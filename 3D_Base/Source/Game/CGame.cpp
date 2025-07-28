@@ -34,6 +34,8 @@ HRESULT CGame::LoadData()
 	}
 
 	return S_OK;
+
+	int a;
 }
 
 //‰ğ•úŠÖ”.
