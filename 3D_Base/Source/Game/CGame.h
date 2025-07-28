@@ -15,7 +15,6 @@
 #include "GameObject/MeshObject/StaticMesh/CCharactor/CEnemy/CEnemy.h"
 #include "Scene/CSceneManager.h"
 
-#include "Camera/CCamera.h"
 
 #include<string>
 #include<vector>
@@ -43,17 +42,6 @@ private:
 	HWND			m_hWnd;			//ウィンドウハンドル
 
 	std::unique_ptr<CSceneManager> m_pSceneManager;
-
-private:
-	CDirectX9*		m_pDx9;
-	CDirectX11*		m_pDx11;
-
-	//スタティックメッシュ.
-	CStaticMesh*	m_pStaticMeshPlayer;	//プレイヤー.
-
-	CCamera*		m_pCamera;		//カメラ.
-	CPlayer*		m_pPlayer;		//プレイヤー.
-
 
 private:
 	//=delete「削除定義」と呼ばれる機能.

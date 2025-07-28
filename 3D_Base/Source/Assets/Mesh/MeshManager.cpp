@@ -49,7 +49,7 @@ HRESULT MeshManager::CreateStaticMesh()
 {
 	StaticMeshList MeshList[] =
 	{
-		StaticMeshList::Fighter,
+		StaticMeshList::Player,
 		StaticMeshList::Ground,
 		StaticMeshList::RoboA,
 		StaticMeshList::RoboB,
@@ -86,7 +86,7 @@ HRESULT MeshManager::CreateSkinMesh()
 HRESULT MeshManager::LoadStaticMesh()
 {
 	//スタティックメッシュの読み込み
-	m_pStaticMeshMap[StaticMeshList::Fighter]->Init(_T("Data\\Mesh\\Static\\Fighter\\Fighter.x"));
+	m_pStaticMeshMap[StaticMeshList::Player ]->Init(_T("Data\\Mesh\\Static\\Character\\character.x"));
 	m_pStaticMeshMap[StaticMeshList::Ground	]->Init(_T("Data\\Mesh\\Static\\Ground\\ground.x"));
 	m_pStaticMeshMap[StaticMeshList::RoboA	]->Init(_T("Data\\Mesh\\Static\\Robo\\RobotA_pivot.x"));
 	m_pStaticMeshMap[StaticMeshList::RoboB	]->Init(_T("Data\\Mesh\\Static\\Robo\\RobotB_pivot.x"));

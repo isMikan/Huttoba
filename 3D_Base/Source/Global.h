@@ -84,7 +84,7 @@ enum class SkinMeshList
 
 enum class StaticMeshList
 {
-	Fighter = 0,
+	Player = 0,
 	Ground,
 	RoboA,
 	RoboB,

@@ -296,8 +296,8 @@ HRESULT CStaticMesh::CreateMaterials()
 //インデックスバッファ作成.
 HRESULT CStaticMesh::CreateIndexBuffer()
 {
-	D3D11_BUFFER_DESC	bd;	//Dx11バッファ構造体.
-	D3D11_SUBRESOURCE_DATA	InitData;//初期化データ.
+	D3D11_BUFFER_DESC	bd{};	//Dx11バッファ構造体.
+	D3D11_SUBRESOURCE_DATA	InitData{};//初期化データ.
 
 	//マテリアル数分の領域を確保.
 	m_ppIndexBuffer.resize(m_Model.NumMaterials);
@@ -363,8 +363,8 @@ HRESULT CStaticMesh::CreateIndexBuffer()
 //頂点バッファ作成.
 HRESULT CStaticMesh::CreateVertexBuffer()
 {
-	D3D11_BUFFER_DESC	bd;	//Dx11バッファ構造体.
-	D3D11_SUBRESOURCE_DATA	InitData;//初期化データ.
+	D3D11_BUFFER_DESC	bd{};	//Dx11バッファ構造体.
+	D3D11_SUBRESOURCE_DATA	InitData{};//初期化データ.
 
 	//Dx9の場合、mapではなくLockで頂点バッファからデータを取り出す.
 	LPDIRECT3DVERTEXBUFFER9 pVB = nullptr;
@@ -575,7 +575,7 @@ HRESULT CStaticMesh::CreateShader()
 HRESULT CStaticMesh::CreateConstantBuffer()
 {
 	//コンスタントバッファ(メッシュ用).
-	D3D11_BUFFER_DESC cb;
+	D3D11_BUFFER_DESC cb{};
 	cb.BindFlags = D3D11_BIND_CONSTANT_BUFFER;	//コンスタントバッファを指定.
 	cb.ByteWidth = sizeof( CBUFFER_PER_MESH );	//コンスタントバッファのサイズ.
 	cb.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;	//書き込みでアクセス.

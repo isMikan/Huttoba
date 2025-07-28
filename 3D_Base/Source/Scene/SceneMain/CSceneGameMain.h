@@ -19,6 +19,8 @@
 #include "Assets/Sprite/SpriteManager.h"
 #include "Assets/Mesh/MeshManager.h"
 
+#include "Camera/CCamera.h"
+
 #include<string>
 #include<vector>
 #include<unordered_map>
@@ -44,11 +46,6 @@ public:
 
 	void AttachMeshToEnemy();
 
-	//カメラ関数.
-	void Camera();
-	//プロジェクション関数.
-	void Projection();
-
 private:
 
 	CDirectX9*  m_pDx9;
@@ -58,14 +55,7 @@ private:
 
 	std::unique_ptr<CDebugText> m_pDbgText;	//デバッグテキスト
 
-	//カメラ情報.
-	CAMERA			m_Camera;
-	//ライト情報
-	LIGHT			m_Light;
-
-	//行列.
-	D3DXMATRIX		m_mView;	//ビュー(カメラ)行列.
-	D3DXMATRIX		m_mProj;	//射影（プロジェクション）行列.
+	CCamera*			m_pCamera;	//カメラ.
 
 	//爆発クラス
 	std::vector<std::unique_ptr<CExplosion> > 	m_pExplosiones;

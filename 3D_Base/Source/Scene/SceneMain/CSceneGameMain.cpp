@@ -3,22 +3,19 @@
 #include "Assets/Sound/CSoundManager.h"
 
 CSceneGameMain::CSceneGameMain(HWND hWnd)
-	: m_hWnd			(hWnd)
-	, m_pDbgText(nullptr)
-	, m_mView()
-	, m_mProj()
+	: m_hWnd			( hWnd )
+	, m_pDbgText		( nullptr )
 
-	, m_Camera()
-	, m_Light()
+	, m_pCamera			( nullptr )
 
-	, m_pUIMap()
+	, m_pUIMap			()
 
-	, m_pExplosiones()
+	, m_pExplosiones	()
 
-	, m_pPlayer(nullptr)
-	, m_pEnemies()
+	, m_pPlayer			( nullptr )
+	, m_pEnemies		()
 
-	, m_pGround(nullptr)
+	, m_pGround			( nullptr )
 
 {
 	m_pDx9 = CDirectX9::GetInstance();
@@ -36,12 +33,7 @@ CSceneGameMain::~CSceneGameMain()
 
 HRESULT CSceneGameMain::Create()
 {
-	//カメラ座標.
-	m_Camera.vPosition = D3DXVECTOR3(0.0f, 2.0f, 0.0f);
-	m_Camera.vLook = D3DXVECTOR3(0.0f, 2.0f, 10.0f);
-
-	//ライト情報
-	m_Light.vDirection = D3DXVECTOR3(1.5f, 1.f, -1.f);	//ライト方向
+	m_pCamera = new CCamera();
 
 	//あらかじめ領域確保
 	m_pExplosiones.resize(Explosion_Max);
@@ -97,7 +89,7 @@ HRESULT CSceneGameMain::LoadData()
 	}
 
 	//スタティックメッシュを設定
-	m_pPlayer->AttachMesh(MeshManager::GetInstance()->GetStaticMesh(StaticMeshList::Fighter));
+	m_pPlayer->AttachMesh(MeshManager::GetInstance()->GetStaticMesh(StaticMeshList::Player));
 	m_pGround->AttachMesh(MeshManager::GetInstance()->GetStaticMesh(StaticMeshList::Ground));
 
 	AttachMeshToEnemy();
@@ -159,27 +151,6 @@ void CSceneGameMain::Update()
 	//BGMのループ再生
 	CSoundManager::PlayLoop(CSoundManager::BGM_Bonus);
 
-	//カメラ座標のデバックコマンド.
-	float add_value = 0.1f;
-	if (GetAsyncKeyState('W') & 0x8000) {
-		m_Camera.vPosition.y += add_value;
-	}
-	if (GetAsyncKeyState('S') & 0x8000) {
-		m_Camera.vPosition.y -= add_value;
-	}
-	if (GetAsyncKeyState('A') & 0x8000) {
-		m_Camera.vPosition.x -= add_value;
-	}
-	if (GetAsyncKeyState('D') & 0x8000) {
-		m_Camera.vPosition.x += add_value;
-	}
-	if (GetAsyncKeyState('Q') & 0x8000) {
-		m_Camera.vPosition.z += add_value;
-	}
-	if (GetAsyncKeyState('E') & 0x8000) {
-		m_Camera.vPosition.z -= add_value;
-	}
-
 	m_pGround->Update();
 	m_pPlayer->Update();
 
@@ -239,20 +210,21 @@ void CSceneGameMain::Update()
 
 void CSceneGameMain::Draw()
 {
-	Camera();
-	Projection();
+	m_pCamera->Update();
 
-	//	m_pStcMeshObj->Draw( m_mView, m_mProj, m_Light, m_Camera );
+	CAMERA camera = m_pCamera->GetCamera();
+	LIGHT light = m_pCamera->GetLight();
+	D3DXMATRIX mView = m_pCamera->GetView();
+	D3DXMATRIX mProj = m_pCamera->GetProj();
 
-	m_pGround->Draw(m_mView, m_mProj, m_Light, m_Camera);
 
-	m_pPlayer->Draw(m_mView, m_mProj, m_Light, m_Camera);
+	m_pPlayer->Draw(mView, mProj, light, camera);
 
 	for (auto& enemyType : m_pEnemies)
 	{
 		for (auto& enemy : enemyType.second)
 		{
-			enemy->Draw(m_mView, m_mProj, m_Light, m_Camera);
+			enemy->Draw(mView, mProj, light, camera);
 		}
 	}
 
@@ -300,7 +272,7 @@ void CSceneGameMain::Draw()
 
 	for (auto& exp : m_pExplosiones)
 	{
-		exp->Draw(m_mView, m_mProj);
+		exp->Draw(mView, mProj);
 	}
 
 	//デバッグテキストの描画
@@ -314,7 +286,7 @@ void CSceneGameMain::Draw()
 	m_pDbgText->Render(dbgText, 10, 110);
 
 	//Effectクラス
-	CEffect::GetInstance()->Draw(m_mView, m_mProj, m_Light, m_Camera);
+	CEffect::GetInstance()->Draw(mView, mProj, light, camera);
 
 }
 
@@ -400,38 +372,3 @@ void CSceneGameMain::AttachMeshToEnemy()
 		}
 	}
 }
-
-//カメラ関数.
-//※カメラ専用のクラスを作成したら便利だよ.
-void CSceneGameMain::Camera()
-{
-	D3DXVECTOR3 cam_pos = m_Camera.vPosition;
-	D3DXVECTOR3 cam_look = m_Camera.vLook;
-	D3DXVECTOR3	vUpVec(0.0f, 1.0f, 0.0f);	//上方（ベクトル）.
-
-	//ビュー（カメラ）変換.
-	D3DXMatrixLookAtLH(
-		&m_mView,	//(out)ビュー計算結果.
-		&cam_pos, &cam_look, &vUpVec);
-}
-
-//プロジェクション関数.
-void CSceneGameMain::Projection()
-{
-	//y方向の視野角。数値を大きくしたら視野が狭くなる.
-	float fov_y = static_cast<FLOAT>(D3DXToRadian(45.0));	//ラジアン値.
-	//アスペクト（幅÷高さ）.
-	float aspect = static_cast<FLOAT>(WND_W) / static_cast<FLOAT>(WND_H);
-	float near_z = 0.1f;
-	float far_z = 100.0f;
-
-	//プロジェクション（射影）変換.
-	D3DXMatrixPerspectiveFovLH(
-		&m_mProj,	//(out)プロジェクション計算結果.
-		fov_y,		//視野角（FOV：Field of View）.
-		aspect,		//アスペクト.
-		near_z,		//近いビュー平面のz値.
-		far_z);	//遠いビュー平面のz値.
-}
-
-
