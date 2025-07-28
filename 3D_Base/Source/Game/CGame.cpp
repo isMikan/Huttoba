@@ -33,6 +33,8 @@ HRESULT CGame::LoadData()
 		return E_FAIL;
 	}
 
+	int a;
+
 	return S_OK;
 }
 
