@@ -19,8 +19,8 @@ public:
 	virtual void Draw( D3DXMATRIX& View, D3DXMATRIX& Proj );
 
 	//スプライトを接続する.
-	void AttachSprite( CSprite3D& pSprite ){
-		m_pSprite = &pSprite;
+	void AttachSprite( std::shared_ptr<CSprite3D> pSprite ){
+		m_pSprite = pSprite;
 	}
 	//スプライトを切り離す.
 	void DetachSprite(){
@@ -31,5 +31,5 @@ protected:
 	void Draw( D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAMERA& Camera) override final;
 
 protected:
-	CSprite3D*	m_pSprite;
+	std::shared_ptr<CSprite3D>	m_pSprite;
 };

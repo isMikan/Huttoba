@@ -12,7 +12,6 @@ CSceneGameMain::CSceneGameMain(HWND hWnd)
 	, m_Camera()
 	, m_Light()
 
-	, m_p3DSpritMap()
 	, m_pUIMap()
 	, m_pStaticMeshMap()
 	, m_pSkinMeshMap()
@@ -53,9 +52,9 @@ HRESULT CSceneGameMain::Create()
 	//デバッグテキストのインスタンス作成
 	m_pDbgText = std::make_unique<CDebugText>();
 
+	if (FAILED(SpriteManager::GetInstance()->Create())){ return E_FAIL; }
+
 	//各オブジェクトのインスタンス作成
-	CreateSprite3D();
-	CreateSprite2D();
 	CreateStaticMesh();
 	CreateUI();
 	CreateSkinMesh();
@@ -84,38 +83,7 @@ HRESULT CSceneGameMain::LoadData()
 		return E_FAIL;
 	}
 
-	//地面スプライトの構造体
-	CSprite3D::SPRITE_STATE SSGround;
-	SSGround.Disp.w = 1.f;
-	SSGround.Disp.h = 1.f;
-	SSGround.Base.w = 256.f;
-	SSGround.Base.h = 256.f;
-	SSGround.Stride.w = 256.f;
-	SSGround.Stride.h = 256.f;
-
-	//地面スプライトの読み込み.
-	m_p3DSpritMap[Sprite3DList::Ground]->Init(_T("Data\\Texture\\Ground.png"), SSGround);
-
-	//プレイヤースプライトの構造体
-	CSprite3D::SPRITE_STATE SSPlayer =
-	{ 1.f, 1.f, 64.f, 64.f, 64.f, 64.f };
-
-	//プレイヤースプライトの読み込み.
-	m_p3DSpritMap[Sprite3DList::Player]->Init(_T("Data\\Texture\\Player.png"), SSPlayer);
-
-	//爆発スプライトの構造体
-	CSprite3D::SPRITE_STATE SSExplosion =
-	{ 1.f, 1.f, 256.f, 256.f, 32.f, 32.f };
-
-	//爆発スプライトの読み込み.
-	m_p3DSpritMap[Sprite3DList::Explosion]->Init(_T("Data\\Texture\\explosion.png"), SSExplosion);
-
-	//Pモンスプライトの構造体
-	CSprite2D::SPRITE_STATE SSPmon =
-	{ 64.f, 64.f, 896.f, 560.f, 896.f / 16.f, 560.f / 10.f };
-
-	//Pモンスプライトの読み込み
-	m_p2DSpritMap[Sprite2DList::PMon]->Init(_T("Data\\Texture\\pmon.png"), SSPmon);
+	if (FAILED(SpriteManager::GetInstance()->LoadData())) { return E_FAIL; }
 
 	//スタティックメッシュの読み込み
 	m_pStaticMeshMap[StaticMeshList::Fighter]	->Init(_T("Data\\Mesh\\Static\\Fighter\\Fighter.x"));
@@ -133,13 +101,13 @@ HRESULT CSceneGameMain::LoadData()
 	//爆発スプライトを設定.
 	for (const auto& exp : m_pExplosiones)
 	{
-		exp->AttachSprite(*m_p3DSpritMap[Sprite3DList::Explosion]);
+		exp->AttachSprite(SpriteManager::GetInstance()->GetSprite3D(Sprite3DList::Explosion));
 	}
 
 	//Pモンスプライトを設定
 	for (auto& UI : m_pUIMap)
 	{
-		UI.second->AttachSprite(*m_p2DSpritMap[Sprite2DList::PMon]);
+		UI.second->AttachSprite(SpriteManager::GetInstance()->GetSprite2D(Sprite2DList::PMon));
 	}
 
 	//スタティックメッシュを設定
@@ -154,8 +122,8 @@ HRESULT CSceneGameMain::LoadData()
 	m_pUIMap[UIList::Scyther]->SetPatternNo(10, 7);
 
 	//Pモンそれぞれの位置を設定
-	const float size = SSPmon.Disp.w * 0.5f;	// 64.f
-	const float pos_y = static_cast<float>(WND_H) - SSPmon.Disp.h;
+	const float size = 64.f;	// 64.f
+	const float pos_y = static_cast<float>(WND_H) - 64.f;
 	m_pUIMap[UIList::Beedrill]->SetPosition(size * 0.f, pos_y, 0.f);
 	m_pUIMap[UIList::Parasect]->SetPosition(size * 1.f, pos_y, 0.f);
 	m_pUIMap[UIList::Scyther]->SetPosition(size * 2.f, pos_y, 0.f);
@@ -364,41 +332,6 @@ void CSceneGameMain::Draw()
 
 }
 
-HRESULT CSceneGameMain::CreateSprite3D()
-{
-	//スプライトのインスタンス作成.
-	Sprite3DList spritw3DList[] =
-	{
-		Sprite3DList::Ground,
-		Sprite3DList::Player,
-		Sprite3DList::Explosion,
-	};
-
-	for (auto& id : spritw3DList)
-	{
-		m_p3DSpritMap[id] = std::make_unique<CSprite3D>();
-		if (!m_p3DSpritMap[id]) return E_POINTER;
-	}
-
-	return S_OK;
-}
-
-HRESULT CSceneGameMain::CreateSprite2D()
-{
-	Sprite2DList sprite2DList[] =
-	{
-		Sprite2DList::PMon
-	};
-
-	for (auto& id : sprite2DList)
-	{
-		m_p2DSpritMap[id] = std::make_unique<CSprite2D>();
-		if (!m_p2DSpritMap[id]) return E_POINTER;
-
-	}
-
-	return S_OK;
-}
 
 HRESULT CSceneGameMain::CreateStaticMesh()
 {

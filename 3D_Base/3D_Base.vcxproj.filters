@@ -134,6 +134,7 @@
     <ClCompile Include="Source\stdafx.cpp">
       <Filter>Sourse</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Assets\Sprite\SpriteManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Assets\AssetManager.h">
@@ -253,5 +254,6 @@
     <ClInclude Include="Source\stdafx.h">
       <Filter>Sourse</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Assets\Sprite\SpriteManager.h" />
   </ItemGroup>
 </Project>
