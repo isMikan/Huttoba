@@ -4,6 +4,8 @@
 #include <ranges> 
 #include<memory>
 
+//基盤遅くない？
+
 //コンストラクタ.
 CGame::CGame(HWND hWnd )
 	: m_hWnd			(hWnd)
