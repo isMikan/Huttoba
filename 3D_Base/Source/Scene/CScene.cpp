@@ -20,7 +20,7 @@ void CScene::Draw()
 
 HRESULT CScene::Create()
 {
-	return true;
+	return S_OK;
 }
 
 void CScene::Destroy()
