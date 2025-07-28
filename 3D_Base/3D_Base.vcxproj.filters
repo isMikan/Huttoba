@@ -86,9 +86,6 @@
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CEnemy\CEnemy.cpp">
       <Filter>Sourse</Filter>
     </ClCompile>
-    <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CPlayer\CPlayer.cpp">
-      <Filter>Sourse</Filter>
-    </ClCompile>
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\CStaticMeshObject.cpp">
       <Filter>Sourse</Filter>
     </ClCompile>
@@ -134,6 +131,15 @@
     <ClCompile Include="Source\stdafx.cpp">
       <Filter>Sourse</Filter>
     </ClCompile>
+    <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CPlayer\CPlayer.cpp" />
+    <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CPlayer\PlayerState\CPlayerActionIdle.cpp" />
+    <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CPlayer\PlayerState\CPlayerHandAttack.cpp" />
+    <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CPlayer\PlayerState\CPlayerMove.cpp" />
+    <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CPlayer\PlayerState\CPlayerMoveIdle.cpp" />
+    <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CPlayer\PlayerState\CPlayerMoveState.cpp" />
+    <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CPlayer\PlayerState\CPlayerRotation.cpp" />
+    <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CPlayer\PlayerState\CPlayerRotationIdle.cpp" />
+    <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CPlayer\PlayerState\CPlayerState.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Assets\AssetManager.h">
@@ -202,9 +208,6 @@
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CEnemy\CEnemy.h">
       <Filter>Sourse</Filter>
     </ClInclude>
-    <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CPlayer\CPlayer.h">
-      <Filter>Sourse</Filter>
-    </ClInclude>
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\CStaticMeshObject.h">
       <Filter>Sourse</Filter>
     </ClInclude>
@@ -253,5 +256,14 @@
     <ClInclude Include="Source\stdafx.h">
       <Filter>Sourse</Filter>
     </ClInclude>
+    <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CPlayer\CPlayer.h" />
+    <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CPlayer\PlayerState\CPlayerActionIdle.h" />
+    <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CPlayer\PlayerState\CPlayerHandAttack.h" />
+    <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CPlayer\PlayerState\CPlayerMove.h" />
+    <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CPlayer\PlayerState\CPlayerMoveIdle.h" />
+    <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CPlayer\PlayerState\CPlayerMoveState.h" />
+    <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CPlayer\PlayerState\CPlayerRotation.h" />
+    <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CPlayer\PlayerState\CPlayerRotationIdle.h" />
+    <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CPlayer\PlayerState\CPlayerState.h" />
   </ItemGroup>
 </Project>
