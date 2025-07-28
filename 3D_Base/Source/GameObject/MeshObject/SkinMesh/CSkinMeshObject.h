@@ -19,7 +19,7 @@ public:
 	virtual void Draw( D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAMERA& Camera ) override;
 
 	//メッシュを接続する.
-	void AttachMesh(CSkinMesh& pMesh);
+	void AttachMesh(std::shared_ptr<CSkinMesh> pMesh);
 	//メッシュを切り離す.
 	void DetachMesh();
 
@@ -28,7 +28,7 @@ public:
 		return m_pBSphere;
 	}
 	//モデルに合わせたバウンディングスフィア作成のラッパー関数
-	HRESULT CreateBSphereForMesh(const CStaticMesh& pMesh) {
+	HRESULT CreateBSphereForMesh(const std::shared_ptr<CStaticMesh> pMesh) {
 		return m_pBSphere->CreateSphereForMesh(pMesh);
 	}
 	//バウンディングスフィアをオブジェクト位置に合わせる
@@ -38,7 +38,7 @@ public:
 	}
 
 protected:
-	CSkinMesh*		m_pMesh;
+	std::shared_ptr<CSkinMesh>		m_pMesh;
 	CBoundingSphere*	m_pBSphere;
 	LPD3DXANIMATIONCONTROLLER	m_pAnimCtrl;
 };

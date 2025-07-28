@@ -2,6 +2,8 @@
 #include "SpriteManager.h"
 
 SpriteManager::SpriteManager()
+	: m_p2DSpritMap()
+	, m_p3DSpritMap()
 {
 }
 

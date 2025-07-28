@@ -2,7 +2,6 @@
 #include "Assets/Effect/CEffect.h"
 #include "Assets/Sound/CSoundManager.h"
 
-
 CSceneGameMain::CSceneGameMain(HWND hWnd)
 	: m_hWnd			(hWnd)
 	, m_pDbgText(nullptr)
@@ -13,8 +12,6 @@ CSceneGameMain::CSceneGameMain(HWND hWnd)
 	, m_Light()
 
 	, m_pUIMap()
-	, m_pStaticMeshMap()
-	, m_pSkinMeshMap()
 
 	, m_pExplosiones()
 
@@ -52,12 +49,13 @@ HRESULT CSceneGameMain::Create()
 	//デバッグテキストのインスタンス作成
 	m_pDbgText = std::make_unique<CDebugText>();
 
-	if (FAILED(SpriteManager::GetInstance()->Create())){ return E_FAIL; }
+	if (FAILED(SpriteManager::GetInstance()	->Create())) { return E_FAIL; }
+	if (FAILED(MeshManager::GetInstance()	->Create())) { return E_FAIL; }
+
+
 
 	//各オブジェクトのインスタンス作成
-	CreateStaticMesh();
 	CreateUI();
-	CreateSkinMesh();
 	CteateExplosion();
 	CreateCharactor();
 	//地面クラスのインスタンス作成
@@ -83,20 +81,8 @@ HRESULT CSceneGameMain::LoadData()
 		return E_FAIL;
 	}
 
-	if (FAILED(SpriteManager::GetInstance()->LoadData())) { return E_FAIL; }
-
-	//スタティックメッシュの読み込み
-	m_pStaticMeshMap[StaticMeshList::Fighter]	->Init(_T("Data\\Mesh\\Static\\Fighter\\Fighter.x"));
-	m_pStaticMeshMap[StaticMeshList::Ground]	->Init(_T("Data\\Mesh\\Static\\Ground\\ground.x"));
-	m_pStaticMeshMap[StaticMeshList::RoboA]		->Init(_T("Data\\Mesh\\Static\\Robo\\RobotA_pivot.x"));
-	m_pStaticMeshMap[StaticMeshList::RoboB]		->Init(_T("Data\\Mesh\\Static\\Robo\\RobotB_pivot.x"));
-	m_pStaticMeshMap[StaticMeshList::Bullet]	->Init(_T("Data\\Mesh\\Static\\Bullet\\bullet.x"));
-
-	//バウンディングスフィア(当たり判定用)
-	m_pStaticMeshMap[StaticMeshList::BSphere]->Init(_T("Data\\Collision\\Sphere.x"));
-
-	//スキンメッシュの読み込み
-	m_pSkinMeshMap[SkinMeshList::Zako]->Init(_T("Data\\Mesh\\Skin\\zako\\zako.x"));
+	if (FAILED(SpriteManager::GetInstance()	->LoadData())) { return E_FAIL; }
+	if (FAILED(MeshManager::GetInstance()	->LoadData())) { return E_FAIL; }
 
 	//爆発スプライトを設定.
 	for (const auto& exp : m_pExplosiones)
@@ -111,8 +97,8 @@ HRESULT CSceneGameMain::LoadData()
 	}
 
 	//スタティックメッシュを設定
-	m_pPlayer->AttachMesh(*m_pStaticMeshMap[StaticMeshList::Fighter]);
-	m_pGround->AttachMesh(*m_pStaticMeshMap[StaticMeshList::Ground]);
+	m_pPlayer->AttachMesh(MeshManager::GetInstance()->GetStaticMesh(StaticMeshList::Fighter));
+	m_pGround->AttachMesh(MeshManager::GetInstance()->GetStaticMesh(StaticMeshList::Ground));
 
 	AttachMeshToEnemy();
 
@@ -129,13 +115,13 @@ HRESULT CSceneGameMain::LoadData()
 	m_pUIMap[UIList::Scyther]->SetPosition(size * 2.f, pos_y, 0.f);
 
 	//バウンディングスフィアの作成
-	m_pPlayer->CreateBSphereForMesh(*m_pStaticMeshMap[StaticMeshList::BSphere]);
+	m_pPlayer->CreateBSphereForMesh(MeshManager::GetInstance()->GetStaticMesh(StaticMeshList::BSphere));
 
 	for (auto& enemyType : m_pEnemies)
 	{
 		for (auto& enemy : enemyType.second)
 		{
-			enemy->CreateBSphereForMesh(*m_pStaticMeshMap[StaticMeshList::BSphere]);
+			enemy->CreateBSphereForMesh(MeshManager::GetInstance()->GetStaticMesh(StaticMeshList::BSphere));
 		}
 	}
 
@@ -155,8 +141,8 @@ HRESULT CSceneGameMain::LoadData()
 	{
 		int i = static_cast<int>(&enemy - &m_pEnemies[EnemyList::RoboA][0]);
 
-		enemy->AttachMesh(*m_pStaticMeshMap[StaticMeshList::RoboA]);
-		enemy->CreateBSphereForMesh(*m_pStaticMeshMap[StaticMeshList::BSphere]);
+		enemy->AttachMesh(MeshManager::GetInstance()->GetStaticMesh(StaticMeshList::RoboA));
+		enemy->CreateBSphereForMesh(MeshManager::GetInstance()->GetStaticMesh(StaticMeshList::BSphere));
 		enemy->SetPosition(-3.f + (i * 3.f), 1.f, 10.f);
 	}
 
@@ -332,44 +318,6 @@ void CSceneGameMain::Draw()
 
 }
 
-
-HRESULT CSceneGameMain::CreateStaticMesh()
-{
-	StaticMeshList MeshList[] =
-	{
-		StaticMeshList::Fighter,
-		StaticMeshList::Ground,
-		StaticMeshList::RoboA,
-		StaticMeshList::RoboB,
-		StaticMeshList::Bullet,
-		StaticMeshList::BSphere,
-	};
-	for (auto& id : MeshList)
-	{
-		m_pStaticMeshMap[id] = std::make_unique<CStaticMesh>();
-		if (!m_pStaticMeshMap[id]) E_POINTER;
-	}
-
-	return S_OK;
-}
-
-HRESULT CSceneGameMain::CreateSkinMesh()
-{
-	SkinMeshList skinMesh[] =
-	{
-		SkinMeshList::Zako
-	};
-
-	//スキンメッシュのインスタンス作成
-	for (auto& id : skinMesh)
-	{
-		m_pSkinMeshMap[id] = std::make_unique<CSkinMesh>();
-		if (!m_pSkinMeshMap[id]) return E_POINTER;
-	}
-
-	return S_OK;
-}
-
 HRESULT CSceneGameMain::CreateUI()
 {
 	UIList UI[] =
@@ -438,12 +386,12 @@ void CSceneGameMain::AttachMeshToEnemy()
 			{
 			case EnemyList::RoboA:
 
-				enemy->AttachMesh(*m_pStaticMeshMap[StaticMeshList::RoboA]);
+				enemy->AttachMesh(MeshManager::GetInstance()->GetStaticMesh(StaticMeshList::RoboA));
 				break;
 
 			case EnemyList::RoboB:
 
-				enemy->AttachMesh(*m_pStaticMeshMap[StaticMeshList::RoboB]);
+				enemy->AttachMesh(MeshManager::GetInstance()->GetStaticMesh(StaticMeshList::RoboB));
 				break;
 
 			default:

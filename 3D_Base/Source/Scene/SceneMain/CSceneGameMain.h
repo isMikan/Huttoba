@@ -17,6 +17,7 @@
 #include "Assets/Mesh/SkinMesh/CSkinMesh.h"
 #include "Scene/CSceneManager.h"
 #include "Assets/Sprite/SpriteManager.h"
+#include "Assets/Mesh/MeshManager.h"
 
 #include<string>
 #include<vector>
@@ -37,8 +38,6 @@ public:
 	void Draw() override;
 
 
-	HRESULT CreateStaticMesh();
-	HRESULT CreateSkinMesh();
 	HRESULT CreateUI();
 	HRESULT CteateExplosion();
 	HRESULT CreateCharactor();
@@ -73,12 +72,6 @@ private:
 
 	//UIオブジェクトクラス
 	std::unordered_map<UIList, std::unique_ptr<CUIObject> > m_pUIMap;
-
-	//スタティックメッシュ(使いまわす資源)
-	std::unordered_map<StaticMeshList, std::unique_ptr<CStaticMesh>> m_pStaticMeshMap;
-
-	//スキンメッシュ(使いまわす資源)
-	std::unordered_map<SkinMeshList, std::unique_ptr<CSkinMesh>> m_pSkinMeshMap;
 
 	//キャラクタークラス
 	std::unique_ptr<CPlayer>	m_pPlayer;

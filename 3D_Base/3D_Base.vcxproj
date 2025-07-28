@@ -234,6 +234,7 @@
   <ItemGroup>
     <ClCompile Include="Source\Assets\AssetManager.cpp" />
     <ClCompile Include="Source\Assets\Effect\CEffect.cpp" />
+    <ClCompile Include="Source\Assets\Mesh\MeshManager.cpp" />
     <ClCompile Include="Source\Assets\Mesh\SkinMesh\CSkinMesh.cpp" />
     <ClCompile Include="Source\Assets\Mesh\SkinMesh\CSkinMeshParser.cpp" />
     <ClCompile Include="Source\Assets\Mesh\StaticMesh\CStaticMesh.cpp" />
@@ -280,6 +281,7 @@
     <ClInclude Include="Source\Assets\Effect\Effekseer\include\Effekseer.Modules.h" />
     <ClInclude Include="Source\Assets\Effect\Effekseer\include\Effekseer.SIMD.h" />
     <ClInclude Include="Source\Assets\Effect\Effekseer\include\EffekseerRendererDX11.h" />
+    <ClInclude Include="Source\Assets\Mesh\MeshManager.h" />
     <ClInclude Include="Source\Assets\Mesh\SkinMesh\CSkinMesh.h" />
     <ClInclude Include="Source\Assets\Mesh\SkinMesh\CSkinMeshParser.h" />
     <ClInclude Include="Source\Assets\Mesh\StaticMesh\CStaticMesh.h" />

@@ -38,9 +38,9 @@ void CSkinMeshObject::Draw(
 }
 
 //メッシュを接続する.
-void CSkinMeshObject::AttachMesh(CSkinMesh& pMesh) 
+void CSkinMeshObject::AttachMesh(std::shared_ptr<CSkinMesh> pMesh)
 {
-	m_pMesh = &pMesh;
+	m_pMesh = pMesh;
 
 	//アニメーションコントローラーを取得
 	LPD3DXANIMATIONCONTROLLER pAC = m_pMesh->GetAnimationController();

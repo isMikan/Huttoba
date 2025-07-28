@@ -12,7 +12,7 @@ public:
 	~CBoundingSphere();
 
 	//モデルに合わせたバウンディングスフィアを作成
-	HRESULT CreateSphereForMesh(const CStaticMesh& pMesh);
+	HRESULT CreateSphereForMesh(const std::shared_ptr<CStaticMesh> pMesh);
 
 	//他の球体との当たり判定
 	bool IsHit(const CBoundingSphere& pBSphere);

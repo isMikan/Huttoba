@@ -11,7 +11,7 @@ CBoundingSphere::~CBoundingSphere()
 }
 
 //モデルに合わせたバウンディングスフィアを作成
-HRESULT CBoundingSphere::CreateSphereForMesh(const CStaticMesh& pMesh)
+HRESULT CBoundingSphere::CreateSphereForMesh(const std::shared_ptr<CStaticMesh> pMesh)
 {
 	LPDIRECT3DVERTEXBUFFER9 pVB = nullptr;	//頂点バッファ
 	void* pVertices = nullptr;				//頂点
@@ -20,7 +20,7 @@ HRESULT CBoundingSphere::CreateSphereForMesh(const CStaticMesh& pMesh)
 
 	//頂点バッファを取得
 	if (FAILED(
-		pMesh.GetMesh()->GetVertexBuffer(&pVB)))
+		pMesh->GetMesh()->GetVertexBuffer(&pVB)))
 	{
 		return E_FAIL;
 	}
@@ -36,8 +36,8 @@ HRESULT CBoundingSphere::CreateSphereForMesh(const CStaticMesh& pMesh)
 	//メッシュの外接円の中心と半径を計算する
 	D3DXComputeBoundingSphere(
 		static_cast<D3DXVECTOR3*>(pVertices),
-		pMesh.GetMesh()->GetNumVertices(),					//頂点の数
-		D3DXGetFVFVertexSize(pMesh.GetMesh()->GetFVF()),	//頂点の情報
+		pMesh->GetMesh()->GetNumVertices(),					//頂点の数
+		D3DXGetFVFVertexSize(pMesh->GetMesh()->GetFVF()),	//頂点の情報
 		&Center,											//(out)中心座標
 		&Radius);											//(out)半径
 
