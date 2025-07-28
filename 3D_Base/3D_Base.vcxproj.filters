@@ -1,0 +1,257 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Resource">
+      <UniqueIdentifier>{afea18ab-a8a1-4f4c-b7cb-b61d1db7c846}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shader">
+      <UniqueIdentifier>{255ca603-ac79-4a2f-818e-a546ec0e808a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sourse">
+      <UniqueIdentifier>{2e95c062-de57-4ef3-b21c-baf07375bf20}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="Data\Shader\Sprite3D.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="Data\Shader\Sprite2D.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="Data\Shader\DebugText.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="Data\Shader\StaticMesh.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="Data\Shader\SkinMesh.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="ChangeSourse.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Source\Assets\AssetManager.cpp">
+      <Filter>Sourse</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Assets\Effect\CEffect.cpp">
+      <Filter>Sourse</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Assets\Mesh\SkinMesh\CSkinMesh.cpp">
+      <Filter>Sourse</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Assets\Mesh\SkinMesh\CSkinMeshParser.cpp">
+      <Filter>Sourse</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Assets\Mesh\StaticMesh\CStaticMesh.cpp">
+      <Filter>Sourse</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Assets\Sound\CSound.cpp">
+      <Filter>Sourse</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Assets\Sound\CSoundManager.cpp">
+      <Filter>Sourse</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Assets\Sprite\Sprite2D\CSprite2D.cpp">
+      <Filter>Sourse</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Assets\Sprite\Sprite3D\CSprite3D.cpp">
+      <Filter>Sourse</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Collision\CBoundingSphere.cpp">
+      <Filter>Sourse</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\DebugText\CDebugText.cpp">
+      <Filter>Sourse</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\DirectX\CDirectX11.cpp">
+      <Filter>Sourse</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\DirectX\CDirectX9.cpp">
+      <Filter>Sourse</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Game\CGame.cpp">
+      <Filter>Sourse</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GameObject\CGameObject.cpp">
+      <Filter>Sourse</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GameObject\MeshObject\SkinMesh\CSkinMeshObject.cpp">
+      <Filter>Sourse</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CCharacter.cpp">
+      <Filter>Sourse</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CEnemy\CEnemy.cpp">
+      <Filter>Sourse</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CPlayer\CPlayer.cpp">
+      <Filter>Sourse</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\CStaticMeshObject.cpp">
+      <Filter>Sourse</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\Ground\CGround.cpp">
+      <Filter>Sourse</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GameObject\SpriteObject\CSpriteObject.cpp">
+      <Filter>Sourse</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GameObject\SpriteObject\Explosion\CExplosion.cpp">
+      <Filter>Sourse</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GameObject\UIObject\CUIObject.cpp">
+      <Filter>Sourse</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Main\CCreateWindow.cpp">
+      <Filter>Sourse</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Main\CMain.cpp">
+      <Filter>Sourse</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Main\WinMain.cpp">
+      <Filter>Sourse</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene\CScene.cpp">
+      <Filter>Sourse</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene\CSceneManager.cpp">
+      <Filter>Sourse</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene\SceneMain\CSceneGameMain.cpp">
+      <Filter>Sourse</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene\SceneOver\CSceneGameOver.cpp">
+      <Filter>Sourse</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene\SceneResult\CSceneResult.cpp">
+      <Filter>Sourse</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene\SceneTitle\CSceneTitle.cpp">
+      <Filter>Sourse</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\stdafx.cpp">
+      <Filter>Sourse</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Source\Assets\AssetManager.h">
+      <Filter>Sourse</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Assets\Effect\CEffect.h">
+      <Filter>Sourse</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Assets\Effect\Effekseer\include\Effekseer.h">
+      <Filter>Sourse</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Assets\Effect\Effekseer\include\Effekseer.Modules.h">
+      <Filter>Sourse</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Assets\Effect\Effekseer\include\Effekseer.SIMD.h">
+      <Filter>Sourse</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Assets\Effect\Effekseer\include\EffekseerRendererDX11.h">
+      <Filter>Sourse</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Assets\Mesh\SkinMesh\CSkinMesh.h">
+      <Filter>Sourse</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Assets\Mesh\SkinMesh\CSkinMeshParser.h">
+      <Filter>Sourse</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Assets\Mesh\StaticMesh\CStaticMesh.h">
+      <Filter>Sourse</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Assets\Sound\CSound.h">
+      <Filter>Sourse</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Assets\Sound\CSoundManager.h">
+      <Filter>Sourse</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Assets\Sprite\Sprite2D\CSprite2D.h">
+      <Filter>Sourse</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Assets\Sprite\Sprite3D\CSprite3D.h">
+      <Filter>Sourse</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Collision\CBoundingSphere.h">
+      <Filter>Sourse</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\DebugText\CDebugText.h">
+      <Filter>Sourse</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\DirectX\CDirectX11.h">
+      <Filter>Sourse</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\DirectX\CDirectX9.h">
+      <Filter>Sourse</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Game\CGame.h">
+      <Filter>Sourse</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GameObject\CGameObject.h">
+      <Filter>Sourse</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GameObject\MeshObject\SkinMesh\CSkinMeshObject.h">
+      <Filter>Sourse</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CCharacter.h">
+      <Filter>Sourse</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CEnemy\CEnemy.h">
+      <Filter>Sourse</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CPlayer\CPlayer.h">
+      <Filter>Sourse</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\CStaticMeshObject.h">
+      <Filter>Sourse</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\Ground\CGround.h">
+      <Filter>Sourse</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GameObject\SpriteObject\CSpriteObject.h">
+      <Filter>Sourse</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GameObject\SpriteObject\Explosion\CExplosion.h">
+      <Filter>Sourse</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GameObject\UIObject\CUIObject.h">
+      <Filter>Sourse</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Main\CCreateWindow.h">
+      <Filter>Sourse</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Main\CMain.h">
+      <Filter>Sourse</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene\CScene.h">
+      <Filter>Sourse</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene\CSceneManager.h">
+      <Filter>Sourse</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene\SceneMain\CSceneGameMain.h">
+      <Filter>Sourse</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene\SceneOver\CSceneGameOver.h">
+      <Filter>Sourse</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene\SceneResult\CSceneResult.h">
+      <Filter>Sourse</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene\SceneTitle\CSceneTitle.h">
+      <Filter>Sourse</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Global.h">
+      <Filter>Sourse</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\MyMacro.h">
+      <Filter>Sourse</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\stdafx.h">
+      <Filter>Sourse</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

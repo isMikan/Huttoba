@@ -1,0 +1,131 @@
+﻿
+
+⚠--------重要---------⚠
+
+・基本的に生ポインタはスマートポインタに変更。
+　漏れがあったら報告お願い
+
+・ファイルを仮想ファイルから物理ファイルに変更。
+　ファイルのパスで楽する方法を模索中。
+
+・CDirectX9,11をシングルトン化
+
+・シーン遷移 
+	main	-> L 
+	その他	-> z
+
+---------------------//
+
+⚠--------今後の方針---------⚠
+
+・ItemManagerを作成。
+・ResouseManagerを作成。
+・ObjectManager作成
+・SceneMainの責任分担
+・クラスの前方宣言化
+・その他便利機能
+
+
+・ItemManagerを作成。
+	ItemBaseを継承したクラスを作成して、アイテムの種類を増やしていく。
+	Managerクラスを作成して、アイテムの管理を行う。
+	Factoryクラスを作成して、アイテムの生成、登録を行う。
+
+
+・リソースクラスを作成。
+
+	Sprite2D・Sprite3D -> SpriteManager
+	StaticMesh・SkinMesh -> MeshManager
+	Sound -> SoundManager
+	Effect -> EffectManager
+
+	各Manager -> ResourceManager
+	ResourceManagerからすべてのリソースを取得できるように
+
+
+・オブジェクトマネージャー作成
+	
+	Item -> ItemManager
+	Player・Stage・ItemManager -> ObjectManager
+
+	ObjectManagerですべてのオブジェクトを管理する。
+
+	ex)ObjectManager->Updateで各オブジェクトのUpdateを呼び出す。
+	
+
+・SceneMainの責任分担
+
+	さすがに肥大化しすぎ。
+	各オブジェクトで分けていきたい
+
+	ex) 
+		Update()
+		{
+			～諸々処理～
+
+			ObjectManager->Update(); // オブジェクトの更新
+			ResourceManager->Update(); // リソースの更新
+		}
+
+		くらいのコンパクトな感じで
+
+
+・クラスの前方宣言化
+		クラスの前方宣言を使って、ヘッダーファイルの依存関係を減らす。
+
+
+・その他便利機能
+
+----------------------//
+
+
+
+
+
+↓変更点↓
+
+
+
+
+
+---------変更---------
+基本的に生ポインタはスマートポインタに変更。
+漏れがあったら変更お願い
+
+ファイルを仮想ファイルから物理ファイルに変更。
+ファイルのパスで楽する方法を模索中。
+
+[WinInit]
+Window作成部分をCCreateWindowに分割
+
+[CDirectX9,11]
+シングルトン化
+
+[CCreateWindow]
+
+いったんm_hWndを持たせているが、そのうちリソースマネージャーを作成し、そこにGetでhWndを渡すかも？要相談
+
+[Mesh・Sprite系統]
+初期化関数を二つ用意。
+一つはDirectXのインスタンスを渡すもの。
+もう一つは、DirectXのインスタンスを渡さずに、現在一つだけのインスタンスを使用するもの。
+
+[CShot・Shot関連
+
+打つという処理は出てくるだろうが、このゲームに合っている処理ではない。
+思考が引っ張られないように削除
+
+[CZako]
+
+おそらくスキンメッシュは使わないと思うので削除
+例外的に使う可能性もあるのでCSukinMeshはコメント化して残している。
+
+・InitのDirectXインスタンス
+
+CSprite3Dのように、InitでDirectX11のアドレスを渡しているのは
+関数の中で固定で受け取ってもいいが、もしかしたら並列処理などで複数のDirectXのインスタンスが欲しくなるかも。
+なので固定化させずに残しておく。
+代わりにInitをオーバーロードして、DirectXのインスタンスを渡さないものも用意している。
+
+---------------------//
+
