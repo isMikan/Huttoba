@@ -5,7 +5,7 @@
 #include "CPlayerMoveIdle.h"
 
 CPlayerMove::CPlayerMove()
-	: m_MoveSpeed		( 0.05f )
+	: m_MoveSpeed		( 0.1f )
 	, m_MoveSpeedScale	( 1.f )
 	, m_MoveDir			( 0, 0, 0 )
 	, m_MoveState		( MoveNone )

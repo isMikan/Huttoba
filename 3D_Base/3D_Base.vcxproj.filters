@@ -140,6 +140,7 @@
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CPlayer\PlayerState\CPlayerRotation.cpp" />
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CPlayer\PlayerState\CPlayerRotationIdle.cpp" />
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CPlayer\PlayerState\CPlayerState.cpp" />
+    <ClCompile Include="Source\Camera\CCamera.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Assets\AssetManager.h">
@@ -265,5 +266,6 @@
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CPlayer\PlayerState\CPlayerRotation.h" />
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CPlayer\PlayerState\CPlayerRotationIdle.h" />
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CPlayer\PlayerState\CPlayerState.h" />
+    <ClInclude Include="Source\Camera\CCamera.h" />
   </ItemGroup>
 </Project>
