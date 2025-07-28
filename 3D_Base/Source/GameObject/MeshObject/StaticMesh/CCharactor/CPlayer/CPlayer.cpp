@@ -25,6 +25,8 @@ void CPlayer::Update()
 		m_vPosition.x -= add_value;
 	}
 	CCharacter::Update();
+
+	int vorocity;
 }
 
 void CPlayer::Draw(
