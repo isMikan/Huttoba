@@ -16,6 +16,7 @@
 #include "GameObject/MeshObject/StaticMesh/CCharactor/CEnemy/CEnemy.h"
 #include "Assets/Mesh/SkinMesh/CSkinMesh.h"
 #include "Scene/CSceneManager.h"
+#include "Assets/Sprite/SpriteManager.h"
 
 #include<string>
 #include<vector>
@@ -36,8 +37,6 @@ public:
 	void Draw() override;
 
 
-	HRESULT CreateSprite3D();
-	HRESULT CreateSprite2D();
 	HRESULT CreateStaticMesh();
 	HRESULT CreateSkinMesh();
 	HRESULT CreateUI();
@@ -68,12 +67,6 @@ private:
 	//行列.
 	D3DXMATRIX		m_mView;	//ビュー(カメラ)行列.
 	D3DXMATRIX		m_mProj;	//射影（プロジェクション）行列.
-
-	//ゲームで扱うスプライトデータ
-	std::unordered_map<Sprite3DList, std::unique_ptr<CSprite3D> > m_p3DSpritMap;
-
-	//スプライト2Dデータ
-	std::unordered_map<Sprite2DList, std::unique_ptr<CSprite2D> > m_p2DSpritMap;
 
 	//爆発クラス
 	std::vector<std::unique_ptr<CExplosion> > 	m_pExplosiones;

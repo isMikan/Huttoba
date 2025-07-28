@@ -241,6 +241,7 @@
     <ClCompile Include="Source\Assets\Sound\CSoundManager.cpp" />
     <ClCompile Include="Source\Assets\Sprite\Sprite2D\CSprite2D.cpp" />
     <ClCompile Include="Source\Assets\Sprite\Sprite3D\CSprite3D.cpp" />
+    <ClCompile Include="Source\Assets\Sprite\SpriteManager.cpp" />
     <ClCompile Include="Source\Collision\CBoundingSphere.cpp" />
     <ClCompile Include="Source\DebugText\CDebugText.cpp" />
     <ClCompile Include="Source\DirectX\CDirectX11.cpp" />
@@ -286,6 +287,7 @@
     <ClInclude Include="Source\Assets\Sound\CSoundManager.h" />
     <ClInclude Include="Source\Assets\Sprite\Sprite2D\CSprite2D.h" />
     <ClInclude Include="Source\Assets\Sprite\Sprite3D\CSprite3D.h" />
+    <ClInclude Include="Source\Assets\Sprite\SpriteManager.h" />
     <ClInclude Include="Source\Collision\CBoundingSphere.h" />
     <ClInclude Include="Source\DebugText\CDebugText.h" />
     <ClInclude Include="Source\DirectX\CDirectX11.h" />
