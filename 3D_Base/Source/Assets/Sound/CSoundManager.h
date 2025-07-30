@@ -4,13 +4,13 @@
 /**************************************************
 *	サウンドマネージャークラス.
 *	Manager(マネージャー)：管理者.
-*		Singleton(シングルトン：デザインパターンの１つ)で作成.
+*	.cppのコメントにある1,2,3の順番で追加できる
 **/
 class CSoundManager
 {
 public:
 	//サウンドリスト列挙型.
-	enum enList
+	enum enSoundList
 	{
 		BGM_Bonus,	//ボーナスステージ.
 		SE_Jump,	//ジャンプ.
@@ -29,18 +29,18 @@ public:
 	bool Load(HWND hWnd);
 
 	//SEを再生する.
-	void PlaySE(enList list) {
+	void PlaySE(enSoundList list) {
 		m_pSound[list]->PlaySE();
 	}
 	//ループ再生する.
-	void PlayLoop(enList list) {
+	void PlayLoop(enSoundList list) {
 		m_pSound[list]->PlayLoop();
 	}
 	//停止する.
-	void Stop(enList list) {
+	void Stop(enSoundList list) {
 		m_pSound[list]->Stop();
 	}
 
 private:
-	std::vector<std::shared_ptr<CSound>> m_pSound;
+	std::unordered_map<enSoundList,std::shared_ptr<CSound>> m_pSound;
 };
