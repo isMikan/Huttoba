@@ -21,7 +21,7 @@ HRESULT CSoundManager::Create()
 }
 
 //サウンドデータ読込関数.
-bool CSoundManager::Load(HWND hWnd)
+bool CSoundManager::LoadData(HWND hWnd)
 {
     struct SoundInfo
     {
@@ -30,7 +30,6 @@ bool CSoundManager::Load(HWND hWnd)
     };
 
     std::unordered_map<enSoundList, SoundInfo> SList;
-
 
 	// 2, サウンドのパスと名前を設定.
 	SList[enSoundList::BGM_Bonus]   = { _T("Data\\Sound\\BGM\\BonusGameHouse.mp3"), _T("BGM_Bonus") };

@@ -26,7 +26,7 @@ public:
 
 	HRESULT Create();
 	//サウンドデータ読込関数.
-	bool Load(HWND hWnd);
+	bool LoadData(HWND hWnd);
 
 	//SEを再生する.
 	void PlaySE(enSoundList list) {

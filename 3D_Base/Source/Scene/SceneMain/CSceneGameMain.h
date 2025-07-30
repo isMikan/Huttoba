@@ -43,7 +43,9 @@ public:
 	HRESULT CteateExplosion();
 	HRESULT CreateCharactor();
 
+	void ManageEffectLaser();
 	void AttachMeshToEnemy();
+
 
 private:
 
