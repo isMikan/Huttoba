@@ -41,12 +41,11 @@ HRESULT CSceneGameMain::Create()
 	//デバッグテキストのインスタンス作成
 	m_pDbgText = std::make_unique<CDebugText>();
 
-	AssetManager::GetInstance()->Create();
-
 	//各オブジェクトのインスタンス作成
 	CreateUI();
 	CteateExplosion();
 	CreateCharactor();
+
 	//地面クラスのインスタンス作成
 	m_pGround = std::make_unique<CGround>();
 
@@ -60,8 +59,6 @@ HRESULT CSceneGameMain::LoadData()
 	if (FAILED(m_pDbgText->Init())) {
 		return E_FAIL;
 	}
-
-	AssetManager::GetInstance()->LoadData();
 
 	//爆発スプライトを設定.
 	for (const auto& exp : m_pExplosiones)
@@ -142,6 +139,7 @@ void CSceneGameMain::Update()
 	m_pGround->Update();
 	m_pPlayer->Update();
 
+	//エネミー
 	for (auto& enemyType : m_pEnemies)
 	{
 		for (auto& enemy : enemyType.second)
@@ -169,31 +167,14 @@ void CSceneGameMain::Update()
 		UI.second->Update();
 	}
 
-	//ほんとはメンバ変数で作ってあげる
-	//エフェクトのインスタンスごとに必要になるハンドル
-	//※3つ制御するなら3つ必要
-	static ::EsHandle hEffect = -1;
+	//レーザーの管理
+	ManageEffectLaser();
 
-	//Effect制御
-	if (GetAsyncKeyState('Y') & 0x0001)
-	{
-		hEffect = AssetManager::Effect()->Play("Laser", m_pPlayer->GetPosition());
-
-		//拡縮
-		AssetManager::Effect()->SetScale(hEffect, D3DXVECTOR3(0.8f, 0.8f, 0.8f));
-		AssetManager::Effect()->SetRotation(hEffect, D3DXVECTOR3(D3DXToRadian(-90.f), 0.f, 0.f));
-		AssetManager::Effect()->SetLocation(hEffect, D3DXVECTOR3(0.f, 1.f, 1.f));
-	}
-	if (GetAsyncKeyState('T') & 0x0001)
-	{
-		AssetManager::Effect()->Stop(hEffect);
-	}
-
+	//次のシーンへ遷移
 	if (GetAsyncKeyState('L') & 0x0001)
 	{
 		SetNextScene(GameOver);
 	}
-
 }
 
 void CSceneGameMain::Draw()
@@ -204,7 +185,6 @@ void CSceneGameMain::Draw()
 	LIGHT light = m_pCamera->GetLight();
 	D3DXMATRIX mView = m_pCamera->GetView();
 	D3DXMATRIX mProj = m_pCamera->GetProj();
-
 
 	m_pPlayer->Draw(mView, mProj, light, camera);
 
@@ -330,7 +310,32 @@ HRESULT CSceneGameMain::CreateCharactor()
 		}
 	}
 
-	return E_NOTIMPL;
+	return S_OK;
+}
+
+void CSceneGameMain::ManageEffectLaser()
+{
+	//ほんとはメンバ変数で作ってあげる
+	//エフェクトのインスタンスごとに必要になるハンドル
+	//※3つ制御するなら3つ必要
+	static ::EsHandle hEffect = -1;
+
+	if (GetAsyncKeyState('Y') & 0x0001)
+	{
+		hEffect = AssetManager::Effect()->Play("Laser", m_pPlayer->GetPosition());
+
+		//拡縮
+		AssetManager::Effect()->SetScale(hEffect, D3DXVECTOR3(0.8f, 0.8f, 0.8f));
+		AssetManager::Effect()->SetRotation(hEffect, D3DXVECTOR3(D3DXToRadian(-90.f), 0.f, 0.f));
+		AssetManager::Effect()->SetLocation(hEffect, D3DXVECTOR3(0.f, 1.f, 1.f));
+	}
+
+	//Effect制御
+	if (GetAsyncKeyState('T') & 0x0001)
+	{
+		AssetManager::Effect()->Stop(hEffect);
+	}
+
 }
 
 void CSceneGameMain::AttachMeshToEnemy()
