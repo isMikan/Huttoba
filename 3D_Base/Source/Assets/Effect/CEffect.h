@@ -15,26 +15,26 @@
 #include<string>
 
 #ifdef _DEBUG
-	#pragma comment(lib,"Effekseerd.lib")
-	#pragma comment(lib,"EffekseerRendererDX11d.lib")
+#pragma comment(lib,"Effekseerd.lib")
+#pragma comment(lib,"EffekseerRendererDX11d.lib")
 #else//#ifdef _DEBUG
-	#pragma comment(lib,"Effekseer.lib")
-	#pragma comment(lib,"EffekseerRendererDX11.lib")
+#pragma comment(lib,"Effekseer.lib")
+#pragma comment(lib,"EffekseerRendererDX11.lib")
 #endif//#ifdef _DEBUG
 
 //エイリアスを用意
 //※コードが横に長くなって読みづらいため
 namespace {
 	namespace Es = ::Effekseer;
-	using EsManagerRef	= ::Es::ManagerRef;
-	using EsManager		= ::Es::Manager;
-	using EsEffectRef	= ::Es::EffectRef;
-	using EsEffect		= ::Es::Effect;
-	using EsVec3		= ::Es::Vector3D;
-	using EsMatrix		= ::Es::Matrix44;
-	using EsHandle		= ::Es::Handle;
+	using EsManagerRef = ::Es::ManagerRef;
+	using EsManager = ::Es::Manager;
+	using EsEffectRef = ::Es::EffectRef;
+	using EsEffect = ::Es::Effect;
+	using EsVec3 = ::Es::Vector3D;
+	using EsMatrix = ::Es::Matrix44;
+	using EsHandle = ::Es::Handle;
 	using EsRendererRef = ::EffekseerRendererDX11::RendererRef;
-	using EsRenderer	= ::EffekseerRendererDX11::Renderer;
+	using EsRenderer = ::EffekseerRendererDX11::Renderer;
 };
 
 /**************************************************
@@ -44,15 +44,7 @@ namespace {
 class CEffect
 {
 public:
-
-	//インスタンス取得(唯一のアクセス経路)
-	static CEffect* GetInstance()
-	{
-		//唯一のインスタンスを作成する
-		//※staticで作成されたので２回目以降は下の１行は無視される
-		static CEffect s_Instance;	//s_:staticの意味
-		return &s_Instance;
-	}
+	CEffect();
 	~CEffect();
 
 	//構築
@@ -60,8 +52,8 @@ public:
 	//データ読み込み
 	HRESULT LoadData();
 	//描画
-	void Draw( const D3DXMATRIX& mView, const D3DXMATRIX& mProj,
-			const LIGHT& Light, const CAMERA& Camera);
+	void Draw(const D3DXMATRIX& mView, const D3DXMATRIX& mProj,
+		const LIGHT& Light, const CAMERA& Camera);
 
 	//-----------------------------------
 	// 変換系
@@ -78,10 +70,9 @@ public:
 	// 制御系
 	//-----------------------------------
 	//再生
-	static ::EsHandle Play(std::string name, const D3DXVECTOR3& pos)
+	::EsHandle Play(std::string name, const D3DXVECTOR3& pos)
 	{
-		CEffect* pE = CEffect::GetInstance();
-		return pE->m_pManager->Play(pE->m_pEffect[name], pos.x, pos.y, pos.z);
+		return m_pManager->Play(m_pEffect[name], pos.x, pos.y, pos.z);
 	}
 
 	/*
@@ -94,68 +85,58 @@ public:
 		回転指定(軸回転)
 		サイズ設定
 	*/
-	
+
 	//停止
-	static void Stop(::EsHandle handle)
+	void Stop(::EsHandle handle)
 	{
-		CEffect::GetInstance()->m_pManager->StopEffect(handle);
+		m_pManager->StopEffect(handle);
 	}
 
 	//すべて停止
-	static void StopAll()
+	void StopAll()
 	{
-		CEffect::GetInstance()->m_pManager->StopAllEffects();
+		m_pManager->StopAllEffects();
 	}
 
 	//一時停止
-	static void Stop(::EsHandle handle, bool paused)
+	void Stop(::EsHandle handle, bool paused)
 	{
-		CEffect::GetInstance()->m_pManager->SetPaused(handle,paused);
+		m_pManager->SetPaused(handle, paused);
 	}
 
 	//再生速度の設定
-	static void SetSpeed(::EsHandle handle, float speed)
+	void SetSpeed(::EsHandle handle, float speed)
 	{
-		CEffect::GetInstance()->m_pManager->SetSpeed(handle,speed);
+		m_pManager->SetSpeed(handle, speed);
 	}
 
 	//位置を特定する
-	static void SetLocation(::EsHandle handle, D3DXVECTOR3 pos)
+	void SetLocation(::EsHandle handle, D3DXVECTOR3 pos)
 	{
-		CEffect::GetInstance()->m_pManager->SetLocation(
+		m_pManager->SetLocation(
 			handle,
-			::EsVec3(pos.x,pos.y,pos.z));
+			::EsVec3(pos.x, pos.y, pos.z));
 	}
 
 	//回転を指定する
-	static void SetRotation(::EsHandle handle, D3DXVECTOR3 rot)
+	void SetRotation(::EsHandle handle, D3DXVECTOR3 rot)
 	{
-		CEffect::GetInstance()->m_pManager->
-			SetRotation(handle,rot.x, rot.y, rot.z);
+		m_pManager->SetRotation(handle, rot.x, rot.y, rot.z);
 	}
 
 	//回転を指定する(軸回転)
-	static void SetRotation(::EsHandle handle, D3DXVECTOR3 vAxis,float angle)
+	void SetRotation(::EsHandle handle, D3DXVECTOR3 vAxis, float angle)
 	{
-		CEffect::GetInstance()->m_pManager->
-			SetRotation(handle, ::EsVec3(vAxis.x, vAxis.y, vAxis.z), angle);
+		m_pManager->SetRotation(handle, ::EsVec3(vAxis.x, vAxis.y, vAxis.z), angle);
 	}
 
 	//サイズを指定する
-	static void SetScale(::EsHandle handle, D3DXVECTOR3 scale)
+	void SetScale(::EsHandle handle, D3DXVECTOR3 scale)
 	{
-		CEffect::GetInstance()->m_pManager->
-			SetScale(handle, scale.x, scale.y, scale.z);
+		m_pManager->SetScale(handle, scale.x, scale.y, scale.z);
 	}
 
 private:
-	//生成やコピーを禁止する
-	CEffect();
-	CEffect(const CEffect& rhs) = delete;
-	CEffect& operator = (const CEffect& rhs) = delete;
-
-	//データ解放
-	HRESULT ReleaseData();
 
 	//ビュー行列を設定
 	void SetViewMatrix(const D3DXMATRIX& mView);

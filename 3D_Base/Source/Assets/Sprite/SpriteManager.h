@@ -7,7 +7,8 @@ class SpriteManager
 {
 public:
 
-	static SpriteManager* GetInstance();
+	SpriteManager();
+	~SpriteManager();
 
 	HRESULT Create();
 	HRESULT LoadData();
@@ -15,12 +16,6 @@ public:
 	std::shared_ptr<CSprite3D> GetSprite3D(Sprite3DList spriteID);
 	std::shared_ptr<CSprite2D> GetSprite2D(Sprite2DList spriteID);
 
-private:
-	SpriteManager();
-	~SpriteManager();
-
-	SpriteManager(const SpriteManager& rhs) = delete;
-	SpriteManager& operator = (const SpriteManager& rhs) = delete;
 
 private:
 

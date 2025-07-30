@@ -1,5 +1,6 @@
 #include "CGame.h"
 #include "Assets/Sound/CSoundManager.h"
+#include "Assets/AssetManager.h"
 #include "Assets/Effect/CEffect.h"
 #include <ranges> 
 #include<memory>
@@ -29,7 +30,7 @@ void CGame::Create()
 HRESULT CGame::LoadData()
 {
 	//サウンドデータの読み込み
-	if (CSoundManager::GetInstance()->Load(m_hWnd) == false) {
+	if (AssetManager::Sound()->Load(m_hWnd) == false) {
 		return E_FAIL;
 	}
 

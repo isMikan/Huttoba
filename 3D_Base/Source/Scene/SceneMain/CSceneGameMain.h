@@ -16,8 +16,7 @@
 #include "GameObject/MeshObject/StaticMesh/CCharactor/CEnemy/CEnemy.h"
 #include "Assets/Mesh/SkinMesh/CSkinMesh.h"
 #include "Scene/CSceneManager.h"
-#include "Assets/Sprite/SpriteManager.h"
-#include "Assets/Mesh/MeshManager.h"
+#include "Assets/AssetManager.h"
 
 #include "Camera/CCamera.h"
 
@@ -48,14 +47,14 @@ public:
 
 private:
 
-	CDirectX9*  m_pDx9;
+	CDirectX9* m_pDx9;
 	CDirectX11* m_pDx11;
 
 	HWND		m_hWnd;			//ウィンドウハンドル
 
 	std::unique_ptr<CDebugText> m_pDbgText;	//デバッグテキスト
 
-	CCamera*			m_pCamera;	//カメラ.
+	CCamera* m_pCamera;	//カメラ.
 
 	//爆発クラス
 	std::vector<std::unique_ptr<CExplosion> > 	m_pExplosiones;

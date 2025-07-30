@@ -42,15 +42,9 @@ D3DXMATRIX CEffect::ToDxMatrix(const::EsMatrix* pSrcMatEfk)
 }
 
 CEffect::CEffect()
-	: m_pManager	( nullptr )
-	, m_pRenderer	( nullptr )
+	: m_pManager(nullptr)
+	, m_pRenderer(nullptr)
 {
-}
-
-//データ解放
-HRESULT CEffect::ReleaseData()
-{
-	return S_OK;
 }
 
 //ビュー行列を設定
@@ -75,9 +69,6 @@ void CEffect::SetProjectionMatrix(const D3DXMATRIX& mProj)
 
 CEffect::~CEffect()
 {
-	//エフェクトデータの破棄
-	ReleaseData();
-
 	//エフェクトのマネージャーを破棄
 	m_pManager.Reset();
 

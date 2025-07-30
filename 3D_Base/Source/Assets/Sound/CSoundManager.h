@@ -21,47 +21,25 @@ public:
 	};
 
 public:
-	//インスタンス取得(唯一のアクセス経路).
-	//※関数の前にstaticを付けることでインスタンス生成しなくても使用できる.
-	static CSoundManager* GetInstance()
-	{
-		//唯一のインスタンスを作成する.
-		//※staticで作成されたので2回目以降は、下の1行は無視される.
-		static CSoundManager s_Instance;	//s_:staticの意味.
-		return &s_Instance;
-	}
-
-
+	CSoundManager();
 	~CSoundManager();
 
 	//サウンドデータ読込関数.
-	bool Load( HWND hWnd );
-	//サウンドデータ解放関数.
-	void Release();
+	bool Load(HWND hWnd);
 
 	//SEを再生する.
-	static void PlaySE( enList list ) {
-		CSoundManager::GetInstance()->m_pSound[list]->PlaySE();
+	void PlaySE(enList list) {
+		m_pSound[list]->PlaySE();
 	}
 	//ループ再生する.
-	static void PlayLoop( enList list ) {
-		CSoundManager::GetInstance()->m_pSound[list]->PlayLoop();
+	void PlayLoop(enList list) {
+		m_pSound[list]->PlayLoop();
 	}
 	//停止する.
-	static void Stop( enList list ) {
-		CSoundManager::GetInstance()->m_pSound[list]->Stop();
+	void Stop(enList list) {
+		m_pSound[list]->Stop();
 	}
 
-private://外部からアクセス不可能.
-	//外部からコンストラクタへのアクセスを禁止する.
-	CSoundManager();
-	//コピーコンストラクタによるコピーを禁止する.
-	//「=delete」で関数の定義を削除できる.
-	CSoundManager( const CSoundManager& rhs ) = delete;
-	//代入演算子によるコピーを禁止する.
-	//operator(オペレータ):演算子のオーバーロードで、演算の中身を拡張できる.
-	CSoundManager& operator = ( const CSoundManager& rhs ) = delete;
-
 private:
-	std::unique_ptr<CSound> m_pSound[enList::max];
+	std::shared_ptr<CSound> m_pSound[enList::max];
 };

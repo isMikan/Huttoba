@@ -11,12 +11,6 @@ SpriteManager::~SpriteManager()
 {
 }
 
-SpriteManager* SpriteManager::GetInstance()
-{
-	static SpriteManager Instance;
-	return &Instance;
-}
-
 HRESULT SpriteManager::Create()
 {
 	if (CreateSprite2D() != S_OK) { return E_FAIL; }

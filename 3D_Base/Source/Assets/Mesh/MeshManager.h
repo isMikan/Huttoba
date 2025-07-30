@@ -6,12 +6,8 @@
 class MeshManager
 {
 public:
-
-	static MeshManager* GetInstance()
-	{
-		static MeshManager instance;
-		return &instance;
-	}
+	MeshManager();
+	~MeshManager();
 
 	HRESULT Create();
 	HRESULT LoadData();
@@ -21,14 +17,12 @@ public:
 
 private:
 
-	MeshManager();
-	~MeshManager();
 
 	MeshManager(MeshManager& shr) = delete;
 	MeshManager& operator=(const MeshManager& rhs) = delete;
 
 private:
-	
+
 	HRESULT CreateStaticMesh();
 	HRESULT CreateSkinMesh();
 	HRESULT LoadStaticMesh();

@@ -3,19 +3,19 @@
 #include "Assets/Sound/CSoundManager.h"
 
 CSceneGameMain::CSceneGameMain(HWND hWnd)
-	: m_hWnd			( hWnd )
-	, m_pDbgText		( nullptr )
+	: m_hWnd(hWnd)
+	, m_pDbgText(nullptr)
 
-	, m_pCamera			( nullptr )
+	, m_pCamera(nullptr)
 
-	, m_pUIMap			()
+	, m_pUIMap()
 
-	, m_pExplosiones	()
+	, m_pExplosiones()
 
-	, m_pPlayer			( nullptr )
-	, m_pEnemies		()
+	, m_pPlayer(nullptr)
+	, m_pEnemies()
 
-	, m_pGround			( nullptr )
+	, m_pGround(nullptr)
 
 {
 	m_pDx9 = CDirectX9::GetInstance();
@@ -41,10 +41,7 @@ HRESULT CSceneGameMain::Create()
 	//デバッグテキストのインスタンス作成
 	m_pDbgText = std::make_unique<CDebugText>();
 
-	if (FAILED(SpriteManager::GetInstance()	->Create())) { return E_FAIL; }
-	if (FAILED(MeshManager::GetInstance()	->Create())) { return E_FAIL; }
-
-
+	AssetManager::GetInstance()->Create();
 
 	//各オブジェクトのインスタンス作成
 	CreateUI();
@@ -53,44 +50,35 @@ HRESULT CSceneGameMain::Create()
 	//地面クラスのインスタンス作成
 	m_pGround = std::make_unique<CGround>();
 
-	//エフェクトクラス
-	CEffect::GetInstance()->Create(
-		m_pDx11->GetDevice(),
-		m_pDx11->GetContext());
-
 	return S_OK;
 }
 
 HRESULT CSceneGameMain::LoadData()
 {
-	if (FAILED(CEffect::GetInstance()->LoadData()))
-	{
-		return E_FAIL;
-	}
 
 	//デバッグテキストの読み込み
 	if (FAILED(m_pDbgText->Init())) {
 		return E_FAIL;
 	}
 
-	if (FAILED(SpriteManager::GetInstance()	->LoadData())) { return E_FAIL; }
-	if (FAILED(MeshManager::GetInstance()	->LoadData())) { return E_FAIL; }
+	AssetManager::GetInstance()->LoadData();
 
 	//爆発スプライトを設定.
 	for (const auto& exp : m_pExplosiones)
 	{
-		exp->AttachSprite(SpriteManager::GetInstance()->GetSprite3D(Sprite3DList::Explosion));
+		exp->AttachSprite(AssetManager::Sprite(Sprite3DList::Explosion));
 	}
 
 	//Pモンスプライトを設定
 	for (auto& UI : m_pUIMap)
 	{
-		UI.second->AttachSprite(SpriteManager::GetInstance()->GetSprite2D(Sprite2DList::PMon));
+		UI.second->AttachSprite(AssetManager::Sprite(Sprite2DList::PMon));
 	}
 
 	//スタティックメッシュを設定
-	m_pPlayer->AttachMesh(MeshManager::GetInstance()->GetStaticMesh(StaticMeshList::Player));
-	m_pGround->AttachMesh(MeshManager::GetInstance()->GetStaticMesh(StaticMeshList::Ground));
+	m_pPlayer->AttachMesh(AssetManager::Mesh(StaticMeshList::Player));
+
+	m_pGround->AttachMesh(AssetManager::Mesh(StaticMeshList::Ground));
 
 	AttachMeshToEnemy();
 
@@ -107,13 +95,13 @@ HRESULT CSceneGameMain::LoadData()
 	m_pUIMap[UIList::Scyther]->SetPosition(size * 2.f, pos_y, 0.f);
 
 	//バウンディングスフィアの作成
-	m_pPlayer->CreateBSphereForMesh(MeshManager::GetInstance()->GetStaticMesh(StaticMeshList::BSphere));
+	m_pPlayer->CreateBSphereForMesh(AssetManager::Mesh(StaticMeshList::BSphere));
 
 	for (auto& enemyType : m_pEnemies)
 	{
 		for (auto& enemy : enemyType.second)
 		{
-			enemy->CreateBSphereForMesh(MeshManager::GetInstance()->GetStaticMesh(StaticMeshList::BSphere));
+			enemy->CreateBSphereForMesh(AssetManager::Mesh(StaticMeshList::BSphere));
 		}
 	}
 
@@ -133,8 +121,8 @@ HRESULT CSceneGameMain::LoadData()
 	{
 		int i = static_cast<int>(&enemy - &m_pEnemies[EnemyList::RoboA][0]);
 
-		enemy->AttachMesh(MeshManager::GetInstance()->GetStaticMesh(StaticMeshList::RoboA));
-		enemy->CreateBSphereForMesh(MeshManager::GetInstance()->GetStaticMesh(StaticMeshList::BSphere));
+		enemy->AttachMesh(AssetManager::Mesh(StaticMeshList::RoboA));
+		enemy->CreateBSphereForMesh(AssetManager::Mesh(StaticMeshList::BSphere));
 		enemy->SetPosition(-3.f + (i * 3.f), 1.f, 10.f);
 	}
 
@@ -149,7 +137,7 @@ void CSceneGameMain::Destroy()
 void CSceneGameMain::Update()
 {
 	//BGMのループ再生
-	CSoundManager::PlayLoop(CSoundManager::BGM_Bonus);
+	AssetManager::Sound()->PlayLoop(CSoundManager::BGM_Bonus);
 
 	m_pGround->Update();
 	m_pPlayer->Update();
@@ -189,16 +177,16 @@ void CSceneGameMain::Update()
 	//Effect制御
 	if (GetAsyncKeyState('Y') & 0x0001)
 	{
-		hEffect = CEffect::Play("Laser", m_pPlayer->GetPosition());
+		hEffect = AssetManager::Effect()->Play("Laser", m_pPlayer->GetPosition());
 
 		//拡縮
-		CEffect::SetScale(hEffect, D3DXVECTOR3(0.8f, 0.8f, 0.8f));
-		CEffect::SetRotation(hEffect, D3DXVECTOR3(D3DXToRadian(-90.f), 0.f, 0.f));
-		CEffect::SetLocation(hEffect, D3DXVECTOR3(0.f, 1.f, 1.f));
+		AssetManager::Effect()->SetScale(hEffect, D3DXVECTOR3(0.8f, 0.8f, 0.8f));
+		AssetManager::Effect()->SetRotation(hEffect, D3DXVECTOR3(D3DXToRadian(-90.f), 0.f, 0.f));
+		AssetManager::Effect()->SetLocation(hEffect, D3DXVECTOR3(0.f, 1.f, 1.f));
 	}
 	if (GetAsyncKeyState('T') & 0x0001)
 	{
-		CEffect::Stop(hEffect);
+		AssetManager::Effect()->Stop(hEffect);
 	}
 
 	if (GetAsyncKeyState('L') & 0x0001)
@@ -286,7 +274,7 @@ void CSceneGameMain::Draw()
 	m_pDbgText->Render(dbgText, 10, 110);
 
 	//Effectクラス
-	CEffect::GetInstance()->Draw(mView, mProj, light, camera);
+	AssetManager::Effect()->Draw(mView, mProj, light, camera);
 
 }
 
@@ -358,12 +346,12 @@ void CSceneGameMain::AttachMeshToEnemy()
 			{
 			case EnemyList::RoboA:
 
-				enemy->AttachMesh(MeshManager::GetInstance()->GetStaticMesh(StaticMeshList::RoboA));
+				enemy->AttachMesh(AssetManager::Mesh(StaticMeshList::RoboA));
 				break;
 
 			case EnemyList::RoboB:
 
-				enemy->AttachMesh(MeshManager::GetInstance()->GetStaticMesh(StaticMeshList::RoboB));
+				enemy->AttachMesh(AssetManager::Mesh(StaticMeshList::RoboB));
 				break;
 
 			default:
