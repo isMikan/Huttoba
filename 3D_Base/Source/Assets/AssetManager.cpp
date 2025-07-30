@@ -20,6 +20,11 @@ HRESULT AssetManager::Create()
 	m_pSoundManager = std::make_shared<CSoundManager>(); if (!m_pSoundManager) return E_FAIL;
 	m_pSpriteManager = std::make_shared<SpriteManager>(); if (!m_pSpriteManager) return E_FAIL;
 
+	m_pEffectManager->Create(CDirectX11::GetInstance()->GetDevice(),CDirectX11::GetInstance()->GetContext());
+	m_pMeshManager->Create();
+	m_pSoundManager->Create();
+	m_pSpriteManager->Create();
+
 	return S_OK;
 }
 

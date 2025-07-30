@@ -15,12 +15,14 @@ HRESULT SpriteManager::Create()
 {
 	if (CreateSprite2D() != S_OK) { return E_FAIL; }
 	if (CreateSprite3D() != S_OK) { return E_FAIL; }
+	return S_OK;
 }
 
 HRESULT SpriteManager::LoadData()
 {
 	if (LoadSprite2D() != S_OK) { return E_FAIL; }
 	if (LoadSprite3D() != S_OK) { return E_FAIL; }
+	return S_OK;
 }
 
 HRESULT SpriteManager::CreateSprite3D()

@@ -24,6 +24,7 @@ public:
 	CSoundManager();
 	~CSoundManager();
 
+	HRESULT Create();
 	//サウンドデータ読込関数.
 	bool Load(HWND hWnd);
 
@@ -41,5 +42,5 @@ public:
 	}
 
 private:
-	std::shared_ptr<CSound> m_pSound[enList::max];
+	std::vector<std::shared_ptr<CSound>> m_pSound;
 };

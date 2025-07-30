@@ -21,3 +21,5 @@ using Microsoft::WRL::ComPtr;
 
 #include "Global.h"
 #include "MyMacro.h"
+#include "CDirectX11.h"
+#include "CDirectX9.h"

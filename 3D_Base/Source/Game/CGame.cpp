@@ -24,16 +24,14 @@ void CGame::Create()
 {
 	m_pSceneManager = std::make_unique<CSceneManager>(m_hWnd);
 	m_pSceneManager->Create();
+
+	AssetManager::GetInstance()->Create();
 }
 
 //ロードデータ関数.
 HRESULT CGame::LoadData()
 {
-	//サウンドデータの読み込み
-	if (AssetManager::Sound()->Load(m_hWnd) == false) {
-		return E_FAIL;
-	}
-
+	if (AssetManager::GetInstance()->LoadData() != S_OK) { return E_FAIL; }
 	return S_OK;
 }
 

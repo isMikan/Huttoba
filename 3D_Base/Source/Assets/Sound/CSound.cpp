@@ -18,15 +18,15 @@ CSound::~CSound()
 //================================================================================
 //  音声ファイルを開く関数.
 //================================================================================
-bool CSound::Open( LPCTSTR sFileName, LPCTSTR sAlias, HWND hWnd )
+bool CSound::Open( std::wstring& sFileName, std::wstring& sAlias, HWND hWnd )
 {
 	//初期設定.
-	SetInitParam( sAlias, hWnd );
+	SetInitParam( sAlias.c_str(), hWnd);
 
 	//コマンド.
 	TCHAR cmd[STR_BUFF_MAX] = _T("");
 
-	wsprintf( cmd, _T("open %s alias %s"), sFileName, m_sAlias );
+	wsprintf( cmd, _T("open %s alias %s"), sFileName.c_str(), m_sAlias);
 
 	if( mciSendString( cmd, nullptr, 0, m_hWnd ) == 0 ){
 		return true;
