@@ -1,4 +1,5 @@
 #pragma once
+#include "../CXInput/CXInput.h"
 
 enum class Action
 {
