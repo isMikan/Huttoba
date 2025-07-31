@@ -1,6 +1,4 @@
 #pragma once
-
-#include "GameObject/MeshObject/StaticMesh/Item/ItemBase.h"
 #include <functional>
 
 /*************************************************
@@ -9,12 +7,14 @@
 *
 */
 
+class ItemBase; // 前方宣言
+
 class ItemFactory
 {
 public:
 
 	//アイテムのインスタンスを生成する関数の入れ物
-	using Createfunc = std::function<std::shared_ptr<ItemBase>()>;
+	using Createfunc = std::function<std::unique_ptr<ItemBase>()>;
 
 
 	/*****************************************************************************************
@@ -36,7 +36,7 @@ public:
 	* @param    itemId		: 登録したいアイテムの名前
 	*			Createfunc	: アイテムを生成する関数
 	*****************************************************************************************/
-	void RegisterItem(std::string itemId, const Createfunc creator);
+	void RegisterItem(const std::string& itemId, const Createfunc& creator);
 
 
 	/*****************************************************************************************
@@ -44,7 +44,7 @@ public:
 	* @param    ItemId : 生成したいアイテム名
 	* @return   作成したフルーツへのポインタ
 	*****************************************************************************************/
-	std::shared_ptr<ItemBase> CreateItem(const std::string ItemId);
+	std::unique_ptr<ItemBase> CreateItem(const std::string& ItemId);
 
 private:
 	ItemFactory();

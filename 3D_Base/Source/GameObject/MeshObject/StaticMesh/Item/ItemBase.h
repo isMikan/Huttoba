@@ -1,9 +1,28 @@
 #pragma once
+
+#include "ItemFactory/ItemFactory.h"
+
 class ItemBase
 {
 public:
 	ItemBase();
 	~ItemBase();
+
+	/*****************************************************************************************
+	* @brief    アイテムを登録するためのテンプレート関数
+	* @param    登録したいアイテムのID
+	* @return   bit数が少ないboolを利用しているだけで、引数に意味はない
+	*****************************************************************************************/
+
+	template<typename T>
+	static bool AutoRegister(const std::string& itemId)
+	{
+		ItemFactory::GetInstance()->RegisterItem(itemId, []()
+			{
+				return std::make_unique<T>();
+			});
+		return true;
+	}
 
 	/*****************************************************************************************
 	* @brief    初期化
