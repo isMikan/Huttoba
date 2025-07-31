@@ -8,8 +8,12 @@ enum class Action
 	MoveLeft,
 	MoveRight,
 
-	Attack,
-	PickUp,
+	Attack,			//UŒ‚.
+	PickUp,			//‚¿ã‚°‚é.
+
+	Decide,			//Œˆ’è.
+	NavigateUp,		//‘I‘ğˆ‚ğã‚ÉˆÚ“®.
+	NavigateDown,	//‘I‘ğˆ‚ğ‰º‚ÉˆÚ“®.
 
 	Max
 };
