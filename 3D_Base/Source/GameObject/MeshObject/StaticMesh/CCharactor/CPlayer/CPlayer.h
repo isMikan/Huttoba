@@ -29,7 +29,7 @@ public:
 	virtual void Draw(
 		D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAMERA& Camera ) override;
 
-	void BlownFrom(D3DXVECTOR3 position, float force);
+	//void BlownFrom(D3DXVECTOR3 position, float force);
 
 	void HandleInput();
 
