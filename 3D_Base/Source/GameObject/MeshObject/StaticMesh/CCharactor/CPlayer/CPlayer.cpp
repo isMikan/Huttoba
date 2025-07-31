@@ -14,14 +14,8 @@ CPlayer::CPlayer()
 {
 	m_pInput = std::make_unique<CInput>(0);
 
-<<<<<<< HEAD
-	m_pMoveState = new CPlayerMoveIdle();
-	m_pRotationState = new CPlayerRotationIdle();
-=======
 	m_pMoveState = std::make_unique<CPlayerMoveIdle>();
 	m_pRotationState = std::make_unique<CPlayerRotationIdle>();
-
->>>>>>> Player
 }
 
 CPlayer::~CPlayer()
@@ -110,11 +104,7 @@ void CPlayer::SetMoveState(std::unique_ptr< CPlayerMoveState> newState)
 		m_pMoveState->Eixt(*this);
 	}
 
-<<<<<<< HEAD
-	m_pMoveState = newState;
-=======
 	m_pMoveState = std::move(newState);
->>>>>>> Player
 
 	if (m_pMoveState != nullptr)
 	{
@@ -129,11 +119,7 @@ void CPlayer::SetRotationState(std::unique_ptr< CPlayerMoveState> newState)
 		m_pRotationState->Eixt(*this);
 	}
 
-<<<<<<< HEAD
-	m_pRotationState = newState;
-=======
 	m_pRotationState = std::move(newState);
->>>>>>> Player
 
 	if (m_pRotationState != nullptr)
 	{
