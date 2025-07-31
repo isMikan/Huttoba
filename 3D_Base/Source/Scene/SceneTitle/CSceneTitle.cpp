@@ -6,9 +6,11 @@ CSceneTitle::CSceneTitle()
 	
 	, m_pInput			( nullptr )
 
-	, m_IsSelector		( true )
+	, m_SelectorPos		()
 
-	, m_SpriteSelectorYPos	(100)
+	, m_SelectorNumber	( 0 )
+
+	, m_SelectorYPos	()
 
 	, m_SthikThreshold	(0.5f)		//ここの値を変えると選択肢を動かす
 									//スティックの最低値が変化する.
@@ -60,20 +62,12 @@ void CSceneTitle::Update()
 	//if (abs(m_pInput->GetLeftSthikY()) >= m_SthikThreshold)
 	if (GetAsyncKeyState('W') & 0x0001)
 	{
-		m_IsSelector = false;
+		m_SelectorNumber--;
 	}
 	if (GetAsyncKeyState('S') & 0x0001)
 	{
-		m_IsSelector = true;
-	}
-
-	if (m_IsSelector)
-	{
-		m_pSpriteSelector->SetPosition(D3DXVECTOR3(500, 430 + m_SpriteSelectorYPos, 0));
-	}
-	else
-	{
-		m_pSpriteSelector->SetPosition(D3DXVECTOR3(500, 430, 0));
+		m_SelectorNumber--;
+		
 	}
 }
 
@@ -98,4 +92,9 @@ void CSceneTitle::SetInputBInding()
 
 	m_pInput->BindKey(Action::NavigateDown, InputBinding(InputDevice::GamePad, CXInput::DOWN));
 	m_pInput->BindKey(Action::NavigateDown, InputBinding(InputDevice::Keyboard, VK_DOWN));
+}
+
+void CSceneTitle::SetSelectorPos()
+{
+	m_SelectorYPos.push_back(500);
 }
