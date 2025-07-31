@@ -16,7 +16,6 @@ CPlayer::CPlayer()
 
 	m_pMoveState = new CPlayerMoveIdle();
 	m_pRotationState = new CPlayerRotationIdle();
-
 }
 
 CPlayer::~CPlayer()
@@ -103,17 +102,17 @@ void CPlayer::Draw(
 	CCharacter::Draw( View, Proj, Light, Camera );
 }
 
-void CPlayer::BlownFrom(D3DXVECTOR3 position, float force)
-{
-	D3DXVECTOR3 dir = m_vPosition - position;
-
-	D3DXVec3Normalize(&dir, &dir);
-
-	float mass = 1.f;
-	m_Velocity = dir * (force / mass);
-
-	m_IsBlown = true;
-}
+//void CPlayer::BlownFrom(D3DXVECTOR3 position, float force)
+//{
+//	D3DXVECTOR3 dir = m_vPosition - position;
+//
+//	D3DXVec3Normalize(&dir, &dir);
+//
+//	float mass = 1.f;
+//	m_Velocity = dir * (force / mass);
+//
+//	m_IsBlown = true;
+//}
 
 void CPlayer::HandleInput()
 {
@@ -140,7 +139,9 @@ void CPlayer::SetMoveState(CPlayerMoveState* newState)
 		m_pMoveState->Eixt(*this);
 		delete m_pMoveState;
 	}
+
 	m_pMoveState = newState;
+
 	if (m_pMoveState != nullptr)
 	{
 		m_pMoveState->Enter(*this);
@@ -154,7 +155,9 @@ void CPlayer::SetRotationState(CPlayerMoveState* newState)
 		m_pRotationState->Eixt(*this);
 		delete m_pRotationState;
 	}
+
 	m_pRotationState = newState;
+
 	if (m_pRotationState != nullptr)
 	{
 		m_pRotationState->Enter(*this);
