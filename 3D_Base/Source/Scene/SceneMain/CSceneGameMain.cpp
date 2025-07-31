@@ -1,21 +1,24 @@
 #include "CSceneGameMain.h"
 #include "Assets/Effect/CEffect.h"
 #include "Assets/Sound/CSoundManager.h"
+#include "Item/ItemManager/ItemManager.h"
 
 CSceneGameMain::CSceneGameMain(HWND hWnd)
 	: m_hWnd(hWnd)
-	, m_pDbgText(nullptr)
 
-	, m_pCamera(nullptr)
+	, m_pDbgText		( nullptr )
 
-	, m_pUIMap()
+	, m_pCamera			( nullptr )
 
-	, m_pExplosiones()
+	, m_pUIMap			()
 
-	, m_pPlayer(nullptr)
-	, m_pEnemies()
+	, m_pExplosiones	()
 
-	, m_pGround(nullptr)
+	, m_pPlayer			( nullptr )
+	, m_pEnemies		()
+
+	, m_pGround			( nullptr )
+	, m_pItemManager	( nullptr )
 
 {
 	m_pDx9 = CDirectX9::GetInstance();
@@ -40,6 +43,9 @@ HRESULT CSceneGameMain::Create()
 
 	//デバッグテキストのインスタンス作成
 	m_pDbgText = std::make_unique<CDebugText>();
+
+	//アイテムマネージャーの作成
+	m_pItemManager = std::make_unique<ItemManager>();
 
 	//各オブジェクトのインスタンス作成
 	CreateUI();
@@ -138,6 +144,7 @@ void CSceneGameMain::Update()
 
 	m_pGround->Update();
 	m_pPlayer->Update();
+	m_pItemManager->Update();
 
 	//エネミー
 	for (auto& enemyType : m_pEnemies)

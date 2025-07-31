@@ -18,6 +18,8 @@
 #include "Scene/CSceneManager.h"
 #include "Assets/AssetManager.h"
 
+class ItemManager;
+
 #include "Camera/CCamera.h"
 
 #include<string>
@@ -73,4 +75,7 @@ private:
 	//地面クラス
 	std::unique_ptr<CGround>	m_pGround;
 
+	//アイテムクラス
+	std::unique_ptr<ItemManager> m_pItemManager;
+	
 };
