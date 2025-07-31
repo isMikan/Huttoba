@@ -41,10 +41,6 @@ public:
 	float GetRightSthikY() { return ThumbNormalize(m_pXInput->GetRThumbY()); }
 
 private:
-	//スティックの値を正規化.
-	float NormalizeStick(SHORT value)const;
-
-private:
 	CXInput*	m_pXInput;
 	DWORD		m_PlayerIndex;
 

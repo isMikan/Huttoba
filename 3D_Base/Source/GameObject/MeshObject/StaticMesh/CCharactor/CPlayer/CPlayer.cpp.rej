@@ -1,0 +1,9 @@
+diff a/3D_Base/Source/GameObject/MeshObject/StaticMesh/CCharactor/CPlayer/CPlayer.cpp b/3D_Base/Source/GameObject/MeshObject/StaticMesh/CCharactor/CPlayer/CPlayer.cpp	(rejected hunks)
+@@ -14,7 +14,6 @@
+ {
+ 	m_pMoveState = new CPlayerMoveIdle();
+ 	m_pRotationState = new CPlayerRotationIdle();
+-
+ }
+ 
+ CPlayer::~CPlayer()
