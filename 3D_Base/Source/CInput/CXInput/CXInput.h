@@ -18,7 +18,7 @@ public:
 	static const BYTE	TRIGGER_MIN		= 0;
 	static const BYTE	TRIGGER_MAX		= 255;
 	//スティック入力範囲.
-	static const SHORT	THUMB_MIN		=-32768;
+	static const SHORT	THUMB_MIN		=-32767;
 	static const SHORT	THUMB_MAX		= 32767;
 	//バイブレーション値範囲.
 	static const WORD	VIBRATION_MIN	= 0;

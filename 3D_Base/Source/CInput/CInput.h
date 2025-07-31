@@ -29,19 +29,25 @@ public:
 	void BindKey(Action action, const InputBinding& binding);
 
 	//正規化したスティックの値を渡す.
-	float ThumbNormalize(SHORT thumb);
+	float SthikNormalize(SHORT sthik);
+
+	//スティックのデッドゾーン処理.
+	float SthikDeadZone(SHORT sthik);
 
 	//左スティックのX軸を取得.
-	float GetLeftSthikX() { return ThumbNormalize(m_pXInput->GetLThumbX()); }
+	float GetLeftSthikX() { return SthikNormalize(m_pXInput->GetLThumbX()); }
 	//左スティックのY軸を取得.
-	float GetLeftSthikY() { return ThumbNormalize(m_pXInput->GetLThumbY()); }
+	float GetLeftSthikY() { return SthikNormalize(m_pXInput->GetLThumbY()); }
 	//右スティックのX軸を取得.
-	float GetRightSthikX() { return ThumbNormalize(m_pXInput->GetRThumbX()); }
+	float GetRightSthikX() { return SthikNormalize(m_pXInput->GetRThumbX()); }
 	//右スティックのY軸を取得.
-	float GetRightSthikY() { return ThumbNormalize(m_pXInput->GetRThumbY()); }
+	float GetRightSthikY() { return SthikNormalize(m_pXInput->GetRThumbY()); }
+
+	//コントローラーが接続されているかを返す.
+	bool IsConnect() { return m_pXInput->IsConnect(); }
 
 private:
-	CXInput*	m_pXInput;
+	std::unique_ptr<CXInput>	m_pXInput;
 	DWORD		m_PlayerIndex;
 
 	//対応するアクションに入力デバイスと入力コードを複数登録できる.
@@ -51,5 +57,5 @@ private:
 	//前フレームでアクションに対応するボタンかキーを押されていたらtrue.
 	std::map<Action, bool>	m_OldInputState;
 
-	float				m_ThumbDeadZone;//スティックのデッドゾーン.
+	float				m_SthikDeadZone;	//スティックのデッドゾーン.
 };

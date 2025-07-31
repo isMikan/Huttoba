@@ -4,9 +4,9 @@
 CInput::CInput(DWORD playerIndex)
 	: m_pXInput			()
 	, m_PlayerIndex		()
-	, m_ThumbDeadZone	(0.2f)
+	, m_SthikDeadZone	(0.2f)
 {
-	m_pXInput = new CXInput(playerIndex);
+	m_pXInput = std::make_unique<CXInput>(playerIndex);
 
 	//mapに全てのアクションをfalseで入れる(ゲーム開始時には何の操作もさせないため).
 	for (int i = 0;i < static_cast<int>(Action::Max);i++)
@@ -82,15 +82,19 @@ void CInput::BindKey(Action action, const InputBinding& binding)
 	m_InputTable[action].push_back(binding);
 }
 
-float CInput::ThumbNormalize(SHORT thumb)
+float CInput::SthikNormalize(SHORT sthik)
 {
-	float f = static_cast<float>(thumb) / CXInput::THUMB_MAX;
+	float f = static_cast<float>(sthik) / CXInput::THUMB_MAX;
 
+	return SthikDeadZone(f);
+}
+
+float CInput::SthikDeadZone(SHORT sthik)
+{
 	//abs(絶対値)がデッドゾーンより大きいなら通る.
-	if (abs(f) > m_ThumbDeadZone)
+	if (abs(sthik) > m_SthikDeadZone)
 	{
-		return f;
+		return sthik;
 	}
-
 	return 0.0f;
 }
