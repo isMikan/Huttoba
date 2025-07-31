@@ -42,7 +42,7 @@ void CPlayerRotationIdle::KeyInput(CPlayer& pPlayer, float x, float z)
 {
 	if (x != 0 || z != 0)
 	{
-		pPlayer.SetRotationState(new CPlayerRotation);
+		pPlayer.SetRotationState(std::make_unique<CPlayerRotation>());
 	}
 }
 

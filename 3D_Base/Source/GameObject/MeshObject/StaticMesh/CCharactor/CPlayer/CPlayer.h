@@ -35,15 +35,15 @@ public:
 
 	void HandleInput();
 
-	void SetMoveState(CPlayerMoveState* newState);
-	void SetRotationState(CPlayerMoveState* newState);
+	void SetMoveState(std::unique_ptr< CPlayerMoveState> newState);
+	void SetRotationState(std::unique_ptr< CPlayerMoveState> newState);
 
 protected:
-	CInput*				m_pInput;			//“ü—Í.
+	std::unique_ptr<CInput>	m_pInput;		//“ü—Í.
 
-	CPlayerMoveState*	m_pMoveState;		//“®‚«.
-	CPlayerMoveState*	m_pRotationState;	//‰ñ“].
-	CPlayerState*		m_pActionState;		//s“®.
+	std::unique_ptr<CPlayerMoveState>	m_pMoveState;		//“®‚«.
+	std::unique_ptr<CPlayerMoveState>	m_pRotationState;	//‰ñ“].
+	std::unique_ptr<CPlayerState>		m_pActionState;		//s“®.
 
 	D3DXVECTOR3 m_Velocity;
 	bool		m_IsBlown;

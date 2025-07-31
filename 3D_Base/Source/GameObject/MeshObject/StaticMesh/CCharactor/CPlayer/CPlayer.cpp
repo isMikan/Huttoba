@@ -12,10 +12,10 @@ CPlayer::CPlayer()
 	, m_pActionState	( nullptr )
 	, m_IsBlown			( false )
 {
-	m_pInput = new CInput( 0 );
+	m_pInput = std::make_unique<CInput>(0);
 
-	m_pMoveState = new CPlayerMoveIdle();
-	m_pRotationState = new CPlayerRotationIdle();
+	m_pMoveState = std::make_unique<CPlayerMoveIdle>();
+	m_pRotationState = std::make_unique<CPlayerRotationIdle>();
 
 }
 
@@ -133,28 +133,30 @@ void CPlayer::HandleInput()
 	m_pRotationState->KeyInput(*this, x, z);
 }
 
-void CPlayer::SetMoveState(CPlayerMoveState* newState)
+void CPlayer::SetMoveState(std::unique_ptr< CPlayerMoveState> newState)
 {
 	if (m_pMoveState != nullptr)
 	{
 		m_pMoveState->Eixt(*this);
-		delete m_pMoveState;
 	}
-	m_pMoveState = newState;
+
+	m_pMoveState = std::move(newState);
+
 	if (m_pMoveState != nullptr)
 	{
 		m_pMoveState->Enter(*this);
 	}
 }
 
-void CPlayer::SetRotationState(CPlayerMoveState* newState)
+void CPlayer::SetRotationState(std::unique_ptr< CPlayerMoveState> newState)
 {
 	if (m_pRotationState != nullptr)
 	{
 		m_pRotationState->Eixt(*this);
-		delete m_pRotationState;
 	}
-	m_pRotationState = newState;
+
+	m_pRotationState = std::move(newState);
+
 	if (m_pRotationState != nullptr)
 	{
 		m_pRotationState->Enter(*this);
