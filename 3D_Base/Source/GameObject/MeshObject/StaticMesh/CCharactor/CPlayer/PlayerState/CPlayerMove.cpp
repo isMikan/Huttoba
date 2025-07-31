@@ -70,7 +70,7 @@ void CPlayerMove::KeyInput(CPlayer& pPlayer, float x, float z)
 {
 	if (x == 0 && z == 0)
 	{
-		pPlayer.SetMoveState(new CPlayerMoveIdle);
+		pPlayer.SetMoveState(std::make_unique<CPlayerMoveIdle>());
 		return;
 	}
 

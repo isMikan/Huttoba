@@ -37,6 +37,6 @@ void CPlayerMoveIdle::KeyInput(CPlayer& pPlayer, float x, float z)
 {
 	if (x != 0 || z != 0)
 	{
-		pPlayer.SetMoveState(new CPlayerMove);
+		pPlayer.SetMoveState(std::make_unique<CPlayerMove>());
 	}
 }

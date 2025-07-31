@@ -12,10 +12,16 @@ CPlayer::CPlayer()
 	, m_pActionState	( nullptr )
 	, m_IsBlown			( false )
 {
-	m_pInput = new CInput( 0 );
+	m_pInput = std::make_unique<CInput>(0);
 
+<<<<<<< HEAD
 	m_pMoveState = new CPlayerMoveIdle();
 	m_pRotationState = new CPlayerRotationIdle();
+=======
+	m_pMoveState = std::make_unique<CPlayerMoveIdle>();
+	m_pRotationState = std::make_unique<CPlayerRotationIdle>();
+
+>>>>>>> Player
 }
 
 CPlayer::~CPlayer()
@@ -41,48 +47,6 @@ void CPlayer::Update()
 	//		m_IsBlown = false;
 	//	}
 	//}
-
-	//if (!m_IsBlown)
-	//{
-#if 1
-		//if (GetAsyncKeyState(VK_RIGHT) & 0x8000) {
-		//	m_vRotation.y += m_TurnSpeed;
-		//}
-		//if (GetAsyncKeyState(VK_LEFT) & 0x8000) {
-		//	m_vRotation.y -= m_TurnSpeed;
-		//}
-
-		//RadioControl();
-#else
-		float add_value = 0.1f;
-		if (GetAsyncKeyState(VK_UP) & 0x8000) {
-			m_vPosition.y += add_value;
-		}
-		if (GetAsyncKeyState(VK_DOWN) & 0x8000) {
-			m_vPosition.y -= add_value;
-		}
-		if (GetAsyncKeyState(VK_RIGHT) & 0x8000) {
-			m_vPosition.x += add_value;
-		}
-		if (GetAsyncKeyState(VK_LEFT) & 0x8000) {
-			m_vPosition.x -= add_value;
-		}
-#endif
-
-		////‘O‰ñ‚ÌƒtƒŒ[ƒ€‚Å’e‚ð”ò‚Î‚µ‚Ä‚¢‚é‚©‚à’m‚ê‚È‚¢‚Ì‚Åfalse‚É‚·‚é.
-		//m_Shot = false;
-
-		////’e‚ð”ò‚Î‚µ‚½‚¢!
-		//if (GetAsyncKeyState('Z') & 0x8000)
-		//{
-		//	m_Shot = true;
-
-		//	//SE‚ÌÄ¶.
-		//	CSoundManager::PlaySE(CSoundManager::SE_Jump);
-		//}
-	//}
-
-		
 
 	HandleInput();
 
@@ -124,23 +88,33 @@ void CPlayer::HandleInput()
 	if (GetAsyncKeyState(VK_LEFT) & 0x8000)		x -= 1.f;
 	if (GetAsyncKeyState(VK_RIGHT) & 0x8000)	x += 1.f;
 
-	x = m_pInput->GetLeftSthikX();
-	z = m_pInput->GetLeftSthikY();
+	m_pInput->BindKey(Action::Attack, InputBinding(InputDevice::Keyboard, VK_UP));
+
+
+	if(m_pInput->GetLeftSthikX() != 0 
+		|| m_pInput->GetLeftSthikY() != 0)
+	{
+		x = m_pInput->GetLeftSthikX();
+		z = m_pInput->GetLeftSthikY();
+	}
 
 	m_pMoveState->KeyInput(*this, x, z);
 
 	m_pRotationState->KeyInput(*this, x, z);
 }
 
-void CPlayer::SetMoveState(CPlayerMoveState* newState)
+void CPlayer::SetMoveState(std::unique_ptr< CPlayerMoveState> newState)
 {
 	if (m_pMoveState != nullptr)
 	{
 		m_pMoveState->Eixt(*this);
-		delete m_pMoveState;
 	}
 
+<<<<<<< HEAD
 	m_pMoveState = newState;
+=======
+	m_pMoveState = std::move(newState);
+>>>>>>> Player
 
 	if (m_pMoveState != nullptr)
 	{
@@ -148,15 +122,18 @@ void CPlayer::SetMoveState(CPlayerMoveState* newState)
 	}
 }
 
-void CPlayer::SetRotationState(CPlayerMoveState* newState)
+void CPlayer::SetRotationState(std::unique_ptr< CPlayerMoveState> newState)
 {
 	if (m_pRotationState != nullptr)
 	{
 		m_pRotationState->Eixt(*this);
-		delete m_pRotationState;
 	}
 
+<<<<<<< HEAD
 	m_pRotationState = newState;
+=======
+	m_pRotationState = std::move(newState);
+>>>>>>> Player
 
 	if (m_pRotationState != nullptr)
 	{
