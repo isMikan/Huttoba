@@ -1,5 +1,7 @@
 #pragma once
 
+#include "CInput/CInput.h"
+
 #include "GameObject/MeshObject/StaticMesh/CCharactor/CCharacter.h"
 #include "PlayerState/CPlayerMoveState.h"
 #include "PlayerState/CPlayerState.h"
@@ -37,6 +39,8 @@ public:
 	void SetRotationState(CPlayerMoveState* newState);
 
 protected:
+	CInput*				m_pInput;			//“ü—Í.
+
 	CPlayerMoveState*	m_pMoveState;		//“®‚«.
 	CPlayerMoveState*	m_pRotationState;	//‰ñ“].
 	CPlayerState*		m_pActionState;		//s“®.

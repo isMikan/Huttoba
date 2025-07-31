@@ -12,6 +12,8 @@ CPlayer::CPlayer()
 	, m_pActionState	( nullptr )
 	, m_IsBlown			( false )
 {
+	m_pInput = new CInput( 0 );
+
 	m_pMoveState = new CPlayerMoveIdle();
 	m_pRotationState = new CPlayerRotationIdle();
 
@@ -26,6 +28,7 @@ CPlayer::~CPlayer()
 
 void CPlayer::Update()
 {
+	m_pInput->Update();
 	//CGameTimer::GetInstance()->Tick();
 	//float deltaTime = CGameTimer::GetInstance()->GetDeltaTime();
 	//if (m_IsBlown)
@@ -80,6 +83,8 @@ void CPlayer::Update()
 		//}
 	//}
 
+		
+
 	HandleInput();
 
 	m_pMoveState->Update(*this);
@@ -119,6 +124,9 @@ void CPlayer::HandleInput()
 	if (GetAsyncKeyState(VK_DOWN) & 0x8000)		z -= 1.f;
 	if (GetAsyncKeyState(VK_LEFT) & 0x8000)		x -= 1.f;
 	if (GetAsyncKeyState(VK_RIGHT) & 0x8000)	x += 1.f;
+
+	x = m_pInput->GetLeftSthikX();
+	z = m_pInput->GetLeftSthikY();
 
 	m_pMoveState->KeyInput(*this, x, z);
 
