@@ -3,44 +3,83 @@
 
 /**************************************************
 *	サウンドマネージャークラス.
-*	Manager(マネージャー)：管理者.
-*	.cppのコメントにある1,2,3の順番で追加できる
+*	担当者: 佐藤　隼斗
+* 
+*	@brief    サウンドの管理を行うクラス.
 **/
 class CSoundManager
 {
 public:
+
 	//サウンドリスト列挙型.
 	enum enSoundList
 	{
-		BGM_Bonus,	//ボーナスステージ.
-		SE_Jump,	//ジャンプ.
-		SE_Clear,	//クリア.
+		BGM_Bonus,	
+		SE_Jump,	
+		SE_Clear,	
 
-		//音が増えたら「ここ」に追加してください.
-		max,		//最大数.
+		//音が増えたら「ここ」に追加
+		max,
+	};
+
+	//サウンドの情報を格納する構造体
+	struct SoundInfo
+	{
+		enSoundList Id;
+		std::wstring Path;
+		std::wstring Name;
 	};
 
 public:
 	CSoundManager();
 	~CSoundManager();
 
-	HRESULT Create();
-	//サウンドデータ読込関数.
-	bool LoadData(HWND hWnd);
 
-	//SEを再生する.
-	void PlaySE(enSoundList list) {
-		m_pSound[list]->PlaySE();
+	/*****************************************************************************************
+	* @brief    サウンド管理mapの添え字宣言とインスタンス作成
+	* @return   S_OK:成功, 
+	*			E_FAIL:失敗
+	*****************************************************************************************/
+	HRESULT Create();
+
+	/*****************************************************************************************
+	* @brief    サウンドの読み込み
+	* @param    hWnd: ウィンドウハンドル
+	* @return   S_OK:成功, 
+	*			E_FAIL:失敗
+	*****************************************************************************************/
+	HRESULT LoadData(HWND hWnd);
+
+
+	/*****************************************************************************************
+	* @brief    SEを再生する
+	* @param    再生したいSEのID
+	*****************************************************************************************/
+	void PlaySE(enSoundList soundId) {
+		m_pSound[soundId]->PlaySE();
 	}
-	//ループ再生する.
-	void PlayLoop(enSoundList list) {
-		m_pSound[list]->PlayLoop();
+
+	/*****************************************************************************************
+	* @brief    音をループ再生する
+	* @param    再生したい音のID
+	*****************************************************************************************/
+	void PlayLoop(enSoundList soundId) {
+		m_pSound[soundId]->PlayLoop();
 	}
-	//停止する.
-	void Stop(enSoundList list) {
-		m_pSound[list]->Stop();
+
+	/*****************************************************************************************
+	* @brief    音を停止する
+	* @param    停止したい音のID
+	*****************************************************************************************/
+	void Stop(enSoundList soundId) {
+		m_pSound[soundId]->Stop();
 	}
 
 private:
+
+	// サウンド管理用のmap
 	std::unordered_map<enSoundList,std::shared_ptr<CSound>> m_pSound;
+
+	std::vector<SoundInfo> m_SoundInfoList;	//サウンド情報のリスト
+
 };

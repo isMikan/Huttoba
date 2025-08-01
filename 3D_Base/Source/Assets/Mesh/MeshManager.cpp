@@ -85,6 +85,14 @@ HRESULT MeshManager::CreateSkinMesh()
 
 HRESULT MeshManager::LoadStaticMesh()
 {
+
+	struct MeshInfo
+	{
+		std::string Path;
+	};
+
+	std::unordered_map<StaticMeshList, std::string> meshDataMap;
+
 	//スタティックメッシュの読み込み
 	m_pStaticMeshMap[StaticMeshList::Player ]->Init(_T("Data\\Mesh\\Static\\Character\\character.x"));
 	m_pStaticMeshMap[StaticMeshList::Ground	]->Init(_T("Data\\Mesh\\Static\\Ground\\ground.x"));

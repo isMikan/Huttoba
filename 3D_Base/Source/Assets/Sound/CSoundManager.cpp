@@ -10,37 +10,39 @@ CSoundManager::~CSoundManager()
 {
 }
 
+
+//-----------------------------------------------------------------------
+
 HRESULT CSoundManager::Create()
 {
-	// 前提, enSoundListに列挙を追加
-    // 1, サウンドのインスタンスを作成.
-    m_pSound[enSoundList::BGM_Bonus] = std::make_shared<CSound>();
-    m_pSound[enSoundList::SE_Jump] = std::make_shared<CSound>();
-    m_pSound[enSoundList::SE_Clear] = std::make_shared<CSound>();
+	//サウンドの列挙に対応するパスと名前を定義
+    m_SoundInfoList = 
+    {
+        { enSoundList::BGM_Bonus, _T("Data\\Sound\\BGM\\BonusGameHouse.mp3"), _T("BGM_Bonus") },
+        { enSoundList::SE_Jump,   _T("Data\\Sound\\SE\\Jump.wav"),            _T("SE_Jump") },
+        { enSoundList::SE_Clear,  _T("Data\\Sound\\SE\\Clear.wav"),           _T("SE_Clear") },
+    };
+
+	//サウンドのインスタンスを格納するための配列を確保
+    for (auto& sound : m_SoundInfoList)
+    {
+        // 1, サウンドのインスタンスを作成.
+        m_pSound[sound.Id] = std::make_shared<CSound>();
+		if (!m_pSound[sound.Id]) return E_FAIL;
+    }
+
     return S_OK;
 }
 
-//サウンドデータ読込関数.
-bool CSoundManager::LoadData(HWND hWnd)
+//-----------------------------------------------------------------------
+
+HRESULT CSoundManager::LoadData(HWND hWnd)
 {
-    struct SoundInfo
+    for (auto& sound : m_SoundInfoList)
     {
-        std::wstring Path;
-        std::wstring Name;
-    };
-
-    std::unordered_map<enSoundList, SoundInfo> SList;
-
-	// 2, サウンドのパスと名前を設定.
-	SList[enSoundList::BGM_Bonus]   = { _T("Data\\Sound\\BGM\\BonusGameHouse.mp3"), _T("BGM_Bonus") };
-	SList[enSoundList::SE_Jump]     = { _T("Data\\Sound\\SE\\Jump.wav"),            _T("SE_Jump") };
-	SList[enSoundList::SE_Clear]    = { _T("Data\\Sound\\SE\\Clear.wav"),           _T("SE_Clear") };
-
-
-	// 3, サウンドを開く.
-    m_pSound[enSoundList::BGM_Bonus]->Open(SList[enSoundList::BGM_Bonus].Path,  SList[enSoundList::BGM_Bonus].Name, hWnd);
-    m_pSound[enSoundList::SE_Jump]  ->Open(SList[enSoundList::SE_Jump].Path,    SList[enSoundList::SE_Jump].Name, hWnd);
-    m_pSound[enSoundList::SE_Clear] ->Open(SList[enSoundList::SE_Clear].Path,   SList[enSoundList::SE_Clear].Name, hWnd);
-
-    return true;
+        if(!m_pSound[sound.Id]->Open(sound.Path,sound.Name, hWnd)) return E_FAIL;
+    }
+    return S_OK;
 }
+
+//-----------------------------------------------------------------------
