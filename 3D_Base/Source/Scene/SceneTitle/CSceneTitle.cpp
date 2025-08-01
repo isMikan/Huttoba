@@ -1,14 +1,17 @@
 #include "CSceneTitle.h"
 
-CSceneTitle::CSceneTitle()
-	: m_pSpriteTitlImg	( nullptr )
+CSceneTitle::CSceneTitle(HWND hWnd)
+	: m_hWnd			(hWnd)
+	, m_pSpriteTitlImg	( nullptr )
 	, m_pSpriteSelector	( nullptr )
 	
 	, m_pInput			( nullptr )
 
-	, m_IsSelector		( true )
+	, m_SelectorPos		()
 
-	, m_SpriteSelectorYPos	(100)
+	, m_SelectorNumber	( 0 )
+
+	, m_SelectorYPos	()
 
 	, m_SthikThreshold	(0.5f)		//ここの値を変えると選択肢を動かす
 									//スティックの最低値が変化する.
@@ -17,6 +20,7 @@ CSceneTitle::CSceneTitle()
 	Create();
 	LoadData();
 	SetInputBInding();
+	SetSelectorPos();
 }
 
 CSceneTitle::~CSceneTitle()
@@ -52,28 +56,32 @@ void CSceneTitle::Update()
 {
 	m_pInput->Update();
 
+	if (m_pInput->IsDown(Action::NavigateUp))
+	{
+		if (m_SelectorNumber > 0)
+			m_SelectorNumber--;
+	}
+	if (m_pInput->IsDown(Action::NavigateDown))
+	{
+		if (m_SelectorNumber < m_SelectorYPos.size() - 1)
+			m_SelectorNumber++;
+	}
+
+	m_pSpriteSelector->SetPositionY(m_SelectorYPos[m_SelectorNumber]);
+
 	if (m_pInput->IsDown(Action::Decide))
 	{
-		SetNextScene(GameMain);
-	}
-
-	//if (abs(m_pInput->GetLeftSthikY()) >= m_SthikThreshold)
-	if (GetAsyncKeyState('W') & 0x0001)
-	{
-		m_IsSelector = false;
-	}
-	if (GetAsyncKeyState('S') & 0x0001)
-	{
-		m_IsSelector = true;
-	}
-
-	if (m_IsSelector)
-	{
-		m_pSpriteSelector->SetPosition(D3DXVECTOR3(500, 430 + m_SpriteSelectorYPos, 0));
-	}
-	else
-	{
-		m_pSpriteSelector->SetPosition(D3DXVECTOR3(500, 430, 0));
+		switch (m_SelectorNumber)
+		{
+		case 0:
+			SetNextScene(GameMain);
+			break;
+		case 1:
+			DestroyWindow(m_hWnd);
+			break;
+		default:
+			break;
+		}
 	}
 }
 
@@ -98,4 +106,13 @@ void CSceneTitle::SetInputBInding()
 
 	m_pInput->BindKey(Action::NavigateDown, InputBinding(InputDevice::GamePad, CXInput::DOWN));
 	m_pInput->BindKey(Action::NavigateDown, InputBinding(InputDevice::Keyboard, VK_DOWN));
+}
+
+void CSceneTitle::SetSelectorPos()
+{
+	m_SelectorPos = D3DXVECTOR3(500, 0, 0);
+	m_pSpriteSelector->SetPosition(m_SelectorPos);
+
+	m_SelectorYPos.push_back(430);
+	m_SelectorYPos.push_back(540);
 }

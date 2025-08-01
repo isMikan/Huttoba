@@ -3,6 +3,11 @@
 //Œx‚É‚Â‚¢‚Ä‚Ìº°ÄŞ•ªÍ‚ğ–³Œø‚É‚·‚é.4005:Ä’è‹`.
 #pragma warning(disable:4005)
 #include <Windows.h>
+#undef min			//std::min‚Æ‹£‡‚·‚é‚Ì‚Åwindows.h‚Ìmin‚ğ–³Œø‰».
+#undef max			//std::max‚Æ‹£‡‚·‚é‚Ì‚Åwindows.h‚Ìmax‚ğ–³Œø‰».
+
+#include <algorithm>	//std::max,std::min‚ğg—p‚·‚é.
+
 #include <crtdbg.h>
 
 //DirectX9

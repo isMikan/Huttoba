@@ -13,7 +13,7 @@ CSceneManager::~CSceneManager()
 
 HRESULT CSceneManager::Create()
 {
-	m_pScene = std::make_unique<CSceneTitle>();
+	m_pScene = std::make_unique<CSceneTitle>(m_hWnd);
 
 	return S_OK;
 }
@@ -53,7 +53,7 @@ void CSceneManager::CreateScene(int Scene)
 	//ÉVÅ[ÉìçÏê¨
 	switch (Scene)
 	{
-	case Title:		m_pScene = std::make_unique<CSceneTitle>	();	break;
+	case Title:		m_pScene = std::make_unique<CSceneTitle>	(m_hWnd);	break;
 	case GameMain:  m_pScene = std::make_unique<CSceneGameMain>	(m_hWnd);	break;
 	case GameOver:  m_pScene = std::make_unique<CSceneGameOver>	();	break;
 	case Ending:	m_pScene = std::make_unique<CSceneResult>	();	break;

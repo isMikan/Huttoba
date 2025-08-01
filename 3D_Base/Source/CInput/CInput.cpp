@@ -82,6 +82,26 @@ void CInput::BindKey(Action action, const InputBinding& binding)
 	m_InputTable[action].push_back(binding);
 }
 
+float CInput::GetLeftSthikX()
+{
+	return SthikNormalize(m_pXInput->GetLThumbX());
+}
+
+float CInput::GetLeftSthikY()
+{
+	return SthikNormalize(m_pXInput->GetLThumbY());
+}
+
+float CInput::GetRightSthikX()
+{
+	return SthikNormalize(m_pXInput->GetRThumbX());
+}
+
+float CInput::GetRightSthikY()
+{
+	return SthikNormalize(m_pXInput->GetRThumbY());
+}
+
 float CInput::SthikNormalize(SHORT sthik)
 {
 	float f = static_cast<float>(sthik) / CXInput::THUMB_MAX;
