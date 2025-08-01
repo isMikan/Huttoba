@@ -1,7 +1,8 @@
 #include "CSceneTitle.h"
 
-CSceneTitle::CSceneTitle()
-	: m_pSpriteTitlImg	( nullptr )
+CSceneTitle::CSceneTitle(HWND hWnd)
+	: m_hWnd			(hWnd)
+	, m_pSpriteTitlImg	( nullptr )
 	, m_pSpriteSelector	( nullptr )
 	
 	, m_pInput			( nullptr )
@@ -19,6 +20,7 @@ CSceneTitle::CSceneTitle()
 	Create();
 	LoadData();
 	SetInputBInding();
+	SetSelectorPos();
 }
 
 CSceneTitle::~CSceneTitle()
@@ -54,20 +56,32 @@ void CSceneTitle::Update()
 {
 	m_pInput->Update();
 
-	if (m_pInput->IsDown(Action::Decide))
+	if (m_pInput->IsDown(Action::NavigateUp))
 	{
-		SetNextScene(GameMain);
+		if (m_SelectorNumber > 0)
+			m_SelectorNumber--;
+	}
+	if (m_pInput->IsDown(Action::NavigateDown))
+	{
+		if (m_SelectorNumber < m_SelectorYPos.size() - 1)
+			m_SelectorNumber++;
 	}
 
-	//if (abs(m_pInput->GetLeftSthikY()) >= m_SthikThreshold)
-	if (GetAsyncKeyState('W') & 0x0001)
+	m_pSpriteSelector->SetPositionY(m_SelectorYPos[m_SelectorNumber]);
+
+	if (m_pInput->IsDown(Action::Decide))
 	{
-		m_SelectorNumber--;
-	}
-	if (GetAsyncKeyState('S') & 0x0001)
-	{
-		m_SelectorNumber--;
-		
+		switch (m_SelectorNumber)
+		{
+		case 0:
+			SetNextScene(GameMain);
+			break;
+		case 1:
+			DestroyWindow(m_hWnd);
+			break;
+		default:
+			break;
+		}
 	}
 }
 
@@ -96,5 +110,9 @@ void CSceneTitle::SetInputBInding()
 
 void CSceneTitle::SetSelectorPos()
 {
-	m_SelectorYPos.push_back(500);
+	m_SelectorPos = D3DXVECTOR3(500, 0, 0);
+	m_pSpriteSelector->SetPosition(m_SelectorPos);
+
+	m_SelectorYPos.push_back(430);
+	m_SelectorYPos.push_back(540);
 }

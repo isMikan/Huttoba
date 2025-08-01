@@ -68,7 +68,7 @@ HRESULT MY_HIERARCHY::CreateMeshContainer(
 	pMeshContainer->MeshData.pMesh = pMesh;
 
 	//メッシュのマテリアル設定.
-	pMeshContainer->NumMaterials = max( 1, NumMaterials );
+	pMeshContainer->NumMaterials = std::max(static_cast<DWORD>(1), NumMaterials);
 	pMeshContainer->pMaterials = new D3DXMATERIAL[pMeshContainer->NumMaterials]();
 	pMeshContainer->pAdjacency = new DWORD[pMeshContainer->MeshData.pMesh->GetNumFaces() * 3]();
 	if ( ( pMeshContainer->pAdjacency == nullptr ) || ( pMeshContainer->pMaterials == nullptr ) )

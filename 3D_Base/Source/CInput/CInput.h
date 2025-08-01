@@ -28,23 +28,24 @@ public:
 	//m_Input->BindKey(Action::Attack, InputBinding(InputDevice::Keyboard, 'Q'));
 	void BindKey(Action action, const InputBinding& binding);
 
+	//左スティックの正規化したX軸を取得.
+	float GetLeftSthikX();
+	//左スティックの正規化したY軸を取得.
+	float GetLeftSthikY();
+	//右スティックの正規化したX軸を取得.
+	float GetRightSthikX();
+	//右スティックの正規化したY軸を取得.
+	float GetRightSthikY();
+
+	//コントローラーが接続されているかを返す.
+	bool IsConnect() { return m_pXInput->IsConnect(); }
+
+private:
 	//正規化したスティックの値を渡す.
 	float SthikNormalize(SHORT sthik);
 
 	//スティックのデッドゾーン処理.
 	float SthikDeadZone(SHORT sthik);
-
-	//左スティックのX軸を取得.
-	float GetLeftSthikX() { return SthikNormalize(m_pXInput->GetLThumbX()); }
-	//左スティックのY軸を取得.
-	float GetLeftSthikY() { return SthikNormalize(m_pXInput->GetLThumbY()); }
-	//右スティックのX軸を取得.
-	float GetRightSthikX() { return SthikNormalize(m_pXInput->GetRThumbX()); }
-	//右スティックのY軸を取得.
-	float GetRightSthikY() { return SthikNormalize(m_pXInput->GetRThumbY()); }
-
-	//コントローラーが接続されているかを返す.
-	bool IsConnect() { return m_pXInput->IsConnect(); }
 
 private:
 	std::unique_ptr<CXInput>	m_pXInput;

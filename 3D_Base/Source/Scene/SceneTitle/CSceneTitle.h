@@ -8,7 +8,7 @@ class CSceneTitle
 	: public CScene
 {
 public:
-	CSceneTitle();
+	CSceneTitle(HWND hWnd);
 	~CSceneTitle() override;
 
 	HRESULT Create() override;
@@ -25,6 +25,8 @@ private:
 	void SetSelectorPos();
 
 private:
+	HWND		m_hWnd;			//ウィンドウハンドル.
+
 	std::unique_ptr<CSprite2D>	m_pSpriteTitlImg;	//タイトル画面.
 	std::unique_ptr<CSprite2D>	m_pSpriteSelector;	//選択矢印.
 
