@@ -8,7 +8,7 @@ class CSceneTitle
 	: public CScene
 {
 public:
-	CSceneTitle(HWND hWnd);
+	CSceneTitle(HWND hWnd, CInput& input);
 	~CSceneTitle() override;
 
 	HRESULT Create() override;
@@ -18,9 +18,6 @@ public:
 	void Destroy() override;
 
 private:
-	//入力情報の設定.
-	void SetInputBInding();
-
 	//選択肢の座標を設定.
 	void SetSelectorPos();
 
@@ -30,7 +27,7 @@ private:
 	std::unique_ptr<CSprite2D>	m_pSpriteTitlImg;	//タイトル画面.
 	std::unique_ptr<CSprite2D>	m_pSpriteSelector;	//選択矢印.
 
-	std::unique_ptr<CInput>		m_pInput;
+	CInput&		m_Input;
 
 	D3DXVECTOR3					m_SelectorPos;		//選択矢印の座標.
 

@@ -180,7 +180,7 @@ void CSceneGameMain::Update()
 	//Ÿ‚ÌƒV[ƒ“‚Ö‘JˆÚ
 	if (GetAsyncKeyState('L') & 0x0001)
 	{
-		SetNextScene(GameOver);
+		SetNextScene(Result);
 	}
 }
 

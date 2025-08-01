@@ -49,7 +49,7 @@
     <ClCompile Include="Source\Scene\CScene.cpp" />
     <ClCompile Include="Source\Scene\CSceneManager.cpp" />
     <ClCompile Include="Source\Scene\SceneMain\CSceneGameMain.cpp" />
-    <ClCompile Include="Source\Scene\SceneOver\CSceneGameOver.cpp" />
+    <ClCompile Include="Source\Scene\SceneStandby\CSceneStandby.cpp" />
     <ClCompile Include="Source\Scene\SceneResult\CSceneResult.cpp" />
     <ClCompile Include="Source\Scene\SceneTitle\CSceneTitle.cpp" />
     <ClCompile Include="Source\stdafx.cpp" />
@@ -113,7 +113,7 @@
     <ClInclude Include="Source\Scene\CScene.h" />
     <ClInclude Include="Source\Scene\CSceneManager.h" />
     <ClInclude Include="Source\Scene\SceneMain\CSceneGameMain.h" />
-    <ClInclude Include="Source\Scene\SceneOver\CSceneGameOver.h" />
+    <ClInclude Include="Source\Scene\SceneStandby\CSceneStandby.h" />
     <ClInclude Include="Source\Scene\SceneResult\CSceneResult.h" />
     <ClInclude Include="Source\Scene\SceneTitle\CSceneTitle.h" />
     <ClInclude Include="Source\stdafx.h" />

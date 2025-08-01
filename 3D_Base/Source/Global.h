@@ -74,9 +74,9 @@ struct LIGHT
 enum EnSceneList
 {
 	Title = 0,
+	Standby,
 	GameMain,
-	GameOver,
-	Ending,
+	Result,
 
 	Max,
 	None = -1

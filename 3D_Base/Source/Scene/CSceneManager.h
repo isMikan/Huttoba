@@ -4,10 +4,11 @@
 #include<memory>
 
 #include "CScene.h"
-#include "Scene/SceneOver/CSceneGameOver.h"
-#include "Scene/SceneMain/CSceneGameMain.h"
 #include "Scene/SceneTitle/CSceneTitle.h"
+#include "Scene/SceneStandby/CSceneStandby.h"
+#include "Scene/SceneMain/CSceneGameMain.h"
 #include "Scene/SceneResult/CSceneResult.h"
+#include "CInput/CInput.h"
 
 class CSceneManager final
 {
@@ -22,10 +23,13 @@ public:
 	void Destroy();
 
 private:
-
-	std::unique_ptr<CScene> m_pScene;
-
 	void CreateScene(int Scene);
+
+	void SetInputBInding();
+
+private:
+	std::unique_ptr<CScene> m_pScene;
+	std::unique_ptr<CInput>	m_pInput;
 
 	HWND	m_hWnd;
 };

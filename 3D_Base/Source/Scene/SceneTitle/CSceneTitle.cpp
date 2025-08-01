@@ -1,11 +1,11 @@
 #include "CSceneTitle.h"
 
-CSceneTitle::CSceneTitle(HWND hWnd)
+CSceneTitle::CSceneTitle(HWND hWnd, CInput& input)
 	: m_hWnd			(hWnd)
 	, m_pSpriteTitlImg	( nullptr )
 	, m_pSpriteSelector	( nullptr )
 	
-	, m_pInput			( nullptr )
+	, m_Input			( input )
 
 	, m_SelectorPos		()
 
@@ -19,7 +19,6 @@ CSceneTitle::CSceneTitle(HWND hWnd)
 {
 	Create();
 	LoadData();
-	SetInputBInding();
 	SetSelectorPos();
 }
 
@@ -32,7 +31,7 @@ HRESULT CSceneTitle::Create()
 	m_pSpriteTitlImg = std::make_unique<CSprite2D>();
 	m_pSpriteSelector = std::make_unique<CSprite2D>();
 
-	m_pInput = std::make_unique<CInput>(0);
+	//m_pInput = std::make_unique<CInput>(0);
 
 	return S_OK;
 }
@@ -54,14 +53,14 @@ HRESULT CSceneTitle::LoadData()
 
 void CSceneTitle::Update()
 {
-	m_pInput->Update();
+	m_Input.Update();
 
-	if (m_pInput->IsDown(Action::NavigateUp))
+	if (m_Input.IsDown(Action::NavigateUp))
 	{
 		if (m_SelectorNumber > 0)
 			m_SelectorNumber--;
 	}
-	if (m_pInput->IsDown(Action::NavigateDown))
+	if (m_Input.IsDown(Action::NavigateDown))
 	{
 		if (m_SelectorNumber < m_SelectorYPos.size() - 1)
 			m_SelectorNumber++;
@@ -69,12 +68,12 @@ void CSceneTitle::Update()
 
 	m_pSpriteSelector->SetPositionY(m_SelectorYPos[m_SelectorNumber]);
 
-	if (m_pInput->IsDown(Action::Decide))
+	if (m_Input.IsDown(Action::Decide,true))
 	{
 		switch (m_SelectorNumber)
 		{
 		case 0:
-			SetNextScene(GameMain);
+			SetNextScene(Standby);
 			break;
 		case 1:
 			DestroyWindow(m_hWnd);
@@ -93,19 +92,6 @@ void CSceneTitle::Draw()
 
 void CSceneTitle::Destroy()
 {
-}
-
-void CSceneTitle::SetInputBInding()
-{
-	m_pInput->BindKey(Action::Decide, InputBinding(InputDevice::GamePad, CXInput::B));
-	m_pInput->BindKey(Action::Decide, InputBinding(InputDevice::Keyboard, 'Z'));
-
-
-	m_pInput->BindKey(Action::NavigateUp, InputBinding(InputDevice::GamePad, CXInput::UP));
-	m_pInput->BindKey(Action::NavigateUp, InputBinding(InputDevice::Keyboard, VK_UP));
-
-	m_pInput->BindKey(Action::NavigateDown, InputBinding(InputDevice::GamePad, CXInput::DOWN));
-	m_pInput->BindKey(Action::NavigateDown, InputBinding(InputDevice::Keyboard, VK_DOWN));
 }
 
 void CSceneTitle::SetSelectorPos()
