@@ -2,6 +2,7 @@
 
 CSceneResult::CSceneResult(CInput& input)
 	: m_pSpriteResultImg	( nullptr )
+	, m_pPlayer				()
 	, m_Input				( input )
 {
 	Create();
