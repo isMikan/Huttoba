@@ -4,6 +4,8 @@
 SpriteManager::SpriteManager()
 	: m_p2DSpritMap()
 	, m_p3DSpritMap()
+	, m_Sprite2DMeshInfoList()
+	, m_Sprite3DMeshInfoList()
 {
 }
 
@@ -27,18 +29,17 @@ HRESULT SpriteManager::LoadData()
 
 HRESULT SpriteManager::CreateSprite3D()
 {
-	//スプライトのインスタンス作成.
-	Sprite3DList spritw3DList[] =
-	{
-		Sprite3DList::Ground,
-		Sprite3DList::Player,
-		Sprite3DList::Explosion,
-	};
+	//各3Dスプライトの情報を登録(ここに3Dスプライト登録)
+//↓-----------------------------------------------------------------------------------------------------------------------------↓
+	RegisterSprite3D(Sprite3DList::Ground,		_T("Data\\Texture\\Ground.png"),	{ 1.f, 1.f, 256.f, 256.f, 256.f, 256.f	});
+	RegisterSprite3D(Sprite3DList::Player,		_T("Data\\Texture\\Player.png"),	{ 1.f, 1.f, 64.f, 64.f, 64.f, 64.f		});
+	RegisterSprite3D(Sprite3DList::Explosion,	_T("Data\\Texture\\explosion.png"), { 1.f, 1.f, 256.f, 256.f, 32.f, 32.f	});
+//↑-----------------------------------------------------------------------------------------------------------------------------↑
 
-	for (auto& id : spritw3DList)
+	for (auto& sprite3D : m_Sprite3DMeshInfoList)
 	{
-		m_p3DSpritMap[id] = std::make_unique<CSprite3D>();
-		if (!m_p3DSpritMap[id]) return E_POINTER;
+		m_p3DSpritMap[sprite3D.Id] = std::make_unique<CSprite3D>();
+		if (!m_p3DSpritMap[sprite3D.Id]) return E_POINTER;
 	}
 
 	return S_OK;
@@ -46,16 +47,16 @@ HRESULT SpriteManager::CreateSprite3D()
 
 HRESULT SpriteManager::CreateSprite2D()
 {
-	Sprite2DList sprite2DList[] =
-	{
-		Sprite2DList::PMon
-	};
+	//各2Dスプライトの情報を登録(ここに2Dスプライト登録)
+//↓-----------------------------------------------------------------------------------------------------------------------------↓
+	RegisterSprite2D(Sprite2DList::PMon,_T("Data\\Texture\\pmon.png"),{ 64.f, 64.f, 896.f, 560.f, 896.f / 16.f, 560.f / 10.f });
+//↑-----------------------------------------------------------------------------------------------------------------------------↑
 
-	for (auto& id : sprite2DList)
+	//各2Dスプライトのインスタンス作成.
+	for (auto& sprite2D : m_Sprite2DMeshInfoList)
 	{
-		m_p2DSpritMap[id] = std::make_unique<CSprite2D>();
-		if (!m_p2DSpritMap[id]) return E_POINTER;
-
+		m_p2DSpritMap[sprite2D.Id] = std::make_unique<CSprite2D>();
+		if (!m_p2DSpritMap[sprite2D.Id]) return E_POINTER;
 	}
 
 	return S_OK;
@@ -63,44 +64,24 @@ HRESULT SpriteManager::CreateSprite2D()
 
 HRESULT SpriteManager::LoadSprite2D()
 {
-
-	//Pモンスプライトの構造体
-	CSprite2D::SPRITE_STATE SSPmon =
-	{ 64.f, 64.f, 896.f, 560.f, 896.f / 16.f, 560.f / 10.f };
-
-	//Pモンスプライトの読み込み
-	m_p2DSpritMap[Sprite2DList::PMon]->Init(_T("Data\\Texture\\pmon.png"), SSPmon);
+	//2Dスプライト読み込み
+	for (auto& sprite2D : m_Sprite2DMeshInfoList)
+	{
+		if(m_p2DSpritMap[sprite2D.Id]->Init(sprite2D.Path, sprite2D.Size) != S_OK)
+		return E_FAIL;
+	}
 
 	return S_OK;
 }
 
 HRESULT SpriteManager::LoadSprite3D()
 {
-	//地面スプライトの構造体
-	CSprite3D::SPRITE_STATE SSGround;
-	SSGround.Disp.w = 1.f;
-	SSGround.Disp.h = 1.f;
-	SSGround.Base.w = 256.f;
-	SSGround.Base.h = 256.f;
-	SSGround.Stride.w = 256.f;
-	SSGround.Stride.h = 256.f;
-
-	//地面スプライトの読み込み.
-	m_p3DSpritMap[Sprite3DList::Ground]->Init(_T("Data\\Texture\\Ground.png"), SSGround);
-
-	//プレイヤースプライトの構造体
-	CSprite3D::SPRITE_STATE SSPlayer =
-	{ 1.f, 1.f, 64.f, 64.f, 64.f, 64.f };
-
-	//プレイヤースプライトの読み込み.
-	m_p3DSpritMap[Sprite3DList::Player]->Init(_T("Data\\Texture\\Player.png"), SSPlayer);
-
-	//爆発スプライトの構造体
-	CSprite3D::SPRITE_STATE SSExplosion =
-	{ 1.f, 1.f, 256.f, 256.f, 32.f, 32.f };
-
-	//爆発スプライトの読み込み.
-	m_p3DSpritMap[Sprite3DList::Explosion]->Init(_T("Data\\Texture\\explosion.png"), SSExplosion);
+	//3Dスプライト読み込み
+	for (auto& sprite3D : m_Sprite3DMeshInfoList)
+	{
+		if (m_p3DSpritMap[sprite3D.Id]->Init(sprite3D.Path, sprite3D.Size) != S_OK)
+			return E_FAIL;
+	}
 
 	return S_OK;
 }
@@ -123,4 +104,14 @@ std::shared_ptr<CSprite2D> SpriteManager::GetSprite2D(Sprite2DList spriteID)
 		return it->second;
 	}
 	return nullptr;
+}
+
+void SpriteManager::RegisterSprite2D(Sprite2DList spriteID, LPCTSTR path, CSprite2D::SPRITE_STATE size)
+{
+	m_Sprite2DMeshInfoList.push_back({ spriteID, path, size });
+}
+
+void SpriteManager::RegisterSprite3D(Sprite3DList spriteID, LPCTSTR path, CSprite3D::SPRITE_STATE size)
+{
+	m_Sprite3DMeshInfoList.push_back({ spriteID, path, size });
 }

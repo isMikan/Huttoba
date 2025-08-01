@@ -140,7 +140,7 @@ void CSceneGameMain::Destroy()
 void CSceneGameMain::Update()
 {
 	//BGM‚Ìƒ‹[ƒvÄ¶
-	AssetManager::Sound()->PlayLoop(CSoundManager::BGM_Bonus);
+	AssetManager::Sound()->PlayLoop(CSoundManager::enSoundList::BGM_Bonus);
 
 	m_pGround->Update();
 	m_pPlayer->Update();

@@ -1,8 +1,8 @@
 #pragma once
-#include "CSound.h"		//サウンドクラス.
+#include "CSound.h"		//サウンドクラス
 
 /**************************************************
-*	サウンドマネージャークラス.
+*	サウンドマネージャークラス
 *	担当者: 佐藤　隼斗
 * 
 *	@brief    サウンドの管理を行うクラス.
@@ -11,8 +11,8 @@ class CSoundManager
 {
 public:
 
-	//サウンドリスト列挙型.
-	enum enSoundList
+	//サウンドリスト列挙型
+	enum class enSoundList
 	{
 		BGM_Bonus,	
 		SE_Jump,	
@@ -80,6 +80,7 @@ private:
 	// サウンド管理用のmap
 	std::unordered_map<enSoundList,std::shared_ptr<CSound>> m_pSound;
 
-	std::vector<SoundInfo> m_SoundInfoList;	//サウンド情報のリスト
+	//サウンド情報のリスト
+	std::vector<SoundInfo> m_SoundInfoList;	
 
 };
