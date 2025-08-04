@@ -73,10 +73,10 @@ void CSceneTitle::Update()
 		switch (m_SelectorNumber)
 		{
 		case 0:
-			SetNextScene(Standby);
+			SetNextScene( Standby );
 			break;
 		case 1:
-			DestroyWindow(m_hWnd);
+			DestroyWindow( m_hWnd );
 			break;
 		default:
 			break;

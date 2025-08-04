@@ -22,12 +22,12 @@ private:
 	void SetSelectorPos();
 
 private:
-	HWND		m_hWnd;			//ウィンドウハンドル.
+	HWND						m_hWnd;				//ウィンドウハンドル.
 
 	std::unique_ptr<CSprite2D>	m_pSpriteTitlImg;	//タイトル画面.
 	std::unique_ptr<CSprite2D>	m_pSpriteSelector;	//選択矢印.
 
-	CInput&		m_Input;
+	CInput&						m_Input;
 
 	D3DXVECTOR3					m_SelectorPos;		//選択矢印の座標.
 

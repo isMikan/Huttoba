@@ -2,7 +2,12 @@
 #include "Scene/CScene.h"
 
 #include "Sprite/Sprite2D/CSprite2D.h"
+
 #include "CInput/CInput.h"
+#include "GameObject/MeshObject/StaticMesh/CCharactor/CPlayer/CPlayer.h"
+#include "Camera/CCamera.h"
+
+#include "Assets/AssetManager.h"
 
 class CSceneStandby
 	: public CScene
@@ -18,9 +23,20 @@ public:
 	void Destroy() override;
 
 private:
+	void InitializePlayers();
 
+	void InitializeInput();
 private:
 	std::unique_ptr<CSprite2D>	m_pSpriteStandbyImg;	//待機画面.
 
-	CInput&		m_Input;
+	std::vector < std::unique_ptr<CSprite2D> >	m_pRedyFontImg;		//準備完了画像.
+	std::vector < std::unique_ptr<CSprite2D> >	m_pNotRedyFontImg;	//準備中画像.
+
+	std::unique_ptr<CCamera>	m_pCamera;	//カメラ.
+
+	//キャラクタークラス
+	std::vector< std::unique_ptr<CPlayer> >	m_pPlayer;
+
+	CInput&				m_Input;
+	std::vector< std::unique_ptr<CInput>>	m_Inputs;
 };

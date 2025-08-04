@@ -1,5 +1,5 @@
 #include "CInput.h"
-#include "CXInput/CXInput.h"
+#include "XInput/CXInput.h"
 
 CInput::CInput(DWORD playerIndex)
 	: m_pXInput			()

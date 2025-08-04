@@ -1,5 +1,5 @@
 #pragma once
-#include "../CXInput/CXInput.h"
+#include "../XInput/CXInput.h"
 
 enum class Action
 {
@@ -35,7 +35,7 @@ struct InputBinding
 	union Code		//中身の変数をどれか一つだけ持てる(入力デバイスに合わせて変化させる).
 	{
 		CXInput::KEY Gamepad;		//コントローラーのボタン.
-		int Keyboard;		//キーボードのキー.
+		int Keyboard;				//キーボードのキー.
 
 		//初期化.
 		Code() :Keyboard(0) {}
