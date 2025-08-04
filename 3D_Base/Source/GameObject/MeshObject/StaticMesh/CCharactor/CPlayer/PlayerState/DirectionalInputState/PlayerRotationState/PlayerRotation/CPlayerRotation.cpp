@@ -2,10 +2,10 @@
 
 #include "GameObject/MeshObject/StaticMesh/CCharactor/CPlayer/CPlayer.h"
 
-#include "CPlayerRotationIdle.h"
+#include "GameObject/MeshObject/StaticMesh/CCharactor/CPlayer/PlayerState/DirectionalInputState/PlayerRotationState/PlayerRotationIdle/CPlayerRotationIdle.h"
 
 CPlayerRotation::CPlayerRotation()
-	: m_RotationSpeed	( static_cast<FLOAT>(D3DXToRadian(5.0)) )
+	: m_RotationSpeed	( D3DXToRadian( 5.f ) )
 	, m_RotationDir		()
 {
 }
@@ -18,12 +18,16 @@ void CPlayerRotation::Enter(CPlayer& pPlayer)
 {
 }
 
-void CPlayerRotation::Eixt(CPlayer& pPlayer)
+void CPlayerRotation::Exit(CPlayer& pPlayer)
 {
 }
 
 void CPlayerRotation::Update(CPlayer& pPlayer)
 {
+	//‰ñ“]‚µ‚Ä‚¢‚é‚©‚ğ true ‚Éİ’è.
+	pPlayer.SetRotating(true);
+
+	//‰ñ“]‚ğæ“¾.
 	D3DXVECTOR3 rot = pPlayer.GetRotation();
 
 	float diff = m_RotationDir - rot.y;	//–Ú“I•ûŒü‚Ü‚Å‚Ì·.
@@ -38,27 +42,28 @@ void CPlayerRotation::Update(CPlayer& pPlayer)
 	{
 		diff += D3DXToRadian(360.f);	//ˆêü•ª‘«‚µ‚Äƒvƒ‰ƒX‚É‚·‚é.
 	}
-	
+
 	//‰ñ“]—Ê‚æ‚è¬‚³‚©‚Á‚½‚ç‡‚í‚¹‚é.
 	if (abs(diff) < m_RotationSpeed)
 	{
 		rot.y = m_RotationDir;
+		//‰ñ“]‚ª–Ú“I‚Ì‚Æ‚±‚ë‚Ü‚Å“’B‚µ‚Ä‚¢‚é‚Ì‚Å false ‚Éİ’è.
+		pPlayer.SetRotating(false);
 	}
 	//ˆÚ“®—Ê‚ğŒvZ‚·‚é.
-	else if(diff > 0)
+	else if (diff > 0)
 	{
+		//³‚Ì”‚È‚ç‘«‚·.
 		rot.y += m_RotationSpeed;
 	}
 	else
 	{
+		//•‰‚Ì”‚È‚çˆø‚­.
 		rot.y -= m_RotationSpeed;
 	}
 
+	//•ûŒü‚ğİ’è.
 	pPlayer.SetRotation(rot);
-}
-
-void CPlayerRotation::Handle(CPlayer& pPlayer, int inputKey)
-{
 }
 
 void CPlayerRotation::KeyInput(CPlayer& pPlayer, float x, float z)

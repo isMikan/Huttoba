@@ -2,7 +2,7 @@
 
 #include "GameObject/MeshObject/StaticMesh/CCharactor/CPlayer/CPlayer.h"
 
-#include "CPlayerMove.h"
+#include "GameObject/MeshObject/StaticMesh/CCharactor/CPlayer/PlayerState/DirectionalInputState/PlayerMoveState/PlayerMove/CPlayerMove.h"
 
 CPlayerMoveIdle::CPlayerMoveIdle()
 {
@@ -16,15 +16,11 @@ void CPlayerMoveIdle::Enter(CPlayer& pPlayer)
 {
 }
 
-void CPlayerMoveIdle::Eixt(CPlayer& pPlayer)
+void CPlayerMoveIdle::Exit(CPlayer& pPlayer)
 {
 }
 
 void CPlayerMoveIdle::Update(CPlayer& pPlayer)
-{
-}
-
-void CPlayerMoveIdle::Handle(CPlayer& pPlayer, int inputKey)
 {
 }
 

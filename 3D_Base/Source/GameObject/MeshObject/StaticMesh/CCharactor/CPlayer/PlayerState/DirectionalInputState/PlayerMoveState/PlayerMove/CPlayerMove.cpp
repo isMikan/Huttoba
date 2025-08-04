@@ -2,13 +2,14 @@
 
 #include "GameObject/MeshObject/StaticMesh/CCharactor/CPlayer/CPlayer.h"
 
-#include "CPlayerMoveIdle.h"
+#include "GameObject/MeshObject/StaticMesh/CCharactor/CPlayer/PlayerState/DirectionalInputState/PlayerMoveState/PlayerIdle/CPlayerMoveIdle.h"
 
 CPlayerMove::CPlayerMove()
-	: m_MoveSpeed		( 0.1f )
-	, m_MoveSpeedScale	( 1.f )
-	, m_MoveDir			( 0, 0, 0 )
-	, m_MoveState		( MoveNone )
+	: m_CurrentSpeed		()
+	, m_MoveSpeed			( 0.15f )
+	, m_RotatingMoveSpeed	( 0.1f )
+	, m_MoveSpeedScale		( 1.f )
+	, m_MoveDir				( 0, 0, 0 )
 {
 }
 
@@ -18,47 +19,29 @@ CPlayerMove::~CPlayerMove()
 
 void CPlayerMove::Enter(CPlayer& pPlayer)
 {
+	pPlayer.SetMoving(true);
 }
 
-void CPlayerMove::Eixt(CPlayer& pPlayer)
+void CPlayerMove::Exit(CPlayer& pPlayer)
 {
+	pPlayer.SetMoving(false);
 }
 
 void CPlayerMove::Update(CPlayer& pPlayer)
 {
+	m_CurrentSpeed = m_MoveSpeed;
+	if (pPlayer.GetRotating())
+	{
+		m_CurrentSpeed = m_RotatingMoveSpeed;
+	}
+
 	D3DXVECTOR3 pos = pPlayer.GetPosition();
 
-	D3DXVECTOR3 velocity = m_MoveDir * m_MoveSpeed;
+	D3DXVECTOR3 velocity = m_MoveDir * m_CurrentSpeed;
 
 	pos += velocity;
 
-#if 1
-#else
-	//à⁄ìÆèÛë‘Ç…ÇÊÇ¡ÇƒèàóùÇï™ÇØÇÈ.
-	switch (m_MoveState)
-	{
-	case MoveForward:	//ëO.
-		pos.z += m_MoveSpeed;
-		break;
-	case MoveBackward:	//å„.
-		pos.z -= m_MoveSpeed;
-		break;
-	case MoveLeft:		//ç∂.
-		pos.x -= m_MoveSpeed;
-		break;
-	case MoveRight:		//âE.
-		pos.x += m_MoveSpeed;
-		break;
-	default:
-		break;
-	}
-#endif
-
 	pPlayer.SetPosition(pos);
-}
-
-void CPlayerMove::Handle(CPlayer& pPlayer, int inputKey)
-{
 }
 
 std::string CPlayerMove::GetStateName() const

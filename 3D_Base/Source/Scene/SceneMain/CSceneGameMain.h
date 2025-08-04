@@ -1,7 +1,11 @@
 #pragma once
+
 #include "DirectX/CDirectX9.h"
 #include "DirectX/CDirectX11.h"
+
+#include "Camera/CCamera.h"
 #include "Scene/CScene.h"
+
 #include "DebugText/CDebugText.h"
 #include "Assets/Sprite/Sprite3D/CSprite3D.h"
 #include "Assets/Sprite/Sprite2D/CSprite2D.h"
@@ -10,17 +14,20 @@
 #include "GameObject/UIObject/CUIObject.h"
 #include "Assets/Mesh/StaticMesh/CStaticMesh.h"
 #include "GameObject/MeshObject/StaticMesh/CStaticMeshObject.h"
+
 #include "GameObject/MeshObject/StaticMesh/CCharactor/CCharacter.h"
 #include "GameObject/MeshObject/StaticMesh/CCharactor/CPlayer/CPlayer.h"
+
 #include "GameObject/MeshObject/StaticMesh/Ground/CGround.h"
 #include "GameObject/MeshObject/StaticMesh/CCharactor/CEnemy/CEnemy.h"
+
 #include "Assets/Mesh/SkinMesh/CSkinMesh.h"
 #include "Scene/CSceneManager.h"
 #include "Assets/AssetManager.h"
 
+
 class ItemManager;
 
-#include "Camera/CCamera.h"
 
 #include<string>
 #include<vector>
@@ -51,14 +58,14 @@ public:
 
 private:
 
-	CDirectX9* m_pDx9;
+	CDirectX9*	m_pDx9;
 	CDirectX11* m_pDx11;
 
 	HWND		m_hWnd;			//ウィンドウハンドル
 
 	std::unique_ptr<CDebugText> m_pDbgText;	//デバッグテキスト
 
-	CCamera* m_pCamera;	//カメラ.
+	std::unique_ptr<CCamera>	m_pCamera;	//カメラ.
 
 	//爆発クラス
 	std::vector<std::unique_ptr<CExplosion> > 	m_pExplosiones;

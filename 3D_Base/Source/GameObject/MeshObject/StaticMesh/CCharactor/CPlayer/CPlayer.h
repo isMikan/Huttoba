@@ -3,8 +3,19 @@
 #include "CInput/CInput.h"
 
 #include "GameObject/MeshObject/StaticMesh/CCharactor/CCharacter.h"
-#include "PlayerState/CPlayerMoveState.h"
-#include "PlayerState/CPlayerState.h"
+
+#include "PlayerHand/PlayerRightHand/CPlayerRightHand.h"
+#include "PlayerHand/PlayerLeftHand/CPlayerLeftHand.h"
+
+#include "PlayerState/DirectionalInputState/CPlayerDirectionalInputState.h"
+#include "PlayerState/ActionState/CActionState.h"
+
+//**************************************
+//	サイズ（あとで消す）
+//プレイヤー頭0.3
+//			体1.0
+//			手0.15
+
 
 /**************************************************
 *	プレイヤークラス.
@@ -13,38 +24,56 @@ class CPlayer
 	: public CCharacter	//キャラクタークラスを継承.
 {
 public:
-	//移動状態列挙型.
-	enum enMoveState
-	{
-		Stop = 0,	//停止.
-		Forward,	//前進.
-		Backward,	//後退.
-		TurnLeft,	//左回転.
-		TurnRight,	//右回転.
-	};
-
-public:
 	CPlayer();
-	virtual ~CPlayer() override;
+	~CPlayer() override;
 
-	virtual void Update() override;
-	virtual void Draw(
+	void Update() override;
+	void Draw(
 		D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAMERA& Camera ) override;
 
-	//void BlownFrom(D3DXVECTOR3 position, float force);
 
 	void HandleInput();
 
-	void SetMoveState(std::unique_ptr< CPlayerMoveState> newState);
-	void SetRotationState(std::unique_ptr< CPlayerMoveState> newState);
+	void SetMoveState(std::unique_ptr< CPlayerDirectionalInputState> newState);
+	void SetRotationState(std::unique_ptr< CPlayerDirectionalInputState> newState);
+	void SetActionState(std::unique_ptr<CActionState> newState);
 
+	//プレイヤーの正面方向を取得.
+	D3DXVECTOR3 GetForward();
+
+	//プレイヤーの方向から位置計算の関数.
+	D3DXVECTOR3 HandPositionMath(D3DXVECTOR3 offsetPos);
+
+	//プレイヤーが右手を持っている(書き込み用).
+	CPlayerRightHand& GetPlayerRightHand() { return *m_pRightHand; }
+	//プレイヤーが右手を持っている(読み込み用).
+	const CPlayerRightHand& GetPlayerRightHand() const { return *m_pRightHand; }
+
+	//プレイヤーが左手を持っている(書き込み用).
+	CPlayerLeftHand& GetPlayerLeftHand() { return *m_pLeftHand; }
+	//プレイヤーが左手を持っている(読み込み用).
+	const CPlayerLeftHand& GetPlayerLeftHand() const { return *m_pLeftHand; }
+
+	//移動しているかの所得と設定.
+	bool GetMoving() { return m_IsMoving; }
+	void SetMoving(bool moving) { m_IsMoving = moving; }
+
+	//回転しているかの所得と設定.
+	bool GetRotating() { return m_IsRotating; }
+	void SetRotating(bool rotating) { m_IsRotating = rotating; }
 protected:
-	std::unique_ptr<CInput>	m_pInput;		//入力.
+	std::unique_ptr<CInput>	m_pInput;	//入力.
 
-	std::unique_ptr<CPlayerMoveState>	m_pMoveState;		//動き.
-	std::unique_ptr<CPlayerMoveState>	m_pRotationState;	//回転.
-	std::unique_ptr<CPlayerState>		m_pActionState;		//行動.
+	std::unique_ptr<CPlayerRightHand>	m_pRightHand;		//右手.
+	std::unique_ptr<CPlayerLeftHand>	m_pLeftHand;		//左手.
 
+	std::unique_ptr<CPlayerDirectionalInputState>	m_pMoveState;		//移動.
+	std::unique_ptr<CPlayerDirectionalInputState>	m_pRotationState;	//回転.
+	std::unique_ptr<CActionState>					m_pActionState;		//行動.
+
+	D3DXVECTOR3 m_Forward;		//正面方向.
 	D3DXVECTOR3 m_Velocity;
+	bool		m_IsMoving;		//移動しているか.
+	bool		m_IsRotating;	//回転しているか.
 	bool		m_IsBlown;
 };

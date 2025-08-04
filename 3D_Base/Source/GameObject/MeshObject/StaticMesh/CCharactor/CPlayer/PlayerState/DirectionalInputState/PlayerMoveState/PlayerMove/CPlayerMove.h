@@ -1,20 +1,10 @@
 #pragma once
 
-#include "CPlayerMoveState.h"
+#include "GameObject/MeshObject/StaticMesh/CCharactor/CPlayer/PlayerState/DirectionalInputState/CPlayerDirectionalInputState.h"
 
 class CPlayerMove
-	: public CPlayerMoveState
+	: public CPlayerDirectionalInputState
 {
-	//移動状態列挙型.
-	enum enMoveState
-	{
-		MoveForward = 0,//前.
-		MoveBackward,	//後.
-		MoveLeft,		//左.
-		MoveRight,		//右.
-		MoveNone,		//なし.
-	};
-
 public:
 	CPlayerMove();
 	~CPlayerMove() override;
@@ -22,21 +12,21 @@ public:
 	//状態が始めるときだけ呼び出される.
 	void Enter(CPlayer& pPlayer) override;
 	//状態が終わるときだけ呼び出される.
-	void Eixt(CPlayer& pPlayer) override;
+	void Exit(CPlayer& pPlayer) override;
 	//この状態の間は毎フレーム呼び出される.
 	void Update(CPlayer& pPlayer) override;
-	//入力されたら切り替える処理を呼び出す.
-	void Handle(CPlayer& pPlayer, int inputKey) override;
 
-	//テスト用のキー処理.
+	//スティックかカーソル入力を感知.
 	void KeyInput(CPlayer& pPlayer, float x, float z) override;
 
 	std::string GetStateName() const override;
 
 
 private:
+	float		m_CurrentSpeed;		//現在の速さ.
 	float		m_MoveSpeed;		//移動速度.
+	float		m_RotatingMoveSpeed;//回転している時の速度.
 	float		m_MoveSpeedScale;	//移動量.
+
 	D3DXVECTOR3	m_MoveDir;			//目的の方向.
-	enMoveState	m_MoveState;		//移動状態.
 };

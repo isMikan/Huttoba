@@ -3,18 +3,17 @@
 #include "Assets/Sound/CSoundManager.h"
 #include "Item/ItemManager/ItemManager.h"
 
-CSceneGameMain::CSceneGameMain(HWND hWnd)
-	: m_hWnd(hWnd)
+CSceneGameMain::CSceneGameMain( HWND hWnd )
+	: m_hWnd			( hWnd )
 
 	, m_pDbgText		( nullptr )
 
-	, m_pCamera			( nullptr )
+	, m_pCamera			()
 
 	, m_pUIMap			()
 
 	, m_pExplosiones	()
 
-	, m_pPlayer			( nullptr )
 	, m_pEnemies		()
 
 	, m_pGround			( nullptr )
@@ -36,13 +35,14 @@ CSceneGameMain::~CSceneGameMain()
 
 HRESULT CSceneGameMain::Create()
 {
-	m_pCamera = new CCamera();
-
 	//あらかじめ領域確保
 	m_pExplosiones.resize(Explosion_Max);
 
 	//デバッグテキストのインスタンス作成
 	m_pDbgText = std::make_unique<CDebugText>();
+
+	//カメラのインスタンス作成.
+	m_pCamera = std::make_unique<CCamera>();
 
 	//アイテムマネージャーの作成
 	m_pItemManager = std::make_unique<ItemManager>();
@@ -51,6 +51,9 @@ HRESULT CSceneGameMain::Create()
 	CreateUI();
 	CteateExplosion();
 	CreateCharactor();
+
+	//プレイヤーのインスタンス生成.
+	m_pPlayer = std::make_unique<CPlayer>();
 
 	//地面クラスのインスタンス作成
 	m_pGround = std::make_unique<CGround>();
@@ -78,8 +81,14 @@ HRESULT CSceneGameMain::LoadData()
 		UI.second->AttachSprite(AssetManager::Sprite(Sprite2DList::PMon));
 	}
 
-	//スタティックメッシュを設定
+	//プレイヤーのスタティックメッシュを設定.
 	m_pPlayer->AttachMesh(AssetManager::Mesh(StaticMeshList::Player));
+	//プレイヤーの右手のスタティックメッシュを設定.
+	m_pPlayer->GetPlayerRightHand().
+		AttachMesh(AssetManager::Mesh(StaticMeshList::PHand));
+	//プレイヤーの左手のスタティックメッシュを設定.
+	m_pPlayer->GetPlayerLeftHand().
+		AttachMesh(AssetManager::Mesh(StaticMeshList::PHand));
 
 	m_pGround->AttachMesh(AssetManager::Mesh(StaticMeshList::Ground));
 
@@ -143,7 +152,12 @@ void CSceneGameMain::Update()
 	AssetManager::Sound()->PlayLoop(CSoundManager::enSoundList::BGM_Bonus);
 
 	m_pGround->Update();
+
+	//プレイヤー.
 	m_pPlayer->Update();
+	m_pPlayer->GetPlayerRightHand().Update();	//右手.
+	m_pPlayer->GetPlayerLeftHand().Update();	//左手.
+
 	m_pItemManager->Update();
 
 	//エネミー
@@ -168,7 +182,6 @@ void CSceneGameMain::Update()
 	//--------------------
 	//	スキンメッシュ
 	//--------------------
-
 	for (auto& UI : m_pUIMap)
 	{
 		UI.second->Update();
@@ -186,14 +199,18 @@ void CSceneGameMain::Update()
 
 void CSceneGameMain::Draw()
 {
+	//カメラの処理.
 	m_pCamera->Update();
-
+	//カメラ情報.
 	CAMERA camera = m_pCamera->GetCamera();
 	LIGHT light = m_pCamera->GetLight();
 	D3DXMATRIX mView = m_pCamera->GetView();
 	D3DXMATRIX mProj = m_pCamera->GetProj();
 
+	//プレイヤー.
 	m_pPlayer->Draw(mView, mProj, light, camera);
+	m_pPlayer->GetPlayerRightHand().Draw(mView, mProj, light, camera);	//右手.
+	m_pPlayer->GetPlayerLeftHand().Draw(mView, mProj, light, camera);	//左手.
 
 	for (auto& enemyType : m_pEnemies)
 	{

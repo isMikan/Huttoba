@@ -1,28 +1,28 @@
 #include "CPlayer.h"
 #include "Sound/CSoundManager.h"
 
-#include "PlayerState/CPlayerMoveIdle.h"
-#include "PlayerState/CPlayerRotationIdle.h"
+#include "PlayerState/DirectionalInputState/PlayerMoveState/PlayerIdle/CPlayerMoveIdle.h"
+#include "PlayerState/DirectionalInputState/PlayerRotationState/PlayerRotationIdle/CPlayerRotationIdle.h"
+#include "PlayerState/ActionState/PlayerActionIdle/CPlayerActionIdle.h"
 
 #include <iostream>
 
 CPlayer::CPlayer()
-	: m_pMoveState		( nullptr )
-	, m_pRotationState	( nullptr )
-	, m_pActionState	( nullptr )
+	: m_pInput			( std::make_unique<CInput>( 0 ) )
+	, m_pRightHand		( std::make_unique<CPlayerRightHand>() )
+	, m_pLeftHand		( std::make_unique<CPlayerLeftHand>() )
+
+	, m_pMoveState		( std::make_unique<CPlayerMoveIdle>() )
+	, m_pRotationState	( std::make_unique<CPlayerRotationIdle>() )
+	, m_pActionState	( std::make_unique<CPlayerActionIdle>() )
+
+	, m_Forward			( 0.f, 0.f, 0.f )
 	, m_IsBlown			( false )
 {
-	m_pInput = std::make_unique<CInput>(0);
-
-	m_pMoveState = std::make_unique<CPlayerMoveIdle>();
-	m_pRotationState = std::make_unique<CPlayerRotationIdle>();
 }
 
 CPlayer::~CPlayer()
 {
-	m_pActionState = nullptr;
-	m_pRotationState = nullptr;
-	m_pMoveState = nullptr;
 }
 
 void CPlayer::Update()
@@ -50,6 +50,9 @@ void CPlayer::Update()
 
 	m_pRotationState->Update(*this);
 	std::cout << "RotationState : " << m_pRotationState->GetStateName() << "\n";
+
+	m_pActionState->Update(*this);
+	std::cout << "ActionState : " << m_pActionState->GetStateName() << "\n";
 
 	CCharacter::Update();
 }
@@ -95,13 +98,21 @@ void CPlayer::HandleInput()
 	m_pMoveState->KeyInput(*this, x, z);
 
 	m_pRotationState->KeyInput(*this, x, z);
+
+	for (int key = 'A'; key <= 'Z'; key++)
+	{
+		if (GetAsyncKeyState(key) & 0x8000)
+		{
+			m_pActionState->Handle(*this, key);
+		}
+	}
 }
 
-void CPlayer::SetMoveState(std::unique_ptr< CPlayerMoveState> newState)
+void CPlayer::SetMoveState(std::unique_ptr< CPlayerDirectionalInputState> newState)
 {
 	if (m_pMoveState != nullptr)
 	{
-		m_pMoveState->Eixt(*this);
+		m_pMoveState->Exit(*this);
 	}
 
 	m_pMoveState = std::move(newState);
@@ -112,11 +123,11 @@ void CPlayer::SetMoveState(std::unique_ptr< CPlayerMoveState> newState)
 	}
 }
 
-void CPlayer::SetRotationState(std::unique_ptr< CPlayerMoveState> newState)
+void CPlayer::SetRotationState(std::unique_ptr< CPlayerDirectionalInputState> newState)
 {
 	if (m_pRotationState != nullptr)
 	{
-		m_pRotationState->Eixt(*this);
+		m_pRotationState->Exit(*this);
 	}
 
 	m_pRotationState = std::move(newState);
@@ -125,4 +136,58 @@ void CPlayer::SetRotationState(std::unique_ptr< CPlayerMoveState> newState)
 	{
 		m_pRotationState->Enter(*this);
 	}
+}
+
+void CPlayer::SetActionState(std::unique_ptr<CActionState> newState)
+{
+	if (m_pActionState != nullptr)
+	{
+		m_pActionState->Exit(*this);
+	}
+
+	m_pActionState = std::move(newState);
+
+	if (m_pActionState != nullptr)
+	{
+		m_pActionState->Enter(*this);
+	}
+}
+
+//プレイヤーの正面方向を取得.
+D3DXVECTOR3 CPlayer::GetForward()
+{
+	float yaw = m_vRotation.y;	//y軸.
+
+	m_Forward.x = sin(yaw);
+	m_Forward.y = 0.f;
+	m_Forward.z = cos(yaw);
+
+	return m_Forward;
+}
+
+//プレイヤーの方向から位置計算の関数.
+D3DXVECTOR3 CPlayer::HandPositionMath(D3DXVECTOR3 offsetPos)
+{
+	GetForward();
+
+	//上方向.
+	D3DXVECTOR3 up(0.f, 1.f, 0.f);
+
+	//方向
+	D3DXVECTOR3 dir;
+	//外積計算.
+	D3DXVec3Cross(&dir, &up, &m_Forward);
+	//上記の正規化.
+	D3DXVec3Normalize(&dir, &dir);
+
+	//調整位置を計算.
+	D3DXVECTOR3 offset =
+		dir * offsetPos.x +
+		up * offsetPos.y +
+		m_Forward * offsetPos.z;
+
+	//手の位置.
+	D3DXVECTOR3 handPos = m_vPosition + offset;
+
+	return handPos;
 }

@@ -90,6 +90,7 @@ enum class SkinMeshList
 enum class StaticMeshList
 {
 	Player = 0,
+	PHand,
 	Ground,
 	RoboA,
 	RoboB,
