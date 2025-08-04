@@ -245,7 +245,8 @@
     <ClCompile Include="Source\Camera\CCamera.cpp" />
     <ClCompile Include="Source\Assets\Sprite\SpriteManager.cpp" />
     <ClCompile Include="Source\CInput\CInput.cpp" />
-    <ClCompile Include="Source\CInput\CXInput\CXInput.cpp" />
+    <ClCompile Include="Source\CInput\CInputManager.cpp" />
+    <ClCompile Include="Source\CInput\XInput\CXInput.cpp" />
     <ClCompile Include="Source\Collision\CBoundingSphere.cpp" />
     <ClCompile Include="Source\DebugText\CDebugText.cpp" />
     <ClCompile Include="Source\DirectX\CDirectX11.cpp" />
@@ -313,7 +314,8 @@
     <ClInclude Include="Source\Camera\CCamera.h" />
     <ClInclude Include="Source\Assets\Sprite\SpriteManager.h" />
     <ClInclude Include="Source\CInput\CInput.h" />
-    <ClInclude Include="Source\CInput\CXInput\CXInput.h" />
+    <ClInclude Include="Source\CInput\CInputManager.h" />
+    <ClInclude Include="Source\CInput\XInput\CXInput.h" />
     <ClInclude Include="Source\CInput\InputDevice\InputDevice.h" />
     <ClInclude Include="Source\Collision\CBoundingSphere.h" />
     <ClInclude Include="Source\DebugText\CDebugText.h" />

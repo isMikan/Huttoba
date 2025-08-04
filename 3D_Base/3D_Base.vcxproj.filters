@@ -54,7 +54,7 @@
     <ClCompile Include="Source\Scene\SceneTitle\CSceneTitle.cpp" />
     <ClCompile Include="Source\stdafx.cpp" />
     <ClCompile Include="Source\CInput\CInput.cpp" />
-    <ClCompile Include="Source\CInput\CXInput\CXInput.cpp" />
+    <ClCompile Include="Source\CInput\XInput\CXInput.cpp" />
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\Item\ItemBase.cpp" />
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\Item\ItemFactory\ItemFactory.cpp" />
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\Item\ItemManager\ItemManager.cpp" />
@@ -65,6 +65,7 @@
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\Item\ItemState\ItemStateUse\ItemStateUse.cpp" />
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\Item\Items\Haetataki\Haetataki.cpp" />
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\Item\Items\SmashBat\SmashBat.cpp" />
+    <ClCompile Include="Source\CInput\CInputManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Assets\AssetManager.h" />
@@ -118,7 +119,7 @@
     <ClInclude Include="Source\Scene\SceneTitle\CSceneTitle.h" />
     <ClInclude Include="Source\stdafx.h" />
     <ClInclude Include="Source\CInput\CInput.h" />
-    <ClInclude Include="Source\CInput\CXInput\CXInput.h" />
+    <ClInclude Include="Source\CInput\XInput\CXInput.h" />
     <ClInclude Include="Source\CInput\InputDevice\InputDevice.h" />
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\Item\ItemBase.h" />
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\Item\ItemFactory\ItemFactory.h" />
@@ -130,6 +131,7 @@
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\Item\ItemState\ItemStateUse\ItemStateUse.h" />
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\Item\Items\Haetataki\Haetataki.h" />
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\Item\Items\SmashBat\SmashBat.h" />
+    <ClInclude Include="Source\CInput\CInputManager.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="ChangeSourse.txt" />

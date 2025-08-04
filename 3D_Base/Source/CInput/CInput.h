@@ -3,7 +3,7 @@
 #include <map>
 #include <vector>
 
-#include "CXInput/CXInput.h"
+#include "XInput/CXInput.h"
 #include "InputDevice/InputDevice.h"
 
 class CInput
