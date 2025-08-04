@@ -3,6 +3,8 @@
 #include "Assets/Sound/CSoundManager.h"
 #include "Item/ItemManager/ItemManager.h"
 
+#include "TimeManager/CTimeManager.h"
+
 CSceneGameMain::CSceneGameMain( HWND hWnd )
 	: m_hWnd			( hWnd )
 
@@ -63,11 +65,14 @@ HRESULT CSceneGameMain::Create()
 
 HRESULT CSceneGameMain::LoadData()
 {
-
 	//デバッグテキストの読み込み
 	if (FAILED(m_pDbgText->Init())) {
 		return E_FAIL;
 	}
+
+	m_pCamera->SetPosition( 0.f, 10.f, -10.f );
+	m_pCamera->SetLook( 0.f, 0.f, 10.f );
+	m_pCamera->SetLight( 1.5f, 1.f, -1.f );
 
 	//爆発スプライトを設定.
 	for (const auto& exp : m_pExplosiones)
@@ -141,7 +146,6 @@ HRESULT CSceneGameMain::LoadData()
 	return S_OK;
 }
 
-
 void CSceneGameMain::Destroy()
 {
 }
@@ -150,6 +154,8 @@ void CSceneGameMain::Update()
 {
 	//BGMのループ再生
 	AssetManager::Sound()->PlayLoop(CSoundManager::enSoundList::BGM_Bonus);
+
+	CTimeManager::GetInstance()->Tick();
 
 	m_pGround->Update();
 
@@ -201,7 +207,7 @@ void CSceneGameMain::Draw()
 {
 	//カメラの処理.
 	m_pCamera->Update();
-	//カメラ情報.
+	//情報を取得.
 	CAMERA camera = m_pCamera->GetCamera();
 	LIGHT light = m_pCamera->GetLight();
 	D3DXMATRIX mView = m_pCamera->GetView();

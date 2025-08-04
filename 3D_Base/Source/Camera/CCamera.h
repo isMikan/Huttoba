@@ -13,9 +13,34 @@ public:
 	//プロジェクション関数.
 	void UpdateProjection();
 
+	//カメラの位置を設定.
+	void SetPosition(float pos_x, float pos_y, float pos_z ) {
+		m_Camera.vPosition.x = pos_x;
+		m_Camera.vPosition.y = pos_y;
+		m_Camera.vPosition.z = pos_z;
+	}
+
+	//カメラの注視点を設定.
+	void SetLook(float look_x, float look_y, float look_z ) {
+		m_Camera.vLook.x = look_x;
+		m_Camera.vLook.y = look_y;
+		m_Camera.vLook.z = look_z;
+	}
+
+	//ライトの方向を設定.
+	void SetLight(float light_x, float light_y, float light_z ) {
+		m_Light.vDirection.x = light_x;
+		m_Light.vDirection.y = light_y;
+		m_Light.vDirection.z = light_z;
+	}
+
+	//カメラ情報の取得.
 	CAMERA GetCamera() const { return m_Camera; }
+	//ライト情報の取得.
 	LIGHT GetLight() const { return m_Light; }
+	//ビュー(情報の取得.
 	D3DXMATRIX GetView() const { return m_mView; }
+	//射影情報の取得.
 	D3DXMATRIX GetProj() const { return m_mProj; }
 
 private:

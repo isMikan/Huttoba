@@ -9,17 +9,11 @@ CCamera::CCamera()
 
 	, m_vUpVec	( 0.f, 1.f, 0.f )
 
-	, m_Fov_y	( D3DXToRadian(45.f) )	//数値を大きくしたら視野が狭くなる.
+	, m_Fov_y	( D3DXToRadian( 45.f ) )	//数値を大きくしたら視野が狭くなる.
 	, m_Aspect	()
 	, m_Near_z	( 0.1f )
 	, m_Far_z	( 100.f )
 {
-	//カメラ座標.
-	m_Camera.vPosition = D3DXVECTOR3(0.f, 20.f, -20.f);
-	m_Camera.vLook = D3DXVECTOR3(0.f, 0.f, 10.f);
-
-	//ライト情報.
-	m_Light.vDirection = D3DXVECTOR3(1.5f, 1.f, -1.f);	//ライト方向.
 }
 
 CCamera::~CCamera()
