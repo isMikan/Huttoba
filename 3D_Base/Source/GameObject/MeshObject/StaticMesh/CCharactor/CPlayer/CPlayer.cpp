@@ -5,6 +5,9 @@
 #include "PlayerState/DirectionalInputState/PlayerRotationState/PlayerRotationIdle/CPlayerRotationIdle.h"
 #include "PlayerState/ActionState/PlayerActionIdle/CPlayerActionIdle.h"
 
+#include "PlayerState/ActionState/PlayerHandAttack/CPlayerHandAttack.h"
+
+
 #include <iostream>
 
 CPlayer::CPlayer()
@@ -19,6 +22,7 @@ CPlayer::CPlayer()
 	, m_Forward			( 0.f, 0.f, 0.f )
 	, m_IsBlown			( false )
 {
+	SetPlayerInput();
 }
 
 CPlayer::~CPlayer()
@@ -80,16 +84,17 @@ void CPlayer::HandleInput()
 	float z = 0.f;	//z².
 	float x = 0.f;	//x².
 
-	if (GetAsyncKeyState(VK_UP) & 0x8000)		z += 1.f;
-	if (GetAsyncKeyState(VK_DOWN) & 0x8000)		z -= 1.f;
-	if (GetAsyncKeyState(VK_LEFT) & 0x8000)		x -= 1.f;
-	if (GetAsyncKeyState(VK_RIGHT) & 0x8000)	x += 1.f;
+	if (m_pInput->IsRepeat(Action::MoveUp))		z += 1.f;
+	if (m_pInput->IsRepeat(Action::MoveDown))	z -= 1.f;
+	if (m_pInput->IsRepeat(Action::MoveLeft))	x -= 1.f;
+	if (m_pInput->IsRepeat(Action::MoveRight))	x += 1.f;
 
-	m_pInput->BindKey(Action::Attack, InputBinding(InputDevice::Keyboard, VK_UP));
+	if (m_pInput->IsDown(Action::Attack))
+	{
+		SetActionState(std::make_unique<CPlayerHandAttack>());
+	}
 
-
-	if(m_pInput->GetLeftSthikX() != 0 
-		|| m_pInput->GetLeftSthikY() != 0)
+	if(m_pInput->IsConnect())
 	{
 		x = m_pInput->GetLeftSthikX();
 		z = m_pInput->GetLeftSthikY();
@@ -99,13 +104,13 @@ void CPlayer::HandleInput()
 
 	m_pRotationState->KeyInput(*this, x, z);
 
-	for (int key = 'A'; key <= 'Z'; key++)
-	{
-		if (GetAsyncKeyState(key) & 0x8000)
-		{
-			m_pActionState->Handle(*this, key);
-		}
-	}
+//	for (int key = 'A'; key <= 'Z'; key++)
+//	{
+//		if (GetAsyncKeyState(key) & 0x8000)
+//		{
+//			m_pActionState->Handle(*this, key);
+//		}
+//	}
 }
 
 void CPlayer::SetMoveState(std::unique_ptr< CPlayerDirectionalInputState> newState)
@@ -151,6 +156,15 @@ void CPlayer::SetActionState(std::unique_ptr<CActionState> newState)
 	{
 		m_pActionState->Enter(*this);
 	}
+}
+
+void CPlayer::SetPlayerInput()
+{
+	m_pInput->BindKey(Action::MoveUp, InputBinding(InputDevice::Keyboard, VK_UP));
+	m_pInput->BindKey(Action::MoveDown, InputBinding(InputDevice::Keyboard, VK_DOWN));
+	m_pInput->BindKey(Action::MoveLeft, InputBinding(InputDevice::Keyboard, VK_LEFT));
+	m_pInput->BindKey(Action::MoveRight, InputBinding(InputDevice::Keyboard, VK_RIGHT));
+	m_pInput->BindKey(Action::Attack, InputBinding(InputDevice::Keyboard, 'Z'));
 }
 
 //ƒvƒŒƒCƒ„[‚Ì³–Ê•ûŒü‚ğæ“¾.

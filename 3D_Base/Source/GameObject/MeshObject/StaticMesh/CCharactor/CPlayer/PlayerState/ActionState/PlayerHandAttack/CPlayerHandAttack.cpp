@@ -71,7 +71,7 @@ void CPlayerHandAttack::Update(CPlayer& pPlayer)
 	}
 
 	m_CurrentSpeed = m_AttackSpeed;
-	if (pPlayer.GetMoving())
+	if (pPlayer.IsMoving())
 	{
 		m_CurrentSpeed = m_MovingAtkSpeed;
 	}

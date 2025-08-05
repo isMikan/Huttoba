@@ -30,7 +30,7 @@ void CPlayerMove::Exit(CPlayer& pPlayer)
 void CPlayerMove::Update(CPlayer& pPlayer)
 {
 	m_CurrentSpeed = m_MoveSpeed;
-	if (pPlayer.GetRotating())
+	if (pPlayer.IsRotating())
 	{
 		m_CurrentSpeed = m_RotatingMoveSpeed;
 	}

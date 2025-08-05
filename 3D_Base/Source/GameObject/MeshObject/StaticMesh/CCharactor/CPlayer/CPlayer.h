@@ -10,11 +10,13 @@
 #include "PlayerState/DirectionalInputState/CPlayerDirectionalInputState.h"
 #include "PlayerState/ActionState/CActionState.h"
 
-//**************************************
-//	サイズ（あとで消す）
-//プレイヤー頭0.3
-//			体1.0
-//			手0.15
+/**************************************************
+*	サイズ後々消す(メタセコイアでアイテム作るとき参考にしてください)
+* 
+*	プレイヤー	頭0.3
+*				体1.0
+*				手0.15
+/**************************************************
 
 
 /**************************************************
@@ -38,6 +40,9 @@ public:
 	void SetRotationState(std::unique_ptr< CPlayerDirectionalInputState> newState);
 	void SetActionState(std::unique_ptr<CActionState> newState);
 
+	//キーバインドの設定.
+	void SetPlayerInput();
+
 	//プレイヤーの正面方向を取得.
 	D3DXVECTOR3 GetForward();
 
@@ -55,12 +60,13 @@ public:
 	const CPlayerLeftHand& GetPlayerLeftHand() const { return *m_pLeftHand; }
 
 	//移動しているかの所得と設定.
-	bool GetMoving() { return m_IsMoving; }
+	bool IsMoving() const { return m_IsMoving; }
 	void SetMoving(bool moving) { m_IsMoving = moving; }
 
 	//回転しているかの所得と設定.
-	bool GetRotating() { return m_IsRotating; }
+	bool IsRotating() const { return m_IsRotating; }
 	void SetRotating(bool rotating) { m_IsRotating = rotating; }
+
 protected:
 	std::unique_ptr<CInput>	m_pInput;	//入力.
 
