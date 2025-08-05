@@ -33,17 +33,16 @@ public:
 	void Draw(
 		D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAMERA& Camera ) override;
 
-
 	void HandleInput();
 
-	void SetMoveState(std::unique_ptr< CPlayerDirectionalInputState> newState);
-	void SetRotationState(std::unique_ptr< CPlayerDirectionalInputState> newState);
+	//移動状態を設定する関数.
+	void SetMoveState(std::unique_ptr<CPlayerDirectionalInputState> newState);
+	//回転状態を設定する関数.
+	void SetRotationState(std::unique_ptr<CPlayerDirectionalInputState> newState);
+	//行動状態を設定する関数.
 	void SetActionState(std::unique_ptr<CActionState> newState);
 
-	//キーバインドの設定.
-	void SetPlayerInput();
-
-	//プレイヤーの正面方向を取得.
+	//プレイヤーの正面方向を取得するための関数.
 	D3DXVECTOR3 GetForward();
 
 	//プレイヤーの方向から位置計算の関数.
@@ -67,7 +66,18 @@ public:
 	bool IsRotating() const { return m_IsRotating; }
 	void SetRotating(bool rotating) { m_IsRotating = rotating; }
 
-protected:
+private:
+	//キーバインドを設定する関数.
+	void SetPlayerInput();
+
+	//テンプレート関数(中身の処理は同じもの).
+	template<typename StateType>
+	//状態遷移の処理関数.
+	void ChangeState(
+		std::unique_ptr<StateType>& currentState,
+		std::unique_ptr<StateType> newScene);
+
+private:
 	std::unique_ptr<CInput>	m_pInput;	//入力.
 
 	std::unique_ptr<CPlayerRightHand>	m_pRightHand;		//右手.
@@ -83,3 +93,26 @@ protected:
 	bool		m_IsRotating;	//回転しているか.
 	bool		m_IsBlown;
 };
+
+//型が決まっていないのでここで定義.
+//inline 複数定義されても毎回インスタンスを生成しない.
+template<typename StateType>
+inline void CPlayer::ChangeState(
+	std::unique_ptr<StateType>& currentState,
+	std::unique_ptr<StateType> newState)
+{
+	if (currentState != nullptr)
+	{
+		//状態の終了処理.
+		currentState->Exit(*this);
+	}
+
+	//新しい状態にする.
+	currentState = std::move(newState);
+
+	if (currentState != nullptr)
+	{
+		//状態の開始処理.
+		currentState->Enter(*this);
+	}
+}

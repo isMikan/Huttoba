@@ -103,71 +103,27 @@ void CPlayer::HandleInput()
 	m_pMoveState->KeyInput(*this, x, z);
 
 	m_pRotationState->KeyInput(*this, x, z);
-
-//	for (int key = 'A'; key <= 'Z'; key++)
-//	{
-//		if (GetAsyncKeyState(key) & 0x8000)
-//		{
-//			m_pActionState->Handle(*this, key);
-//		}
-//	}
 }
 
+//移動状態を設定する関数.
 void CPlayer::SetMoveState(std::unique_ptr< CPlayerDirectionalInputState> newState)
 {
-	if (m_pMoveState != nullptr)
-	{
-		m_pMoveState->Exit(*this);
-	}
-
-	m_pMoveState = std::move(newState);
-
-	if (m_pMoveState != nullptr)
-	{
-		m_pMoveState->Enter(*this);
-	}
+	ChangeState(m_pMoveState, std::move(newState));
 }
 
+//回転状態を設定する関数.
 void CPlayer::SetRotationState(std::unique_ptr< CPlayerDirectionalInputState> newState)
 {
-	if (m_pRotationState != nullptr)
-	{
-		m_pRotationState->Exit(*this);
-	}
-
-	m_pRotationState = std::move(newState);
-
-	if (m_pRotationState != nullptr)
-	{
-		m_pRotationState->Enter(*this);
-	}
+	ChangeState(m_pRotationState, std::move(newState));
 }
 
+//行動状態を設定する関数.
 void CPlayer::SetActionState(std::unique_ptr<CActionState> newState)
 {
-	if (m_pActionState != nullptr)
-	{
-		m_pActionState->Exit(*this);
-	}
-
-	m_pActionState = std::move(newState);
-
-	if (m_pActionState != nullptr)
-	{
-		m_pActionState->Enter(*this);
-	}
+	ChangeState(m_pActionState, std::move(newState));
 }
 
-void CPlayer::SetPlayerInput()
-{
-	m_pInput->BindKey(Action::MoveUp, InputBinding(InputDevice::Keyboard, VK_UP));
-	m_pInput->BindKey(Action::MoveDown, InputBinding(InputDevice::Keyboard, VK_DOWN));
-	m_pInput->BindKey(Action::MoveLeft, InputBinding(InputDevice::Keyboard, VK_LEFT));
-	m_pInput->BindKey(Action::MoveRight, InputBinding(InputDevice::Keyboard, VK_RIGHT));
-	m_pInput->BindKey(Action::Attack, InputBinding(InputDevice::Keyboard, 'Z'));
-}
-
-//プレイヤーの正面方向を取得.
+//プレイヤーの正面方向を取得するための関数.
 D3DXVECTOR3 CPlayer::GetForward()
 {
 	float yaw = m_vRotation.y;	//y軸.
@@ -204,4 +160,14 @@ D3DXVECTOR3 CPlayer::HandPositionMath(D3DXVECTOR3 offsetPos)
 	D3DXVECTOR3 handPos = m_vPosition + offset;
 
 	return handPos;
+}
+
+//キーバインドを設定する関数.
+void CPlayer::SetPlayerInput()
+{
+	m_pInput->BindKey(Action::MoveUp, InputBinding(InputDevice::Keyboard, VK_UP));
+	m_pInput->BindKey(Action::MoveDown, InputBinding(InputDevice::Keyboard, VK_DOWN));
+	m_pInput->BindKey(Action::MoveLeft, InputBinding(InputDevice::Keyboard, VK_LEFT));
+	m_pInput->BindKey(Action::MoveRight, InputBinding(InputDevice::Keyboard, VK_RIGHT));
+	m_pInput->BindKey(Action::Attack, InputBinding(InputDevice::Keyboard, 'Z'));
 }
