@@ -97,8 +97,3 @@ void CPlayerHandAttack::Update(CPlayer& pPlayer)
 void CPlayerHandAttack::Handle(CPlayer& pPlayer, int inputKey)
 {
 }
-
-std::string CPlayerHandAttack::GetStateName() const
-{
-	return "Attack";
-}

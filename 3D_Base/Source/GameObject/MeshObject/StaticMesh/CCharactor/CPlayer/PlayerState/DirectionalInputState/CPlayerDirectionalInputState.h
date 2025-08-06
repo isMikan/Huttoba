@@ -1,7 +1,5 @@
 #pragma once
 
-#include <string>
-
 class CPlayer;
 
 class CPlayerDirectionalInputState
@@ -18,9 +16,7 @@ public:
 	virtual void Update(CPlayer& pPlayer) = 0;
 
 	//スティックかカーソル入力を感知.
-	virtual void KeyInput(CPlayer& pPlayer, float x, float z) = 0;
-
-	virtual std::string GetStateName() const = 0;
+	virtual void HandleInput(CPlayer& pPlayer, float x, float z) = 0;
 
 protected:
 

@@ -18,8 +18,6 @@ public:
 	//“ü—Í‚³‚ê‚½‚çØ‚è‘Ö‚¦‚éˆ—‚ğŒÄ‚Ño‚·.
 	void Handle(CPlayer& pPlayer, int inputKey) override;
 
-	std::string GetStateName() const override;
-
 private:
 
 };

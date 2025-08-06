@@ -18,8 +18,6 @@ public:
 	//入力されたら切り替える処理を呼び出す.
 	void Handle(CPlayer& pPlayer, int inputKey) override;
 
-	std::string GetStateName() const override;
-
 private:
 	D3DXVECTOR3 m_RightOffset;	//右手の調整位置.
 	D3DXVECTOR3 m_LeftOffset;	//左手の調整位置.

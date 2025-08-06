@@ -42,8 +42,3 @@ void CPlayerActionIdle::Handle(CPlayer& pPlayer, int inputKey)
 		pPlayer.SetActionState(std::make_unique<CPlayerHandAttack>());
 	}
 }
-
-std::string CPlayerActionIdle::GetStateName() const
-{
-	return "ActionIdle";
-}

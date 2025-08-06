@@ -1,7 +1,5 @@
 #pragma once
 
-#include <string>
-
 class CPlayer;
 
 class CActionState
@@ -18,8 +16,6 @@ public:
 	virtual void Update(CPlayer& pPlayer) = 0;
 	//“ü—Í‚³‚ê‚½‚çØ‚è‘Ö‚¦‚éˆ—‚ğŒÄ‚Ño‚·.
 	virtual void Handle(CPlayer& pPlayer,int inputKey) = 0;
-
-	virtual std::string GetStateName() const = 0;
 
 protected:
 

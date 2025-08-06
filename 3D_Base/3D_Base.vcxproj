@@ -263,7 +263,7 @@
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CPlayer\PlayerState\ActionState\PlayerActionIdle\CPlayerActionIdle.cpp" />
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CPlayer\PlayerState\ActionState\PlayerHandAttack\CPlayerHandAttack.cpp" />
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CPlayer\PlayerState\DirectionalInputState\CPlayerDirectionalInputState.cpp" />
-    <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CPlayer\PlayerState\DirectionalInputState\PlayerMoveState\PlayerIdle\CPlayerMoveIdle.cpp" />
+    <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CPlayer\PlayerState\DirectionalInputState\PlayerMoveState\PlayerMoveIdle\CPlayerMoveIdle.cpp" />
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CPlayer\PlayerState\DirectionalInputState\PlayerMoveState\PlayerMove\CPlayerMove.cpp" />
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CPlayer\PlayerState\DirectionalInputState\PlayerRotationState\PlayerRotationIdle\CPlayerRotationIdle.cpp" />
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CPlayer\PlayerState\DirectionalInputState\PlayerRotationState\PlayerRotation\CPlayerRotation.cpp" />
@@ -337,7 +337,7 @@
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CPlayer\PlayerState\ActionState\PlayerActionIdle\CPlayerActionIdle.h" />
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CPlayer\PlayerState\ActionState\PlayerHandAttack\CPlayerHandAttack.h" />
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CPlayer\PlayerState\DirectionalInputState\CPlayerDirectionalInputState.h" />
-    <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CPlayer\PlayerState\DirectionalInputState\PlayerMoveState\PlayerIdle\CPlayerMoveIdle.h" />
+    <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CPlayer\PlayerState\DirectionalInputState\PlayerMoveState\PlayerMoveIdle\CPlayerMoveIdle.h" />
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CPlayer\PlayerState\DirectionalInputState\PlayerMoveState\PlayerMove\CPlayerMove.h" />
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CPlayer\PlayerState\DirectionalInputState\PlayerRotationState\PlayerRotationIdle\CPlayerRotationIdle.h" />
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CPlayer\PlayerState\DirectionalInputState\PlayerRotationState\PlayerRotation\CPlayerRotation.h" />

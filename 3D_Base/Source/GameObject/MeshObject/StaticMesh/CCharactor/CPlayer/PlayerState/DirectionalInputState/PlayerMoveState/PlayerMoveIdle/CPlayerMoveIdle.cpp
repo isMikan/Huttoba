@@ -24,12 +24,7 @@ void CPlayerMoveIdle::Update(CPlayer& pPlayer)
 {
 }
 
-std::string CPlayerMoveIdle::GetStateName() const
-{
-	return "MoveIdle";
-}
-
-void CPlayerMoveIdle::KeyInput(CPlayer& pPlayer, float x, float z)
+void CPlayerMoveIdle::HandleInput(CPlayer& pPlayer, float x, float z)
 {
 	if (x != 0 || z != 0)
 	{

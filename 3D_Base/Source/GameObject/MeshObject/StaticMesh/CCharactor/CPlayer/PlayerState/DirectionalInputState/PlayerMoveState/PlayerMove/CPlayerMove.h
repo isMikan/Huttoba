@@ -17,10 +17,7 @@ public:
 	void Update(CPlayer& pPlayer) override;
 
 	//スティックかカーソル入力を感知.
-	void KeyInput(CPlayer& pPlayer, float x, float z) override;
-
-	std::string GetStateName() const override;
-
+	void HandleInput(CPlayer& pPlayer, float x, float z) override;
 
 private:
 	float		m_CurrentSpeed;		//現在の速さ.

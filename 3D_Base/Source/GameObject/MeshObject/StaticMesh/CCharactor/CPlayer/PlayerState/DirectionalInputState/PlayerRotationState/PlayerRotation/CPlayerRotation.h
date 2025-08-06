@@ -16,10 +16,8 @@ public:
 	//この状態の間は毎フレーム呼び出される.
 	void Update(CPlayer& pPlayer) override;
 
-	//テスト用のキー処理.
-	void KeyInput(CPlayer& pPlayer, float x, float z) override;
-
-	std::string GetStateName() const override;
+	//スティックかカーソル入力を感知.
+	void HandleInput(CPlayer& pPlayer, float x, float z) override;
 
 private:
 	float			m_RotationSpeed;	//回転速度.
