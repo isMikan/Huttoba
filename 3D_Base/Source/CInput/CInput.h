@@ -16,8 +16,9 @@ public:
 
 	void Update();
 
-	//‰Ÿ‚µ‚½(‘æ“ñˆø”‚ğtrue‚É‚·‚é‚Æ‰Ÿ‚µ‚½uŠÔ‚ğ‚Æ‚é‰½‚à“ü‚ê‚È‚¢‚Æfalse).
-	bool IsDown(Action action, bool just = false);
+	//‰Ÿ‚µ‚½(‘æ“ñˆø”‚ğfalse‚É‚·‚é‚Æ‰Ÿ‚µ‚Ä‚¢‚é‚ğ‚Æ‚é).
+	//‰Ÿ‚µ‘±‚¯‚Ä‚¢‚é‚Ì‚Æ—‚Ä‚¢‚é‚Ì‚Åfalseˆ—‚ÍÁ‚µ‚Ä‚à‚¢‚¢‚©‚à.
+	bool IsDown(Action action, bool just = true);
 	//—£‚µ‚½.
 	bool IsUp(Action action);
 	//‰Ÿ‚µ‘±‚¯‚Ä‚¢‚é.
