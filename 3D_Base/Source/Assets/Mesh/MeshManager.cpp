@@ -64,7 +64,7 @@ HRESULT MeshManager::CreateStaticMesh()
 //Å´-----------------------------------------------------------------------------------------------------------------------------Å´
 	RegisterStaticMesh(StaticMeshList::Player,	_T("Data\\Mesh\\Static\\Character\\character.x"));
 	RegisterStaticMesh(StaticMeshList::PHand,	_T("Data\\Mesh\\Static\\Character\\hand.x"));
-	RegisterStaticMesh(StaticMeshList::Ground,	_T("Data\\Mesh\\Static\\Ground\\ground.x"));
+	RegisterStaticMesh(StaticMeshList::Ground,	_T("Data\\Mesh\\Static\\Ground\\safe_floor.x"));
 	RegisterStaticMesh(StaticMeshList::RoboA,	_T("Data\\Mesh\\Static\\Robo\\RobotA_pivot.x"));
 	RegisterStaticMesh(StaticMeshList::RoboB,	_T("Data\\Mesh\\Static\\Robo\\RobotB_pivot.x"));
 	RegisterStaticMesh(StaticMeshList::Bullet,	_T("Data\\Mesh\\Static\\Bullet\\bullet.x"));

@@ -96,6 +96,7 @@ HRESULT CSceneGameMain::LoadData()
 		AttachMesh(AssetManager::Mesh(StaticMeshList::PHand));
 
 	m_pGround->AttachMesh(AssetManager::Mesh(StaticMeshList::Ground));
+	m_pGround->SetPosition(0.f, 0.f, 10.f);
 
 	AttachMeshToEnemy();
 
@@ -213,7 +214,10 @@ void CSceneGameMain::Draw()
 	D3DXMATRIX mView = m_pCamera->GetView();
 	D3DXMATRIX mProj = m_pCamera->GetProj();
 
-	//プレイヤー.
+	//床の描画.
+	m_pGround->Draw(mView, mProj, light, camera);
+
+	//プレイヤーの描画.
 	m_pPlayer->Draw(mView, mProj, light, camera);
 	m_pPlayer->GetPlayerRightHand().Draw(mView, mProj, light, camera);	//右手.
 	m_pPlayer->GetPlayerLeftHand().Draw(mView, mProj, light, camera);	//左手.
