@@ -66,7 +66,7 @@ void CPlayerRotation::Update(CPlayer& pPlayer)
 	pPlayer.SetRotation(rot);
 }
 
-void CPlayerRotation::HandleInput(CPlayer& pPlayer, float x, float z)
+void CPlayerRotation::KeyInput(CPlayer& pPlayer, float x, float z)
 {
 	if (x == 0 && z == 0)
 	{
@@ -75,4 +75,9 @@ void CPlayerRotation::HandleInput(CPlayer& pPlayer, float x, float z)
 	}
 
 	m_RotationDir = atan2(x, z);
+}
+
+std::string CPlayerRotation::GetStateName() const
+{
+	return "Rotation";
 }

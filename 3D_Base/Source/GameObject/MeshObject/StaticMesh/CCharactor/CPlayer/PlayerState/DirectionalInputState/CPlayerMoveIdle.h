@@ -1,13 +1,13 @@
 #pragma once
 
-#include "GameObject/MeshObject/StaticMesh/CCharactor/CPlayer/PlayerState/DirectionalInputState/CPlayerDirectionalInputState.h"
+#include "CPlayerMoveState.h"
 
-class CPlayerRotationIdle
+class CPlayerMoveIdle
 	: public CPlayerDirectionalInputState
 {
 public:
-	CPlayerRotationIdle();
-	~CPlayerRotationIdle() override;
+	CPlayerMoveIdle();
+	~CPlayerMoveIdle() override;
 
 	//状態が始めるときだけ呼び出される.
 	void Enter(CPlayer& pPlayer) override;
@@ -15,8 +15,10 @@ public:
 	void Exit(CPlayer& pPlayer) override;
 	//この状態の間は毎フレーム呼び出される.
 	void Update(CPlayer& pPlayer) override;
+	//入力されたら切り替える処理を呼び出す.
+	void Handle(CPlayer& pPlayer, int inputKey) override;
 
-	//スティックかカーソル入力を感知.
+	//テスト用のキー処理.
 	void KeyInput(CPlayer& pPlayer, float x, float z) override;
 
 	std::string GetStateName() const override;

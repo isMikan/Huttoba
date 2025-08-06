@@ -2,7 +2,8 @@
 
 #include "GameObject/MeshObject/StaticMesh/CCharactor/CPlayer/CPlayer.h"
 
-#include "GameObject/MeshObject/StaticMesh/CCharactor/CPlayer/PlayerState/DirectionalInputState/PlayerMoveState/PlayerMoveIdle/CPlayerMoveIdle.h"
+#include "GameObject/MeshObject/StaticMesh/CCharactor/CPlayer/PlayerState/DirectionalInputState/PlayerMoveState/PlayerIdle/CPlayerMoveIdle.h"
+
 CPlayerMove::CPlayerMove()
 	: m_CurrentSpeed		()
 	, m_MoveSpeed			( 0.15f )
@@ -43,7 +44,12 @@ void CPlayerMove::Update(CPlayer& pPlayer)
 	pPlayer.SetPosition(pos);
 }
 
-void CPlayerMove::HandleInput(CPlayer& pPlayer, float x, float z)
+std::string CPlayerMove::GetStateName() const
+{
+	return "Move";
+}
+
+void CPlayerMove::KeyInput(CPlayer& pPlayer, float x, float z)
 {
 	if (x == 0 && z == 0)
 	{

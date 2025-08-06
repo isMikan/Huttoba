@@ -24,10 +24,15 @@ void CPlayerRotationIdle::Update(CPlayer& pPlayer)
 {
 }
 
-void CPlayerRotationIdle::HandleInput(CPlayer& pPlayer, float x, float z)
+void CPlayerRotationIdle::KeyInput(CPlayer& pPlayer, float x, float z)
 {
 	if (x != 0 || z != 0)
 	{
 		pPlayer.SetRotationState(std::make_unique<CPlayerRotation>());
 	}
+}
+
+std::string CPlayerRotationIdle::GetStateName() const
+{
+	return "RotationIdle";
 }

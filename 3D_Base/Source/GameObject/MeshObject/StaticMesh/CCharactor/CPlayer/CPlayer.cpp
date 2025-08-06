@@ -1,7 +1,7 @@
 #include "CPlayer.h"
 #include "Sound/CSoundManager.h"
 
-#include "PlayerState/DirectionalInputState/PlayerMoveState/PlayerMoveIdle/CPlayerMoveIdle.h"
+#include "PlayerState/DirectionalInputState/PlayerMoveState/PlayerIdle/CPlayerMoveIdle.h"
 #include "PlayerState/DirectionalInputState/PlayerRotationState/PlayerRotationIdle/CPlayerRotationIdle.h"
 #include "PlayerState/ActionState/PlayerActionIdle/CPlayerActionIdle.h"
 
@@ -49,10 +49,14 @@ void CPlayer::Update()
 	HandleInput();
 
 	m_pMoveState->Update(*this);
+	std::cout << "MoveState : " << m_pMoveState->GetStateName() << "\n";
+	std::cout << "Player Position: X=" << m_vPosition.x << ", Y=" << m_vPosition.y << ", Z=" << m_vPosition.z << "\n";
 
 	m_pRotationState->Update(*this);
+	std::cout << "RotationState : " << m_pRotationState->GetStateName() << "\n";
 
 	m_pActionState->Update(*this);
+	std::cout << "ActionState : " << m_pActionState->GetStateName() << "\n";
 
 	CCharacter::Update();
 }
@@ -96,9 +100,9 @@ void CPlayer::HandleInput()
 		z = m_pInput->GetLeftSthikY();
 	}
 
-	m_pMoveState->HandleInput(*this, x, z);
+	m_pMoveState->KeyInput(*this, x, z);
 
-	m_pRotationState->HandleInput(*this, x, z);
+	m_pRotationState->KeyInput(*this, x, z);
 }
 
 //ˆÚ“®ó‘Ô‚ğİ’è‚·‚éŠÖ”.
