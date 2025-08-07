@@ -44,11 +44,6 @@ void CPlayerMove::Update(CPlayer& pPlayer)
 	pPlayer.SetPosition(pos);
 }
 
-std::string CPlayerMove::GetStateName() const
-{
-	return "Move";
-}
-
 void CPlayerMove::KeyInput(CPlayer& pPlayer, float x, float z)
 {
 	if (x == 0 && z == 0)

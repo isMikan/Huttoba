@@ -19,8 +19,6 @@ public:
 	//テスト用のキー処理.
 	void KeyInput(CPlayer& pPlayer, float x, float z) override;
 
-	std::string GetStateName() const override;
-
 private:
 	float			m_RotationSpeed;	//回転速度.
 	float			m_RotationDir;		//目的の方向.

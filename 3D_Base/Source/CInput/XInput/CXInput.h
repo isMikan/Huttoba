@@ -85,7 +85,7 @@ public:
 
 	//正規化したスティックの値を渡す.
 	//引数にGet引数でほしいスティックを入れる.
-	float ThumbNormalize(SHORT thumb);
+	float ThumbNormalize(SHORT thumb) const;
 
 	//振動設定.
 	bool SetVibration( WORD LMotorSpd, WORD RMotorSpd );

@@ -34,16 +34,3 @@ void CPlayerActionIdle::Update(CPlayer& pPlayer)
 	pPlayer.GetPlayerRightHand().SetPosition(right);
 	pPlayer.GetPlayerLeftHand().SetPosition(left);
 }
-
-void CPlayerActionIdle::Handle(CPlayer& pPlayer, int inputKey)
-{
-	if (inputKey == 'Z')
-	{
-		pPlayer.SetActionState(std::make_unique<CPlayerHandAttack>());
-	}
-}
-
-std::string CPlayerActionIdle::GetStateName() const
-{
-	return "ActionIdle";
-}

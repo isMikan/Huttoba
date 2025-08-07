@@ -20,8 +20,6 @@ public:
 	//スティックかカーソル入力を感知.
 	virtual void KeyInput(CPlayer& pPlayer, float x, float z) = 0;
 
-	virtual std::string GetStateName() const = 0;
-
 protected:
 
 };

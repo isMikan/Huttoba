@@ -19,9 +19,6 @@ public:
 	//スティックかカーソル入力を感知.
 	void KeyInput(CPlayer& pPlayer, float x, float z) override;
 
-	std::string GetStateName() const override;
-
-
 private:
 
 };

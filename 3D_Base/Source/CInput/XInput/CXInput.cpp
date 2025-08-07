@@ -127,7 +127,7 @@ bool CXInput::IsRepeat( KEY key )
 	return false;
 }
 
-float CXInput::ThumbNormalize(SHORT thumb)
+float CXInput::ThumbNormalize(SHORT thumb) const
 {
 	float f = static_cast<float>(thumb) / THUMB_MAX;
 

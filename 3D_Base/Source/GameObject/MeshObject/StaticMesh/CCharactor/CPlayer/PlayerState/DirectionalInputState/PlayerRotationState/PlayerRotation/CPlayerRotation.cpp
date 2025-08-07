@@ -76,8 +76,3 @@ void CPlayerRotation::KeyInput(CPlayer& pPlayer, float x, float z)
 
 	m_RotationDir = atan2(x, z);
 }
-
-std::string CPlayerRotation::GetStateName() const
-{
-	return "Rotation";
-}

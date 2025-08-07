@@ -31,8 +31,3 @@ void CPlayerRotationIdle::KeyInput(CPlayer& pPlayer, float x, float z)
 		pPlayer.SetRotationState(std::make_unique<CPlayerRotation>());
 	}
 }
-
-std::string CPlayerRotationIdle::GetStateName() const
-{
-	return "RotationIdle";
-}

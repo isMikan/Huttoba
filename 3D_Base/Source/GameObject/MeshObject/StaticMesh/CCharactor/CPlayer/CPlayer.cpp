@@ -49,14 +49,11 @@ void CPlayer::Update()
 	HandleInput();
 
 	m_pMoveState->Update(*this);
-	std::cout << "MoveState : " << m_pMoveState->GetStateName() << "\n";
-	std::cout << "Player Position: X=" << m_vPosition.x << ", Y=" << m_vPosition.y << ", Z=" << m_vPosition.z << "\n";
 
 	m_pRotationState->Update(*this);
-	std::cout << "RotationState : " << m_pRotationState->GetStateName() << "\n";
 
 	m_pActionState->Update(*this);
-	std::cout << "ActionState : " << m_pActionState->GetStateName() << "\n";
+
 
 	CCharacter::Update();
 }
@@ -170,4 +167,5 @@ void CPlayer::SetPlayerInput()
 	m_pInput->BindKey(Action::MoveLeft, InputBinding(InputDevice::Keyboard, VK_LEFT));
 	m_pInput->BindKey(Action::MoveRight, InputBinding(InputDevice::Keyboard, VK_RIGHT));
 	m_pInput->BindKey(Action::Attack, InputBinding(InputDevice::Keyboard, 'Z'));
+	m_pInput->BindKey(Action::Attack, InputBinding(InputDevice::GamePad, CXInput::RB));
 }

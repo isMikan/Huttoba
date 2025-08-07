@@ -93,12 +93,3 @@ void CPlayerHandAttack::Update(CPlayer& pPlayer)
 	pPlayer.GetPlayerRightHand().SetPosition(m_RightPos);
 	pPlayer.GetPlayerLeftHand().SetPosition(m_LeftPos);
 }
-
-void CPlayerHandAttack::Handle(CPlayer& pPlayer, int inputKey)
-{
-}
-
-std::string CPlayerHandAttack::GetStateName() const
-{
-	return "Attack";
-}
