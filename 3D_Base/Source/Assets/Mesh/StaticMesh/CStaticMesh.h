@@ -147,18 +147,18 @@ public:
 
 
 	//クォータニオン型の回転の設定関数.
-	void SetRotationQuat(float x, float y, float z, float w) {
-		m_RotationQuat.x = x;
-		m_RotationQuat.y = y;
-		m_RotationQuat.z = z;
-		m_RotationQuat.w = w;
+	void SetQuaternion(float x, float y, float z, float w) {
+		m_Quaternion.x = x;
+		m_Quaternion.y = y;
+		m_Quaternion.z = z;
+		m_Quaternion.w = w;
 	}
-	void SetRotationQuat(const D3DXQUATERNION& quat) {
-		m_RotationQuat = quat;
+	void SetQuaternion(const D3DXQUATERNION& quat) {
+		m_Quaternion = quat;
 	}
 	//クォータニオン型の回転の取得関数.
-	const D3DXQUATERNION& GetRotationQuat() const {
-		return m_RotationQuat;
+	const D3DXQUATERNION& GetQuaternion() const {
+		return m_Quaternion;
 	}
 
 	//メッシュを取得.
@@ -224,5 +224,5 @@ private:
 								//※x=Pitch, y=Yaw, z=Roll.
 	D3DXVECTOR3		m_Scale;	//拡大縮小値(x,y,z等倍).
 
-	D3DXQUATERNION	m_RotationQuat;	//クォータニオンの回転.
+	D3DXQUATERNION	m_Quaternion;	//クォータニオンの回転.
  };

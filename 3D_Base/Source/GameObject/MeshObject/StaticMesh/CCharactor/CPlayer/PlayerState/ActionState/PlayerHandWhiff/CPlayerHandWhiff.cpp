@@ -10,7 +10,7 @@
 
 CPlayerHandWhiff::CPlayerHandWhiff()
 	: m_StartTime			()
-	, m_EndTime				( 0.3f )
+	, m_EndTime				( 0.4f )
 							  
 	, m_CurrentTiltAngle	()
 	, m_TiltAngleMax		( D3DXToRadian( 30.f ) )
@@ -31,10 +31,11 @@ CPlayerHandWhiff::~CPlayerHandWhiff()
 
 void CPlayerHandWhiff::Enter(CPlayer& pPlayer)
 {
+	//傾き角度の初期化.
 	m_CurrentTiltAngle = 0.f;
 
 	//クォータニオン型の回転を取得.
-	m_StartQuat = pPlayer.GetRotationQuat();
+	m_StartQuat = pPlayer.GetQuaternion();
 
 	//攻撃の開始時間を取得.
 	m_StartTime = CTimeManager::GetInstance()->GetTotalTime();
@@ -87,7 +88,7 @@ void CPlayerHandWhiff::Enter(CPlayer& pPlayer)
 
 void CPlayerHandWhiff::Exit(CPlayer& pPlayer)
 {
-	pPlayer.SetRotationQuat(m_StartQuat);
+	pPlayer.SetQuaternion(m_StartQuat);
 }
 
 void CPlayerHandWhiff::Update(CPlayer& pPlayer)
@@ -133,10 +134,7 @@ void CPlayerHandWhiff::Update(CPlayer& pPlayer)
 	CPlayer::LocalAxes axes = pPlayer.GetLocalAxes();
 
 	//クォータニオンの回転を計算して設定する.
-	pPlayer.SetRotationQuat(pPlayer.TiltedQuat(m_StartQuat, axes.right, m_CurrentTiltAngle));
-
-	//D3DXVECTOR3 offset = D3DXVECTOR3(0.f, 0.f, 5.f);
-	//pPlayer.SetPivotOffset(offset);
+	pPlayer.SetQuaternion(pPlayer.TiltedQuat(m_StartQuat, axes.right, m_CurrentTiltAngle));
 
 	float eased = sinf(progress * D3DX_PI * 0.5f);	//0.5かけて半円分の移動を計算.	
 

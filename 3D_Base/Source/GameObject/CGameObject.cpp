@@ -6,7 +6,7 @@ CGameObject::CGameObject()
 	, m_vRotation	()
 	, m_vScale		( 1.0f, 1.0f, 1.0f )
 
-	, m_vRotationQuat	( D3DXQUATERNION(0.f, 0.f, 0.f, 1.f) )
+	, m_vQuaternion	( D3DXQUATERNION(0.f, 0.f, 0.f, 1.f) )
 {
 }
 

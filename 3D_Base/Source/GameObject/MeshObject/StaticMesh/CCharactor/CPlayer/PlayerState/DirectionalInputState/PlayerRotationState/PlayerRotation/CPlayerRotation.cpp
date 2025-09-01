@@ -32,7 +32,7 @@ void CPlayerRotation::Update(CPlayer& pPlayer)
 	CPlayer::LocalAxes axes = pPlayer.GetLocalAxes();
 
 	//クォータニオンの回転を取得.
-	D3DXQUATERNION currentQuat = pPlayer.GetRotationQuat();
+	D3DXQUATERNION currentQuat = pPlayer.GetQuaternion();
 
 	//目標の角度.
 	D3DXQUATERNION targetQuat;
@@ -46,7 +46,7 @@ void CPlayerRotation::Update(CPlayer& pPlayer)
 	D3DXQuaternionNormalize(&quat, &quat);
 
 	//クォータニオンの回転を設定.
-	pPlayer.SetRotationQuat(quat);
+	pPlayer.SetQuaternion(quat);
 }
 
 void CPlayerRotation::KeyInput(CPlayer& pPlayer, float x, float z)

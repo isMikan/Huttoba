@@ -8,19 +8,19 @@
 #include "TimeManager/CTimeManager.h"
 
 CPlayerHandAttack::CPlayerHandAttack()
-	: m_RightHandPos	( 0.f, 0.f, 0.f )
-	, m_LeftHandPos		( 0.f, 0.f, 0.f )
+	: m_RightHandPos		( 0.f, 0.f, 0.f )
+	, m_LeftHandPos			( 0.f, 0.f, 0.f )
 
-	, m_CenterOffset	( 0.2f )
+	, m_CenterHandOffset	( 0.2f )
 
-	, m_StartTime		()
-	, m_EndTime			( 0.07f )
+	, m_StartTime			()
+	, m_EndTime				( 0.07f )
 
-	, m_CurrentSpeed	()
-	, m_AttackSpeed		( 8.f )
-	, m_MovingAtkSpeed	( 18.f )
+	, m_CurrentSpeed		()
+	, m_StoppingAtkSpeed	( 8.f )
+	, m_MovingAtkSpeed		( 15.f )
 
-	, m_StartQuat		( 0.f, 0.f, 0.f, 1.f )
+	, m_StartQuat			( 0.f, 0.f, 0.f, 1.f )
 {
 }
 
@@ -35,7 +35,7 @@ void CPlayerHandAttack::Enter(CPlayer& pPlayer)
 
 	//プレイヤーの位置を取得.
 	D3DXVECTOR3 playerPos = pPlayer.GetPosition();
-	m_StartQuat = pPlayer.GetRotationQuat();
+	m_StartQuat = pPlayer.GetQuaternion();
 
 	//ローカル軸を取得.
 	CPlayer::LocalAxes axes = pPlayer.GetLocalAxes();
@@ -45,8 +45,8 @@ void CPlayerHandAttack::Enter(CPlayer& pPlayer)
 	D3DXVECTOR3 leftOffset = pPlayer.GetPlayerLeftHand().GetOffsetPos();
 
 	//元の調整位置よりも中心寄りにする.
-	rightOffset.x -= m_CenterOffset;
-	leftOffset.x += m_CenterOffset;
+	rightOffset.x -= m_CenterHandOffset;
+	leftOffset.x += m_CenterHandOffset;
 
 	//手の調整リスト.
 	D3DXVECTOR3 offset[]
@@ -98,7 +98,7 @@ void CPlayerHandAttack::Update(CPlayer& pPlayer)
 		return;
 	}
 
-	m_CurrentSpeed = m_AttackSpeed;
+	m_CurrentSpeed = m_StoppingAtkSpeed;
 	if (pPlayer.IsMoving())
 	{
 		m_CurrentSpeed = m_MovingAtkSpeed;

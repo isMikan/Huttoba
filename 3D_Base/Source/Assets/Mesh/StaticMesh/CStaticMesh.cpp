@@ -42,7 +42,7 @@ CStaticMesh::CStaticMesh()
 	, m_Rotation			()
 	, m_Scale				( 1.0f, 1.0f, 1.0f )
 
-	, m_RotationQuat		( 0.f, 0.f, 0.f, 1.f )
+	, m_Quaternion		( 0.f, 0.f, 0.f, 1.f )
 {
 }
 
@@ -663,7 +663,7 @@ void CStaticMesh::Render(
 
 	//クォータニオンから回転行列を作成.
 	D3DXMATRIX mRotQuat;
-	D3DXMatrixRotationQuaternion(&mRotQuat, &m_RotationQuat);
+	D3DXMatrixRotationQuaternion(&mRotQuat, &m_Quaternion);
 	mWorld = mScale * mRotQuat * mTran;
 
 	//使用するシェーダのセット.

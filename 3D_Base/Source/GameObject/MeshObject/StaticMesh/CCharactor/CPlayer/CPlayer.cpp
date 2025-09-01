@@ -99,7 +99,7 @@ D3DXVECTOR3 CPlayer::GetForward()
 {
 	D3DXMATRIX rot;
 	//クォータニオンをマトリクスに変換.
-	D3DXMatrixRotationQuaternion(&rot, &m_vRotationQuat);
+	D3DXMatrixRotationQuaternion(&rot, &m_vQuaternion);
 
 	D3DXVECTOR3 forward(0, 0, 1); //z軸の正面方向を基準にする. 
 	D3DXVec3TransformCoord(&forward, &forward, &rot);
@@ -113,7 +113,7 @@ CPlayer::LocalAxes CPlayer::GetLocalAxes()
 
 	D3DXMATRIX rot;
 	//クォータニオンをマトリクスに変換.
-	D3DXMatrixRotationQuaternion(&rot, &m_vRotationQuat);
+	D3DXMatrixRotationQuaternion(&rot, &m_vQuaternion);
 
 	//行列で.
 	axes.right = D3DXVECTOR3(rot._11, rot._12, rot._13);
@@ -136,11 +136,11 @@ D3DXQUATERNION CPlayer::TiltedQuat(
 	D3DXQUATERNION tilt;
 	D3DXQuaternionRotationAxis(&tilt, &localAxes, tiltAngle);
 
-	D3DXQUATERNION rotQuat;
-	D3DXQuaternionMultiply(&rotQuat, &baseQuat, &tilt); //基準の姿勢に傾きを掛ける.
-	D3DXQuaternionNormalize(&rotQuat, &rotQuat);
+	D3DXQUATERNION quat;
+	D3DXQuaternionMultiply(&quat, &baseQuat, &tilt); //基準の姿勢に傾きを掛ける.
+	D3DXQuaternionNormalize(&quat, &quat);
 
-	return rotQuat;
+	return quat;
 }
 
 //キーバインドを設定する関数.
