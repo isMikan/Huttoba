@@ -62,13 +62,16 @@ HRESULT MeshManager::CreateStaticMesh()
 {
 	//äestaticMeshÇÃèÓïÒÇìoò^
 //Å´-----------------------------------------------------------------------------------------------------------------------------Å´
-	RegisterStaticMesh(StaticMeshList::Player,	_T("Data\\Mesh\\Static\\Character\\character.x"));
-	RegisterStaticMesh(StaticMeshList::PHand,	_T("Data\\Mesh\\Static\\Character\\hand.x"));
-	RegisterStaticMesh(StaticMeshList::Ground,	_T("Data\\Mesh\\Static\\Ground\\safe_floor.x"));
-	RegisterStaticMesh(StaticMeshList::RoboA,	_T("Data\\Mesh\\Static\\Robo\\RobotA_pivot.x"));
-	RegisterStaticMesh(StaticMeshList::RoboB,	_T("Data\\Mesh\\Static\\Robo\\RobotB_pivot.x"));
-	RegisterStaticMesh(StaticMeshList::Bullet,	_T("Data\\Mesh\\Static\\Bullet\\bullet.x"));
-	RegisterStaticMesh(StaticMeshList::BSphere, _T("Data\\Collision\\Sphere.x"));
+	RegisterStaticMesh(StaticMeshList::FirstFallGround,	_T("Data\\Mesh\\Static\\Ground\\fall_floor_1.x"));
+	//RegisterStaticMesh(StaticMeshList::SecondFallGround,_T("Data\\Mesh\\Static\\Ground\\fall_floor_2.x"));
+	RegisterStaticMesh(StaticMeshList::ThirdFallGround,	_T("Data\\Mesh\\Static\\Ground\\fall_floor_3.x"));
+	RegisterStaticMesh(StaticMeshList::SafeGround,		_T("Data\\Mesh\\Static\\Ground\\safe_floor.x"));
+	RegisterStaticMesh(StaticMeshList::Player,			_T("Data\\Mesh\\Static\\Character\\character.x"));
+	RegisterStaticMesh(StaticMeshList::PHand,			_T("Data\\Mesh\\Static\\Character\\hand.x"));
+	RegisterStaticMesh(StaticMeshList::RoboA,			_T("Data\\Mesh\\Static\\Robo\\RobotA_pivot.x"));
+	RegisterStaticMesh(StaticMeshList::RoboB,			_T("Data\\Mesh\\Static\\Robo\\RobotB_pivot.x"));
+	RegisterStaticMesh(StaticMeshList::Bullet,			_T("Data\\Mesh\\Static\\Bullet\\bullet.x"));
+	RegisterStaticMesh(StaticMeshList::BSphere,			_T("Data\\Collision\\Sphere.x"));
 //Å™-----------------------------------------------------------------------------------------------------------------------------Å™
 
 

@@ -90,9 +90,12 @@ enum class SkinMeshList
 
 enum class StaticMeshList
 {
-	Player = 0,
+	FirstFallGround = 0,
+	SecondFallGround,
+	ThirdFallGround,
+	SafeGround,
+	Player,
 	PHand,
-	Ground,
 	RoboA,
 	RoboB,
 	Bullet,
@@ -109,10 +112,7 @@ enum class UIList
 };
 enum class Sprite3DList
 {
-	Ground = 0,
-	Player,
 	Explosion,
-
 };
 
 enum class Sprite2DList

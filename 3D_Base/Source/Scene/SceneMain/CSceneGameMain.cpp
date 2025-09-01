@@ -106,9 +106,14 @@ HRESULT CSceneGameMain::LoadData()
 
 	for (auto& ground : m_pGrounds)
 	{
-		ground->AttachMesh(AssetManager::Mesh(StaticMeshList::Ground));
+		//床の位置を設定.
 		ground->SetPosition(0.f, 0.f, 10.f);
 	}
+	//床のスタティックメッシュを設定.
+	m_pGrounds[0]->AttachMesh(AssetManager::Mesh(StaticMeshList::FirstFallGround));
+	//m_pGrounds[1]->AttachMesh(AssetManager::Mesh(StaticMeshList::SecondFallGround));
+	m_pGrounds[2]->AttachMesh(AssetManager::Mesh(StaticMeshList::ThirdFallGround));
+	m_pGrounds[3]->AttachMesh(AssetManager::Mesh(StaticMeshList::SafeGround));
 
 	m_pItemManager->LoadData();
 	m_pDrawCollision->LoadData();
