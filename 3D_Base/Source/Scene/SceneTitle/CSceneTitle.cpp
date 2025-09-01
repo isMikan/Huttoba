@@ -2,6 +2,7 @@
 
 CSceneTitle::CSceneTitle(HWND hWnd, CInput& input)
 	: m_hWnd			(hWnd)
+
 	, m_pSpriteTitlImg	( nullptr )
 	, m_pSpriteSelector	( nullptr )
 	
@@ -28,25 +29,20 @@ CSceneTitle::~CSceneTitle()
 
 HRESULT CSceneTitle::Create()
 {
-	m_pSpriteTitlImg = std::make_unique<CSprite2D>();
-	m_pSpriteSelector = std::make_unique<CSprite2D>();
+	m_pSpriteTitlImg = std::make_unique<CUIObject>();
+	m_pSpriteSelector = std::make_unique<CUIObject>();
 
-	//m_pInput = std::make_unique<CInput>(0);
+	m_pSpriteTitlImg->SetPatternNo(0, 0);
+	m_pSpriteTitlImg->SetPosition(D3DXVECTOR3(0, 0, 0));
 
 	return S_OK;
 }
 
 HRESULT CSceneTitle::LoadData()
 {
-	CSprite2D::SPRITE_STATE Title =
-	{ WND_W,WND_H,WND_W,WND_H,WND_W,WND_H };
+	m_pSpriteTitlImg->AttachSprite(AssetManager::Sprite(Sprite2DList::Title));
 
-	m_pSpriteTitlImg->Init(_T("Data\\Texture\\Title_kari.png"), Title);
-
-	CSprite2D::SPRITE_STATE Selector =
-	{ 64,64,64,64,64,64 };
-
-	m_pSpriteSelector->Init(_T("Data\\Texture\\yajirusi_kari.png"), Selector);
+	m_pSpriteSelector->AttachSprite(AssetManager::Sprite(Sprite2DList::Selector));
 
 	return S_OK;
 }
@@ -66,7 +62,8 @@ void CSceneTitle::Update()
 			m_SelectorNumber++;
 	}
 
-	m_pSpriteSelector->SetPositionY(m_SelectorYPos[m_SelectorNumber]);
+	m_SelectorPos.y = m_SelectorYPos[m_SelectorNumber];
+	m_pSpriteSelector->SetPosition(m_SelectorPos);
 
 	if (m_Input.IsDown(Action::Decide,true))
 	{
@@ -86,8 +83,8 @@ void CSceneTitle::Update()
 
 void CSceneTitle::Draw()
 {
-	m_pSpriteSelector->Render();
-	m_pSpriteTitlImg->Render();
+	m_pSpriteSelector->Draw();
+	m_pSpriteTitlImg->Draw();
 }
 
 void CSceneTitle::Destroy()
@@ -97,7 +94,6 @@ void CSceneTitle::Destroy()
 void CSceneTitle::SetSelectorPos()
 {
 	m_SelectorPos = D3DXVECTOR3(500, 0, 0);
-	m_pSpriteSelector->SetPosition(m_SelectorPos);
 
 	m_SelectorYPos.push_back(430);
 	m_SelectorYPos.push_back(540);
