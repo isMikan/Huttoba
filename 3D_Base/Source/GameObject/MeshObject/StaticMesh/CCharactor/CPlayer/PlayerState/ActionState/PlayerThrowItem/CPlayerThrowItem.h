@@ -17,9 +17,6 @@ public:
 	void Update(CPlayer& pPlayer) override;
 
 private:
-	D3DXVECTOR3		m_RightHandPos;			//右手の位置.
-	D3DXVECTOR3		m_LeftHandPos;			//左手の位置.
-
 	float			m_StartTime;			//開始時間.
 	float			m_EndTime;				//終了時間.
 
@@ -27,5 +24,14 @@ private:
 	float			m_TiltAngleMax;			//最大の傾き角度.
 	float			m_PhaseSplit;			//傾きの変わり目.
 	
+	D3DXVECTOR3 m_RightHandPos;		
+	D3DXVECTOR3 m_LeftHandPos;
+
+	D3DXVECTOR3		m_RightHandStartPos;	//右手の元の位置.
+	D3DXVECTOR3		m_LeftHandStartPos;		//左手の元の位置.
+	D3DXVECTOR3		m_RightHandEndPos;		//右手の元の位置.
+	D3DXVECTOR3		m_LeftHandEndPos;		//左手の元の位置.
+
+
 	D3DXQUATERNION	m_StartQuat;			//開始時の回転.
 };
