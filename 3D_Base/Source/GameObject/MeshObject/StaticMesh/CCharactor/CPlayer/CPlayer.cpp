@@ -6,6 +6,8 @@
 #include "PlayerState/ActionState/PlayerActionIdle/CPlayerActionIdle.h"
 
 #include "PlayerState/ActionState/PlayerHandAttack/CPlayerHandAttack.h"
+#include "PlayerState/ActionState/PlayerPickupItem/CPlayerPickupItem.h"
+#include "PlayerState/ActionState/PlayerThrowItem/CPlayerThrowItem.h"
 
 #include <iostream>
 
@@ -19,9 +21,12 @@ CPlayer::CPlayer()
 	, m_pActionState	( std::make_unique<CPlayerActionIdle>() )
 
 	, m_Forward			( 0.f, 0.f, 0.f )
-	, m_IsBlown			( false )
+
+	, m_IsMoving		( false )
+	, m_IsRotating		( false )
+	, m_IsHoldingItem	( false )
 {
-	SetPlayerInput();
+	SetPlayerInputBinding();
 }
 
 CPlayer::~CPlayer()
@@ -60,9 +65,20 @@ void CPlayer::HandleInput()
 	if (m_pInput->IsRepeat(Action::MoveLeft))	x -= 1.f;
 	if (m_pInput->IsRepeat(Action::MoveRight))	x += 1.f;
 
+	//攻撃.
 	if (m_pInput->IsDown(Action::Attack))
 	{
 		SetActionState(std::make_unique<CPlayerHandAttack>());
+	}
+	//持っていないなら拾う.
+	if (m_pInput->IsDown(Action::ToggleItem) && !m_IsHoldingItem)
+	{
+		SetActionState(std::make_unique<CPlayerPickupItem>());
+	}
+	//持っているなら捨てる.
+	else if (m_pInput->IsDown(Action::ToggleItem) && m_IsHoldingItem)
+	{
+		SetActionState(std::make_unique<CPlayerThrowItem>());
 	}
 
 	if(m_pInput->IsConnect())
@@ -134,25 +150,29 @@ D3DXQUATERNION CPlayer::TiltedQuat(
 {
 	//傾き用クォータニオン.
 	D3DXQUATERNION tilt;
+	//マトリクスをクォータニオンに変換.
 	D3DXQuaternionRotationAxis(&tilt, &localAxes, tiltAngle);
 
 	D3DXQUATERNION quat;
 	D3DXQuaternionMultiply(&quat, &baseQuat, &tilt); //基準の姿勢に傾きを掛ける.
+	//正規化.
 	D3DXQuaternionNormalize(&quat, &quat);
 
 	return quat;
 }
 
 //キーバインドを設定する関数.
-void CPlayer::SetPlayerInput()
+void CPlayer::SetPlayerInputBinding()
 {
-	m_pInput->BindKey(Action::MoveUp, InputBinding(InputDevice::Keyboard, VK_UP));
-	m_pInput->BindKey(Action::MoveDown, InputBinding(InputDevice::Keyboard, VK_DOWN));
-	m_pInput->BindKey(Action::MoveLeft, InputBinding(InputDevice::Keyboard, VK_LEFT));
-	m_pInput->BindKey(Action::MoveRight, InputBinding(InputDevice::Keyboard, VK_RIGHT));
-	m_pInput->BindKey(Action::Attack, InputBinding(InputDevice::Keyboard, 'Z'));
+	//キーボード操作.
+	m_pInput->BindKey(Action::MoveUp, InputBinding(InputDevice::Keyboard, VK_UP));			//上移動.
+	m_pInput->BindKey(Action::MoveDown, InputBinding(InputDevice::Keyboard, VK_DOWN));		//下移動.
+	m_pInput->BindKey(Action::MoveLeft, InputBinding(InputDevice::Keyboard, VK_LEFT));		//左移動.
+	m_pInput->BindKey(Action::MoveRight, InputBinding(InputDevice::Keyboard, VK_RIGHT));	//右移動.
+	m_pInput->BindKey(Action::Attack, InputBinding(InputDevice::Keyboard, 'Z'));			//攻撃.
+	m_pInput->BindKey(Action::ToggleItem, InputBinding(InputDevice::Keyboard, 'X'));		//拾う/捨てる.
 
-
-	m_pInput->BindKey(Action::Attack, InputBinding(InputDevice::GamePad, CXInput::RB));
-	m_pInput->BindKey(Action::PickUp, InputBinding(InputDevice::GamePad, CXInput::B));
+	//コントローラ操作.
+	m_pInput->BindKey(Action::Attack, InputBinding(InputDevice::GamePad, CXInput::RB));		//攻撃.
+	m_pInput->BindKey(Action::ToggleItem, InputBinding(InputDevice::GamePad, CXInput::B));	//拾う/捨てる.
 }

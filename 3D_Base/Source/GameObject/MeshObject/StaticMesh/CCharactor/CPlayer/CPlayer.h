@@ -81,9 +81,13 @@ public:
 	bool IsRotating() const { return m_IsRotating; }
 	void SetRotating(bool rotating) { m_IsRotating = rotating; }
 
+	//アイテムを手に入れているかの取得と設定.
+	bool IsHoldingItem() const { return m_IsHoldingItem; }
+	void SetHoldingItem(bool holdingItem) { m_IsHoldingItem = holdingItem; }
+
 private:
 	//キーバインドを設定する関数.
-	void SetPlayerInput();
+	void SetPlayerInputBinding();
 
 	//テンプレート関数(中身の処理は同じもの).
 	template<typename StateType>
@@ -102,11 +106,11 @@ private:
 	std::unique_ptr<CPlayerDirectionalInputState>	m_pRotationState;	//回転.
 	std::unique_ptr<CActionState>					m_pActionState;		//行動.
 
-	D3DXVECTOR3 m_Forward;		//正面方向.
-	D3DXVECTOR3 m_Velocity;
-	bool		m_IsMoving;		//移動しているか.
-	bool		m_IsRotating;	//回転しているか.
-	bool		m_IsBlown;
+	D3DXVECTOR3 m_Forward;			//正面方向.
+
+	bool		m_IsMoving;			//移動しているか.
+	bool		m_IsRotating;		//回転しているか.
+	bool		m_IsHoldingItem;	//アイテムを持っているか.
 };
 
 //型が決まっていないのでここで定義.

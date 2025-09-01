@@ -3,13 +3,13 @@
 
 enum class Action
 {
-	MoveUp,
-	MoveDown,
-	MoveLeft,
-	MoveRight,
+	MoveUp,			//上移動.
+	MoveDown,		//下移動.
+	MoveLeft,		//左移動.
+	MoveRight,		//右移動.
 
 	Attack,			//攻撃.
-	PickUp,			//持ち上げる.
+	ToggleItem,		//アイテムの切り替え.
 
 	Decide,			//決定.
 	NavigateUp,		//選択肢を上に移動.
