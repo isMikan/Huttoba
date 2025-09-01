@@ -23,6 +23,16 @@ public:
 	*****************************************************************************************/
 	void Draw(D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAMERA& Camera) override;
 
+	/*****************************************************************************************
+	* @brief    アイテムの共通処理
+	*****************************************************************************************/
+	void Spawn()	override; // 出現
+	void OnGround() override; // 取得待機
+	void Have()		override; // 取得
+	void Use()		override; // 使用
+	void Throw()	override; // 投擲
+	void Destroy()	override; // 消滅
+
 private:
 
 };

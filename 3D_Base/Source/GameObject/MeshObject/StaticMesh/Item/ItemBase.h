@@ -25,6 +25,19 @@ public:
 			});
 		return true;
 	}
+	
+	// アイテムの状態
+	enum class State
+	{
+		None = -1,
+		Spawn,
+		OnGround,
+		Have,
+		Use,
+		Throw,
+		Destroy,
+	};
+
 
 	/*****************************************************************************************
 	* @brief    初期化
@@ -43,5 +56,15 @@ public:
 
 protected:
 
+	virtual void Spawn	 ()	= 0; // 出現
+	virtual void OnGround()	= 0; // 取得待機
+	virtual void Have	 ()	= 0; // 取得
+	virtual void Use	 ()	= 0; // 使用
+	virtual void Throw	 ()	= 0; // 投擲
+	virtual void Destroy ()	= 0; // 消滅
+
+protected:
+
 	std::unique_ptr<CStaticMeshObject> m_Item; // アイテム;
+	State m_State; // アイテムの状態
 };

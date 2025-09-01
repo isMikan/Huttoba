@@ -100,7 +100,7 @@ enum class StaticMeshList
 	RoboB,
 	Bullet,
 	BSphere,
-
+	Haetataki,
 };
 
 enum class UIList

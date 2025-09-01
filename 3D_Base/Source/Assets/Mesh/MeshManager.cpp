@@ -72,8 +72,8 @@ HRESULT MeshManager::CreateStaticMesh()
 	RegisterStaticMesh(StaticMeshList::RoboB,			_T("Data\\Mesh\\Static\\Robo\\RobotB_pivot.x"));
 	RegisterStaticMesh(StaticMeshList::Bullet,			_T("Data\\Mesh\\Static\\Bullet\\bullet.x"));
 	RegisterStaticMesh(StaticMeshList::BSphere,			_T("Data\\Collision\\Sphere.x"));
+	RegisterStaticMesh(StaticMeshList::Haetataki,		_T("Data\\Mesh\\Static\\Item\\Haetataki.x"));
 //Å™-----------------------------------------------------------------------------------------------------------------------------Å™
-
 
 	for (auto& mesh : m_StaticMeshInfoList)
 	{
