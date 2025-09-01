@@ -117,7 +117,12 @@ enum class Sprite3DList
 enum class Sprite2DList
 {
 	PMon = 0,
-
+	Title,
+	Standby,
+	RedyFont,
+	NotRedyFont,
+	Result,
+	Selector
 };
 
 enum class EnemyList
