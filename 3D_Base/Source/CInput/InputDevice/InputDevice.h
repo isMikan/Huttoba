@@ -9,7 +9,7 @@ enum class Action
 	MoveRight,
 
 	Attack,			//UŒ‚.
-	PickUp,			//‚¿ã‚°‚é.
+	Pickup,			//‚¿ã‚°‚é.
 
 	Decide,			//Œˆ’è.
 	NavigateUp,		//‘I‘ğˆ‚ğã‚ÉˆÚ“®.
