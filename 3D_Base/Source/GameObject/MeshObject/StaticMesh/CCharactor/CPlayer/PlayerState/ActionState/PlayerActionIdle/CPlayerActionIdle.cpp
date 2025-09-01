@@ -22,15 +22,45 @@ void CPlayerActionIdle::Exit(CPlayer& pPlayer)
 
 void CPlayerActionIdle::Update(CPlayer& pPlayer)
 {
+	//プレイヤーの位置を取得.
+	D3DXVECTOR3 playerPos = pPlayer.GetPosition();
+
+	//ローカル軸を取得.
+	CPlayer::LocalAxes axes = pPlayer.GetLocalAxes();
+
 	//手の位置を調整するための数値を取得.
-	D3DXVECTOR3 m_RightOffset = pPlayer.GetPlayerRightHand().GetOffsetPos();
-	D3DXVECTOR3 m_LeftOffset = pPlayer.GetPlayerLeftHand().GetOffsetPos();
+	D3DXVECTOR3 rightOffset = pPlayer.GetPlayerRightHand().GetOffsetPos();
+	D3DXVECTOR3 leftOffset = pPlayer.GetPlayerLeftHand().GetOffsetPos();
 
-	//手の位置計算.
-	D3DXVECTOR3 right = pPlayer.HandPositionMath(m_RightOffset);
-	D3DXVECTOR3 left = pPlayer.HandPositionMath(m_LeftOffset);
+	//手の調整リスト.
+	D3DXVECTOR3 offset[]
+	{
+		rightOffset,
+		leftOffset
+	};
+	//リストの最大数.
+	int offsetMax = sizeof(offset) / sizeof(offset[0]);
 
-	//手の位置を設定.
-	pPlayer.GetPlayerRightHand().SetPosition(right);
-	pPlayer.GetPlayerLeftHand().SetPosition(left);
+	for (int i = 0;i < offsetMax; i++)
+	{
+		//方向に合わせて位置を調整.
+		offset[i] =
+			axes.right * offset[i].x +
+			axes.up * offset[i].y +
+			axes.forward * offset[i].z;
+
+		//手の位置.
+		D3DXVECTOR3 handPos = playerPos + offset[i];
+
+		if (i == 0)
+		{
+			//右手の位置を設定.
+			pPlayer.GetPlayerRightHand().SetPosition(handPos);
+		}
+		else
+		{
+			//左手の位置を設定.
+			pPlayer.GetPlayerLeftHand().SetPosition(handPos);
+		}
+	}
 }

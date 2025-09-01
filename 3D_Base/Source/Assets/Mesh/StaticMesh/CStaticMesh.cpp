@@ -41,6 +41,8 @@ CStaticMesh::CStaticMesh()
 	, m_Position			()
 	, m_Rotation			()
 	, m_Scale				( 1.0f, 1.0f, 1.0f )
+
+	, m_RotationQuat		( 0.f, 0.f, 0.f, 1.f )
 {
 }
 
@@ -659,6 +661,10 @@ void CStaticMesh::Render(
 	//拡縮×回転×移動 ※順番がとても大切！！.
 	mWorld = mScale * mRot * mTran;
 
+	//クォータニオンから回転行列を作成.
+	D3DXMATRIX mRotQuat;
+	D3DXMatrixRotationQuaternion(&mRotQuat, &m_RotationQuat);
+	mWorld = mScale * mRotQuat * mTran;
 
 	//使用するシェーダのセット.
 	m_pContext11->VSSetShader( m_pVertexShader.Get(), nullptr, 0);	//頂点シェーダ.

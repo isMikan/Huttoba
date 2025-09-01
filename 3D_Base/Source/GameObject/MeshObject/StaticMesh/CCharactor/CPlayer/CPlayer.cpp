@@ -7,7 +7,6 @@
 
 #include "PlayerState/ActionState/PlayerHandAttack/CPlayerHandAttack.h"
 
-
 #include <iostream>
 
 CPlayer::CPlayer()
@@ -32,19 +31,6 @@ CPlayer::~CPlayer()
 void CPlayer::Update()
 {
 	m_pInput->Update();
-	//CGameTimer::GetInstance()->Tick();
-	//float deltaTime = CGameTimer::GetInstance()->GetDeltaTime();
-	//if (m_IsBlown)
-	//{
-	//	m_Velocity += D3DXVECTOR3(0.f, -10.f, 5.f) * deltaTime;
-	//	m_vPosition += m_Velocity * deltaTime;
-
-	//	if (m_vPosition.y <= 1.f)
-	//	{
-	//		m_vPosition.y = 1.f;
-	//		m_IsBlown = false;
-	//	}
-	//}
 
 	HandleInput();
 
@@ -63,18 +49,6 @@ void CPlayer::Draw(
 {
 	CCharacter::Draw( View, Proj, Light, Camera );
 }
-
-//void CPlayer::BlownFrom(D3DXVECTOR3 position, float force)
-//{
-//	D3DXVECTOR3 dir = m_vPosition - position;
-//
-//	D3DXVec3Normalize(&dir, &dir);
-//
-//	float mass = 1.f;
-//	m_Velocity = dir * (force / mass);
-//
-//	m_IsBlown = true;
-//}
 
 void CPlayer::HandleInput()
 {
@@ -123,40 +97,50 @@ void CPlayer::SetActionState(std::unique_ptr<CActionState> newState)
 //プレイヤーの正面方向を取得するための関数.
 D3DXVECTOR3 CPlayer::GetForward()
 {
-	float yaw = m_vRotation.y;	//y軸.
+	D3DXMATRIX rot;
+	//クォータニオンをマトリクスに変換.
+	D3DXMatrixRotationQuaternion(&rot, &m_vRotationQuat);
 
-	m_Forward.x = sin(yaw);
-	m_Forward.y = 0.f;
-	m_Forward.z = cos(yaw);
-
-	return m_Forward;
+	D3DXVECTOR3 forward(0, 0, 1); //z軸の正面方向を基準にする. 
+	D3DXVec3TransformCoord(&forward, &forward, &rot);
+	return forward;
 }
 
-//プレイヤーの方向から位置計算の関数.
-D3DXVECTOR3 CPlayer::HandPositionMath(D3DXVECTOR3 offsetPos)
+//ローカル座標軸を取得.
+CPlayer::LocalAxes CPlayer::GetLocalAxes()
 {
-	GetForward();
+	LocalAxes axes;
 
-	//上方向.
-	D3DXVECTOR3 up(0.f, 1.f, 0.f);
+	D3DXMATRIX rot;
+	//クォータニオンをマトリクスに変換.
+	D3DXMatrixRotationQuaternion(&rot, &m_vRotationQuat);
 
-	//方向
-	D3DXVECTOR3 dir;
-	//外積計算.
-	D3DXVec3Cross(&dir, &up, &m_Forward);
-	//上記の正規化.
-	D3DXVec3Normalize(&dir, &dir);
+	//行列で.
+	axes.right = D3DXVECTOR3(rot._11, rot._12, rot._13);
+	axes.up = D3DXVECTOR3(rot._21, rot._22, rot._23);
+	axes.forward = D3DXVECTOR3(rot._31, rot._32, rot._33);
 
-	//調整位置を計算.
-	D3DXVECTOR3 offset =
-		dir * offsetPos.x +
-		up * offsetPos.y +
-		m_Forward * offsetPos.z;
+	//正規化.
+	D3DXVec3Normalize(&axes.right, &axes.right);
+	D3DXVec3Normalize(&axes.up, &axes.up);
+	D3DXVec3Normalize(&axes.forward, &axes.forward);
 
-	//手の位置.
-	D3DXVECTOR3 handPos = m_vPosition + offset;
+	return axes;
+}
 
-	return handPos;
+//プレイヤーの初期角度から傾きを計算する関数..
+D3DXQUATERNION CPlayer::TiltedQuat(
+	D3DXQUATERNION baseQuat, D3DXVECTOR3 localAxes, float tiltAngle)
+{
+	//傾き用クォータニオン.
+	D3DXQUATERNION tilt;
+	D3DXQuaternionRotationAxis(&tilt, &localAxes, tiltAngle);
+
+	D3DXQUATERNION rotQuat;
+	D3DXQuaternionMultiply(&rotQuat, &baseQuat, &tilt); //基準の姿勢に傾きを掛ける.
+	D3DXQuaternionNormalize(&rotQuat, &rotQuat);
+
+	return rotQuat;
 }
 
 //キーバインドを設定する関数.
@@ -167,5 +151,8 @@ void CPlayer::SetPlayerInput()
 	m_pInput->BindKey(Action::MoveLeft, InputBinding(InputDevice::Keyboard, VK_LEFT));
 	m_pInput->BindKey(Action::MoveRight, InputBinding(InputDevice::Keyboard, VK_RIGHT));
 	m_pInput->BindKey(Action::Attack, InputBinding(InputDevice::Keyboard, 'Z'));
+
+
 	m_pInput->BindKey(Action::Attack, InputBinding(InputDevice::GamePad, CXInput::RB));
+	m_pInput->BindKey(Action::PickUp, InputBinding(InputDevice::GamePad, CXInput::B));
 }

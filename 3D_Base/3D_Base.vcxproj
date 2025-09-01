@@ -262,6 +262,7 @@
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CPlayer\PlayerState\ActionState\CActionState.cpp" />
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CPlayer\PlayerState\ActionState\PlayerActionIdle\CPlayerActionIdle.cpp" />
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CPlayer\PlayerState\ActionState\PlayerHandAttack\CPlayerHandAttack.cpp" />
+    <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CPlayer\PlayerState\ActionState\PlayerHandWhiff\CPlayerHandWhiff.cpp" />
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CPlayer\PlayerState\DirectionalInputState\CPlayerDirectionalInputState.cpp" />
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CPlayer\PlayerState\DirectionalInputState\PlayerMoveState\PlayerIdle\CPlayerMoveIdle.cpp" />
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CPlayer\PlayerState\DirectionalInputState\PlayerMoveState\PlayerMove\CPlayerMove.cpp" />
@@ -336,6 +337,7 @@
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CPlayer\PlayerState\ActionState\CActionState.h" />
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CPlayer\PlayerState\ActionState\PlayerActionIdle\CPlayerActionIdle.h" />
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CPlayer\PlayerState\ActionState\PlayerHandAttack\CPlayerHandAttack.h" />
+    <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CPlayer\PlayerState\ActionState\PlayerHandWhiff\CPlayerHandWhiff.h" />
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CPlayer\PlayerState\DirectionalInputState\CPlayerDirectionalInputState.h" />
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CPlayer\PlayerState\DirectionalInputState\PlayerMoveState\PlayerIdle\CPlayerMoveIdle.h" />
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CPlayer\PlayerState\DirectionalInputState\PlayerMoveState\PlayerMove\CPlayerMove.h" />

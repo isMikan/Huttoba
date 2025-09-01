@@ -31,6 +31,7 @@ void CStaticMeshObject::Draw(
 	m_pMesh->SetPosition( m_vPosition );
 	m_pMesh->SetRotation( m_vRotation );
 	m_pMesh->SetScale( m_vScale );
+	m_pMesh->SetRotationQuat(m_vRotationQuat);
 
 	//ƒŒƒ“ƒ_ƒŠƒ“ƒO.
 	m_pMesh->Render( View, Proj, Light, Camera.vPosition );

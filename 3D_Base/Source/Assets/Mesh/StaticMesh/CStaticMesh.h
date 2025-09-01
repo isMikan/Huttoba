@@ -145,6 +145,22 @@ public:
 		m_Scale.z = scale;
 	}
 
+
+	//クォータニオン型の回転の設定関数.
+	void SetRotationQuat(float x, float y, float z, float w) {
+		m_RotationQuat.x = x;
+		m_RotationQuat.y = y;
+		m_RotationQuat.z = z;
+		m_RotationQuat.w = w;
+	}
+	void SetRotationQuat(const D3DXQUATERNION& quat) {
+		m_RotationQuat = quat;
+	}
+	//クォータニオン型の回転の取得関数.
+	const D3DXQUATERNION& GetRotationQuat() const {
+		return m_RotationQuat;
+	}
+
 	//メッシュを取得.
 	LPD3DXMESH GetMesh() const { return m_Model.pMesh; }
 	//レイとの当たり判定用のメッシュを取得.
@@ -207,4 +223,6 @@ private:
 	D3DXVECTOR3		m_Rotation;	//回転値(x,y,z).
 								//※x=Pitch, y=Yaw, z=Roll.
 	D3DXVECTOR3		m_Scale;	//拡大縮小値(x,y,z等倍).
+
+	D3DXQUATERNION	m_RotationQuat;	//クォータニオンの回転.
  };

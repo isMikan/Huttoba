@@ -26,6 +26,15 @@ class CPlayer
 	: public CCharacter	//キャラクタークラスを継承.
 {
 public:
+	//ローカル軸の構造体.
+	struct LocalAxes
+	{
+		D3DXVECTOR3 right;		//ローカルX軸(右).
+		D3DXVECTOR3 up;			//ローカルY軸(上).
+		D3DXVECTOR3 forward;	//ローカルZ軸(正面).
+	};
+
+public:
 	CPlayer();
 	~CPlayer() override;
 
@@ -45,8 +54,14 @@ public:
 	//プレイヤーの正面方向を取得するための関数.
 	D3DXVECTOR3 GetForward();
 
-	//プレイヤーの方向から位置計算の関数.
-	D3DXVECTOR3 HandPositionMath(D3DXVECTOR3 offsetPos);
+	//ローカル座標軸を取得する関数.
+	LocalAxes GetLocalAxes();
+
+	//プレイヤーの初期角度から傾きを計算する関数..
+	D3DXQUATERNION TiltedQuat(
+		D3DXQUATERNION	baseQuat,	//基準にする回転姿勢.
+		D3DXVECTOR3		localAxes,	//ローカル軸の方向.
+		float			tiltAngle);	//傾きの角度.
 
 	//プレイヤーが右手を持っている(書き込み用).
 	CPlayerRightHand& GetPlayerRightHand() { return *m_pRightHand; }

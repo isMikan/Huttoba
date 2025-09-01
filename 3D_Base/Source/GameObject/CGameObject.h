@@ -58,8 +58,25 @@ public:
 	}
 
 
+	//クォータニオン型の回転の設定関数.
+	void SetRotationQuat(float x, float y, float z, float w) {
+		m_vRotationQuat.x = x;
+		m_vRotationQuat.y = y;
+		m_vRotationQuat.z = z;
+		m_vRotationQuat.w = w;
+	}
+	void SetRotationQuat(const D3DXQUATERNION& quat) {
+		m_vRotationQuat = quat;
+	}
+	//クォータニオン型の回転の取得関数.
+	const D3DXQUATERNION& GetRotationQuat() const {
+		return m_vRotationQuat;
+	}
+
 protected://protectedは子クラスのみアクセス可能.
 	D3DXVECTOR3	m_vPosition;
 	D3DXVECTOR3	m_vRotation;
 	D3DXVECTOR3	m_vScale;
+
+	D3DXQUATERNION m_vRotationQuat;	//クォータニオンの回転.
 };

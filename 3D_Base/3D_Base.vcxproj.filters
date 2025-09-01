@@ -29,14 +29,6 @@
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CCharacter.cpp" />
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CEnemy\CEnemy.cpp" />
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CPlayer\CPlayer.cpp" />
-    <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CPlayer\PlayerState\CPlayerActionIdle.cpp" />
-    <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CPlayer\PlayerState\CPlayerHandAttack.cpp" />
-    <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CPlayer\PlayerState\CPlayerMove.cpp" />
-    <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CPlayer\PlayerState\CPlayerMoveIdle.cpp" />
-    <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CPlayer\PlayerState\CPlayerMoveState.cpp" />
-    <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CPlayer\PlayerState\CPlayerRotation.cpp" />
-    <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CPlayer\PlayerState\CPlayerRotationIdle.cpp" />
-    <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CPlayer\PlayerState\CPlayerState.cpp" />
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\CStaticMeshObject.cpp" />
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\Ground\CGround.cpp" />
     <ClCompile Include="Source\GameObject\SpriteObject\CSpriteObject.cpp" />
@@ -66,6 +58,19 @@
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\Item\Items\Haetataki\Haetataki.cpp" />
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\Item\Items\SmashBat\SmashBat.cpp" />
     <ClCompile Include="Source\CInput\CInputManager.cpp" />
+    <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CPlayer\PlayerHand\CPlayerHand.cpp" />
+    <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CPlayer\PlayerHand\PlayerLeftHand\CPlayerLeftHand.cpp" />
+    <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CPlayer\PlayerHand\PlayerRightHand\CPlayerRightHand.cpp" />
+    <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CPlayer\PlayerState\ActionState\CActionState.cpp" />
+    <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CPlayer\PlayerState\ActionState\PlayerActionIdle\CPlayerActionIdle.cpp" />
+    <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CPlayer\PlayerState\ActionState\PlayerHandAttack\CPlayerHandAttack.cpp" />
+    <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CPlayer\PlayerState\DirectionalInputState\CPlayerDirectionalInputState.cpp" />
+    <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CPlayer\PlayerState\DirectionalInputState\PlayerMoveState\PlayerIdle\CPlayerMoveIdle.cpp" />
+    <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CPlayer\PlayerState\DirectionalInputState\PlayerMoveState\PlayerMove\CPlayerMove.cpp" />
+    <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CPlayer\PlayerState\DirectionalInputState\PlayerRotationState\PlayerRotationIdle\CPlayerRotationIdle.cpp" />
+    <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CPlayer\PlayerState\DirectionalInputState\PlayerRotationState\PlayerRotation\CPlayerRotation.cpp" />
+    <ClCompile Include="Source\TimeManager\CTimeManager.cpp" />
+    <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CPlayer\PlayerState\ActionState\PlayerHandWhiff\CPlayerHandWhiff.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Assets\AssetManager.h" />
@@ -93,14 +98,6 @@
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CCharacter.h" />
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CEnemy\CEnemy.h" />
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CPlayer\CPlayer.h" />
-    <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CPlayer\PlayerState\CPlayerActionIdle.h" />
-    <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CPlayer\PlayerState\CPlayerHandAttack.h" />
-    <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CPlayer\PlayerState\CPlayerMove.h" />
-    <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CPlayer\PlayerState\CPlayerMoveIdle.h" />
-    <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CPlayer\PlayerState\CPlayerMoveState.h" />
-    <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CPlayer\PlayerState\CPlayerRotation.h" />
-    <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CPlayer\PlayerState\CPlayerRotationIdle.h" />
-    <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CPlayer\PlayerState\CPlayerState.h" />
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\CStaticMeshObject.h" />
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\Ground\CGround.h" />
     <ClInclude Include="Source\GameObject\SpriteObject\CSpriteObject.h" />
@@ -132,6 +129,19 @@
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\Item\Items\Haetataki\Haetataki.h" />
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\Item\Items\SmashBat\SmashBat.h" />
     <ClInclude Include="Source\CInput\CInputManager.h" />
+    <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CPlayer\PlayerHand\CPlayerHand.h" />
+    <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CPlayer\PlayerHand\PlayerLeftHand\CPlayerLeftHand.h" />
+    <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CPlayer\PlayerHand\PlayerRightHand\CPlayerRightHand.h" />
+    <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CPlayer\PlayerState\ActionState\CActionState.h" />
+    <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CPlayer\PlayerState\ActionState\PlayerActionIdle\CPlayerActionIdle.h" />
+    <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CPlayer\PlayerState\ActionState\PlayerHandAttack\CPlayerHandAttack.h" />
+    <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CPlayer\PlayerState\DirectionalInputState\CPlayerDirectionalInputState.h" />
+    <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CPlayer\PlayerState\DirectionalInputState\PlayerMoveState\PlayerIdle\CPlayerMoveIdle.h" />
+    <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CPlayer\PlayerState\DirectionalInputState\PlayerMoveState\PlayerMove\CPlayerMove.h" />
+    <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CPlayer\PlayerState\DirectionalInputState\PlayerRotationState\PlayerRotationIdle\CPlayerRotationIdle.h" />
+    <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CPlayer\PlayerState\DirectionalInputState\PlayerRotationState\PlayerRotation\CPlayerRotation.h" />
+    <ClInclude Include="Source\TimeManager\CTimeManager.h" />
+    <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CPlayer\PlayerState\ActionState\PlayerHandWhiff\CPlayerHandWhiff.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="ChangeSourse.txt" />
