@@ -18,7 +18,7 @@ CSceneGameMain::CSceneGameMain( HWND hWnd )
 
 	, m_pEnemies		()
 
-	, m_pGround			( nullptr )
+	, m_pGrounds		()
 	, m_pItemManager	( nullptr )
 
 	, m_pDrawCollision	()
@@ -62,7 +62,12 @@ HRESULT CSceneGameMain::Create()
 	m_pPlayer = std::make_unique<CPlayer>();
 
 	//地面クラスのインスタンス作成
-	m_pGround = std::make_unique<CGround>();
+	m_pGrounds.resize(Ground_Max);
+
+	for (auto& ground : m_pGrounds)
+	{
+		ground = std::make_unique<CGround>();
+	}
 
 	return S_OK;
 }
@@ -99,8 +104,16 @@ HRESULT CSceneGameMain::LoadData()
 	m_pPlayer->GetPlayerLeftHand().
 		AttachMesh(AssetManager::Mesh(StaticMeshList::PHand));
 
-	m_pGround->AttachMesh(AssetManager::Mesh(StaticMeshList::Ground));
-	m_pGround->SetPosition(0.f, 0.f, 10.f);
+	for (auto& ground : m_pGrounds)
+	{
+		//床の位置を設定.
+		ground->SetPosition(0.f, 0.f, 10.f);
+	}
+	//床のスタティックメッシュを設定.
+	m_pGrounds[0]->AttachMesh(AssetManager::Mesh(StaticMeshList::FirstFallGround));
+	//m_pGrounds[1]->AttachMesh(AssetManager::Mesh(StaticMeshList::SecondFallGround));
+	m_pGrounds[2]->AttachMesh(AssetManager::Mesh(StaticMeshList::ThirdFallGround));
+	m_pGrounds[3]->AttachMesh(AssetManager::Mesh(StaticMeshList::SafeGround));
 
 	m_pItemManager->LoadData();
 	m_pDrawCollision->LoadData();
@@ -171,9 +184,13 @@ void CSceneGameMain::Update()
 
 	CTimeManager::GetInstance()->Tick();
 
-	m_pGround->Update();
+	//床の動作.
+	for (auto& ground : m_pGrounds)
+	{
+		ground->Update();
+	}
 
-	//プレイヤー.
+	//プレイヤーの動作.
 	m_pPlayer->Update();
 	m_pPlayer->GetPlayerRightHand().Update();	//右手.
 	m_pPlayer->GetPlayerLeftHand().Update();	//左手.
@@ -230,7 +247,10 @@ void CSceneGameMain::Draw()
 	D3DXMATRIX mProj = m_pCamera->GetProj();
 
 	//床の描画.
-	m_pGround->Draw(mView, mProj, light, camera);
+	for (auto& ground : m_pGrounds)
+	{
+		ground->Draw(mView, mProj, light, camera);
+	}
 
 	//プレイヤーの描画.
 	m_pPlayer->Draw(mView, mProj, light, camera);

@@ -37,8 +37,6 @@ HRESULT SpriteManager::CreateSprite3D()
 {
 	//Šesprite3D‚Ìî•ñ‚ğ“o˜^
 //«-----------------------------------------------------------------------------------------------------------------------------«
-	RegisterSprite3D(Sprite3DList::Ground,		_T("Data\\Texture\\Ground.png"),	{ 1.f, 1.f, 256.f, 256.f, 256.f, 256.f	});
-	RegisterSprite3D(Sprite3DList::Player,		_T("Data\\Texture\\Player.png"),	{ 1.f, 1.f, 64.f, 64.f, 64.f, 64.f		});
 	RegisterSprite3D(Sprite3DList::Explosion,	_T("Data\\Texture\\explosion.png"), { 1.f, 1.f, 256.f, 256.f, 32.f, 32.f	});
 //ª-----------------------------------------------------------------------------------------------------------------------------ª
 
