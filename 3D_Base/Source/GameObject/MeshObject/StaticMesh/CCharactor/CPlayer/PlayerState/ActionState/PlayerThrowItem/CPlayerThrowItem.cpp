@@ -1,4 +1,4 @@
-#include "CPlayerPickupItem.h"
+#include "CPlayerThrowItem.h"
 
 #include "GameObject/MeshObject/StaticMesh/CCharactor/CPlayer/CPlayer.h"
 
@@ -6,12 +6,10 @@
 
 #include "TimeManager/CTimeManager.h"
 
-CPlayerPickupItem::CPlayerPickupItem()
+CPlayerThrowItem::CPlayerThrowItem()
 	: m_RightHandPos		( 0.f, 0.f, 0.f )
 	, m_LeftHandPos			( 0.f, 0.f, 0.f )
 
-	, m_CenterHandOffset	( 0.2f )
-	
 	, m_StartTime			()
 	, m_EndTime				( 0.2f )
 
@@ -19,22 +17,17 @@ CPlayerPickupItem::CPlayerPickupItem()
 	, m_TiltAngleMax		( D3DXToRadian( 30.f ) )
 	, m_PhaseSplit			( 0.5f )
 
-	, m_CurrentForwardHandSpeed		( 0.f )
-	, m_StoppingForwardHandSpeed	( 2.5f )
-	, m_MovingForwardHandSpeed		( 10.5f )
-	, m_DownHandSpeed				( -1.5f )
-
-	, m_StartQuat					()
+	, m_StartQuat			()
 {
 }
 
-CPlayerPickupItem::~CPlayerPickupItem()
+CPlayerThrowItem::~CPlayerThrowItem()
 {
 }
 
-void CPlayerPickupItem::Enter(CPlayer& pPlayer)
+void CPlayerThrowItem::Enter(CPlayer& pPlayer)
 {
-	pPlayer.SetHoldingItem(true);
+	pPlayer.SetHoldingItem(false);
 
 	//傾き角度の初期化.
 	m_CurrentTiltAngle = 0.f;
@@ -54,10 +47,6 @@ void CPlayerPickupItem::Enter(CPlayer& pPlayer)
 	//手の位置を調整するための数値を取得.
 	D3DXVECTOR3 rightOffset = pPlayer.GetPlayerRightHand().GetOffsetPos();
 	D3DXVECTOR3 leftOffset = pPlayer.GetPlayerLeftHand().GetOffsetPos();
-
-	//元の調整位置よりも中心寄りにする.
-	rightOffset.x -= m_CenterHandOffset;
-	leftOffset.x += m_CenterHandOffset;
 
 	//手の調整リスト.
 	D3DXVECTOR3 offset[]
@@ -91,12 +80,12 @@ void CPlayerPickupItem::Enter(CPlayer& pPlayer)
 	}
 }
 
-void CPlayerPickupItem::Exit(CPlayer& pPlayer)
+void CPlayerThrowItem::Exit(CPlayer& pPlayer)
 {
 	pPlayer.SetQuaternion(m_StartQuat);
 }
 
-void CPlayerPickupItem::Update(CPlayer& pPlayer)
+void CPlayerThrowItem::Update(CPlayer& pPlayer)
 {
 	float totalTime = CTimeManager::GetInstance()->GetTotalTime();
 
@@ -140,21 +129,6 @@ void CPlayerPickupItem::Update(CPlayer& pPlayer)
 
 	//クォータニオンの回転を計算して設定する.
 	pPlayer.SetQuaternion(pPlayer.TiltedQuat(m_StartQuat, axes.right, m_CurrentTiltAngle));
-
-	//前に進む手の速度を通常に設定.
-	m_CurrentForwardHandSpeed = m_StoppingForwardHandSpeed;
-	//移動していたら早くする.
-	if (pPlayer.IsMoving())
-	{
-		m_CurrentForwardHandSpeed = m_MovingForwardHandSpeed;
-	}
-
-	//プレイヤーの正面方向に手を押し出す.
-	m_RightHandPos += axes.forward * m_CurrentForwardHandSpeed * deltaTime;
-	m_LeftHandPos += axes.forward * m_CurrentForwardHandSpeed * deltaTime;
-	//プレイヤーの下方向に手を押し出す.
-	m_RightHandPos += axes.up * m_DownHandSpeed * deltaTime;
-	m_LeftHandPos += axes.up * m_DownHandSpeed * deltaTime;
 
 	//手の位置を設定.
 	pPlayer.GetPlayerRightHand().SetPosition(m_RightHandPos);

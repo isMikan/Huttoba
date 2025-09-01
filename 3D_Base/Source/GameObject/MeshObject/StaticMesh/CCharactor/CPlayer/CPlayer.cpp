@@ -7,6 +7,7 @@
 
 #include "PlayerState/ActionState/PlayerHandAttack/CPlayerHandAttack.h"
 #include "PlayerState/ActionState/PlayerPickupItem/CPlayerPickupItem.h"
+#include "PlayerState/ActionState/PlayerThrowItem/CPlayerThrowItem.h"
 
 #include <iostream>
 
@@ -20,9 +21,12 @@ CPlayer::CPlayer()
 	, m_pActionState	( std::make_unique<CPlayerActionIdle>() )
 
 	, m_Forward			( 0.f, 0.f, 0.f )
-	, m_IsBlown			( false )
+
+	, m_IsMoving		( false )
+	, m_IsRotating		( false )
+	, m_IsHoldingItem	( false )
 {
-	SetPlayerInput();
+	SetPlayerInputBinding();
 }
 
 CPlayer::~CPlayer()
@@ -61,13 +65,20 @@ void CPlayer::HandleInput()
 	if (m_pInput->IsRepeat(Action::MoveLeft))	x -= 1.f;
 	if (m_pInput->IsRepeat(Action::MoveRight))	x += 1.f;
 
+	//çUåÇ.
 	if (m_pInput->IsDown(Action::Attack))
 	{
 		SetActionState(std::make_unique<CPlayerHandAttack>());
 	}
-	if (m_pInput->IsDown(Action::Pickup))
+	//éùÇ¡ÇƒÇ¢Ç»Ç¢Ç»ÇÁèEÇ§.
+	if (m_pInput->IsDown(Action::ToggleItem) && !m_IsHoldingItem)
 	{
 		SetActionState(std::make_unique<CPlayerPickupItem>());
+	}
+	//éùÇ¡ÇƒÇ¢ÇÈÇ»ÇÁéÃÇƒÇÈ.
+	else if (m_pInput->IsDown(Action::ToggleItem) && m_IsHoldingItem)
+	{
+		SetActionState(std::make_unique<CPlayerThrowItem>());
 	}
 
 	if(m_pInput->IsConnect())
@@ -151,7 +162,7 @@ D3DXQUATERNION CPlayer::TiltedQuat(
 }
 
 //ÉLÅ[ÉoÉCÉìÉhÇê›íËÇ∑ÇÈä÷êî.
-void CPlayer::SetPlayerInput()
+void CPlayer::SetPlayerInputBinding()
 {
 	//ÉLÅ[É{Å[ÉhëÄçÏ.
 	m_pInput->BindKey(Action::MoveUp, InputBinding(InputDevice::Keyboard, VK_UP));			//è„à⁄ìÆ.
@@ -159,9 +170,9 @@ void CPlayer::SetPlayerInput()
 	m_pInput->BindKey(Action::MoveLeft, InputBinding(InputDevice::Keyboard, VK_LEFT));		//ç∂à⁄ìÆ.
 	m_pInput->BindKey(Action::MoveRight, InputBinding(InputDevice::Keyboard, VK_RIGHT));	//âEà⁄ìÆ.
 	m_pInput->BindKey(Action::Attack, InputBinding(InputDevice::Keyboard, 'Z'));			//çUåÇ.
-	m_pInput->BindKey(Action::Pickup, InputBinding(InputDevice::Keyboard, 'X'));			//èEÇ§/éÃÇƒÇÈ.
+	m_pInput->BindKey(Action::ToggleItem, InputBinding(InputDevice::Keyboard, 'X'));		//èEÇ§/éÃÇƒÇÈ.
 
 	//ÉRÉìÉgÉçÅ[ÉâëÄçÏ.
 	m_pInput->BindKey(Action::Attack, InputBinding(InputDevice::GamePad, CXInput::RB));		//çUåÇ.
-	m_pInput->BindKey(Action::Pickup, InputBinding(InputDevice::GamePad, CXInput::B));		//èEÇ§/éÃÇƒÇÈ.
+	m_pInput->BindKey(Action::ToggleItem, InputBinding(InputDevice::GamePad, CXInput::B));	//èEÇ§/éÃÇƒÇÈ.
 }
