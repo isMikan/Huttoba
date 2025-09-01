@@ -1,6 +1,5 @@
 #pragma once
 #include "Scene/CScene.h"
-#include "Assets/Sprite/Sprite2D/CSprite2D.h"
 
 #include "GameObject/UIObject/CUIObject.h"
 #include "Assets/AssetManager.h"
@@ -23,8 +22,12 @@ private:
 	//選択肢の座標を設定.
 	void SetSelectorPos();
 
+	void MoveSelector();
+
 private:
 	HWND						m_hWnd;				//ウィンドウハンドル.
+
+	std::vector<std::function<void()>>	m_Action;	//画面遷移時の動作を入れる.
 
 	std::unique_ptr<CUIObject>	m_pSpriteTitlImg;	//タイトル画面.
 	std::unique_ptr<CUIObject>	m_pSpriteSelector;	//選択矢印.
@@ -38,5 +41,6 @@ private:
 
 	std::vector<float>			m_SelectorYPos;		//各選択肢のY座標.
 
-	float						m_SthikThreshold;	//選択肢を動かすときのスティックの最小値.
+	//中間までに導入する時間がないので時間があれば追加できるようにする
+	//float						m_SthikThreshold;	//選択肢を動かすときのスティックの最小値.
 };

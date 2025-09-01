@@ -1,7 +1,7 @@
 #pragma once
 #include "Scene/CScene.h"
 
-#include "Sprite/Sprite2D/CSprite2D.h"
+#include "GameObject/UIObject/CUIObject.h"
 
 #include "CInput/CInput.h"
 #include "GameObject/MeshObject/StaticMesh/CCharactor/CPlayer/CPlayer.h"
@@ -27,16 +27,17 @@ private:
 
 	void InitializeInput();
 private:
-	std::unique_ptr<CSprite2D>	m_pSpriteStandbyImg;	//待機画面.
+	std::unique_ptr<CUIObject>	m_pSpriteStandbyImg;	//待機画面.
 
-	std::vector < std::unique_ptr<CSprite2D> >	m_pRedyFontImg;		//準備完了画像.
-	std::vector < std::unique_ptr<CSprite2D> >	m_pNotRedyFontImg;	//準備中画像.
+	//プレイヤーの人数の4がマジックナンバーなので後で変更しておく.
+	std::array < std::unique_ptr<CUIObject>,4 >	m_pRedyFontImg;		//準備完了画像.
+	std::array < std::unique_ptr<CUIObject>,4 >	m_pNotRedyFontImg;	//準備中画像.
 
 	std::unique_ptr<CCamera>	m_pCamera;	//カメラ.
 
 	//キャラクタークラス
-	std::vector< std::unique_ptr<CPlayer> >	m_pPlayer;
+	std::array< std::unique_ptr<CPlayer>,4 >	m_pPlayer;
 
 	CInput&				m_Input;
-	std::vector< std::unique_ptr<CInput>>	m_Inputs;
+	std::array< std::unique_ptr<CInput>,4>	m_Inputs;
 };

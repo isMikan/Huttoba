@@ -20,10 +20,13 @@ CSceneStandby::~CSceneStandby()
 
 HRESULT CSceneStandby::Create()
 {
-	m_pSpriteStandbyImg = std::make_unique<CSprite2D>();
+	m_pSpriteStandbyImg = std::make_unique<CUIObject>();
 
-
-
+	for (int i = 0;i < 4;i++)
+	{
+		m_pRedyFontImg[i] = std::make_unique<CUIObject>();
+		m_pNotRedyFontImg[i] = std::make_unique<CUIObject>();
+	}
 	m_pCamera = std::make_unique<CCamera>();
 
 	return S_OK;
@@ -31,11 +34,8 @@ HRESULT CSceneStandby::Create()
 
 HRESULT CSceneStandby::LoadData()
 {
-	CSprite2D::SPRITE_STATE Title =
-	{ WND_W,WND_H,WND_W,WND_H,WND_W,WND_H };
-
 	//読み込みのマネージャーを作成してくれているみたいなので後で切り替えておく.
-	m_pSpriteStandbyImg->Init(_T("Data\\Texture\\Standby_kari.png"), Title);
+	//m_pSpriteStandbyImg->Init(_T("Data\\Texture\\Standby_kari.png"), Title);
 
 	return S_OK;
 }
@@ -60,11 +60,11 @@ void CSceneStandby::Draw()
 	CAMERA		camera = m_pCamera->GetCamera();
 
 
-	//m_pSpriteStandbyImg->Render();	//一番前に表示されるので文字などを表示させたい際は要検証.
-	for (int i = 0;i < 4;i++)
-	{
-		m_pPlayer[i]->Draw(mView, mProj, light, camera);
-	}
+	m_pSpriteStandbyImg->Draw();	//一番前に表示されるので文字などを表示させたい際は要検証.
+	//for (int i = 0;i < 4;i++)
+	//{
+	//	m_pPlayer[i]->Draw(mView, mProj, light, camera);
+	//}
 }
 
 void CSceneStandby::Destroy()
@@ -73,13 +73,13 @@ void CSceneStandby::Destroy()
 
 void CSceneStandby::InitializePlayers()
 {
-	//プレイヤーの人数だけ処理(マジックナンバーなのを後で変える).
-	for (int i = 0;i < 4;i++)
-	{
-		m_pPlayer.push_back(std::make_unique<CPlayer>());
-		m_pPlayer[i]->AttachMesh(AssetManager::Mesh(StaticMeshList::Player));
-		m_pPlayer[i]->SetPosition(-12.f + (9.f * i), 1.f, 6.f);
-	}
+	////プレイヤーの人数だけ処理(マジックナンバーなのを後で変える).
+	//for (int i = 0;i < 4;i++)
+	//{
+	//	m_pPlayer.push_back(std::make_unique<CPlayer>());
+	//	m_pPlayer[i]->AttachMesh(AssetManager::Mesh(StaticMeshList::Player));
+	//	m_pPlayer[i]->SetPosition(-12.f + (9.f * i), 1.f, 6.f);
+	//}
 }
 
 void CSceneStandby::InitializeInput()
