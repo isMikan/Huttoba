@@ -22,10 +22,11 @@ CGame::~CGame()
 //構築.
 void CGame::Create()
 {
+	AssetManager::GetInstance()->Create();
+
 	m_pSceneManager = std::make_unique<CSceneManager>(m_hWnd);
 	m_pSceneManager->Create();
 
-	AssetManager::GetInstance()->Create();
 }
 
 //ロードデータ関数.

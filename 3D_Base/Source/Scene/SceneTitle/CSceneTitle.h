@@ -1,7 +1,9 @@
 #pragma once
 #include "Scene/CScene.h"
+#include "Assets/Sprite/Sprite2D/CSprite2D.h"
 
-#include "Sprite/Sprite2D/CSprite2D.h"
+#include "GameObject/UIObject/CUIObject.h"
+#include "Assets/AssetManager.h"
 #include "CInput/CInput.h"
 
 class CSceneTitle
@@ -24,8 +26,8 @@ private:
 private:
 	HWND						m_hWnd;				//ウィンドウハンドル.
 
-	std::unique_ptr<CSprite2D>	m_pSpriteTitlImg;	//タイトル画面.
-	std::unique_ptr<CSprite2D>	m_pSpriteSelector;	//選択矢印.
+	std::unique_ptr<CUIObject>	m_pSpriteTitlImg;	//タイトル画面.
+	std::unique_ptr<CUIObject>	m_pSpriteSelector;	//選択矢印.
 
 	CInput&						m_Input;
 
