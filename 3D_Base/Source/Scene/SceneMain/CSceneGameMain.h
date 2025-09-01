@@ -82,7 +82,7 @@ private:
 	std::unordered_map < EnemyList, std::vector<std::unique_ptr<CEnemy> > > m_pEnemies;
 
 	//地面クラス
-	std::unique_ptr<CGround>	m_pGround;
+	std::vector<std::unique_ptr<CGround>> 	m_pGrounds;
 
 	//アイテムクラス
 	std::unique_ptr<ItemManager> m_pItemManager;

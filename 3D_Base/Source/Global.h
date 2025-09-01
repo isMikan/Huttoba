@@ -43,6 +43,7 @@ const int FPS = 60;		//フレームレート.
 //最大数
 static constexpr int Enemy_Max = 3;
 static constexpr int Explosion_Max = 20;
+static constexpr int Ground_Max = 4;
 static constexpr int Player_Shot_Max = 64;
 
 //弾のインターバル
