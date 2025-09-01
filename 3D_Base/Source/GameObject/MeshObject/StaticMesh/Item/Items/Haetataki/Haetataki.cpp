@@ -20,6 +20,6 @@ void Haetataki::Update()
 {
 }
 
-void Haetataki::Draw()
+void Haetataki::Draw(D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAMERA& Camera)
 {
 }

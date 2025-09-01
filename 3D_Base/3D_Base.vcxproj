@@ -232,6 +232,7 @@
     <Text Include="ChangeSourse.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\DrawCollision\DrawCollision.cpp" />
     <ClCompile Include="Source\Assets\AssetManager.cpp" />
     <ClCompile Include="Source\Assets\Effect\CEffect.cpp" />
     <ClCompile Include="Source\Assets\Mesh\MeshManager.cpp" />
@@ -304,6 +305,7 @@
     <ClCompile Include="Source\TimeManager\CTimeManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\DrawCollision\DrawCollision.h" />
     <ClInclude Include="Source\Assets\AssetManager.h" />
     <ClInclude Include="Source\Assets\Effect\CEffect.h" />
     <ClInclude Include="Source\Assets\Effect\Effekseer\include\Effekseer.h" />

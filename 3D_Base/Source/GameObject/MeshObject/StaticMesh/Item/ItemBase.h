@@ -1,8 +1,10 @@
 #pragma once
 
 #include "ItemFactory/ItemFactory.h"
+#include "GameObject/MeshObject/StaticMesh/CStaticMeshObject.h"
 
-class ItemBase
+class ItemBase :
+	public CStaticMeshObject
 {
 public:
 	ItemBase();
@@ -32,12 +34,12 @@ public:
 	/*****************************************************************************************
 	* @brief    çXêVèàóù
 	*****************************************************************************************/
-	virtual void Update() = 0; 
+	virtual void Update() override;
 
 	/*****************************************************************************************
 	* @brief    ï`âÊèàóù
 	*****************************************************************************************/
-	virtual void Draw() = 0;
+	virtual void Draw(D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAMERA& Camera) override;
 
 private:
 

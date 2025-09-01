@@ -19,6 +19,7 @@
 #include "GameObject/MeshObject/StaticMesh/CCharactor/CPlayer/CPlayer.h"
 
 #include "GameObject/MeshObject/StaticMesh/Ground/CGround.h"
+#include "GameObject/MeshObject/StaticMesh/DrawCollision/DrawCollision.h"
 #include "GameObject/MeshObject/StaticMesh/CCharactor/CEnemy/CEnemy.h"
 
 #include "Assets/Mesh/SkinMesh/CSkinMesh.h"
@@ -43,6 +44,7 @@ public:
 
 	HRESULT Create() override;
 	HRESULT LoadData()	override;
+	void Init();
 	void Destroy() override;
 	void Update() override;
 	void Draw() override;
@@ -85,4 +87,6 @@ private:
 	//アイテムクラス
 	std::unique_ptr<ItemManager> m_pItemManager;
 	
+	//当たり判定描画クラス
+	std::unique_ptr<DrawCollision> m_pDrawCollision;
 };

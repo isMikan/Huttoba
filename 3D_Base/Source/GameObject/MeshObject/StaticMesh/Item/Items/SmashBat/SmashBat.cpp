@@ -20,7 +20,7 @@ void SmashBat::Update()
 {
 }
 
-void SmashBat::Draw()
+void SmashBat::Draw(D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAMERA& Camera)
 {
 }
 

@@ -41,10 +41,10 @@ void ItemManager::Update()
 	}
 }
 
-void ItemManager::Draw()
+void ItemManager::Draw(D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAMERA& Camera)
 {
 	for (auto& item : m_pItems)
 	{
-		item->Draw();
+		item->Draw(View,Proj, Light,Camera);
 	}
 }

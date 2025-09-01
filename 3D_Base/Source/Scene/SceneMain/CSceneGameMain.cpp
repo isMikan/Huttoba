@@ -21,6 +21,8 @@ CSceneGameMain::CSceneGameMain( HWND hWnd )
 	, m_pGround			( nullptr )
 	, m_pItemManager	( nullptr )
 
+	, m_pDrawCollision	()
+
 {
 	m_pDx9 = CDirectX9::GetInstance();
 	m_pDx11 = CDirectX11::GetInstance();
@@ -48,6 +50,8 @@ HRESULT CSceneGameMain::Create()
 
 	//アイテムマネージャーの作成
 	m_pItemManager = std::make_unique<ItemManager>();
+
+	m_pDrawCollision = std::make_unique<DrawCollision>();
 
 	//各オブジェクトのインスタンス作成
 	CreateUI();
@@ -98,6 +102,9 @@ HRESULT CSceneGameMain::LoadData()
 	m_pGround->AttachMesh(AssetManager::Mesh(StaticMeshList::Ground));
 	m_pGround->SetPosition(0.f, 0.f, 10.f);
 
+	m_pItemManager->LoadData();
+	m_pDrawCollision->LoadData();
+
 	AttachMeshToEnemy();
 
 	//Pモンそれぞれの画像パターンを設定
@@ -147,6 +154,12 @@ HRESULT CSceneGameMain::LoadData()
 	return S_OK;
 }
 
+void CSceneGameMain::Init()
+{
+	m_pDrawCollision->Init();
+	m_pItemManager->Init();
+}
+
 void CSceneGameMain::Destroy()
 {
 }
@@ -185,6 +198,8 @@ void CSceneGameMain::Update()
 			exp->Update();
 		}
 	}
+
+	m_pDrawCollision->Update();
 
 	//--------------------
 	//	スキンメッシュ
@@ -229,6 +244,9 @@ void CSceneGameMain::Draw()
 			enemy->Draw(mView, mProj, light, camera);
 		}
 	}
+
+	m_pItemManager->Draw(mView, mProj, light, camera);
+	m_pDrawCollision->Draw(mView, mProj, light, camera);
 
 	////ボーン座標に合わせて球体を表示
 	//m_pStaticMeshMap[StaticMeshList::BSphere]->SetPosition(m_ZakoBonePos);
