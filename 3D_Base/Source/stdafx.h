@@ -16,10 +16,12 @@
 #include<memory>
 #include<string>
 
+
 #include <wrl/client.h>
 using Microsoft::WRL::ComPtr;
 
 #include "Global.h"
 #include "MyMacro.h"
+#include "Assets/AssetManager.h"
 #include "CDirectX11.h"
 #include "CDirectX9.h"

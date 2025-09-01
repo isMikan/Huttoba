@@ -3,7 +3,9 @@
 
 
 ItemBase::ItemBase()
+	: m_Item()
 {
+	m_Item = std::make_unique<CStaticMeshObject>();
 }
 
 ItemBase::~ItemBase()
