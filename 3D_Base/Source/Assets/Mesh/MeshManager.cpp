@@ -63,7 +63,7 @@ HRESULT MeshManager::CreateStaticMesh()
 	//ŠestaticMesh‚Ìî•ñ‚ğ“o˜^
 //«-----------------------------------------------------------------------------------------------------------------------------«
 	RegisterStaticMesh(StaticMeshList::FirstFallGround,	_T("Data\\Mesh\\Static\\Ground\\fall_floor_1.x"));
-	//RegisterStaticMesh(StaticMeshList::SecondFallGround,_T("Data\\Mesh\\Static\\Ground\\fall_floor_2.x"));
+	RegisterStaticMesh(StaticMeshList::SecondFallGround,_T("Data\\Mesh\\Static\\Ground\\fall_floor_2.x"));
 	RegisterStaticMesh(StaticMeshList::ThirdFallGround,	_T("Data\\Mesh\\Static\\Ground\\fall_floor_3.x"));
 	RegisterStaticMesh(StaticMeshList::SafeGround,		_T("Data\\Mesh\\Static\\Ground\\safe_floor.x"));
 	RegisterStaticMesh(StaticMeshList::Player,			_T("Data\\Mesh\\Static\\Character\\character.x"));

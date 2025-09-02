@@ -111,7 +111,7 @@ HRESULT CSceneGameMain::LoadData()
 	}
 	//床のスタティックメッシュを設定.
 	m_pGrounds[0]->AttachMesh(AssetManager::Mesh(StaticMeshList::FirstFallGround));
-	//m_pGrounds[1]->AttachMesh(AssetManager::Mesh(StaticMeshList::SecondFallGround));
+	m_pGrounds[1]->AttachMesh(AssetManager::Mesh(StaticMeshList::SecondFallGround));
 	m_pGrounds[2]->AttachMesh(AssetManager::Mesh(StaticMeshList::ThirdFallGround));
 	m_pGrounds[3]->AttachMesh(AssetManager::Mesh(StaticMeshList::SafeGround));
 
