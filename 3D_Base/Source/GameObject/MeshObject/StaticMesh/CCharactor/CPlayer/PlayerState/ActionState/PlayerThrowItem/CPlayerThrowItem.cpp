@@ -41,12 +41,12 @@ void CPlayerThrowItem::Enter(CPlayer& pPlayer)
 	m_StartTime = CTimeManager::GetInstance()->GetTotalTime();
 
 	//手の位置を調整するための数値を取得.
-	D3DXVECTOR3 rightOffset = pPlayer.GetPlayerRightHand().GetOffsetPos();
-	D3DXVECTOR3 leftOffset = pPlayer.GetPlayerLeftHand().GetOffsetPos();
+	D3DXVECTOR3 rightHandOffset = pPlayer.GetPlayerRightHand().GetOffsetPos();
+	D3DXVECTOR3 leftHandOffset = pPlayer.GetPlayerLeftHand().GetOffsetPos();
 
 	//手の開始位置を設定.
-	m_RightHandStartPos = rightOffset;
-	m_LeftHandStartPos = leftOffset;
+	m_RightHandStartPos = rightHandOffset;
+	m_LeftHandStartPos = leftHandOffset;
 	//手の終了位置を設定.
 	m_RightHandEndPos = m_RightHandStartPos + m_RightHandEndPos;
 	m_LeftHandEndPos = m_LeftHandStartPos + m_LeftHandEndPos;

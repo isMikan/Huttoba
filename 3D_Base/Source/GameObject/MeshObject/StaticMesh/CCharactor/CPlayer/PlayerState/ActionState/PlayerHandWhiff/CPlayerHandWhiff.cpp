@@ -10,7 +10,7 @@
 
 CPlayerHandWhiff::CPlayerHandWhiff()
 	: m_StartTime			()
-	, m_EndTime				( 0.4f )
+	, m_EndTime				( 0.5f )
 							  
 	, m_CurrentTiltAngle	()
 	, m_TiltAngleMax		( D3DXToRadian( 30.f ) )
@@ -51,14 +51,14 @@ void CPlayerHandWhiff::Enter(CPlayer& pPlayer)
 	CPlayer::LocalAxes axes = pPlayer.GetLocalAxes();
 
 	//手の位置を調整するための数値を取得.
-	D3DXVECTOR3 rightOffset = pPlayer.GetPlayerRightHand().GetOffsetPos();
-	D3DXVECTOR3 leftOffset = pPlayer.GetPlayerLeftHand().GetOffsetPos();
+	D3DXVECTOR3 rightHandOffset = pPlayer.GetPlayerRightHand().GetOffsetPos();
+	D3DXVECTOR3 leftHandOffset = pPlayer.GetPlayerLeftHand().GetOffsetPos();
 
 	//手の調整リスト.
 	D3DXVECTOR3 offset[]
 	{
-		rightOffset,
-		leftOffset
+		rightHandOffset,
+		leftHandOffset
 	};
 	//リストの最大数.
 	int offsetMax = sizeof(offset) / sizeof(offset[0]);
@@ -138,13 +138,13 @@ void CPlayerHandWhiff::Update(CPlayer& pPlayer)
 
 	float eased = sinf(progress * D3DX_PI * 0.5f);	//0.5かけて半円分の移動を計算.	
 
+	//プレイヤーの位置を計算.
 	D3DXVECTOR3 rightHandPos;
 	D3DXVec3Lerp(&rightHandPos, &m_RightHandStartPos, &m_RightHandEndPos, eased);
-
-	pPlayer.GetPlayerRightHand().SetPosition(rightHandPos);
-
 	D3DXVECTOR3 leftHandPos;
 	D3DXVec3Lerp(&leftHandPos, &m_LeftHandStartPos, &m_LeftHandEndPos, eased);
 
+	//手の位置を設定.
+	pPlayer.GetPlayerRightHand().SetPosition(rightHandPos);
 	pPlayer.GetPlayerLeftHand().SetPosition(leftHandPos);
 }

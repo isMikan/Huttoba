@@ -29,14 +29,14 @@ void CPlayerActionIdle::Update(CPlayer& pPlayer)
 	CPlayer::LocalAxes axes = pPlayer.GetLocalAxes();
 
 	//手の位置を調整するための数値を取得.
-	D3DXVECTOR3 rightOffset = pPlayer.GetPlayerRightHand().GetOffsetPos();
-	D3DXVECTOR3 leftOffset = pPlayer.GetPlayerLeftHand().GetOffsetPos();
+	D3DXVECTOR3 rightHandOffset = pPlayer.GetPlayerRightHand().GetOffsetPos();
+	D3DXVECTOR3 leftHandOffset = pPlayer.GetPlayerLeftHand().GetOffsetPos();
 
 	//手の調整リスト.
 	D3DXVECTOR3 offset[]
 	{
-		rightOffset,
-		leftOffset
+		rightHandOffset,
+		leftHandOffset
 	};
 	//リストの最大数.
 	int offsetMax = sizeof(offset) / sizeof(offset[0]);

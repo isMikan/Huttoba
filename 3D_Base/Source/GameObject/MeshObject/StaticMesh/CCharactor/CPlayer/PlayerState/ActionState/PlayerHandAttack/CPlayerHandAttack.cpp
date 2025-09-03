@@ -11,7 +11,7 @@ CPlayerHandAttack::CPlayerHandAttack()
 	: m_CenterHandOffset	( 0.2f )
 
 	, m_StartTime			()
-	, m_EndTime				( 0.07f )
+	, m_EndTime				( 0.1f )
 
 	, m_RightHandStartPos	()
 	, m_LeftHandStartPos	()
@@ -39,15 +39,15 @@ void CPlayerHandAttack::Enter(CPlayer& pPlayer)
 	CPlayer::LocalAxes axes = pPlayer.GetLocalAxes();
 
 	//手の位置を調整するための数値を取得.
-	D3DXVECTOR3 rightOffset = pPlayer.GetPlayerRightHand().GetOffsetPos();
-	D3DXVECTOR3 leftOffset = pPlayer.GetPlayerLeftHand().GetOffsetPos();
+	D3DXVECTOR3 rightHandOffset = pPlayer.GetPlayerRightHand().GetOffsetPos();
+	D3DXVECTOR3 leftHandOffset = pPlayer.GetPlayerLeftHand().GetOffsetPos();
 
 	//手の開始位置を設定.
-	m_RightHandStartPos = rightOffset;
-	m_LeftHandStartPos = leftOffset;
+	m_RightHandStartPos = rightHandOffset;
+	m_LeftHandStartPos = leftHandOffset;
 	//手の位置を中心寄りに調整.
-	m_RightHandStartPos.x = rightOffset.x - m_CenterHandOffset;
-	m_LeftHandStartPos.x = leftOffset.x + m_CenterHandOffset;
+	m_RightHandStartPos.x = rightHandOffset.x - m_CenterHandOffset;
+	m_LeftHandStartPos.x = leftHandOffset.x + m_CenterHandOffset;
 	//手の終了位置を設定.
 	m_RightHandEndPos = m_RightHandStartPos + m_RightHandEndPos;
 	m_LeftHandEndPos = m_LeftHandStartPos + m_LeftHandEndPos;
