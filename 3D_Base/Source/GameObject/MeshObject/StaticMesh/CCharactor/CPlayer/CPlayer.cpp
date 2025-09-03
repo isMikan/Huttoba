@@ -65,17 +65,17 @@ void CPlayer::HandleInput()
 	if (m_pInput->IsRepeat(Action::MoveLeft))	x -= 1.f;
 	if (m_pInput->IsRepeat(Action::MoveRight))	x += 1.f;
 
-	//攻撃.
-	if (m_pInput->IsDown(Action::Attack))
+	//アイテムを持っていないなら攻撃.
+	if (m_pInput->IsDown(Action::Attack) && !m_IsHoldingItem)
 	{
 		SetActionState(std::make_unique<CPlayerHandAttack>());
 	}
-	//持っていないなら拾う.
+	//アイテムを持っていないなら拾う.
 	if (m_pInput->IsDown(Action::ToggleItem) && !m_IsHoldingItem)
 	{
 		SetActionState(std::make_unique<CPlayerPickupItem>());
 	}
-	//持っているなら捨てる.
+	//アイテムを持っているなら捨てる.
 	else if (m_pInput->IsDown(Action::ToggleItem) && m_IsHoldingItem)
 	{
 		SetActionState(std::make_unique<CPlayerThrowItem>());
