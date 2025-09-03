@@ -17,9 +17,6 @@ public:
 	void Update(CPlayer& pPlayer) override;
 
 private:
-	D3DXVECTOR3		m_RightHandPos;			//右手の位置.
-	D3DXVECTOR3		m_LeftHandPos;			//左手の位置.
-
 	float			m_CenterHandOffset;		//手の中心寄りに調整.
 
 	float			m_StartTime;			//開始時間.
@@ -29,10 +26,10 @@ private:
 	float			m_TiltAngleMax;			//最大の傾き角度.
 	float			m_PhaseSplit;			//傾きの変わり目.
 
-	float			m_CurrentForwardHandSpeed;	//手の現在の速度.
-	float			m_StoppingForwardHandSpeed;	//止まっているときの手の前に進む速度.
-	float			m_MovingForwardHandSpeed;	//動いているときの手の前に進む速度.
-	float			m_DownHandSpeed;			//手の下がる速度.
-	
-	D3DXQUATERNION	m_StartQuat;				//開始時の回転.
+	D3DXVECTOR3		m_RightHandStartPos;	//右手の元の位置.
+	D3DXVECTOR3		m_LeftHandStartPos;		//左手の元の位置.
+	D3DXVECTOR3		m_RightHandEndPos;		//右手の元の位置.
+	D3DXVECTOR3		m_LeftHandEndPos;		//左手の元の位置.
+
+	D3DXQUATERNION	m_StartQuat;			//開始時の回転.
 };
