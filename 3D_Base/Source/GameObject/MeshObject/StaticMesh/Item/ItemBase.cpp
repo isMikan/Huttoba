@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "ItemBase.h"
+#include "CCharactor/CPlayer/CPlayer.h"
 
 
 ItemBase::ItemBase()
@@ -32,6 +33,12 @@ void ItemBase::Update()
 
 	//“–‚½‚è”»’è‚ÌÀ•W‚ğXV
 	UpdateBSpherePos();
+
+	//‰Šú‰»
+	if (GetAsyncKeyState('R') & 0x8000)
+	{
+		Init();
+	}
 
 }
 

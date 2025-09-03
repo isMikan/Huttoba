@@ -40,4 +40,6 @@ public:
 
 private:
 
+	float m_tGravity; // d—Í‰Á‘¬“x(ŠÈˆÕ”Å)
+
 };

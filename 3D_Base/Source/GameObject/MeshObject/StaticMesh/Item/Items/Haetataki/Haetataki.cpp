@@ -9,10 +9,9 @@ namespace { const bool regist = ItemBase::AutoRegister<Haetataki>("Haetataki"); 
 //--------------------------------------------------------------------------------------------------------------
 
 Haetataki::Haetataki()
+	: m_tGravity	( 0.01f )
 {
-	AttachMesh(AssetManager::Mesh(StaticMeshList::Haetataki));
-	CreateBSphereForMesh(AssetManager::Mesh(StaticMeshList::BSphere));
-	SetPosition(0.f,0.f,5.f);
+	Init();
 }
 
 //--------------------------------------------------------------------------------------------------------------
@@ -25,7 +24,10 @@ Haetataki::~Haetataki()
 
 void Haetataki::Update()
 {
+	//ƒAƒCƒeƒ€‹¤’Ê‚ÌUpdate
 	ItemBase::Update();
+
+
 }
 
 //--------------------------------------------------------------------------------------------------------------
@@ -39,13 +41,24 @@ void Haetataki::Draw(D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAMERA& C
 
 void Haetataki::Init()
 {
+	AttachMesh(AssetManager::Mesh(StaticMeshList::Haetataki));
+	CreateBSphereForMesh(AssetManager::Mesh(StaticMeshList::BSphere));
+	SetPosition(0.f, 5.f, 5.f);
+
+	m_State = ItemBase::State::Spawn;
+	m_tGravity = 0.01f;
 }
 
 //--------------------------------------------------------------------------------------------------------------
 
 void Haetataki::Spawn()
 {
-	if (GetAsyncKeyState('N') & 0x8000)
+	if(m_vPosition.y > 0.7f)
+	{
+		m_vPosition.y -= m_tGravity;
+		m_tGravity += 0.001f;
+	}
+	else
 	{
 		m_State = ItemBase::State::OnGround;
 	}

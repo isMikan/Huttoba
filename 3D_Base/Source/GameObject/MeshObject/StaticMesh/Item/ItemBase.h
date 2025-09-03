@@ -3,6 +3,8 @@
 #include "ItemFactory/ItemFactory.h"
 #include "GameObject/MeshObject/StaticMesh/CStaticMeshObject.h"
 
+class CPlayer;
+
 class ItemBase :
 	public CStaticMeshObject
 {
@@ -66,4 +68,7 @@ protected:
 protected:
 
 	State m_State; // アイテムの状態
+
+	//当たり判定用(test)
+	CPlayer* m_pPlayer; // プレイヤーのポインタ
 };
