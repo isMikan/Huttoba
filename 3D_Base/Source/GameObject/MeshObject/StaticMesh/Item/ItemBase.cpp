@@ -3,10 +3,8 @@
 
 
 ItemBase::ItemBase()
-	: m_Item()
-	, m_State(State::Spawn)
+	: m_State(State::Spawn)
 {
-	m_Item = std::make_unique<CStaticMeshObject>();
 }
 
 ItemBase::~ItemBase()
@@ -33,11 +31,11 @@ void ItemBase::Update()
 	}
 
 	//“–‚½‚è”»’è‚ÌÀ•W‚ðXV
-	m_Item->UpdateBSpherePos();
+	UpdateBSpherePos();
 
 }
 
 void ItemBase::Draw(D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAMERA& Camera)
 {
-	m_Item->Draw(View, Proj, Light, Camera);
+	CStaticMeshObject::Draw(View, Proj, Light, Camera);
 }

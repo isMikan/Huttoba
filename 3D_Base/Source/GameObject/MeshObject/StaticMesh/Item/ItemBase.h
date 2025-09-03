@@ -52,7 +52,7 @@ public:
 	/*****************************************************************************************
 	* @brief    描画処理
 	*****************************************************************************************/
-	virtual void Draw(D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAMERA& Camera) override;
+	virtual void Draw(D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAMERA& Camera) override = 0;
 
 protected:
 
@@ -65,6 +65,5 @@ protected:
 
 protected:
 
-	std::unique_ptr<CStaticMeshObject> m_Item; // アイテム;
 	State m_State; // アイテムの状態
 };

@@ -10,9 +10,9 @@ namespace { const bool regist = ItemBase::AutoRegister<Haetataki>("Haetataki"); 
 
 Haetataki::Haetataki()
 {
-	m_Item->AttachMesh(AssetManager::Mesh(StaticMeshList::Haetataki));
-	m_Item->CreateBSphereForMesh(AssetManager::Mesh(StaticMeshList::BSphere));
-	m_Item->SetPosition(0.f,0.f,5.f);
+	AttachMesh(AssetManager::Mesh(StaticMeshList::Haetataki));
+	CreateBSphereForMesh(AssetManager::Mesh(StaticMeshList::BSphere));
+	SetPosition(0.f,0.f,5.f);
 }
 
 //--------------------------------------------------------------------------------------------------------------
