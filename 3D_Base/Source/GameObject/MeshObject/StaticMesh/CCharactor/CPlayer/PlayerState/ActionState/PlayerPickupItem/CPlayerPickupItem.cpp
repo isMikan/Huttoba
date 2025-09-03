@@ -10,7 +10,7 @@ CPlayerPickupItem::CPlayerPickupItem()
 	: m_CenterHandOffset	( 0.2f )
 	
 	, m_StartTime			()
-	, m_EndTime				( 0.3f )
+	, m_EndTime				( 0.4f )
 
 	, m_CurrentTiltAngle	()
 	, m_TiltAngleMax		( D3DXToRadian( 30.f ) )
@@ -18,8 +18,8 @@ CPlayerPickupItem::CPlayerPickupItem()
 
 	, m_RightHandStartPos	()
 	, m_LeftHandStartPos	()
-	, m_RightHandEndPos		( 0.f, -0.5f, 0.5f )
-	, m_LeftHandEndPos		( 0.f, -0.5f, 0.5f )
+	, m_RightHandEndPos		( 0.f, -0.5f, 0.6f )
+	, m_LeftHandEndPos		( 0.f, -0.5f, 0.6f )
 
 	, m_StartQuat			()
 {

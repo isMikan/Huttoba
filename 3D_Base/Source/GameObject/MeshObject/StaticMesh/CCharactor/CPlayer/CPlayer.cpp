@@ -45,7 +45,6 @@ void CPlayer::Update()
 
 	m_pActionState->Update(*this);
 
-
 	CCharacter::Update();
 }
 
@@ -57,8 +56,8 @@ void CPlayer::Draw(
 
 void CPlayer::HandleInput()
 {
-	float z = 0.f;	//zŽ².
 	float x = 0.f;	//xŽ².
+	float z = 0.f;	//zŽ².
 
 	if (m_pInput->IsRepeat(Action::MoveUp))		z += 1.f;
 	if (m_pInput->IsRepeat(Action::MoveDown))	z -= 1.f;
