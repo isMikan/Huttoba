@@ -1,6 +1,6 @@
 #include "Scene/SceneResult/CSceneResult.h"
 
-CSceneResult::CSceneResult(CInput& input)
+CSceneResult::CSceneResult(CInputManager& input)
 	: m_Action				()
 
 	, m_pSpriteResultImg	( nullptr )
@@ -8,7 +8,7 @@ CSceneResult::CSceneResult(CInput& input)
 
 	, m_pPlayer				()
 
-	, m_Input				( input )
+	, m_InputManager		( input )
 
 	, m_SelectorPos			()
 
@@ -43,9 +43,9 @@ HRESULT CSceneResult::LoadData()
 
 void CSceneResult::Update()
 {
-	m_Input.Update();
+	m_InputManager.Update();
 
-	if (m_Input.IsDown(Action::Decide, true))
+	if (m_InputManager.GetInput(0).IsDown(Action::Decide, true))
 	{
 		SetNextScene(Title);
 	}
@@ -59,7 +59,7 @@ void CSceneResult::Update()
 		
 	};
 
-	if (m_Input.IsDown(Action::Decide))
+	if (m_InputManager.GetInput(0).IsDown(Action::Decide))
 	{
 		//‘I‘ð’†‚Ì”Ô†‚Åˆ—‚³‚ê‚éŠÖ”‚ª•Ï‚í‚é.
 		m_Action[m_SelectorNumber]();
@@ -87,12 +87,12 @@ void CSceneResult::SetSelectorPos()
 
 void CSceneResult::MoveSelector()
 {
-	if (m_Input.IsDown(Action::NavigateUp))
+	if (m_InputManager.GetInput(0).IsDown(Action::NavigateUp))
 	{
 		if (m_SelectorNumber > 0)
 			m_SelectorNumber--;
 	}
-	if (m_Input.IsDown(Action::NavigateDown))
+	if (m_InputManager.GetInput(0).IsDown(Action::NavigateDown))
 	{
 		if (m_SelectorNumber < m_SelectorYPos.size() - 1)
 			m_SelectorNumber++;

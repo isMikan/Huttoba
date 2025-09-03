@@ -3,13 +3,13 @@
 
 #include "GameObject/UIObject/CUIObject.h"
 #include "Assets/AssetManager.h"
-#include "CInput/CInput.h"
+#include "CInput/CInputManager.h"
 
 class CSceneTitle
 	: public CScene
 {
 public:
-	CSceneTitle(HWND hWnd, CInput& input);
+	CSceneTitle(HWND hWnd, CInputManager& input);
 	~CSceneTitle() override;
 
 	HRESULT Create() override;
@@ -32,7 +32,7 @@ private:
 	std::unique_ptr<CUIObject>	m_pSpriteTitlImg;	//タイトル画面.
 	std::unique_ptr<CUIObject>	m_pSpriteSelector;	//選択矢印.
 
-	CInput&						m_Input;
+	CInputManager&				m_InputManager;
 
 	D3DXVECTOR3					m_SelectorPos;		//選択矢印の座標.
 

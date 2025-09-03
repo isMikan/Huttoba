@@ -2,7 +2,7 @@
 #include "Scene/CScene.h"
 
 #include "GameObject/UIObject/CUIObject.h"
-#include "CInput/CInput.h"
+#include "CInput/CInputManager.h"
 #include "GameObject/MeshObject/StaticMesh/CCharactor/CPlayer/CPlayer.h"
 #include "Assets/AssetManager.h"
 
@@ -12,7 +12,7 @@ class CSceneResult
 	: public CScene
 {
 public:
-	CSceneResult(CInput& input);
+	CSceneResult(CInputManager& input);
 	~CSceneResult() override;
 
 	HRESULT Create()	override;
@@ -36,7 +36,7 @@ private:
 	//キャラクタークラス
 	std::vector< std::unique_ptr<CPlayer> >	m_pPlayer;
 
-	CInput&		m_Input;
+	CInputManager&				m_InputManager;
 
 	D3DXVECTOR3					m_SelectorPos;		//選択矢印の座標.
 

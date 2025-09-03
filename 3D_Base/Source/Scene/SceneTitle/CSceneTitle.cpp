@@ -1,6 +1,6 @@
 #include "CSceneTitle.h"
 
-CSceneTitle::CSceneTitle(HWND hWnd, CInput& input)
+CSceneTitle::CSceneTitle(HWND hWnd, CInputManager& inputmanager)
 	: m_hWnd			(hWnd)
 
 	, m_Action			()
@@ -8,7 +8,7 @@ CSceneTitle::CSceneTitle(HWND hWnd, CInput& input)
 	, m_pSpriteTitlImg	( nullptr )
 	, m_pSpriteSelector	( nullptr )
 	
-	, m_Input			( input )
+	, m_InputManager	( inputmanager )
 
 	, m_SelectorPos		()
 
@@ -44,15 +44,6 @@ HRESULT CSceneTitle::LoadData()
 
 	m_pSpriteSelector->AttachSprite(AssetManager::Sprite(Sprite2DList::Selector));
 
-	return S_OK;
-}
-
-void CSceneTitle::Update()
-{
-	m_Input.Update();
-
-	MoveSelector();
-
 	//ŠÖ”‚ð“ü‚ê‚é
 	m_Action =
 	{
@@ -62,7 +53,16 @@ void CSceneTitle::Update()
 		[this]() {DestroyWindow(m_hWnd);}
 	};
 
-	if (m_Input.IsDown(Action::Decide))
+	return S_OK;
+}
+
+void CSceneTitle::Update()
+{
+	m_InputManager.Update();
+
+	MoveSelector();
+
+	if (m_InputManager.GetInput(0).IsDown(Action::Decide))
 	{
 		//‘I‘ð’†‚Ì”Ô†‚Åˆ—‚³‚ê‚éŠÖ”‚ª•Ï‚í‚é.
 		m_Action[m_SelectorNumber]();
@@ -89,12 +89,12 @@ void CSceneTitle::SetSelectorPos()
 
 void CSceneTitle::MoveSelector()
 {
-	if (m_Input.IsDown(Action::NavigateUp))
+	if (m_InputManager.GetInput(0).IsDown(Action::NavigateUp))
 	{
 		if (m_SelectorNumber > 0)
 			m_SelectorNumber--;
 	}
-	if (m_Input.IsDown(Action::NavigateDown))
+	if (m_InputManager.GetInput(0).IsDown(Action::NavigateDown))
 	{
 		if (m_SelectorNumber < m_SelectorYPos.size() - 1)
 			m_SelectorNumber++;
