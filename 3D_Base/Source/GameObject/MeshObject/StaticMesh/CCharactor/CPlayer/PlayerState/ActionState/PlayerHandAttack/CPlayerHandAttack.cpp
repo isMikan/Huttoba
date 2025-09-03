@@ -8,17 +8,15 @@
 #include "TimeManager/CTimeManager.h"
 
 CPlayerHandAttack::CPlayerHandAttack()
-	: m_RightHandPos		( 0.f, 0.f, 0.f )
-	, m_LeftHandPos			( 0.f, 0.f, 0.f )
-
-	, m_CenterHandOffset	( 0.2f )
+	: m_CenterHandOffset	( 0.2f )
 
 	, m_StartTime			()
 	, m_EndTime				( 0.07f )
 
-	, m_CurrentSpeed		()
-	, m_StoppingAtkSpeed	( 8.f )
-	, m_MovingAtkSpeed		( 15.f )
+	, m_RightHandStartPos	()
+	, m_LeftHandStartPos	()
+	, m_RightHandEndPos		( 0.f, 0.f, 0.6f )
+	, m_LeftHandEndPos		( 0.f, 0.f, 0.6f )
 
 	, m_StartQuat			( 0.f, 0.f, 0.f, 1.f )
 {
@@ -44,43 +42,15 @@ void CPlayerHandAttack::Enter(CPlayer& pPlayer)
 	D3DXVECTOR3 rightOffset = pPlayer.GetPlayerRightHand().GetOffsetPos();
 	D3DXVECTOR3 leftOffset = pPlayer.GetPlayerLeftHand().GetOffsetPos();
 
-	//元の調整位置よりも中心寄りにする.
-	rightOffset.x -= m_CenterHandOffset;
-	leftOffset.x += m_CenterHandOffset;
-
-	//手の調整リスト.
-	D3DXVECTOR3 offset[]
-	{
-		rightOffset,
-		leftOffset
-	};
-	//リストの最大数.
-	int offsetMax = sizeof(offset) / sizeof(offset[0]);
-
-	for (int i = 0;i < offsetMax; i++)
-	{
-		//方向に合わせて位置を調整.
-		offset[i] =
-			axes.right * offset[i].x +
-			axes.up * offset[i].y +
-			axes.forward * offset[i].z;
-
-		//手の位置.
-		D3DXVECTOR3 handPos = playerPos + offset[i];
-
-		if (i == 0)
-		{
-			m_RightHandPos = handPos;
-			//右手の位置を設定.
-			pPlayer.GetPlayerRightHand().SetPosition(handPos);
-		}
-		else
-		{
-			m_LeftHandPos = handPos;
-			//左手の位置を設定.
-			pPlayer.GetPlayerLeftHand().SetPosition(handPos);
-		}
-	}
+	//手の開始位置を設定.
+	m_RightHandStartPos = rightOffset;
+	m_LeftHandStartPos = leftOffset;
+	//手の位置を中心寄りに調整.
+	m_RightHandStartPos.x = rightOffset.x - m_CenterHandOffset;
+	m_LeftHandStartPos.x = leftOffset.x + m_CenterHandOffset;
+	//手の終了位置を設定.
+	m_RightHandEndPos = m_RightHandStartPos + m_RightHandEndPos;
+	m_LeftHandEndPos = m_LeftHandStartPos + m_LeftHandEndPos;
 }
 
 void CPlayerHandAttack::Exit(CPlayer& pPlayer)
@@ -98,26 +68,40 @@ void CPlayerHandAttack::Update(CPlayer& pPlayer)
 		return;
 	}
 
-	m_CurrentSpeed = m_StoppingAtkSpeed;
-	if (pPlayer.IsMoving())
-	{
-		m_CurrentSpeed = m_MovingAtkSpeed;
-	}
+	//ローカル軸を取得.
+	CPlayer::LocalAxes axes = pPlayer.GetLocalAxes();
 
-	//前回のフレームからの経過時間.
-	float deltaTime = CTimeManager::GetInstance()->GetDeltaTime();
+	//全体の時間の現在の割合.
+	float progress = (totalTime - m_StartTime) / m_EndTime;
+	
+	float eased = sinf(progress * D3DX_PI * 0.5);	//0.5で半往復させ前に手を出す計算をする.	
 
-	//プレイヤーの位置.
+	//右手と左手の調整位置だけの計算.
+	D3DXVECTOR3 rightHandOffsetPos;
+	D3DXVec3Lerp(&rightHandOffsetPos, &m_RightHandStartPos, &m_RightHandEndPos, eased);
+	D3DXVECTOR3 leftHandOffsetPos;
+	D3DXVec3Lerp(&leftHandOffsetPos, &m_LeftHandStartPos, &m_LeftHandEndPos, eased);
+
+	//攻撃の開始時間を取得.
 	D3DXVECTOR3 playerPos = pPlayer.GetPosition();
-	//正面の方向を取得.
-	D3DXVECTOR3 forward = pPlayer.GetLocalAxes().forward;
-	D3DXVec3Normalize(&forward, &forward);	//正規化.
 
-	//プレイヤーの正面方向に手を押し出す.
-	m_RightHandPos += forward * m_CurrentSpeed * deltaTime;
-	m_LeftHandPos += forward  * m_CurrentSpeed * deltaTime;
+	//方向に合わせて右手の位置を調整.
+	rightHandOffsetPos =
+		axes.right * rightHandOffsetPos.x +
+		axes.up * rightHandOffsetPos.y +
+		axes.forward * rightHandOffsetPos.z;
+
+	//方向に合わせて左手の位置を調整.
+	leftHandOffsetPos =
+		axes.right * leftHandOffsetPos.x +
+		axes.up * leftHandOffsetPos.y +
+		axes.forward * leftHandOffsetPos.z;
+
+	//プレイヤーの位置と手の調整位置を合わせる.
+	D3DXVECTOR3 rightHandPos = playerPos + rightHandOffsetPos;
+	D3DXVECTOR3 leftHandPos = playerPos + leftHandOffsetPos;
 
 	//手の位置を設定.
-	pPlayer.GetPlayerRightHand().SetPosition(m_RightHandPos);
-	pPlayer.GetPlayerLeftHand().SetPosition(m_LeftHandPos);
+	pPlayer.GetPlayerRightHand().SetPosition(rightHandPos);
+	pPlayer.GetPlayerLeftHand().SetPosition(leftHandPos);
 }

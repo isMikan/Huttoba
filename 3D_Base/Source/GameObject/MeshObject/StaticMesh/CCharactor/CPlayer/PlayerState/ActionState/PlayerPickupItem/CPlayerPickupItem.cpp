@@ -73,12 +73,6 @@ void CPlayerPickupItem::Update(CPlayer& pPlayer)
 		return;
 	}
 
-	//前回のフレームからの経過時間.
-	float deltaTime = CTimeManager::GetInstance()->GetDeltaTime();
-
-	//ローカル軸を取得.
-	CPlayer::LocalAxes axes = pPlayer.GetLocalAxes();
-
 	//全体の時間の現在の割合.
 	float progress = (totalTime - m_StartTime) / m_EndTime;
 
@@ -103,6 +97,9 @@ void CPlayerPickupItem::Update(CPlayer& pPlayer)
 		//終了後は0度.
 		m_CurrentTiltAngle = 0.f;
 	}
+
+	//ローカル軸を取得.
+	CPlayer::LocalAxes axes = pPlayer.GetLocalAxes();
 
 	//クォータニオンの回転を計算して設定する.
 	pPlayer.SetQuaternion(pPlayer.TiltedQuat(m_StartQuat, axes.right, m_CurrentTiltAngle));

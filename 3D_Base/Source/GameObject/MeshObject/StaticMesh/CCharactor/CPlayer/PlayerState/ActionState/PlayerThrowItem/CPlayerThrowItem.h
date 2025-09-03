@@ -2,8 +2,11 @@
 
 #include "GameObject/MeshObject/StaticMesh/CCharactor/CPlayer/PlayerState/ActionState/CActionState.h"
 
+/**************************************************
+*	プレイヤーがアイテムを投げ捨てるの状態クラス.
+**/
 class CPlayerThrowItem
-	: public CActionState
+	: public CActionState	//行動状態のクラスの継承.
 {
 public:
 	CPlayerThrowItem();

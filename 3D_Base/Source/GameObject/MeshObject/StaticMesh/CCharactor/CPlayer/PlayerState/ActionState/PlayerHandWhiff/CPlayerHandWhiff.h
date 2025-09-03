@@ -3,8 +3,11 @@
 
 #include "GameObject/MeshObject/StaticMesh/CCharactor/CPlayer/PlayerState/ActionState/CActionState.h"
 
+/************************************************************
+*	プレイヤーがアイテム未所持の攻撃を空振りする状態クラス.
+**/
 class CPlayerHandWhiff
-	: public CActionState
+	: public CActionState	//行動状態のクラスの継承.
 {
 public:
 	CPlayerHandWhiff();

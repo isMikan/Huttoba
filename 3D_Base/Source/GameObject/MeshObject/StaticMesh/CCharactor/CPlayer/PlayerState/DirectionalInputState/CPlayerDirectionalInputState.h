@@ -4,6 +4,9 @@
 
 class CPlayer;
 
+/************************************************************
+*	プレイヤーが入力数値を受け取り行動する状態の継承クラス.
+**/
 class CPlayerDirectionalInputState
 {
 public:

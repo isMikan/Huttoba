@@ -2,8 +2,11 @@
 
 #include "GameObject/MeshObject/StaticMesh/CCharactor/CPlayer/PlayerState/ActionState/CActionState.h"
 
+/**************************************************
+*	プレイヤーがアイテム未所持の攻撃状態クラス.
+**/
 class CPlayerHandAttack
-	: public CActionState
+	: public CActionState	//行動状態のクラスの継承.
 {
 public:
 	CPlayerHandAttack();
@@ -17,17 +20,15 @@ public:
 	void Update(CPlayer& pPlayer) override;
 
 private:
-	D3DXVECTOR3 m_RightHandPos;		//右手の位置.
-	D3DXVECTOR3 m_LeftHandPos;		//左手の位置.
+	float			m_CenterHandOffset;		//手を中心寄りに調整.
 
-	float	m_CenterHandOffset;		//手を中心寄りに調整.
+	float			m_StartTime;			//開始時間.
+	float			m_EndTime;				//終了時間.
 
-	float	m_StartTime;			//開始時間.
-	float	m_EndTime;				//終了時間.
+	D3DXVECTOR3		m_RightHandStartPos;	//右手の元の位置.
+	D3DXVECTOR3		m_LeftHandStartPos;		//左手の元の位置.
+	D3DXVECTOR3		m_RightHandEndPos;		//右手の元の位置.
+	D3DXVECTOR3		m_LeftHandEndPos;		//左手の元の位置.
 
-	float	m_CurrentSpeed;			//現在の速度.
-	float	m_StoppingAtkSpeed;		//攻撃速度.
-	float	m_MovingAtkSpeed;		//移動している時の攻撃速度.
-
-	D3DXQUATERNION m_StartQuat;		//開始時の回転.
+	D3DXQUATERNION	m_StartQuat;			//開始時の回転.
 };

@@ -13,14 +13,13 @@
 
 CPlayer::CPlayer()
 	: m_pInput			( std::make_unique<CInput>( 0 ) )
+
 	, m_pRightHand		( std::make_unique<CPlayerRightHand>() )
 	, m_pLeftHand		( std::make_unique<CPlayerLeftHand>() )
 
 	, m_pMoveState		( std::make_unique<CPlayerMoveIdle>() )
 	, m_pRotationState	( std::make_unique<CPlayerRotationIdle>() )
 	, m_pActionState	( std::make_unique<CPlayerActionIdle>() )
-
-	, m_Forward			( 0.f, 0.f, 0.f )
 
 	, m_IsMoving		( false )
 	, m_IsRotating		( false )
@@ -64,6 +63,16 @@ void CPlayer::HandleInput()
 	if (m_pInput->IsRepeat(Action::MoveLeft))	x -= 1.f;
 	if (m_pInput->IsRepeat(Action::MoveRight))	x += 1.f;
 
+	//ê⁄ë±Ç≥ÇÍÇƒÇ¢ÇΩÇÁêîílÇéÛÇØéÊÇÈ.
+	if (m_pInput->IsConnect())
+	{
+		x = m_pInput->GetLeftSthikX();
+		z = m_pInput->GetLeftSthikY();
+	}
+
+	m_pMoveState->KeyInput(*this, x, z);
+	m_pRotationState->KeyInput(*this, x, z);
+
 	//ÉAÉCÉeÉÄÇéùÇ¡ÇƒÇ¢Ç»Ç¢Ç»ÇÁçUåÇ.
 	if (m_pInput->IsDown(Action::Attack) && !m_IsHoldingItem)
 	{
@@ -79,16 +88,6 @@ void CPlayer::HandleInput()
 	{
 		SetActionState(std::make_unique<CPlayerThrowItem>());
 	}
-
-	if(m_pInput->IsConnect())
-	{
-		x = m_pInput->GetLeftSthikX();
-		z = m_pInput->GetLeftSthikY();
-	}
-
-	m_pMoveState->KeyInput(*this, x, z);
-
-	m_pRotationState->KeyInput(*this, x, z);
 }
 
 //à⁄ìÆèÛë‘Çê›íËÇ∑ÇÈä÷êî.
@@ -164,14 +163,14 @@ D3DXQUATERNION CPlayer::TiltedQuat(
 void CPlayer::SetPlayerInputBinding()
 {
 	//ÉLÅ[É{Å[ÉhëÄçÏ.
-	m_pInput->BindKey(Action::MoveUp, InputBinding(InputDevice::Keyboard, VK_UP));			//è„à⁄ìÆ.
-	m_pInput->BindKey(Action::MoveDown, InputBinding(InputDevice::Keyboard, VK_DOWN));		//â∫à⁄ìÆ.
-	m_pInput->BindKey(Action::MoveLeft, InputBinding(InputDevice::Keyboard, VK_LEFT));		//ç∂à⁄ìÆ.
-	m_pInput->BindKey(Action::MoveRight, InputBinding(InputDevice::Keyboard, VK_RIGHT));	//âEà⁄ìÆ.
-	m_pInput->BindKey(Action::Attack, InputBinding(InputDevice::Keyboard, 'Z'));			//çUåÇ.
-	m_pInput->BindKey(Action::ToggleItem, InputBinding(InputDevice::Keyboard, 'X'));		//èEÇ§/éÃÇƒÇÈ.
+	m_pInput->BindKey(Action::MoveUp,		InputBinding(InputDevice::Keyboard, VK_UP));		//è„à⁄ìÆ.
+	m_pInput->BindKey(Action::MoveDown,		InputBinding(InputDevice::Keyboard, VK_DOWN));		//â∫à⁄ìÆ.
+	m_pInput->BindKey(Action::MoveLeft,		InputBinding(InputDevice::Keyboard, VK_LEFT));		//ç∂à⁄ìÆ.
+	m_pInput->BindKey(Action::MoveRight,	InputBinding(InputDevice::Keyboard, VK_RIGHT));		//âEà⁄ìÆ.
+	m_pInput->BindKey(Action::Attack,		InputBinding(InputDevice::Keyboard, 'Z'));			//çUåÇ.
+	m_pInput->BindKey(Action::ToggleItem,	InputBinding(InputDevice::Keyboard, 'X'));			//èEÇ§/éÃÇƒÇÈ.
 
 	//ÉRÉìÉgÉçÅ[ÉâëÄçÏ.
-	m_pInput->BindKey(Action::Attack, InputBinding(InputDevice::GamePad, CXInput::RB));		//çUåÇ.
-	m_pInput->BindKey(Action::ToggleItem, InputBinding(InputDevice::GamePad, CXInput::B));	//èEÇ§/éÃÇƒÇÈ.
+	m_pInput->BindKey(Action::Attack,		InputBinding(InputDevice::GamePad, CXInput::RB));	//çUåÇ.
+	m_pInput->BindKey(Action::ToggleItem,	InputBinding(InputDevice::GamePad, CXInput::B));	//èEÇ§/éÃÇƒÇÈ.
 }

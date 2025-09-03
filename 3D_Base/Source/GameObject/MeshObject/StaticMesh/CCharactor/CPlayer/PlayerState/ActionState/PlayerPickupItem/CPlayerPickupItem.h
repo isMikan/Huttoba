@@ -2,8 +2,11 @@
 
 #include "GameObject/MeshObject/StaticMesh/CCharactor/CPlayer/PlayerState/ActionState/CActionState.h"
 
+/**************************************************
+*	プレイヤーがアイテムを拾う状態クラス.
+**/
 class CPlayerPickupItem
-	: public CActionState
+	: public CActionState	//行動状態のクラスの継承.
 {
 public:
 	CPlayerPickupItem();

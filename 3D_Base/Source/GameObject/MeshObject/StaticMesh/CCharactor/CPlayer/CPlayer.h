@@ -97,7 +97,7 @@ private:
 		std::unique_ptr<StateType> newScene);
 
 private:
-	std::unique_ptr<CInput>	m_pInput;	//“ü—Í.
+	std::unique_ptr<CInput>				m_pInput;			//“ü—Í.
 
 	std::unique_ptr<CPlayerRightHand>	m_pRightHand;		//‰Eè.
 	std::unique_ptr<CPlayerLeftHand>	m_pLeftHand;		//¶è.
@@ -105,8 +105,6 @@ private:
 	std::unique_ptr<CPlayerDirectionalInputState>	m_pMoveState;		//ˆÚ“®.
 	std::unique_ptr<CPlayerDirectionalInputState>	m_pRotationState;	//‰ñ“].
 	std::unique_ptr<CActionState>					m_pActionState;		//s“®.
-
-	D3DXVECTOR3 m_Forward;			//³–Ê•ûŒü.
 
 	bool		m_IsMoving;			//ˆÚ“®‚µ‚Ä‚¢‚é‚©.
 	bool		m_IsRotating;		//‰ñ“]‚µ‚Ä‚¢‚é‚©.

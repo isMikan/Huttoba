@@ -2,8 +2,11 @@
 
 #include "GameObject/MeshObject/StaticMesh/CCharactor/CPlayer/PlayerState/DirectionalInputState/CPlayerDirectionalInputState.h"
 
+/**************************************************
+*	プレイヤーが移動しない状態クラス.
+**/
 class CPlayerMoveIdle
-	: public CPlayerDirectionalInputState
+	: public CPlayerDirectionalInputState	//入力数値の受け取り状態クラスを継承.
 {
 public:
 	CPlayerMoveIdle();

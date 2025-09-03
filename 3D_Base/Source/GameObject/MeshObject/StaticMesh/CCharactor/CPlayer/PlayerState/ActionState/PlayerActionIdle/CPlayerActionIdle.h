@@ -2,8 +2,11 @@
 
 #include "GameObject/MeshObject/StaticMesh/CCharactor/CPlayer/PlayerState/ActionState/CActionState.h"
 
+/**************************************************
+*	プレイヤーが何も行動していない状態クラス.
+**/
 class CPlayerActionIdle
-	: public CActionState
+	: public CActionState	//行動状態のクラスの継承.
 {
 public:
 	CPlayerActionIdle();

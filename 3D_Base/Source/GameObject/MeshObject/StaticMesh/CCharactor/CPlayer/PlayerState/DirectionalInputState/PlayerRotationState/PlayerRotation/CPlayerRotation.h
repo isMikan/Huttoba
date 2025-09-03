@@ -2,8 +2,11 @@
 
 #include "GameObject/MeshObject/StaticMesh/CCharactor/CPlayer/PlayerState/DirectionalInputState/CPlayerDirectionalInputState.h"
 
+/**************************************************
+*	プレイヤーが回転する状態クラス.
+**/
 class CPlayerRotation
-	: public CPlayerDirectionalInputState
+	: public CPlayerDirectionalInputState	//入力数値の受け取り状態クラスを継承.
 {
 public:
 	CPlayerRotation();
