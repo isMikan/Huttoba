@@ -18,6 +18,7 @@ CSceneResult::CSceneResult(CInputManager& input)
 {
 	Create();
 	LoadData();
+	SetSelectorPos();
 }
 
 CSceneResult::~CSceneResult()
@@ -37,6 +38,16 @@ HRESULT CSceneResult::LoadData()
 	m_pSpriteResultImg->AttachSprite(AssetManager::Sprite(Sprite2DList::Result));
 	m_pSpriteSelector->AttachSprite(AssetManager::Sprite(Sprite2DList::Selector));
 
+	//関数を入れる
+	m_Action =
+	{
+		//ラムダ式で関数にしてm_Actionの中に入れている(SetNextScene(Standby);ではだめ).
+		//画面に表示される選択肢の文字と同じ順番に処理を入れていく
+		[this]() {SetNextScene(GameMain);},
+		[this]() {SetNextScene(Standby);},
+		[this]() {SetNextScene(Title);}
+	};
+
 	return S_OK;
 }
 
@@ -45,19 +56,12 @@ void CSceneResult::Update()
 {
 	m_InputManager.Update();
 
-	if (m_InputManager.GetInput(0).IsDown(Action::Decide, true))
-	{
-		SetNextScene(Title);
-	}
+	MoveSelector();
 
-	//関数を入れる
-	m_Action =
-	{
-		//ラムダ式で関数にしてm_Actionの中に入れている(SetNextScene(Standby);ではだめ).
-		//画面に表示される選択肢の文字と同じ順番に処理を入れていく
-		[this]() {SetNextScene(Standby);},
-		
-	};
+	//if (m_InputManager.GetInput(0).IsDown(Action::Decide, true))
+	//{
+	//	SetNextScene(Title);
+	//}
 
 	if (m_InputManager.GetInput(0).IsDown(Action::Decide))
 	{
@@ -79,10 +83,11 @@ void CSceneResult::Destroy()
 
 void CSceneResult::SetSelectorPos()
 {
-	m_SelectorPos = D3DXVECTOR3(500, 0, 0);
+	m_SelectorPos = D3DXVECTOR3(900, 0, 0);
 
-	m_SelectorYPos.push_back(430);
-	m_SelectorYPos.push_back(540);
+	m_SelectorYPos.push_back(D3DXVECTOR3(900, 410, 0));
+	m_SelectorYPos.push_back(D3DXVECTOR3(850, 510, 0));
+	m_SelectorYPos.push_back(D3DXVECTOR3(900, 590, 0));
 }
 
 void CSceneResult::MoveSelector()
@@ -98,6 +103,6 @@ void CSceneResult::MoveSelector()
 			m_SelectorNumber++;
 	}
 
-	m_SelectorPos.y = m_SelectorYPos[m_SelectorNumber];
-	m_pSpriteSelector->SetPosition(m_SelectorPos);
+	//m_SelectorPos.y = m_SelectorYPos[m_SelectorNumber];
+	m_pSpriteSelector->SetPosition(m_SelectorYPos[m_SelectorNumber]);
 }

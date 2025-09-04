@@ -113,6 +113,7 @@ enum class UIList
 enum class Sprite3DList
 {
 	Explosion,
+	Standby
 };
 
 enum class Sprite2DList

@@ -156,7 +156,7 @@ void CSceneStandby::InitializeRedyFont()
 {
 	for (int i = 0;i < 4;i++)
 	{
-		m_pRedyFontImg[i]->SetPosition(200 + (200 * i), 40, 0);
+		m_pRedyFontImg[i]->SetPosition(200 + (200 * i), 240, 0);
 		m_pNotRedyFontImg[i]->SetPosition(200 + (200 * i), 240, 0);
 	}
 }
@@ -165,8 +165,8 @@ void CSceneStandby::SetSelectorPos()
 {
 	m_SelectorPos = D3DXVECTOR3(500, 430, 0);
 
-	m_SelectorYPos.push_back(430);
-	m_SelectorYPos.push_back(540);
+	m_SelectorYPos.push_back(460);
+	m_SelectorYPos.push_back(550);
 }
 
 void CSceneStandby::MoveSelector()
