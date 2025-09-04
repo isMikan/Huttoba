@@ -20,7 +20,6 @@
 
 #include "GameObject/MeshObject/StaticMesh/Ground/CGround.h"
 #include "GameObject/MeshObject/StaticMesh/DrawCollision/DrawCollision.h"
-#include "GameObject/MeshObject/StaticMesh/CCharactor/CEnemy/CEnemy.h"
 
 #include "Assets/Mesh/SkinMesh/CSkinMesh.h"
 #include "Scene/CSceneManager.h"
@@ -56,8 +55,6 @@ public:
 	HRESULT CreateCharactor();
 
 	void ManageEffectLaser();
-	void AttachMeshToEnemy();
-
 
 private:
 
@@ -78,9 +75,6 @@ private:
 
 	//キャラクタークラス
 	std::vector<std::unique_ptr<CPlayer>>	m_pPlayers;
-
-	//エネミークラス
-	std::unordered_map < EnemyList, std::vector<std::unique_ptr<CEnemy> > > m_pEnemies;
 
 	//地面クラス
 	std::vector<std::unique_ptr<CGround>> 	m_pGrounds;

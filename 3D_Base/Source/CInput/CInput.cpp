@@ -109,7 +109,7 @@ float CInput::SthikNormalize(SHORT sthik)
 	return SthikDeadZone(f);
 }
 
-float CInput::SthikDeadZone(float sthik)
+float CInput::SthikDeadZone(float sthik) const
 {
 	//abs(絶対値)がデッドゾーンより大きいなら通る.
 	if (abs(sthik) > m_SthikDeadZone)

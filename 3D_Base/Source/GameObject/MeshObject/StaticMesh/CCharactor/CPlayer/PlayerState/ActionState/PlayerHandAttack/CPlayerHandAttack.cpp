@@ -75,6 +75,7 @@ void CPlayerHandAttack::Update(CPlayer& pPlayer)
 		&& isHit)
 	{
 		pPlayer.SetActionState(std::make_unique<CPlayerHandHit>());
+		pPlayer.SetHitInfo(pPlayer.GetPosition(), 0.f, false);
 		return;
 	}
 	else if (totalTime - m_StartTime > m_EndTime)

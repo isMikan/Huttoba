@@ -12,7 +12,6 @@
 #include "GameObject/MeshObject/StaticMesh/CCharactor/CCharacter.h"
 #include "GameObject/MeshObject/StaticMesh/CCharactor/CPlayer/CPlayer.h"
 #include "GameObject/MeshObject/StaticMesh/Ground/CGround.h"
-#include "GameObject/MeshObject/StaticMesh/CCharactor/CEnemy/CEnemy.h"
 #include "Scene/CSceneManager.h"
 
 

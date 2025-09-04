@@ -93,7 +93,8 @@ void CPlayer::HandleInput()
 		SetActionState(std::make_unique<CPlayerThrowItem>());
 	}
 
-	if (m_HitInfo.isHit == true)
+	if (m_HitInfo.isHit == true
+		&& m_HitInfo.force > 0.f)
 	{
 		SetActionState(std::make_unique<CPlayerPushed>());
 	}

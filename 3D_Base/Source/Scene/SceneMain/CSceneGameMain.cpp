@@ -18,8 +18,6 @@ CSceneGameMain::CSceneGameMain( HWND hWnd, CInputManager& inputManager)
 
 	, m_pExplosiones	()
 
-	, m_pEnemies		()
-
 	, m_pGrounds		()
 
 	, m_pItemManager	( nullptr )
@@ -160,8 +158,6 @@ HRESULT CSceneGameMain::LoadData()
 	m_pItemManager->LoadData();
 	m_pDrawCollision->LoadData();
 
-	AttachMeshToEnemy();
-
 	//Pモンそれぞれの画像パターンを設定
 	m_pUIMap[UIList::Beedrill]->SetPatternNo(14, 0);
 	m_pUIMap[UIList::Parasect]->SetPatternNo(14, 2);
@@ -174,32 +170,6 @@ HRESULT CSceneGameMain::LoadData()
 	m_pUIMap[UIList::Parasect]->SetPosition(size * 1.f, pos_y, 0.f);
 	m_pUIMap[UIList::Scyther]->SetPosition(size * 2.f, pos_y, 0.f);
 
-
-	for (auto& enemyType : m_pEnemies)
-	{
-		for (auto& enemy : enemyType.second)
-		{
-			enemy->CreateBSphereForMesh(AssetManager::Mesh(StaticMeshList::BSphere));
-		}
-	}
-
-	for (auto& enemyType : m_pEnemies)
-	{
-		for (auto& enemy : enemyType.second)
-		{
-			enemy->SetPosition(0.f, 1.f, 16.f);
-		}
-	}
-	//エネミー複数設定
-
-	for (auto& enemy : m_pEnemies[EnemyList::RoboA])
-	{
-		int i = static_cast<int>(&enemy - &m_pEnemies[EnemyList::RoboA][0]);
-
-		enemy->AttachMesh(AssetManager::Mesh(StaticMeshList::RoboA));
-		enemy->CreateBSphereForMesh(AssetManager::Mesh(StaticMeshList::BSphere));
-		enemy->SetPosition(-3.f + (i * 3.f), 1.f, 10.f);
-	}
 
 	return S_OK;
 }
@@ -236,15 +206,6 @@ void CSceneGameMain::Update()
 	}
 
 	m_pItemManager->Update(m_pPlayers[0].get());
-
-	//エネミー
-	for (auto& enemyType : m_pEnemies)
-	{
-		for (auto& enemy : enemyType.second)
-		{
-			enemy->Update();
-		}
-	}
 
 	//爆発
 	for (auto& exp : m_pExplosiones)
@@ -302,14 +263,6 @@ void CSceneGameMain::Draw()
 		player->UpdateBSpherePos();
 	}
 
-	for (auto& enemyType : m_pEnemies)
-	{
-		for (auto& enemy : enemyType.second)
-		{
-			enemy->Draw(mView, mProj, light, camera);
-		}
-	}
-
 	m_pItemManager->Draw(mView, mProj, light, camera);
 	m_pDrawCollision->Draw(mView, mProj, light, camera);
 
@@ -329,13 +282,6 @@ void CSceneGameMain::Draw()
 	m_pDx11->SetDepth(true);
 
 
-	for (auto& enemyType : m_pEnemies)
-	{
-		for (auto& enemy : enemyType.second)
-		{
-			enemy->UpdateBSpherePos();
-		}
-	}
 	for (int pNo = 0;pNo < Player_Max;pNo++)
 	{
 		for (int aNo = 0;aNo < Player_Max;aNo++)
@@ -358,25 +304,12 @@ void CSceneGameMain::Draw()
 			{
 				m_pPlayers[pNo]->SetHitInfo(
 					m_pPlayers[aNo]->GetPosition(), 0.05f, true);
+
+				m_pPlayers[aNo]->SetHitInfo(
+					m_pPlayers[aNo]->GetPosition(), 0.f, true);
 			}
 		}
 	}
-
-	////プレイヤーとエネミーの当たり判定
-	//for (auto& enemyType : m_pEnemies)
-	//{
-	//	for (auto& enemy : enemyType.second)
-	//	{
-	//		if (m_pPlayer->GetBSphere()->IsHit(*enemy->GetBSphere()))
-	//		{
-	//			SetWindowText(m_hWnd, _T("衝突しています"));
-	//		}
-	//		else
-	//		{
-	//			SetWindowText(m_hWnd, _T(""));
-	//		}
-	//	}
-	//}
 
 	for (auto& exp : m_pExplosiones)
 	{
@@ -440,22 +373,6 @@ HRESULT CSceneGameMain::CreateCharactor()
 		if (!m_pPlayers[pNo]) return E_POINTER;
 	}
 
-	m_pEnemies[EnemyList::RoboB].push_back(std::make_unique<CEnemy>());
-
-	for (int i = 0; i < Enemy_Max; i++)
-	{
-		m_pEnemies[EnemyList::RoboA].push_back(std::make_unique<CEnemy>());
-	}
-
-	//nullチェック
-	for (const auto& enemyType : m_pEnemies)
-	{
-		for (const auto& e : enemyType.second)
-		{
-			if (!e) return E_POINTER;
-		}
-	}
-
 	return S_OK;
 }
 
@@ -485,32 +402,4 @@ void CSceneGameMain::ManageEffectLaser()
 		AssetManager::Effect()->Stop(hEffect);
 	}
 
-}
-
-void CSceneGameMain::AttachMeshToEnemy()
-{
-	//敵の種類分回す
-	for (auto& enemyType : m_pEnemies)
-	{
-		//その種類の敵の数分回す
-		for (auto& enemy : enemyType.second)
-		{
-			//種類によってメッシュ変更
-			switch (enemyType.first)
-			{
-			case EnemyList::RoboA:
-
-				enemy->AttachMesh(AssetManager::Mesh(StaticMeshList::RoboA));
-				break;
-
-			case EnemyList::RoboB:
-
-				enemy->AttachMesh(AssetManager::Mesh(StaticMeshList::RoboB));
-				break;
-
-			default:
-				break;
-			}
-		}
-	}
 }

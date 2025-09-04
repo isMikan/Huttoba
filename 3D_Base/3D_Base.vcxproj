@@ -258,7 +258,6 @@
     <ClCompile Include="Source\GameObject\CGameObject.cpp" />
     <ClCompile Include="Source\GameObject\MeshObject\SkinMesh\CSkinMeshObject.cpp" />
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CCharacter.cpp" />
-    <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CEnemy\CEnemy.cpp" />
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CPlayer\CPlayer.cpp" />
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CPlayer\PlayerHand\CPlayerHand.cpp" />
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CPlayer\PlayerHand\PlayerLeftHand\CPlayerLeftHand.cpp" />
@@ -339,7 +338,6 @@
     <ClInclude Include="Source\GameObject\CGameObject.h" />
     <ClInclude Include="Source\GameObject\MeshObject\SkinMesh\CSkinMeshObject.h" />
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CCharacter.h" />
-    <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CEnemy\CEnemy.h" />
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CPlayer\CPlayer.h" />
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CPlayer\PlayerHand\CPlayerHand.h" />
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CPlayer\PlayerHand\PlayerLeftHand\CPlayerLeftHand.h" />

@@ -46,7 +46,7 @@ private:
 	float SthikNormalize(SHORT sthik);
 
 	//スティックのデッドゾーン処理.
-	float SthikDeadZone(float sthik);
+	float SthikDeadZone(float sthik) const;
 
 private:
 	std::unique_ptr<CXInput>	m_pXInput;
