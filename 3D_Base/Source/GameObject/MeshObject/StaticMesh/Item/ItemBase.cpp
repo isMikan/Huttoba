@@ -4,7 +4,9 @@
 
 
 ItemBase::ItemBase()
-	: m_State(State::Spawn)
+	: m_State	( State::Spawn )
+	, m_pPlayer	( nullptr )
+	, m_tGravity(0.01f)
 {
 }
 
@@ -16,8 +18,14 @@ void ItemBase::Init()
 {
 }
 
-void ItemBase::Update()
+void ItemBase::Update(CPlayer* player)
 {
+	//‰Šú‰»
+	if (GetAsyncKeyState('R') & 0x8000)
+	{
+		Init();
+	}
+
 	//ó‘Ô‚É‚æ‚Á‚Ä‘JˆÚ
 	switch (m_State)
 	{
@@ -34,11 +42,6 @@ void ItemBase::Update()
 	//“–‚½‚è”»’è‚ÌÀ•W‚ğXV
 	UpdateBSpherePos();
 
-	//‰Šú‰»
-	if (GetAsyncKeyState('R') & 0x8000)
-	{
-		Init();
-	}
 
 }
 

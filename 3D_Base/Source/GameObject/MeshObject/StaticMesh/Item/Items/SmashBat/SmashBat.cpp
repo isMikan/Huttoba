@@ -25,7 +25,7 @@ void SmashBat::Init()
 
 //--------------------------------------------------------------------------------------------------------------
 
-void SmashBat::Update()
+void SmashBat::Update(CPlayer* player)
 {
 }
 
