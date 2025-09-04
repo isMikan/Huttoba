@@ -158,19 +158,6 @@ HRESULT CSceneGameMain::LoadData()
 	m_pItemManager->LoadData();
 	m_pDrawCollision->LoadData();
 
-	//Pモンそれぞれの画像パターンを設定
-	m_pUIMap[UIList::Beedrill]->SetPatternNo(14, 0);
-	m_pUIMap[UIList::Parasect]->SetPatternNo(14, 2);
-	m_pUIMap[UIList::Scyther]->SetPatternNo(10, 7);
-
-	//Pモンそれぞれの位置を設定
-	const float size = 64.f;	// 64.f
-	const float pos_y = static_cast<float>(WND_H) - 64.f;
-	m_pUIMap[UIList::Beedrill]->SetPosition(size * 0.f, pos_y, 0.f);
-	m_pUIMap[UIList::Parasect]->SetPosition(size * 1.f, pos_y, 0.f);
-	m_pUIMap[UIList::Scyther]->SetPosition(size * 2.f, pos_y, 0.f);
-
-
 	return S_OK;
 }
 
@@ -275,7 +262,7 @@ void CSceneGameMain::Draw()
 
 	for (auto& UI : m_pUIMap)
 	{
-		UI.second->Draw();
+		//UI.second->Draw();
 	}
 
 	//やりたいことが終わったので、深度テストを有効にしておく
@@ -287,16 +274,6 @@ void CSceneGameMain::Draw()
 		for (int aNo = 0;aNo < Player_Max;aNo++)
 		{
 			if (pNo == aNo) break;
-
-			if (m_pPlayers[aNo]->GetBSphere()->
-				IsHit(*m_pPlayers[pNo]->GetBSphere()))
-			{
-				SetWindowText(m_hWnd, _T("衝突しています"));
-			}
-			else
-			{
-				SetWindowText(m_hWnd, _T(""));
-			}
 
 			if (m_pPlayers[aNo]->IsAttacking()
 				&& m_pPlayers[aNo]->GetBSphere()->
@@ -316,15 +293,15 @@ void CSceneGameMain::Draw()
 		exp->Draw(mView, mProj);
 	}
 
-	//デバッグテキストの描画
-	m_pDbgText->SetColor(0.9f, 0.6f, 0.f);	//色の設定
-	m_pDbgText->Render(_T("ABCD"), 10, 100);
+	////デバッグテキストの描画
+	//m_pDbgText->SetColor(0.9f, 0.6f, 0.f);	//色の設定
+	//m_pDbgText->Render(_T("ABCD"), 10, 100);
 
-	//デバッグテキスト(数値入り)の描画
-	m_pDbgText->SetColor(1.f, 0.f, 0.f);
-	TCHAR dbgText[64];
-	_stprintf_s(dbgText, _T("Float:%f, %f"), 1.f, 2.2f);
-	m_pDbgText->Render(dbgText, 10, 110);
+	////デバッグテキスト(数値入り)の描画
+	//m_pDbgText->SetColor(1.f, 0.f, 0.f);
+	//TCHAR dbgText[64];
+	//_stprintf_s(dbgText, _T("Float:%f, %f"), 1.f, 2.2f);
+	//m_pDbgText->Render(dbgText, 10, 110);
 
 	//Effectクラス
 	AssetManager::Effect()->Draw(mView, mProj, light, camera);
@@ -336,9 +313,6 @@ HRESULT CSceneGameMain::CreateUI()
 	UIList UI[] =
 	{
 		UIList::Pmon,
-		UIList::Beedrill,
-		UIList::Parasect,
-		UIList::Scyther,
 	};
 
 	for (auto& id : UI)

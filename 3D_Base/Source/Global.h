@@ -108,9 +108,6 @@ enum class StaticMeshList
 enum class UIList
 {
 	Pmon = 0,
-	Beedrill,
-	Parasect,
-	Scyther,
 };
 enum class Sprite3DList
 {
@@ -127,12 +124,3 @@ enum class Sprite2DList
 	Result,
 	Selector
 };
-
-enum class EnemyList
-{
-	RoboA = 0,
-	RoboB,
-	Zako
-};
-
-
