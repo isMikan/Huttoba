@@ -6,18 +6,17 @@ CSceneResult::CSceneResult(CInputManager& input)
 	, m_pSpriteResultImg	( nullptr )
 	, m_pSpriteSelector		( nullptr )
 
-	, m_pPlayer				()
+	//, m_pPlayer				()
 
 	, m_InputManager		( input )
 
 	, m_SelectorPos			()
 
 	, m_SelectorNumber		( 0 )
-
-	, m_SelectorYPos		()
 {
 	Create();
 	LoadData();
+	SetSelectorPos();
 }
 
 CSceneResult::~CSceneResult()
@@ -45,18 +44,21 @@ void CSceneResult::Update()
 {
 	m_InputManager.Update();
 
-	if (m_InputManager.GetInput(0).IsDown(Action::Decide, true))
-	{
-		SetNextScene(Title);
-	}
+	MoveSelector();
+
+	//if (m_InputManager.GetInput(0).IsDown(Action::Decide, true))
+	//{
+	//	SetNextScene(Title);
+	//}
 
 	//ŠÖ”‚ğ“ü‚ê‚é
 	m_Action =
 	{
 		//ƒ‰ƒ€ƒ_®‚ÅŠÖ”‚É‚µ‚Äm_Action‚Ì’†‚É“ü‚ê‚Ä‚¢‚é(SetNextScene(Standby);‚Å‚Í‚¾‚ß).
 		//‰æ–Ê‚É•\¦‚³‚ê‚é‘I‘ğˆ‚Ì•¶š‚Æ“¯‚¶‡”Ô‚Éˆ—‚ğ“ü‚ê‚Ä‚¢‚­
+		[this]() {SetNextScene(GameMain);},
 		[this]() {SetNextScene(Standby);},
-		
+		[this]() {SetNextScene(Title);}
 	};
 
 	if (m_InputManager.GetInput(0).IsDown(Action::Decide))
@@ -79,10 +81,9 @@ void CSceneResult::Destroy()
 
 void CSceneResult::SetSelectorPos()
 {
-	m_SelectorPos = D3DXVECTOR3(500, 0, 0);
-
-	m_SelectorYPos.push_back(430);
-	m_SelectorYPos.push_back(540);
+	m_SelectorPos.push_back(D3DXVECTOR3(910, 415, 0));
+	m_SelectorPos.push_back(D3DXVECTOR3(850, 510, 0));
+	m_SelectorPos.push_back(D3DXVECTOR3(910, 590, 0));
 }
 
 void CSceneResult::MoveSelector()
@@ -94,10 +95,9 @@ void CSceneResult::MoveSelector()
 	}
 	if (m_InputManager.GetInput(0).IsDown(Action::NavigateDown))
 	{
-		if (m_SelectorNumber < m_SelectorYPos.size() - 1)
+		if (m_SelectorNumber < m_SelectorPos.size() - 1)
 			m_SelectorNumber++;
 	}
 
-	m_SelectorPos.y = m_SelectorYPos[m_SelectorNumber];
-	m_pSpriteSelector->SetPosition(m_SelectorPos);
+	m_pSpriteSelector->SetPosition(m_SelectorPos[m_SelectorNumber]);
 }
