@@ -25,7 +25,6 @@ void ItemBase::Update(CPlayer* player)
 	{
 		Init();
 	}
-
 	
 	//ó‘Ô‚É‚æ‚Á‚Ä‘JˆÚ
 	switch (m_State)
@@ -42,8 +41,6 @@ void ItemBase::Update(CPlayer* player)
 
 	//“–‚½‚è”»’è‚ÌÀ•W‚ğXV
 	UpdateBSpherePos();
-
-
 }
 
 void ItemBase::Update()
