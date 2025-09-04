@@ -8,7 +8,7 @@
 #include "Scene/SceneStandby/CSceneStandby.h"
 #include "Scene/SceneMain/CSceneGameMain.h"
 #include "Scene/SceneResult/CSceneResult.h"
-#include "CInput/CInput.h"
+#include "CInput/CInputManager.h"
 
 class CSceneManager final
 {
@@ -28,8 +28,8 @@ private:
 	void SetInputBInding();
 
 private:
-	std::unique_ptr<CScene> m_pScene;
-	std::unique_ptr<CInput>	m_pInput;
+	std::unique_ptr<CScene>		m_pScene;
+	CInputManager&				m_pInputManager;
 
 	HWND	m_hWnd;
 };

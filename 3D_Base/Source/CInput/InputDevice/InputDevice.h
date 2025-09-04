@@ -12,6 +12,7 @@ enum class Action
 	ToggleItem,		//アイテムの切り替え.
 
 	Decide,			//決定.
+	Switch,			//準備切り替え.
 	NavigateUp,		//選択肢を上に移動.
 	NavigateDown,	//選択肢を下に移動.
 

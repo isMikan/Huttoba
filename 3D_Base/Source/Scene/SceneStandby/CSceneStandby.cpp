@@ -1,17 +1,32 @@
 #include "CSceneStandby.h"
 
-CSceneStandby::CSceneStandby(CInput& input)
+CSceneStandby::CSceneStandby(CInputManager& input)
 	: m_pSpriteStandbyImg	( nullptr )
-	, m_pRedyFontImg		()
+
+	, m_pRedyFontImg		( )
 	, m_pNotRedyFontImg		()
+
+	, m_pSpriteSelector		(nullptr)
+
 	, m_pCamera				( nullptr )
+
 	, m_pPlayer				()
-	, m_Input				( input )
-	, m_Inputs				()
+
+	, m_InputManager		( input )
+
+	, m_Action				()
+
+	, m_SelectorPos			()
+
+	, m_SelectorNumber		(0)
+
+	, m_SelectorYPos		()
 {
 	Create();
 	LoadData();
-	InitializePlayers();
+	//InitializePlayers();
+	InitializeRedyFont();
+	SetSelectorPos();
 }
 
 CSceneStandby::~CSceneStandby()
@@ -20,9 +35,15 @@ CSceneStandby::~CSceneStandby()
 
 HRESULT CSceneStandby::Create()
 {
-	m_pSpriteStandbyImg = std::make_unique<CSprite2D>();
+	m_pSpriteStandbyImg = std::make_unique<CUIObject>();
 
+	for (int i = 0;i < 4;i++)
+	{
+		m_pRedyFontImg[i] = std::make_unique<CUIObject>();
+		m_pNotRedyFontImg[i] = std::make_unique<CUIObject>();
+	}
 
+	m_pSpriteSelector = std::make_unique<CUIObject>();
 
 	m_pCamera = std::make_unique<CCamera>();
 
@@ -31,22 +52,60 @@ HRESULT CSceneStandby::Create()
 
 HRESULT CSceneStandby::LoadData()
 {
-	CSprite2D::SPRITE_STATE Title =
-	{ WND_W,WND_H,WND_W,WND_H,WND_W,WND_H };
-
 	//読み込みのマネージャーを作成してくれているみたいなので後で切り替えておく.
-	m_pSpriteStandbyImg->Init(_T("Data\\Texture\\Standby_kari.png"), Title);
+	//m_pSpriteStandbyImg->Init(_T("Data\\Texture\\Standby_kari.png"), Title);
+
+
+	m_pSpriteStandbyImg->AttachSprite(AssetManager::Sprite(Sprite2DList::Standby));
+
+	for (int i = 0;i < 4;i++)
+	{
+		m_pRedyFontImg[i]->AttachSprite(AssetManager::Sprite(Sprite2DList::RedyFont));
+		m_pNotRedyFontImg[i]->AttachSprite(AssetManager::Sprite(Sprite2DList::NotRedyFont));
+	}
+
+	m_pSpriteSelector->AttachSprite(AssetManager::Sprite(Sprite2DList::Selector));
+
+
+	//関数を入れる
+	m_Action =
+	{
+		//ラムダ式で関数にしてm_Actionの中に入れている(SetNextScene(Standby);ではだめ).
+		//画面に表示される選択肢の文字と同じ順番に処理を入れていく
+		[this]() {SetNextScene(GameMain);},
+		[this]() {SetNextScene(Title);}
+	};
 
 	return S_OK;
 }
 
 void CSceneStandby::Update()
 {
-	m_Input.Update();
+	m_InputManager.Update();
 
-	if (m_Input.IsDown(Action::Decide, true))
+	MoveSelector();
+
+	auto& input = m_InputManager.GetInput(0);
+
+	// コントローラー0は「決定可能」
+	auto& input0 = m_InputManager.GetInput(0);
+	auto& slot0 = m_InputManager.GetSlot(0);
+	if (input0.IsDown(Action::Decide)/* && slot0.ready*/)
 	{
-		SetNextScene(GameMain);
+		//SetNextScene(GameMain);
+		//選択中の番号で処理される関数が変わる.
+		m_Action[m_SelectorNumber]();
+	}
+
+	//コントローラーで準備状態切り替え.
+	for (int i = 0; i < 4; ++i)
+	{
+		auto& input = m_InputManager.GetInput(i);
+
+		if (input.IsDown(Action::Switch))
+		{
+			m_InputManager.ChangeSlot(i);
+		}
 	}
 }
 
@@ -60,28 +119,69 @@ void CSceneStandby::Draw()
 	CAMERA		camera = m_pCamera->GetCamera();
 
 
-	//m_pSpriteStandbyImg->Render();	//一番前に表示されるので文字などを表示させたい際は要検証.
 	for (int i = 0;i < 4;i++)
 	{
-		m_pPlayer[i]->Draw(mView, mProj, light, camera);
+		if (m_InputManager.GetSlot(i).ready)
+		{
+			m_pRedyFontImg[i]->Draw();
+		}
+		else
+		{
+			m_pNotRedyFontImg[i]->Draw();
+		}
 	}
+
+	m_pSpriteSelector->Draw();
+
+	m_pSpriteStandbyImg->Draw();	//一番前に表示されるので文字などを表示させたい際は要検証.
+
 }
 
 void CSceneStandby::Destroy()
 {
 }
 
-void CSceneStandby::InitializePlayers()
+//void CSceneStandby::InitializePlayers()
+//{
+//	////プレイヤーの人数だけ処理(マジックナンバーなのを後で変える).
+//	//for (int i = 0;i < 4;i++)
+//	//{
+//	//	m_pPlayer.push_back(std::make_unique<CPlayer>());
+//	//	m_pPlayer[i]->AttachMesh(AssetManager::Mesh(StaticMeshList::Player));
+//	//	m_pPlayer[i]->SetPosition(-12.f + (9.f * i), 1.f, 6.f);
+//	//}
+//}
+
+void CSceneStandby::InitializeRedyFont()
 {
-	//プレイヤーの人数だけ処理(マジックナンバーなのを後で変える).
 	for (int i = 0;i < 4;i++)
 	{
-		m_pPlayer.push_back(std::make_unique<CPlayer>());
-		m_pPlayer[i]->AttachMesh(AssetManager::Mesh(StaticMeshList::Player));
-		m_pPlayer[i]->SetPosition(-12.f + (9.f * i), 1.f, 6.f);
+		m_pRedyFontImg[i]->SetPosition(200 + (200 * i), 40, 0);
+		m_pNotRedyFontImg[i]->SetPosition(200 + (200 * i), 240, 0);
 	}
 }
 
-void CSceneStandby::InitializeInput()
+void CSceneStandby::SetSelectorPos()
 {
+	m_SelectorPos = D3DXVECTOR3(500, 430, 0);
+
+	m_SelectorYPos.push_back(430);
+	m_SelectorYPos.push_back(540);
+}
+
+void CSceneStandby::MoveSelector()
+{
+	if (m_InputManager.GetInput(0).IsDown(Action::NavigateUp))
+	{
+		if (m_SelectorNumber > 0)
+			m_SelectorNumber--;
+	}
+	if (m_InputManager.GetInput(0).IsDown(Action::NavigateDown))
+	{
+		if (m_SelectorNumber < m_SelectorYPos.size() - 1)
+			m_SelectorNumber++;
+	}
+
+	m_SelectorPos.y = m_SelectorYPos[m_SelectorNumber];
+	m_pSpriteSelector->SetPosition(m_SelectorPos);
 }

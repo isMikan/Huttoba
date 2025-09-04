@@ -2,7 +2,7 @@
 #include "CInput.h"
 #include <array>
 
-//準備画面でのプレイヤーの状態.
+//準備画面でのプレイヤーの状態(※絶対ここに書くべきではないので学校でどこに入れるかみんなに聞く).
 enum class PlayerSlotState
 {
 	None,
@@ -12,51 +12,66 @@ enum class PlayerSlotState
 	Max
 };
 
-//プレイヤーの情報をまとめる.
+//プレイヤーの情報をまとめる(※上に同じ).
 struct PlayerSlot
 {
 	PlayerSlotState state;	//準備画面でのプレイヤーの状態.
-	int inputIndex;			//対応するコントローラーの番号.
+    bool ready = false;			    //準備状態.
 };
 
 class CInputManager
 {
 public:
-	static CInputManager& GetInstance()
-	{
-		static CInputManager instance;
-		return instance;
-	}
+    ~CInputManager();
+
+    static CInputManager& Instance() 
+    {
+        static CInputManager instance;
+        return instance;
+    }
+
+    void Update();
+
+    CInput& GetInput(int index) { return *m_pInputs[index]; }
+
+    void BindKey(Action action, const InputBinding& binding);
+
+    void BindKey(Action action, const InputBinding& binding, int i);
+
+
+    //別の場所に追加するべき-----------
+    PlayerSlot& GetSlot(int index) { return m_Slot[index]; }
+
+    void ChangeSlot(int index)
+    {
+        if (m_Slot[index].ready)
+        {
+            m_Slot[index].ready = false;
+        }
+        else
+        {
+            m_Slot[index].ready = true;
+        }
+    }
+
+    void SetHuman(int index) {
+        m_Slot[index].state = PlayerSlotState::Player;
+        m_Slot[index].ready = true;
+    }
+
+    void SetCPU(int index) {
+        m_Slot[index].state = PlayerSlotState::COM;
+        m_Slot[index].ready = false;
+    }
+
+    //-------
+private:
+    CInputManager();
+    CInputManager(const CInputManager&) = delete;
+    CInputManager& operator=(const CInputManager&) = delete;
 
 private:
-	CInputManager()/* = default*/;
-	~CInputManager();
+    std::array<std::unique_ptr<CInput>, 4> m_pInputs;
 
-public:
-	//void Initialize();
-	void Update();
-
-	//プレイヤーの参加管理.
-	void JoinPlayer(int inputIndex);
-
-	CInput& GetPlayerIndex(int playerIndex);
-
-private:
-
-	CInputManager(const CInputManager&) = delete;
-	CInputManager& operator=(const CInputManager&) = delete;
-
-	//m_Inputの作成.
-	void InitializeInput();
-
-private:
-	//ゲームのプレイヤーの最大人数Globalに入れるべきかも.
-	static const int PlayerMax = 4;
-
-private:
-	//プレイヤーの数だけCInput作成する.
-	std::array<std::unique_ptr<CInput>, PlayerMax>	m_Inputs;	
-
-	//プレイヤーが参加するかをとる.
-	std::array < PlayerSlot, PlayerMax>					m_PlayerSlot;
+    std::array<PlayerSlot, 4>                m_Slot;    //仮置き
 };

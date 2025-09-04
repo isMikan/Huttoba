@@ -1,9 +1,9 @@
 #include "CSceneManager.h"
 
 CSceneManager::CSceneManager(HWND hWnd)
-	: m_pScene		( nullptr )
-	, m_pInput		( nullptr )
-	, m_hWnd		( hWnd )
+	: m_pScene				(nullptr)
+	, m_pInputManager	(CInputManager::Instance() )
+	, m_hWnd			( hWnd )
 {
 	Create();
 }
@@ -14,8 +14,8 @@ CSceneManager::~CSceneManager()
 
 HRESULT CSceneManager::Create()
 {
-	m_pScene = std::make_unique<CSceneTitle>(m_hWnd, *m_pInput);
-	m_pInput = std::make_unique<CInput>(0);
+	//m_pInputManager = std::make_unique<CInputManager>();
+	m_pScene = std::make_unique<CSceneTitle>(m_hWnd, m_pInputManager);
 
 	SetInputBInding();
 
@@ -57,10 +57,10 @@ void CSceneManager::CreateScene(int Scene)
 	//ÉVÅ[ÉìçÏê¨
 	switch (Scene)
 	{
-	case Title:		m_pScene = std::make_unique<CSceneTitle>	(m_hWnd, *m_pInput);break;
-	case Standby:	m_pScene = std::make_unique<CSceneStandby>	(*m_pInput);		break;
-	case GameMain:  m_pScene = std::make_unique<CSceneGameMain>	(m_hWnd);			break;
-	case Result:	m_pScene = std::make_unique<CSceneResult>	(*m_pInput);		break;
+	case Title:		m_pScene = std::make_unique<CSceneTitle>	(m_hWnd, m_pInputManager);	break;
+	case Standby:	m_pScene = std::make_unique<CSceneStandby>	(m_pInputManager);			break;
+	case GameMain:  m_pScene = std::make_unique<CSceneGameMain>	(m_hWnd);					break;
+	case Result:	m_pScene = std::make_unique<CSceneResult>	(m_pInputManager);			break;
 	default: 
 		//èIóπ
 		return;
@@ -72,13 +72,15 @@ void CSceneManager::CreateScene(int Scene)
 
 void CSceneManager::SetInputBInding()
 {
-	m_pInput->BindKey(Action::Decide, InputBinding(InputDevice::GamePad, CXInput::B));
-	m_pInput->BindKey(Action::Decide, InputBinding(InputDevice::Keyboard, 'Z'));
+	m_pInputManager.BindKey(Action::Decide, InputBinding(InputDevice::GamePad, CXInput::B));
+	m_pInputManager.BindKey(Action::Decide, InputBinding(InputDevice::Keyboard, 'Z'));
 
-
-	m_pInput->BindKey(Action::NavigateUp, InputBinding(InputDevice::GamePad, CXInput::UP));
-	m_pInput->BindKey(Action::NavigateUp, InputBinding(InputDevice::Keyboard, VK_UP));
-
-	m_pInput->BindKey(Action::NavigateDown, InputBinding(InputDevice::GamePad, CXInput::DOWN));
-	m_pInput->BindKey(Action::NavigateDown, InputBinding(InputDevice::Keyboard, VK_DOWN));
+	m_pInputManager.BindKey(Action::Switch, InputBinding(InputDevice::GamePad, CXInput::A));
+	m_pInputManager.BindKey(Action::Switch, InputBinding(InputDevice::Keyboard, 'X'));
+				   
+	m_pInputManager.BindKey(Action::NavigateUp, InputBinding(InputDevice::GamePad, CXInput::UP));
+	m_pInputManager.BindKey(Action::NavigateUp, InputBinding(InputDevice::Keyboard, VK_UP));
+				   
+	m_pInputManager.BindKey(Action::NavigateDown, InputBinding(InputDevice::GamePad, CXInput::DOWN));
+	m_pInputManager.BindKey(Action::NavigateDown, InputBinding(InputDevice::Keyboard, VK_DOWN));
 }
