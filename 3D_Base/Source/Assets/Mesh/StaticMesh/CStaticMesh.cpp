@@ -709,12 +709,12 @@ void CStaticMesh::Render(
 
 
 	//メッシュのレンダリング.
-	RenderMesh( mWorld, mView, mProj );
+	RenderMesh( mWorld, mQuatWorld, mView, mProj );
 }
 
 //レンダリング関数(クラス内でのみ使用する).
 void CStaticMesh::RenderMesh(
-	D3DXMATRIX& mWorld, D3DXMATRIX& mView, D3DXMATRIX& mProj)
+	D3DXMATRIX& mWorld, D3DXMATRIX& mQuatWorld, D3DXMATRIX& mView, D3DXMATRIX& mProj)
 {
 	//シェーダのコンスタントバッファに各種データを渡す.
 	D3D11_MAPPED_SUBRESOURCE pData;
@@ -742,6 +742,25 @@ void CStaticMesh::RenderMesh(
 			pData.RowPitch,	//コピー先のバッファサイズ.
 			(void*)(&cb),	//コピー元のバッファ.
 			sizeof(cb));	//コピー元のバッファサイズ.
+
+		//==========クォータニオン==========.
+		//コンスタントバッファ.
+		CBUFFER_PER_MESH cbQuat;
+
+		cbQuat.mW = mQuatWorld;
+		D3DXMatrixTranspose(&cbQuat.mW, &cbQuat.mW);
+
+		//ワールド,ビュー,プロジェクション行列を渡す.
+		D3DXMATRIX mQWVP = mQuatWorld * mView * mProj;
+		D3DXMatrixTranspose(&mQWVP, &mQWVP);	//行列を転置する.
+		//※行列の計算方法がDirectXとGPUで異なるため転置が必要.
+		cbQuat.mWVP = mQWVP;
+
+		memcpy_s(
+			pData.pData,	//コピー先のバッファ.
+			pData.RowPitch,	//コピー先のバッファサイズ.
+			(void*)(&cbQuat),	//コピー元のバッファ.
+			sizeof(cbQuat));	//コピー元のバッファサイズ.
 
 		//バッファ内のデータの書き換え終了時にUnmap.
 		m_pContext11->Unmap( m_pCBufferPerMesh.Get(), 0);

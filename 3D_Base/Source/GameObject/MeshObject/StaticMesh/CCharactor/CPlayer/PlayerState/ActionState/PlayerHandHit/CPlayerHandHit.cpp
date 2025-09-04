@@ -1,14 +1,14 @@
-#include "CPlayerHandWhiff.h"
+#include "CPlayerHandHit.h"
 
-#include "CPlayer.h"
+#include "GameObject/MeshObject/StaticMesh/CCharactor/CPlayer/CPlayer.h"
 
-#include "CPlayerMoveIdle.h"
-#include "CPlayerRotationIdle.h"
-#include "CPlayerActionIdle.h"
+#include "GameObject/MeshObject/StaticMesh/CCharactor/CPlayer/PlayerState/DirectionalInputState/PlayerMoveState/PlayerIdle/CPlayerMoveIdle.h"
+#include "GameObject/MeshObject/StaticMesh/CCharactor/CPlayer/PlayerState/DirectionalInputState/PlayerRotationState/PlayerRotationIdle/CPlayerRotationIdle.h"
+#include "GameObject/MeshObject/StaticMesh/CCharactor/CPlayer/PlayerState/ActionState/PlayerActionIdle/CPlayerActionIdle.h"
 
-#include "CGameTimer.h"
+#include "TimeManager/CTimeManager.h"
 
-CPlayerHandWhiff::CPlayerHandWhiff()
+CPlayerHandHit::CPlayerHandHit()
 	: m_StartTime			()
 	, m_EndTime				( 0.3f )
 
@@ -25,19 +25,20 @@ CPlayerHandWhiff::CPlayerHandWhiff()
 {
 }
 
-CPlayerHandWhiff::~CPlayerHandWhiff()
+CPlayerHandHit::~CPlayerHandHit()
 {
 }
 
-void CPlayerHandWhiff::Enter(CPlayer& pPlayer)
+void CPlayerHandHit::Enter(CPlayer& pPlayer)
 {
+	//傾き角度の初期化.
 	m_CurrentTiltAngle = 0.f;
 
 	//クォータニオン型の回転を取得.
-    m_StartQuat = pPlayer.GetRotationQuat();
+    m_StartQuat = pPlayer.GetQuaternion();
 
 	//攻撃の開始時間を取得.
-	m_StartTime = CGameTimer::GetInstance()->GetTotalTime();
+	m_StartTime = CTimeManager::GetInstance()->GetTotalTime();
 
 	//手の開始位置を設定.
 	m_RightHandStartPos = pPlayer.GetPlayerRightHand().GetPosition();
@@ -85,17 +86,17 @@ void CPlayerHandWhiff::Enter(CPlayer& pPlayer)
 	}
 }
 
-void CPlayerHandWhiff::Exit(CPlayer& pPlayer)
+void CPlayerHandHit::Exit(CPlayer& pPlayer)
 {
-    pPlayer.SetRotationQuat(m_StartQuat);
+    pPlayer.SetQuaternion(m_StartQuat);
 }
 
-void CPlayerHandWhiff::Update(CPlayer& pPlayer)
+void CPlayerHandHit::Update(CPlayer& pPlayer)
 {
 	pPlayer.SetMoveState(std::make_unique<CPlayerMoveIdle>());
 	pPlayer.SetRotationState(std::make_unique<CPlayerRotationIdle>());
 
-	float totalTime = CGameTimer::GetInstance()->GetTotalTime();
+	float totalTime = CTimeManager::GetInstance()->GetTotalTime();
 
 	//現在の経過時間と開始時間の差が終了時間を上回ったら.
 	if (totalTime - m_StartTime > m_EndTime)
@@ -133,7 +134,7 @@ void CPlayerHandWhiff::Update(CPlayer& pPlayer)
 	CPlayer::LocalAxes axes = pPlayer.GetLocalAxes();
 
 	//クォータニオンの回転を計算して設定する.
-	pPlayer.SetRotationQuat(pPlayer.TiltedQuat(m_StartQuat, axes.right, m_CurrentTiltAngle));
+	pPlayer.SetQuaternion(pPlayer.TiltedQuat(m_StartQuat, axes.right, m_CurrentTiltAngle));
 	
 	//D3DXVECTOR3 offset = D3DXVECTOR3(0.f, 0.f, 5.f);
 	//pPlayer.SetPivotOffset(offset);
@@ -148,14 +149,4 @@ void CPlayerHandWhiff::Update(CPlayer& pPlayer)
 	//手の位置を設定.
 	pPlayer.GetPlayerRightHand().SetPosition(rightHandPos);
 	pPlayer.GetPlayerLeftHand().SetPosition(leftHandPos);
-}
-
-void CPlayerHandWhiff::Handle(CPlayer& pPlayer, int inputKey)
-{
-
-}
-
-std::string CPlayerHandWhiff::GetStateName() const
-{
-	return "HandWhiff";
 }

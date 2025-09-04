@@ -186,7 +186,7 @@ private:
 	HRESULT CreateSampler();
 
 	//レンダリング関数(クラス内でのみ使用する).
-	void RenderMesh( D3DXMATRIX& mWorld, D3DXMATRIX& mView, D3DXMATRIX& mProj );
+	void RenderMesh( D3DXMATRIX& mWorld, D3DXMATRIX& mQuatWorld, D3DXMATRIX& mView, D3DXMATRIX& mProj );
 
 private:
 	//Dx9.
