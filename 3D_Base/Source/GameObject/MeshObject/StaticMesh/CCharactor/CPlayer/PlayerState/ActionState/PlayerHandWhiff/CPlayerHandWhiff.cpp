@@ -10,11 +10,11 @@
 
 CPlayerHandWhiff::CPlayerHandWhiff()
 	: m_StartTime			()
-	, m_EndTime				( 0.5f )
+	, m_EndTime				( 0.4f )
 							  
 	, m_CurrentTiltAngle	()
-	, m_TiltAngleMax		( D3DXToRadian( 30.f ) )
-	, m_PhaseSplit			( 0.5f )
+	, m_TiltAngleMax		( D3DXToRadian( 20.f ) )
+	, m_PhaseSplit			( 0.4f )
 							  
 	, m_RightHandStartPos	( 0.f, 0.f, 0.f )
 	, m_LeftHandStartPos	( 0.f, 0.f, 0.f )
@@ -88,7 +88,6 @@ void CPlayerHandWhiff::Enter(CPlayer& pPlayer)
 
 void CPlayerHandWhiff::Exit(CPlayer& pPlayer)
 {
-	pPlayer.SetQuaternion(m_StartQuat);
 }
 
 void CPlayerHandWhiff::Update(CPlayer& pPlayer)

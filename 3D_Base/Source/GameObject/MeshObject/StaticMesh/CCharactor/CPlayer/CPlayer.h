@@ -101,7 +101,7 @@ public:
 	void SetAttacking(bool attacking) { m_IsAttacking = attacking; }
 
 	//UŒ‚‚ğó‚¯‚½î•ñ‚ğæ“¾‚Æİ’è.
-	HitInfo GetHitInfo() { return m_HitInfo; }
+	HitInfo GetHitInfo() const { return m_HitInfo; }
 	void SetHitInfo(D3DXVECTOR3 pos, float force, bool isHit) {
 		m_HitInfo.position = pos;
 		m_HitInfo.force = force;

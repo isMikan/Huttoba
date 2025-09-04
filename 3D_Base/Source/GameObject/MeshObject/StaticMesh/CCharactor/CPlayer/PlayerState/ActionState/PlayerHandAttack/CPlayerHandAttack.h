@@ -25,6 +25,9 @@ private:
 	float			m_StartTime;			//開始時間.
 	float			m_EndTime;				//終了時間.
 
+	float			m_CurrentTiltAngle;		//現在の傾き角度.
+	float			m_TiltAngleMax;			//最大の傾き角度.
+
 	D3DXVECTOR3		m_RightHandStartPos;	//右手の元の位置.
 	D3DXVECTOR3		m_LeftHandStartPos;		//左手の元の位置.
 	D3DXVECTOR3		m_RightHandEndPos;		//右手の元の位置.

@@ -1,14 +1,14 @@
-#include "CPlayerHandWhiff.h"
+#include "CPlayerHandHit.h"
 
-#include "CPlayer.h"
+#include "GameObject/MeshObject/StaticMesh/CCharactor/CPlayer/CPlayer.h"
 
-#include "CPlayerMoveIdle.h"
-#include "CPlayerRotationIdle.h"
-#include "CPlayerActionIdle.h"
+#include "GameObject/MeshObject/StaticMesh/CCharactor/CPlayer/PlayerState/DirectionalInputState/PlayerMoveState/PlayerIdle/CPlayerMoveIdle.h"
+#include "GameObject/MeshObject/StaticMesh/CCharactor/CPlayer/PlayerState/DirectionalInputState/PlayerRotationState/PlayerRotationIdle/CPlayerRotationIdle.h"
+#include "GameObject/MeshObject/StaticMesh/CCharactor/CPlayer/PlayerState/ActionState/PlayerActionIdle/CPlayerActionIdle.h"
 
-#include "CGameTimer.h"
+#include "TimeManager/CTimeManager.h"
 
-CPlayerHandWhiff::CPlayerHandWhiff()
+CPlayerHandHit::CPlayerHandHit()
 	: m_StartTime			()
 	, m_EndTime				( 0.3f )
 
@@ -25,77 +25,39 @@ CPlayerHandWhiff::CPlayerHandWhiff()
 {
 }
 
-CPlayerHandWhiff::~CPlayerHandWhiff()
+CPlayerHandHit::~CPlayerHandHit()
 {
 }
 
-void CPlayerHandWhiff::Enter(CPlayer& pPlayer)
+void CPlayerHandHit::Enter(CPlayer& pPlayer)
 {
+	//傾き角度の初期化.
 	m_CurrentTiltAngle = 0.f;
 
 	//クォータニオン型の回転を取得.
-    m_StartQuat = pPlayer.GetRotationQuat();
+    m_StartQuat = pPlayer.GetQuaternion();
 
 	//攻撃の開始時間を取得.
-	m_StartTime = CGameTimer::GetInstance()->GetTotalTime();
+	m_StartTime = CTimeManager::GetInstance()->GetTotalTime();
 
 	//手の開始位置を設定.
 	m_RightHandStartPos = pPlayer.GetPlayerRightHand().GetPosition();
 	m_LeftHandStartPos = pPlayer.GetPlayerLeftHand().GetPosition();
-
-	//プレイヤーの位置を取得.
-	D3DXVECTOR3 playerPos = pPlayer.GetPosition();
-
-	//ローカル軸を取得.
-	CPlayer::LocalAxes axes = pPlayer.GetLocalAxes();
-
-	//手の位置を調整するための数値を取得.
-	D3DXVECTOR3 rightOffset = pPlayer.GetPlayerRightHand().GetOffsetPos();
-	D3DXVECTOR3 leftOffset = pPlayer.GetPlayerLeftHand().GetOffsetPos();
-
-	//手の調整リスト.
-	D3DXVECTOR3 offset[]
-	{
-		rightOffset,
-		leftOffset
-	};
-	//リストの最大数.
-	int offsetMax = sizeof(offset) / sizeof(offset[0]);
-
-	for (int i = 0;i < offsetMax; i++)
-	{
-		//方向に合わせて位置を調整.
-		offset[i] =
-			axes.right * offset[i].x +
-			axes.up * offset[i].y +
-			axes.forward * offset[i].z;
-
-		//手の位置.
-		D3DXVECTOR3 handPos = playerPos + offset[i];
-
-		//手の最終位置を設定.
-		if (i == 0)
-		{
-			m_RightHandEndPos = handPos;
-		}
-		else
-		{
-			m_LeftHandEndPos = handPos;
-		}
-	}
+	//手の開始位置を設定.
+	m_RightHandEndPos = pPlayer.GetPlayerRightHand().GetOffsetPos();
+	m_LeftHandEndPos = pPlayer.GetPlayerLeftHand().GetOffsetPos();
 }
 
-void CPlayerHandWhiff::Exit(CPlayer& pPlayer)
+void CPlayerHandHit::Exit(CPlayer& pPlayer)
 {
-    pPlayer.SetRotationQuat(m_StartQuat);
 }
 
-void CPlayerHandWhiff::Update(CPlayer& pPlayer)
+void CPlayerHandHit::Update(CPlayer& pPlayer)
 {
 	pPlayer.SetMoveState(std::make_unique<CPlayerMoveIdle>());
 	pPlayer.SetRotationState(std::make_unique<CPlayerRotationIdle>());
 
-	float totalTime = CGameTimer::GetInstance()->GetTotalTime();
+	float totalTime = CTimeManager::GetInstance()->GetTotalTime();
 
 	//現在の経過時間と開始時間の差が終了時間を上回ったら.
 	if (totalTime - m_StartTime > m_EndTime)
@@ -133,29 +95,36 @@ void CPlayerHandWhiff::Update(CPlayer& pPlayer)
 	CPlayer::LocalAxes axes = pPlayer.GetLocalAxes();
 
 	//クォータニオンの回転を計算して設定する.
-	pPlayer.SetRotationQuat(pPlayer.TiltedQuat(m_StartQuat, axes.right, m_CurrentTiltAngle));
-	
-	//D3DXVECTOR3 offset = D3DXVECTOR3(0.f, 0.f, 5.f);
-	//pPlayer.SetPivotOffset(offset);
+	pPlayer.SetQuaternion(pPlayer.TiltedQuat(m_StartQuat, axes.right, m_CurrentTiltAngle));
 
-	float eased = sinf(progress * D3DX_PI * 0.5f);	//0.5かけて半円分の移動を計算.	
+	float eased = sinf(progress * D3DX_PI * 0.5);	//0.5で半往復させ前に手を戻す計算をする.	
 
-	D3DXVECTOR3 rightHandPos;
-	D3DXVec3Lerp(&rightHandPos, &m_RightHandStartPos, &m_RightHandEndPos, eased);
-	D3DXVECTOR3 leftHandPos;
-	D3DXVec3Lerp(&leftHandPos, &m_LeftHandStartPos, &m_LeftHandEndPos, eased);
+	//右手と左手の調整位置だけの計算.
+	D3DXVECTOR3 rightHandOffsetPos;
+	D3DXVec3Lerp(&rightHandOffsetPos, &m_RightHandStartPos, &m_RightHandEndPos, eased);
+	D3DXVECTOR3 leftHandOffsetPos;
+	D3DXVec3Lerp(&leftHandOffsetPos, &m_LeftHandStartPos, &m_LeftHandEndPos, eased);
+
+	//攻撃の開始時間を取得.
+	D3DXVECTOR3 playerPos = pPlayer.GetPosition();
+
+	//方向に合わせて右手の位置を調整.
+	rightHandOffsetPos =
+		axes.right * rightHandOffsetPos.x +
+		axes.up * rightHandOffsetPos.y +
+		axes.forward * rightHandOffsetPos.z;
+
+	//方向に合わせて左手の位置を調整.
+	leftHandOffsetPos =
+		axes.right * leftHandOffsetPos.x +
+		axes.up * leftHandOffsetPos.y +
+		axes.forward * leftHandOffsetPos.z;
+
+	//プレイヤーの位置と手の調整位置を合わせる.
+	D3DXVECTOR3 rightHandPos = playerPos + rightHandOffsetPos;
+	D3DXVECTOR3 leftHandPos = playerPos + leftHandOffsetPos;
 
 	//手の位置を設定.
 	pPlayer.GetPlayerRightHand().SetPosition(rightHandPos);
 	pPlayer.GetPlayerLeftHand().SetPosition(leftHandPos);
-}
-
-void CPlayerHandWhiff::Handle(CPlayer& pPlayer, int inputKey)
-{
-
-}
-
-std::string CPlayerHandWhiff::GetStateName() const
-{
-	return "HandWhiff";
 }
