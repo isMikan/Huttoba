@@ -10,6 +10,10 @@ namespace { const bool regist = ItemBase::AutoRegister<Haetataki>("Haetataki"); 
 //--------------------------------------------------------------------------------------------------------------
 
 Haetataki::Haetataki()
+	: offset(0.5f, 1.f, 0.f)
+	, addPos(0.f, 0.f, 0.f)
+	, addRot(0.2f, 0.2f, 0.f)
+	, switchDir(false)
 {
 	Init();
 }
@@ -97,15 +101,40 @@ void Haetataki::Have(CPlayer* player)
 
 void Haetataki::Use(CPlayer* player)
 {
-	static D3DXVECTOR3 offset = { 0.5f, 1.f, 0.f };
-	static D3DXVECTOR3 addPos = { 0.f,0.f, 0.f };
-	static D3DXVECTOR3 addRot = { 0.2f,0.2f,0.f };
-	static D3DXVECTOR3 newRot = GetRotation() + addRot;
-	static bool switchDir = false;
+	//使用モーション
+	if (addPos.x < 0.2f && !switchDir)
+	{
+		m_vPosition.x += addPos.x;
+		addPos.x += 0.02f;
+	}
+	else
+	{
+		//trueになると毎回ここに通るので無理やり初期化
+		if (!switchDir)
+		{
+			addPos = { 0.f, 0.f, 0.f };
+		}
 
-	
+		//切り替えしON
+		switchDir = true;
+	}
 
-	m_vPosition = player->GetPosition() + offset ;
+	//切り替えし
+	if (switchDir)
+	{
+		if (addPos.x < 0.35f)
+		{
+			m_vPosition.x -= addPos.x;
+			addPos.x += 0.02f;
+		}
+		else
+		{
+			m_State = ItemBase::State::Have;
+			switchDir = false;
+			addPos = { 0.f,0.f, 0.f };
+
+		}
+	}
 
 }
 
