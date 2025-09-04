@@ -73,8 +73,8 @@ protected:
 
 	virtual void Spawn	 ()	= 0; // 出現
 	virtual void OnGround()	= 0; // 取得待機
-	virtual void Have	 ()	= 0; // 取得
-	virtual void Use	 ()	= 0; // 使用
+	virtual void Have	 (CPlayer* player)	= 0; // 取得
+	virtual void Use	 (CPlayer* player)	= 0; // 使用
 	virtual void Throw	 ()	= 0; // 投擲
 	virtual void Destroy ()	= 0; // 消滅
 

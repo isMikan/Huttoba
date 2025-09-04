@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Haetataki.h"
+#include "CCharactor/CPlayer/CPlayer.h"
 
 //--------------------------------------------------------------------------------------------------------------
 
@@ -75,11 +76,13 @@ void Haetataki::OnGround()
 
 //--------------------------------------------------------------------------------------------------------------
 
-void Haetataki::Have()
+void Haetataki::Have(CPlayer* player)
 {
-	
+	D3DXVECTOR3 offset = { 1.f, 1.f, 0.f };
 
-	if (GetAsyncKeyState('N') & 0x8000)
+	m_vPosition = player->GetPosition() + offset;
+
+	if (GetAsyncKeyState('N') & 0x0001)
 	{
 		m_State = ItemBase::State::Use;
 	}
@@ -87,12 +90,13 @@ void Haetataki::Have()
 
 //--------------------------------------------------------------------------------------------------------------
 
-void Haetataki::Use()
+void Haetataki::Use(CPlayer* player)
 {
-	if (GetAsyncKeyState('N') & 0x8000)
-	{
-		m_State = ItemBase::State::Throw;
-	}
+	D3DXVECTOR3 offset = { 1.f, 1.f, 0.f };
+
+	m_vRotation.y += D3DXToRadian(30.f);
+	m_vPosition = player->GetPosition() + offset;
+
 }
 
 //--------------------------------------------------------------------------------------------------------------

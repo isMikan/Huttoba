@@ -26,16 +26,17 @@ void ItemBase::Update(CPlayer* player)
 		Init();
 	}
 
+	
 	//ó‘Ô‚É‚æ‚Á‚Ä‘JˆÚ
 	switch (m_State)
 	{
 	case ItemBase::State::None:break;
-	case ItemBase::State::Spawn:	Spawn();	break;
-	case ItemBase::State::OnGround: OnGround(); break;
-	case ItemBase::State::Have:		Have();		break;
-	case ItemBase::State::Use:		Use();		break;
-	case ItemBase::State::Throw:	Throw();	break;
-	case ItemBase::State::Destroy:	Destroy();	break;
+	case ItemBase::State::Spawn:	Spawn();		break;
+	case ItemBase::State::OnGround: OnGround();		break;
+	case ItemBase::State::Have:		Have(player);	break;
+	case ItemBase::State::Use:		Use(player);	break;
+	case ItemBase::State::Throw:	Throw();		break;
+	case ItemBase::State::Destroy:	Destroy();		break;
 	default: break;
 	}
 
