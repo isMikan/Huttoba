@@ -109,11 +109,41 @@ HRESULT CSceneGameMain::LoadData()
 			AttachMesh(AssetManager::Mesh(StaticMeshList::PHand));
 		//バウンディングスフィアの作成
 		m_pPlayers[pNo]->CreateBSphereForMesh(AssetManager::Mesh(StaticMeshList::BSphere));
-		//キャラクターの初期座標を設定
-		m_pPlayers[0]->SetPosition(-5.f, 1.f, 5.f);
-		m_pPlayers[1]->SetPosition(-5.f, 1.f, 10.f);
-		m_pPlayers[2]->SetPosition(5.f, 1.f, 5.f);
-		m_pPlayers[3]->SetPosition(5.f, 1.f, 10.f);
+
+		if (m_pInputManager.GetSlot(pNo).ready)
+		{
+			//キャラクターの初期座標を設定
+			switch (pNo)
+			{
+			case 0:
+				m_pPlayers[0]->SetPosition(-5.f, 1.f, 5.f);
+			case 1:
+				m_pPlayers[1]->SetPosition(-5.f, 1.f, 10.f);
+			case 2:
+				m_pPlayers[2]->SetPosition(5.f, 1.f, 5.f);
+			case 3:
+				m_pPlayers[3]->SetPosition(5.f, 1.f, 10.f);
+			default:
+				break;
+			}
+		}
+		else
+		{
+			//キャラクターの初期座標を設定
+			switch (pNo)
+			{
+			case 0:
+				m_pPlayers[0]->SetPosition(0.f, 0.f, 0.f);
+			case 1:
+				m_pPlayers[1]->SetPosition(0.f, 0.f, 0.f);
+			case 2:
+				m_pPlayers[2]->SetPosition(0.f, 0.f, 0.f);
+			case 3:
+				m_pPlayers[3]->SetPosition(0.f, 0.f, 0.f);
+			default:
+				break;
+			}
+		}
 	}
 
 	for (auto& ground : m_pGrounds)
@@ -381,7 +411,6 @@ HRESULT CSceneGameMain::CreateCharactor()
 	for (int pNo = 0;pNo < Player_Max;pNo++)
 	{
 		m_pPlayers[pNo] = std::make_unique<CPlayer>(pNo);
-
 		if (!m_pPlayers[pNo]) return E_POINTER;
 	}
 

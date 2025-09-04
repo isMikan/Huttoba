@@ -54,17 +54,19 @@ public:
         }
     }
 
-    void SetHuman(int index) {
+    void SetHuman(int index) 
+    {
         m_Slot[index].state = PlayerSlotState::Player;
         m_Slot[index].ready = true;
     }
 
-    void SetCPU(int index) {
+    void SetCPU(int index) 
+    {
         m_Slot[index].state = PlayerSlotState::COM;
         m_Slot[index].ready = false;
     }
-
     //-------
+
 private:
     CInputManager();
     CInputManager(const CInputManager&) = delete;
