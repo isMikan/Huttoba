@@ -10,7 +10,7 @@
 
 CPlayerPushed::CPlayerPushed()
 	: m_StartTime			()
-	, m_EndTime				( 0.3f )
+	, m_EndTime				( 1.f )
 
 	, m_CurrentTiltAngle	()
 	, m_TiltAngleMax		( D3DXToRadian(-30.f) )
@@ -132,6 +132,7 @@ void CPlayerPushed::Update(CPlayer& pPlayer)
 	pPlayer.GetPlayerRightHand().SetPosition(rightHandPos);
 	pPlayer.GetPlayerLeftHand().SetPosition(leftHandPos);
 
+	//プレイヤーの位置に押された移動量を足す.
 	playerPos += pPlayer.Knockback();
 
 	//プレイヤーの位置を設定.
