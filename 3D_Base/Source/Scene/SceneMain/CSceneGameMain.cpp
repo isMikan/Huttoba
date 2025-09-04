@@ -342,8 +342,8 @@ void CSceneGameMain::Draw()
 		{
 			if (pNo == aNo) break;
 
-			if (m_pPlayers[pNo]->GetBSphere()->
-				IsHit(*m_pPlayers[aNo]->GetBSphere()))
+			if (m_pPlayers[aNo]->GetBSphere()->
+				IsHit(*m_pPlayers[pNo]->GetBSphere()))
 			{
 				SetWindowText(m_hWnd, _T("Õ“Ë‚µ‚Ä‚¢‚Ü‚·"));
 			}
@@ -352,9 +352,9 @@ void CSceneGameMain::Draw()
 				SetWindowText(m_hWnd, _T(""));
 			}
 
-			if (m_pPlayers[pNo]->IsAttacking()
-				&& m_pPlayers[pNo]->GetBSphere()->
-				IsHit(*m_pPlayers[aNo]->GetBSphere()))
+			if (m_pPlayers[aNo]->IsAttacking()
+				&& m_pPlayers[aNo]->GetBSphere()->
+				IsHit(*m_pPlayers[pNo]->GetBSphere()))
 			{
 				m_pPlayers[pNo]->SetHitInfo(
 					m_pPlayers[aNo]->GetPosition(), 0.05f, true);

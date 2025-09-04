@@ -14,6 +14,8 @@ CPlayerActionIdle::~CPlayerActionIdle()
 
 void CPlayerActionIdle::Enter(CPlayer& pPlayer)
 {
+	pPlayer.SetQuaternion(
+		0.f, pPlayer.GetQuaternion().y, 0.f, pPlayer.GetQuaternion().w);
 }
 
 void CPlayerActionIdle::Exit(CPlayer& pPlayer)

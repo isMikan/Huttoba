@@ -37,7 +37,7 @@ public:
 	//バウンディングスフィアをオブジェクト位置に合わせる
 	//※モデルの原点が中心の場合を想定
 	void UpdateBSpherePos() {
-		m_pBSphere->SetPosition(m_vPosition);
+		m_pBSphere->SetPosition(m_vPosition + D3DXVECTOR3(0.f,5.f,0.f));
 	}
 
 protected:
