@@ -43,7 +43,7 @@ public:
 	};
 
 public:
-	CPlayer(int index);
+	CPlayer(int index);	//ˆø”‚ÍƒRƒ“ƒgƒ[ƒ‰”Ô†.
 	~CPlayer() override;
 
 	void Update() override;
@@ -96,6 +96,10 @@ public:
 	bool IsHoldingItem() const { return m_IsHoldingItem; }
 	void SetHoldingItem(bool holdingItem) { m_IsHoldingItem = holdingItem; }
 
+	//UŒ‚‚µ‚Ä‚¢‚é‚©‚Ìæ“¾‚Æİ’è.
+	bool IsAttacking() const { return m_IsAttacking; }
+	void SetAttacking(bool attacking) { m_IsAttacking = attacking; }
+
 	//UŒ‚‚ğó‚¯‚½î•ñ‚ğæ“¾‚Æİ’è.
 	HitInfo GetHitInfo() { return m_HitInfo; }
 	void SetHitInfo(D3DXVECTOR3 pos, float force, bool isHit) {
@@ -128,6 +132,7 @@ private:
 	bool		m_IsMoving;			//ˆÚ“®‚µ‚Ä‚¢‚é‚©.
 	bool		m_IsRotating;		//‰ñ“]‚µ‚Ä‚¢‚é‚©.
 	bool		m_IsHoldingItem;	//ƒAƒCƒeƒ€‚ğ‚Á‚Ä‚¢‚é‚©.
+	bool		m_IsAttacking;		//UŒ‚‚µ‚Ä‚¢‚é‚©.
 
 	HitInfo		m_HitInfo;			//UŒ‚‚ğó‚¯‚½î•ñ.
 };

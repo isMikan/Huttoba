@@ -8,6 +8,7 @@
 #include "PlayerState/ActionState/PlayerHandAttack/CPlayerHandAttack.h"
 #include "PlayerState/ActionState/PlayerPickupItem/CPlayerPickupItem.h"
 #include "PlayerState/ActionState/PlayerThrowItem/CPlayerThrowItem.h"
+#include "PlayerState/ActionState/PlayerPushed/CPlayerPushed.h"
 
 #include <iostream>
 
@@ -24,6 +25,9 @@ CPlayer::CPlayer(int index)
 	, m_IsMoving		( false )
 	, m_IsRotating		( false )
 	, m_IsHoldingItem	( false )
+	, m_IsAttacking		( false )
+
+	, m_HitInfo			()
 {
 	SetPlayerInputBinding();
 }
@@ -87,6 +91,11 @@ void CPlayer::HandleInput()
 	else if (m_pInput->IsDown(Action::ToggleItem) && m_IsHoldingItem)
 	{
 		SetActionState(std::make_unique<CPlayerThrowItem>());
+	}
+
+	if (m_HitInfo.isHit == true)
+	{
+		SetActionState(std::make_unique<CPlayerPushed>());
 	}
 }
 
