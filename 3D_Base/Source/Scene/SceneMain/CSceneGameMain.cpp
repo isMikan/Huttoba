@@ -5,7 +5,7 @@
 
 #include "TimeManager/CTimeManager.h"
 
-CSceneGameMain::CSceneGameMain( HWND hWnd )
+CSceneGameMain::CSceneGameMain( HWND hWnd, CInputManager& inputManager)
 	: m_hWnd			( hWnd )
 
 	, m_pDbgText		( nullptr )
@@ -14,15 +14,19 @@ CSceneGameMain::CSceneGameMain( HWND hWnd )
 
 	, m_pUIMap			()
 
+	, m_pPlayers		()
+
 	, m_pExplosiones	()
 
 	, m_pEnemies		()
 
 	, m_pGrounds		()
+
 	, m_pItemManager	( nullptr )
 
 	, m_pDrawCollision	()
 
+	, m_pInputManager	( inputManager )
 {
 	m_pDx9 = CDirectX9::GetInstance();
 	m_pDx11 = CDirectX11::GetInstance();
@@ -58,9 +62,6 @@ HRESULT CSceneGameMain::Create()
 	CteateExplosion();
 	CreateCharactor();
 
-	//プレイヤーのインスタンス生成.
-	m_pPlayer = std::make_unique<CPlayer>();
-
 	//地面クラスのインスタンス作成
 	m_pGrounds.resize(Ground_Max);
 
@@ -95,14 +96,25 @@ HRESULT CSceneGameMain::LoadData()
 		UI.second->AttachSprite(AssetManager::Sprite(Sprite2DList::PMon));
 	}
 
-	//プレイヤーのスタティックメッシュを設定.
-	m_pPlayer->AttachMesh(AssetManager::Mesh(StaticMeshList::Player));
-	//プレイヤーの右手のスタティックメッシュを設定.
-	m_pPlayer->GetPlayerRightHand().
-		AttachMesh(AssetManager::Mesh(StaticMeshList::PHand));
-	//プレイヤーの左手のスタティックメッシュを設定.
-	m_pPlayer->GetPlayerLeftHand().
-		AttachMesh(AssetManager::Mesh(StaticMeshList::PHand));
+	//プレイヤー.
+	for (int pNo = 0;pNo < Player_Max;pNo++)
+	{
+		//胴体のスタティックメッシュを設定.
+		m_pPlayers[pNo]->AttachMesh(AssetManager::Mesh(StaticMeshList::Player));
+		//右手のスタティックメッシュを設定.
+		m_pPlayers[pNo]->GetPlayerRightHand().
+			AttachMesh(AssetManager::Mesh(StaticMeshList::PHand));
+		//左手のスタティックメッシュを設定.
+		m_pPlayers[pNo]->GetPlayerLeftHand().
+			AttachMesh(AssetManager::Mesh(StaticMeshList::PHand));
+		//バウンディングスフィアの作成
+		m_pPlayers[pNo]->CreateBSphereForMesh(AssetManager::Mesh(StaticMeshList::BSphere));
+		//キャラクターの初期座標を設定
+		m_pPlayers[0]->SetPosition(-5.f, 1.f, 5.f);
+		m_pPlayers[1]->SetPosition(-5.f, 1.f, 10.f);
+		m_pPlayers[2]->SetPosition(5.f, 1.f, 5.f);
+		m_pPlayers[3]->SetPosition(5.f, 1.f, 10.f);
+	}
 
 	for (auto& ground : m_pGrounds)
 	{
@@ -132,8 +144,6 @@ HRESULT CSceneGameMain::LoadData()
 	m_pUIMap[UIList::Parasect]->SetPosition(size * 1.f, pos_y, 0.f);
 	m_pUIMap[UIList::Scyther]->SetPosition(size * 2.f, pos_y, 0.f);
 
-	//バウンディングスフィアの作成
-	m_pPlayer->CreateBSphereForMesh(AssetManager::Mesh(StaticMeshList::BSphere));
 
 	for (auto& enemyType : m_pEnemies)
 	{
@@ -142,9 +152,6 @@ HRESULT CSceneGameMain::LoadData()
 			enemy->CreateBSphereForMesh(AssetManager::Mesh(StaticMeshList::BSphere));
 		}
 	}
-
-	//キャラクターの初期座標を設定
-	m_pPlayer->SetPosition(0.f, 1.f, 6.f);
 
 	for (auto& enemyType : m_pEnemies)
 	{
@@ -191,9 +198,12 @@ void CSceneGameMain::Update()
 	}
 
 	//プレイヤーの動作.
-	m_pPlayer->Update();
-	m_pPlayer->GetPlayerRightHand().Update();	//右手.
-	m_pPlayer->GetPlayerLeftHand().Update();	//左手.
+	for (auto& player : m_pPlayers)
+	{
+		player->Update();
+		player->GetPlayerRightHand().Update();	//右手.
+		player->GetPlayerLeftHand().Update();	//左手.
+	}
 
 	m_pItemManager->Update();
 
@@ -253,9 +263,14 @@ void CSceneGameMain::Draw()
 	}
 
 	//プレイヤーの描画.
-	m_pPlayer->Draw(mView, mProj, light, camera);
-	m_pPlayer->GetPlayerRightHand().Draw(mView, mProj, light, camera);	//右手.
-	m_pPlayer->GetPlayerLeftHand().Draw(mView, mProj, light, camera);	//左手.
+	for (auto& player : m_pPlayers)
+	{
+		player->Draw(mView, mProj, light, camera);
+		player->GetPlayerRightHand().Draw(mView, mProj, light, camera);	//右手.
+		player->GetPlayerLeftHand().Draw(mView, mProj, light, camera);	//左手.
+		//当たり判定の中心座標を更新する
+		player->UpdateBSpherePos();
+	}
 
 	for (auto& enemyType : m_pEnemies)
 	{
@@ -283,9 +298,6 @@ void CSceneGameMain::Draw()
 	//やりたいことが終わったので、深度テストを有効にしておく
 	m_pDx11->SetDepth(true);
 
-	//当たり判定の中心座標を更新する
-	m_pPlayer->UpdateBSpherePos();
-
 
 	for (auto& enemyType : m_pEnemies)
 	{
@@ -294,21 +306,21 @@ void CSceneGameMain::Draw()
 			enemy->UpdateBSpherePos();
 		}
 	}
-	//プレイヤーとエネミーの当たり判定
-	for (auto& enemyType : m_pEnemies)
-	{
-		for (auto& enemy : enemyType.second)
-		{
-			if (m_pPlayer->GetBSphere()->IsHit(*enemy->GetBSphere()))
-			{
-				SetWindowText(m_hWnd, _T("衝突しています"));
-			}
-			else
-			{
-				SetWindowText(m_hWnd, _T(""));
-			}
-		}
-	}
+	////プレイヤーとエネミーの当たり判定
+	//for (auto& enemyType : m_pEnemies)
+	//{
+	//	for (auto& enemy : enemyType.second)
+	//	{
+	//		if (m_pPlayer->GetBSphere()->IsHit(*enemy->GetBSphere()))
+	//		{
+	//			SetWindowText(m_hWnd, _T("衝突しています"));
+	//		}
+	//		else
+	//		{
+	//			SetWindowText(m_hWnd, _T(""));
+	//		}
+	//	}
+	//}
 
 	for (auto& exp : m_pExplosiones)
 	{
@@ -363,8 +375,15 @@ HRESULT CSceneGameMain::CteateExplosion()
 HRESULT CSceneGameMain::CreateCharactor()
 {
 	//キャラクター関連のインスタンス作成
-	m_pPlayer = std::make_unique<CPlayer>();
-	if (!m_pPlayer) return E_POINTER;
+
+	//プレイヤーのインスタンス生成.
+	m_pPlayers.resize(Player_Max);
+	for (int pNo = 0;pNo < Player_Max;pNo++)
+	{
+		m_pPlayers[pNo] = std::make_unique<CPlayer>(pNo);
+
+		if (!m_pPlayers[pNo]) return E_POINTER;
+	}
 
 	m_pEnemies[EnemyList::RoboB].push_back(std::make_unique<CEnemy>());
 
@@ -394,7 +413,10 @@ void CSceneGameMain::ManageEffectLaser()
 
 	if (GetAsyncKeyState('Y') & 0x0001)
 	{
-		hEffect = AssetManager::Effect()->Play("Laser", m_pPlayer->GetPosition());
+		for (auto& player : m_pPlayers)
+		{
+			hEffect = AssetManager::Effect()->Play("Laser", player->GetPosition());
+		}
 
 		//拡縮
 		AssetManager::Effect()->SetScale(hEffect, D3DXVECTOR3(0.8f, 0.8f, 0.8f));

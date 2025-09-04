@@ -25,6 +25,7 @@
 #include "Assets/Mesh/SkinMesh/CSkinMesh.h"
 #include "Scene/CSceneManager.h"
 #include "Assets/AssetManager.h"
+#include "CInput/CInputManager.h"
 
 
 class ItemManager;
@@ -39,7 +40,7 @@ class CSceneGameMain
 	: public CScene
 {
 public:
-	CSceneGameMain(HWND hWnd);
+	CSceneGameMain(HWND hWnd, CInputManager& inputManager);
 	~CSceneGameMain() override;
 
 	HRESULT Create() override;
@@ -76,7 +77,7 @@ private:
 	std::unordered_map<UIList, std::unique_ptr<CUIObject> > m_pUIMap;
 
 	//キャラクタークラス
-	std::unique_ptr<CPlayer>	m_pPlayer;
+	std::vector<std::unique_ptr<CPlayer>>	m_pPlayers;
 
 	//エネミークラス
 	std::unordered_map < EnemyList, std::vector<std::unique_ptr<CEnemy> > > m_pEnemies;
@@ -85,8 +86,10 @@ private:
 	std::vector<std::unique_ptr<CGround>> 	m_pGrounds;
 
 	//アイテムクラス
-	std::unique_ptr<ItemManager> m_pItemManager;
+	std::unique_ptr<ItemManager>	m_pItemManager;
 	
 	//当たり判定描画クラス
-	std::unique_ptr<DrawCollision> m_pDrawCollision;
+	std::unique_ptr<DrawCollision>	m_pDrawCollision;
+
+	CInputManager&					m_pInputManager;
 };

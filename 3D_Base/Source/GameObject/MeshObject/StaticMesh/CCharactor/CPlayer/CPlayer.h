@@ -35,7 +35,7 @@ public:
 	};
 
 public:
-	CPlayer();
+	CPlayer(int index);
 	~CPlayer() override;
 
 	void Update() override;

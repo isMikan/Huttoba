@@ -1,8 +1,8 @@
 #include "CSceneManager.h"
 
 CSceneManager::CSceneManager(HWND hWnd)
-	: m_pScene				(nullptr)
-	, m_pInputManager	(CInputManager::Instance() )
+	: m_pScene			( nullptr )
+	, m_pInputManager	( CInputManager::Instance() )
 	, m_hWnd			( hWnd )
 {
 	Create();
@@ -59,7 +59,7 @@ void CSceneManager::CreateScene(int Scene)
 	{
 	case Title:		m_pScene = std::make_unique<CSceneTitle>	(m_hWnd, m_pInputManager);	break;
 	case Standby:	m_pScene = std::make_unique<CSceneStandby>	(m_pInputManager);			break;
-	case GameMain:  m_pScene = std::make_unique<CSceneGameMain>	(m_hWnd);					break;
+	case GameMain:  m_pScene = std::make_unique<CSceneGameMain>	(m_hWnd, m_pInputManager);	break;
 	case Result:	m_pScene = std::make_unique<CSceneResult>	(m_pInputManager);			break;
 	default: 
 		//èIóπ

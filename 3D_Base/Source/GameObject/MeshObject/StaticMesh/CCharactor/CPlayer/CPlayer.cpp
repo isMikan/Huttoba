@@ -11,8 +11,8 @@
 
 #include <iostream>
 
-CPlayer::CPlayer()
-	: m_pInput			( std::make_unique<CInput>( 0 ) )
+CPlayer::CPlayer(int index)
+	: m_pInput			( std::make_unique<CInput>( index ) )
 
 	, m_pRightHand		( std::make_unique<CPlayerRightHand>() )
 	, m_pLeftHand		( std::make_unique<CPlayerLeftHand>() )
