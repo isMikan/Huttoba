@@ -2,15 +2,15 @@
 
 #include "GameObject/MeshObject/StaticMesh/CCharactor/CPlayer/PlayerState/ActionState/CActionState.h"
 
-/************************************************************
-*	プレイヤーがアイテム未所持の攻撃を空振りする状態クラス.
+/**************************************************
+*	プレイヤーが押される状態クラス.
 **/
-class CPlayerHandWhiff
+class CPlayerPushed
 	: public CActionState	//行動状態のクラスの継承.
 {
 public:
-	CPlayerHandWhiff();
-	~CPlayerHandWhiff();
+	CPlayerPushed();
+	~CPlayerPushed() override;
 
 	//状態が始めるときだけ呼び出される.
 	void Enter(CPlayer& pPlayer) override;
@@ -33,4 +33,5 @@ private:
 	D3DXVECTOR3		m_LeftHandEndPos;		//左手の元の位置.
 
 	D3DXQUATERNION	m_StartQuat;			//開始時の回転.
+
 };

@@ -28,6 +28,8 @@ CPlayerHandAttack::~CPlayerHandAttack()
 
 void CPlayerHandAttack::Enter(CPlayer& pPlayer)
 {
+	pPlayer.SetAttacking(true);
+
 	//UŒ‚‚ÌŠJŽnŽžŠÔ‚ðŽæ“¾.
 	m_StartTime = CTimeManager::GetInstance()->GetTotalTime();
 
@@ -55,6 +57,7 @@ void CPlayerHandAttack::Enter(CPlayer& pPlayer)
 
 void CPlayerHandAttack::Exit(CPlayer& pPlayer)
 {
+	pPlayer.SetAttacking(false);
 }
 
 void CPlayerHandAttack::Update(CPlayer& pPlayer)
