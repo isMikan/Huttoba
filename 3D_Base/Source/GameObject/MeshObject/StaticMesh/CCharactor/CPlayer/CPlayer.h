@@ -34,8 +34,16 @@ public:
 		D3DXVECTOR3 forward;	//ローカルZ軸(正面).
 	};
 
+	//攻撃を受けた情報.
+	struct HitInfo
+	{
+		D3DXVECTOR3 position;	//攻撃された位置.
+		float		force;		//攻撃力.
+		bool		isHit;		//攻撃を受けたか.
+	};
+
 public:
-	CPlayer(int index);
+	CPlayer(int index);	//引数はコントローラ番号.
 	~CPlayer() override;
 
 	void Update() override;
@@ -63,6 +71,9 @@ public:
 		D3DXVECTOR3		localAxes,	//ローカル軸の方向.
 		float			tiltAngle);	//傾きの角度.
 
+	//押された時の移動量を計算する関数.
+	D3DXVECTOR3 Knockback();
+
 	//プレイヤーが右手を持っている(書き込み用).
 	CPlayerRightHand& GetPlayerRightHand() { return *m_pRightHand; }
 	//プレイヤーが右手を持っている(読み込み用).
@@ -84,6 +95,18 @@ public:
 	//アイテムを手に入れているかの取得と設定.
 	bool IsHoldingItem() const { return m_IsHoldingItem; }
 	void SetHoldingItem(bool holdingItem) { m_IsHoldingItem = holdingItem; }
+
+	//攻撃しているかの取得と設定.
+	bool IsAttacking() const { return m_IsAttacking; }
+	void SetAttacking(bool attacking) { m_IsAttacking = attacking; }
+
+	//攻撃を受けた情報を取得と設定.
+	HitInfo GetHitInfo() { return m_HitInfo; }
+	void SetHitInfo(D3DXVECTOR3 pos, float force, bool isHit) {
+		m_HitInfo.position = pos;
+		m_HitInfo.force = force;
+		m_HitInfo.isHit = isHit;
+	}
 
 private:
 	//キーバインドを設定する関数.
@@ -109,6 +132,9 @@ private:
 	bool		m_IsMoving;			//移動しているか.
 	bool		m_IsRotating;		//回転しているか.
 	bool		m_IsHoldingItem;	//アイテムを持っているか.
+	bool		m_IsAttacking;		//攻撃しているか.
+
+	HitInfo		m_HitInfo;			//攻撃を受けた情報.
 };
 
 //型が決まっていないのでここで定義.

@@ -336,6 +336,32 @@ void CSceneGameMain::Draw()
 			enemy->UpdateBSpherePos();
 		}
 	}
+	for (int pNo = 0;pNo < Player_Max;pNo++)
+	{
+		for (int aNo = 0;aNo < Player_Max;aNo++)
+		{
+			if (pNo == aNo) break;
+
+			if (m_pPlayers[pNo]->GetBSphere()->
+				IsHit(*m_pPlayers[aNo]->GetBSphere()))
+			{
+				SetWindowText(m_hWnd, _T("衝突しています"));
+			}
+			else
+			{
+				SetWindowText(m_hWnd, _T(""));
+			}
+
+			if (m_pPlayers[pNo]->IsAttacking()
+				&& m_pPlayers[pNo]->GetBSphere()->
+				IsHit(*m_pPlayers[aNo]->GetBSphere()))
+			{
+				m_pPlayers[pNo]->SetHitInfo(
+					m_pPlayers[aNo]->GetPosition(), 0.05f, true);
+			}
+		}
+	}
+
 	////プレイヤーとエネミーの当たり判定
 	//for (auto& enemyType : m_pEnemies)
 	//{

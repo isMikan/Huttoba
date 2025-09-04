@@ -75,6 +75,7 @@
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CPlayer\PlayerState\ActionState\PlayerThrowItem\CPlayerThrowItem.cpp" />
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\DrawCollision\DrawCollision.cpp" />
     <ClCompile Include="Source\Collision\CollisionManager\CollisionManager.cpp" />
+    <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CPlayer\PlayerState\ActionState\PlayerPushed\CPlayerPushed.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Assets\AssetManager.h" />
@@ -150,6 +151,7 @@
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CPlayer\PlayerState\ActionState\PlayerThrowItem\CPlayerThrowItem.h" />
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\DrawCollision\DrawCollision.h" />
     <ClInclude Include="Source\Collision\CollisionManager\CollisionManager.h" />
+    <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CPlayer\PlayerState\ActionState\PlayerPushed\CPlayerPushed.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="ChangeSourse.txt" />
