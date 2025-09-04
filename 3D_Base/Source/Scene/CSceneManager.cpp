@@ -14,6 +14,7 @@ CSceneManager::~CSceneManager()
 
 HRESULT CSceneManager::Create()
 {
+	//m_pInputManager = std::make_unique<CInputManager>();
 	m_pScene = std::make_unique<CSceneTitle>(m_hWnd, m_pInputManager);
 
 	SetInputBInding();

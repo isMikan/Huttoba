@@ -37,8 +37,7 @@ HRESULT SpriteManager::CreateSprite3D()
 {
 	//Šesprite3D‚Ìî•ñ‚ğ“o˜^
 //«-----------------------------------------------------------------------------------------------------------------------------«
-	RegisterSprite3D(Sprite3DList::Explosion, _T("Data\\Texture\\explosion.png"), { 1.f, 1.f, 256.f, 256.f, 32.f, 32.f });
-	RegisterSprite3D(Sprite3DList::Standby, _T("Data\\Texture\\Standby_kari.png"), { WND_W,WND_H,WND_W,WND_H,WND_W,WND_H });
+	RegisterSprite3D(Sprite3DList::Explosion,	_T("Data\\Texture\\explosion.png"), { 1.f, 1.f, 256.f, 256.f, 32.f, 32.f	});
 //ª-----------------------------------------------------------------------------------------------------------------------------ª
 
 	//“o˜^‚µ‚½sprite3D‚ÌƒCƒ“ƒXƒ^ƒ“ƒXì¬.

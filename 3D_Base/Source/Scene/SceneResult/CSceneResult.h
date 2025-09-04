@@ -43,5 +43,5 @@ private:
 	//8ビットの符号付整数型.
 	uint8_t						m_SelectorNumber;	//現在選択中の番号.
 
-	std::vector<D3DXVECTOR3>	m_SelectorYPos;		//各選択肢のY座標.
+	std::vector<float>			m_SelectorYPos;		//各選択肢のY座標.
 };
