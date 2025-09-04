@@ -45,7 +45,7 @@ void ItemManager::Init()
 
 //--------------------------------------------------------------------------------------------------------------
 
-void ItemManager::Update()
+void ItemManager::Update(CPlayer* player)
 {
 	for (auto& item : m_pItems)
 	{
