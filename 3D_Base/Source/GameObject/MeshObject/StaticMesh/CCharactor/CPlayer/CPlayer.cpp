@@ -159,6 +159,18 @@ D3DXQUATERNION CPlayer::TiltedQuat(
 	return quat;
 }
 
+//押された時の移動量を計算する関数.
+D3DXVECTOR3 CPlayer::Knockback()
+{
+	D3DXVECTOR3 dir = m_vPosition - m_HitInfo.position;
+
+	D3DXVec3Normalize(&dir, &dir);
+
+	D3DXVECTOR3 pos = dir * (m_HitInfo.force);
+
+	return pos;
+}
+
 //キーバインドを設定する関数.
 void CPlayer::SetPlayerInputBinding()
 {
