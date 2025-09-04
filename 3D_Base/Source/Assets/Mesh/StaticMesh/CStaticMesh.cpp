@@ -662,9 +662,9 @@ void CStaticMesh::Render(
 	mWorld = mScale * mRot * mTran;
 
 	//クォータニオンから回転行列を作成.
-	D3DXMATRIX mRotQuat;
+	D3DXMATRIX mRotQuat, mQuatWorld;
 	D3DXMatrixRotationQuaternion(&mRotQuat, &m_Quaternion);
-	mWorld = mScale * mRotQuat * mTran;
+	mQuatWorld = mScale * mRotQuat * mTran;
 
 	//使用するシェーダのセット.
 	m_pContext11->VSSetShader( m_pVertexShader.Get(), nullptr, 0);	//頂点シェーダ.
