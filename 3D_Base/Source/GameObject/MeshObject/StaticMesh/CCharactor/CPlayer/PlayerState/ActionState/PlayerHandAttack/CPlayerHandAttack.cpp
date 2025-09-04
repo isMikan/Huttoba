@@ -4,6 +4,7 @@
 
 #include "GameObject/MeshObject/StaticMesh/CCharactor/CPlayer/PlayerState/ActionState/PlayerActionIdle/CPlayerActionIdle.h"
 #include "GameObject/MeshObject/StaticMesh/CCharactor/CPlayer/PlayerState/ActionState/PlayerHandWhiff/CPlayerHandWhiff.h"
+#include "GameObject/MeshObject/StaticMesh/CCharactor/CPlayer/PlayerState/ActionState/PlayerHandHit/CPlayerHandHit.h"
 
 #include "TimeManager/CTimeManager.h"
 
@@ -12,6 +13,9 @@ CPlayerHandAttack::CPlayerHandAttack()
 
 	, m_StartTime			()
 	, m_EndTime				( 0.1f )
+
+	, m_CurrentTiltAngle	()
+	, m_TiltAngleMax		( D3DXToRadian(10.f) )
 
 	, m_RightHandStartPos	()
 	, m_LeftHandStartPos	()
@@ -64,8 +68,16 @@ void CPlayerHandAttack::Update(CPlayer& pPlayer)
 {
 	float totalTime = CTimeManager::GetInstance()->GetTotalTime();
 
+	bool isHit = pPlayer.GetHitInfo().isHit;
+
 	//現在の経過時間と開始時間の差が終了時間を上回ったら.
-	if (totalTime - m_StartTime > m_EndTime)
+	if (totalTime - m_StartTime > m_EndTime
+		&& isHit)
+	{
+		pPlayer.SetActionState(std::make_unique<CPlayerHandHit>());
+		return;
+	}
+	else if (totalTime - m_StartTime > m_EndTime)
 	{
 		pPlayer.SetActionState(std::make_unique<CPlayerHandWhiff>());
 		return;
@@ -76,7 +88,13 @@ void CPlayerHandAttack::Update(CPlayer& pPlayer)
 
 	//全体の時間の現在の割合.
 	float progress = (totalTime - m_StartTime) / m_EndTime;
-	
+
+	//現在の傾き = 最大傾き角度 * 割合.
+	m_CurrentTiltAngle = m_TiltAngleMax * progress;
+
+	//クォータニオンの回転を計算して設定する.
+	pPlayer.SetQuaternion(pPlayer.TiltedQuat(m_StartQuat, axes.right, m_CurrentTiltAngle));
+
 	float eased = sinf(progress * D3DX_PI * 0.5);	//0.5で半往復させ前に手を出す計算をする.	
 
 	//右手と左手の調整位置だけの計算.
