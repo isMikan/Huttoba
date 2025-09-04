@@ -4,8 +4,8 @@
 //=================================================
 //	定数.
 //=================================================
-const TCHAR WND_TITLE[] = _T("初めての3Dシューティング");
-const TCHAR APP_NAME[] = _T("3DSTG");
+const TCHAR WND_TITLE[] = _T("ふっとば！！");
+const TCHAR APP_NAME[] = _T("Huttoba");
 
 CCreateWindow::CCreateWindow()
 {
