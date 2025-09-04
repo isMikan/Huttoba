@@ -94,8 +94,10 @@ void Haetataki::Have(CPlayer* player)
 void Haetataki::Use(CPlayer* player)
 {
 	D3DXVECTOR3 offset = { 1.f, 1.f, 0.f };
+	D3DXVECTOR3 a = { 0.f,0.2f,0.f };
+	D3DXVECTOR3 newRot = GetRotation() + a;
 
-	m_vRotation.y += D3DXToRadian(30.f);
+	SetRotation(newRot);
 	m_vPosition = player->GetPosition() + offset;
 
 }

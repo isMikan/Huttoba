@@ -43,12 +43,14 @@ void ItemBase::Update(CPlayer* player)
 	UpdateBSpherePos();
 }
 
-void ItemBase::Update()
-{
-
-}
 
 void ItemBase::Draw(D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAMERA& Camera)
 {
 	CStaticMeshObject::Draw(View, Proj, Light, Camera);
+}
+
+//---------------------åpè≥Ç≈édï˚Ç»Ç≠íËã`------------------------
+void ItemBase::Update()
+{
+
 }
