@@ -84,8 +84,7 @@ protected:
 
 	State m_State; // アイテムの状態
 
-	//持っているプレイヤーのポインタ(プレイヤーの座標取得に必要)
-	CPlayer* m_pPlayer;
+	CPlayer* m_pPlayer; // 持っているプレイヤーのポインタ(プレイヤーの座標取得に必要)
 
 
 };

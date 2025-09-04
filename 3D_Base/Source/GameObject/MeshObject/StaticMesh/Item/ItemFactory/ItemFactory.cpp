@@ -12,6 +12,7 @@ ItemFactory::~ItemFactory()
 
 
 //--------------------------------------------------------------------------------------------------------------
+
 void ItemFactory::RegisterItem(const std::string& itemId, const Createfunc& creator)
 {
 	//Ç‹Çæìoò^Ç≥ÇÍÇƒÇ¢Ç»Ç¢èÍçáÇÃÇ›ìoò^Ç∑ÇÈ
