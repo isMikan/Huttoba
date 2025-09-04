@@ -44,4 +44,9 @@ public:
 	void TakeMostion();
 private:
 
+	D3DXVECTOR3 offset = { 0.5f, 1.f, 0.f };
+	D3DXVECTOR3 addPos = { 0.f,0.f, 0.f };
+	D3DXVECTOR3 addRot = { 0.2f,0.2f,0.f };
+	bool switchDir ;
+
 };
