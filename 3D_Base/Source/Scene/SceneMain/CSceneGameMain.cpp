@@ -235,7 +235,7 @@ void CSceneGameMain::Update()
 		player->GetPlayerLeftHand().Update();	//左手.
 	}
 
-	m_pItemManager->Update();
+	m_pItemManager->Update(m_pPlayers[0].get());
 
 	//エネミー
 	for (auto& enemyType : m_pEnemies)

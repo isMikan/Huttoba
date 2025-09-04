@@ -49,8 +49,13 @@ void ItemManager::Update(CPlayer* player)
 {
 	for (auto& item : m_pItems)
 	{
-		item->Update();
+		item->Update(player);
 	}
+}
+
+void ItemManager::Update()
+{
+
 }
 
 //--------------------------------------------------------------------------------------------------------------
