@@ -211,7 +211,11 @@ public:
 	virtual void SetLightDirection(const ::Effekseer::Vector3D& direction);
 
 	/**
-		@brief	Get the color of light
+		@brief	Get the 
+		
+		
+		
+		of light
 	*/
 	virtual const ::Effekseer::Color& GetLightColor() const;
 

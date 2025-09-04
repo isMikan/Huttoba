@@ -401,7 +401,7 @@ void CSprite2D::Render()
 		cb.mWorld = m;
 
 		//カラー.
-		cb.vColor = D3DXVECTOR4( 1.0f, 1.0f, 1.0f, m_Alpha );
+		cb.vColor = D3DXVECTOR4( 10.0f, 10.0f, 10.0f, m_Alpha );
 
 		//テクスチャ座標(UV座標)
 		//１マスあたりの割合にパターン番号(マス目)をかけて座標を設定する

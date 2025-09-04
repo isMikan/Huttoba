@@ -9,6 +9,8 @@
 
 #include "Assets/AssetManager.h"
 
+#include "GameObject/SpriteObject/CSpriteObject.h"
+
 class CSceneStandby
 	: public CScene
 {

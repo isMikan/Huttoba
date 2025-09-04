@@ -27,6 +27,10 @@ CSceneStandby::CSceneStandby(CInputManager& input)
 	//InitializePlayers();
 	InitializeRedyFont();
 	SetSelectorPos();
+
+	m_pCamera->SetPosition(0.f, 10.f, 10.f);
+	m_pCamera->SetLook(0.f, 0.f, -10.f);
+	m_pCamera->SetLight(1.5f, 1.f, -1.f);
 }
 
 CSceneStandby::~CSceneStandby()
@@ -52,10 +56,6 @@ HRESULT CSceneStandby::Create()
 
 HRESULT CSceneStandby::LoadData()
 {
-	//読み込みのマネージャーを作成してくれているみたいなので後で切り替えておく.
-	//m_pSpriteStandbyImg->Init(_T("Data\\Texture\\Standby_kari.png"), Title);
-
-
 	m_pSpriteStandbyImg->AttachSprite(AssetManager::Sprite(Sprite2DList::Standby));
 
 	for (int i = 0;i < 4;i++)
@@ -117,7 +117,6 @@ void CSceneStandby::Draw()
 	D3DXMATRIX	mProj = m_pCamera->GetProj();
 	LIGHT		light = m_pCamera->GetLight();
 	CAMERA		camera = m_pCamera->GetCamera();
-
 
 	for (int i = 0;i < 4;i++)
 	{

@@ -19,6 +19,8 @@
 #include <D3DX10.h>	//「D3DX～」の定義使用時に必要.
 #include <D3D10.h>
 
+#include <DirectXMath.h>
+
 #include "MyMacro.h"
 
 //ライブラリ読み込み.
