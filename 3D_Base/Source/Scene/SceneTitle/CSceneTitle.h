@@ -32,7 +32,9 @@ private:
 	std::unique_ptr<CUIObject>	m_pSpriteTitlImg;	//タイトル画面.
 	std::unique_ptr<CUIObject>	m_pSpriteSelector;	//選択矢印.
 
-	std::unique_ptr<CUIObject>	m_pSpriteFont;
+	std::unique_ptr<CUIObject>	m_pSpriteTitleFont;
+	std::unique_ptr<CUIObject>	m_pSpriteStartFont;
+	std::unique_ptr<CUIObject>	m_pSpriteEndFont;
 
 	CInputManager&				m_InputManager;
 

@@ -7,6 +7,10 @@ CSceneTitle::CSceneTitle(HWND hWnd, CInputManager& inputmanager)
 
 	, m_pSpriteTitlImg	( nullptr )
 	, m_pSpriteSelector	( nullptr )
+
+	, m_pSpriteTitleFont( nullptr )
+	, m_pSpriteStartFont( nullptr )
+	, m_pSpriteEndFont	( nullptr )
 	
 	, m_InputManager	( inputmanager )
 
@@ -35,7 +39,9 @@ HRESULT CSceneTitle::Create()
 	m_pSpriteTitlImg = std::make_unique<CUIObject>();
 	m_pSpriteSelector = std::make_unique<CUIObject>();
 
-	m_pSpriteFont = std::make_unique<CUIObject>();
+	m_pSpriteTitleFont = std::make_unique<CUIObject>();
+	m_pSpriteStartFont = std::make_unique<CUIObject>();
+	m_pSpriteEndFont = std::make_unique<CUIObject>();
 
 	return S_OK;
 }
@@ -46,9 +52,17 @@ HRESULT CSceneTitle::LoadData()
 
 	m_pSpriteSelector->AttachSprite(AssetManager::Sprite(Sprite2DList::Selector));
 
-	m_pSpriteFont->AttachSprite(AssetManager::Sprite(Sprite2DList::FontUI));
-	m_pSpriteFont->SetPatternNo(0, 6);
-	m_pSpriteFont->SetPosition(0, 0, 0);
+	m_pSpriteTitleFont->AttachSprite(AssetManager::Sprite(Sprite2DList::BigFontUI));
+	m_pSpriteTitleFont->SetPatternNo(0, 0);
+	m_pSpriteTitleFont->SetPosition(330, 50, 0);
+
+	m_pSpriteStartFont->AttachSprite(AssetManager::Sprite(Sprite2DList::FontUI));
+	m_pSpriteStartFont->SetPatternNo(0, 0);
+	m_pSpriteStartFont->SetPosition(570, 440, 0);
+
+	m_pSpriteEndFont->AttachSprite(AssetManager::Sprite(Sprite2DList::FontUI));
+	m_pSpriteEndFont->SetPatternNo(0, 1);
+	m_pSpriteEndFont->SetPosition(570, 540, 0);
 
 	//ŠÖ”‚ð“ü‚ê‚é
 	m_Action =
@@ -77,10 +91,13 @@ void CSceneTitle::Update()
 
 void CSceneTitle::Draw()
 {
-	m_pSpriteFont->Draw();
+	m_pSpriteTitleFont->Draw();
+	m_pSpriteStartFont->Draw();
+	m_pSpriteEndFont->Draw();
 
 	m_pSpriteSelector->Draw();
-	m_pSpriteTitlImg->Draw();
+
+	//m_pSpriteTitlImg->Draw();
 }
 
 void CSceneTitle::Destroy()
@@ -91,7 +108,7 @@ void CSceneTitle::SetSelectorPos()
 {
 	m_SelectorPos = D3DXVECTOR3(500, 0, 0);
 
-	m_SelectorYPos.push_back(430);
+	m_SelectorYPos.push_back(440);
 	m_SelectorYPos.push_back(540);
 }
 
