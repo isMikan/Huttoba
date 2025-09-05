@@ -1,8 +1,8 @@
 #include "CPlayerHead.h"
 
 CPlayerHead::CPlayerHead()
+	: m_OffsetPos		( 0.f, 1.f, 0.f )
 {
-	m_OffsetPos = D3DXVECTOR3( 0.f, 1.f, 0.f );
 }
 
 CPlayerHead::~CPlayerHead()

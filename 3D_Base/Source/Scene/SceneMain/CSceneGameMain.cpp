@@ -98,7 +98,10 @@ HRESULT CSceneGameMain::LoadData()
 	for (int pNo = 0;pNo < Player_Max;pNo++)
 	{
 		//胴体のスタティックメッシュを設定.
-		m_pPlayers[pNo]->AttachMesh(AssetManager::Mesh(StaticMeshList::Player));
+		m_pPlayers[pNo]->AttachMesh(AssetManager::Mesh(StaticMeshList::PBody));
+		//頭のスタティックメッシュを設定.
+		m_pPlayers[pNo]->GetPlayerHead().
+			AttachMesh(AssetManager::Mesh(StaticMeshList::PHead));
 		//右手のスタティックメッシュを設定.
 		m_pPlayers[pNo]->GetPlayerRightHand().
 			AttachMesh(AssetManager::Mesh(StaticMeshList::PHand));
@@ -178,8 +181,6 @@ void CSceneGameMain::Update()
 
 	CTimeManager::GetInstance()->Tick();
 
-	CInputManager::Instance().Update();
-
 	//床の動作.
 	for (auto& ground : m_pGrounds)
 	{
@@ -190,6 +191,7 @@ void CSceneGameMain::Update()
 	for (auto& player : m_pPlayers)
 	{
 		player->Update();
+		player->GetPlayerHead().Update();		//頭.
 		player->GetPlayerRightHand().Update();	//右手.
 		player->GetPlayerLeftHand().Update();	//左手.
 	}
@@ -246,6 +248,7 @@ void CSceneGameMain::Draw()
 	for (auto& player : m_pPlayers)
 	{
 		player->Draw(mView, mProj, light, camera);
+		player->GetPlayerHead().Draw(mView, mProj, light, camera);		//頭.
 		player->GetPlayerRightHand().Draw(mView, mProj, light, camera);	//右手.
 		player->GetPlayerLeftHand().Draw(mView, mProj, light, camera);	//左手.
 		//当たり判定の中心座標を更新する

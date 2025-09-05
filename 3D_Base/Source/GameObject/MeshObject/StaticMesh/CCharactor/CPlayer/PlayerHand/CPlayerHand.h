@@ -2,8 +2,6 @@
 
 #include "GameObject/MeshObject/StaticMesh/CCharactor/CCharacter.h"
 
-#include <memory>
-
 /**************************************************
 *	プレイヤーの手クラス.
 **/

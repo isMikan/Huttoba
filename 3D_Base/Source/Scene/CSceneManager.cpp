@@ -72,15 +72,27 @@ void CSceneManager::CreateScene(int Scene)
 
 void CSceneManager::SetInputBInding()
 {
-	m_pInputManager.BindKey(Action::Decide, InputBinding(InputDevice::GamePad, CXInput::B));
-	m_pInputManager.BindKey(Action::Decide, InputBinding(InputDevice::Keyboard, 'Z'));
+	//m_pInputManager.BindKey(Action::Decide, InputBinding(InputDevice::GamePad, CXInput::B));
+	//m_pInputManager.BindKey(Action::Decide, InputBinding(InputDevice::Keyboard, 'Z'));
 
-	m_pInputManager.BindKey(Action::Switch, InputBinding(InputDevice::GamePad, CXInput::A));
-	m_pInputManager.BindKey(Action::Switch, InputBinding(InputDevice::Keyboard, 'X'));
+	//m_pInputManager.BindKey(Action::Switch, InputBinding(InputDevice::GamePad, CXInput::A));
+	//m_pInputManager.BindKey(Action::Switch, InputBinding(InputDevice::Keyboard, 'X'));
+	//			   
+	//m_pInputManager.BindKey(Action::NavigateUp, InputBinding(InputDevice::GamePad, CXInput::UP));
+	//m_pInputManager.BindKey(Action::NavigateUp, InputBinding(InputDevice::Keyboard, VK_UP));
+	//			   
+	//m_pInputManager.BindKey(Action::NavigateDown, InputBinding(InputDevice::GamePad, CXInput::DOWN));
+	//m_pInputManager.BindKey(Action::NavigateDown, InputBinding(InputDevice::Keyboard, VK_DOWN));
+
+	CInputManager::Instance().BindKey(Action::Decide, InputBinding(InputDevice::GamePad, CXInput::B));
+	CInputManager::Instance().BindKey(Action::Decide, InputBinding(InputDevice::Keyboard, 'Z'));
 				   
-	m_pInputManager.BindKey(Action::NavigateUp, InputBinding(InputDevice::GamePad, CXInput::UP));
-	m_pInputManager.BindKey(Action::NavigateUp, InputBinding(InputDevice::Keyboard, VK_UP));
-				   
-	m_pInputManager.BindKey(Action::NavigateDown, InputBinding(InputDevice::GamePad, CXInput::DOWN));
-	m_pInputManager.BindKey(Action::NavigateDown, InputBinding(InputDevice::Keyboard, VK_DOWN));
+	CInputManager::Instance().BindKey(Action::Switch, InputBinding(InputDevice::GamePad, CXInput::A));
+	CInputManager::Instance().BindKey(Action::Switch, InputBinding(InputDevice::Keyboard, 'X'));
+
+	CInputManager::Instance().BindKey(Action::NavigateUp, InputBinding(InputDevice::GamePad, CXInput::UP));
+	CInputManager::Instance().BindKey(Action::NavigateUp, InputBinding(InputDevice::Keyboard, VK_UP));
+				
+	CInputManager::Instance().BindKey(Action::NavigateDown, InputBinding(InputDevice::GamePad, CXInput::DOWN));
+	CInputManager::Instance().BindKey(Action::NavigateDown, InputBinding(InputDevice::Keyboard, VK_DOWN));
 }

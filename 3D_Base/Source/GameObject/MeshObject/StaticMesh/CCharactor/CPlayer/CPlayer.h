@@ -4,6 +4,7 @@
 
 #include "GameObject/MeshObject/StaticMesh/CCharactor/CCharacter.h"
 
+#include "PlayerHead/CPlayerHead.h"
 #include "PlayerHand/PlayerRightHand/CPlayerRightHand.h"
 #include "PlayerHand/PlayerLeftHand/CPlayerLeftHand.h"
 
@@ -26,6 +27,15 @@ class CPlayer
 	: public CCharacter	//キャラクタークラスを継承.
 {
 public:
+	enum class PlayerColor
+	{
+		Red,
+		Blue,
+		Green,
+		Pink,
+		None = -1,
+	};
+
 	//ローカル軸の構造体.
 	struct LocalAxes
 	{
@@ -37,9 +47,9 @@ public:
 	//攻撃を受けた情報.
 	struct HitInfo
 	{
-		D3DXVECTOR3 position;	//攻撃された位置.
-		float		force;		//攻撃力.
-		bool		isHit;		//攻撃を受けたか.
+		D3DXVECTOR3 position;		//攻撃された位置.
+		float		force;			//攻撃力.
+		bool		isHit;			//攻撃を受けたか.
 	};
 
 public:
@@ -59,6 +69,9 @@ public:
 	//行動状態を設定する関数.
 	void SetActionState(std::unique_ptr<CActionState> newState);
 
+	//頭の位置を設定するために計算する関数.
+	D3DXVECTOR3 SetHandPos();
+
 	//プレイヤーの正面方向を取得するための関数.
 	D3DXVECTOR3 GetForward();
 
@@ -73,6 +86,13 @@ public:
 
 	//押された時の移動量を計算する関数.
 	D3DXVECTOR3 Knockback();
+
+	ObjectColor SetPlayerColor(int index);
+
+	//プレイヤーが頭を持っている(書き込み用).
+	CPlayerHead& GetPlayerHead() { return *m_pHead; }
+	//プレイヤーが頭を持っている(読み込み用).
+	const CPlayerHead& GetPlayerHead() const { return *m_pHead; }
 
 	//プレイヤーが右手を持っている(書き込み用).
 	CPlayerRightHand& GetPlayerRightHand() { return *m_pRightHand; }
@@ -120,10 +140,11 @@ private:
 		std::unique_ptr<StateType> newScene);
 
 private:
-	std::unique_ptr<CInput>				m_pInput;			//入力.
+	std::unique_ptr<CInput>				m_pInput;		//入力.
 
-	std::unique_ptr<CPlayerRightHand>	m_pRightHand;		//右手.
-	std::unique_ptr<CPlayerLeftHand>	m_pLeftHand;		//左手.
+	std::unique_ptr<CPlayerHead>		m_pHead;		//頭.
+	std::unique_ptr<CPlayerRightHand>	m_pRightHand;	//右手.
+	std::unique_ptr<CPlayerLeftHand>	m_pLeftHand;	//左手.
 
 	std::unique_ptr<CPlayerDirectionalInputState>	m_pMoveState;		//移動.
 	std::unique_ptr<CPlayerDirectionalInputState>	m_pRotationState;	//回転.

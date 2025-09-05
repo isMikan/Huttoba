@@ -10,11 +10,10 @@
 #include "PlayerState/ActionState/PlayerThrowItem/CPlayerThrowItem.h"
 #include "PlayerState/ActionState/PlayerPushed/CPlayerPushed.h"
 
-#include <iostream>
-
 CPlayer::CPlayer(int index)
-	: m_pInput			( std::make_unique<CInput>( index ) )
+	: m_pInput			( std::make_unique<CInput>(index) )
 
+	, m_pHead			( std::make_unique<CPlayerHead>() )
 	, m_pRightHand		( std::make_unique<CPlayerRightHand>() )
 	, m_pLeftHand		( std::make_unique<CPlayerLeftHand>() )
 
@@ -29,6 +28,8 @@ CPlayer::CPlayer(int index)
 
 	, m_HitInfo			()
 {
+	m_ObjColor = SetPlayerColor(index);
+
 	SetPlayerInputBinding();
 }
 
@@ -59,6 +60,10 @@ void CPlayer::Draw(
 
 void CPlayer::HandleInput()
 {
+	D3DXVECTOR3 hand = GetPlayerRightHand().GetPosition();
+
+	GetPlayerHead().SetPosition(SetHandPos());
+
 	float x = 0.f;	//x軸.
 	float z = 0.f;	//z軸.
 
@@ -116,6 +121,26 @@ void CPlayer::SetRotationState(std::unique_ptr< CPlayerDirectionalInputState> ne
 void CPlayer::SetActionState(std::unique_ptr<CActionState> newState)
 {
 	ChangeState(m_pActionState, std::move(newState));
+}
+
+D3DXVECTOR3 CPlayer::SetHandPos()
+{
+	LocalAxes axes = GetLocalAxes();
+
+	D3DXVECTOR3 headOffsetPos = GetPlayerHead().GetOffsetPos();
+
+	//方向に合わせて位置を調整.
+	headOffsetPos =
+		axes.right * headOffsetPos.x +
+		axes.up * headOffsetPos.y +
+		axes.forward * headOffsetPos.z;
+
+	D3DXVECTOR3 headPos = m_vPosition;
+
+	//頭の位置.
+	headPos = m_vPosition + headOffsetPos;
+
+	return headPos;
 }
 
 //プレイヤーの正面方向を取得するための関数.
@@ -178,6 +203,49 @@ D3DXVECTOR3 CPlayer::Knockback()
 	D3DXVECTOR3 pos = dir * (m_HitInfo.force);
 
 	return pos;
+}
+
+CStaticMeshObject::ObjectColor CPlayer::SetPlayerColor(int index)
+{
+	std::array<ObjectColor, Player_Max>	playerColor;	//プレイヤーの色.
+
+	switch (index)
+	{
+	case 0:
+		playerColor[0] = {
+			D3DXVECTOR4(1.f, 0.f, 0.f, 1.f), // 赤
+			D3DXVECTOR4(0.5f, 0.f, 0.f, 1.f), // 少し暗めの赤
+			D3DXVECTOR4(0.1f, 0.1f, 0.1f, 1.f),
+		};
+
+		break;
+	case 1:
+		playerColor[1] = {
+			D3DXVECTOR4(0.f, 0.f, 1.f, 1.f),  // 青
+			D3DXVECTOR4(0.f, 0.f, 0.5f, 1.f),  // 少し暗めの青
+			D3DXVECTOR4(0.1f, 0.1f, 0.1f, 1.f),  // 白っぽい光沢
+		};
+
+		break;
+	case 2:
+		playerColor[2] = {
+			D3DXVECTOR4(1.0f, 0.5f, 0.f, 1.f),  // オレンジ
+			D3DXVECTOR4(0.5f, 0.3f, 0.f, 1.f), // 少し暗めのオレンジ
+			D3DXVECTOR4(0.1f, 0.1f, 0.1f, 1.f),  // 白っぽい光沢
+		};
+
+		break;
+	case 3:
+		playerColor[3] = {
+			D3DXVECTOR4(0.0f, 1.0f, 0.0f, 1.f),  // 緑
+			D3DXVECTOR4(0.0f, 0.5f, 0.0f, 1.f),  // 少し暗めの緑
+			D3DXVECTOR4(0.1f, 0.1f, 0.1f, 1.f),  // 白っぽい光沢
+		};
+
+		break;
+	}
+
+	return playerColor[index];
 }
 
 //キーバインドを設定する関数.

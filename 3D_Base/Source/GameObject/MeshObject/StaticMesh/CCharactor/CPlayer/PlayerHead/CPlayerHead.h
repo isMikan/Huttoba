@@ -3,7 +3,7 @@
 #include "GameObject/MeshObject/StaticMesh/CCharactor/CCharacter.h"
 
 /**************************************************
-*	プレイヤーの右手クラス.
+*	プレイヤーの頭クラス.
 **/
 class CPlayerHead
 	: public CCharacter	//キャラクタークラスを継承.

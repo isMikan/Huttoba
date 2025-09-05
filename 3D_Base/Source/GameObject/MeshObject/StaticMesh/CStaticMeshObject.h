@@ -59,7 +59,7 @@ public:
 	void SetObjectColor(ObjectColor color){
 		m_ObjColor = color;
 	}
-	ObjectColor GetObjectColor(){
+	ObjectColor GetObjectColor() const {
 		return m_ObjColor;
 	}
 
