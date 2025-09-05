@@ -714,6 +714,14 @@ void CStaticMesh::Render(
 		m_pContext11->Map(m_pCBufferPerMaterial.Get(),
 			0, D3D11_MAP_WRITE_DISCARD, 0, &pDataMat)))
 	{
+		//シェーダーのper_material cbufferの構造に合わせてデータをコピー
+		struct CBUFFER_PER_MATERIAL
+		{
+			D3DXVECTOR4 Diffuse;
+			D3DXVECTOR4 Ambient;
+			D3DXVECTOR4 Specular;
+		};
+
 		//GPUに書き込み.
 		CBUFFER_PER_MATERIAL* dataPtr = (CBUFFER_PER_MATERIAL*)pDataMat.pData;
 
