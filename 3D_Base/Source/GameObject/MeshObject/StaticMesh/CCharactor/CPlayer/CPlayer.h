@@ -27,6 +27,15 @@ class CPlayer
 	: public CCharacter	//キャラクタークラスを継承.
 {
 public:
+	enum class PlayerColor
+	{
+		Red,
+		Blue,
+		Green,
+		Pink,
+		None = -1,
+	};
+
 	//ローカル軸の構造体.
 	struct LocalAxes
 	{
@@ -77,6 +86,8 @@ public:
 
 	//押された時の移動量を計算する関数.
 	D3DXVECTOR3 Knockback();
+
+	ObjectColor SetPlayerColor(int index);
 
 	//プレイヤーが頭を持っている(書き込み用).
 	CPlayerHead& GetPlayerHead() { return *m_pHead; }

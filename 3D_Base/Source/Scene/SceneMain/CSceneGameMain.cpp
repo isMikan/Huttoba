@@ -181,8 +181,6 @@ void CSceneGameMain::Update()
 
 	CTimeManager::GetInstance()->Tick();
 
-	CInputManager::Instance().Update();
-
 	//°‚Ì“®ì.
 	for (auto& ground : m_pGrounds)
 	{
