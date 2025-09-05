@@ -96,7 +96,7 @@ void CPlayerHandAttack::Update(CPlayer& pPlayer)
 	//クォータニオンの回転を計算して設定する.
 	pPlayer.SetQuaternion(pPlayer.TiltedQuat(m_StartQuat, axes.right, m_CurrentTiltAngle));
 
-	float eased = sinf(progress * D3DX_PI * 0.5);	//0.5で半往復させ前に手を出す計算をする.	
+	float eased = sinf(progress * D3DX_PI * 0.5f);	//0.5で半往復させ前に手を出す計算をする.	
 
 	//右手と左手の調整位置だけの計算.
 	D3DXVECTOR3 rightHandOffsetPos;

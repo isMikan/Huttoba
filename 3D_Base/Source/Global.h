@@ -97,6 +97,8 @@ enum class StaticMeshList
 	ThirdFallGround,
 	SafeGround,
 	Player,
+	PBody,
+	PHead,
 	PHand,
 	RoboA,
 	RoboB,
