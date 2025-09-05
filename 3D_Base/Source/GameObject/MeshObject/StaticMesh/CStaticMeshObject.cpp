@@ -3,6 +3,10 @@
 CStaticMeshObject::CStaticMeshObject()
 	: m_pMesh			( nullptr )
 	, m_pBSphere		( nullptr )
+
+	, m_Diffuse			( 1.f, 1.f, 1.f, 1.f )
+	, m_Ambient			( 0.5f, 0.5f, 0.5f, 0.5f )
+	, m_Specular		( 1.f, 1.f, 1.f, 1.f )
 {
 	m_pBSphere = new CBoundingSphere();
 }

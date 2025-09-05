@@ -173,7 +173,6 @@ public:
 	//レイとの当たり判定用のメッシュを取得.
 	LPD3DXMESH GetMeshForRay() const { return m_ModelForRay.pMesh; }
 	
-
 private:
 	//メッシュ読み込み.
 	HRESULT LoadXMesh( LPCTSTR lpFileName );

@@ -719,9 +719,8 @@ void CStaticMesh::Render(
 		m_pContext11->Unmap(m_pCBufferPerMaterial.Get(), 0);	//通知.
 	}
 
-
 	//メッシュのレンダリング.
-	RenderMesh( mWorld, mView, mProj);
+	RenderMesh(mWorld, mView, mProj);
 }
 
 //レンダリング関数(クラス内でのみ使用する).
