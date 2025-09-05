@@ -694,6 +694,31 @@ void CStaticMesh::Render(
 	m_pContext11->VSSetConstantBuffers(	2, 1, pCBufferPerFrame);	//頂点シェーダ.
 	m_pContext11->PSSetConstantBuffers(	2, 1, pCBufferPerFrame);	//ピクセルシェーダ.
 
+	//マテリアルの各要素をシェーダに渡す.
+	D3D11_MAPPED_SUBRESOURCE pDataMat;
+	//Map でGPUのバッファにデータを書き込む.
+	if (SUCCEEDED(
+		m_pContext11->Map(m_pCBufferPerMaterial.Get(),
+			0, D3D11_MAP_WRITE_DISCARD, 0, &pDataMat)))
+	{
+		//シェーダーのper_material cbufferの構造に合わせてデータをコピー
+		struct CBUFFER_PER_MATERIAL
+		{
+			D3DXVECTOR4 Diffuse;
+			D3DXVECTOR4 Ambient;
+			D3DXVECTOR4 Specular;
+		};
+
+		//GPUに書き込み.
+		CBUFFER_PER_MATERIAL* dataPtr = (CBUFFER_PER_MATERIAL*)pDataMat.pData;
+
+		dataPtr->Diffuse = m_Diffuse;
+		dataPtr->Ambient = m_Ambient;
+		dataPtr->Specular = m_Specular;
+
+		m_pContext11->Unmap(m_pCBufferPerMaterial.Get(), 0);	//通知.
+	}
+
 
 	//メッシュのレンダリング.
 	RenderMesh( mWorld, mView, mProj);

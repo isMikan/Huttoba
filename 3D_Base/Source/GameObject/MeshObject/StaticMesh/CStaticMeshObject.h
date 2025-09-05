@@ -46,7 +46,7 @@ public:
 		const D3DXVECTOR4& ambient,
 		const D3DXVECTOR4& specular)
 	{
-		m_Diffuse = diffuse;
+		m_Diffuse = diffuse;	
 		m_Ambient = ambient;
 		m_Specular = specular;
 	}
@@ -58,5 +58,4 @@ protected:
 	D3DXVECTOR4			m_Diffuse;		//ŠgŽU”½ŽË.
 	D3DXVECTOR4			m_Ambient;		//ŠÂ‹«Œõ.
 	D3DXVECTOR4			m_Specular;		//‹¾–Ê”½ŽË.
-
 };
