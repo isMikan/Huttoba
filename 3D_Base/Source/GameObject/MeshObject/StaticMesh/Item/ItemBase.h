@@ -69,6 +69,10 @@ public:
 	*****************************************************************************************/
 	void GetPlayer(CPlayer* player) { m_pPlayer = player; }
 
+	void SetState(State state) { m_State = state; }
+
+	bool IsUse(); // égópíÜÇ©Ç«Ç§Ç©
+
 protected:
 
 	virtual void Spawn	 ()	= 0; // èoåª
