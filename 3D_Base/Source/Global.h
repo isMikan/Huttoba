@@ -123,5 +123,6 @@ enum class Sprite2DList
 	NotRedyFont,
 	Result,
 	Selector,
-	FontUI		//選択肢などのちょっと小さい文字.
+	FontUI,		//選択肢などのちょっと小さい文字.
+	BigFontUI	//タイトルなどの大き目の文字.
 };

@@ -32,6 +32,8 @@ private:
 	std::unique_ptr<CUIObject>	m_pSpriteTitlImg;	//タイトル画面.
 	std::unique_ptr<CUIObject>	m_pSpriteSelector;	//選択矢印.
 
+	std::unique_ptr<CUIObject>	m_pSpriteFont;
+
 	CInputManager&				m_InputManager;
 
 	D3DXVECTOR3					m_SelectorPos;		//選択矢印の座標.
