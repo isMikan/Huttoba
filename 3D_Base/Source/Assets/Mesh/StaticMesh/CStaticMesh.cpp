@@ -707,6 +707,25 @@ void CStaticMesh::Render(
 	m_pContext11->VSSetConstantBuffers(	2, 1, pCBufferPerFrame);	//頂点シェーダ.
 	m_pContext11->PSSetConstantBuffers(	2, 1, pCBufferPerFrame);	//ピクセルシェーダ.
 
+	//マテリアルの各要素をシェーダに渡す.
+	D3D11_MAPPED_SUBRESOURCE pDataMat;
+	//Map でGPUのバッファにデータを書き込む.
+	if (SUCCEEDED(
+		m_pContext11->Map(m_pCBufferPerMaterial.Get(),
+			0, D3D11_MAP_WRITE_DISCARD, 0, &pDataMat)))
+	{
+		//GPUに書き込み.
+		CBUFFER_PER_MATERIAL* dataPtr = (CBUFFER_PER_MATERIAL*)pDataMat.pData;
+
+		dataPtr->Diffuse = m_Diffuse;
+		dataPtr->Ambient = m_Ambient;
+		dataPtr->Specular = m_Specular;
+
+		m_pContext11->Unmap(m_pCBufferPerMaterial.Get(), 0);	//通知.
+	}
+	//シェーダーで使うコンスタントバッファを設定.
+	m_pContext11->PSSetConstantBuffers(1, 1, &m_pCBufferPerMaterial);
+
 
 	//メッシュのレンダリング.
 	RenderMesh( mWorld, mQuatWorld, mView, mProj );
@@ -797,7 +816,6 @@ void CStaticMesh::RenderMesh(
 
 		//マテリアルの各要素をシェーダに渡す.
 		D3D11_MAPPED_SUBRESOURCE pDataMat;
-
 		if( SUCCEEDED(
 			m_pContext11->Map(m_pCBufferPerMaterial.Get(),
 				0, D3D11_MAP_WRITE_DISCARD, 0, &pDataMat )))

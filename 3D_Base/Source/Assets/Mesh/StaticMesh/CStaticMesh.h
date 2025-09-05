@@ -161,6 +161,13 @@ public:
 		return m_Quaternion;
 	}
 
+	//拡散反射を設定する関数..
+	void SetDiffuseColor(const D3DXVECTOR4& color) { m_Diffuse = color; }
+	//環境光を設定する関数..
+	void SetAmbientColor(const D3DXVECTOR4& color) { m_Ambient = color; }
+	//鏡面反射を設定する関数..
+	void SetSpecularColor(const D3DXVECTOR4& color) { m_Specular = color; }
+
 	//メッシュを取得.
 	LPD3DXMESH GetMesh() const { return m_Model.pMesh; }
 	//レイとの当たり判定用のメッシュを取得.
@@ -225,4 +232,8 @@ private:
 	D3DXVECTOR3		m_Scale;	//拡大縮小値(x,y,z等倍).
 
 	D3DXQUATERNION	m_Quaternion;	//クォータニオンの回転.
- };
+
+	D3DXVECTOR4		m_Diffuse;		//拡散反射(明暗).
+	D3DXVECTOR4		m_Ambient;		//環境光(光影).
+	D3DXVECTOR4		m_Specular;		//鏡面反射(艶感).
+};

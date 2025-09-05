@@ -40,7 +40,22 @@ public:
 		m_pBSphere->SetPosition(m_vPosition + D3DXVECTOR3(0.f,5.f,0.f));
 	}
 
+	//ƒ‚ƒfƒ‹‚ÌF‚ğİ’è‚·‚éŠÖ”.
+	void SetColor(
+		const D3DXVECTOR4& diffuse,
+		const D3DXVECTOR4& ambient,
+		const D3DXVECTOR4& specular)
+	{
+		m_Diffuse = diffuse;
+		m_Ambient = ambient;
+		m_Specular = specular;
+	}
+
 protected:
-	std::shared_ptr<CStaticMesh>		m_pMesh;
+	std::shared_ptr<CStaticMesh>	m_pMesh;
 	CBoundingSphere*	m_pBSphere;
+
+	D3DXVECTOR4			m_Diffuse;		//ŠgU”½Ë.
+	D3DXVECTOR4			m_Ambient;		//ŠÂ‹«Œõ.
+	D3DXVECTOR4			m_Specular;		//‹¾–Ê”½Ë.
 };
