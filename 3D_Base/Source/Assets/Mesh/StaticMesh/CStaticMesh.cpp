@@ -694,9 +694,25 @@ void CStaticMesh::Render(
 	m_pContext11->VSSetConstantBuffers(	2, 1, pCBufferPerFrame);	//頂点シェーダ.
 	m_pContext11->PSSetConstantBuffers(	2, 1, pCBufferPerFrame);	//ピクセルシェーダ.
 
+	//マテリアルの各要素をシェーダに渡す.
+	D3D11_MAPPED_SUBRESOURCE pDataMat;
+	//Map でGPUのバッファにデータを書き込む.
+	if (SUCCEEDED(
+		m_pContext11->Map(m_pCBufferPerMaterial.Get(),
+			0, D3D11_MAP_WRITE_DISCARD, 0, &pDataMat)))
+	{
+		//GPUに書き込み.
+		CBUFFER_PER_MATERIAL* dataPtr = (CBUFFER_PER_MATERIAL*)pDataMat.pData;
+
+		dataPtr->Diffuse = m_Diffuse;
+		dataPtr->Ambient = m_Ambient;
+		dataPtr->Specular = m_Specular;
+
+		m_pContext11->Unmap(m_pCBufferPerMaterial.Get(), 0);	//通知.
+	}
 
 	//メッシュのレンダリング.
-	RenderMesh( mWorld, mView, mProj);
+	RenderMesh(mWorld, mView, mProj);
 }
 
 //レンダリング関数(クラス内でのみ使用する).
@@ -773,9 +789,9 @@ void CStaticMesh::RenderMesh(
 			//コンスタントバッファ(マテリアル用).
 			CBUFFER_PER_MATERIAL cb;
 			//ディフューズ,アンビエント,スペキュラをシェーダに渡す.
-			cb.Diffuse	= m_pMaterials[m_AttrID[No]].Diffuse;
-			cb.Ambient	= m_pMaterials[m_AttrID[No]].Ambient;
-			cb.Specular = m_pMaterials[m_AttrID[No]].Specular;
+			cb.Diffuse = m_Diffuse;
+			cb.Ambient = m_Ambient;
+			cb.Specular = m_Specular;
 
 			memcpy_s(pDataMat.pData, pDataMat.RowPitch,
 				(void*)&cb, sizeof(cb));

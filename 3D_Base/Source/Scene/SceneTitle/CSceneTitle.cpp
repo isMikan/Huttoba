@@ -35,6 +35,8 @@ HRESULT CSceneTitle::Create()
 	m_pSpriteTitlImg = std::make_unique<CUIObject>();
 	m_pSpriteSelector = std::make_unique<CUIObject>();
 
+	m_pSpriteFont = std::make_unique<CUIObject>();
+
 	return S_OK;
 }
 
@@ -43,6 +45,10 @@ HRESULT CSceneTitle::LoadData()
 	m_pSpriteTitlImg->AttachSprite(AssetManager::Sprite(Sprite2DList::Title));
 
 	m_pSpriteSelector->AttachSprite(AssetManager::Sprite(Sprite2DList::Selector));
+
+	m_pSpriteFont->AttachSprite(AssetManager::Sprite(Sprite2DList::FontUI));
+	m_pSpriteFont->SetPatternNo(0, 6);
+	m_pSpriteFont->SetPosition(0, 0, 0);
 
 	//ŠÖ”‚ð“ü‚ê‚é
 	m_Action =
@@ -71,6 +77,8 @@ void CSceneTitle::Update()
 
 void CSceneTitle::Draw()
 {
+	m_pSpriteFont->Draw();
+
 	m_pSpriteSelector->Draw();
 	m_pSpriteTitlImg->Draw();
 }

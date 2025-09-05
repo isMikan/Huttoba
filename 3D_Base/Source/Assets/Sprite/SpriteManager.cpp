@@ -62,7 +62,9 @@ HRESULT SpriteManager::CreateSprite2D()
 	RegisterSprite2D(Sprite2DList::RedyFont, _T("Data\\Texture\\Ready_kari.png"), { 200,100, 200,100, 200,100 });
 	RegisterSprite2D(Sprite2DList::NotRedyFont, _T("Data\\Texture\\NotReady_kari.png"), { 200,100, 200,100, 200,100 });
 	RegisterSprite2D(Sprite2DList::Result, _T("Data\\Texture\\Result_kari.png"), { WND_W,WND_H,WND_W,WND_H,WND_W,WND_H });
-	RegisterSprite2D(Sprite2DList::Selector,_T("Data\\Texture\\yajirusi_kari.png"), { 64,64,64,64,64,64 });
+	RegisterSprite2D(Sprite2DList::Selector, _T("Data\\Texture\\yajirusi_kari.png"), { 64,64,64,64,64,64 });
+	RegisterSprite2D(Sprite2DList::FontUI, _T("Data\\Texture\\UI.png"), { 400,64,400,544,400,64 });
+	RegisterSprite2D(Sprite2DList::BigFontUI, _T("Data\\Texture\\BigUI.png"), { 800,200,800,620,800,200 });
 //↑-----------------------------------------------------------------------------------------------------------------------------↑
 
 	//各sprite2Dのインスタンス作成.

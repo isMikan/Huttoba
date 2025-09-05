@@ -11,6 +11,15 @@ class CStaticMeshObject
 	: public CGameObject
 {
 public:
+	//オブジェクトの色の構造体.
+	struct ObjectColor
+	{
+		D3DXVECTOR4 diffuse;
+		D3DXVECTOR4 ambient;
+		D3DXVECTOR4 specular;
+	};
+
+public:
 	CStaticMeshObject();
 	virtual ~CStaticMeshObject() override;
 
@@ -40,7 +49,23 @@ public:
 		m_pBSphere->SetPosition(m_vPosition + D3DXVECTOR3(0.f,5.f,0.f));
 	}
 
+	//オブジェクトの色を設定する関数.
+	void SetObjectColor(
+		D3DXVECTOR4& diffuse, D3DXVECTOR4& ambient, D3DXVECTOR4& specular){
+		m_ObjColor.diffuse = diffuse;
+		m_ObjColor.ambient = ambient;
+		m_ObjColor.specular = specular;
+	}
+	void SetObjectColor(ObjectColor color){
+		m_ObjColor = color;
+	}
+	ObjectColor GetObjectColor(){
+		return m_ObjColor;
+	}
+
 protected:
-	std::shared_ptr<CStaticMesh>		m_pMesh;
+	std::shared_ptr<CStaticMesh>	m_pMesh;
 	CBoundingSphere*	m_pBSphere;
+
+	ObjectColor			m_ObjColor;		//オブジェクトの色.
 };
