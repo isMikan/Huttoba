@@ -135,6 +135,12 @@ void Haetataki::Use(CPlayer* player)
 	//アイテムをプレイヤーの位置に合わせる
 	m_vPosition = player->GetPosition() + m_Offset;
 
+	if(GetBSphere()->IsHit(*player->GetBSphere()))
+	{
+		//敵に当たったときの処理
+		player->SetPosition(0.f, 0.f, 0.f);
+	}
+
 	//モーション終了で所持状態へ戻る
 	if (!AttackMostion())
 	{

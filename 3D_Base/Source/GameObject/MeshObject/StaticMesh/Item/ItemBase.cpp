@@ -49,8 +49,18 @@ void ItemBase::Draw(D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAMERA& Ca
 	CStaticMeshObject::Draw(View, Proj, Light, Camera);
 }
 
+bool ItemBase::IsUse()
+{
+	if (m_State == State::Use)
+	{
+		return true;
+	}
+	return false;
+}
+
 //---------------------åpè≥Ç≈édï˚Ç»Ç≠íËã`------------------------
 void ItemBase::Update()
 {
 
 }
+

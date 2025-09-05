@@ -1,6 +1,9 @@
 #include "stdafx.h"
 #include "ItemManager.h"
 #include "Item/ItemBase.h"	
+#include "CCharactor/CPlayer/CPlayer.h"
+#include "CInput/CInputManager.h"
+
 
 //--------------------------------------------------------------------------------------------------------------
 
@@ -22,6 +25,10 @@ HRESULT ItemManager::Create()
 {
 	m_pItems.push_back(ItemFactory::GetInstance()->CreateItem("Haetataki"));
 	m_pItems.push_back(ItemFactory::GetInstance()->CreateItem("SmashBat"));
+
+	CInputManager::Instance().BindKey(Action::Have, InputBinding(InputDevice::GamePad, CXInput::A));
+	CInputManager::Instance().BindKey(Action::HaeAttack, InputBinding(InputDevice::GamePad, CXInput::X));
+	CInputManager::Instance().BindKey(Action::Have, InputBinding(InputDevice::Keyboard, 'Z'));
 
 	return S_OK;
 }
@@ -50,6 +57,19 @@ void ItemManager::Update(CPlayer* player)
 	for (auto& item : m_pItems)
 	{
 		item->Update(player);
+
+		// “–‚½‚è”»’è
+		if (item->GetBSphere()->IsHit(*player->GetBSphere()))
+		{
+			if (CInputManager::Instance().GetInput(0).IsDown(Action::Have))
+			{
+				item->SetState(ItemBase::State::Have);
+			}
+		}
+		if (CInputManager::Instance().GetInput(0).IsDown(Action::HaeAttack))
+		{
+			item->SetState(ItemBase::State::Use);
+		}
 	}
 }
 
