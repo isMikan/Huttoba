@@ -50,7 +50,7 @@ public:
 	/*****************************************************************************************
 	* @brief    更新処理
 	*****************************************************************************************/
-	virtual void Update(CPlayer* player);
+	virtual void Update(std::vector<std::unique_ptr<CPlayer>>& playiers);
 
 	//継承が邪魔になったので切る。突貫工事
 	virtual void Update() override;
@@ -77,8 +77,8 @@ protected:
 
 	virtual void Spawn	 ()	= 0; // 出現
 	virtual void OnGround()	= 0; // 取得待機
-	virtual void Have	 (CPlayer* player)	= 0; // 取得
-	virtual void Use	 (CPlayer* player)	= 0; // 使用
+	virtual void Have	 (std::vector<std::unique_ptr<CPlayer>>& playiers)	= 0; // 取得
+	virtual void Use	 (std::vector<std::unique_ptr<CPlayer>>& playiers)	= 0; // 使用
 	virtual void Throw	 ()	= 0; // 投擲
 	virtual void Destroy ()	= 0; // 消滅
 

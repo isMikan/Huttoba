@@ -58,10 +58,10 @@ Haetataki::~Haetataki()
 
 //--------------------------------------------------------------------------------------------------------------
 
-void Haetataki::Update(CPlayer* player)
+void Haetataki::Update(std::vector<std::unique_ptr<CPlayer>>& playiers)
 {
 	//アイテム共通のUpdate
-	ItemBase::Update(player);
+	ItemBase::Update(playiers);
 }
 
 //--------------------------------------------------------------------------------------------------------------
@@ -114,13 +114,13 @@ void Haetataki::OnGround()
 
 //--------------------------------------------------------------------------------------------------------------
 
-void Haetataki::Have(CPlayer* player)
+void Haetataki::Have(std::vector<std::unique_ptr<CPlayer>>& playiers)
 {
 	//アイテムを拾うモーション
 	TakeMostion();
 
 	//アイテムをプレイヤーの位置に合わせる
-	m_vPosition = player->GetPosition() + m_Offset;
+	m_vPosition = playiers[0]->GetPosition() + m_Offset;
 
 	if (GetAsyncKeyState('N') & 0x0001)
 	{
@@ -130,15 +130,18 @@ void Haetataki::Have(CPlayer* player)
 
 //--------------------------------------------------------------------------------------------------------------
 
-void Haetataki::Use(CPlayer* player)
+void Haetataki::Use(std::vector<std::unique_ptr<CPlayer>>& playiers)
 {
 	//アイテムをプレイヤーの位置に合わせる
-	m_vPosition = player->GetPosition() + m_Offset;
+	m_vPosition = playiers[0]->GetPosition() + m_Offset;
 
-	if(GetBSphere()->IsHit(*player->GetBSphere()))
+	for (auto& player : playiers)
 	{
-		//敵に当たったときの処理
-		player->SetPosition(0.f, 0.f, 0.f);
+		if (GetBSphere()->IsHit(*player->GetBSphere()) && playiers[0] != player)
+		{
+			//敵に当たったときの処理
+			player->SetPosition(0.f, 0.f, 0.f);
+		}
 	}
 
 	//モーション終了で所持状態へ戻る

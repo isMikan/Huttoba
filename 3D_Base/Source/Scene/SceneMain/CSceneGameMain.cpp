@@ -194,7 +194,7 @@ void CSceneGameMain::Update()
 		player->GetPlayerLeftHand().Update();	//¶Žè.
 	}
 
-	m_pItemManager->Update(m_pPlayers[0].get());
+	m_pItemManager->Update(m_pPlayers);
 
 	//”š”­
 	for (auto& exp : m_pExplosiones)

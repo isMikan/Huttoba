@@ -52,26 +52,31 @@ void ItemManager::Init()
 
 //--------------------------------------------------------------------------------------------------------------
 
-void ItemManager::Update(CPlayer* player)
+void ItemManager::Update(std::vector<std::unique_ptr<CPlayer>>& players)
 {
 	for (auto& item : m_pItems)
 	{
-		item->Update(player);
+		//ˆê’UPlayer0‚µ‚©Ž‚Ä‚È‚¢‚æ‚¤‚É‚·‚é
+		item->Update(players);
 
-		// “–‚½‚è”»’è
-		if (item->GetBSphere()->IsHit(*player->GetBSphere()))
+		for (auto& player : players)
 		{
-			if (CInputManager::Instance().GetInput(0).IsDown(Action::Have))
+			// “–‚½‚è”»’è
+			if (item->GetBSphere()->IsHit(*player->GetBSphere()))
 			{
-				item->SetState(ItemBase::State::Have);
+				if (CInputManager::Instance().GetInput(0).IsDown(Action::Have))
+				{
+					item->SetState(ItemBase::State::Have);
+				}
 			}
-		}
-		if (CInputManager::Instance().GetInput(0).IsDown(Action::HaeAttack))
-		{
-			item->SetState(ItemBase::State::Use);
+			if (CInputManager::Instance().GetInput(0).IsDown(Action::HaeAttack))
+			{
+				item->SetState(ItemBase::State::Use);
+			}
 		}
 	}
 }
+
 
 void ItemManager::Update()
 {

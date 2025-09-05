@@ -18,7 +18,7 @@ void ItemBase::Init()
 {
 }
 
-void ItemBase::Update(CPlayer* player)
+void ItemBase::Update(std::vector<std::unique_ptr<CPlayer>>& playiers)
 {
 	//èâä˙âª
 	if (GetAsyncKeyState('R') & 0x8000)
@@ -32,8 +32,8 @@ void ItemBase::Update(CPlayer* player)
 	case ItemBase::State::None:break;
 	case ItemBase::State::Spawn:	Spawn();		break;
 	case ItemBase::State::OnGround: OnGround();		break;
-	case ItemBase::State::Have:		Have(player);	break;
-	case ItemBase::State::Use:		Use(player);	break;
+	case ItemBase::State::Have:		Have(playiers);	break;
+	case ItemBase::State::Use:		Use(playiers);	break;
 	case ItemBase::State::Throw:	Throw();		break;
 	case ItemBase::State::Destroy:	Destroy();		break;
 	default: break;

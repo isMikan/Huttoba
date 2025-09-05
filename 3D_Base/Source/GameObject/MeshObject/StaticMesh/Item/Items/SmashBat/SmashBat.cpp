@@ -25,7 +25,7 @@ void SmashBat::Init()
 
 //--------------------------------------------------------------------------------------------------------------
 
-void SmashBat::Update(CPlayer* player)
+void SmashBat::Update(std::vector<std::unique_ptr<CPlayer>>& playiers)
 {
 }
 
@@ -49,13 +49,13 @@ void SmashBat::OnGround()
 
 //--------------------------------------------------------------------------------------------------------------
 
-void SmashBat::Have(CPlayer* player)
+void SmashBat::Have(std::vector<std::unique_ptr<CPlayer>>& playiers)
 {
 }
 
 //--------------------------------------------------------------------------------------------------------------
 
-void SmashBat::Use(CPlayer* player)
+void SmashBat::Use(std::vector<std::unique_ptr<CPlayer>>& playiers)
 {
 }
 
