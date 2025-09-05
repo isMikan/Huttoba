@@ -160,7 +160,6 @@ D3DXQUATERNION CPlayer::TiltedQuat(
 	D3DXQUATERNION tilt;
 	//マトリクスをクォータニオンに変換.
 	D3DXQuaternionRotationAxis(&tilt, &localAxes, tiltAngle);
-
 	D3DXQUATERNION quat;
 	D3DXQuaternionMultiply(&quat, &baseQuat, &tilt); //基準の姿勢に傾きを掛ける.
 	//正規化.

@@ -186,7 +186,7 @@ private:
 	HRESULT CreateSampler();
 
 	//レンダリング関数(クラス内でのみ使用する).
-	void RenderMesh( D3DXMATRIX& mWorld, D3DXMATRIX& mQuatWorld, D3DXMATRIX& mView, D3DXMATRIX& mProj );
+	void RenderMesh( D3DXMATRIX& mWorld, D3DXMATRIX& mView, D3DXMATRIX& mProj );
 
 private:
 	//Dx9.
@@ -219,10 +219,10 @@ private:
 
 	bool			m_EnableTexture;//テクスチャあり.
 
-	D3DXVECTOR3		m_Position;	//位置(x,y,z).
-	D3DXVECTOR3		m_Rotation;	//回転値(x,y,z).
-								//※x=Pitch, y=Yaw, z=Roll.
-	D3DXVECTOR3		m_Scale;	//拡大縮小値(x,y,z等倍).
+	D3DXVECTOR3		m_Position;		//位置(x,y,z).
+	D3DXVECTOR3		m_Rotation;		//回転値(x,y,z).
+									//※x=Pitch, y=Yaw, z=Roll.
+	D3DXVECTOR3		m_Scale;		//拡大縮小値(x,y,z等倍).
 
 	D3DXQUATERNION	m_Quaternion;	//クォータニオンの回転.
  };

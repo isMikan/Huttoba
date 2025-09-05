@@ -636,35 +636,22 @@ void CStaticMesh::Render(
 	LIGHT& Light, D3DXVECTOR3& CamPos)
 {
 	//ワールド行列、スケール行列、回転行列、平行移動行列.
-	D3DXMATRIX mWorld, mScale, mRot, mTran;
-	D3DXMATRIX mYaw, mPitch, mRoll;
+	D3DXMATRIX mWorld, mScale, mRotQuat, mTran;
 
 	//拡大縮小行列作成.
 	D3DXMatrixScaling(
 		&mScale,	//(out)計算結果.
 		m_Scale.x, m_Scale.y, m_Scale.z);	//x,y,zそれぞれの拡縮値.
-	//Y軸回転行列作成.
-	D3DXMatrixRotationY( &mYaw, m_Rotation.y);
-	//X軸回転行列作成.
-	D3DXMatrixRotationX( &mPitch, m_Rotation.x);
-	//Z軸回転行列作成.
-	D3DXMatrixRotationZ( &mRoll, m_Rotation.z);
 	//平行移動行列作成.
 	D3DXMatrixTranslation(
 		&mTran,	//(out)計算結果.
 		m_Position.x, m_Position.y, m_Position.z);	//x,y,z座標.
 
-	//回転行列を作成.
-	mRot = mYaw * mPitch * mRoll;
-
+	//クォータニオンから回転行列を作成.
+	D3DXMatrixRotationQuaternion(&mRotQuat, &m_Quaternion);
 	//ワールド行列作成.
 	//拡縮×回転×移動 ※順番がとても大切！！.
-	mWorld = mScale * mRot * mTran;
-
-	//クォータニオンから回転行列を作成.
-	D3DXMATRIX mRotQuat, mQuatWorld;
-	D3DXMatrixRotationQuaternion(&mRotQuat, &m_Quaternion);
-	mQuatWorld = mScale * mRotQuat * mTran;
+	mWorld = mScale * mRotQuat * mTran;
 
 	//使用するシェーダのセット.
 	m_pContext11->VSSetShader( m_pVertexShader.Get(), nullptr, 0);	//頂点シェーダ.
@@ -709,12 +696,12 @@ void CStaticMesh::Render(
 
 
 	//メッシュのレンダリング.
-	RenderMesh( mWorld, mQuatWorld, mView, mProj );
+	RenderMesh( mWorld, mView, mProj);
 }
 
 //レンダリング関数(クラス内でのみ使用する).
 void CStaticMesh::RenderMesh(
-	D3DXMATRIX& mWorld, D3DXMATRIX& mQuatWorld, D3DXMATRIX& mView, D3DXMATRIX& mProj)
+	D3DXMATRIX& mWorld, D3DXMATRIX& mView, D3DXMATRIX& mProj)
 {
 	//シェーダのコンスタントバッファに各種データを渡す.
 	D3D11_MAPPED_SUBRESOURCE pData;
@@ -742,25 +729,6 @@ void CStaticMesh::RenderMesh(
 			pData.RowPitch,	//コピー先のバッファサイズ.
 			(void*)(&cb),	//コピー元のバッファ.
 			sizeof(cb));	//コピー元のバッファサイズ.
-
-		//==========クォータニオン==========.
-		//コンスタントバッファ.
-		CBUFFER_PER_MESH cbQuat;
-
-		cbQuat.mW = mQuatWorld;
-		D3DXMatrixTranspose(&cbQuat.mW, &cbQuat.mW);
-
-		//ワールド,ビュー,プロジェクション行列を渡す.
-		D3DXMATRIX mQWVP = mQuatWorld * mView * mProj;
-		D3DXMatrixTranspose(&mQWVP, &mQWVP);	//行列を転置する.
-		//※行列の計算方法がDirectXとGPUで異なるため転置が必要.
-		cbQuat.mWVP = mQWVP;
-
-		memcpy_s(
-			pData.pData,	//コピー先のバッファ.
-			pData.RowPitch,	//コピー先のバッファサイズ.
-			(void*)(&cbQuat),	//コピー元のバッファ.
-			sizeof(cbQuat));	//コピー元のバッファサイズ.
 
 		//バッファ内のデータの書き換え終了時にUnmap.
 		m_pContext11->Unmap( m_pCBufferPerMesh.Get(), 0);

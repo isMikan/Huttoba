@@ -27,11 +27,18 @@ void CStaticMeshObject::Draw(
 		return;
 	}
 
+	//中身がないなら通らない.(突貫工事)
+	if(m_vRotation != D3DXVECTOR3(0.f,0.f,0.f))
+	{
+		//オイラー角をクォータニオンに変換.
+		D3DXQuaternionRotationYawPitchRoll(
+			&m_vQuaternion, m_vRotation.x, m_vRotation.y, m_vRotation.z);
+	}
+
 	//描画直前で座標や回転情報などを更新.
 	m_pMesh->SetPosition( m_vPosition );
-	m_pMesh->SetRotation( m_vRotation );
 	m_pMesh->SetScale( m_vScale );
-	m_pMesh->SetQuaternion(m_vQuaternion);
+	m_pMesh->SetQuaternion( m_vQuaternion );
 
 	//レンダリング.
 	m_pMesh->Render( View, Proj, Light, Camera.vPosition );
