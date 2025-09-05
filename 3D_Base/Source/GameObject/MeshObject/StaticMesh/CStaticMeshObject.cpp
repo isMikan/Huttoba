@@ -3,11 +3,11 @@
 CStaticMeshObject::CStaticMeshObject()
 	: m_pMesh			( nullptr )
 	, m_pBSphere		( nullptr )
-
-	, m_Diffuse			( 1.f, 1.f, 1.f, 1.f )
-	, m_Ambient			( 0.5f, 0.5f, 0.5f, 0.5f )
-	, m_Specular		( 1.f, 1.f, 1.f, 1.f )
 {
+	m_ObjColor.diffuse =	D3DXVECTOR4( 0.8f, 0.8f, 0.8f, 1.f );
+	m_ObjColor.ambient =	D3DXVECTOR4( 0.3f, 0.3f, 0.3f, 1.f );
+	m_ObjColor.specular =	D3DXVECTOR4( 0.1f, 0.1f, 0.1f, 1.f );
+
 	m_pBSphere = new CBoundingSphere();
 }
 
@@ -45,9 +45,9 @@ void CStaticMeshObject::Draw(
 	m_pMesh->SetQuaternion( m_vQuaternion );
 
 	//CStaticMesh‚ÉŒ»Ý‚ÌF‚ð“n‚·.
-	m_pMesh->SetDiffuseColor(m_Diffuse);
-	m_pMesh->SetAmbientColor(m_Ambient);
-	m_pMesh->SetSpecularColor(m_Specular);
+	m_pMesh->SetDiffuseColor( m_ObjColor.diffuse );
+	m_pMesh->SetAmbientColor( m_ObjColor.ambient );
+	m_pMesh->SetSpecularColor( m_ObjColor.specular );
 
 	//ƒŒƒ“ƒ_ƒŠƒ“ƒO.
 	m_pMesh->Render( View, Proj, Light, Camera.vPosition );
