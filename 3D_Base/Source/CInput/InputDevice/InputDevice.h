@@ -8,7 +8,9 @@ enum class Action
 	MoveLeft,		//左移動.
 	MoveRight,		//右移動.
 
+	Have,			//所持.
 	Attack,			//攻撃.
+	HaeAttack,			//攻撃.
 	ToggleItem,		//アイテムの切り替え.
 
 	Decide,			//決定.
