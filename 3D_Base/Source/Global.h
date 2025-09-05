@@ -122,5 +122,6 @@ enum class Sprite2DList
 	RedyFont,
 	NotRedyFont,
 	Result,
-	Selector
+	Selector,
+	FontUI		//‘I‘ğˆ‚È‚Ç‚Ì‚¿‚å‚Á‚Æ¬‚³‚¢•¶š.
 };
