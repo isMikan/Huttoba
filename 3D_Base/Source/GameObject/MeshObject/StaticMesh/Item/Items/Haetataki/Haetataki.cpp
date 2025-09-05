@@ -9,11 +9,43 @@ namespace { const bool regist = ItemBase::AutoRegister<Haetataki>("Haetataki"); 
 
 //--------------------------------------------------------------------------------------------------------------
 
+//汎用定数宣言
+
+//プレイヤーとの位置を合わせるためのオフセット
+constexpr float OFFSET_X = 0.5f;	
+constexpr float OFFSET_Y = 1.f;		
+
+//モーションの移動加速度
+constexpr float ADD_POS_X = 0.02f;
+
+//モーションの回転加速度
+constexpr float ADD_ROT_X = 0.2f;		
+constexpr float ADD_ROT_Y = 0.2f;		
+
+//初期位置
+constexpr float INITAL_POS_X = 0.f;		
+constexpr float INITAL_POS_Y = 5.f;
+constexpr float INITAL_POS_Z = 5.f;
+
+//初期角度
+constexpr float INITAL_ROT_X = 0.f;
+constexpr float INITAL_ROT_Y = 0.f;
+constexpr float INITAL_ROT_Z = 90.f;
+
+//重力関連
+constexpr float INITAL_GRAVITY = 0.01f;
+constexpr float ADD_GRAVITY = 0.001f;
+
+//ステージの高さ(当たり判定ができたら消す)突貫
+constexpr float STAGE_HEIGHT = 1.2f;
+
+//--------------------------------------------------------------------------------------------------------------
+
 Haetataki::Haetataki()
-	: offset(0.5f, 1.f, 0.f)
-	, addPos(0.f, 0.f, 0.f)
-	, addRot(0.2f, 0.2f, 0.f)
-	, switchDir(false)
+	: m_Offset		(OFFSET_X, OFFSET_Y, 0.f)
+	, m_AddPos		(0.f, 0.f, 0.f)
+	, m_AddRot		(ADD_ROT_X, ADD_ROT_Y, 0.f)
+	, m_SwitchDir	(false)
 {
 	Init();
 }
@@ -46,10 +78,12 @@ void Haetataki::Init()
 {
 	AttachMesh(AssetManager::Mesh(StaticMeshList::Haetataki));
 	CreateBSphereForMesh(AssetManager::Mesh(StaticMeshList::BSphere));
-	SetPosition(0.f, 5.f, 5.f);
-	SetRotation(0.f,0.,90.f);
+
+	SetPosition(INITAL_POS_X, INITAL_POS_Y, INITAL_POS_Z);
+	SetRotation(INITAL_ROT_X, INITAL_ROT_Y, INITAL_ROT_Z);
+
 	m_State = ItemBase::State::Spawn;
-	m_tGravity = 0.01f;
+	m_tGravity = INITAL_GRAVITY;
 }
 
 //--------------------------------------------------------------------------------------------------------------
@@ -57,10 +91,10 @@ void Haetataki::Init()
 void Haetataki::Spawn()
 {
 	//落下処理
-	if(m_vPosition.y > 1.2f)
+	if(m_vPosition.y > STAGE_HEIGHT)
 	{
 		m_vPosition.y -= m_tGravity;
-		m_tGravity += 0.001f;
+		m_tGravity += ADD_GRAVITY;
 	}
 	else
 	{
@@ -82,14 +116,11 @@ void Haetataki::OnGround()
 
 void Haetataki::Have(CPlayer* player)
 {
-	//プレイヤーの位置に合わせるためのオフセット
-	D3DXVECTOR3 offset = { 0.5f, 1.f, 0.f };
-
 	//アイテムを拾うモーション
 	TakeMostion();
 
 	//アイテムをプレイヤーの位置に合わせる
-	m_vPosition = player->GetPosition() + offset;
+	m_vPosition = player->GetPosition() + m_Offset;
 
 	if (GetAsyncKeyState('N') & 0x0001)
 	{
@@ -101,41 +132,14 @@ void Haetataki::Have(CPlayer* player)
 
 void Haetataki::Use(CPlayer* player)
 {
-	//使用モーション
-	if (addPos.x < 0.2f && !switchDir)
+	//アイテムをプレイヤーの位置に合わせる
+	m_vPosition = player->GetPosition() + m_Offset;
+
+	//モーション終了で所持状態へ戻る
+	if (!AttackMostion())
 	{
-		m_vPosition.x += addPos.x;
-		addPos.x += 0.02f;
+		m_State = ItemBase::State::Have;
 	}
-	else
-	{
-		//trueになると毎回ここに通るので無理やり初期化
-		if (!switchDir)
-		{
-			addPos = { 0.f, 0.f, 0.f };
-		}
-
-		//切り替えしON
-		switchDir = true;
-	}
-
-	//切り替えし
-	if (switchDir)
-	{
-		if (addPos.x < 0.35f)
-		{
-			m_vPosition.x -= addPos.x;
-			addPos.x += 0.02f;
-		}
-		else
-		{
-			m_State = ItemBase::State::Have;
-			switchDir = false;
-			addPos = { 0.f,0.f, 0.f };
-
-		}
-	}
-
 }
 
 //--------------------------------------------------------------------------------------------------------------
@@ -162,17 +166,70 @@ void Haetataki::Destroy()
 
 void Haetataki::TakeMostion()
 {
-	static D3DXVECTOR3 addRot = { 0.2f,0.4f,0.f };
+	//目標角度
+	constexpr float TARGET_ANGLE_X = 90;
+	constexpr float TARGET_ANGLE_Y = 180;
 
 	//所持モーション
-	if (m_vRotation.y < D3DXToRadian(145))
+	if (m_vRotation.x < D3DXToRadian(TARGET_ANGLE_X))
 	{
-		m_vRotation.y += addRot.y;
+		m_vRotation.x += m_AddRot.x;
 	}
-	if (m_vRotation.x < D3DXToRadian(90))
+	if (m_vRotation.y < D3DXToRadian(TARGET_ANGLE_Y))
 	{
-		m_vRotation.x += addRot.x;
+		m_vRotation.y += m_AddRot.y;
 	}
+}
+
+//--------------------------------------------------------------------------------------------------------------
+
+bool Haetataki::AttackMostion()
+{
+	//定数宣言
+	constexpr float RIGHT_TARGET_POS_X = 0.1f;
+	constexpr float LEFT_TARGET_POS_X = 0.2f;
+
+
+	//使用モーション
+	if (m_AddPos.x < RIGHT_TARGET_POS_X && !m_SwitchDir)
+	{
+		m_vPosition.x += m_AddPos.x;
+		m_vRotation.x += m_AddRot.x / 2;	//回転を少し抑える
+		m_AddPos.x += ADD_POS_X;
+	}
+	else
+	{
+		//trueになると毎回ここに通るので無理やり初期化
+		if (!m_SwitchDir)
+		{
+			m_AddPos = { 0.f, 0.f, 0.f };
+		}
+
+		//切り替えしON
+		m_SwitchDir = true;
+	}
+
+	//切り替えし
+	if (m_SwitchDir)
+	{
+		if (m_AddPos.x < LEFT_TARGET_POS_X)
+		{
+			m_vPosition.x -= m_AddPos.x;
+			m_vRotation.x -= m_AddRot.x / 2; //回転を少し抑える
+			m_AddPos.x += ADD_POS_X;
+		}
+		else
+		{
+			m_SwitchDir = false;
+			m_AddPos = { 0.f,0.f, 0.f };	//初期化
+
+			//モーション終了
+			return false;
+		}
+	}
+
+	//モーション中
+	return true;
 }
 
 //--------------------------------------------------------------------------------------------------------------
