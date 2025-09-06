@@ -42,10 +42,12 @@ constexpr float STAGE_HEIGHT = 1.2f;
 //--------------------------------------------------------------------------------------------------------------
 
 Haetataki::Haetataki()
-	: m_Offset		(OFFSET_X, OFFSET_Y, 0.f)
-	, m_AddPos		(0.f, 0.f, 0.f)
-	, m_AddRot		(ADD_ROT_X, ADD_ROT_Y, 0.f)
-	, m_SwitchDir	(false)
+	: m_Offset			( OFFSET_X, OFFSET_Y, 0.f )
+	, m_AddPos			( 0.f, 0.f, 0.f )
+	, m_AddRot			( ADD_ROT_X, ADD_ROT_Y, 0.f )
+	, m_SwitchDir		( false )
+	, m_IsFlyAway		( false )
+	, m_IsFlyAwayPower	( 3.f )
 {
 	Init();
 }
@@ -135,14 +137,22 @@ void Haetataki::Use(std::vector<std::unique_ptr<CPlayer>>& playiers)
 	//アイテムをプレイヤーの位置に合わせる
 	m_vPosition = playiers[0]->GetPosition() + m_Offset;
 
+	//プレイヤーとの当たり判定
 	for (auto& player : playiers)
 	{
 		if (GetBSphere()->IsHit(*player->GetBSphere()) && playiers[0] != player)
 		{
+			//当たったときの吹っ飛び座標格納(仮)
+			D3DXVECTOR3 newPos = player->GetPosition();
+			newPos.x -= 5.f;	
+
 			//敵に当たったときの処理
-			player->SetPosition(0.f, 0.f, 0.f);
+			player->SetPosition(newPos);
+			AssetManager::Sound()->PlaySE(enSoundList::SE_HitHaetataki);
+			continue;
 		}
 	}
+
 
 	//モーション終了で所持状態へ戻る
 	if (!AttackMostion())

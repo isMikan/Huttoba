@@ -23,7 +23,6 @@
 
 #include "Assets/Mesh/SkinMesh/CSkinMesh.h"
 #include "Scene/CSceneManager.h"
-#include "Assets/AssetManager.h"
 #include "CInput/CInputManager.h"
 
 

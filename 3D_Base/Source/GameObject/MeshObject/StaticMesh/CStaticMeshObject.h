@@ -49,6 +49,12 @@ public:
 		m_pBSphere->SetPosition(m_vPosition + D3DXVECTOR3(0.f,5.f,0.f));
 	}
 
+	//バウンディングスフィアをオブジェクト位置に合わせる
+	void UpdateBSpherePos(D3DXVECTOR3 offset) {
+		m_pBSphere->SetPosition(m_vPosition + offset + + D3DXVECTOR3(0.f, 5.f, 0.f));
+	}
+
+
 	//オブジェクトの色を設定する関数.
 	void SetObjectColor(
 		D3DXVECTOR4& diffuse, D3DXVECTOR4& ambient, D3DXVECTOR4& specular){

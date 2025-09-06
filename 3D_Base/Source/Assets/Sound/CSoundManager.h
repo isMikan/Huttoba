@@ -11,17 +11,6 @@ class CSoundManager
 {
 public:
 
-	//サウンドリスト列挙型
-	enum class enSoundList
-	{
-		BGM_Bonus,	
-		SE_Jump,	
-		SE_Clear,	
-
-		//音が増えたら「ここ」に追加
-		max,
-	};
-
 	//サウンドの情報を格納する構造体
 	struct SoundInfo
 	{

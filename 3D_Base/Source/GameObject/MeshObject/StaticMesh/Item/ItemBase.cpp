@@ -39,8 +39,10 @@ void ItemBase::Update(std::vector<std::unique_ptr<CPlayer>>& playiers)
 	default: break;
 	}
 
-	//当たり判定の座標を更新
-	UpdateBSpherePos();
+	//ハエたたき限定当たり判定の座標を調整+更新
+	static D3DXVECTOR3 offSet;
+	offSet = {0.f,0.f,1.f};
+	UpdateBSpherePos(offSet);
 }
 
 

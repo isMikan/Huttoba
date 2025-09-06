@@ -77,6 +77,7 @@ void ItemManager::Update(std::vector<std::unique_ptr<CPlayer>>& players)
 	}
 }
 
+//--------------------------------------------------------------------------------------------------------------
 
 void ItemManager::Update()
 {

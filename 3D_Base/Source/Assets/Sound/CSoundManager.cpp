@@ -15,9 +15,11 @@ CSoundManager::~CSoundManager()
 HRESULT CSoundManager::Create()
 {
 	//サウンドの列挙に対応するパスと名前を定義
-    m_SoundInfoList.push_back({ enSoundList::BGM_Bonus, _T("Data\\Sound\\BGM\\BonusGameHouse.mp3"), _T("BGM_Bonus") });
-    m_SoundInfoList.push_back({ enSoundList::SE_Jump,   _T("Data\\Sound\\SE\\Jump.wav"),            _T("SE_Jump") });
-    m_SoundInfoList.push_back({ enSoundList::SE_Clear,  _T("Data\\Sound\\SE\\Clear.wav"),           _T("SE_Clear") });
+    m_SoundInfoList.push_back({ enSoundList::BGM_Bonus,         _T("Data\\Sound\\BGM\\BonusGameHouse.mp3"), _T("BGM_Bonus") });
+    m_SoundInfoList.push_back({ enSoundList::SE_Jump,           _T("Data\\Sound\\SE\\Jump.wav"),            _T("SE_Jump") });
+    m_SoundInfoList.push_back({ enSoundList::SE_Clear,          _T("Data\\Sound\\SE\\Clear.wav"),           _T("SE_Clear") });
+    m_SoundInfoList.push_back({ enSoundList::SE_HitHaetataki,   _T("Data\\Sound\\SE\\HitHaetataki.mp3"),    _T("SE_HitHaetataki") });
+    m_SoundInfoList.push_back({ enSoundList::SE_MissHaetataki,  _T("Data\\Sound\\SE\\MissHaetataki.mp3"),   _T("SE_MissHaetataki") });
 
 	//サウンドのインスタンスを格納するための配列を確保
     for (auto& sound : m_SoundInfoList)

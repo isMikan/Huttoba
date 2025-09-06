@@ -128,3 +128,18 @@ enum class Sprite2DList
 	FontUI,		//選択肢などのちょっと小さい文字.
 	BigFontUI	//タイトルなどの大き目の文字.
 };
+
+//サウンドリスト列挙型
+enum class enSoundList
+{
+	BGM_Bonus,
+	SE_Jump,
+	SE_Clear,
+	SE_HitHaetataki,
+	SE_MissHaetataki,
+
+
+	//音が増えたら「ここ」に追加
+	max,
+};
+
