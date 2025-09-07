@@ -26,6 +26,9 @@ private:
 	void SetSelectorPos();
 
 	void MoveSelector();
+
+	//選択肢がスティックで連続して動いてしまうのを制御する(中間審査用でここに追加したが後でCInputに追加しておく).
+	void SelectorControl();
 private:
 	std::vector<std::function<void()>>	m_Action;	//画面遷移時の動作を入れる.
 
@@ -42,4 +45,11 @@ private:
 
 	//8ビットの符号付整数型.
 	uint8_t						m_SelectorNumber;	//現在選択中の番号.
+
+	//スティックの上下を倒した時の保存.
+	bool isHeldUp;
+	bool isHeldDown;
+
+	//フレームカウント.
+	int cnt;
 };
