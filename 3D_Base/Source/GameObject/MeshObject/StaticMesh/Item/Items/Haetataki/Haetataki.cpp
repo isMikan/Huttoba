@@ -48,6 +48,7 @@ Haetataki::Haetataki()
 	, m_SwitchDir		( false )
 	, m_IsFlyAway		( false )
 	, m_IsFlyAwayPower	( 3.f )
+	, m_IsMissAttack	( false )
 {
 	Init();
 }
@@ -124,6 +125,7 @@ void Haetataki::Have(std::vector<std::unique_ptr<CPlayer>>& playiers)
 	//アイテムをプレイヤーの位置に合わせる
 	m_vPosition = playiers[0]->GetPosition() + m_Offset;
 
+	//Nキーで使用状態へ
 	if (GetAsyncKeyState('N') & 0x0001)
 	{
 		m_State = ItemBase::State::Use;
@@ -151,13 +153,23 @@ void Haetataki::Use(std::vector<std::unique_ptr<CPlayer>>& playiers)
 			AssetManager::Sound()->PlaySE(enSoundList::SE_HitHaetataki);
 			continue;
 		}
+		else
+		{
+			//外れたときのSE(1回だけ鳴るように)
+			if (!m_IsMissAttack)
+			{
+				AssetManager::Sound()->PlaySE(enSoundList::SE_MissHaetataki);
+				m_IsMissAttack = true;
+			}
+			continue;
+		}
 	}
-
 
 	//モーション終了で所持状態へ戻る
 	if (!AttackMostion())
 	{
 		m_State = ItemBase::State::Have;
+		m_IsMissAttack = false; //初期化
 	}
 }
 

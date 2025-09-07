@@ -133,6 +133,7 @@ enum class Sprite2DList
 enum class enSoundList
 {
 	BGM_Bonus,
+	BGM_SceneMain,
 	SE_Jump,
 	SE_Clear,
 	SE_Pickup,

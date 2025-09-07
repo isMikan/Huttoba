@@ -177,7 +177,7 @@ void CSceneGameMain::Destroy()
 void CSceneGameMain::Update()
 {
 	//BGM‚Ìƒ‹[ƒvÄ¶
-	AssetManager::Sound()->PlayLoop(enSoundList::BGM_Bonus);
+	AssetManager::Sound()->PlayLoop(enSoundList::BGM_SceneMain);
 
 	CTimeManager::GetInstance()->Tick();
 

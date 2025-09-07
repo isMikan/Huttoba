@@ -29,7 +29,7 @@ void ItemBase::Update(std::vector<std::unique_ptr<CPlayer>>& playiers)
 	//ó‘Ô‚É‚æ‚Á‚Ä‘JˆÚ
 	switch (m_State)
 	{
-	case ItemBase::State::None:break;
+	case ItemBase::State::None:						break;
 	case ItemBase::State::Spawn:	Spawn();		break;
 	case ItemBase::State::OnGround: OnGround();		break;
 	case ItemBase::State::Have:		Have(playiers);	break;
