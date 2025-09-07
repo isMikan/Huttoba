@@ -83,7 +83,8 @@ void CPlayer::HandleInput()
 	m_pRotationState->KeyInput(*this, x, z);
 
 	//ƒAƒCƒeƒ€‚ðŽ‚Á‚Ä‚¢‚È‚¢‚È‚çUŒ‚.
-	if (m_pInput->IsDown(Action::Attack) && !m_IsHoldingItem)
+	if (m_pInput->IsDown(Action::Attack) && !m_IsHoldingItem
+		&& !m_IsAttacking)
 	{
 		SetActionState(std::make_unique<CPlayerHandAttack>());
 	}

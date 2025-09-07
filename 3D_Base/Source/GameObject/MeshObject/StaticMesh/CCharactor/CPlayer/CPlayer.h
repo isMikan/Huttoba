@@ -27,15 +27,6 @@ class CPlayer
 	: public CCharacter	//キャラクタークラスを継承.
 {
 public:
-	enum class PlayerColor
-	{
-		Red,
-		Blue,
-		Green,
-		Pink,
-		None = -1,
-	};
-
 	//ローカル軸の構造体.
 	struct LocalAxes
 	{

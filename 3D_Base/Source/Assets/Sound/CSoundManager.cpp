@@ -18,6 +18,8 @@ HRESULT CSoundManager::Create()
     m_SoundInfoList.push_back({ enSoundList::BGM_Bonus,         _T("Data\\Sound\\BGM\\BonusGameHouse.mp3"), _T("BGM_Bonus") });
     m_SoundInfoList.push_back({ enSoundList::SE_Jump,           _T("Data\\Sound\\SE\\Jump.wav"),            _T("SE_Jump") });
     m_SoundInfoList.push_back({ enSoundList::SE_Clear,          _T("Data\\Sound\\SE\\Clear.wav"),           _T("SE_Clear") });
+    m_SoundInfoList.push_back({ enSoundList::SE_AttackHand,     _T("Data\\Sound\\SE\\AttackHand.mp3"),      _T("SE_AttackHand") });
+    m_SoundInfoList.push_back({ enSoundList::SE_HitHand,        _T("Data\\Sound\\SE\\HitHand.mp3"),         _T("SE_HitHand") });
     m_SoundInfoList.push_back({ enSoundList::SE_HitHaetataki,   _T("Data\\Sound\\SE\\HitHaetataki.mp3"),    _T("SE_HitHaetataki") });
     m_SoundInfoList.push_back({ enSoundList::SE_MissHaetataki,  _T("Data\\Sound\\SE\\MissHaetataki.mp3"),   _T("SE_MissHaetataki") });
 

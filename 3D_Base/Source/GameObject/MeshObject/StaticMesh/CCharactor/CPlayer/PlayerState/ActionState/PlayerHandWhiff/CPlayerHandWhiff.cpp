@@ -88,6 +88,7 @@ void CPlayerHandWhiff::Enter(CPlayer& pPlayer)
 
 void CPlayerHandWhiff::Exit(CPlayer& pPlayer)
 {
+	pPlayer.SetAttacking(false);
 }
 
 void CPlayerHandWhiff::Update(CPlayer& pPlayer)

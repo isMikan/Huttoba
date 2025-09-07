@@ -32,6 +32,8 @@ CPlayerHandAttack::~CPlayerHandAttack()
 
 void CPlayerHandAttack::Enter(CPlayer& pPlayer)
 {
+	AssetManager::Sound()->PlaySE(enSoundList::SE_AttackHand);
+
 	pPlayer.SetAttacking(true);
 
 	//UŒ‚‚ÌŠJŽnŽžŠÔ‚ðŽæ“¾.
@@ -61,7 +63,6 @@ void CPlayerHandAttack::Enter(CPlayer& pPlayer)
 
 void CPlayerHandAttack::Exit(CPlayer& pPlayer)
 {
-	pPlayer.SetAttacking(false);
 }
 
 void CPlayerHandAttack::Update(CPlayer& pPlayer)
@@ -74,7 +75,8 @@ void CPlayerHandAttack::Update(CPlayer& pPlayer)
 	if (totalTime - m_StartTime > m_EndTime
 		&& isHit)
 	{
-		pPlayer.SetActionState(std::make_unique<CPlayerHandHit>());
+		pPlayer.SetAttacking(false);
+		pPlayer.SetActionState(std::make_unique<CPlayerActionIdle>());
 		pPlayer.SetHitInfo(pPlayer.GetPosition(), 0.f, false);
 		return;
 	}

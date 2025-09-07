@@ -31,6 +31,8 @@ CPlayerPushed::~CPlayerPushed()
 
 void CPlayerPushed::Enter(CPlayer& pPlayer)
 {
+	AssetManager::Sound()->PlaySE(enSoundList::SE_HitHand);
+
 	//ŒX‚«Šp“x‚Ì‰Šú‰».
 	m_CurrentTiltAngle = 0.f;
 
