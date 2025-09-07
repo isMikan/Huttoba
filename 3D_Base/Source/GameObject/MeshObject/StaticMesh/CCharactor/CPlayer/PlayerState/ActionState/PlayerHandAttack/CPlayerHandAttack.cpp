@@ -32,6 +32,7 @@ CPlayerHandAttack::~CPlayerHandAttack()
 
 void CPlayerHandAttack::Enter(CPlayer& pPlayer)
 {
+	//SE‚ð–Â‚ç‚·.
 	AssetManager::Sound()->PlaySE(enSoundList::SE_AttackHand);
 
 	pPlayer.SetAttacking(true);

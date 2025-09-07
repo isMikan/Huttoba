@@ -135,6 +135,7 @@ enum class enSoundList
 	BGM_Bonus,
 	SE_Jump,
 	SE_Clear,
+	SE_Pickup,
 	SE_AttackHand,
 	SE_HitHand,
 	SE_HitHaetataki,

@@ -31,6 +31,7 @@ CPlayerPushed::~CPlayerPushed()
 
 void CPlayerPushed::Enter(CPlayer& pPlayer)
 {
+	//SE‚ğ–Â‚ç‚·.
 	AssetManager::Sound()->PlaySE(enSoundList::SE_HitHand);
 
 	//ŒX‚«Šp“x‚Ì‰Šú‰».
