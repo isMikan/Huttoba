@@ -29,6 +29,8 @@ CPlayerThrowItem::~CPlayerThrowItem()
 
 void CPlayerThrowItem::Enter(CPlayer& pPlayer)
 {
+	AssetManager::Sound()->PlaySE(enSoundList::SE_AttackHand);
+
 	pPlayer.SetHoldingItem(false);
 
 	//ŒX‚«Šp“x‚Ì‰Šú‰».
