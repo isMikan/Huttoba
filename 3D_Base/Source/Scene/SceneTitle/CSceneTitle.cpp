@@ -109,12 +109,12 @@ void CSceneTitle::SetSelectorPos()
 
 void CSceneTitle::MoveSelector()
 {
-	if (m_InputManager.GetInput(0).IsDown(Action::NavigateUp))
+	if (m_InputManager.GetInput(0).IsDown(Action::NavigateUp) || 0 < m_InputManager.GetInput(0).GetLeftSthikY())
 	{
 		if (m_SelectorNumber > 0)
 			m_SelectorNumber--;
 	}
-	if (m_InputManager.GetInput(0).IsDown(Action::NavigateDown))
+	if (m_InputManager.GetInput(0).IsDown(Action::NavigateDown) || 0 > m_InputManager.GetInput(0).GetLeftSthikY())
 	{
 		if (m_SelectorNumber < m_SelectorPos.size() - 1)
 			m_SelectorNumber++;
