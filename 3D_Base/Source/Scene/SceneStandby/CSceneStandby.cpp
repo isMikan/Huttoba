@@ -19,8 +19,6 @@ CSceneStandby::CSceneStandby(CInputManager& input)
 	, m_SelectorPos			()
 
 	, m_SelectorNumber		(0)
-
-	, m_SelectorYPos		()
 {
 	Create();
 	LoadData();
@@ -155,17 +153,15 @@ void CSceneStandby::InitializeRedyFont()
 {
 	for (int i = 0;i < 4;i++)
 	{
-		m_pRedyFontImg[i]->SetPosition(200 + (200 * i), 240, 0);
-		m_pNotRedyFontImg[i]->SetPosition(200 + (200 * i), 240, 0);
+		m_pRedyFontImg[i]->SetPosition(200 + (230 * i), 240, 0);
+		m_pNotRedyFontImg[i]->SetPosition(200 + (230 * i), 240, 0);
 	}
 }
 
 void CSceneStandby::SetSelectorPos()
 {
-	m_SelectorPos = D3DXVECTOR3(500, 430, 0);
-
-	m_SelectorYPos.push_back(455);
-	m_SelectorYPos.push_back(550);
+	m_SelectorPos.push_back(D3DXVECTOR3(455, 450, 0));
+	m_SelectorPos.push_back(D3DXVECTOR3(440, 550, 0));
 }
 
 void CSceneStandby::MoveSelector()
@@ -177,10 +173,9 @@ void CSceneStandby::MoveSelector()
 	}
 	if (m_InputManager.GetInput(0).IsDown(Action::NavigateDown))
 	{
-		if (m_SelectorNumber < m_SelectorYPos.size() - 1)
+		if (m_SelectorNumber < m_SelectorPos.size() - 1)
 			m_SelectorNumber++;
 	}
 
-	m_SelectorPos.y = m_SelectorYPos[m_SelectorNumber];
-	m_pSpriteSelector->SetPosition(m_SelectorPos);
+	m_pSpriteSelector->SetPosition(m_SelectorPos[m_SelectorNumber]);
 }

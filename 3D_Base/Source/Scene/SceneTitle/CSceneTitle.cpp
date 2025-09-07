@@ -18,9 +18,6 @@ CSceneTitle::CSceneTitle(HWND hWnd, CInputManager& inputmanager)
 
 	, m_SelectorNumber	( 0 )
 
-	, m_SelectorYPos	()
-
-
 	//, m_SthikThreshold	(0.5f)		//ここの値を変えると選択肢を動かす
 									//スティックの最低値が変化する.
 
@@ -58,7 +55,7 @@ HRESULT CSceneTitle::LoadData()
 
 	m_pSpriteStartFont->AttachSprite(AssetManager::Sprite(Sprite2DList::FontUI));
 	m_pSpriteStartFont->SetPatternNo(0, 0);
-	m_pSpriteStartFont->SetPosition(570, 440, 0);
+	m_pSpriteStartFont->SetPosition(550, 440, 0);
 
 	m_pSpriteEndFont->AttachSprite(AssetManager::Sprite(Sprite2DList::FontUI));
 	m_pSpriteEndFont->SetPatternNo(0, 1);
@@ -106,10 +103,8 @@ void CSceneTitle::Destroy()
 
 void CSceneTitle::SetSelectorPos()
 {
-	m_SelectorPos = D3DXVECTOR3(500, 0, 0);
-
-	m_SelectorYPos.push_back(440);
-	m_SelectorYPos.push_back(540);
+	m_SelectorPos.push_back(D3DXVECTOR3(465, 440, 0));
+	m_SelectorPos.push_back(D3DXVECTOR3(490, 540, 0));
 }
 
 void CSceneTitle::MoveSelector()
@@ -121,10 +116,8 @@ void CSceneTitle::MoveSelector()
 	}
 	if (m_InputManager.GetInput(0).IsDown(Action::NavigateDown))
 	{
-		if (m_SelectorNumber < m_SelectorYPos.size() - 1)
+		if (m_SelectorNumber < m_SelectorPos.size() - 1)
 			m_SelectorNumber++;
 	}
-
-	m_SelectorPos.y = m_SelectorYPos[m_SelectorNumber];
-	m_pSpriteSelector->SetPosition(m_SelectorPos);
+	m_pSpriteSelector->SetPosition(m_SelectorPos[m_SelectorNumber]);
 }

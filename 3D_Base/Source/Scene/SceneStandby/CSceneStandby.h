@@ -51,10 +51,8 @@ private:
 
 	std::vector<std::function<void()>>	m_Action;	//画面遷移時の動作を入れる.
 
-	D3DXVECTOR3					m_SelectorPos;		//選択矢印の座標.
-
 	//8ビットの符号付整数型.
 	uint8_t						m_SelectorNumber;	//現在選択中の番号.
 
-	std::vector<float>			m_SelectorYPos;		//各選択肢のY座標.
+	std::vector<D3DXVECTOR3>	m_SelectorPos;		//選択矢印の座標.
 };

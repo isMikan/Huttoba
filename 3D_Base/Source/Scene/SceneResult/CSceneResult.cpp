@@ -81,9 +81,9 @@ void CSceneResult::Destroy()
 
 void CSceneResult::SetSelectorPos()
 {
-	m_SelectorPos.push_back(D3DXVECTOR3(910, 415, 0));
-	m_SelectorPos.push_back(D3DXVECTOR3(850, 510, 0));
-	m_SelectorPos.push_back(D3DXVECTOR3(910, 590, 0));
+	m_SelectorPos.push_back(D3DXVECTOR3(790, 415, 0));
+	m_SelectorPos.push_back(D3DXVECTOR3(750, 510, 0));
+	m_SelectorPos.push_back(D3DXVECTOR3(770, 590, 0));
 }
 
 void CSceneResult::MoveSelector()

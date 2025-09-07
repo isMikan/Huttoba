@@ -38,12 +38,10 @@ private:
 
 	CInputManager&				m_InputManager;
 
-	D3DXVECTOR3					m_SelectorPos;		//選択矢印の座標.
+	std::vector<D3DXVECTOR3>	m_SelectorPos;		//選択矢印の座標.
 
 	//8ビットの符号付整数型.
 	uint8_t						m_SelectorNumber;	//現在選択中の番号.
-
-	std::vector<float>			m_SelectorYPos;		//各選択肢のY座標.
 
 	//中間までに導入する時間がないので時間があれば追加できるようにする
 	//float						m_SthikThreshold;	//選択肢を動かすときのスティックの最小値.
