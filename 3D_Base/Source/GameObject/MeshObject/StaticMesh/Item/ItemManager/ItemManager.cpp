@@ -59,6 +59,8 @@ void ItemManager::Update(std::vector<std::unique_ptr<CPlayer>>& players)
 		//ˆê’UPlayer0‚µ‚©Ž‚Ä‚È‚¢‚æ‚¤‚É‚·‚é
 		item->Update(players);
 
+		CInputManager::Instance().Update();
+
 		for (auto& player : players)
 		{
 			// “–‚½‚è”»’è
