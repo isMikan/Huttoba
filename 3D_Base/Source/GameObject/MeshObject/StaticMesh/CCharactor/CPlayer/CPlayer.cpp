@@ -261,6 +261,6 @@ void CPlayer::SetPlayerInputBinding()
 	m_pInput->BindKey(Action::ToggleItem,	InputBinding(InputDevice::Keyboard, 'X'));			//E‚¤/Ì‚Ä‚é.
 
 	//ƒRƒ“ƒgƒ[ƒ‰‘€ì.
-	m_pInput->BindKey(Action::Attack,		InputBinding(InputDevice::GamePad, CXInput::RB));	//UŒ‚.
-	m_pInput->BindKey(Action::ToggleItem,	InputBinding(InputDevice::GamePad, CXInput::B));	//E‚¤/Ì‚Ä‚é.
+	m_pInput->BindKey(Action::Attack,		InputBinding(InputDevice::GamePad, CXInput::B));	//UŒ‚.
+	m_pInput->BindKey(Action::ToggleItem,	InputBinding(InputDevice::GamePad, CXInput::A));	//E‚¤/Ì‚Ä‚é.
 }
