@@ -119,9 +119,9 @@ HRESULT CSceneGameMain::LoadData()
 			case 0:
 				m_pPlayers[0]->SetPosition(-5.f, 1.f, 5.f);
 			case 1:
-				m_pPlayers[1]->SetPosition(-5.f, 1.f, 10.f);
+				m_pPlayers[1]->SetPosition(5.f, 1.f, 5.f);
 			case 2:
-				m_pPlayers[2]->SetPosition(5.f, 1.f, 5.f);
+				m_pPlayers[2]->SetPosition(-5.f, 1.f, 10.f);
 			case 3:
 				m_pPlayers[3]->SetPosition(5.f, 1.f, 10.f);
 			default:
@@ -150,7 +150,7 @@ HRESULT CSceneGameMain::LoadData()
 	for (auto& ground : m_pGrounds)
 	{
 		//床の位置を設定.
-		ground->SetPosition(0.f, 0.f, 10.f);
+		ground->SetPosition(0.f, 0.5f, 10.f);
 	}
 	//床のスタティックメッシュを設定.
 	m_pGrounds[0]->AttachMesh(AssetManager::Mesh(StaticMeshList::FirstFallGround));
