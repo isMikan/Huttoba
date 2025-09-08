@@ -27,7 +27,7 @@ HRESULT ItemManager::Create()
 	m_pItems.push_back(ItemFactory::GetInstance()->CreateItem("SmashBat"));
 
 	CInputManager::Instance().BindKey(Action::Have, InputBinding(InputDevice::GamePad, CXInput::A));
-	CInputManager::Instance().BindKey(Action::HaeAttack, InputBinding(InputDevice::GamePad, CXInput::X));
+	CInputManager::Instance().BindKey(Action::HaeAttack, InputBinding(InputDevice::GamePad, CXInput::Y));
 	CInputManager::Instance().BindKey(Action::Have, InputBinding(InputDevice::Keyboard, 'Z'));
 
 	return S_OK;
