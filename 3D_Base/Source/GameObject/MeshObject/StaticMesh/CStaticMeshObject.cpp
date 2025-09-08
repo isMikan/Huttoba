@@ -4,9 +4,9 @@ CStaticMeshObject::CStaticMeshObject()
 	: m_pMesh			( nullptr )
 	, m_pBSphere		( nullptr )
 {
-	m_ObjColor.diffuse = D3DXVECTOR4(0.5f, 0.5f, 0.5f, 1.f);
-	m_ObjColor.ambient = D3DXVECTOR4(0.3f, 0.3f, 0.3f, 1.f);
-	m_ObjColor.specular = D3DXVECTOR4(0.1f, 0.1f, 0.1f, 1.f);
+	m_ObjColor.diffuse =	D3DXVECTOR4( 0.5f, 0.5f, 0.5f, 1.f );
+	m_ObjColor.ambient =	D3DXVECTOR4( 0.3f, 0.3f, 0.3f, 1.f );
+	m_ObjColor.specular =	D3DXVECTOR4( 0.1f, 0.1f, 0.1f, 1.f );
 
 	m_pBSphere = new CBoundingSphere();
 }

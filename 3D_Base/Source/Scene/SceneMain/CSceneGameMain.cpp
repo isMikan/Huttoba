@@ -111,24 +111,7 @@ HRESULT CSceneGameMain::LoadData()
 		//バウンディングスフィアの作成
 		m_pPlayers[pNo]->CreateBSphereForMesh(AssetManager::Mesh(StaticMeshList::BSphere));
 
-		if (m_pInputManager.GetSlot(pNo).ready)
-		{
-			//キャラクターの初期座標を設定
-			switch (pNo)
-			{
-			case 0:
-				m_pPlayers[0]->SetPosition(-5.f, 0.f, 5.f);
-			case 1:								 
-				m_pPlayers[1]->SetPosition(5.f,  0.f, 5.f);
-			case 2:								 
-				m_pPlayers[2]->SetPosition(-5.f, 0.f, 10.f);
-			case 3:								 
-				m_pPlayers[3]->SetPosition(5.f,  0.f, 10.f);
-			default:
-				break;
-			}
-		}
-		else
+		if (!m_pInputManager.GetSlot(pNo).ready)
 		{
 			//キャラクターの初期座標を設定
 			switch (pNo)

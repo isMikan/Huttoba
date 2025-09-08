@@ -789,8 +789,8 @@ void CStaticMesh::RenderMesh(
 			//コンスタントバッファ(マテリアル用).
 			CBUFFER_PER_MATERIAL cb;
 			//ディフューズ,アンビエント,スペキュラをシェーダに渡す.
-			
-			if (m_pMaterials[m_AttrID[No]].Diffuse != D3DXVECTOR4(1.f, 1.f, 1.f, 1.f))
+			//デフォルト値と同じで変わってなければ、モデルの色を設定.
+			if (m_Diffuse == D3DXVECTOR4(0.5f, 0.5f, 0.5f, 1.f))
 			{
 				cb.Diffuse = m_pMaterials[m_AttrID[No]].Diffuse;
 				cb.Ambient = m_pMaterials[m_AttrID[No]].Ambient;
