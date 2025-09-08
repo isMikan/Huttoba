@@ -167,6 +167,10 @@ public:
 	void SetAmbientColor(const D3DXVECTOR4& color) { m_Ambient = color; }
 	//鏡面反射を設定する関数..
 	void SetSpecularColor(const D3DXVECTOR4& color) { m_Specular = color; }
+	//デフォルトの色を取得する関数.
+	CBUFFER_PER_MATERIAL GetDefaultColor() const {
+		return m_DefaultColor;
+	}
 
 	//メッシュを取得.
 	LPD3DXMESH GetMesh() const { return m_Model.pMesh; }
@@ -235,4 +239,6 @@ private:
 	D3DXVECTOR4		m_Diffuse;		//拡散反射.
 	D3DXVECTOR4		m_Ambient;		//環境光.
 	D3DXVECTOR4		m_Specular;		//鏡面反射.
+
+	CBUFFER_PER_MATERIAL m_DefaultColor;	//デフォルトの色.
  };

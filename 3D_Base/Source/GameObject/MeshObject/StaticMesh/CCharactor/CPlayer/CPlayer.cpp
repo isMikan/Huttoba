@@ -28,7 +28,7 @@ CPlayer::CPlayer(int index)
 
 	, m_HitInfo			()
 {
-	m_ObjColor = SetPlayerColor(index);
+	SetCharacterDefault(index);
 
 	SetPlayerInputBinding();
 }
@@ -206,14 +206,16 @@ D3DXVECTOR3 CPlayer::Knockback()
 	return pos;
 }
 
-CStaticMeshObject::ObjectColor CPlayer::SetPlayerColor(int index)
+void CPlayer::SetCharacterDefault(int index)
 {
-	std::array<ObjectColor, Player_Max>	playerColor;	//プレイヤーの色.
+	std::array<D3DXVECTOR3, Player_Max> playerPos;							//プレイヤーの位置.
+	std::array<CStaticMeshObject::ObjectColor, Player_Max>	playerColor;	//プレイヤーの色.
 
 	switch (index)
 	{
 	case 0:
-		playerColor[0] = {
+		playerPos[index] = D3DXVECTOR3(-5.f, 0.f, 5.f);
+		playerColor[index] = {
 			D3DXVECTOR4(1.f, 0.f, 0.f, 1.f), // 赤
 			D3DXVECTOR4(0.5f, 0.f, 0.f, 1.f), // 少し暗めの赤
 			D3DXVECTOR4(0.1f, 0.1f, 0.1f, 1.f),
@@ -221,7 +223,8 @@ CStaticMeshObject::ObjectColor CPlayer::SetPlayerColor(int index)
 
 		break;
 	case 1:
-		playerColor[1] = {
+		playerPos[index] = D3DXVECTOR3(5.f, 0.f, 5.f);
+		playerColor[index] = {
 			D3DXVECTOR4(0.f, 0.f, 1.f, 1.f),  // 青
 			D3DXVECTOR4(0.f, 0.f, 0.5f, 1.f),  // 少し暗めの青
 			D3DXVECTOR4(0.1f, 0.1f, 0.1f, 1.f),  // 白っぽい光沢
@@ -229,7 +232,8 @@ CStaticMeshObject::ObjectColor CPlayer::SetPlayerColor(int index)
 
 		break;
 	case 2:
-		playerColor[2] = {
+		playerPos[index] = D3DXVECTOR3(-5.f, 0.f, 10.f);
+		playerColor[index] = {
 			D3DXVECTOR4(1.0f, 0.5f, 0.f, 1.f),  // オレンジ
 			D3DXVECTOR4(0.5f, 0.3f, 0.f, 1.f), // 少し暗めのオレンジ
 			D3DXVECTOR4(0.1f, 0.1f, 0.1f, 1.f),  // 白っぽい光沢
@@ -237,16 +241,20 @@ CStaticMeshObject::ObjectColor CPlayer::SetPlayerColor(int index)
 
 		break;
 	case 3:
-		playerColor[3] = {
+		playerPos[index] = D3DXVECTOR3(5.f, 0.f, 10.f);
+		playerColor[index] = {
 			D3DXVECTOR4(0.0f, 1.0f, 0.0f, 1.f),  // 緑
 			D3DXVECTOR4(0.0f, 0.5f, 0.0f, 1.f),  // 少し暗めの緑
 			D3DXVECTOR4(0.1f, 0.1f, 0.1f, 1.f),  // 白っぽい光沢
 		};
 
 		break;
+	default:
+		break;
 	}
 
-	return playerColor[index];
+	m_vPosition = playerPos[index];
+	m_ObjColor = playerColor[index];
 }
 
 //キーバインドを設定する関数.

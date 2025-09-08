@@ -65,6 +65,7 @@ public:
 	void SetObjectColor(ObjectColor color){
 		m_ObjColor = color;
 	}
+	//オブジェクトの色を取得する関数.
 	ObjectColor GetObjectColor() const {
 		return m_ObjColor;
 	}

@@ -18,8 +18,8 @@ CPlayerPickupItem::CPlayerPickupItem()
 
 	, m_RightHandStartPos	()
 	, m_LeftHandStartPos	()
-	, m_RightHandEndPos		( 0.f, -0.5f, 0.6f )
-	, m_LeftHandEndPos		( 0.f, -0.5f, 0.6f )
+	, m_RightHandEndPos		( 0.f, -0.3f, 0.6f )
+	, m_LeftHandEndPos		( 0.f, -0.3f, 0.6f )
 
 	, m_StartQuat			()
 {

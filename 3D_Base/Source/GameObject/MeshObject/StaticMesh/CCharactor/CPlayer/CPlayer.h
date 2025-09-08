@@ -78,7 +78,8 @@ public:
 	//押された時の移動量を計算する関数.
 	D3DXVECTOR3 Knockback();
 
-	ObjectColor SetPlayerColor(int index);
+	//キャラクターの色を設定する関数.
+	void SetCharacterDefault(int index);
 
 	//プレイヤーが頭を持っている(書き込み用).
 	CPlayerHead& GetPlayerHead() { return *m_pHead; }
