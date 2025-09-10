@@ -15,7 +15,7 @@ CPlayerHandAttack::CPlayerHandAttack()
 	, m_EndTime				( 0.1f )
 
 	, m_CurrentTiltAngle	()
-	, m_TiltAngleMax		( D3DXToRadian(10.f) )
+	, m_TiltAngleMax		( D3DXToRadian( 10.f ) )
 
 	, m_RightHandStartPos	()
 	, m_LeftHandStartPos	()
@@ -68,11 +68,13 @@ void CPlayerHandAttack::Exit(CPlayer& pPlayer)
 
 void CPlayerHandAttack::Update(CPlayer& pPlayer)
 {
+	//ゲーム全体の経過時間.
 	float totalTime = CTimeManager::GetInstance()->GetTotalTime();
 
 	bool isHit = pPlayer.GetHitInfo().isHit;
 
 	//現在の経過時間と開始時間の差が終了時間を上回ったら.
+	//攻撃が当たってる場合.
 	if (totalTime - m_StartTime > m_EndTime
 		&& isHit)
 	{
@@ -81,6 +83,7 @@ void CPlayerHandAttack::Update(CPlayer& pPlayer)
 		pPlayer.SetHitInfo(pPlayer.GetPosition(), 0.f, false);
 		return;
 	}
+	//攻撃が当たっていない場合.
 	else if (totalTime - m_StartTime > m_EndTime)
 	{
 		pPlayer.SetActionState(std::make_unique<CPlayerHandWhiff>());

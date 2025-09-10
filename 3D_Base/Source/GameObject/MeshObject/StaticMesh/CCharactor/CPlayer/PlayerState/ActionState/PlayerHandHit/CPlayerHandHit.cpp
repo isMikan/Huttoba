@@ -11,7 +11,7 @@ CPlayerHandHit::CPlayerHandHit()
 	, m_EndTime				( 0.3f )
 
 	, m_CurrentTiltAngle	()
-	, m_TiltAngleMax		( D3DXToRadian(30.f) )
+	, m_TiltAngleMax		( D3DXToRadian( 30.f ) )
 	, m_PhaseSplit			( 0.5f )
 
 	, m_RightHandStartPos	( 0.f, 0.f, 0.f )
@@ -49,6 +49,7 @@ void CPlayerHandHit::Exit(CPlayer& pPlayer)
 
 void CPlayerHandHit::Update(CPlayer& pPlayer)
 {
+	//ゲーム全体の経過時間.
 	float totalTime = CTimeManager::GetInstance()->GetTotalTime();
 
 	//プレイヤーの位置を取得.
@@ -56,7 +57,7 @@ void CPlayerHandHit::Update(CPlayer& pPlayer)
 	//手の位置を調整するための数値を取得.
 	D3DXVECTOR3 rightHandOffset = pPlayer.GetPlayerRightHand().GetOffsetPos();
 	D3DXVECTOR3 leftHandOffset = pPlayer.GetPlayerLeftHand().GetOffsetPos();
-
+	//手の終了位置を設定.
 	m_RightHandEndPos = playerPos + rightHandOffset;
 	m_LeftHandEndPos = playerPos + leftHandOffset;
 
@@ -100,7 +101,7 @@ void CPlayerHandHit::Update(CPlayer& pPlayer)
 
 	float eased = sinf(progress * D3DX_PI * m_PhaseSplit);	//半円分の移動を計算.	
 
-	//プレイヤーの位置を計算.
+	//プレイヤーの手の位置を計算.
 	D3DXVECTOR3 rightHandPos;
 	D3DXVec3Lerp(&rightHandPos, &m_RightHandStartPos, &m_RightHandEndPos, eased);
 	D3DXVECTOR3 leftHandPos;
