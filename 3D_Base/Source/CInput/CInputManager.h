@@ -30,18 +30,35 @@ public:
         return instance;
     }
 
+    //Inputのupdate回している
     void Update();
 
+    //指定したInputをとれる
     CInput& GetInput(int index) { return *m_pInputs[index]; }
-
+    //全部のInputに入力設定
     void BindKey(Action action, const InputBinding& binding);
-
+    //第2引数で指定のInputに入力設定
     void BindKey(Action action, const InputBinding& binding, int i);
 
+    //全部のInputのIsDown
+    void IsDown(Action action);
+    //第2引数で指定したのInputのIsDown
+    void IsDown(Action action, int i);
+    
+    //全部のInputのIsUp
+    void IsUp(Action action);
+    //第2引数で指定したのInputのIsUp
+    void IsUp(Action action, int i);
+
+    //全部のInputのIsRepeat
+    void IsRepeat(Action action);
+    //第2引数で指定したのInputのIsRepeat
+    void IsRepeat(Action action, int i);
 
     //別の場所に追加するべき-----------
     PlayerSlot& GetSlot(int index) { return m_Slot[index]; }
 
+    //CInputのものではない
     void ChangeSlot(int index)
     {
         if (m_Slot[index].ready)
@@ -53,13 +70,13 @@ public:
             m_Slot[index].ready = true;
         }
     }
-
+    //CInputのものではない
     void SetHuman(int index) 
     {
         m_Slot[index].state = PlayerSlotState::Player;
         m_Slot[index].ready = true;
     }
-
+    //CInputのものではない
     void SetCPU(int index) 
     {
         m_Slot[index].state = PlayerSlotState::COM;
