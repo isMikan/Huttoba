@@ -236,6 +236,7 @@
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CPlayer\PlayerHead\CPlayerHead.cpp" />
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CPlayer\PlayerState\ActionState\PlayerHandHit\CPlayerHandHit.cpp" />
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CPlayer\PlayerState\ActionState\PlayerPushed\CPlayerPushed.cpp" />
+    <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\PlayerManager\CPlayerManager.cpp" />
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\DrawCollision\DrawCollision.cpp" />
     <ClCompile Include="Source\Assets\AssetManager.cpp" />
     <ClCompile Include="Source\Assets\Effect\CEffect.cpp" />
@@ -312,6 +313,7 @@
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CPlayer\PlayerHead\CPlayerHead.h" />
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CPlayer\PlayerState\ActionState\PlayerHandHit\CPlayerHandHit.h" />
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CPlayer\PlayerState\ActionState\PlayerPushed\CPlayerPushed.h" />
+    <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\PlayerManager\CPlayerManager.h" />
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\DrawCollision\DrawCollision.h" />
     <ClInclude Include="Source\Assets\AssetManager.h" />
     <ClInclude Include="Source\Assets\Effect\CEffect.h" />

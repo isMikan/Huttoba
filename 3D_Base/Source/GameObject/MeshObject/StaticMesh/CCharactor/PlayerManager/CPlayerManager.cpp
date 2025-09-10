@@ -1,5 +1,15 @@
 #include "CPlayerManager.h"
 
+#include "CCharactor/CPlayer/PlayerState/DirectionalInputState/PlayerMoveState/PlayerIdle/CPlayerMoveIdle.h"
+#include "CCharactor/CPlayer/PlayerState/DirectionalInputState/PlayerMoveState/PlayerIdle/CPlayerMoveIdle.h"
+#include "CCharactor/CPlayer/PlayerState/DirectionalInputState/PlayerRotationState/PlayerRotationIdle/CPlayerRotationIdle.h"
+#include "CCharactor/CPlayer/PlayerState/ActionState/PlayerActionIdle/CPlayerActionIdle.h"
+
+#include "CCharactor/CPlayer/PlayerState/ActionState/PlayerHandAttack/CPlayerHandAttack.h"
+#include "CCharactor/CPlayer/PlayerState/ActionState/PlayerPickupItem/CPlayerPickupItem.h"
+#include "CCharactor/CPlayer/PlayerState/ActionState/PlayerThrowItem/CPlayerThrowItem.h"
+#include "CCharactor/CPlayer/PlayerState/ActionState/PlayerPushed/CPlayerPushed.h"
+
 CPlayerManager::CPlayerManager(int index)
 	: m_pPlayers	()
 	, m_PlayerID	(index)
@@ -115,6 +125,58 @@ void CPlayerManager::Collision()
 	}
 }
 
+void CPlayerManager::HandleInput()
+{
+	for (int pNo = 0;pNo < Player_Max;pNo++)
+	{
+		//float x = 0.f;	//x軸.
+		//float z = 0.f;	//z軸.
+
+		//if (m_pInput->IsRepeat(Action::MoveUp))		z += 1.f;
+		//if (m_pInput->IsRepeat(Action::MoveDown))	z -= 1.f;
+		//if (m_pInput->IsRepeat(Action::MoveLeft))	x -= 1.f;
+		//if (m_pInput->IsRepeat(Action::MoveRight))	x += 1.f;
+
+		//接続されていたら数値を受け取る.
+		//if (m_pInput->IsConnect())
+		//{
+		//	x = m_pInput->GetLeftSthikX();
+		//	z = m_pInput->GetLeftSthikY();
+		//}
+
+		//m_pMoveState->KeyInput(*this, x, z);
+		//m_pRotationState->KeyInput(*this, x, z);
+
+		//アイテムを持っていないなら攻撃.
+		if (CInputManager::Instance().GetInput(pNo).IsDown(Action::Attack)
+			&& !m_pPlayers[pNo]->IsHoldingItem()
+			&& !m_pPlayers[pNo]->IsAttacking())
+		{
+			m_pPlayers[pNo]->SetActionState(std::make_unique<CPlayerHandAttack>());
+		}
+		//アイテムを持っていないなら拾う.
+		if (CInputManager::Instance().GetInput(pNo).IsDown(Action::ToggleItem)
+			&& !m_pPlayers[pNo]->IsHoldingItem())
+		{
+			m_pPlayers[pNo]->SetActionState(std::make_unique<CPlayerPickupItem>());
+		}
+		//アイテムを持っているなら捨てる.
+		else if (CInputManager::Instance().GetInput(pNo).
+			IsDown(Action::ToggleItem)
+			&& m_pPlayers[pNo]->IsHoldingItem())
+		{
+			m_pPlayers[pNo]->SetActionState(std::make_unique<CPlayerThrowItem>());
+		}
+
+		if (m_pPlayers[pNo]->GetHitInfo().isHit == true
+			&& m_pPlayers[pNo]->GetHitInfo().force > 0.f)
+		{
+			m_pPlayers[pNo]->SetActionState(std::make_unique<CPlayerPushed>());
+		}
+	}
+
+}
+
 //エフェクトを表示するための関数.
 //void CPlayerManager::ManageEffectLaser(static::EsHandle hEffect)
 //{
@@ -217,23 +279,57 @@ D3DXVECTOR3 CPlayerManager::SetDefaultPosition(int index)
 //キーバインドを設定する関数.
 void CPlayerManager::SetPlayerInputBinding()
 {
-	m_Keys =
-	{
-		{Action::MoveUp,		VK_UP},
-		{Action::MoveDown,		VK_DOWN},
-		{Action::MoveLeft,		VK_LEFT},
-		{Action::MoveRight,		VK_RIGHT},
-		{Action::Attack,		'Z'},
-		{Action::ToggleItem,	'X'},
+	std::array<std::unordered_map<Action, int>,Player_Max> keys;
 
-	};
-	//キーボード操作.
-	CInputManager::Instance().BindKey(Action::MoveUp,		InputBinding(InputDevice::Keyboard, VK_UP), 0);		//上移動.
-	CInputManager::Instance().BindKey(Action::MoveDown,		InputBinding(InputDevice::Keyboard, VK_DOWN), 0);		//下移動.
-	CInputManager::Instance().BindKey(Action::MoveLeft,		InputBinding(InputDevice::Keyboard, VK_LEFT), 0);		//左移動.
-	CInputManager::Instance().BindKey(Action::MoveRight,	InputBinding(InputDevice::Keyboard, VK_RIGHT), 0);		//右移動.
-	CInputManager::Instance().BindKey(Action::Attack,		InputBinding(InputDevice::Keyboard, 'Z'), 0);			//攻撃.
-	CInputManager::Instance().BindKey(Action::ToggleItem,	InputBinding(InputDevice::Keyboard, 'X'), 0);			//拾う/捨てる.
+	for (int pNo = 0; pNo < Player_Max;pNo++)
+	{
+		switch (pNo)
+		{
+		case 0:
+			keys[pNo] =
+			{
+				{Action::MoveUp,		VK_UP},
+				{Action::MoveDown,		VK_DOWN},
+				{Action::MoveLeft,		VK_LEFT},
+				{Action::MoveRight,		VK_RIGHT},
+				{Action::Attack,		'Z'},
+				{Action::ToggleItem,	'X'},
+			};
+
+			break;
+		case 1:
+			keys[pNo] =
+			{
+				{Action::MoveUp,		'W'},
+				{Action::MoveDown,		'S'},
+				{Action::MoveLeft,		'A'},
+				{Action::MoveRight,		'D'},
+				{Action::Attack,		'Q'},
+				{Action::ToggleItem,	'E'},
+			};
+
+			break;
+		default:
+			break;
+		}
+
+		for(auto& key : keys[pNo])
+		{
+			Action action = key.first;
+			int code = key.second;
+
+			CInputManager::Instance().BindKey(
+				action, InputBinding(InputDevice::Keyboard, code), pNo);
+		}
+	}
+
+	////キーボード操作.
+	//CInputManager::Instance().BindKey(Action::MoveUp,		InputBinding(InputDevice::Keyboard, VK_UP), 0);		//上移動.
+	//CInputManager::Instance().BindKey(Action::MoveDown,		InputBinding(InputDevice::Keyboard, VK_DOWN), 0);		//下移動.
+	//CInputManager::Instance().BindKey(Action::MoveLeft,		InputBinding(InputDevice::Keyboard, VK_LEFT), 0);		//左移動.
+	//CInputManager::Instance().BindKey(Action::MoveRight,	InputBinding(InputDevice::Keyboard, VK_RIGHT), 0);		//右移動.
+	//CInputManager::Instance().BindKey(Action::Attack,		InputBinding(InputDevice::Keyboard, 'Z'), 0);			//攻撃.
+	//CInputManager::Instance().BindKey(Action::ToggleItem,	InputBinding(InputDevice::Keyboard, 'X'), 0);			//拾う/捨てる.
 
 	//コントローラ操作.
 	CInputManager::Instance().BindKey(Action::Attack,		InputBinding(InputDevice::GamePad, CXInput::B));	//攻撃.

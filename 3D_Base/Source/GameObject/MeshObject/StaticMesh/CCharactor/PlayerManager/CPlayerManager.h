@@ -1,6 +1,6 @@
 #pragma once
 
-#include "GameObject/MeshObject/StaticMesh/CStaticMeshObject.h"
+#include "GameObject/MeshObject/StaticMesh/CCharactor/CCharacter.h"
 
 #include "GameObject/MeshObject/StaticMesh/CCharactor/CPlayer/CPlayer.h"
 
@@ -9,7 +9,7 @@
 #include <unordered_map>
 
 class CPlayerManager
-	: public CStaticMeshObject
+	: public CCharacter	//キャラクタークラスを継承.
 {
 public:
 	CPlayerManager(int index);
@@ -31,6 +31,9 @@ public:
 	//衝突判定関数.
 	void Collision();
 	
+	//入力関数.
+	void HandleInput();
+
 	//今は実際使うかわからないのでコメント化.
 	//エフェクトを表示するための関数.
 	//void ManageEffectLaser(static::EsHandle hEffect);
@@ -51,6 +54,4 @@ private:
 	std::vector<std::unique_ptr<CPlayer>>	m_pPlayers;
 
 	int m_PlayerID;
-
-	std::unordered_map<Action, int> m_Keys;
 };

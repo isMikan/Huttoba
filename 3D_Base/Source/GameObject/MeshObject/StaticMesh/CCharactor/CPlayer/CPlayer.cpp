@@ -39,6 +39,8 @@ CPlayer::~CPlayer()
 
 void CPlayer::Update()
 {
+	GetPlayerHead().SetPosition(SetHandPos());
+
 	m_pInput->Update();
 
 	HandleInput();
@@ -60,10 +62,6 @@ void CPlayer::Draw(
 
 void CPlayer::HandleInput()
 {
-	D3DXVECTOR3 hand = GetPlayerRightHand().GetPosition();
-
-	GetPlayerHead().SetPosition(SetHandPos());
-
 	float x = 0.f;	//xé≤.
 	float z = 0.f;	//zé≤.
 
