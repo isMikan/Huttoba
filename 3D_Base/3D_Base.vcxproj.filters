@@ -77,7 +77,6 @@
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CPlayer\PlayerState\ActionState\PlayerPushed\CPlayerPushed.cpp" />
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CPlayer\PlayerHead\CPlayerHead.cpp" />
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CPlayer\PlayerState\ActionState\PlayerHandHit\CPlayerHandHit.cpp" />
-    <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\PlayerManager\CPlayerManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Assets\AssetManager.h" />
@@ -89,7 +88,6 @@
     <ClInclude Include="Source\Assets\Mesh\MeshManager.h" />
     <ClInclude Include="Source\Assets\Mesh\SkinMesh\CSkinMesh.h" />
     <ClInclude Include="Source\Assets\Mesh\SkinMesh\CSkinMeshParser.h" />
-    <ClInclude Include="Source\Assets\Mesh\StaticMesh\CStaticMesh.h" />
     <ClInclude Include="Source\Assets\Sound\CSound.h" />
     <ClInclude Include="Source\Assets\Sound\CSoundManager.h" />
     <ClInclude Include="Source\Assets\Sprite\Sprite2D\CSprite2D.h" />
@@ -155,7 +153,7 @@
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CPlayer\PlayerState\ActionState\PlayerPushed\CPlayerPushed.h" />
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CPlayer\PlayerHead\CPlayerHead.h" />
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CPlayer\PlayerState\ActionState\PlayerHandHit\CPlayerHandHit.h" />
-    <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\PlayerManager\CPlayerManager.h" />
+    <ClInclude Include="Source\Assets\Mesh\StaticMesh\CStaticMesh.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="ChangeSourse.txt" />
