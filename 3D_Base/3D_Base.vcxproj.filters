@@ -27,7 +27,6 @@
     <ClCompile Include="Source\GameObject\CGameObject.cpp" />
     <ClCompile Include="Source\GameObject\MeshObject\SkinMesh\CSkinMeshObject.cpp" />
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CCharacter.cpp" />
-    <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CEnemy\CEnemy.cpp" />
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CPlayer\CPlayer.cpp" />
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\CStaticMeshObject.cpp" />
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\Ground\CGround.cpp" />
@@ -76,6 +75,8 @@
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\DrawCollision\DrawCollision.cpp" />
     <ClCompile Include="Source\Collision\CollisionManager\CollisionManager.cpp" />
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CPlayer\PlayerState\ActionState\PlayerPushed\CPlayerPushed.cpp" />
+    <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CPlayer\PlayerHead\CPlayerHead.cpp" />
+    <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CPlayer\PlayerState\ActionState\PlayerHandHit\CPlayerHandHit.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Assets\AssetManager.h" />
@@ -101,7 +102,6 @@
     <ClInclude Include="Source\GameObject\CGameObject.h" />
     <ClInclude Include="Source\GameObject\MeshObject\SkinMesh\CSkinMeshObject.h" />
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CCharacter.h" />
-    <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CEnemy\CEnemy.h" />
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CPlayer\CPlayer.h" />
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\CStaticMeshObject.h" />
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\Ground\CGround.h" />
@@ -152,6 +152,8 @@
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\DrawCollision\DrawCollision.h" />
     <ClInclude Include="Source\Collision\CollisionManager\CollisionManager.h" />
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CPlayer\PlayerState\ActionState\PlayerPushed\CPlayerPushed.h" />
+    <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CPlayer\PlayerHead\CPlayerHead.h" />
+    <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\CCharactor\CPlayer\PlayerState\ActionState\PlayerHandHit\CPlayerHandHit.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="ChangeSourse.txt" />

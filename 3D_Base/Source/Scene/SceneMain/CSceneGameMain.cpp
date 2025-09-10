@@ -261,7 +261,7 @@ void CSceneGameMain::Draw()
 	{
 		for (int aNo = 0;aNo < Player_Max;aNo++)
 		{
-			if (pNo == aNo) break;
+			if (pNo == aNo) continue;
 
 			if (m_pPlayers[aNo]->IsAttacking()
 				&& m_pPlayers[aNo]->GetBSphere()->

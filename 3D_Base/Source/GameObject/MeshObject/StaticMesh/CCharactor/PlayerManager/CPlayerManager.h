@@ -1,12 +1,19 @@
 #pragma once
 
+#include "GameObject/MeshObject/StaticMesh/CStaticMeshObject.h"
+
 #include "GameObject/MeshObject/StaticMesh/CCharactor/CPlayer/CPlayer.h"
 
+#include "CInput/CInputManager.h"
+
+#include <unordered_map>
+
 class CPlayerManager
+	: public CStaticMeshObject
 {
 public:
 	CPlayerManager(int index);
-	~CPlayerManager();
+	~CPlayerManager() override;
 
 	//構築関数.
 	HRESULT Create();
@@ -17,21 +24,33 @@ public:
 	//破棄関数.
 	void Destroy();
 	//更新関数.
-	void Update();
+	void Update() override;
 	//描画関数.
-	void Draw();
+	void Draw(D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAMERA& Camera) override;
+
+	//衝突判定関数.
+	void Collision();
+	
+	//今は実際使うかわからないのでコメント化.
+	//エフェクトを表示するための関数.
+	//void ManageEffectLaser(static::EsHandle hEffect);
 
 private:
 	//キャラクターの色を設定する関数.
 	CPlayer::ObjectColor SetCharacterColor(int index);
 
-	//初期位置.
+	//初期位置を設定する関数.
 	D3DXVECTOR3 SetDefaultPosition(int index);
+
+	//キーバインドを設定する関数.
+	void SetPlayerInputBinding();
 
 
 private:
-	//キャラクタークラス
-	std::vector<std::unique_ptr<CPlayer>>	m_pPlayer;
+	//プレイヤー.
+	std::vector<std::unique_ptr<CPlayer>>	m_pPlayers;
 
 	int m_PlayerID;
+
+	std::unordered_map<Action, int> m_Keys;
 };

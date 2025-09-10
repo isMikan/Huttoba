@@ -1,7 +1,7 @@
 #include "CPlayerManager.h"
 
 CPlayerManager::CPlayerManager(int index)
-	: m_pPlayer		()
+	: m_pPlayers	()
 	, m_PlayerID	(index)
 {
 	Create();
@@ -14,22 +14,48 @@ CPlayerManager::~CPlayerManager()
 //構築関数.
 HRESULT CPlayerManager::Create()
 {
+	//プレイヤーのインスタンス生成.
+	m_pPlayers.resize(Player_Max);
+	for (int pNo = 0;pNo < Player_Max;pNo++)
+	{
+		m_pPlayers[pNo] = std::make_unique<CPlayer>(pNo);
+		if (!m_pPlayers[pNo]) return E_POINTER;
+	}
+
 	return S_OK;
 }
 
 //データの読み込み関数.
 HRESULT CPlayerManager::LoadData()
 {
+	//プレイヤー.
+	for (int pNo = 0;pNo < Player_Max;pNo++)
+	{
+		//胴体のスタティックメッシュを設定.
+		m_pPlayers[pNo]->AttachMesh(AssetManager::Mesh(StaticMeshList::PBody));
+		//頭のスタティックメッシュを設定.
+		m_pPlayers[pNo]->GetPlayerHead().
+			AttachMesh(AssetManager::Mesh(StaticMeshList::PHead));
+		//右手のスタティックメッシュを設定.
+		m_pPlayers[pNo]->GetPlayerRightHand().
+			AttachMesh(AssetManager::Mesh(StaticMeshList::PHand));
+		//左手のスタティックメッシュを設定.
+		m_pPlayers[pNo]->GetPlayerLeftHand().
+			AttachMesh(AssetManager::Mesh(StaticMeshList::PHand));
+		//バウンディングスフィアの作成
+		m_pPlayers[pNo]->CreateBSphereForMesh(AssetManager::Mesh(StaticMeshList::BSphere));
+	}
+
 	return S_OK;
 }
 
 //初期化関数.
 void CPlayerManager::Init()
 {
-	for (auto& player : m_pPlayer)
+	for (auto& player : m_pPlayers)
 	{
-		player.SetObjectColor(SetCharacterColor(m_PlayerID));
-		player.SetPosition(SetDefaultPosition(m_PlayerID))
+		player->SetObjectColor(SetCharacterColor(m_PlayerID));
+		player->SetPosition(SetDefaultPosition(m_PlayerID));
 	}
 }
 
@@ -41,17 +67,83 @@ void CPlayerManager::Destroy()
 //更新関数.
 void CPlayerManager::Update()
 {
+	for (auto& player : m_pPlayers)
+	{
+		//動作.
+		player->Update();						//胴体.
+		player->GetPlayerHead().Update();		//頭.
+		player->GetPlayerRightHand().Update();	//右手.
+		player->GetPlayerLeftHand().Update();	//左手.
+	}
 }
 
 //描画関数.
-void CPlayerManager::Draw()
+void CPlayerManager::Draw(D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAMERA& Camera)
 {
+	for (auto& player : m_pPlayers)
+	{
+		//描画.
+		player->Draw( View, Proj, Light, Camera );						//胴体.
+		player->GetPlayerHead().Draw( View, Proj, Light, Camera );		//頭.
+		player->GetPlayerRightHand().Draw( View, Proj, Light, Camera );	//右手.
+		player->GetPlayerLeftHand().Draw( View, Proj, Light, Camera );	//左手.
+
+		//当たり判定の中心座標を更新する
+		player->UpdateBSpherePos();
+	}
 }
+
+void CPlayerManager::Collision()
+{
+	for (int pNo = 0;pNo < Player_Max;pNo++)
+	{
+		for (int aNo = 0;aNo < Player_Max;aNo++)
+		{
+			if (pNo == aNo) continue;
+
+			if (m_pPlayers[aNo]->IsAttacking()
+				&& m_pPlayers[aNo]->GetBSphere()->
+				IsHit(*m_pPlayers[pNo]->GetBSphere()))
+			{
+				m_pPlayers[pNo]->SetHitInfo(
+					m_pPlayers[aNo]->GetPosition(), 0.05f, true);
+
+				m_pPlayers[aNo]->SetHitInfo(
+					m_pPlayers[aNo]->GetPosition(), 0.f, true);
+			}
+		}
+	}
+}
+
+//エフェクトを表示するための関数.
+//void CPlayerManager::ManageEffectLaser(static::EsHandle hEffect)
+//{
+//	if (GetAsyncKeyState('Y') & 0x0001)
+//	{
+//		for (auto& player : m_pPlayers)
+//		{
+//			hEffect = AssetManager::Effect()->Play("Laser", player->GetPosition());
+//
+//			//拡縮
+//			AssetManager::Effect()->SetScale(hEffect, D3DXVECTOR3(0.8f, 0.8f, 0.8f));
+//			AssetManager::Effect()->SetRotation(hEffect, D3DXVECTOR3(D3DXToRadian(-90.f), 0.f, 0.f));
+//			AssetManager::Effect()->SetLocation(hEffect, D3DXVECTOR3(0.f, 1.f, 1.f));
+//		}
+//	}
+//
+//	//Effect制御
+//	if (GetAsyncKeyState('T') & 0x0001)
+//	{
+//		AssetManager::Effect()->Stop(hEffect);
+//	}
+//}
 
 //キャラクターの色を設定する関数.
 CPlayer::ObjectColor CPlayerManager::SetCharacterColor(int index)
 {
-	std::array<CStaticMeshObject::ObjectColor, Player_Max>	playerColor;	//プレイヤーの色.
+	//プレイヤーの色.
+	std::array<CStaticMeshObject::ObjectColor, Player_Max>	playerColor;
+
 	switch (index)
 	{
 	case 0:
@@ -92,7 +184,7 @@ CPlayer::ObjectColor CPlayerManager::SetCharacterColor(int index)
 	return playerColor[index];
 }
 
-//初期位置.
+//初期位置を設定する関数.
 D3DXVECTOR3 CPlayerManager::SetDefaultPosition(int index)
 {
 	std::array<D3DXVECTOR3, Player_Max> playerPos;	//プレイヤーの位置.
@@ -120,4 +212,30 @@ D3DXVECTOR3 CPlayerManager::SetDefaultPosition(int index)
 	}
 
 	return playerPos[index];
+}
+
+//キーバインドを設定する関数.
+void CPlayerManager::SetPlayerInputBinding()
+{
+	m_Keys =
+	{
+		{Action::MoveUp,		VK_UP},
+		{Action::MoveDown,		VK_DOWN},
+		{Action::MoveLeft,		VK_LEFT},
+		{Action::MoveRight,		VK_RIGHT},
+		{Action::Attack,		'Z'},
+		{Action::ToggleItem,	'X'},
+
+	};
+	//キーボード操作.
+	CInputManager::Instance().BindKey(Action::MoveUp,		InputBinding(InputDevice::Keyboard, VK_UP), 0);		//上移動.
+	CInputManager::Instance().BindKey(Action::MoveDown,		InputBinding(InputDevice::Keyboard, VK_DOWN), 0);		//下移動.
+	CInputManager::Instance().BindKey(Action::MoveLeft,		InputBinding(InputDevice::Keyboard, VK_LEFT), 0);		//左移動.
+	CInputManager::Instance().BindKey(Action::MoveRight,	InputBinding(InputDevice::Keyboard, VK_RIGHT), 0);		//右移動.
+	CInputManager::Instance().BindKey(Action::Attack,		InputBinding(InputDevice::Keyboard, 'Z'), 0);			//攻撃.
+	CInputManager::Instance().BindKey(Action::ToggleItem,	InputBinding(InputDevice::Keyboard, 'X'), 0);			//拾う/捨てる.
+
+	//コントローラ操作.
+	CInputManager::Instance().BindKey(Action::Attack,		InputBinding(InputDevice::GamePad, CXInput::B));	//攻撃.
+	CInputManager::Instance().BindKey(Action::ToggleItem,	InputBinding(InputDevice::GamePad, CXInput::A));	//拾う/捨てる.
 }
