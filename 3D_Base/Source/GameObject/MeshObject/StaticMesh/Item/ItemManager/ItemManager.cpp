@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "ItemManager.h"
 #include "Item/ItemBase.h"	
-#include "CCharactor/CPlayer/CPlayer.h"
+#include "CCharacter/CPlayer/CPlayer.h"
 #include "CInput/CInputManager.h"
 
 

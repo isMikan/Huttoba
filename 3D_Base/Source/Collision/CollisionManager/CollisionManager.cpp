@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "CollisionManager.h"
 #include "Collision/CBoundingSphere.h"
-#include "CCharactor/CPlayer/CPlayer.h"
+#include "CCharacter/CPlayer/CPlayer.h"
 #include "Item/ItemBase.h"
 
 CollisionManager::CollisionManager()

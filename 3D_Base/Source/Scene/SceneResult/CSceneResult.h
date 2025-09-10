@@ -3,7 +3,7 @@
 
 #include "GameObject/UIObject/CUIObject.h"
 #include "CInput/CInputManager.h"
-#include "GameObject/MeshObject/StaticMesh/CCharactor/CPlayer/CPlayer.h"
+#include "GameObject/MeshObject/StaticMesh/CCharacter/CPlayer/CPlayer.h"
 #include "Assets/AssetManager.h"
 
 #include <functional>

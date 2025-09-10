@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "Haetataki.h"
-#include "CCharactor/CPlayer/CPlayer.h"
+#include "CCharacter/CPlayer/CPlayer.h"
 
 //--------------------------------------------------------------------------------------------------------------
 
