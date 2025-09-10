@@ -96,6 +96,7 @@ void CPlayerHandWhiff::Update(CPlayer& pPlayer)
 	pPlayer.SetMoveState(std::make_unique<CPlayerMoveIdle>());
 	pPlayer.SetRotationState(std::make_unique<CPlayerRotationIdle>());
 
+	//ゲーム全体の経過時間.
 	float totalTime = CTimeManager::GetInstance()->GetTotalTime();
 
 	//現在の経過時間と開始時間の差が終了時間を上回ったら.
@@ -138,7 +139,7 @@ void CPlayerHandWhiff::Update(CPlayer& pPlayer)
 
 	float eased = sinf(progress * D3DX_PI * 0.5f);	//0.5かけて半円分の移動を計算.	
 
-	//プレイヤーの位置を計算.
+	//プレイヤーの手の位置を計算.
 	D3DXVECTOR3 rightHandPos;
 	D3DXVec3Lerp(&rightHandPos, &m_RightHandStartPos, &m_RightHandEndPos, eased);
 	D3DXVECTOR3 leftHandPos;

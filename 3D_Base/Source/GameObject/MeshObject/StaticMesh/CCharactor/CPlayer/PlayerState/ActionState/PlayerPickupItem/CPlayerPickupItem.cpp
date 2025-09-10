@@ -67,6 +67,7 @@ void CPlayerPickupItem::Exit(CPlayer& pPlayer)
 
 void CPlayerPickupItem::Update(CPlayer& pPlayer)
 {
+	//ゲーム全体の経過時間.
 	float totalTime = CTimeManager::GetInstance()->GetTotalTime();
 
 	//現在の経過時間と開始時間の差が終了時間を上回ったら.
