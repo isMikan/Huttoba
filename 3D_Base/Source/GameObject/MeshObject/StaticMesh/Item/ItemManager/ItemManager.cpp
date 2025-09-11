@@ -77,6 +77,9 @@ void ItemManager::Update(std::vector<std::unique_ptr<CPlayer>>& players)
 			}
 		}
 	}
+
+	//”j‰ó‚·‚é‚×‚«ƒAƒCƒeƒ€‚ð”j‰ó
+	DestroyItem();
 }
 
 //--------------------------------------------------------------------------------------------------------------
@@ -90,6 +93,7 @@ void ItemManager::Update()
 
 void ItemManager::Draw(D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAMERA& Camera)
 {
+
 	for (auto& item : m_pItems)
 	{
 		item->Draw(View,Proj, Light,Camera);
@@ -107,7 +111,8 @@ void ItemManager::DestroyItem()
 			{
 				return item->IsDestroy();
 			}
-		)
+		),
+		m_pItems.end()
 	);
 }
 
