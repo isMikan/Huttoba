@@ -97,3 +97,18 @@ void ItemManager::Draw(D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAMERA&
 }
 
 //--------------------------------------------------------------------------------------------------------------
+
+void ItemManager::DestroyItem()
+{
+	m_pItems.erase(
+		std::remove_if(
+			m_pItems.begin(), m_pItems.end(),
+			[](const std::unique_ptr<ItemBase>& item)
+			{
+				return item->IsDestroy();
+			}
+		)
+	);
+}
+
+//--------------------------------------------------------------------------------------------------------------

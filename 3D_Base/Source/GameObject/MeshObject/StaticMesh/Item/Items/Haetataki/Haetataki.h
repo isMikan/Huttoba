@@ -58,7 +58,7 @@ private:
 	bool m_IsFlyAway;		//吹き飛び力発生フラグ
 	float m_IsFlyAwayPower;	//吹き飛び力
 
-	bool m_IsMissAttack; //攻撃は外れているか？(SEのタイミング用)
+	bool m_IsMissAttack; //攻撃は外れているか(SEのタイミング用)
 
 
 };

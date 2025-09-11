@@ -73,6 +73,8 @@ public:
 
 	bool IsUse(); // 使用中かどうか
 
+	bool IsDestroy() { return m_IsDestroy; }
+
 protected:
 
 	virtual void Spawn	 ()	= 0; // 出現
@@ -84,9 +86,10 @@ protected:
 
 protected:
 
-	float m_tGravity; // 重力加速度(簡易版)
+	float m_tGravity;	// 重力加速度(簡易版)
+	bool m_IsDestroy;	// 破壊するかどうか
 
-	State m_State; // アイテムの状態
+	State m_State;		// アイテムの状態
 
 	CPlayer* m_pPlayer; // 持っているプレイヤーのポインタ(プレイヤーの座標取得に必要)
 
