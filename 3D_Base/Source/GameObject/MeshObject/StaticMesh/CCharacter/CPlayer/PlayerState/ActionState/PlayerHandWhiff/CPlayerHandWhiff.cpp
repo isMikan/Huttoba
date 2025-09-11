@@ -2,8 +2,8 @@
 
 #include "GameObject/MeshObject/StaticMesh/CCharacter/CPlayer/CPlayer.h"
 
-#include "GameObject/MeshObject/StaticMesh/CCharacter/CPlayer/PlayerState/DirectionalInputState/PlayerMoveState/PlayerIdle/CPlayerMoveIdle.h"
-#include "GameObject/MeshObject/StaticMesh/CCharacter/CPlayer/PlayerState/DirectionalInputState/PlayerRotationState/PlayerRotationIdle/CPlayerRotationIdle.h"
+#include "GameObject/MeshObject/StaticMesh/CCharacter/CPlayer/PlayerState/PlayerMoveState/PlayerMoveIdelState/CPlayerMoveIdleState.h"
+#include "GameObject/MeshObject/StaticMesh/CCharacter/CPlayer/PlayerState/PlayerTurnState/PlayerTurnIdleState/CPlayerTurnIdleState.h"
 #include "GameObject/MeshObject/StaticMesh/CCharacter/CPlayer/PlayerState/ActionState/PlayerActionIdle/CPlayerActionIdle.h"
 
 #include "TimeManager/CTimeManager.h"
@@ -93,8 +93,8 @@ void CPlayerHandWhiff::Exit(CPlayer& pPlayer)
 
 void CPlayerHandWhiff::Update(CPlayer& pPlayer)
 {
-	pPlayer.SetMoveState(std::make_unique<CPlayerMoveIdle>());
-	pPlayer.SetRotationState(std::make_unique<CPlayerRotationIdle>());
+	pPlayer.SetMoveState(std::make_unique<CPlayerMoveIdleState>());
+	pPlayer.SetTurnState(std::make_unique<CPlayerTurnIdleState>());
 
 	//ƒQ[ƒ€‘S‘Ì‚ÌŒo‰ßŽžŠÔ.
 	float totalTime = CTimeManager::GetInstance()->GetTotalTime();

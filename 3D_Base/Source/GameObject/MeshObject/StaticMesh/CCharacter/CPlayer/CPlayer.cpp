@@ -1,9 +1,12 @@
 #include "CPlayer.h"
 #include "Sound/CSoundManager.h"
 
-#include "PlayerState/DirectionalInputState/PlayerMoveState/PlayerIdle/CPlayerMoveIdle.h"
-#include "PlayerState/DirectionalInputState/PlayerRotationState/PlayerRotationIdle/CPlayerRotationIdle.h"
+#include "PlayerState/PlayerMoveState/PlayerMoveIdelState/CPlayerMoveIdleState.h"
+#include "PlayerState/PlayerTurnState/PlayerTurnIdleState/CPlayerTurnIdleState.h"
 #include "PlayerState/ActionState/PlayerActionIdle/CPlayerActionIdle.h"
+
+#include "PlayerState/PlayerMoveState/PlayerMoveState/CPlayerMoveState.h"
+#include "PlayerState/PlayerTurnState/PlayerTurnState/CPlayerTurnState.h"
 
 #include "PlayerState/ActionState/PlayerHandAttack/CPlayerHandAttack.h"
 #include "PlayerState/ActionState/PlayerPickupItem/CPlayerPickupItem.h"
@@ -17,8 +20,8 @@ CPlayer::CPlayer(int index)
 	, m_pRightHand		( std::make_unique<CPlayerRightHand>() )
 	, m_pLeftHand		( std::make_unique<CPlayerLeftHand>() )
 
-	, m_pMoveState		( std::make_unique<CPlayerMoveIdle>() )
-	, m_pRotationState	( std::make_unique<CPlayerRotationIdle>() )
+	, m_pMoveState		( std::make_unique<CPlayerMoveIdleState>( 0.f,0.f ) )
+	, m_pTurnState		( std::make_unique<CPlayerTurnIdleState>( 0.f,0.f ) )
 	, m_pActionState	( std::make_unique<CPlayerActionIdle>() )
 
 	, m_IsMoving		( false )
@@ -47,7 +50,7 @@ void CPlayer::Update()
 
 	m_pMoveState->Update(*this);
 
-	m_pRotationState->Update(*this);
+	m_pTurnState->Update(*this);
 
 	m_pActionState->Update(*this);
 
@@ -77,8 +80,8 @@ void CPlayer::HandleInput()
 		z = m_pInput->GetLeftSthikY();
 	}
 
-	m_pMoveState->KeyInput(*this, x, z);
-	m_pRotationState->KeyInput(*this, x, z);
+	SetMoveState(std::make_unique<CPlayerMoveState>(x,z));
+	SetTurnState(std::make_unique<CPlayerTurnState>(x,z));
 
 	//アイテムを持っていないなら攻撃.
 	if (m_pInput->IsDown(Action::Attack) && !m_IsHoldingItem
@@ -105,21 +108,42 @@ void CPlayer::HandleInput()
 }
 
 //移動状態を設定する関数.
-void CPlayer::SetMoveState(std::unique_ptr< CPlayerDirectionalInputState> newState)
+void CPlayer::SetMoveState(std::unique_ptr< CPlayerState> newState)
 {
 	ChangeState(m_pMoveState, std::move(newState));
 }
 
 //回転状態を設定する関数.
-void CPlayer::SetRotationState(std::unique_ptr< CPlayerDirectionalInputState> newState)
+void CPlayer::SetTurnState(std::unique_ptr< CPlayerState> newState)
 {
-	ChangeState(m_pRotationState, std::move(newState));
+	ChangeState(m_pTurnState, std::move(newState));
 }
 
 //行動状態を設定する関数.
-void CPlayer::SetActionState(std::unique_ptr<CActionState> newState)
+void CPlayer::SetActionState(std::unique_ptr<CPlayerState> newState)
 {
 	ChangeState(m_pActionState, std::move(newState));
+}
+
+//状態遷移の処理関数.
+void CPlayer::ChangeState(
+	std::unique_ptr<CPlayerState>& currentState,
+	std::unique_ptr<CPlayerState> newState)
+{
+	if (currentState != nullptr)
+	{
+		//状態の終了処理.
+		currentState->Exit(*this);
+	}
+
+	//新しい状態にする.
+	currentState = std::move(newState);
+
+	if (currentState != nullptr)
+	{
+		//状態の開始処理.
+		currentState->Enter(*this);
+	}
 }
 
 D3DXVECTOR3 CPlayer::SetHandPos()

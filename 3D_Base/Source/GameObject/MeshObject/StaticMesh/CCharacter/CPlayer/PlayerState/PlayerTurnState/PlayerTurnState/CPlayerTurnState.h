@@ -3,14 +3,15 @@
 #include "GameObject/MeshObject/StaticMesh/CCharacter/CPlayer/PlayerState/CPlayerState.h"
 
 /**************************************************
-*	プレイヤーが何も行動していない状態クラス.
+*	プレイヤーが回転する状態クラス.
 **/
-class CPlayerActionIdle
+class CPlayerTurnState
 	: public CPlayerState	//プレイヤー状態継承クラス.
 {
 public:
-	CPlayerActionIdle();
-	~CPlayerActionIdle() override;
+	CPlayerTurnState() {}
+	CPlayerTurnState(float x, float z);
+	~CPlayerTurnState() override;
 
 	//状態が始めるときだけ呼び出される.
 	void Enter(CPlayer& pPlayer) override;
@@ -20,5 +21,8 @@ public:
 	void Update(CPlayer& pPlayer) override;
 
 private:
+	D3DXVECTOR3		m_Dir;			//方向キーの入力.
 
+	float			m_TurnSpeed;	//回転速度.
+	float			m_TurnDir;		//目的の方向.
 };

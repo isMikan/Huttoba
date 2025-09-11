@@ -1,12 +1,12 @@
 #pragma once
 
-#include "GameObject/MeshObject/StaticMesh/CCharacter/CPlayer/PlayerState/ActionState/CActionState.h"
+#include "GameObject/MeshObject/StaticMesh/CCharacter/CPlayer/PlayerState/CPlayerState.h"
 
 /**************************************************
 *	プレイヤーがアイテムを投げ捨てるの状態クラス.
 **/
 class CPlayerThrowItem
-	: public CActionState	//行動状態のクラスの継承.
+	: public CPlayerState	//プレイヤー状態継承クラス.
 {
 public:
 	CPlayerThrowItem();

@@ -1,9 +1,9 @@
 #pragma once
 
-#include "GameObject/MeshObject/StaticMesh/CCharacter/CPlayer/PlayerState/ActionState/CActionState.h"
+#include "GameObject/MeshObject/StaticMesh/CCharacter/CPlayer/PlayerState/CPlayerState.h"
 
 class CPlayerHandHit
-	: public CActionState	//行動状態のクラスの継承.
+	: public CPlayerState	//プレイヤー状態継承クラス.
 {
 public:
 	CPlayerHandHit();
