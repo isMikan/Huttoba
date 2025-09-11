@@ -20,8 +20,8 @@ CPlayer::CPlayer(int index)
 	, m_pRightHand		( std::make_unique<CPlayerRightHand>() )
 	, m_pLeftHand		( std::make_unique<CPlayerLeftHand>() )
 
-	, m_pMoveState		( std::make_unique<CPlayerMoveIdleState>( 0.f,0.f ) )
-	, m_pTurnState		( std::make_unique<CPlayerTurnIdleState>( 0.f,0.f ) )
+	, m_pMoveState		( std::make_unique<CPlayerMoveIdleState>( 0.f, 0.f ) )
+	, m_pTurnState		( std::make_unique<CPlayerTurnIdleState>( 0.f, 0.f ) )
 	, m_pActionState	( std::make_unique<CPlayerActionIdle>() )
 
 	, m_IsMoving		( false )
@@ -42,7 +42,7 @@ CPlayer::~CPlayer()
 
 void CPlayer::Update()
 {
-	GetPlayerHead().SetPosition(SetHandPos());
+	GetPlayerHead().SetPosition(SetHeadPos());
 
 	m_pInput->Update();
 
@@ -80,8 +80,8 @@ void CPlayer::HandleInput()
 		z = m_pInput->GetLeftSthikY();
 	}
 
-	SetMoveState(std::make_unique<CPlayerMoveState>(x,z));
-	SetTurnState(std::make_unique<CPlayerTurnState>(x,z));
+	SetMoveState(std::make_unique<CPlayerMoveState>(x, z));
+	SetTurnState(std::make_unique<CPlayerTurnState>(x, z));
 
 	//ƒAƒCƒeƒ€‚ðŽ‚Á‚Ä‚¢‚È‚¢‚È‚çUŒ‚.
 	if (m_pInput->IsDown(Action::Attack) && !m_IsHoldingItem
@@ -146,7 +146,7 @@ void CPlayer::ChangeState(
 	}
 }
 
-D3DXVECTOR3 CPlayer::SetHandPos()
+D3DXVECTOR3 CPlayer::SetHeadPos()
 {
 	LocalAxes axes = GetLocalAxes();
 

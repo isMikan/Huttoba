@@ -70,7 +70,7 @@ public:
 	void SetActionState(std::unique_ptr<CPlayerState> newState);
 
 	//頭の位置を設定するために計算する関数.
-	D3DXVECTOR3 SetHandPos();
+	D3DXVECTOR3 SetHeadPos();
 
 	//プレイヤーの正面方向を取得するための関数.
 	D3DXVECTOR3 GetForward();

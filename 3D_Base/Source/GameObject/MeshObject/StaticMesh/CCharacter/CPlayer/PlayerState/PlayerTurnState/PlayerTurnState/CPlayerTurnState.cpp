@@ -6,7 +6,7 @@
 
 CPlayerTurnState::CPlayerTurnState(float x, float z)
 	:  m_Dir			( x, 0.f, z )
-	, m_TurnSpeed		( D3DXToRadian(5.f) )
+	, m_TurnSpeed		( D3DXToRadian( 5.f ) )
 	, m_TurnDir			()
 {
 }
