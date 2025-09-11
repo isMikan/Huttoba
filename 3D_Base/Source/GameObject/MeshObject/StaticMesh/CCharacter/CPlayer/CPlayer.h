@@ -51,6 +51,16 @@ public:
 	void Draw(
 		D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAMERA& Camera ) override;
 
+	//void AddObserver(IPlayerObserver* observer){
+	//	observers.push_back(observer);
+	//}
+	// void Notify(PlayerEvent event){
+	// for(auto& obs : observers){
+	//		obs->OnNotify(event);
+	//		}
+	// }		 
+
+	//ƒL[‘€ì.
 	void HandleInput();
 
 	//ˆÚ“®ó‘Ô‚ğİ’è‚·‚éŠÖ”.
