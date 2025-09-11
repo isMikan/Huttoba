@@ -3,14 +3,15 @@
 #include "GameObject/MeshObject/StaticMesh/CCharacter/CPlayer/PlayerState/CPlayerState.h"
 
 /**************************************************
-*	プレイヤーが何も行動していない状態クラス.
+*	プレイヤーが回転しない状態クラス.
 **/
-class CPlayerActionIdle
+class CPlayerTurnIdleState
 	: public CPlayerState	//プレイヤー状態継承クラス.
 {
 public:
-	CPlayerActionIdle();
-	~CPlayerActionIdle() override;
+	CPlayerTurnIdleState();
+	CPlayerTurnIdleState(float x, float z);
+	~CPlayerTurnIdleState() override;
 
 	//状態が始めるときだけ呼び出される.
 	void Enter(CPlayer& pPlayer) override;

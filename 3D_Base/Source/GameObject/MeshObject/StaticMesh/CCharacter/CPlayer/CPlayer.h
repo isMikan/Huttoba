@@ -8,8 +8,7 @@
 #include "PlayerHand/PlayerRightHand/CPlayerRightHand.h"
 #include "PlayerHand/PlayerLeftHand/CPlayerLeftHand.h"
 
-#include "PlayerState/DirectionalInputState/CPlayerDirectionalInputState.h"
-#include "PlayerState/ActionState/CActionState.h"
+#include "PlayerState/CPlayerState.h"
 
 /**************************************************
 *	サイズ後々消す(メタセコイアでアイテム作るとき参考にしてください)
@@ -64,11 +63,11 @@ public:
 	void HandleInput();
 
 	//移動状態を設定する関数.
-	void SetMoveState(std::unique_ptr<CPlayerDirectionalInputState> newState);
+	void SetMoveState(std::unique_ptr<CPlayerState> newState);
 	//回転状態を設定する関数.
-	void SetRotationState(std::unique_ptr<CPlayerDirectionalInputState> newState);
+	void SetTurnState(std::unique_ptr<CPlayerState> newState);
 	//行動状態を設定する関数.
-	void SetActionState(std::unique_ptr<CActionState> newState);
+	void SetActionState(std::unique_ptr<CPlayerState> newState);
 
 	//頭の位置を設定するために計算する関数.
 	D3DXVECTOR3 SetHandPos();
@@ -134,12 +133,9 @@ private:
 	//キーバインドを設定する関数.
 	void SetPlayerInputBinding();
 
-	//テンプレート関数(中身の処理は同じもの).
-	template<typename StateType>
-	//状態遷移の処理関数.
 	void ChangeState(
-		std::unique_ptr<StateType>& currentState,
-		std::unique_ptr<StateType> newScene);
+		std::unique_ptr<CPlayerState>& currentState,
+		std::unique_ptr<CPlayerState> newScene);
 
 private:
 	std::unique_ptr<CInput>				m_pInput;		//入力.
@@ -148,9 +144,9 @@ private:
 	std::unique_ptr<CPlayerRightHand>	m_pRightHand;	//右手.
 	std::unique_ptr<CPlayerLeftHand>	m_pLeftHand;	//左手.
 
-	std::unique_ptr<CPlayerDirectionalInputState>	m_pMoveState;		//移動.
-	std::unique_ptr<CPlayerDirectionalInputState>	m_pRotationState;	//回転.
-	std::unique_ptr<CActionState>					m_pActionState;		//行動.
+	std::unique_ptr<CPlayerState>	m_pMoveState;		//移動.
+	std::unique_ptr<CPlayerState>	m_pTurnState;		//回転.
+	std::unique_ptr<CPlayerState>	m_pActionState;		//行動.
 
 	bool		m_IsMoving;			//移動しているか.
 	bool		m_IsRotating;		//回転しているか.
@@ -159,26 +155,3 @@ private:
 
 	HitInfo		m_HitInfo;			//攻撃を受けた情報.
 };
-
-//型が決まっていないのでここで定義.
-//inline 複数定義されても毎回インスタンスを生成しない.
-template<typename StateType>
-inline void CPlayer::ChangeState(
-	std::unique_ptr<StateType>& currentState,
-	std::unique_ptr<StateType> newState)
-{
-	if (currentState != nullptr)
-	{
-		//状態の終了処理.
-		currentState->Exit(*this);
-	}
-
-	//新しい状態にする.
-	currentState = std::move(newState);
-
-	if (currentState != nullptr)
-	{
-		//状態の開始処理.
-		currentState->Enter(*this);
-	}
-}
