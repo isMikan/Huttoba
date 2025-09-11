@@ -105,6 +105,7 @@ enum class StaticMeshList
 	Bullet,
 	BSphere,
 	Haetataki,
+	Bomb,
 };
 
 enum class UIList
