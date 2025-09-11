@@ -7,6 +7,7 @@ ItemBase::ItemBase()
 	: m_State	( State::Spawn )
 	, m_pPlayer	( nullptr )
 	, m_tGravity(0.01f)
+	, m_IsDestroy	( false )
 {
 }
 
