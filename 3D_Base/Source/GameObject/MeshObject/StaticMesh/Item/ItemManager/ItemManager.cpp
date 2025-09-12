@@ -79,7 +79,7 @@ void ItemManager::Update(std::vector<std::unique_ptr<CPlayer>>& players)
 		}
 	}
 
-	//破壊するべきアイテムを破壊
+	//不必要なアイテム削除
 	DestroyItem();
 }
 

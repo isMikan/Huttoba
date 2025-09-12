@@ -187,10 +187,7 @@ void Haetataki::Throw()
 
 void Haetataki::Destroy()
 {
-	if (GetAsyncKeyState('N') & 0x8000)
-	{
-		m_State = ItemBase::State::Spawn;
-	}
+	m_IsDestroy = true;
 }
 
 //--------------------------------------------------------------------------------------------------------------
