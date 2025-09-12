@@ -61,6 +61,20 @@ Haetataki::~Haetataki()
 
 //--------------------------------------------------------------------------------------------------------------
 
+void Haetataki::Init()
+{
+	AttachMesh(AssetManager::Mesh(StaticMeshList::Haetataki));
+	CreateBSphereForMesh(AssetManager::Mesh(StaticMeshList::BSphere));
+
+	SetPosition(INITAL_POS_X, INITAL_POS_Y, INITAL_POS_Z);
+	SetRotation(INITAL_ROT_X, INITAL_ROT_Y, INITAL_ROT_Z);
+
+	m_State = ItemBase::State::Spawn;
+	m_tGravity = INITAL_GRAVITY;
+}
+
+//--------------------------------------------------------------------------------------------------------------
+
 void Haetataki::Update(std::vector<std::unique_ptr<CPlayer>>& playiers)
 {
 	//アイテム共通のUpdate
@@ -73,20 +87,6 @@ void Haetataki::Draw(D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAMERA& C
 {
 	//アイテム共通のDraw
 	ItemBase::Draw(View, Proj, Light, Camera);
-}
-
-//--------------------------------------------------------------------------------------------------------------
-
-void Haetataki::Init()
-{
-	AttachMesh(AssetManager::Mesh(StaticMeshList::Haetataki));
-	CreateBSphereForMesh(AssetManager::Mesh(StaticMeshList::BSphere));
-
-	SetPosition(INITAL_POS_X, INITAL_POS_Y, INITAL_POS_Z);
-	SetRotation(INITAL_ROT_X, INITAL_ROT_Y, INITAL_ROT_Z);
-
-	m_State = ItemBase::State::Spawn;
-	m_tGravity = INITAL_GRAVITY;
 }
 
 //--------------------------------------------------------------------------------------------------------------

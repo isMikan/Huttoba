@@ -76,6 +76,7 @@
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\CCharacter\CPlayer\PlayerState\PlayerTurnState\PlayerTurnIdleState\CPlayerTurnIdleState.cpp" />
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\CCharacter\CPlayer\PlayerState\PlayerMoveState\PlayerMoveState\CPlayerMoveState.cpp" />
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\CCharacter\CPlayer\PlayerState\PlayerMoveState\PlayerMoveIdelState\CPlayerMoveIdleState.cpp" />
+    <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\Item\Items\Bomb\Bomb.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Assets\AssetManager.h" />
@@ -153,6 +154,7 @@
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\CCharacter\CPlayer\PlayerState\PlayerTurnState\PlayerTurnIdleState\CPlayerTurnIdleState.h" />
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\CCharacter\CPlayer\PlayerState\PlayerMoveState\PlayerMoveState\CPlayerMoveState.h" />
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\CCharacter\CPlayer\PlayerState\PlayerMoveState\PlayerMoveIdelState\CPlayerMoveIdleState.h" />
+    <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\Item\Items\Bomb\Bomb.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="ChangeSourse.txt" />

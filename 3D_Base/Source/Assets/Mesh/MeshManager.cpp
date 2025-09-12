@@ -75,6 +75,7 @@ HRESULT MeshManager::CreateStaticMesh()
 	RegisterStaticMesh(StaticMeshList::Bullet,			_T("Data\\Mesh\\Static\\Bullet\\bullet.x"));
 	RegisterStaticMesh(StaticMeshList::BSphere,			_T("Data\\Collision\\Sphere.x"));
 	RegisterStaticMesh(StaticMeshList::Haetataki,		_T("Data\\Mesh\\Static\\Item\\Haetataki.x"));
+	RegisterStaticMesh(StaticMeshList::Bomb,			_T("Data\\Mesh\\Static\\Item\\Bomb.x"));
 //Å™-----------------------------------------------------------------------------------------------------------------------------Å™
 
 	for (auto& mesh : m_StaticMeshInfoList)

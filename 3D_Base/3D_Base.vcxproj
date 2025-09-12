@@ -283,6 +283,7 @@
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\Item\ItemState\ItemStateHave\ItemStateHave.cpp" />
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\Item\ItemState\ItemStateSpawn\ItemStateSpawn.cpp" />
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\Item\ItemState\ItemStateUse\ItemStateUse.cpp" />
+    <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\Item\Items\Bomb\Bomb.cpp" />
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\Item\Items\Haetataki\Haetataki.cpp" />
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\Item\Items\SmashBat\SmashBat.cpp" />
     <ClCompile Include="Source\GameObject\SpriteObject\CSpriteObject.cpp" />
@@ -364,6 +365,7 @@
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\Item\ItemState\ItemStateHave\ItemStateHave.h" />
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\Item\ItemState\ItemStateSpawn\ItemStateSpawn.h" />
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\Item\ItemState\ItemStateUse\ItemStateUse.h" />
+    <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\Item\Items\Bomb\Bomb.h" />
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\Item\Items\Haetataki\Haetataki.h" />
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\Item\Items\SmashBat\SmashBat.h" />
     <ClInclude Include="Source\GameObject\SpriteObject\CSpriteObject.h" />
