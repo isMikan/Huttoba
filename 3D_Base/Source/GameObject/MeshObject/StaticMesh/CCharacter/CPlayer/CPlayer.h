@@ -78,7 +78,11 @@ public:
 	//ローカル座標軸を取得する関数.
 	LocalAxes GetLocalAxes();
 
-	//プレイヤーの初期角度から傾きを計算する関数..
+	//クォータニオンによるベクトル回転の関数.
+	D3DXVECTOR3 RotateVectorByQuat(
+		D3DXVECTOR3 vector, D3DXQUATERNION quat);
+
+		//プレイヤーの初期角度から傾きを計算する関数..
 	D3DXQUATERNION TiltedQuat(
 		D3DXQUATERNION	baseQuat,	//基準にする回転姿勢.
 		D3DXVECTOR3		localAxes,	//ローカル軸の方向.

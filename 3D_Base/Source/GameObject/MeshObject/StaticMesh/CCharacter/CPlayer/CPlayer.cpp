@@ -181,23 +181,46 @@ D3DXVECTOR3 CPlayer::GetForward()
 //ローカル座標軸を取得.
 CPlayer::LocalAxes CPlayer::GetLocalAxes()
 {
+	//ローカル軸.
 	LocalAxes axes;
 
-	D3DXMATRIX rot;
-	//クォータニオンをマトリクスに変換.
-	D3DXMatrixRotationQuaternion(&rot, &m_vQuaternion);
-
-	//行列で.
-	axes.right = D3DXVECTOR3(rot._11, rot._12, rot._13);
-	axes.up = D3DXVECTOR3(rot._21, rot._22, rot._23);
-	axes.forward = D3DXVECTOR3(rot._31, rot._32, rot._33);
-
+	//ローカル軸をクォータニオンにして計算.
+	axes.right =	RotateVectorByQuat(D3DXVECTOR3(1, 0, 0), m_vQuaternion);
+	axes.up =		RotateVectorByQuat(D3DXVECTOR3(0, 1, 0), m_vQuaternion);
+	axes.forward =	RotateVectorByQuat(D3DXVECTOR3(0, 0, 1), m_vQuaternion);
 	//正規化.
 	D3DXVec3Normalize(&axes.right, &axes.right);
 	D3DXVec3Normalize(&axes.up, &axes.up);
 	D3DXVec3Normalize(&axes.forward, &axes.forward);
 
 	return axes;
+}
+
+//クォータニオンによるベクトル回転の関数.
+D3DXVECTOR3 CPlayer::RotateVectorByQuat(
+	D3DXVECTOR3 vector, D3DXQUATERNION quat)
+{
+	//正規化.
+	D3DXQuaternionNormalize(&quat, &quat);
+
+	//ベクトルをクォータニオンに変換.
+	D3DXQUATERNION vecQuat(vector.x, vector.y, vector.z, 0.f);
+
+	//逆元.
+	D3DXQUATERNION inverseRot;
+	//逆元を求める(共役(-x,-y-,z,w)をベクトルサイズの二乗で割る).
+	D3DXQuaternionInverse(&inverseRot, &quat);
+
+	//途中結果(v * -q).
+	D3DXQUATERNION temp;
+	//ベクトルと逆元をかける(回転が歪まないように).
+	D3DXQuaternionMultiply(&temp, &inverseRot, &vecQuat);
+	//最終結果(q * {v * -q}).
+	D3DXQUATERNION result;
+	D3DXQuaternionMultiply(&result, &temp, &quat);
+
+	//ベクトル分だけ返す.
+	return D3DXVECTOR3(result.x, result.y, result.z);
 }
 
 //プレイヤーの初期角度から傾きを計算する関数..
