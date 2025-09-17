@@ -125,6 +125,10 @@ public:
 	bool IsAttacking() const { return m_IsAttacking; }
 	void SetAttacking(bool attacking) { m_IsAttacking = attacking; }
 
+	//UŒ‚‚µ‚Ä‚¢‚é‚©‚Ìæ“¾‚Æİ’è.
+	bool IsStopping() const { return m_IsStopping; }
+	void SetStopping(bool stopping) { m_IsStopping = stopping; }
+
 	//UŒ‚‚ğó‚¯‚½î•ñ‚ğæ“¾‚Æİ’è.
 	HitInfo GetHitInfo() const { return m_HitInfo; }
 	void SetHitInfo(D3DXVECTOR3 pos, float force, bool isHit) {
@@ -156,6 +160,7 @@ private:
 	bool		m_IsRotating;		//‰ñ“]‚µ‚Ä‚¢‚é‚©.
 	bool		m_IsHoldingItem;	//ƒAƒCƒeƒ€‚ğ‚Á‚Ä‚¢‚é‚©.
 	bool		m_IsAttacking;		//UŒ‚‚µ‚Ä‚¢‚é‚©.
+	bool		m_IsStopping;		//~‚Ü‚é‚Æ‚«.
 
 	HitInfo		m_HitInfo;			//UŒ‚‚ğó‚¯‚½î•ñ.
 };

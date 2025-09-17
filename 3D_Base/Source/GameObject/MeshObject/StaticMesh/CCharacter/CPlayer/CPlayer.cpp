@@ -80,8 +80,11 @@ void CPlayer::HandleInput()
 		z = m_pInput->GetLeftSthikY();
 	}
 
-	SetMoveState(std::make_unique<CPlayerMoveState>(x, z));
-	SetTurnState(std::make_unique<CPlayerTurnState>(x, z));
+	if(!m_IsStopping)
+	{
+		SetMoveState(std::make_unique<CPlayerMoveState>(x, z));
+		SetTurnState(std::make_unique<CPlayerTurnState>(x, z));
+	}
 
 	//ƒAƒCƒeƒ€‚ðŽ‚Á‚Ä‚¢‚È‚¢‚È‚çUŒ‚.
 	if (m_pInput->IsDown(Action::Attack) && !m_IsHoldingItem

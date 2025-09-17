@@ -31,6 +31,8 @@ CPlayerHandWhiff::~CPlayerHandWhiff()
 
 void CPlayerHandWhiff::Enter(CPlayer& pPlayer)
 {
+	pPlayer.SetStopping(true);
+		
 	//ŒX‚«Šp“x‚Ì‰Šú‰».
 	m_CurrentTiltAngle = 0.f;
 
@@ -88,6 +90,7 @@ void CPlayerHandWhiff::Enter(CPlayer& pPlayer)
 
 void CPlayerHandWhiff::Exit(CPlayer& pPlayer)
 {
+	pPlayer.SetStopping(false);
 	pPlayer.SetAttacking(false);
 }
 

@@ -31,6 +31,8 @@ CPlayerPushed::~CPlayerPushed()
 
 void CPlayerPushed::Enter(CPlayer& pPlayer)
 {
+	pPlayer.SetStopping(true);
+
 	//SE‚ð–Â‚ç‚·.
 	AssetManager::Sound()->PlaySE(enSoundList::SE_HitHand);
 
@@ -58,6 +60,7 @@ void CPlayerPushed::Enter(CPlayer& pPlayer)
 
 void CPlayerPushed::Exit(CPlayer& pPlayer)
 {
+	pPlayer.SetStopping(false);
 }
 
 void CPlayerPushed::Update(CPlayer& pPlayer)
