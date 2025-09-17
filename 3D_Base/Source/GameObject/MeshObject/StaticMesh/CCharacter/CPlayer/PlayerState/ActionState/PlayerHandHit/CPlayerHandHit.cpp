@@ -54,15 +54,29 @@ void CPlayerHandHit::Update(CPlayer& pPlayer)
 
 	//プレイヤーの位置を取得.
 	D3DXVECTOR3 playerPos = pPlayer.GetPosition();
+	//プレイヤーのローカル軸を取得.
+	CPlayer::LocalAxes axes = pPlayer.GetLocalAxes();
+
 	//手の位置を調整するための数値を取得.
 	D3DXVECTOR3 rightHandOffset = pPlayer.GetPlayerRightHand().GetOffsetPos();
 	D3DXVECTOR3 leftHandOffset = pPlayer.GetPlayerLeftHand().GetOffsetPos();
+	//プレイヤーの正面方向に手の位置調整.
+	rightHandOffset =
+		axes.right * rightHandOffset.x +
+		axes.up * rightHandOffset.y +
+		axes.forward * rightHandOffset.z;
+	leftHandOffset = 
+		axes.right * leftHandOffset.x +
+		axes.up * leftHandOffset.y +
+		axes.forward * leftHandOffset.z;
 	//手の終了位置を設定.
 	m_RightHandEndPos = playerPos + rightHandOffset;
 	m_LeftHandEndPos = playerPos + leftHandOffset;
 
 	//現在の経過時間と開始時間の差が終了時間を上回ったら.
-	if (totalTime - m_StartTime > m_EndTime)
+	if (totalTime - m_StartTime > m_EndTime
+		|| (pPlayer.GetQuaternion().x == 0.f
+		&& pPlayer.GetQuaternion().z == 0.f))
 	{
 		pPlayer.SetActionState(std::make_unique<CPlayerActionIdle>());
 		return;
@@ -71,33 +85,11 @@ void CPlayerHandHit::Update(CPlayer& pPlayer)
 	//全体の時間の現在の割合.
 	float progress = (totalTime - m_StartTime) / m_EndTime;
 
-	//時間の割合が半分より前なら(倒れる動き).
-	if (progress < m_PhaseSplit) 
-	{
-		//倒れきるまでの現在の傾き割合.
-		float ratio = progress / m_PhaseSplit;
-		//現在の傾き = 最大傾き角度 * 割合.
-		m_CurrentTiltAngle = m_TiltAngleMax * ratio;
-	}
-	//時間の割合が半分以上(戻る動き).
-	else if (progress <= 1.0f)
-	{
-		//傾きの変わり目(m_PhaseSplit)からどれだけ経過したかを割って割合.
-		float ratio = (progress - m_PhaseSplit) / m_PhaseSplit;
-		//現在の傾き = 最大傾き角度 * (1 - 割合).
-		m_CurrentTiltAngle = m_TiltAngleMax * (1.f - ratio);
-	}
-	else 
-	{
-		//終了後は0度.
-		m_CurrentTiltAngle = 0.f;
-	}
-
-	//プレイヤーのローカル軸を取得.
-	CPlayer::LocalAxes axes = pPlayer.GetLocalAxes();
+	//現在の傾き = 最大傾き角度 * 割合.
+	m_CurrentTiltAngle = m_TiltAngleMax * progress;
 
 	//クォータニオンの回転を計算して設定する.
-	pPlayer.SetQuaternion(pPlayer.TiltedQuat(m_StartQuat, axes.right, m_CurrentTiltAngle));
+	pPlayer.SetQuaternion(pPlayer.TiltedQuat(m_StartQuat, -axes.right, m_CurrentTiltAngle));
 
 	float eased = sinf(progress * D3DX_PI * m_PhaseSplit);	//半円分の移動を計算.	
 
