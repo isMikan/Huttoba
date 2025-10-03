@@ -245,13 +245,54 @@ D3DXQUATERNION CPlayer::TiltedQuat(
 //押された時の移動量を計算する関数.
 D3DXVECTOR3 CPlayer::Knockback()
 {
+	//押されるベクトル.
 	D3DXVECTOR3 dir = m_vPosition - m_HitInfo.position;
-
+	//正規化.
 	D3DXVec3Normalize(&dir, &dir);
-
-	D3DXVECTOR3 pos = dir * (m_HitInfo.force);
+	//方向へ吹き飛び量分の位置へ.
+	D3DXVECTOR3 pos = dir * m_HitInfo.force;
 
 	return pos;
+}
+
+//攻撃を受けた時のの移動量.
+D3DXVECTOR3 CPlayer::GetVelocity()
+{
+	//飛ぶベクトル.
+	D3DXVECTOR3 dir = m_vPosition - m_HitInfo.position;
+	//正規化.
+	D3DXVec3Normalize(&dir, &dir);
+
+	//角度60度上方向.
+	float angle = D3DXToRadian(60.f);
+	float speed = m_HitInfo.force;	//吹き飛ばし量を速度とする.
+
+	D3DXVECTOR3 velocity{};
+	velocity.x = cos(angle) * speed * dir.x;	//x軸方向に.
+	velocity.z = cos(angle) * speed * dir.z;	//z軸方向に.
+	velocity.y = sin(angle) * speed;			
+
+	return velocity;
+}
+
+float CPlayer::Clamp(float value, float min, float max)
+{
+	//最小値より小さかったら最小値を返す.
+	if (value < min) return min;
+	//最大値より大きかったら最大値を返す.
+	if (value > max) return max;
+
+	return value;
+}
+
+float CPlayer::WrapAngle(float value)
+{
+	//360度以上なら引く.
+	if (value >= 2.f * D3DX_PI) return value - 2.f * D3DX_PI;
+	//0度以上なら足す.
+	if (value < 0.f) return value + 2.f * D3DX_PI;
+
+	return value;
 }
 
 void CPlayer::SetCharacterDefault(int index)

@@ -267,11 +267,13 @@ void CSceneGameMain::Draw()
 				&& m_pPlayers[aNo]->GetBSphere()->
 				IsHit(*m_pPlayers[pNo]->GetBSphere()))
 			{
+				D3DXVECTOR3 hitPos = m_pPlayers[aNo]->GetPosition();
+
 				m_pPlayers[pNo]->SetHitInfo(
-					m_pPlayers[aNo]->GetPosition(), 0.05f, true);
+					hitPos, hitPos, 0.05f, true, CPlayer::StatePattern::Push);
 
 				m_pPlayers[aNo]->SetHitInfo(
-					m_pPlayers[aNo]->GetPosition(), 0.f, true);
+					hitPos, hitPos, 0.f, true, CPlayer::StatePattern::Push);
 			}
 		}
 	}

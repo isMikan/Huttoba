@@ -26,6 +26,15 @@ class CPlayer
 	: public CCharacter	//キャラクタークラスを継承.
 {
 public:
+	//攻撃を受けたアニメーションパターン.
+	enum class StatePattern
+	{
+		Push,			//押し出し.
+		Knockback,		//吹き飛ばし.
+		Down,			//ダウン.
+		None = -1		//なし.
+	};
+
 	//ローカル軸の構造体.
 	struct LocalAxes
 	{
@@ -37,9 +46,11 @@ public:
 	//攻撃を受けた情報.
 	struct HitInfo
 	{
-		D3DXVECTOR3 position;		//攻撃された位置.
-		float		force;			//攻撃力.
-		bool		isHit;			//攻撃を受けたか.
+		D3DXVECTOR3	position;	//攻撃された位置.
+		D3DXVECTOR3 velocity;	//初速度.
+		float		force;		//攻撃力.
+		bool		isHit;		//攻撃を受けたか.
+		StatePattern	animName;	//アニメーション.
 	};
 
 public:
@@ -91,6 +102,15 @@ public:
 	//押された時の移動量を計算する関数.
 	D3DXVECTOR3 Knockback();
 
+	//攻撃を受けた時のの移動量.
+	D3DXVECTOR3 GetVelocity();
+
+	//数値の領域を指定する関数.
+	float Clamp(float value, float min, float max);
+
+	//角度を0～360度にする関数.
+	float WrapAngle(float value);
+
 	//キャラクターの色を設定する関数.
 	void SetCharacterDefault(int index);
 
@@ -131,10 +151,21 @@ public:
 
 	//攻撃を受けた情報を取得と設定.
 	HitInfo GetHitInfo() const { return m_HitInfo; }
-	void SetHitInfo(D3DXVECTOR3 pos, float force, bool isHit) {
-		m_HitInfo.position = pos;
-		m_HitInfo.force = force;
+	void SetHitInfo(
+		bool isHit, StatePattern anim)
+	{
 		m_HitInfo.isHit = isHit;
+		m_HitInfo.animName = anim;
+	}
+	void SetHitInfo(
+		D3DXVECTOR3 pos, D3DXVECTOR3 velocity,
+		float force, bool isHit, StatePattern anim)
+	{
+		m_HitInfo.position = pos;
+		m_HitInfo.velocity = velocity;
+		m_HitInfo.force = force;	//7 以上、15 以下推奨.
+		m_HitInfo.isHit = isHit;
+		m_HitInfo.animName = anim;
 	}
 
 private:

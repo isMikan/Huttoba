@@ -1,16 +1,16 @@
-#include "CPlayerFallDown.h"
+#include "CPlayerFallingState.h"
 
-#include "CPlayer.h"
+#include "GameObject/MeshObject/StaticMesh/CCharacter/CPlayer/CPlayer.h"
 
-#include "CPlayerMoveIdle.h"
-#include "CPlayerRotationIdle.h"
-#include "CPlayerActionIdle.h"
+#include "GameObject/MeshObject/StaticMesh/CCharacter/CPlayer/PlayerState/PlayerMoveState/PlayerMoveIdelState/CPlayerMoveIdleState.h"
+#include "GameObject/MeshObject/StaticMesh/CCharacter/CPlayer/PlayerState/PlayerTurnState/PlayerTurnIdleState/CPlayerTurnIdleState.h"
+#include "GameObject/MeshObject/StaticMesh/CCharacter/CPlayer/PlayerState/PlayerActionState/PlayerActionIdleState/CPlayerActionIdleState.h"
 
-#include "CPlayerLaying.h"
+#include "GameObject/MeshObject/StaticMesh/CCharacter/CPlayer/PlayerState/PlayerActionState/PlayerGetUpState/CPlayerGetUpState.h"
 
-#include "CGameTimer.h"
+#include "TimeManager/CTimeManager.h"
 
-CPlayerFallDown::CPlayerFallDown()
+CPlayerFallingState::CPlayerFallingState()
 	: m_UpHandOffset		( 0.f, 0.5f, 0.f )
 	, m_StartRightAxis		()
 	, m_Velocity			()
@@ -31,20 +31,20 @@ CPlayerFallDown::CPlayerFallDown()
 {
 }
 
-CPlayerFallDown::~CPlayerFallDown()
+CPlayerFallingState::~CPlayerFallingState()
 {
 }
 
-void CPlayerFallDown::Enter(CPlayer& pPlayer)
+void CPlayerFallingState::Enter(CPlayer& pPlayer)
 {
 	//攻撃の開始時間を取得.
-	m_StartTime = CGameTimer::GetInstance()->GetTotalTime();
+	m_StartTime = CTimeManager::GetInstance()->GetTotalTime();
 
 	//傾き角度の初期化.
 	m_CurrentTiltAngle = 0.f;
 
 	//クォータニオン型の回転を取得.
-	m_StartQuat = pPlayer.GetRotationQuat();
+	m_StartQuat = pPlayer.GetQuaternion();
 
 	//プレイヤーのローカル軸を取得.
 	CPlayer::LocalAxes axes = pPlayer.GetLocalAxes();
@@ -60,7 +60,7 @@ void CPlayerFallDown::Enter(CPlayer& pPlayer)
 	m_RotateSpeed += m_ForceMax - force;	//最大量から引いて速さの調整.
 }
 
-void CPlayerFallDown::Exit(CPlayer& pPlayer)
+void CPlayerFallingState::Exit(CPlayer& pPlayer)
 {
 	//プレイヤーの位置を取得.
 	D3DXVECTOR3 playerPos = pPlayer.GetPosition();
@@ -68,13 +68,13 @@ void CPlayerFallDown::Exit(CPlayer& pPlayer)
 	pPlayer.SetPosition(playerPos.x, 0.f, playerPos.z);
 }
 
-void CPlayerFallDown::Update(CPlayer& pPlayer)
+void CPlayerFallingState::Update(CPlayer& pPlayer)
 {
-	pPlayer.SetMoveState(std::make_unique<CPlayerMoveIdle>());
-	pPlayer.SetRotationState(std::make_unique<CPlayerRotationIdle>());
+	pPlayer.SetMoveState(std::make_unique<CPlayerMoveIdleState>());
+	pPlayer.SetTurnState(std::make_unique<CPlayerTurnIdleState>());
 
 	//経過時間を取得.
-	float t = CGameTimer::GetInstance()->GetTotalTime();
+	float t = CTimeManager::GetInstance()->GetTotalTime();
 
 	//プレイヤーの位置を取得.
 	D3DXVECTOR3 playerPos = pPlayer.GetPosition();
@@ -83,12 +83,12 @@ void CPlayerFallDown::Update(CPlayer& pPlayer)
 	if (t - m_StartTime > m_EndTime
 		|| playerPos.y < 0.f)
 	{
-		pPlayer.SetActionState(std::make_unique<CPlayerLaying>());
+		pPlayer.SetActionState(std::make_unique<CPlayerGetUpState>());
 		return;
 	}
 
 	//現在のクォータニオンを取得.
-	D3DXQUATERNION quat = pPlayer.GetRotationQuat();
+	D3DXQUATERNION quat = pPlayer.GetQuaternion();
 
 	m_CurrentTiltAngle = pPlayer.WrapAngle(m_CurrentTiltAngle);
 	//地面近くかつ90度に近づいたら.
@@ -96,7 +96,7 @@ void CPlayerFallDown::Update(CPlayer& pPlayer)
 		&& fabsf(D3DXToDegree(m_CurrentTiltAngle) - 90.f) < m_RotateRange)
 	{
 		//現在のクォータニオンを設定.
-		pPlayer.SetRotationQuat(quat);
+		pPlayer.SetQuaternion(quat);
 	}
 	else
 	{
@@ -105,7 +105,7 @@ void CPlayerFallDown::Update(CPlayer& pPlayer)
 		m_CurrentTiltAngle = pPlayer.WrapAngle(progress * D3DX_PI * m_RotateSpeed);
 
 		//クォータニオンの回転を計算して設定.
-		pPlayer.SetRotationQuat(pPlayer.TiltedQuat(m_StartQuat, m_StartRightAxis, m_CurrentTiltAngle));
+		pPlayer.SetQuaternion(pPlayer.TiltedQuat(m_StartQuat, m_StartRightAxis, m_CurrentTiltAngle));
 	}
 
 	//プレイヤーのローカル軸を取得.
@@ -136,7 +136,7 @@ void CPlayerFallDown::Update(CPlayer& pPlayer)
 	pPlayer.GetPlayerLeftHand().SetPosition(leftHandPos);
 
 	//1フレームの速さを取得.
-	float dt = CGameTimer::GetInstance()->GetDeltaTime();
+	float dt = CTimeManager::GetInstance()->GetDeltaTime();
 
 	//攻撃された情報の取得.
 	m_Velocity.y += -m_Gravity * dt;
@@ -144,13 +144,4 @@ void CPlayerFallDown::Update(CPlayer& pPlayer)
 
 	//プレイヤーの位置を設定.
 	pPlayer.SetPosition(playerPos);
-}
-
-void CPlayerFallDown::Handle(CPlayer& pPlayer, int inputKey)
-{
-}
-
-std::string CPlayerFallDown::GetStateName() const
-{
-	return std::string();
 }

@@ -1,14 +1,14 @@
-#include "CPlayerLaying.h"
+#include "CPlayerGetUpState.h"
 
-#include "CPlayer.h"
+#include "GameObject/MeshObject/StaticMesh/CCharacter/CPlayer/CPlayer.h"
 
-#include "CPlayerMoveIdle.h"
-#include "CPlayerRotationIdle.h"
-#include "CPlayerActionIdle.h"
+#include "GameObject/MeshObject/StaticMesh/CCharacter/CPlayer/PlayerState/PlayerMoveState/PlayerMoveIdelState/CPlayerMoveIdleState.h"
+#include "GameObject/MeshObject/StaticMesh/CCharacter/CPlayer/PlayerState/PlayerTurnState/PlayerTurnIdleState/CPlayerTurnIdleState.h"
+#include "GameObject/MeshObject/StaticMesh/CCharacter/CPlayer/PlayerState/PlayerActionState/PlayerActionIdleState/CPlayerActionIdleState.h"
 
-#include "CGameTimer.h"
+#include "TimeManager/CTimeManager.h"
 
-CPlayerLaying::CPlayerLaying()
+CPlayerGetUpState::CPlayerGetUpState()
 	: m_StartRightAxis		()
 
 	, m_StartTime			()
@@ -24,17 +24,17 @@ CPlayerLaying::CPlayerLaying()
 {
 }
 
-CPlayerLaying::~CPlayerLaying()
+CPlayerGetUpState::~CPlayerGetUpState()
 {
 }
 
-void CPlayerLaying::Enter(CPlayer& pPlayer)
+void CPlayerGetUpState::Enter(CPlayer& pPlayer)
 {
 	//攻撃の開始時間を取得.
-	m_StartTime = CGameTimer::GetInstance()->GetTotalTime();
+	m_StartTime = CTimeManager::GetInstance()->GetTotalTime();
 
 	//クォータニオン型の回転を取得.
-	m_StartQuat = pPlayer.GetRotationQuat();
+	m_StartQuat = pPlayer.GetQuaternion();
 
 	//プレイヤーのローカル軸を取得.
 	CPlayer::LocalAxes axes = pPlayer.GetLocalAxes();
@@ -43,7 +43,7 @@ void CPlayerLaying::Enter(CPlayer& pPlayer)
 	
 	m_DefaultQuat = D3DXQUATERNION(0.f, m_StartQuat.y, 0.f, m_StartQuat.w);
 
-	pPlayer.SetRotationQuat(m_StartQuat);
+	pPlayer.SetQuaternion(m_StartQuat);
 
 	//手の位置を調整するための数値を取得.
 	D3DXVECTOR3 rightHandOffset = pPlayer.GetPlayerRightHand().GetOffsetPos();
@@ -53,22 +53,22 @@ void CPlayerLaying::Enter(CPlayer& pPlayer)
 	m_LeftHandStartPos = leftHandOffset;
 }
 
-void CPlayerLaying::Exit(CPlayer& pPlayer)
+void CPlayerGetUpState::Exit(CPlayer& pPlayer)
 {
-	pPlayer.SetRotationQuat(0.f, m_StartQuat.y, 0.f, m_StartQuat.w);
+	pPlayer.SetQuaternion(0.f, m_StartQuat.y, 0.f, m_StartQuat.w);
 }
 
-void CPlayerLaying::Update(CPlayer& pPlayer)
+void CPlayerGetUpState::Update(CPlayer& pPlayer)
 {
-	pPlayer.SetMoveState(std::make_unique<CPlayerMoveIdle>());
-	pPlayer.SetRotationState(std::make_unique<CPlayerRotationIdle>());
+	pPlayer.SetMoveState(std::make_unique<CPlayerMoveIdleState>());
+	pPlayer.SetTurnState(std::make_unique<CPlayerTurnIdleState>());
 
-	float t = CGameTimer::GetInstance()->GetTotalTime();
+	float t = CTimeManager::GetInstance()->GetTotalTime();
 
 	//現在の経過時間と開始時間の差が終了時間を上回ったら.
 	if (t - m_StartTime > m_EndTime)
 	{
-		pPlayer.SetActionState(std::make_unique<CPlayerActionIdle>());
+		pPlayer.SetActionState(std::make_unique<CPlayerActionIdleState>());
 		return;
 	}
 
@@ -82,7 +82,7 @@ void CPlayerLaying::Update(CPlayer& pPlayer)
 	//滑らかに正常の位置に戻す.
 	D3DXQUATERNION quat;
 	D3DXQuaternionSlerp(&quat, &m_StartQuat, &m_DefaultQuat, progress);
-	pPlayer.SetRotationQuat(quat);
+	pPlayer.SetQuaternion(quat);
 
 	if (progress > 0.7f)
 	{
@@ -127,13 +127,4 @@ void CPlayerLaying::Update(CPlayer& pPlayer)
 	//手の位置を設定.
 	pPlayer.GetPlayerRightHand().SetPosition(rightHandPos);
 	pPlayer.GetPlayerLeftHand().SetPosition(leftHandPos);
-}
-
-void CPlayerLaying::Handle(CPlayer& pPlayer, int inputKey)
-{
-}
-
-std::string CPlayerLaying::GetStateName() const
-{
-	return std::string();
 }

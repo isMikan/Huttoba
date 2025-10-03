@@ -80,7 +80,7 @@ void CPlayerHandAttackState::Update(CPlayer& pPlayer)
 	{
 		pPlayer.SetAttacking(false);
 		pPlayer.SetActionState(std::make_unique<CPlayerHandHitState>());
-		pPlayer.SetHitInfo(pPlayer.GetPosition(), 0.f, false);
+		pPlayer.SetHitInfo(false, CPlayer::StatePattern::None);
 		return;
 	}
 	//UŒ‚‚ª“–‚½‚Á‚Ä‚¢‚È‚¢ê‡.

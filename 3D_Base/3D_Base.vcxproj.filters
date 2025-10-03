@@ -76,6 +76,9 @@
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\CCharacter\CPlayer\PlayerState\PlayerActionState\PlayerPickupState\CPlayerPickupState.cpp" />
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\CCharacter\CPlayer\PlayerState\PlayerActionState\PlayerPushedState\CPlayerPushedState.cpp" />
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\CCharacter\CPlayer\PlayerState\PlayerActionState\PlayerThrowState\CPlayerThrowState.cpp" />
+    <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\CCharacter\CPlayer\PlayerState\PlayerActionState\PlayerFallingState\CPlayerFallingState.cpp" />
+    <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\CCharacter\CPlayer\PlayerState\PlayerActionState\PlayerGetUpState\CPlayerGetUpState.cpp" />
+    <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\CCharacter\CPlayer\PlayerState\PlayerActionState\PlayerKnockbackState\CPlayerKnockbackState.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Assets\AssetManager.h" />
@@ -153,6 +156,9 @@
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\CCharacter\CPlayer\PlayerState\PlayerActionState\PlayerPickupState\CPlayerPickupState.h" />
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\CCharacter\CPlayer\PlayerState\PlayerActionState\PlayerPushedState\CPlayerPushedState.h" />
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\CCharacter\CPlayer\PlayerState\PlayerActionState\PlayerThrowState\CPlayerThrowState.h" />
+    <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\CCharacter\CPlayer\PlayerState\PlayerActionState\PlayerGetUpState\CPlayerGetUpState.h" />
+    <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\CCharacter\CPlayer\PlayerState\PlayerActionState\PlayerFallingState\CPlayerFallingState.h" />
+    <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\CCharacter\CPlayer\PlayerState\PlayerActionState\PlayerKnockbackState\CPlayerKnockbackState.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="ChangeSourse.txt" />
