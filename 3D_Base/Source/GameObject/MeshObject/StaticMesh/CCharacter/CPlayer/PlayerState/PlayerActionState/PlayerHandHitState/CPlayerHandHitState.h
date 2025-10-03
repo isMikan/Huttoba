@@ -2,12 +2,12 @@
 
 #include "GameObject/MeshObject/StaticMesh/CCharacter/CPlayer/PlayerState/CPlayerState.h"
 
-class CPlayerHandHit
+class CPlayerHandHitState
 	: public CPlayerState	//プレイヤー状態継承クラス.
 {
 public:
-	CPlayerHandHit();
-	~CPlayerHandHit();
+	CPlayerHandHitState();
+	~CPlayerHandHitState();
 
 	//状態が始めるときだけ呼び出される.
 	void Enter(CPlayer& pPlayer) override;

@@ -5,12 +5,12 @@
 /**************************************************
 *	プレイヤーが何も行動していない状態クラス.
 **/
-class CPlayerActionIdle
+class CPlayerActionIdleState
 	: public CPlayerState	//プレイヤー状態継承クラス.
 {
 public:
-	CPlayerActionIdle();
-	~CPlayerActionIdle() override;
+	CPlayerActionIdleState();
+	~CPlayerActionIdleState() override;
 
 	//状態が始めるときだけ呼び出される.
 	void Enter(CPlayer& pPlayer) override;

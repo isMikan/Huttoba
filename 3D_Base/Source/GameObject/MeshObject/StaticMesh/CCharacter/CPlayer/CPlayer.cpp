@@ -3,15 +3,15 @@
 
 #include "PlayerState/PlayerMoveState/PlayerMoveIdelState/CPlayerMoveIdleState.h"
 #include "PlayerState/PlayerTurnState/PlayerTurnIdleState/CPlayerTurnIdleState.h"
-#include "PlayerState/ActionState/PlayerActionIdle/CPlayerActionIdle.h"
+#include "PlayerState/PlayerActionState/PlayerActionIdleState/CPlayerActionIdleState.h"
 
 #include "PlayerState/PlayerMoveState/PlayerMoveState/CPlayerMoveState.h"
 #include "PlayerState/PlayerTurnState/PlayerTurnState/CPlayerTurnState.h"
 
-#include "PlayerState/ActionState/PlayerHandAttack/CPlayerHandAttack.h"
-#include "PlayerState/ActionState/PlayerPickupItem/CPlayerPickupItem.h"
-#include "PlayerState/ActionState/PlayerThrowItem/CPlayerThrowItem.h"
-#include "PlayerState/ActionState/PlayerPushed/CPlayerPushed.h"
+#include "PlayerState/PlayerActionState/PlayerHandAttackState/CPlayerHandAttackState.h"
+#include "PlayerState/PlayerActionState/PlayerPickupState/CPlayerPickupState.h"
+#include "PlayerState/PlayerActionState/PlayerThrowState/CPlayerThrowState.h"
+#include "PlayerState/PlayerActionState/PlayerPushedState/CPlayerPushedState.h"
 
 CPlayer::CPlayer(int index)
 	: m_pInput			( std::make_unique<CInput>(index) )
@@ -22,7 +22,7 @@ CPlayer::CPlayer(int index)
 
 	, m_pMoveState		( std::make_unique<CPlayerMoveIdleState>( 0.f, 0.f ) )
 	, m_pTurnState		( std::make_unique<CPlayerTurnIdleState>( 0.f, 0.f ) )
-	, m_pActionState	( std::make_unique<CPlayerActionIdle>() )
+	, m_pActionState	( std::make_unique<CPlayerActionIdleState>() )
 
 	, m_IsMoving		( false )
 	, m_IsRotating		( false )
@@ -90,23 +90,23 @@ void CPlayer::HandleInput()
 	if (m_pInput->IsDown(Action::Attack) && !m_IsHoldingItem
 		&& !m_IsAttacking)
 	{
-		SetActionState(std::make_unique<CPlayerHandAttack>());
+		SetActionState(std::make_unique<CPlayerHandAttackState>());
 	}
 	//アイテムを持っていないなら拾う.
 	if (m_pInput->IsDown(Action::ToggleItem) && !m_IsHoldingItem)
 	{
-		SetActionState(std::make_unique<CPlayerPickupItem>());
+		SetActionState(std::make_unique<CPlayerPickupState>());
 	}
 	//アイテムを持っているなら捨てる.
 	else if (m_pInput->IsDown(Action::ToggleItem) && m_IsHoldingItem)
 	{
-		SetActionState(std::make_unique<CPlayerThrowItem>());
+		SetActionState(std::make_unique<CPlayerThrowState>());
 	}
 
 	if (m_HitInfo.isHit == true
 		&& m_HitInfo.force > 0.f)
 	{
-		SetActionState(std::make_unique<CPlayerPushed>());
+		SetActionState(std::make_unique<CPlayerPushedState>());
 	}
 }
 

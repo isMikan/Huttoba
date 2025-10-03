@@ -1,0 +1,36 @@
+#pragma once
+
+#include "CPlayerState.h"
+
+class CPlayerLaying
+	: public CPlayerState
+{
+public:
+	CPlayerLaying();
+	~CPlayerLaying();
+
+	//状態が始めるときだけ呼び出される.
+	void Enter(CPlayer& pPlayer) override;
+	//状態が終わるときだけ呼び出される.
+	void Exit(CPlayer& pPlayer) override;
+	//この状態の間は毎フレーム呼び出される.
+	void Update(CPlayer& pPlayer) override;
+	//入力されたら切り替える処理を呼び出す.
+	void Handle(CPlayer& pPlayer, int inputKey) override;
+
+	std::string GetStateName() const override;
+
+private:
+	D3DXVECTOR3		m_StartRightAxis;	//開始時の右軸.
+
+	float			m_StartTime;		//開始時間.
+	float			m_EndTime;			//終了時間.
+
+	D3DXQUATERNION	m_StartQuat;		//開始時の回転.
+	D3DXQUATERNION	m_DefaultQuat;		//元の回転.
+
+	D3DXVECTOR3		m_RightHandStartPos;	//右手の元の位置.
+	D3DXVECTOR3		m_LeftHandStartPos;		//左手の元の位置.
+	D3DXVECTOR3		m_RightHandEndPos;		//右手の元の位置.
+	D3DXVECTOR3		m_LeftHandEndPos;		//左手の元の位置.
+};

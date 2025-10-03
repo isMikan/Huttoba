@@ -2,15 +2,15 @@
 
 #include "GameObject/MeshObject/StaticMesh/CCharacter/CPlayer/PlayerState/CPlayerState.h"
 
-/************************************************************
-*	プレイヤーがアイテム未所持の攻撃を空振りする状態クラス.
+/**************************************************
+*	プレイヤーがアイテムを投げ捨てるの状態クラス.
 **/
-class CPlayerHandWhiff
+class CPlayerThrowState
 	: public CPlayerState	//プレイヤー状態継承クラス.
 {
 public:
-	CPlayerHandWhiff();
-	~CPlayerHandWhiff();
+	CPlayerThrowState();
+	~CPlayerThrowState() override;
 
 	//状態が始めるときだけ呼び出される.
 	void Enter(CPlayer& pPlayer) override;
@@ -26,7 +26,7 @@ private:
 	float			m_CurrentTiltAngle;		//現在の傾き角度.
 	float			m_TiltAngleMax;			//最大の傾き角度.
 	float			m_PhaseSplit;			//傾きの変わり目.
-
+	
 	D3DXVECTOR3		m_RightHandStartPos;	//右手の元の位置.
 	D3DXVECTOR3		m_LeftHandStartPos;		//左手の元の位置.
 	D3DXVECTOR3		m_RightHandEndPos;		//右手の元の位置.

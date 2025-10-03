@@ -1,14 +1,14 @@
-#include "CPlayerHandWhiff.h"
+#include "CPlayerHandWhiffState.h"
 
 #include "GameObject/MeshObject/StaticMesh/CCharacter/CPlayer/CPlayer.h"
 
 #include "GameObject/MeshObject/StaticMesh/CCharacter/CPlayer/PlayerState/PlayerMoveState/PlayerMoveIdelState/CPlayerMoveIdleState.h"
 #include "GameObject/MeshObject/StaticMesh/CCharacter/CPlayer/PlayerState/PlayerTurnState/PlayerTurnIdleState/CPlayerTurnIdleState.h"
-#include "GameObject/MeshObject/StaticMesh/CCharacter/CPlayer/PlayerState/ActionState/PlayerActionIdle/CPlayerActionIdle.h"
+#include "GameObject/MeshObject/StaticMesh/CCharacter/CPlayer/PlayerState/PlayerActionState/PlayerActionIdleState/CPlayerActionIdleState.h"
 
 #include "TimeManager/CTimeManager.h"
 
-CPlayerHandWhiff::CPlayerHandWhiff()
+CPlayerHandWhiffState::CPlayerHandWhiffState()
 	: m_StartTime			()
 	, m_EndTime				( 0.4f )
 							  
@@ -25,11 +25,11 @@ CPlayerHandWhiff::CPlayerHandWhiff()
 {
 }
 
-CPlayerHandWhiff::~CPlayerHandWhiff()
+CPlayerHandWhiffState::~CPlayerHandWhiffState()
 {
 }
 
-void CPlayerHandWhiff::Enter(CPlayer& pPlayer)
+void CPlayerHandWhiffState::Enter(CPlayer& pPlayer)
 {
 	pPlayer.SetStopping(true);
 		
@@ -88,13 +88,13 @@ void CPlayerHandWhiff::Enter(CPlayer& pPlayer)
 	}
 }
 
-void CPlayerHandWhiff::Exit(CPlayer& pPlayer)
+void CPlayerHandWhiffState::Exit(CPlayer& pPlayer)
 {
 	pPlayer.SetStopping(false);
 	pPlayer.SetAttacking(false);
 }
 
-void CPlayerHandWhiff::Update(CPlayer& pPlayer)
+void CPlayerHandWhiffState::Update(CPlayer& pPlayer)
 {
 	pPlayer.SetMoveState(std::make_unique<CPlayerMoveIdleState>());
 	pPlayer.SetTurnState(std::make_unique<CPlayerTurnIdleState>());
@@ -105,7 +105,7 @@ void CPlayerHandWhiff::Update(CPlayer& pPlayer)
 	//現在の経過時間と開始時間の差が終了時間を上回ったら.
 	if (totalTime - m_StartTime > m_EndTime)
 	{
-		pPlayer.SetActionState(std::make_unique<CPlayerActionIdle>());
+		pPlayer.SetActionState(std::make_unique<CPlayerActionIdleState>());
 		return;
 	}
 

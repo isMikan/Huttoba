@@ -1,12 +1,12 @@
-#include "CPlayerHandHit.h"
+#include "CPlayerHandHitState.h"
 
 #include "GameObject/MeshObject/StaticMesh/CCharacter/CPlayer/CPlayer.h"
 
-#include "GameObject/MeshObject/StaticMesh/CCharacter/CPlayer/PlayerState/ActionState/PlayerActionIdle/CPlayerActionIdle.h"
+#include "GameObject/MeshObject/StaticMesh/CCharacter/CPlayer/PlayerState/PlayerActionState/PlayerActionIdleState/CPlayerActionIdleState.h"
 
 #include "TimeManager/CTimeManager.h"
 
-CPlayerHandHit::CPlayerHandHit()
+CPlayerHandHitState::CPlayerHandHitState()
 	: m_StartTime			()
 	, m_EndTime				( 0.3f )
 
@@ -23,11 +23,11 @@ CPlayerHandHit::CPlayerHandHit()
 {
 }
 
-CPlayerHandHit::~CPlayerHandHit()
+CPlayerHandHitState::~CPlayerHandHitState()
 {
 }
 
-void CPlayerHandHit::Enter(CPlayer& pPlayer)
+void CPlayerHandHitState::Enter(CPlayer& pPlayer)
 {
 	//ŒX‚«Šp“x‚Ì‰Šú‰».
 	m_CurrentTiltAngle = 0.f;
@@ -43,11 +43,11 @@ void CPlayerHandHit::Enter(CPlayer& pPlayer)
 	m_LeftHandStartPos = pPlayer.GetPlayerLeftHand().GetPosition();
 }
 
-void CPlayerHandHit::Exit(CPlayer& pPlayer)
+void CPlayerHandHitState::Exit(CPlayer& pPlayer)
 {
 }
 
-void CPlayerHandHit::Update(CPlayer& pPlayer)
+void CPlayerHandHitState::Update(CPlayer& pPlayer)
 {
 	//ƒQ[ƒ€‘S‘Ì‚ÌŒo‰ßŽžŠÔ.
 	float totalTime = CTimeManager::GetInstance()->GetTotalTime();
@@ -78,7 +78,7 @@ void CPlayerHandHit::Update(CPlayer& pPlayer)
 		|| (pPlayer.GetQuaternion().x == 0.f
 		&& pPlayer.GetQuaternion().z == 0.f))
 	{
-		pPlayer.SetActionState(std::make_unique<CPlayerActionIdle>());
+		pPlayer.SetActionState(std::make_unique<CPlayerActionIdleState>());
 		return;
 	}
 	

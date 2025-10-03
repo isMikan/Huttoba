@@ -1,12 +1,12 @@
-#include "CPlayerPickupItem.h"
+#include "CPlayerPickupState.h"
 
 #include "GameObject/MeshObject/StaticMesh/CCharacter/CPlayer/CPlayer.h"
 
-#include "GameObject/MeshObject/StaticMesh/CCharacter/CPlayer/PlayerState/ActionState/PlayerActionIdle/CPlayerActionIdle.h"
+#include "GameObject/MeshObject/StaticMesh/CCharacter/CPlayer/PlayerState/PlayerActionState/PlayerActionIdleState/CPlayerActionIdleState.h"
 
 #include "TimeManager/CTimeManager.h"
 
-CPlayerPickupItem::CPlayerPickupItem()
+CPlayerPickupState::CPlayerPickupState()
 	: m_CenterHandOffset	( 0.2f )
 	
 	, m_StartTime			()
@@ -25,11 +25,11 @@ CPlayerPickupItem::CPlayerPickupItem()
 {
 }
 
-CPlayerPickupItem::~CPlayerPickupItem()
+CPlayerPickupState::~CPlayerPickupState()
 {
 }
 
-void CPlayerPickupItem::Enter(CPlayer& pPlayer)
+void CPlayerPickupState::Enter(CPlayer& pPlayer)
 {
 	//SEを鳴らす.
 	AssetManager::Sound()->PlaySE(enSoundList::SE_Pickup);
@@ -60,12 +60,12 @@ void CPlayerPickupItem::Enter(CPlayer& pPlayer)
 	m_LeftHandEndPos = m_LeftHandStartPos + m_LeftHandEndPos;
 }
 
-void CPlayerPickupItem::Exit(CPlayer& pPlayer)
+void CPlayerPickupState::Exit(CPlayer& pPlayer)
 {
 	pPlayer.SetQuaternion(m_StartQuat);
 }
 
-void CPlayerPickupItem::Update(CPlayer& pPlayer)
+void CPlayerPickupState::Update(CPlayer& pPlayer)
 {
 	//ゲーム全体の経過時間.
 	float totalTime = CTimeManager::GetInstance()->GetTotalTime();
@@ -73,7 +73,7 @@ void CPlayerPickupItem::Update(CPlayer& pPlayer)
 	//現在の経過時間と開始時間の差が終了時間を上回ったら.
 	if (totalTime - m_StartTime > m_EndTime)
 	{
-		pPlayer.SetActionState(std::make_unique<CPlayerActionIdle>());
+		pPlayer.SetActionState(std::make_unique<CPlayerActionIdleState>());
 		return;
 	}
 

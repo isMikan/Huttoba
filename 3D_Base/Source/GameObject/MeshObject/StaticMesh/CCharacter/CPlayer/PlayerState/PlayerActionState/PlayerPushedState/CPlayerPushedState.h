@@ -3,14 +3,14 @@
 #include "GameObject/MeshObject/StaticMesh/CCharacter/CPlayer/PlayerState/CPlayerState.h"
 
 /**************************************************
-*	プレイヤーがアイテムを投げ捨てるの状態クラス.
+*	プレイヤーが押される状態クラス.
 **/
-class CPlayerThrowItem
+class CPlayerPushedState
 	: public CPlayerState	//プレイヤー状態継承クラス.
 {
 public:
-	CPlayerThrowItem();
-	~CPlayerThrowItem() override;
+	CPlayerPushedState();
+	~CPlayerPushedState() override;
 
 	//状態が始めるときだけ呼び出される.
 	void Enter(CPlayer& pPlayer) override;
@@ -26,11 +26,12 @@ private:
 	float			m_CurrentTiltAngle;		//現在の傾き角度.
 	float			m_TiltAngleMax;			//最大の傾き角度.
 	float			m_PhaseSplit;			//傾きの変わり目.
-	
+
 	D3DXVECTOR3		m_RightHandStartPos;	//右手の元の位置.
 	D3DXVECTOR3		m_LeftHandStartPos;		//左手の元の位置.
 	D3DXVECTOR3		m_RightHandEndPos;		//右手の元の位置.
 	D3DXVECTOR3		m_LeftHandEndPos;		//左手の元の位置.
 
 	D3DXQUATERNION	m_StartQuat;			//開始時の回転.
+
 };

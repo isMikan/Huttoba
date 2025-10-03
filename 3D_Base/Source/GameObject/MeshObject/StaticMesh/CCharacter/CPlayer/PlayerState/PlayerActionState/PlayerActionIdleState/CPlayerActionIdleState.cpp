@@ -1,28 +1,28 @@
-#include "CPlayerActionIdle.h"
+#include "CPlayerActionIdleState.h"
 
 #include "GameObject/MeshObject/StaticMesh/CCharacter/CPlayer/CPlayer.h"
 
-#include "GameObject/MeshObject/StaticMesh/CCharacter/CPlayer/PlayerState/ActionState/PlayerHandAttack/CPlayerHandAttack.h"
+#include "GameObject/MeshObject/StaticMesh/CCharacter/CPlayer/PlayerState/PlayerActionState/PlayerHandAttackState/CPlayerHandAttackState.h"
 
-CPlayerActionIdle::CPlayerActionIdle()
+CPlayerActionIdleState::CPlayerActionIdleState()
 {
 }
 
-CPlayerActionIdle::~CPlayerActionIdle()
+CPlayerActionIdleState::~CPlayerActionIdleState()
 {
 }
 
-void CPlayerActionIdle::Enter(CPlayer& pPlayer)
+void CPlayerActionIdleState::Enter(CPlayer& pPlayer)
 {
 	pPlayer.SetQuaternion(
 		0.f, pPlayer.GetQuaternion().y, 0.f, pPlayer.GetQuaternion().w);
 }
 
-void CPlayerActionIdle::Exit(CPlayer& pPlayer)
+void CPlayerActionIdleState::Exit(CPlayer& pPlayer)
 {
 }
 
-void CPlayerActionIdle::Update(CPlayer& pPlayer)
+void CPlayerActionIdleState::Update(CPlayer& pPlayer)
 {
 	//プレイヤーの位置を取得.
 	D3DXVECTOR3 playerPos = pPlayer.GetPosition();

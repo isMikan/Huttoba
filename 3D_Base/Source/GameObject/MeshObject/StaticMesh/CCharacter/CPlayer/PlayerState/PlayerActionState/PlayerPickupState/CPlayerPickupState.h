@@ -3,14 +3,14 @@
 #include "GameObject/MeshObject/StaticMesh/CCharacter/CPlayer/PlayerState/CPlayerState.h"
 
 /**************************************************
-*	プレイヤーがアイテム未所持の攻撃状態クラス.
+*	プレイヤーがアイテムを拾う状態クラス.
 **/
-class CPlayerHandAttack
+class CPlayerPickupState
 	: public CPlayerState	//プレイヤー状態継承クラス.
 {
 public:
-	CPlayerHandAttack();
-	~CPlayerHandAttack();
+	CPlayerPickupState();
+	~CPlayerPickupState() override;
 
 	//状態が始めるときだけ呼び出される.
 	void Enter(CPlayer& pPlayer) override;
@@ -20,13 +20,14 @@ public:
 	void Update(CPlayer& pPlayer) override;
 
 private:
-	float			m_CenterHandOffset;		//手を中心寄りに調整.
+	float			m_CenterHandOffset;		//手の中心寄りに調整.
 
 	float			m_StartTime;			//開始時間.
 	float			m_EndTime;				//終了時間.
 
 	float			m_CurrentTiltAngle;		//現在の傾き角度.
 	float			m_TiltAngleMax;			//最大の傾き角度.
+	float			m_PhaseSplit;			//傾きの変わり目.
 
 	D3DXVECTOR3		m_RightHandStartPos;	//右手の元の位置.
 	D3DXVECTOR3		m_LeftHandStartPos;		//左手の元の位置.
