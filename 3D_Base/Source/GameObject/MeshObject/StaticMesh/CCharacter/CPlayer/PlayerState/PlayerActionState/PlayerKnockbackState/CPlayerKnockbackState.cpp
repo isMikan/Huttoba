@@ -19,9 +19,8 @@ CPlayerKnockbackState::CPlayerKnockbackState()
 	, m_EndTime				( 1.f )
 
 	, m_Gravity				( 9.8f )
-	, m_RotateSpeed			( 4.f )
+	, m_RotateSpeed			( 4.f )		//2回転.
 	, m_CurrentTiltAngle	()
-	, m_TiltAngleMax		( D3DXToRadian( -30.f ) )
 
 	, m_StartQuat			( 0.f, 0.f, 0.f, 1.f )
 {
@@ -59,22 +58,6 @@ void CPlayerKnockbackState::Enter(CPlayer& pPlayer)
 	pPlayer.SetHitInfo(
 		hitInfo.position, m_Velocity, hitInfo.force,
 		false, hitInfo.animName);
-
-	D3DXQUATERNION playerQuat;
-
-	D3DXVECTOR3 vec = hitInfo.position - playerPos;
-
-	D3DXVec3Normalize(&vec, &vec);
-
-	float angle = atan2f(vec.z, vec.x);
-	D3DXVECTOR3 up(0.f, 1.f, 0.f);
-	D3DXQUATERNION quat;
-	D3DXQuaternionRotationAxis(&quat, &up, angle);
-	D3DXQuaternionNormalize(&quat, &quat);
-	D3DXQuaternionMultiply(&playerQuat, &playerQuat, &quat);
-
-	//クォータニオンの回転を設定.
-	pPlayer.SetQuaternion(playerQuat);
 }
 
 void CPlayerKnockbackState::Exit(CPlayer& pPlayer)
@@ -136,8 +119,8 @@ void CPlayerKnockbackState::Update(CPlayer& pPlayer)
 
 	//全体の時間の現在の割合.
 	float progress = (t - m_StartTime) / m_EndTime;
-
-	m_CurrentTiltAngle = progress * D3DX_PI * m_RotateSpeed;
+	//時間以内に回数分回転するように.
+	m_CurrentTiltAngle = pPlayer.WrapAngle(progress * D3DX_PI * m_RotateSpeed);
 
 	//クォータニオンの回転を計算して設定する.
 	pPlayer.SetQuaternion(

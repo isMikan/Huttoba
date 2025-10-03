@@ -9,9 +9,7 @@
 #include "TimeManager/CTimeManager.h"
 
 CPlayerGetUpState::CPlayerGetUpState()
-	: m_StartRightAxis		()
-
-	, m_StartTime			()
+	: m_StartTime			()
 	, m_EndTime				( 0.5f )
 
 	, m_StartQuat			( 0.f, 0.f, 0.f, 1.f )
@@ -36,11 +34,6 @@ void CPlayerGetUpState::Enter(CPlayer& pPlayer)
 	//クォータニオン型の回転を取得.
 	m_StartQuat = pPlayer.GetQuaternion();
 
-	//プレイヤーのローカル軸を取得.
-	CPlayer::LocalAxes axes = pPlayer.GetLocalAxes();
-	//開始時の右軸を設定.
-	m_StartRightAxis = axes.right;
-	
 	m_DefaultQuat = D3DXQUATERNION(0.f, m_StartQuat.y, 0.f, m_StartQuat.w);
 
 	pPlayer.SetQuaternion(m_StartQuat);

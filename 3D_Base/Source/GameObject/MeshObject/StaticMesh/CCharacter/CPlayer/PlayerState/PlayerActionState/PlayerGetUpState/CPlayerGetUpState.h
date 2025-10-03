@@ -2,6 +2,9 @@
 
 #include "GameObject/MeshObject/StaticMesh/CCharacter/CPlayer/PlayerState/CPlayerState.h"
 
+/**************************************************
+*	プレイヤーの起き上がる状態クラス.
+**/
 class CPlayerGetUpState
 	: public CPlayerState
 {
@@ -17,8 +20,6 @@ public:
 	void Update(CPlayer& pPlayer) override;
 
 private:
-	D3DXVECTOR3		m_StartRightAxis;	//開始時の右軸.
-
 	float			m_StartTime;		//開始時間.
 	float			m_EndTime;			//終了時間.
 

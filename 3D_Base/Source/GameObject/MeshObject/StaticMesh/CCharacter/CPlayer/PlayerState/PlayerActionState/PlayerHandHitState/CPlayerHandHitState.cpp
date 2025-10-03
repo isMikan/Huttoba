@@ -84,9 +84,10 @@ void CPlayerHandHitState::Update(CPlayer& pPlayer)
 	
 	//全体の時間の現在の割合.
 	float progress = (totalTime - m_StartTime) / m_EndTime;
+	progress = pPlayer.Clamp(progress, 0.f, 1.f);
 
 	//現在の傾き = 最大傾き角度 * 割合.
-	m_CurrentTiltAngle = m_TiltAngleMax * progress;
+	m_CurrentTiltAngle = pPlayer.WrapAngle(m_TiltAngleMax * progress);
 
 	//クォータニオンの回転を計算して設定する.
 	pPlayer.SetQuaternion(pPlayer.TiltedQuat(m_StartQuat, -axes.right, m_CurrentTiltAngle));

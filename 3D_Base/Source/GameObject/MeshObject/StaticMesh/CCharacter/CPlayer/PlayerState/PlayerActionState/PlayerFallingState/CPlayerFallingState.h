@@ -2,6 +2,9 @@
 
 #include "GameObject/MeshObject/StaticMesh/CCharacter/CPlayer/PlayerState/CPlayerState.h"
 
+/**************************************************
+*	プレイヤーの落ちる状態クラス.
+**/
 class CPlayerFallingState
 	: public CPlayerState
 {
@@ -31,7 +34,6 @@ private:
 	float			m_Gravity;				//重力.
 	float			m_RotateSpeed;			//回転する速度.
 	float			m_CurrentTiltAngle;		//現在の傾き角度.
-	float			m_TiltAngleMax;			//最大の傾き角度.
 
 	D3DXQUATERNION	m_StartQuat;			//開始時の回転.
 

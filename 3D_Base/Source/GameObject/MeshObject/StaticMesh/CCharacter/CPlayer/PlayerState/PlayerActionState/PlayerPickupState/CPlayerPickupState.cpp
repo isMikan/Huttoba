@@ -79,6 +79,7 @@ void CPlayerPickupState::Update(CPlayer& pPlayer)
 
 	//‘S‘Ì‚ÌŠÔ‚ÌŒ»İ‚ÌŠ„‡.
 	float progress = (totalTime - m_StartTime) / m_EndTime;
+	progress = pPlayer.Clamp(progress, 0.f, 1.f);
 
 	//ŠÔ‚ÌŠ„‡‚ª”¼•ª‚æ‚è‘O‚È‚ç(“|‚ê‚é“®‚«).
 	if (progress < m_PhaseSplit)
@@ -86,7 +87,7 @@ void CPlayerPickupState::Update(CPlayer& pPlayer)
 		//“|‚ê‚«‚é‚Ü‚Å‚ÌŒ»İ‚ÌŒX‚«Š„‡.
 		float ratio = progress / m_PhaseSplit;
 		//Œ»İ‚ÌŒX‚« = Å‘åŒX‚«Šp“x * Š„‡.
-		m_CurrentTiltAngle = m_TiltAngleMax * ratio;
+		m_CurrentTiltAngle = pPlayer.WrapAngle(m_TiltAngleMax * ratio);
 	}
 	//ŠÔ‚ÌŠ„‡‚ª”¼•ªˆÈã(–ß‚é“®‚«).
 	else if (progress <= 1.0f)
@@ -94,7 +95,7 @@ void CPlayerPickupState::Update(CPlayer& pPlayer)
 		//ŒX‚«‚Ì•Ï‚í‚è–Ú(m_PhaseSplit)‚©‚ç‚Ç‚ê‚¾‚¯Œo‰ß‚µ‚½‚©‚ğŠ„‚Á‚ÄŠ„‡.
 		float ratio = (progress - m_PhaseSplit) / m_PhaseSplit;
 		//Œ»İ‚ÌŒX‚« = Å‘åŒX‚«Šp“x * (1 - Š„‡).
-		m_CurrentTiltAngle = m_TiltAngleMax * (1.f - ratio);
+		m_CurrentTiltAngle = pPlayer.WrapAngle(m_TiltAngleMax * (1.f - ratio));
 	}
 	else
 	{

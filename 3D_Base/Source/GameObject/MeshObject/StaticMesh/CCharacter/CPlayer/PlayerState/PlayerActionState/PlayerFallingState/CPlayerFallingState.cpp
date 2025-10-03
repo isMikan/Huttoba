@@ -16,16 +16,15 @@ CPlayerFallingState::CPlayerFallingState()
 	, m_Velocity			()
 
 	, m_StartTime			()
-	, m_EndTime				( 10.f )
+	, m_EndTime				( 10.f )	//吹き飛ばし量によって着地時間が変わるので多めに.
 
 	, m_GroundRange			( 1.5f )	//この位置を下回るまで回転. 
 	, m_RotateRange			( 15.f )	//この角度の範囲内で止まる.
 	, m_ForceMax			( 14.f )	//想定.
 
 	, m_Gravity				( 9.8f )
-	, m_RotateSpeed			( 40.f )
+	, m_RotateSpeed			( 40.f )	//20回転.
 	, m_CurrentTiltAngle	()
-	, m_TiltAngleMax		( D3DXToRadian( -30.f ) )
 
 	, m_StartQuat			( 0.f, 0.f, 0.f, 1.f )
 {
@@ -102,6 +101,7 @@ void CPlayerFallingState::Update(CPlayer& pPlayer)
 	{
 		//全体の時間の現在の割合.
 		float progress = (t - m_StartTime) / m_EndTime;
+		//時間以内に回数分回転するように.
 		m_CurrentTiltAngle = pPlayer.WrapAngle(progress * D3DX_PI * m_RotateSpeed);
 
 		//クォータニオンの回転を計算して設定.
