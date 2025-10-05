@@ -68,10 +68,10 @@ void CPlayerPushedState::Update(CPlayer& pPlayer)
 	pPlayer.SetTurnState(std::make_unique<CPlayerTurnIdleState>());
 
 	//ゲーム全体の経過時間.
-	float totalTime = CTimeManager::GetInstance()->GetTotalTime();
+	float t = CTimeManager::GetInstance()->GetTotalTime();
 
 	//現在の経過時間と開始時間の差が終了時間を上回ったら.
-	if (totalTime - m_StartTime > m_EndTime)
+	if (t - m_StartTime > m_EndTime)
 	{
 		pPlayer.SetActionState(std::make_unique<CPlayerActionIdleState>());
 		return;
@@ -83,7 +83,7 @@ void CPlayerPushedState::Update(CPlayer& pPlayer)
 	CPlayer::LocalAxes axes = pPlayer.GetLocalAxes();
 	
 	//全体の時間の現在の割合.
-	float progress = (totalTime - m_StartTime) / m_EndTime;
+	float progress = (t - m_StartTime) / m_EndTime;
 	progress = pPlayer.Clamp(progress, 0.f, 1.f);
 
 	//時間の割合が半分より前なら(倒れる動き).

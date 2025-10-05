@@ -33,7 +33,7 @@ void CPlayerGetUpState::Enter(CPlayer& pPlayer)
 
 	//クォータニオン型の回転を取得.
 	m_StartQuat = pPlayer.GetQuaternion();
-
+	//最終に戻る位置を設定.
 	m_DefaultQuat = D3DXQUATERNION(0.f, m_StartQuat.y, 0.f, m_StartQuat.w);
 
 	pPlayer.SetQuaternion(m_StartQuat);

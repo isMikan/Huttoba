@@ -33,7 +33,7 @@ CPlayer::CPlayer(int index)
 {
 	SetCharacterDefault(index);
 
-	SetPlayerInputBinding();
+	SetPlayerInputBinding(index);
 }
 
 CPlayer::~CPlayer()
@@ -357,15 +357,18 @@ void CPlayer::SetCharacterDefault(int index)
 }
 
 //----- キーバインドを設定する関数 -----.
-void CPlayer::SetPlayerInputBinding()
+void CPlayer::SetPlayerInputBinding(int index)
 {
-	//キーボード操作.
-	m_pInput->BindKey(Action::MoveUp,		InputBinding(InputDevice::Keyboard, VK_UP));		//上移動.
-	m_pInput->BindKey(Action::MoveDown,		InputBinding(InputDevice::Keyboard, VK_DOWN));		//下移動.
-	m_pInput->BindKey(Action::MoveLeft,		InputBinding(InputDevice::Keyboard, VK_LEFT));		//左移動.
-	m_pInput->BindKey(Action::MoveRight,	InputBinding(InputDevice::Keyboard, VK_RIGHT));		//右移動.
-	m_pInput->BindKey(Action::Attack,		InputBinding(InputDevice::Keyboard, 'Z'));			//攻撃.
-	m_pInput->BindKey(Action::ToggleItem,	InputBinding(InputDevice::Keyboard, 'X'));			//拾う/捨てる.
+	if (index == 0)
+	{
+		//キーボード操作.
+		m_pInput->BindKey(Action::MoveUp, InputBinding(InputDevice::Keyboard, VK_UP));		//上移動.
+		m_pInput->BindKey(Action::MoveDown, InputBinding(InputDevice::Keyboard, VK_DOWN));		//下移動.
+		m_pInput->BindKey(Action::MoveLeft, InputBinding(InputDevice::Keyboard, VK_LEFT));		//左移動.
+		m_pInput->BindKey(Action::MoveRight, InputBinding(InputDevice::Keyboard, VK_RIGHT));		//右移動.
+		m_pInput->BindKey(Action::Attack, InputBinding(InputDevice::Keyboard, 'Z'));			//攻撃.
+		m_pInput->BindKey(Action::ToggleItem, InputBinding(InputDevice::Keyboard, 'X'));			//拾う/捨てる.
+	}
 
 	//コントローラ操作.
 	m_pInput->BindKey(Action::Attack,		InputBinding(InputDevice::GamePad, CXInput::B));	//攻撃.

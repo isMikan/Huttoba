@@ -10,8 +10,6 @@ CPlayerHandHitState::CPlayerHandHitState()
 	: m_StartTime			()
 	, m_EndTime				( 0.3f )
 
-	, m_CurrentTiltAngle	()
-	, m_TiltAngleMax		( D3DXToRadian( 30.f ) )
 	, m_PhaseSplit			( 0.5f )
 
 	, m_RightHandStartPos	( 0.f, 0.f, 0.f )
@@ -20,6 +18,7 @@ CPlayerHandHitState::CPlayerHandHitState()
 	, m_LeftHandEndPos		( 0.f, 0.f, 0.f )
 
 	, m_StartQuat			( 0.f, 0.f, 0.f, 1.f )
+	, m_DefaultQuat			( 0.f, 0.f, 0.f, 1.f )
 {
 }
 
@@ -29,14 +28,13 @@ CPlayerHandHitState::~CPlayerHandHitState()
 
 void CPlayerHandHitState::Enter(CPlayer& pPlayer)
 {
-	//傾き角度の初期化.
-	m_CurrentTiltAngle = 0.f;
-
 	//クォータニオン型の回転を取得.
     m_StartQuat = pPlayer.GetQuaternion();
 
 	//攻撃の開始時間を取得.
 	m_StartTime = CTimeManager::GetInstance()->GetTotalTime();
+	//最終に戻る位置を設定.
+	m_DefaultQuat = D3DXQUATERNION(0.f, m_StartQuat.y, 0.f, m_StartQuat.w);
 
 	//手の開始位置を設定.
 	m_RightHandStartPos = pPlayer.GetPlayerRightHand().GetPosition();
@@ -45,12 +43,31 @@ void CPlayerHandHitState::Enter(CPlayer& pPlayer)
 
 void CPlayerHandHitState::Exit(CPlayer& pPlayer)
 {
+	pPlayer.SetQuaternion(0.f, m_StartQuat.y, 0.f, m_StartQuat.w);
 }
 
 void CPlayerHandHitState::Update(CPlayer& pPlayer)
 {
 	//ゲーム全体の経過時間.
-	float totalTime = CTimeManager::GetInstance()->GetTotalTime();
+	float t = CTimeManager::GetInstance()->GetTotalTime();
+
+	//現在の経過時間と開始時間の差が終了時間を上回ったら.
+	if (t - m_StartTime > m_EndTime
+		|| (pPlayer.GetQuaternion().x == 0.f
+		&& pPlayer.GetQuaternion().z == 0.f))
+	{
+		pPlayer.SetActionState(std::make_unique<CPlayerActionIdleState>());
+		return;
+	}
+	
+	//全体の時間の現在の割合.
+	float progress = (t - m_StartTime) / m_EndTime;
+	progress = pPlayer.Clamp(progress, 0.f, 1.f);
+
+	//滑らかに正常の位置に戻す.
+	D3DXQUATERNION quat;
+	D3DXQuaternionSlerp(&quat, &m_StartQuat, &m_DefaultQuat, progress);
+	pPlayer.SetQuaternion(quat);
 
 	//プレイヤーの位置を取得.
 	D3DXVECTOR3 playerPos = pPlayer.GetPosition();
@@ -65,32 +82,13 @@ void CPlayerHandHitState::Update(CPlayer& pPlayer)
 		axes.right * rightHandOffset.x +
 		axes.up * rightHandOffset.y +
 		axes.forward * rightHandOffset.z;
-	leftHandOffset = 
+	leftHandOffset =
 		axes.right * leftHandOffset.x +
 		axes.up * leftHandOffset.y +
 		axes.forward * leftHandOffset.z;
 	//手の終了位置を設定.
 	m_RightHandEndPos = playerPos + rightHandOffset;
 	m_LeftHandEndPos = playerPos + leftHandOffset;
-
-	//現在の経過時間と開始時間の差が終了時間を上回ったら.
-	if (totalTime - m_StartTime > m_EndTime
-		|| (pPlayer.GetQuaternion().x == 0.f
-		&& pPlayer.GetQuaternion().z == 0.f))
-	{
-		pPlayer.SetActionState(std::make_unique<CPlayerActionIdleState>());
-		return;
-	}
-	
-	//全体の時間の現在の割合.
-	float progress = (totalTime - m_StartTime) / m_EndTime;
-	progress = pPlayer.Clamp(progress, 0.f, 1.f);
-
-	//現在の傾き = 最大傾き角度 * 割合.
-	m_CurrentTiltAngle = pPlayer.WrapAngle(m_TiltAngleMax * progress);
-
-	//クォータニオンの回転を計算して設定する.
-	pPlayer.SetQuaternion(pPlayer.TiltedQuat(m_StartQuat, -axes.right, m_CurrentTiltAngle));
 
 	float eased = sinf(progress * D3DX_PI * m_PhaseSplit);	//半円分の移動を計算.	
 

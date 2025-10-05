@@ -172,7 +172,7 @@ public:
 
 private:
 	//----- キーバインドを設定する関数 -----.
-	void SetPlayerInputBinding();
+	void SetPlayerInputBinding(int index);
 	//----- 状態を変更を処理する関数 -----.
 	void ChangeState(
 		std::unique_ptr<CPlayerState>& currentState,
