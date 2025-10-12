@@ -6,8 +6,6 @@
 #include "GameObject/MeshObject/StaticMesh/CCharacter/CPlayer/PlayerState/PlayerTurnState/PlayerTurnIdleState/CPlayerTurnIdleState.h"
 #include "GameObject/MeshObject/StaticMesh/CCharacter/CPlayer/PlayerState/PlayerActionState/PlayerActionIdleState/CPlayerActionIdleState.h"
 
-#include "TimeManager/CTimeManager.h"
-
 CPlayerGetUpState::CPlayerGetUpState()
 	: m_StartTime			()
 	, m_EndTime				( 0.5f )
@@ -29,7 +27,7 @@ CPlayerGetUpState::~CPlayerGetUpState()
 void CPlayerGetUpState::Enter(CPlayer& pPlayer)
 {
 	//攻撃の開始時間を取得.
-	m_StartTime = CTimeManager::GetInstance()->GetTotalTime();
+	m_StartTime = CTimeManager::GetTotalTime();
 
 	//クォータニオン型の回転を取得.
 	m_StartQuat = pPlayer.GetQuaternion();
@@ -56,7 +54,7 @@ void CPlayerGetUpState::Update(CPlayer& pPlayer)
 	pPlayer.SetMoveState(std::make_unique<CPlayerMoveIdleState>());
 	pPlayer.SetTurnState(std::make_unique<CPlayerTurnIdleState>());
 
-	float t = CTimeManager::GetInstance()->GetTotalTime();
+	float t = CTimeManager::GetTotalTime();
 
 	//現在の経過時間と開始時間の差が終了時間を上回ったら.
 	if (t - m_StartTime > m_EndTime)

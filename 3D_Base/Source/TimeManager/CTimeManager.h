@@ -1,49 +1,54 @@
 #pragma once
 
-#include <Windows.h>
+#include <chrono>
 
-/************************************************************
-*	実際の経過時間のクラス.
-**/
 class CTimeManager
 {
 public:
-	//シングルトン.
-	static CTimeManager* GetInstance()
-	{
-		static CTimeManager s_Instance;
-		return &s_Instance;
-	}
-
+	CTimeManager();
 	~CTimeManager();
 
-	//毎フレーム呼び出す処理.
-	void Tick();
-
-	//時間をリセット.
-	void Reset() {
-		QueryPerformanceCounter(&m_PreviousTime);
-		QueryPerformanceCounter(&m_StartTime);
-		m_CurrentTime = m_PreviousTime;
-		m_DeltaTime = 0.f;
+	//唯一のインスタンスを作成.
+	static CTimeManager& Instance()
+	{
+		static CTimeManager* s_Instance = new CTimeManager;
+		return *s_Instance;
 	}
 
-	//前のフレームからの経過時間を取得.
-	float GetDeltaTime() const { return m_DeltaTime; }
+	//リセット関数を外部へ.
+	static void Reset() { Instance().Reset_Internal(); }
+	//一時停止関数を外部へ.
+	static void Pause() { Instance().Pause_Internal(); }
+	//再開関数を外部へ.
+	static void Resume() { Instance().Resume_Internal(); }
+	//更新関数を外部へ.
+	static void Update() { Instance().Update_Internal(); }
 
-	//ゲーム開始からの総計時間を取得.
-	float GetTotalTime() const {
-		return static_cast<float>(m_CurrentTime.QuadPart - m_StartTime.QuadPart) / static_cast<float>(m_Frequency.QuadPart);
-	}
+	//デルタタイムを取得.
+	static double GetDeltaTime() { return Instance().m_DeltaTime; }
+	//経過時間を取得.
+	static double GetTotalTime() { return Instance().m_TotalTime; }
 
 private:
-	CTimeManager();
+	//--- リセット関数 ---.
+	void Reset_Internal();
+	//--- 一時停止関数 ---.
+	void Pause_Internal();
+	//--- 再開関数 ---.
+	void Resume_Internal();
+	//--- 更新関数 ---.
+	void Update_Internal();
 
 private:
-	LARGE_INTEGER	m_Frequency;	//周波数(カウントの速さ).
-	LARGE_INTEGER	m_PreviousTime;	//前の時間.
-	LARGE_INTEGER	m_CurrentTime;	//現在の時間
-	LARGE_INTEGER	m_StartTime;	//ゲーム開始の時間
+	//長いので using で短くする.
+	using Clock = std::chrono::high_resolution_clock;	//高精度タイマー.
+	using TimePoint = std::chrono::time_point<Clock>;	//ある時点.
 
-	float			m_DeltaTime;	//経過時間.
+	TimePoint	m_StartTime;	//開始時間.
+	TimePoint	m_PreviousTime;	//以前の時間.
+
+	double		m_DeltaTime;	//1フレームの間どれだけ経ったか.
+	double		m_TotalTime;	//経過時間.
+
+	bool		m_IsPaused;		//一時停止しているか.
 };

@@ -8,8 +8,6 @@
 
 #include "GameObject/MeshObject/StaticMesh/CCharacter/CPlayer/PlayerState/PlayerActionState/PlayerFallingState/CPlayerFallingState.h"
 
-#include "TimeManager/CTimeManager.h"
-
 CPlayerKnockbackState::CPlayerKnockbackState()
 	: m_UpHandOffset		( 0.f, 0.5f, 0.f )
 	, m_StartRightAxis		()
@@ -33,7 +31,7 @@ CPlayerKnockbackState::~CPlayerKnockbackState()
 void CPlayerKnockbackState::Enter(CPlayer& pPlayer)
 {
 	//攻撃の開始時間を取得.
-	m_StartTime = CTimeManager::GetInstance()->GetTotalTime();
+	m_StartTime = CTimeManager::GetTotalTime();
 
 	//プレイヤーの位置を取得.
 	D3DXVECTOR3 playerPos = pPlayer.GetPosition();
@@ -69,7 +67,7 @@ void CPlayerKnockbackState::Update(CPlayer& pPlayer)
 	pPlayer.SetMoveState(std::make_unique<CPlayerMoveIdleState>());
 	pPlayer.SetTurnState(std::make_unique<CPlayerTurnIdleState>());
 
-	float t = CTimeManager::GetInstance()->GetTotalTime();
+	float t = CTimeManager::GetTotalTime();
 
 	//プレイヤーの位置を取得.
 	D3DXVECTOR3 playerPos = pPlayer.GetPosition();
@@ -108,7 +106,7 @@ void CPlayerKnockbackState::Update(CPlayer& pPlayer)
 	pPlayer.GetPlayerRightHand().SetPosition(rightHandPos);
 	pPlayer.GetPlayerLeftHand().SetPosition(leftHandPos);
 
-	float dt = CTimeManager::GetInstance()->GetDeltaTime();
+	float dt = CTimeManager::GetDeltaTime();
 
 	//攻撃された情報の取得.
 	m_Velocity.y += -m_Gravity * dt;

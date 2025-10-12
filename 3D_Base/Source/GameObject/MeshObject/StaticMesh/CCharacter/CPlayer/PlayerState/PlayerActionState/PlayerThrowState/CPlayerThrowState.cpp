@@ -4,8 +4,6 @@
 
 #include "GameObject/MeshObject/StaticMesh/CCharacter/CPlayer/PlayerState/PlayerActionState/PlayerActionIdleState/CPlayerActionIdleState.h"
 
-#include "TimeManager/CTimeManager.h"
-
 CPlayerThrowState::CPlayerThrowState()
 	: m_StartTime			()
 	, m_EndTime				( 0.4f )
@@ -41,7 +39,7 @@ void CPlayerThrowState::Enter(CPlayer& pPlayer)
 	m_StartQuat = pPlayer.GetQuaternion();
 
 	//攻撃の開始時間を取得.
-	m_StartTime = CTimeManager::GetInstance()->GetTotalTime();
+	m_StartTime = CTimeManager::GetTotalTime();
 
 	//手の位置を調整するための数値を取得.
 	D3DXVECTOR3 rightHandOffset = pPlayer.GetPlayerRightHand().GetOffsetPos();
@@ -63,7 +61,7 @@ void CPlayerThrowState::Exit(CPlayer& pPlayer)
 void CPlayerThrowState::Update(CPlayer& pPlayer)
 {
 	//ゲーム全体の経過時間.
-	float t = CTimeManager::GetInstance()->GetTotalTime();
+	float t = CTimeManager::GetTotalTime();
 
 	//現在の経過時間と開始時間の差が終了時間を上回ったら.
 	if (t - m_StartTime > m_EndTime)
@@ -73,7 +71,7 @@ void CPlayerThrowState::Update(CPlayer& pPlayer)
 	}
 
 	//前回のフレームからの経過時間.
-	float deltaTime = CTimeManager::GetInstance()->GetDeltaTime();
+	float deltaTime = CTimeManager::GetDeltaTime();
 
 	//ローカル軸を取得.
 	CPlayer::LocalAxes axes = pPlayer.GetLocalAxes();

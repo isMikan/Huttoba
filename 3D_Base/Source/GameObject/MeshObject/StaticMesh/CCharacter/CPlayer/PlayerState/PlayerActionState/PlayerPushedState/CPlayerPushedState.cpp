@@ -6,8 +6,6 @@
 #include "GameObject/MeshObject/StaticMesh/CCharacter/CPlayer/PlayerState/PlayerTurnState/PlayerTurnIdleState/CPlayerTurnIdleState.h"
 #include "GameObject/MeshObject/StaticMesh/CCharacter/CPlayer/PlayerState/PlayerActionState/PlayerActionIdleState/CPlayerActionIdleState.h"
 
-#include "TimeManager/CTimeManager.h"
-
 CPlayerPushedState::CPlayerPushedState()
 	: m_StartTime			()
 	, m_EndTime				( 0.5f )
@@ -43,7 +41,7 @@ void CPlayerPushedState::Enter(CPlayer& pPlayer)
 	m_StartQuat = pPlayer.GetQuaternion();
 
 	//攻撃の開始時間を取得.
-	m_StartTime = CTimeManager::GetInstance()->GetTotalTime();
+	m_StartTime = CTimeManager::GetTotalTime();
 
 	//手の開始位置の設定.
 	m_RightHandStartPos = pPlayer.GetPlayerRightHand().GetOffsetPos();
@@ -68,7 +66,7 @@ void CPlayerPushedState::Update(CPlayer& pPlayer)
 	pPlayer.SetTurnState(std::make_unique<CPlayerTurnIdleState>());
 
 	//ゲーム全体の経過時間.
-	float t = CTimeManager::GetInstance()->GetTotalTime();
+	float t = CTimeManager::GetTotalTime();
 
 	//現在の経過時間と開始時間の差が終了時間を上回ったら.
 	if (t - m_StartTime > m_EndTime)

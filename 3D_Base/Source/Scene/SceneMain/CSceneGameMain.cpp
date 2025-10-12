@@ -3,8 +3,6 @@
 #include "Assets/Sound/CSoundManager.h"
 #include "Item/ItemManager/ItemManager.h"
 
-#include "TimeManager/CTimeManager.h"
-
 CSceneGameMain::CSceneGameMain( HWND hWnd, CInputManager& inputManager)
 	: m_hWnd			( hWnd )
 
@@ -162,7 +160,7 @@ void CSceneGameMain::Update()
 	//BGM‚Ìƒ‹[ƒvÄ¶
 	AssetManager::Sound()->PlayLoop(enSoundList::BGM_SceneMain);
 
-	CTimeManager::GetInstance()->Tick();
+	CTimeManager::Update();
 
 	//°‚Ì“®ì.
 	for (auto& ground : m_pGrounds)

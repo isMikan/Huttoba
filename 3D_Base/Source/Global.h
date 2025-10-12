@@ -23,6 +23,8 @@
 
 #include "MyMacro.h"
 
+#include "TimeManager/CTimeManager.h"
+
 //ƒ‰ƒCƒuƒ‰ƒŠ“Ç‚İ‚İ.
 #pragma comment( lib, "winmm.lib" )
 //DirectX9

@@ -6,8 +6,6 @@
 #include "GameObject/MeshObject/StaticMesh/CCharacter/CPlayer/PlayerState/PlayerActionState/PlayerHandWhiffState/CPlayerHandWhiffState.h"
 #include "GameObject/MeshObject/StaticMesh/CCharacter/CPlayer/PlayerState/PlayerActionState/PlayerHandHitState/CPlayerHandHitState.h"
 
-#include "TimeManager/CTimeManager.h"
-
 CPlayerHandAttackState::CPlayerHandAttackState()
 	: m_CenterHandOffset	( 0.2f )
 
@@ -38,7 +36,7 @@ void CPlayerHandAttackState::Enter(CPlayer& pPlayer)
 	pPlayer.SetAttacking(true);
 
 	//攻撃の開始時間を取得.
-	m_StartTime = CTimeManager::GetInstance()->GetTotalTime();
+	m_StartTime = CTimeManager::GetTotalTime();
 
 	//プレイヤーの位置を取得.
 	D3DXVECTOR3 playerPos = pPlayer.GetPosition();
@@ -69,7 +67,7 @@ void CPlayerHandAttackState::Exit(CPlayer& pPlayer)
 void CPlayerHandAttackState::Update(CPlayer& pPlayer)
 {
 	//ゲーム全体の経過時間.
-	float t = CTimeManager::GetInstance()->GetTotalTime();
+	float t = CTimeManager::GetTotalTime();
 
 	bool isHit = pPlayer.GetHitInfo().isHit;
 

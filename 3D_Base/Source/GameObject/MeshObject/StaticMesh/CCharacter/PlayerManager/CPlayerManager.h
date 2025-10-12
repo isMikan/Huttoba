@@ -44,7 +44,7 @@ private:
 	void SetPlayerInputBinding();
 
 private:
-	std::vector<std::unique_ptr<CCharacter>>	m_pPlayers;	//プレイヤー.
+	std::vector<std::unique_ptr<CCharacter>> m_pPlayers;	//プレイヤー.
 
-	int m_PlayerID;	//プレイヤー番号.
+	int		m_PlayerID;		//プレイヤー番号.
 };

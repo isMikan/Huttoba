@@ -12,7 +12,7 @@
 
 CPlayerManager::CPlayerManager(int index)
 	: m_pPlayers	()
-	, m_PlayerID	(index)
+	, m_PlayerID	( index )
 {
 	Create();
 }
@@ -136,8 +136,8 @@ void CPlayerManager::HandleInput()
 		//float z = 0.f;	//z².
 
 		//if (m_pInput->IsRepeat(Action::MoveUp))		z += 1.f;
-		//if (m_pInput->IsRepeat(Action::MoveDown))	z -= 1.f;
-		//if (m_pInput->IsRepeat(Action::MoveLeft))	x -= 1.f;
+		//if (m_pInput->IsRepeat(Action::MoveDown))		z -= 1.f;
+		//if (m_pInput->IsRepeat(Action::MoveLeft))		x -= 1.f;
 		//if (m_pInput->IsRepeat(Action::MoveRight))	x += 1.f;
 
 		//Ú‘±‚³‚ê‚Ä‚¢‚½‚ç”’l‚ğó‚¯æ‚é.

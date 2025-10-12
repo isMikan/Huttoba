@@ -8,8 +8,6 @@
 
 #include "GameObject/MeshObject/StaticMesh/CCharacter/CPlayer/PlayerState/PlayerActionState/PlayerGetUpState/CPlayerGetUpState.h"
 
-#include "TimeManager/CTimeManager.h"
-
 CPlayerFallingState::CPlayerFallingState()
 	: m_UpHandOffset		( 0.f, 0.5f, 0.f )
 	, m_StartRightAxis		()
@@ -37,7 +35,7 @@ CPlayerFallingState::~CPlayerFallingState()
 void CPlayerFallingState::Enter(CPlayer& pPlayer)
 {
 	//攻撃の開始時間を取得.
-	m_StartTime = CTimeManager::GetInstance()->GetTotalTime();
+	m_StartTime = CTimeManager::GetTotalTime();
 
 	//傾き角度の初期化.
 	m_CurrentTiltAngle = 0.f;
@@ -73,7 +71,7 @@ void CPlayerFallingState::Update(CPlayer& pPlayer)
 	pPlayer.SetTurnState(std::make_unique<CPlayerTurnIdleState>());
 
 	//経過時間を取得.
-	float t = CTimeManager::GetInstance()->GetTotalTime();
+	float t = CTimeManager::GetTotalTime();
 
 	//プレイヤーの位置を取得.
 	D3DXVECTOR3 playerPos = pPlayer.GetPosition();
@@ -136,7 +134,7 @@ void CPlayerFallingState::Update(CPlayer& pPlayer)
 	pPlayer.GetPlayerLeftHand().SetPosition(leftHandPos);
 
 	//1フレームの速さを取得.
-	float dt = CTimeManager::GetInstance()->GetDeltaTime();
+	float dt = CTimeManager::GetDeltaTime();
 
 	//攻撃された情報の取得.
 	m_Velocity.y += -m_Gravity * dt;
