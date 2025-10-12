@@ -18,16 +18,15 @@
 #include "GameObject/MeshObject/StaticMesh/CCharacter/CCharacter.h"
 #include "GameObject/MeshObject/StaticMesh/CCharacter/CPlayer/CPlayer.h"
 
-#include "GameObject/MeshObject/StaticMesh/Ground/CGround.h"
+#include "GameObject/MeshObject/StaticMesh/Ground/GroundManager/CGroundManager.h"
+
 #include "GameObject/MeshObject/StaticMesh/DrawCollision/DrawCollision.h"
 
 #include "Assets/Mesh/SkinMesh/CSkinMesh.h"
 #include "Scene/CSceneManager.h"
 #include "CInput/CInputManager.h"
 
-
 class ItemManager;
-
 
 #include<string>
 #include<vector>
@@ -48,7 +47,6 @@ public:
 	void Update() override;
 	void Draw() override;
 
-
 	HRESULT CreateUI();
 	HRESULT CteateExplosion();
 	HRESULT CreateCharactor();
@@ -56,7 +54,6 @@ public:
 	void ManageEffectLaser();
 
 private:
-
 	CDirectX9*	m_pDx9;
 	CDirectX11* m_pDx11;
 
@@ -76,7 +73,7 @@ private:
 	std::vector<std::unique_ptr<CPlayer>>	m_pPlayers;
 
 	//地面クラス
-	std::vector<std::unique_ptr<CGround>> 	m_pGrounds;
+	std::unique_ptr<CGroundManager> 	m_pGroundManager;
 
 	//アイテムクラス
 	std::unique_ptr<ItemManager>	m_pItemManager;

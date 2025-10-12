@@ -12,16 +12,17 @@ public:
 	CPlayerManager(int index);
 	~CPlayerManager();
 
-	//構築関数.
-	HRESULT Create();
-	//データの読み込み関数.
-	HRESULT LoadData();
-	//破棄関数.
+	//--- 構築関数 ---.
+	void Create();
+	//--- 読込関数 ---.
+	void LoadData();
+	//--- 破棄関数 ---.
 	void Destroy();
-	//更新関数.
+	//--- 更新関数 ---.
 	void Update();
-	//描画関数.
-	void Draw(D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAMERA& Camera);
+	//--- 描画関数 ---.
+	void Draw(
+		D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAMERA& Camera);
 
 	//衝突判定関数.
 	void Collision();

@@ -277,6 +277,7 @@
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\CCharacter\CPlayer\PlayerHand\PlayerRightHand\CPlayerRightHand.cpp" />
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\CStaticMeshObject.cpp" />
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\Ground\CGround.cpp" />
+    <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\Ground\GroundManager\CGroundManager.cpp" />
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\Item\ItemBase.cpp" />
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\Item\ItemFactory\ItemFactory.cpp" />
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\Item\ItemManager\ItemManager.cpp" />
@@ -361,6 +362,7 @@
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\CCharacter\CPlayer\PlayerHand\PlayerRightHand\CPlayerRightHand.h" />
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\CStaticMeshObject.h" />
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\Ground\CGround.h" />
+    <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\Ground\GroundManager\CGroundManager.h" />
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\Item\ItemBase.h" />
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\Item\ItemFactory\ItemFactory.h" />
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\Item\ItemManager\ItemManager.h" />

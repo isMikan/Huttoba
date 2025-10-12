@@ -79,6 +79,7 @@
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\CCharacter\CPlayer\PlayerState\PlayerActionState\PlayerFallingState\CPlayerFallingState.cpp" />
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\CCharacter\CPlayer\PlayerState\PlayerActionState\PlayerGetUpState\CPlayerGetUpState.cpp" />
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\CCharacter\CPlayer\PlayerState\PlayerActionState\PlayerKnockbackState\CPlayerKnockbackState.cpp" />
+    <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\Ground\GroundManager\CGroundManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Assets\AssetManager.h" />
@@ -159,6 +160,7 @@
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\CCharacter\CPlayer\PlayerState\PlayerActionState\PlayerGetUpState\CPlayerGetUpState.h" />
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\CCharacter\CPlayer\PlayerState\PlayerActionState\PlayerFallingState\CPlayerFallingState.h" />
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\CCharacter\CPlayer\PlayerState\PlayerActionState\PlayerKnockbackState\CPlayerKnockbackState.h" />
+    <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\Ground\GroundManager\CGroundManager.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="ChangeSourse.txt" />

@@ -22,31 +22,30 @@ CPlayerManager::~CPlayerManager()
 }
 
 //構築関数.
-HRESULT CPlayerManager::Create()
+void CPlayerManager::Create()
 {
 	//プレイヤーのインスタンス生成.
 	m_pPlayers.resize(Player_Max);
 	for (int pNo = 0; pNo < Player_Max; pNo++)
 	{
-		
-
 		if (m_pInput->IsConnect())
 		{
 			m_pPlayers[pNo] = std::make_unique<CPlayer>(pNo);
 		}
 		else
 		{
-			m_pPlayers = std::make_ptr<CPlayerAI>(ipNod);
+			m_pPlayers = std::make_ptr<CPlayerAI>(pNo);
 		}
 
-		if (!m_pPlayers[pNo]) return E_POINTER;
-	}
+		if (!m_pPlayers[pNo]) return ;
 
-	return S_OK;
+		m_pPlayers[pNo]->SetObjectColor(SetCharacterColor(pNo));
+		m_pPlayers[pNo]->SetPosition(SetDefaultPosition(pNo));
+	}
 }
 
 //データの読み込み関数.
-HRESULT CPlayerManager::LoadData()
+void CPlayerManager::LoadData()
 {
 	//プレイヤー.
 	for (auto& player : m_pPlayers)
@@ -64,12 +63,7 @@ HRESULT CPlayerManager::LoadData()
 			AttachMesh(AssetManager::Mesh(StaticMeshList::PHand));
 		//バウンディングスフィアの作成
 		player->CreateBSphereForMesh(AssetManager::Mesh(StaticMeshList::BSphere));
-
-		player->SetObjectColor(SetCharacterColor(m_PlayerID));
-		player->SetPosition(SetDefaultPosition(m_PlayerID));
 	}
-
-	return S_OK;
 }
 
 //破棄関数.
