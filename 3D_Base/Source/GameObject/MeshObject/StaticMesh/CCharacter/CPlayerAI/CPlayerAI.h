@@ -1,7 +1,5 @@
 #pragma once
 
-#include "CInput/CInput.h"
-
 #include "GameObject/MeshObject/StaticMesh/CCharacter/CCharacter.h"
 
 #include "PlayerHead/CPlayerHead.h"
@@ -11,18 +9,9 @@
 #include "PlayerState/CPlayerState.h"
 
 /**************************************************
-*	サイズ後々消す(メタセコイアでアイテム作るとき参考にしてください)
-* 
-*	プレイヤー	頭0.3
-*				体1.0
-*				手0.15
-/**************************************************
-
-
-/**************************************************
 *	プレイヤークラス.
 **/
-class CPlayer
+class CPlayerAI
 	: public CCharacter	//キャラクタークラスを継承.
 {
 public:
@@ -54,8 +43,8 @@ public:
 	};
 
 public:
-	CPlayer(int index);		//引数はコントローラ番号.
-	~CPlayer() override;
+	CPlayerAI(int index);		//引数はコントローラ番号.
+	~CPlayerAI() override;
 
 	//----- 毎フレームの動作する関数 -----.
 	void Update() override;
@@ -70,7 +59,7 @@ public:
 	// for(auto& obs : observers){
 	//		obs->OnNotify(event);
 	//		}
-	//}		 
+	// }		 
 
 	//----- キー操作 -----.
 	void HandleInput();
@@ -102,10 +91,10 @@ public:
 		float			tiltAngle);	//傾きの角度.
 
 	//----- 押された時の移動量を計算する関数 -----.
-	D3DXVECTOR3 Knockback();
+	D3DXVECTOR3 Knockback() const;
 
 	//----- 攻撃を受けた時のの移動量 -----.
-	D3DXVECTOR3 GetVelocity();
+	D3DXVECTOR3 GetVelocity() const;
 
 	//----- 数値の領域を指定する関数 -----.
 	float Clamp(float value, float min, float max);

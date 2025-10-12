@@ -1,32 +1,27 @@
 #pragma once
 
-#include "GameObject/MeshObject/StaticMesh/CCharactor/CCharacter.h"
-
-#include "GameObject/MeshObject/StaticMesh/CCharactor/CPlayer/CPlayer.h"
+#include "GameObject/MeshObject/StaticMesh/CCharacter/CCharacter.h"
 
 #include "CInput/CInputManager.h"
 
 #include <unordered_map>
 
 class CPlayerManager
-	: public CCharacter	//キャラクタークラスを継承.
 {
 public:
 	CPlayerManager(int index);
-	~CPlayerManager() override;
+	~CPlayerManager();
 
 	//構築関数.
 	HRESULT Create();
 	//データの読み込み関数.
 	HRESULT LoadData();
-	//初期化関数.
-	void Init();
 	//破棄関数.
 	void Destroy();
 	//更新関数.
-	void Update() override;
+	void Update();
 	//描画関数.
-	void Draw(D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAMERA& Camera) override;
+	void Draw(D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAMERA& Camera);
 
 	//衝突判定関数.
 	void Collision();
@@ -48,10 +43,8 @@ private:
 	//キーバインドを設定する関数.
 	void SetPlayerInputBinding();
 
-
 private:
-	//プレイヤー.
-	std::vector<std::unique_ptr<CPlayer>>	m_pPlayers;
+	std::vector<std::unique_ptr<CCharacter>>	m_pPlayers;	//プレイヤー.
 
-	int m_PlayerID;
+	int m_PlayerID;	//プレイヤー番号.
 };

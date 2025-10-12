@@ -26,9 +26,19 @@ HRESULT CPlayerManager::Create()
 {
 	//プレイヤーのインスタンス生成.
 	m_pPlayers.resize(Player_Max);
-	for (int pNo = 0;pNo < Player_Max;pNo++)
+	for (int pNo = 0; pNo < Player_Max; pNo++)
 	{
-		m_pPlayers[pNo] = std::make_unique<CPlayer>(pNo);
+		
+
+		if (m_pInput->IsConnect())
+		{
+			m_pPlayers[pNo] = std::make_unique<CPlayer>(pNo);
+		}
+		else
+		{
+			m_pPlayers = std::make_ptr<CPlayerAI>(ipNod);
+		}
+
 		if (!m_pPlayers[pNo]) return E_POINTER;
 	}
 
@@ -39,34 +49,27 @@ HRESULT CPlayerManager::Create()
 HRESULT CPlayerManager::LoadData()
 {
 	//プレイヤー.
-	for (int pNo = 0;pNo < Player_Max;pNo++)
-	{
-		//胴体のスタティックメッシュを設定.
-		m_pPlayers[pNo]->AttachMesh(AssetManager::Mesh(StaticMeshList::PBody));
-		//頭のスタティックメッシュを設定.
-		m_pPlayers[pNo]->GetPlayerHead().
-			AttachMesh(AssetManager::Mesh(StaticMeshList::PHead));
-		//右手のスタティックメッシュを設定.
-		m_pPlayers[pNo]->GetPlayerRightHand().
-			AttachMesh(AssetManager::Mesh(StaticMeshList::PHand));
-		//左手のスタティックメッシュを設定.
-		m_pPlayers[pNo]->GetPlayerLeftHand().
-			AttachMesh(AssetManager::Mesh(StaticMeshList::PHand));
-		//バウンディングスフィアの作成
-		m_pPlayers[pNo]->CreateBSphereForMesh(AssetManager::Mesh(StaticMeshList::BSphere));
-	}
-
-	return S_OK;
-}
-
-//初期化関数.
-void CPlayerManager::Init()
-{
 	for (auto& player : m_pPlayers)
 	{
+		//胴体のスタティックメッシュを設定.
+		player->AttachMesh(AssetManager::Mesh(StaticMeshList::PBody));
+		//頭のスタティックメッシュを設定.
+		player->GetPlayerHead().
+			AttachMesh(AssetManager::Mesh(StaticMeshList::PHead));
+		//右手のスタティックメッシュを設定.
+		player->GetPlayerRightHand().
+			AttachMesh(AssetManager::Mesh(StaticMeshList::PHand));
+		//左手のスタティックメッシュを設定.
+		player->GetPlayerLeftHand().
+			AttachMesh(AssetManager::Mesh(StaticMeshList::PHand));
+		//バウンディングスフィアの作成
+		player->CreateBSphereForMesh(AssetManager::Mesh(StaticMeshList::BSphere));
+
 		player->SetObjectColor(SetCharacterColor(m_PlayerID));
 		player->SetPosition(SetDefaultPosition(m_PlayerID));
 	}
+
+	return S_OK;
 }
 
 //破棄関数.
@@ -204,7 +207,7 @@ void CPlayerManager::HandleInput()
 CPlayer::ObjectColor CPlayerManager::SetCharacterColor(int index)
 {
 	//プレイヤーの色.
-	std::array<CStaticMeshObject::ObjectColor, Player_Max>	playerColor;
+	std::array<CStaticMeshObject::ObjectColor, Player_Max>	playerColor{};
 
 	switch (index)
 	{
@@ -249,7 +252,7 @@ CPlayer::ObjectColor CPlayerManager::SetCharacterColor(int index)
 //初期位置を設定する関数.
 D3DXVECTOR3 CPlayerManager::SetDefaultPosition(int index)
 {
-	std::array<D3DXVECTOR3, Player_Max> playerPos;	//プレイヤーの位置.
+	std::array<D3DXVECTOR3, Player_Max> playerPos{};	//プレイヤーの位置.
 
 	switch (index)
 	{
@@ -279,57 +282,61 @@ D3DXVECTOR3 CPlayerManager::SetDefaultPosition(int index)
 //キーバインドを設定する関数.
 void CPlayerManager::SetPlayerInputBinding()
 {
-	std::array<std::unordered_map<Action, int>,Player_Max> keys;
-
-	for (int pNo = 0; pNo < Player_Max;pNo++)
+	//キーボード操作.
 	{
-		switch (pNo)
+		//プレイヤーごとにキーを設定するため.
+		using keyMap = std::unordered_map<Action, int>;
+		//プレイヤー数分にキーを割り当てる.
+		static const std::array<keyMap, Player_Max> keys =
 		{
-		case 0:
-			keys[pNo] =
+			//プレイヤー1.
 			{
-				{Action::MoveUp,		VK_UP},
-				{Action::MoveDown,		VK_DOWN},
-				{Action::MoveLeft,		VK_LEFT},
-				{Action::MoveRight,		VK_RIGHT},
-				{Action::Attack,		'Z'},
-				{Action::ToggleItem,	'X'},
-			};
-
-			break;
-		case 1:
-			keys[pNo] =
+				{Action::MoveUp,		VK_UP},		//上移動.
+				{Action::MoveDown,		VK_DOWN},	//下移動.
+				{Action::MoveLeft,		VK_LEFT},	//左移動.
+				{Action::MoveRight,		VK_RIGHT},	//右移動.
+				{Action::Attack,		'/'},		//攻撃.
+				{Action::ToggleItem,	'-'},		//拾う/捨てる.
+			},
+			//プレイヤー2.
 			{
-				{Action::MoveUp,		'W'},
-				{Action::MoveDown,		'S'},
-				{Action::MoveLeft,		'A'},
-				{Action::MoveRight,		'D'},
-				{Action::Attack,		'Q'},
-				{Action::ToggleItem,	'E'},
-			};
-
-			break;
-		default:
-			break;
+				{Action::MoveUp,		'W'},	//上移動.
+				{Action::MoveDown,		'S'},	//下移動.
+				{Action::MoveLeft,		'A'},	//左移動.
+				{Action::MoveRight,		'D'},	//右移動.
+				{Action::Attack,		'Q'},	//攻撃.
+				{Action::ToggleItem,	'E'},	//拾う/捨てる.
+			},
+			//プレイヤー3.
+			{
+				{Action::MoveUp,		'T'},	//上移動.
+				{Action::MoveDown,		'G'},	//下移動.
+				{Action::MoveLeft,		'F'},	//左移動.
+				{Action::MoveRight,		'H'},	//右移動.
+				{Action::Attack,		'R'}, 	//攻撃.
+				{Action::ToggleItem,	'Y'}, 	//拾う/捨てる.
+			},
+			//プレイヤー4.
+			{
+				{Action::MoveUp,		'I'},	//上移動.
+				{Action::MoveDown,		'K'},	//下移動.
+				{Action::MoveLeft,		'J'},	//左移動.
+				{Action::MoveRight,		'L'},	//右移動.
+				{Action::Attack,		'U'}, 	//攻撃.
+				{Action::ToggleItem,	'O'}, 	//拾う/捨てる.
+			},
 		}
 
-		for(auto& key : keys[pNo])
+		//プレイヤーにキーを設定.
+		for (int pNo = 0; pNo < Player_Max;pNo++)
 		{
-			Action action = key.first;
-			int code = key.second;
-
-			CInputManager::Instance().BindKey(
-				action, InputBinding(InputDevice::Keyboard, code), pNo);
+			for (const auto& [action, key] : keys[pNo])
+			{
+				CInputManager::Instance().BindKey(
+					action, InputBinding(InputDevice::Keyboard, code), pNo);
+			}
 		}
 	}
-
-	////キーボード操作.
-	//CInputManager::Instance().BindKey(Action::MoveUp,		InputBinding(InputDevice::Keyboard, VK_UP), 0);		//上移動.
-	//CInputManager::Instance().BindKey(Action::MoveDown,		InputBinding(InputDevice::Keyboard, VK_DOWN), 0);		//下移動.
-	//CInputManager::Instance().BindKey(Action::MoveLeft,		InputBinding(InputDevice::Keyboard, VK_LEFT), 0);		//左移動.
-	//CInputManager::Instance().BindKey(Action::MoveRight,	InputBinding(InputDevice::Keyboard, VK_RIGHT), 0);		//右移動.
-	//CInputManager::Instance().BindKey(Action::Attack,		InputBinding(InputDevice::Keyboard, 'Z'), 0);			//攻撃.
-	//CInputManager::Instance().BindKey(Action::ToggleItem,	InputBinding(InputDevice::Keyboard, 'X'), 0);			//拾う/捨てる.
 
 	//コントローラ操作.
 	CInputManager::Instance().BindKey(Action::Attack,		InputBinding(InputDevice::GamePad, CXInput::B));	//攻撃.
