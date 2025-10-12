@@ -31,7 +31,7 @@ CPlayerKnockbackState::~CPlayerKnockbackState()
 void CPlayerKnockbackState::Enter(CPlayer& pPlayer)
 {
 	//攻撃の開始時間を取得.
-	m_StartTime = CTimeManager::GetTotalTime();
+	m_StartTime = static_cast<float>(CTimeManager::GetTotalTime());
 
 	//プレイヤーの位置を取得.
 	D3DXVECTOR3 playerPos = pPlayer.GetPosition();
@@ -67,7 +67,7 @@ void CPlayerKnockbackState::Update(CPlayer& pPlayer)
 	pPlayer.SetMoveState(std::make_unique<CPlayerMoveIdleState>());
 	pPlayer.SetTurnState(std::make_unique<CPlayerTurnIdleState>());
 
-	float t = CTimeManager::GetTotalTime();
+	float t = static_cast<float>(CTimeManager::GetTotalTime());
 
 	//プレイヤーの位置を取得.
 	D3DXVECTOR3 playerPos = pPlayer.GetPosition();
@@ -106,7 +106,7 @@ void CPlayerKnockbackState::Update(CPlayer& pPlayer)
 	pPlayer.GetPlayerRightHand().SetPosition(rightHandPos);
 	pPlayer.GetPlayerLeftHand().SetPosition(leftHandPos);
 
-	float dt = CTimeManager::GetDeltaTime();
+	float dt = static_cast<float>(CTimeManager::GetDeltaTime());
 
 	//攻撃された情報の取得.
 	m_Velocity.y += -m_Gravity * dt;

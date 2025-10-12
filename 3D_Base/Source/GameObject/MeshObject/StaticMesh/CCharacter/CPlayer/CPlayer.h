@@ -57,9 +57,9 @@ public:
 	CPlayer(int index);		//引数はコントローラ番号.
 	~CPlayer() override;
 
-	//----- 毎フレームの動作する関数 -----.
+	//--- 毎フレームの動作する関数 ---.
 	void Update() override;
-	//----- 毎フレームの描画する関数 -----.
+	//--- 毎フレームの描画する関数 ---.
 	void Draw(
 		D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAMERA& Camera ) override;
 
@@ -72,86 +72,86 @@ public:
 	//		}
 	//}		 
 
-	//----- キー操作 -----.
+	//--- キー操作 ---.
 	void HandleInput();
 
-	//----- 移動状態を設定する関数 -----.
+	//--- 移動状態を設定する関数 ---.
 	void SetMoveState(std::unique_ptr<CPlayerState> newState);
-	//----- 回転状態を設定する関数 -----.
+	//--- 回転状態を設定する関数 ---.
 	void SetTurnState(std::unique_ptr<CPlayerState> newState);
-	//----- 行動状態を設定する関数 -----.
+	//--- 行動状態を設定する関数 ---.
 	void SetActionState(std::unique_ptr<CPlayerState> newState);
 
-	//----- 頭の位置を設定するために計算する関数 -----.
+	//--- 頭の位置を設定するために計算する関数 ---.
 	D3DXVECTOR3 SetHeadPos();
 
-	//----- プレイヤーの正面方向を取得するための関数 -----.
+	//--- プレイヤーの正面方向を取得するための関数 ---.
 	D3DXVECTOR3 GetForward();
 
-	//----- ローカル座標軸を取得する関数 -----.
+	//--- ローカル座標軸を取得する関数 ---.
 	LocalAxes GetLocalAxes();
 
-	//----- クォータニオンによるベクトル回転の関数 -----.
+	//--- クォータニオンによるベクトル回転の関数 ---.
 	D3DXVECTOR3 RotateVectorByQuat(
 		D3DXVECTOR3 vector, D3DXQUATERNION quat);
 
-	//----- プレイヤーの初期角度から傾きを計算する関数 -----.
+	//--- プレイヤーの初期角度から傾きを計算する関数 ---.
 	D3DXQUATERNION TiltedQuat(
 		D3DXQUATERNION	baseQuat,	//基準にする回転姿勢.
 		D3DXVECTOR3		localAxes,	//ローカル軸の方向.
 		float			tiltAngle);	//傾きの角度.
 
-	//----- 押された時の移動量を計算する関数 -----.
+	//--- 押された時の移動量を計算する関数 ---.
 	D3DXVECTOR3 Knockback();
 
-	//----- 攻撃を受けた時のの移動量 -----.
+	//--- 攻撃を受けた時のの移動量 ---.
 	D3DXVECTOR3 GetVelocity();
 
-	//----- 数値の領域を指定する関数 -----.
+	//--- 数値の領域を指定する関数 ---.
 	float Clamp(float value, float min, float max);
 
-	//----- 角度を0～360度にする関数 -----.
+	//--- 角度を0～360度にする関数 ---.
 	float WrapAngle(float value);
 
-	//----- キャラクターの色を設定する関数 -----.
+	//--- キャラクターの色を設定する関数 ---.
 	void SetCharacterDefault(int index);
 
-	//----- プレイヤーが頭を持っている(書き込み用) -----.
+	//--- プレイヤーが頭を持っている(書き込み用) ---.
 	CPlayerHead& GetPlayerHead() { return *m_pHead; }
-	//----- プレイヤーが頭を持っている(読み込み用) -----.
+	//--- プレイヤーが頭を持っている(読み込み用) ---.
 	const CPlayerHead& GetPlayerHead() const { return *m_pHead; }
 
-	//----- プレイヤーが右手を持っている(書き込み用) -----.
+	//--- プレイヤーが右手を持っている(書き込み用) ---.
 	CPlayerRightHand& GetPlayerRightHand() { return *m_pRightHand; }
-	//----- プレイヤーが右手を持っている(読み込み用) -----.
+	//--- プレイヤーが右手を持っている(読み込み用) ---.
 	const CPlayerRightHand& GetPlayerRightHand() const { return *m_pRightHand; }
 
-	//----- プレイヤーが左手を持っている(書き込み用) -----.
+	//--- プレイヤーが左手を持っている(書き込み用) ---.
 	CPlayerLeftHand& GetPlayerLeftHand() { return *m_pLeftHand; }
-	//----- プレイヤーが左手を持っている(読み込み用) -----.
+	//--- プレイヤーが左手を持っている(読み込み用) ---.
 	const CPlayerLeftHand& GetPlayerLeftHand() const { return *m_pLeftHand; }
 
-	//----- 移動しているかの所得と設定 -----.
+	//--- 移動しているかの所得と設定 ---.
 	bool IsMoving() const { return m_IsMoving; }
 	void SetMoving(bool moving) { m_IsMoving = moving; }
 
-	//----- 回転しているかの所得と設定 -----.
+	//--- 回転しているかの所得と設定 ---.
 	bool IsRotating() const { return m_IsRotating; }
 	void SetRotating(bool rotating) { m_IsRotating = rotating; }
 
-	//----- アイテムを手に入れているかの取得と設定 -----.
+	//--- アイテムを手に入れているかの取得と設定 ---.
 	bool IsHoldingItem() const { return m_IsHoldingItem; }
 	void SetHoldingItem(bool holdingItem) { m_IsHoldingItem = holdingItem; }
 
-	//----- 攻撃しているかの取得と設定 -----.
+	//--- 攻撃しているかの取得と設定 ---.
 	bool IsAttacking() const { return m_IsAttacking; }
 	void SetAttacking(bool attacking) { m_IsAttacking = attacking; }
 
-	//----- 攻撃しているかの取得と設定 -----.
+	//--- 攻撃しているかの取得と設定 ---.
 	bool IsStopping() const { return m_IsStopping; }
 	void SetStopping(bool stopping) { m_IsStopping = stopping; }
 
-	//----- 攻撃を受けた情報を取得と設定 -----.
+	//--- 攻撃を受けた情報を取得と設定 ---.
 	HitInfo GetHitInfo() const { return m_HitInfo; }
 	void SetHitInfo(
 		bool isHit, StatePattern anim)
@@ -171,9 +171,9 @@ public:
 	}
 
 private:
-	//----- キーバインドを設定する関数 -----.
+	//--- キーバインドを設定する関数 ---.
 	void SetPlayerInputBinding(int index);
-	//----- 状態を変更を処理する関数 -----.
+	//--- 状態を変更を処理する関数 ---.
 	void ChangeState(
 		std::unique_ptr<CPlayerState>& currentState,
 		std::unique_ptr<CPlayerState> newScene);

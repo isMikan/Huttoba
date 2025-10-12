@@ -39,7 +39,7 @@ void CPlayerThrowState::Enter(CPlayer& pPlayer)
 	m_StartQuat = pPlayer.GetQuaternion();
 
 	//攻撃の開始時間を取得.
-	m_StartTime = CTimeManager::GetTotalTime();
+	m_StartTime = static_cast<float>(CTimeManager::GetTotalTime());
 
 	//手の位置を調整するための数値を取得.
 	D3DXVECTOR3 rightHandOffset = pPlayer.GetPlayerRightHand().GetOffsetPos();
@@ -61,7 +61,7 @@ void CPlayerThrowState::Exit(CPlayer& pPlayer)
 void CPlayerThrowState::Update(CPlayer& pPlayer)
 {
 	//ゲーム全体の経過時間.
-	float t = CTimeManager::GetTotalTime();
+	float t = static_cast<float>(CTimeManager::GetTotalTime());
 
 	//現在の経過時間と開始時間の差が終了時間を上回ったら.
 	if (t - m_StartTime > m_EndTime)
@@ -71,7 +71,7 @@ void CPlayerThrowState::Update(CPlayer& pPlayer)
 	}
 
 	//前回のフレームからの経過時間.
-	float deltaTime = CTimeManager::GetDeltaTime();
+	float deltaTime = static_cast<float>(CTimeManager::GetDeltaTime());
 
 	//ローカル軸を取得.
 	CPlayer::LocalAxes axes = pPlayer.GetLocalAxes();

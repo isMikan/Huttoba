@@ -30,7 +30,7 @@ void CPlayerHandHitState::Enter(CPlayer& pPlayer)
     m_StartQuat = pPlayer.GetQuaternion();
 
 	//攻撃の開始時間を取得.
-	m_StartTime = CTimeManager::GetTotalTime();
+	m_StartTime = static_cast<float>(CTimeManager::GetTotalTime());
 	//最終に戻る位置を設定.
 	m_DefaultQuat = D3DXQUATERNION(0.f, m_StartQuat.y, 0.f, m_StartQuat.w);
 
@@ -47,7 +47,7 @@ void CPlayerHandHitState::Exit(CPlayer& pPlayer)
 void CPlayerHandHitState::Update(CPlayer& pPlayer)
 {
 	//ゲーム全体の経過時間.
-	float t = CTimeManager::GetTotalTime();
+	float t = static_cast<float>(CTimeManager::GetTotalTime());
 
 	//現在の経過時間と開始時間の差が終了時間を上回ったら.
 	if (t - m_StartTime > m_EndTime

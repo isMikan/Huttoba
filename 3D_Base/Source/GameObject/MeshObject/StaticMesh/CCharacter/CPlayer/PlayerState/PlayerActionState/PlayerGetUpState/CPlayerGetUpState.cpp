@@ -27,7 +27,7 @@ CPlayerGetUpState::~CPlayerGetUpState()
 void CPlayerGetUpState::Enter(CPlayer& pPlayer)
 {
 	//攻撃の開始時間を取得.
-	m_StartTime = CTimeManager::GetTotalTime();
+	m_StartTime = static_cast<float>(CTimeManager::GetTotalTime());
 
 	//クォータニオン型の回転を取得.
 	m_StartQuat = pPlayer.GetQuaternion();
@@ -54,7 +54,7 @@ void CPlayerGetUpState::Update(CPlayer& pPlayer)
 	pPlayer.SetMoveState(std::make_unique<CPlayerMoveIdleState>());
 	pPlayer.SetTurnState(std::make_unique<CPlayerTurnIdleState>());
 
-	float t = CTimeManager::GetTotalTime();
+	float t = static_cast<float>(CTimeManager::GetTotalTime());
 
 	//現在の経過時間と開始時間の差が終了時間を上回ったら.
 	if (t - m_StartTime > m_EndTime)

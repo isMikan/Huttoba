@@ -36,7 +36,7 @@ void CPlayerHandAttackState::Enter(CPlayer& pPlayer)
 	pPlayer.SetAttacking(true);
 
 	//攻撃の開始時間を取得.
-	m_StartTime = CTimeManager::GetTotalTime();
+	m_StartTime = static_cast<float>(CTimeManager::GetTotalTime());
 
 	//プレイヤーの位置を取得.
 	D3DXVECTOR3 playerPos = pPlayer.GetPosition();
@@ -67,7 +67,7 @@ void CPlayerHandAttackState::Exit(CPlayer& pPlayer)
 void CPlayerHandAttackState::Update(CPlayer& pPlayer)
 {
 	//ゲーム全体の経過時間.
-	float t = CTimeManager::GetTotalTime();
+	float t = static_cast<float>(CTimeManager::GetTotalTime());
 
 	bool isHit = pPlayer.GetHitInfo().isHit;
 

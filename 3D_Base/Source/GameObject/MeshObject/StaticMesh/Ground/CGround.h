@@ -10,9 +10,9 @@ class CGround
 {
 public:
 	//色が変わる時間.
-	static constexpr float	m_ChangeColorTime = 3.f;	
+	static constexpr float	m_ChangeColorTime = 5.f;	
 	//揺れる時間.
-	static constexpr float	m_VibrateTime = 1.f;
+	static constexpr float	m_VibrateTime = 2.f;
 
 public:
 	CGround();
@@ -50,6 +50,9 @@ private:
 
 	//--- 地面が落ちる ---.
 	void FallDownGround();
+
+	//--- 数値の領域を指定する関数 ---.
+	float Clamp(float value, float min, float max);
 
 private:
 	float	m_FallSpeed;			//落下速度.

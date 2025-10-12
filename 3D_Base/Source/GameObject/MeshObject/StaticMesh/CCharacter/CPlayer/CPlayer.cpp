@@ -40,7 +40,7 @@ CPlayer::~CPlayer()
 {
 }
 
-//----- 毎フレームの動作する関数 -----.
+//--- 毎フレームの動作する関数 ---.
 void CPlayer::Update()
 {
 	GetPlayerHead().SetPosition(SetHeadPos());
@@ -58,14 +58,14 @@ void CPlayer::Update()
 	CCharacter::Update();
 }
 
-//----- 毎フレームの描画する関数 -----.
+//--- 毎フレームの描画する関数 ---.
 void CPlayer::Draw(
 	D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAMERA& Camera )
 {
 	CCharacter::Draw( View, Proj, Light, Camera );
 }
 
-//----- キー操作 -----.
+//--- キー操作 ---.
 void CPlayer::HandleInput()
 {
 	float x = 0.f;	//x軸.
@@ -113,25 +113,25 @@ void CPlayer::HandleInput()
 	}
 }
 
-//----- 移動状態を設定する関数 -----.
+//--- 移動状態を設定する関数 ---.
 void CPlayer::SetMoveState(std::unique_ptr< CPlayerState> newState)
 {
 	ChangeState(m_pMoveState, std::move(newState));
 }
 
-//----- 回転状態を設定する関数 -----.
+//--- 回転状態を設定する関数 ---.
 void CPlayer::SetTurnState(std::unique_ptr< CPlayerState> newState)
 {
 	ChangeState(m_pTurnState, std::move(newState));
 }
 
-//----- 行動状態を設定する関数 -----.
+//--- 行動状態を設定する関数 ---.
 void CPlayer::SetActionState(std::unique_ptr<CPlayerState> newState)
 {
 	ChangeState(m_pActionState, std::move(newState));
 }
 
-//----- 状態遷移の処理関数 -----.
+//--- 状態遷移の処理関数 ---.
 void CPlayer::ChangeState(
 	std::unique_ptr<CPlayerState>& currentState,
 	std::unique_ptr<CPlayerState> newState)
@@ -152,7 +152,7 @@ void CPlayer::ChangeState(
 	}
 }
 
-//----- 頭の位置を設定するために計算する関数 -----.
+//--- 頭の位置を設定するために計算する関数 ---.
 D3DXVECTOR3 CPlayer::SetHeadPos()
 {
 	//ローカル軸を取得.
@@ -176,7 +176,7 @@ D3DXVECTOR3 CPlayer::SetHeadPos()
 	return headPos;
 }
 
-//----- プレイヤーの正面方向を取得するための関数 -----.
+//--- プレイヤーの正面方向を取得するための関数 ---.
 D3DXVECTOR3 CPlayer::GetForward()
 {
 	D3DXMATRIX rot;
@@ -188,7 +188,7 @@ D3DXVECTOR3 CPlayer::GetForward()
 	return forward;
 }
 
-//----- ローカル座標軸を取得 -----.
+//--- ローカル座標軸を取得 ---.
 CPlayer::LocalAxes CPlayer::GetLocalAxes()
 {
 	//ローカル軸.
@@ -206,7 +206,7 @@ CPlayer::LocalAxes CPlayer::GetLocalAxes()
 	return axes;
 }
 
-//----- クォータニオンによるベクトル回転の関数 -----.
+//--- クォータニオンによるベクトル回転の関数 ---.
 D3DXVECTOR3 CPlayer::RotateVectorByQuat(
 	D3DXVECTOR3 vector, D3DXQUATERNION quat)
 {
@@ -233,7 +233,7 @@ D3DXVECTOR3 CPlayer::RotateVectorByQuat(
 	return D3DXVECTOR3(result.x, result.y, result.z);
 }
 
-//----- プレイヤーの初期角度から傾きを計算する関数 -----.
+//--- プレイヤーの初期角度から傾きを計算する関数 ---.
 D3DXQUATERNION CPlayer::TiltedQuat(
 	D3DXQUATERNION baseQuat, D3DXVECTOR3 localAxes, float tiltAngle)
 {
@@ -249,7 +249,7 @@ D3DXQUATERNION CPlayer::TiltedQuat(
 	return quat;
 }
 
-//----- 押された時の移動量を計算する関数 -----.
+//--- 押された時の移動量を計算する関数 ---.
 D3DXVECTOR3 CPlayer::Knockback()
 {
 	//押されるベクトル.
@@ -262,7 +262,7 @@ D3DXVECTOR3 CPlayer::Knockback()
 	return pos;
 }
 
-//----- 攻撃を受けた時のの移動量 -----.
+//--- 攻撃を受けた時のの移動量 ---.
 D3DXVECTOR3 CPlayer::GetVelocity()
 {
 	//飛ぶベクトル.
@@ -282,7 +282,7 @@ D3DXVECTOR3 CPlayer::GetVelocity()
 	return velocity;
 }
 
-//----- 数値の領域を指定する関数 -----.
+//--- 数値の領域を指定する関数 ---.
 float CPlayer::Clamp(float value, float min, float max)
 {
 	//最小値より小さかったら最小値を返す.
@@ -293,7 +293,7 @@ float CPlayer::Clamp(float value, float min, float max)
 	return value;
 }
 
-//----- 角度を0～360度にする関数 -----.
+//--- 角度を0～360度にする関数 ---.
 float CPlayer::WrapAngle(float value)
 {
 	//360度以上なら引く.
@@ -304,7 +304,7 @@ float CPlayer::WrapAngle(float value)
 	return value;
 }
 
-//----- キャラクターの色を設定する関数 -----.
+//--- キャラクターの色を設定する関数 ---.
 void CPlayer::SetCharacterDefault(int index)
 {
 	std::array<D3DXVECTOR3, Player_Max> playerPos;							//プレイヤーの位置.
@@ -356,7 +356,7 @@ void CPlayer::SetCharacterDefault(int index)
 	m_ObjColor = playerColor[index];
 }
 
-//----- キーバインドを設定する関数 -----.
+//--- キーバインドを設定する関数 ---.
 void CPlayer::SetPlayerInputBinding(int index)
 {
 	if (index == 0)
