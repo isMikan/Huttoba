@@ -56,6 +56,8 @@ private:
 
 private:
 	float	m_FallSpeed;			//落下速度.
+	float	m_Gravity;				//重力.
+	float	m_Velocity;				//重力速度.
 
 	float	m_ChangeColorStartTime;	//色が変わり始めた時間.
 	float	m_VibrateStartTime;		//揺れ始めた時間.

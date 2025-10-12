@@ -1,7 +1,9 @@
 #include "CGround.h"
 
 CGround::CGround()
-	: m_FallSpeed				( 10.f )
+	: m_FallSpeed				( 1.5f )
+	, m_Gravity					( 9.8f )
+	, m_Velocity				()
 
 	, m_ChangeColorStartTime	()
 	, m_VibrateStartTime		()
@@ -95,7 +97,8 @@ void CGround::FallDownGround()
 	//デルタタイムを取得.
 	float dt = static_cast<float>(CTimeManager::GetDeltaTime());
 
-	m_vPosition.y -= dt * m_FallSpeed;	//地面を下へ.
+	m_Velocity += dt * m_Gravity;
+	m_vPosition.y -= dt * m_Velocity * m_FallSpeed;	//地面を下へ.
 }
 
 //--- 数値の領域を指定する関数 ---.
