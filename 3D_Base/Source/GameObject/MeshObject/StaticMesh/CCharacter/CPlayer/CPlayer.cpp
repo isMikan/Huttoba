@@ -1,5 +1,4 @@
 #include "CPlayer.h"
-#include "Sound/CSoundManager.h"
 
 #include "PlayerState/PlayerMoveState/PlayerMoveIdelState/CPlayerMoveIdleState.h"
 #include "PlayerState/PlayerTurnState/PlayerTurnIdleState/CPlayerTurnIdleState.h"
@@ -12,6 +11,12 @@
 #include "PlayerState/PlayerActionState/PlayerPickupState/CPlayerPickupState.h"
 #include "PlayerState/PlayerActionState/PlayerThrowState/CPlayerThrowState.h"
 #include "PlayerState/PlayerActionState/PlayerPushedState/CPlayerPushedState.h"
+
+#include "CInput/CInputManager.h"
+#include "Sound/CSoundManager.h"
+
+#include <unordered_map>
+#include <array>
 
 CPlayer::CPlayer(int index)
 	: m_pInput			( std::make_unique<CInput>(index) )
@@ -90,7 +95,8 @@ void CPlayer::HandleInput()
 	}
 
 	//アイテムを持っていないなら攻撃.
-	if (m_pInput->IsDown(Action::Attack) && !m_IsHoldingItem
+	if (m_pInput->IsDown(Action::Attack) 
+		&& !m_IsHoldingItem
 		&& !m_IsAttacking)
 	{
 		SetActionState(std::make_unique<CPlayerHandAttackState>());
@@ -359,18 +365,67 @@ void CPlayer::SetCharacterDefault(int index)
 //--- キーバインドを設定する関数 ---.
 void CPlayer::SetPlayerInputBinding(int index)
 {
-	if (index == 0)
+	//キーボード操作.
 	{
-		//キーボード操作.
-		m_pInput->BindKey(Action::MoveUp, InputBinding(InputDevice::Keyboard, VK_UP));		//上移動.
-		m_pInput->BindKey(Action::MoveDown, InputBinding(InputDevice::Keyboard, VK_DOWN));		//下移動.
-		m_pInput->BindKey(Action::MoveLeft, InputBinding(InputDevice::Keyboard, VK_LEFT));		//左移動.
-		m_pInput->BindKey(Action::MoveRight, InputBinding(InputDevice::Keyboard, VK_RIGHT));		//右移動.
-		m_pInput->BindKey(Action::Attack, InputBinding(InputDevice::Keyboard, 'Z'));			//攻撃.
-		m_pInput->BindKey(Action::ToggleItem, InputBinding(InputDevice::Keyboard, 'X'));			//拾う/捨てる.
+		//プレイヤーごとにキーを設定するため.
+		using keyMap = std::unordered_map<Action, int>;
+		//プレイヤー数分にキーを割り当てる.
+		static const std::array<keyMap, Player_Max> keys =
+		{
+			//プレイヤー1.
+			keyMap
+			{
+				{Action::MoveUp,		VK_UP},		//上移動.
+				{Action::MoveDown,		VK_DOWN},	//下移動.
+				{Action::MoveLeft,		VK_LEFT},	//左移動.
+				{Action::MoveRight,		VK_RIGHT},	//右移動.
+				{Action::Attack,		VK_OEM_2},		//攻撃.
+				{Action::ToggleItem,	VK_OEM_102},	//拾う/捨てる.
+			},
+			//プレイヤー2.
+			keyMap
+			{
+				{Action::MoveUp,		'W'},	//上移動.
+				{Action::MoveDown,		'S'},	//下移動.
+				{Action::MoveLeft,		'A'},	//左移動.
+				{Action::MoveRight,		'D'},	//右移動.
+				{Action::Attack,		'Q'},	//攻撃.
+				{Action::ToggleItem,	'E'},	//拾う/捨てる.
+			},
+			//プレイヤー3.
+			keyMap
+			{
+				{Action::MoveUp,		'T'},	//上移動.
+				{Action::MoveDown,		'G'},	//下移動.
+				{Action::MoveLeft,		'F'},	//左移動.
+				{Action::MoveRight,		'H'},	//右移動.
+				{Action::Attack,		'R'}, 	//攻撃.
+				{Action::ToggleItem,	'Y'}, 	//拾う/捨てる.
+			},
+			//プレイヤー4.
+			keyMap
+			{
+				{Action::MoveUp,		'I'},	//上移動.
+				{Action::MoveDown,		'K'},	//下移動.
+				{Action::MoveLeft,		'J'},	//左移動.
+				{Action::MoveRight,		'L'},	//右移動.
+				{Action::Attack,		'U'}, 	//攻撃.
+				{Action::ToggleItem,	'O'}, 	//拾う/捨てる.
+			},
+		};
+
+		//プレイヤーにキーを設定.
+		for (const auto& key : keys[index])
+		{
+			const Action action = key.first;
+			const int code = key.second;
+
+			m_pInput->BindKey(
+				action, InputBinding(InputDevice::Keyboard, code));
+		}
 	}
 
 	//コントローラ操作.
-	m_pInput->BindKey(Action::Attack,		InputBinding(InputDevice::GamePad, CXInput::B));	//攻撃.
-	m_pInput->BindKey(Action::ToggleItem,	InputBinding(InputDevice::GamePad, CXInput::A));	//拾う/捨てる.
+	CInputManager::Instance().BindKey(Action::Attack,		InputBinding(InputDevice::GamePad, CXInput::B));	//攻撃.
+	CInputManager::Instance().BindKey(Action::ToggleItem,	InputBinding(InputDevice::GamePad, CXInput::A));	//拾う/捨てる.
 }
