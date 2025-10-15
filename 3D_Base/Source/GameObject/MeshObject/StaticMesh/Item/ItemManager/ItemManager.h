@@ -2,7 +2,7 @@
 #include "GameObject/MeshObject/StaticMesh/CStaticMeshObject.h"
 
 class ItemBase;
-class CPlayer;
+class CPlayerBase;
 
 class ItemManager:
 	public CStaticMeshObject
@@ -32,7 +32,7 @@ public:
 	/*****************************************************************************************
 	* @brief    XVˆ—
 	*****************************************************************************************/
-	void Update(std::vector<std::unique_ptr<CPlayer>>& players) ;
+	void Update(std::vector<std::unique_ptr<CPlayerBase>>& players) ;
 
 	//Œp³‚ª×–‚‚É‚È‚Á‚½‚Ì‚ÅØ‚é
 	void Update() override;

@@ -4,7 +4,7 @@
 #include "GameObject/UIObject/CUIObject.h"
 
 #include "CInput/CInputManager.h"
-#include "GameObject/MeshObject/StaticMesh/CCharacter/CPlayer/CPlayer.h"
+#include "GameObject/MeshObject/StaticMesh/PlayerBase/CPlayerBase.h"
 #include "Camera/CCamera.h"
 
 #include "Assets/AssetManager.h"
@@ -45,7 +45,7 @@ private:
 	std::unique_ptr<CCamera>	m_pCamera;	//カメラ.
 
 	//キャラクタークラス
-	std::array< std::unique_ptr<CPlayer>,4 >		m_pPlayer;
+	std::array< std::unique_ptr<CPlayerBase>,4 >		m_pPlayer;
 
 	CInputManager&									m_InputManager;
 

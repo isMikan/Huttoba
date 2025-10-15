@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "ItemManager.h"
 #include "Item/ItemBase.h"	
-#include "CCharacter/CPlayer/CPlayer.h"
+#include "PlayerBase/CPlayerBase.h"
 #include "CInput/CInputManager.h"
 
 
@@ -53,7 +53,7 @@ void ItemManager::Init()
 
 //--------------------------------------------------------------------------------------------------------------
 
-void ItemManager::Update(std::vector<std::unique_ptr<CPlayer>>& players)
+void ItemManager::Update(std::vector<std::unique_ptr<CPlayerBase>>& players)
 {
 	for (auto& item : m_pItems)
 	{

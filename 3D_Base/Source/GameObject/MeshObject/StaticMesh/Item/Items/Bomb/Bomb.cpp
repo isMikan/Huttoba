@@ -25,7 +25,7 @@ void Bomb::Init()
 	m_tGravity = 0.01;
 }
 
-void Bomb::Update(std::vector<std::unique_ptr<CPlayer>>& playiers)
+void Bomb::Update(std::vector<std::unique_ptr<CPlayerBase>>& playiers)
 {
 	ItemBase::Update(playiers);
 }
@@ -53,11 +53,11 @@ void Bomb::OnGround()
 {
 }
 
-void Bomb::Have(std::vector<std::unique_ptr<CPlayer>>& playiers)
+void Bomb::Have(std::vector<std::unique_ptr<CPlayerBase>>& playiers)
 {
 }
 
-void Bomb::Use(std::vector<std::unique_ptr<CPlayer>>& playiers)
+void Bomb::Use(std::vector<std::unique_ptr<CPlayerBase>>& playiers)
 {
 }
 

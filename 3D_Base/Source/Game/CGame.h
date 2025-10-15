@@ -9,9 +9,6 @@
 #include "GameObject/UIObject/CUIObject.h"
 #include "Assets/Mesh/StaticMesh/CStaticMesh.h"
 #include "GameObject/MeshObject/StaticMesh/CStaticMeshObject.h"
-#include "GameObject/MeshObject/StaticMesh/CCharacter/CCharacter.h"
-#include "GameObject/MeshObject/StaticMesh/CCharacter/CPlayer/CPlayer.h"
-#include "GameObject/MeshObject/StaticMesh/Ground/CGround.h"
 #include "Scene/CSceneManager.h"
 
 
