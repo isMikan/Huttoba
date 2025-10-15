@@ -28,46 +28,42 @@ void CInputManager::BindKey(Action action, const InputBinding& binding)
 	}
 }
 
-void CInputManager::BindKey(Action action, const InputBinding& binding, int i)
+void CInputManager::BindKey(Action action, const InputBinding& binding, int index)
 {
-	m_pInputs[i]->BindKey(action, binding);
+	m_pInputs[index]->BindKey(action, binding);
 }
 
-void CInputManager::IsDown(Action action)
+bool CInputManager::IsDown(Action action, int index)
 {
-	for (auto& i : m_pInputs)
-	{
-		i->IsDown(action);
-	}
+	return m_pInputs[index]->IsDown(action);
 }
 
-void CInputManager::IsDown(Action action, int i)
+bool CInputManager::IsUp(Action action, int index)
 {
-	m_pInputs[i]->IsDown(action);
+	return m_pInputs[index]->IsUp(action);
 }
 
-void CInputManager::IsUp(Action action)
+bool CInputManager::IsRepeat(Action action, int index)
 {
-	for (auto& i : m_pInputs)
-	{
-		i->IsUp(action);
-	}
+	return m_pInputs[index]->IsRepeat(action);
 }
 
-void CInputManager::IsUp(Action action, int i)
+float CInputManager::GetLeftSthikX(int index)
 {
-	m_pInputs[i]->IsUp(action);
+	return m_pInputs[index]->GetLeftSthikX();
 }
 
-void CInputManager::IsRepeat(Action action)
+float CInputManager::GetLeftSthikY(int index)
 {
-	for (auto& i : m_pInputs)
-	{
-		i->IsRepeat(action);
-	}
+	return m_pInputs[index]->GetLeftSthikY();
 }
 
-void CInputManager::IsRepeat(Action action, int i)
+float CInputManager::GetRightSthikX(int index)
 {
-	m_pInputs[i]->IsRepeat(action);
+	return m_pInputs[index]->GetRightSthikX();
+}
+
+float CInputManager::GetRightSthikY(int index)
+{
+	return m_pInputs[index]->GetRightSthikY();
 }

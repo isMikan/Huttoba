@@ -37,28 +37,32 @@ public:
     CInput& GetInput(int index) { return *m_pInputs[index]; }
     //全部のInputに入力設定
     void BindKey(Action action, const InputBinding& binding);
+
     //第2引数で指定のInputに入力設定
-    void BindKey(Action action, const InputBinding& binding, int i);
+    void BindKey(Action action, const InputBinding& binding, int index);
 
-    //全部のInputのIsDown
-    void IsDown(Action action);
-    //第2引数で指定したのInputのIsDown
-    void IsDown(Action action, int i);
+    //第2引数で指定したInputのIsDown
+    bool IsDown(Action action, int index);
     
-    //全部のInputのIsUp
-    void IsUp(Action action);
-    //第2引数で指定したのInputのIsUp
-    void IsUp(Action action, int i);
+    //第2引数で指定したInputのIsUp
+    bool IsUp(Action action, int index);
 
-    //全部のInputのIsRepeat
-    void IsRepeat(Action action);
-    //第2引数で指定したのInputのIsRepeat
-    void IsRepeat(Action action, int i);
-
-    //別の場所に追加するべき-----------
+    //第2引数で指定したInputのIsRepeat
+    bool IsRepeat(Action action, int index);
+    
+    //引数で指定したパッドの左スティックの正規化したX軸を取得
+    float GetLeftSthikX(int index);
+    //引数で指定したパッドの左スティックの正規化したY軸を取得
+    float GetLeftSthikY(int index);
+    //引数で指定したパッドの右スティックの正規化したX軸を取得
+    float GetRightSthikX(int index);
+    //引数で指定したパッドの右スティックの正規化したY軸を取得
+    float GetRightSthikY(int index);
+    
+    //別の場所に追加するべき----------
     PlayerSlot& GetSlot(int index) { return m_Slot[index]; }
 
-    //CInputのものではない
+    //com作る時にもっと練って作り直しておく
     void ChangeSlot(int index)
     {
         if (m_Slot[index].ready)
