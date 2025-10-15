@@ -19,7 +19,7 @@
 #include <array>
 
 CPlayer::CPlayer(int index)
-	: m_pInput			( std::make_unique<CInput>(index) )
+	: m_pInput			( std::make_unique<CInput>( index ) )
 
 	, m_pHead			( std::make_unique<CPlayerHead>() )
 	, m_pRightHand		( std::make_unique<CPlayerRightHand>() )
@@ -373,16 +373,6 @@ void CPlayer::SetPlayerInputBinding(int index)
 			//プレイヤー1.
 			keyMap
 			{
-				{Action::MoveUp,		VK_UP},		//上移動.
-				{Action::MoveDown,		VK_DOWN},	//下移動.
-				{Action::MoveLeft,		VK_LEFT},	//左移動.
-				{Action::MoveRight,		VK_RIGHT},	//右移動.
-				{Action::Attack,		VK_OEM_2},		//攻撃.
-				{Action::ToggleItem,	VK_OEM_102},	//拾う/捨てる.
-			},
-			//プレイヤー2.
-			keyMap
-			{
 				{Action::MoveUp,		'W'},	//上移動.
 				{Action::MoveDown,		'S'},	//下移動.
 				{Action::MoveLeft,		'A'},	//左移動.
@@ -390,7 +380,7 @@ void CPlayer::SetPlayerInputBinding(int index)
 				{Action::Attack,		'Q'},	//攻撃.
 				{Action::ToggleItem,	'E'},	//拾う/捨てる.
 			},
-			//プレイヤー3.
+			//プレイヤー2.
 			keyMap
 			{
 				{Action::MoveUp,		'T'},	//上移動.
@@ -400,7 +390,7 @@ void CPlayer::SetPlayerInputBinding(int index)
 				{Action::Attack,		'R'}, 	//攻撃.
 				{Action::ToggleItem,	'Y'}, 	//拾う/捨てる.
 			},
-			//プレイヤー4.
+			//プレイヤー3.
 			keyMap
 			{
 				{Action::MoveUp,		'I'},	//上移動.
@@ -409,6 +399,16 @@ void CPlayer::SetPlayerInputBinding(int index)
 				{Action::MoveRight,		'L'},	//右移動.
 				{Action::Attack,		'U'}, 	//攻撃.
 				{Action::ToggleItem,	'O'}, 	//拾う/捨てる.
+			},
+			//プレイヤー4.
+			keyMap
+			{
+				{Action::MoveUp,		VK_OEM_3},	//上移動.
+				{Action::MoveDown,		VK_OEM_1},	//下移動.
+				{Action::MoveLeft,		VK_OEM_PLUS},	//左移動.
+				{Action::MoveRight,		VK_OEM_6},	//右移動.
+				{Action::Attack,		'P'},		//攻撃.
+				{Action::ToggleItem,	VK_OEM_4},	//拾う/捨てる.
 			},
 		};
 
@@ -424,6 +424,8 @@ void CPlayer::SetPlayerInputBinding(int index)
 	}
 
 	//コントローラ操作.
-	CInputManager::Instance().BindKey(Action::Attack,		InputBinding(InputDevice::GamePad, CXInput::B));	//攻撃.
-	CInputManager::Instance().BindKey(Action::ToggleItem,	InputBinding(InputDevice::GamePad, CXInput::A));	//拾う/捨てる.
+	CInputManager::Instance().BindKey(Action::Attack,
+		InputBinding(InputDevice::GamePad, CXInput::B));	//攻撃.
+	CInputManager::Instance().BindKey(Action::ToggleItem,	
+		InputBinding(InputDevice::GamePad, CXInput::A));	//拾う/捨てる.
 }
