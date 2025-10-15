@@ -52,7 +52,7 @@ void CPlayerPushedState::Enter(CPlayer& pPlayer)
 	m_LeftHandEndPos += m_LeftHandStartPos;
 
 	//false ‚ğ“ü‚ê‚ÄA‚¢‚Â‚Å‚àUŒ‚‚ªó‚¯‚ç‚ê‚éó‘Ô‚É‚·‚é
-	pPlayer.SetHitInfo(false, CPlayer::StatePattern::None);
+	pPlayer.SetHitInfo(false, CPlayer::PlayerEvent::None);
 }
 
 void CPlayerPushedState::Exit(CPlayer& pPlayer)

@@ -403,12 +403,12 @@ void CPlayer::SetPlayerInputBinding(int index)
 			//プレイヤー4.
 			keyMap
 			{
-				{Action::MoveUp,		VK_OEM_3},	//上移動.
-				{Action::MoveDown,		VK_OEM_1},	//下移動.
+				{Action::MoveUp,		VK_OEM_3},		//上移動.
+				{Action::MoveDown,		VK_OEM_1},		//下移動.
 				{Action::MoveLeft,		VK_OEM_PLUS},	//左移動.
-				{Action::MoveRight,		VK_OEM_6},	//右移動.
-				{Action::Attack,		'P'},		//攻撃.
-				{Action::ToggleItem,	VK_OEM_4},	//拾う/捨てる.
+				{Action::MoveRight,		VK_OEM_6},		//右移動.
+				{Action::Attack,		'P'},			//攻撃.
+				{Action::ToggleItem,	VK_OEM_4},		//拾う/捨てる.
 			},
 		};
 

@@ -9,8 +9,7 @@ class CPlayerMoveState
 	: public CPlayerState	//プレイヤー状態継承クラス.
 {
 public:
-	CPlayerMoveState() {}
-	CPlayerMoveState(float x, float z);
+	CPlayerMoveState(float x, float z);	//引数:移動方向のx軸、z軸.
 	~CPlayerMoveState() override;
 
 	//状態が始めるときだけ呼び出される.
@@ -29,5 +28,10 @@ private:
 	float		m_MoveSpeedScale;	//移動量.
 
 	D3DXVECTOR3	m_MoveDir;			//目的の方向.
+
+private:
+	CPlayerMoveState() = delete;	//デフォルトコンストラクタ禁止.
+	CPlayerMoveState(const CPlayerMoveState&) = delete;
+	CPlayerMoveState& operator = (const CPlayerMoveState& rhs) = delete;
 
 };

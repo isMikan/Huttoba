@@ -9,8 +9,7 @@ class CPlayerTurnState
 	: public CPlayerState	//プレイヤー状態継承クラス.
 {
 public:
-	CPlayerTurnState() {}
-	CPlayerTurnState(float x, float z);
+	CPlayerTurnState(float x, float z);	//引数:回転方向のx軸、z軸.
 	~CPlayerTurnState() override;
 
 	//状態が始めるときだけ呼び出される.
@@ -25,4 +24,10 @@ private:
 
 	float			m_TurnSpeed;	//回転速度.
 	float			m_TurnDir;		//目的の方向.
+
+private:
+	CPlayerTurnState() = delete;	//デフォルトコンストラクタ禁止.
+	CPlayerTurnState(const CPlayerTurnState&) = delete;
+	CPlayerTurnState& operator = (const CPlayerTurnState& rhs) = delete;
+
 };

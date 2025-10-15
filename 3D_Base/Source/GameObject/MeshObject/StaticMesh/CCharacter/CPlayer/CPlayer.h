@@ -27,7 +27,7 @@ class CPlayer
 {
 public:
 	//攻撃を受けたアニメーションパターン.
-	enum class StatePattern
+	enum class PlayerEvent
 	{
 		Push,			//押し出し.
 		Knockback,		//吹き飛ばし.
@@ -46,11 +46,11 @@ public:
 	//攻撃を受けた情報.
 	struct HitInfo
 	{
-		D3DXVECTOR3	position;	//攻撃された位置.
-		D3DXVECTOR3 velocity;	//初速度.
-		float		force;		//攻撃力.
-		bool		isHit;		//攻撃を受けたか.
-		StatePattern	animName;	//アニメーション.
+		D3DXVECTOR3		position;					//攻撃された位置.
+		D3DXVECTOR3		velocity;					//初速度.
+		float			force = 0.f;				//攻撃力.
+		bool			isHit = false;				//攻撃を受けたか.
+		PlayerEvent	animName = PlayerEvent::None;	//アニメーション.
 	};
 
 public:
@@ -145,14 +145,14 @@ public:
 	//--- 攻撃を受けた情報を取得と設定 ---.
 	HitInfo GetHitInfo() const { return m_HitInfo; }
 	void SetHitInfo(
-		bool isHit, StatePattern anim)
+		bool isHit, PlayerEvent anim)
 	{
 		m_HitInfo.isHit = isHit;
 		m_HitInfo.animName = anim;
 	}
 	void SetHitInfo(
 		D3DXVECTOR3 pos, D3DXVECTOR3 velocity,
-		float force, bool isHit, StatePattern anim)
+		float force, bool isHit, PlayerEvent anim)
 	{
 		m_HitInfo.position = pos;
 		m_HitInfo.velocity = velocity;
