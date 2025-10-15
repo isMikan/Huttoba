@@ -115,24 +115,9 @@ void CPlayerPickupState::Update(CPlayer& pPlayer)
 	D3DXVECTOR3 leftHandOffsetPos;
 	D3DXVec3Lerp(&leftHandOffsetPos, &m_LeftHandStartPos, &m_LeftHandEndPos, eased);
 
-	//プレイヤーの位置を取得.
-	D3DXVECTOR3 playerPos = pPlayer.GetPosition();
-
-	//方向に合わせて右手の位置を調整.
-	rightHandOffsetPos =
-		axes.right * rightHandOffsetPos.x +
-		axes.up * rightHandOffsetPos.y +
-		axes.forward * rightHandOffsetPos.z;
-
-	//方向に合わせて左手の位置を調整.
-	leftHandOffsetPos =
-		axes.right * leftHandOffsetPos.x +
-		axes.up * leftHandOffsetPos.y +
-		axes.forward * leftHandOffsetPos.z;
-
 	//プレイヤーの位置と手の調整位置を合わせる.
-	D3DXVECTOR3 rightHandPos = playerPos + rightHandOffsetPos;
-	D3DXVECTOR3 leftHandPos = playerPos + leftHandOffsetPos;
+	D3DXVECTOR3 rightHandPos = pPlayer.GetObjectPos(rightHandOffsetPos);
+	D3DXVECTOR3 leftHandPos = pPlayer.GetObjectPos(leftHandOffsetPos);
 
 	//手の位置を設定.
 	pPlayer.GetPlayerRightHand().SetPosition(rightHandPos);

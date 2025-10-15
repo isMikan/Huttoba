@@ -48,7 +48,10 @@ CPlayer::~CPlayer()
 //--- 毎フレームの動作する関数 ---.
 void CPlayer::Update()
 {
-	GetPlayerHead().SetPosition(SetHeadPos());
+	//頭の調整位置を取得.
+	D3DXVECTOR3 headOffsetPos = GetPlayerHead().GetOffsetPos();
+	//頭の位置を設定.
+	GetPlayerHead().SetPosition(GetObjectPos(headOffsetPos));
 
 	m_pInput->Update();
 
@@ -158,28 +161,22 @@ void CPlayer::ChangeState(
 	}
 }
 
-//--- 頭の位置を設定するために計算する関数 ---.
-D3DXVECTOR3 CPlayer::SetHeadPos()
+//--- 位置を設定するために計算する関数 ---.
+D3DXVECTOR3 CPlayer::GetObjectPos(D3DXVECTOR3 offset)
 {
 	//ローカル軸を取得.
 	LocalAxes axes = GetLocalAxes();
 
-	//調整位置を取得.
-	D3DXVECTOR3 headOffsetPos = GetPlayerHead().GetOffsetPos();
+	//方向による位置を調整.
+	offset =
+		axes.right * offset.x +
+		axes.up * offset.y +
+		axes.forward * offset.z;
 
-	//方向に合わせて位置を調整.
-	headOffsetPos =
-		axes.right * headOffsetPos.x +
-		axes.up * headOffsetPos.y +
-		axes.forward * headOffsetPos.z;
+	//プレイヤーに合わせて調整.
+	D3DXVECTOR3 objPos = m_vPosition + offset;
 
-	//頭の位置をプレイヤーの位置に合わせる.
-	D3DXVECTOR3 headPos = m_vPosition;
-
-	//上に調整.
-	headPos = m_vPosition + headOffsetPos;
-
-	return headPos;
+	return objPos;
 }
 
 //--- プレイヤーの正面方向を取得するための関数 ---.
@@ -191,6 +188,7 @@ D3DXVECTOR3 CPlayer::GetForward()
 
 	D3DXVECTOR3 forward(0, 0, 1); //z軸の正面方向を基準にする. 
 	D3DXVec3TransformCoord(&forward, &forward, &rot);
+
 	return forward;
 }
 

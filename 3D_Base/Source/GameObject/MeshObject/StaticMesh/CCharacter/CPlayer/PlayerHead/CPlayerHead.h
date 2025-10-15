@@ -21,4 +21,5 @@ public:
 
 private:
 	D3DXVECTOR3	m_OffsetPos;	//И╩ТuВ╠Т▓Ро.
+
 };

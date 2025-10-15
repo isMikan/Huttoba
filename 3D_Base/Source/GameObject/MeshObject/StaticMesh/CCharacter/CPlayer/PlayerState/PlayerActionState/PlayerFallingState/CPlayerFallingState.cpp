@@ -20,7 +20,7 @@ CPlayerFallingState::CPlayerFallingState()
 	, m_RotateRange			( 15.f )	//この角度の範囲内で止まる.
 	, m_ForceMax			( 14.f )	//想定.
 
-	, m_Gravity				( 9.8f )
+	, m_Gravity				( -9.8f )
 	, m_RotateSpeed			( 40.f )	//20回転.
 	, m_CurrentTiltAngle	()
 
@@ -113,21 +113,9 @@ void CPlayerFallingState::Update(CPlayer& pPlayer)
 	D3DXVECTOR3 rightHandOffsetPos = m_UpHandOffset + pPlayer.GetPlayerRightHand().GetOffsetPos();
 	D3DXVECTOR3 leftHandOffsetPos = m_UpHandOffset + pPlayer.GetPlayerLeftHand().GetOffsetPos();
 
-	//方向に合わせて右手の位置を調整.
-	rightHandOffsetPos =
-		axes.right * rightHandOffsetPos.x +
-		axes.up * rightHandOffsetPos.y +
-		axes.forward * rightHandOffsetPos.z;
-
-	//方向に合わせて左手の位置を調整.
-	leftHandOffsetPos =
-		axes.right * leftHandOffsetPos.x +
-		axes.up * leftHandOffsetPos.y +
-		axes.forward * leftHandOffsetPos.z;
-
 	//プレイヤーの位置と手の調整位置を合わせる.
-	D3DXVECTOR3 rightHandPos = playerPos + rightHandOffsetPos;
-	D3DXVECTOR3 leftHandPos = playerPos + leftHandOffsetPos;
+	D3DXVECTOR3 rightHandPos = pPlayer.GetObjectPos(rightHandOffsetPos);
+	D3DXVECTOR3 leftHandPos = pPlayer.GetObjectPos(leftHandOffsetPos);
 
 	//手の位置を設定.
 	pPlayer.GetPlayerRightHand().SetPosition(rightHandPos);
@@ -137,7 +125,7 @@ void CPlayerFallingState::Update(CPlayer& pPlayer)
 	float dt = static_cast<float>(CTimeManager::GetDeltaTime());
 
 	//攻撃された情報の取得.
-	m_Velocity.y += -m_Gravity * dt;
+	m_Velocity.y += m_Gravity * dt;
 	playerPos += m_Velocity * dt;
 
 	//プレイヤーの位置を設定.
