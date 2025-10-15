@@ -3,7 +3,7 @@
 
 #include "GameObject/UIObject/CUIObject.h"
 #include "CInput/CInputManager.h"
-#include "GameObject/MeshObject/StaticMesh/CCharacter/CPlayer/CPlayer.h"
+#include "GameObject/MeshObject/StaticMesh/PlayerBase/CPlayerBase.h"
 #include "Assets/AssetManager.h"
 
 #include <functional>
@@ -37,7 +37,7 @@ private:
 
 
 	//キャラクタークラス
-	//std::vector< std::unique_ptr<CPlayer> >	m_pPlayer;
+	//std::vector< std::unique_ptr<CPlayerBase> >	m_pPlayer;
 
 	CInputManager&				m_InputManager;
 

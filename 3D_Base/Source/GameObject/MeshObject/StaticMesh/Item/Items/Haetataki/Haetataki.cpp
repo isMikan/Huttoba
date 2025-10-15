@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "Haetataki.h"
-#include "CCharacter/CPlayer/CPlayer.h"
+#include "PlayerBase/CPlayerBase.h"
 
 //--------------------------------------------------------------------------------------------------------------
 
@@ -75,7 +75,7 @@ void Haetataki::Init()
 
 //--------------------------------------------------------------------------------------------------------------
 
-void Haetataki::Update(std::vector<std::unique_ptr<CPlayer>>& playiers)
+void Haetataki::Update(std::vector<std::unique_ptr<CPlayerBase>>& playiers)
 {
 	//アイテム共通のUpdate
 	ItemBase::Update(playiers);
@@ -117,7 +117,7 @@ void Haetataki::OnGround()
 
 //--------------------------------------------------------------------------------------------------------------
 
-void Haetataki::Have(std::vector<std::unique_ptr<CPlayer>>& playiers)
+void Haetataki::Have(std::vector<std::unique_ptr<CPlayerBase>>& playiers)
 {
 	//アイテムを拾うモーション
 	TakeMostion();
@@ -134,7 +134,7 @@ void Haetataki::Have(std::vector<std::unique_ptr<CPlayer>>& playiers)
 
 //--------------------------------------------------------------------------------------------------------------
 
-void Haetataki::Use(std::vector<std::unique_ptr<CPlayer>>& playiers)
+void Haetataki::Use(std::vector<std::unique_ptr<CPlayerBase>>& playiers)
 {
 	//アイテムをプレイヤーの位置に合わせる
 	m_vPosition = playiers[0]->GetPosition() + m_Offset;

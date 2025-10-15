@@ -162,7 +162,7 @@ void CSceneGameMain::Update()
 		player->GetPlayerLeftHand().Update();	//左手.
 	}
 
-	m_pItemManager->Update(m_pPlayers);
+	//m_pItemManager->Update(m_pPlayers);
 
 	//爆発
 	for (auto& exp : m_pExplosiones)
@@ -250,10 +250,10 @@ void CSceneGameMain::Draw()
 				D3DXVECTOR3 hitPos = m_pPlayers[aNo]->GetPosition();
 
 				m_pPlayers[pNo]->SetHitInfo(
-					hitPos, hitPos, 0.05f, true, CPlayer::PlayerEvent::Push);
+					hitPos, hitPos, 0.05f, true, CPlayerBase::PlayerEvent::Push);
 
 				m_pPlayers[aNo]->SetHitInfo(
-					hitPos, hitPos, 0.f, true, CPlayer::PlayerEvent::Push);
+					hitPos, hitPos, 0.f, true, CPlayerBase::PlayerEvent::Push);
 			}
 		}
 	}
@@ -310,6 +310,7 @@ HRESULT CSceneGameMain::CreateCharactor()
 	//キャラクター関連のインスタンス作成
 
 	//プレイヤーのインスタンス生成.
+	m_pPlayers.clear();
 	m_pPlayers.resize(Player_Max);
 	for (int pNo = 0;pNo < Player_Max;pNo++)
 	{

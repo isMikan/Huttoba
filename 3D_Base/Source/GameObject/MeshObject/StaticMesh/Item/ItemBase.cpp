@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "ItemBase.h"
-#include "CCharacter/CPlayer/CPlayer.h"
+#include "PlayerBase/CPlayerBase.h"
 
 
 ItemBase::ItemBase()
@@ -19,7 +19,7 @@ void ItemBase::Init()
 {
 }
 
-void ItemBase::Update(std::vector<std::unique_ptr<CPlayer>>& playiers)
+void ItemBase::Update(std::vector<std::unique_ptr<CPlayerBase>>& playiers)
 {
 	//‰Šú‰»
 	if (GetAsyncKeyState('R') & 0x8000)

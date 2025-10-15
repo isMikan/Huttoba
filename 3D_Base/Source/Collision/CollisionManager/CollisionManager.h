@@ -3,7 +3,7 @@
 //一旦間に合わないからスルーそのうち！！
 
 class CBoundingSphere;
-class CPlayer;
+class CPlayerBase;
 class CItemManager;
 
 class CollisionManager

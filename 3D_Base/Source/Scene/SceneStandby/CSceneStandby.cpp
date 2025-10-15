@@ -143,7 +143,7 @@ void CSceneStandby::Destroy()
 //	////プレイヤーの人数だけ処理(マジックナンバーなのを後で変える).
 //	//for (int i = 0;i < 4;i++)
 //	//{
-//	//	m_pPlayer.push_back(std::make_unique<CPlayer>());
+//	//	m_pPlayer.push_back(std::make_unique<CPlayerBase>());
 //	//	m_pPlayer[i]->AttachMesh(AssetManager::Mesh(StaticMeshList::Player));
 //	//	m_pPlayer[i]->SetPosition(-12.f + (9.f * i), 1.f, 6.f);
 //	//}
