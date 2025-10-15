@@ -153,8 +153,8 @@ void CSceneStandby::InitializeRedyFont()
 {
 	for (int i = 0;i < 4;i++)
 	{
-		m_pRedyFontImg[i]->SetPosition(200 + (230 * i), 240, 0);
-		m_pNotRedyFontImg[i]->SetPosition(200 + (230 * i), 240, 0);
+		m_pRedyFontImg[i]->SetPosition(200 + static_cast<float>(230 * i), 240, 0);
+		m_pNotRedyFontImg[i]->SetPosition(200 + static_cast<float>(230 * i), 240, 0);
 	}
 }
 
