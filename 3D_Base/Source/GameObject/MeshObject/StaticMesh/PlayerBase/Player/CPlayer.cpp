@@ -18,12 +18,14 @@
 CPlayer::CPlayer(int index)
 	: CPlayerBase			( index )
 
-	, m_pInput			( std::make_unique<CInput>( index ) )
+	, m_PlayerID			( index )
+	, m_pInput				( std::make_unique<CInput>( index ) )
+
 
 {
-	SetCharacterDefault(index);
+	SetCharacterDefault(m_PlayerID);
 
-	SetPlayerInputBinding(index);
+	SetPlayerInputBinding(m_PlayerID);
 }
 
 CPlayer::~CPlayer()
@@ -70,7 +72,7 @@ void CPlayer::HandleInput()
 	if (m_pInput->IsRepeat(Action::MoveRight))	x += 1.f;
 
 	//接続されていたら数値を受け取る.
-	if (m_pInput->IsConnect())
+	//if (m_pInput->IsConnect())
 	{
 		x = m_pInput->GetLeftSthikX();
 		z = m_pInput->GetLeftSthikY();
@@ -83,19 +85,19 @@ void CPlayer::HandleInput()
 	}
 
 	//アイテムを持っていないなら攻撃.
-	if (m_pInput->IsDown(Action::Attack) 
+	if (m_pInput->IsDown(Action::Attack, m_PlayerID)
 		&& !m_IsHoldingItem
 		&& !m_IsAttacking)
 	{
 		SetActionState(std::make_unique<CPlayerHandAttackState>());
 	}
 	//アイテムを持っていないなら拾う.
-	if (m_pInput->IsDown(Action::ToggleItem) && !m_IsHoldingItem)
+	if (m_pInput->IsDown(Action::ToggleItem, m_PlayerID) && !m_IsHoldingItem)
 	{
 		SetActionState(std::make_unique<CPlayerPickupState>());
 	}
 	//アイテムを持っているなら捨てる.
-	else if (m_pInput->IsDown(Action::ToggleItem) && m_IsHoldingItem)
+	else if (m_pInput->IsDown(Action::ToggleItem, m_PlayerID) && m_IsHoldingItem)
 	{
 		SetActionState(std::make_unique<CPlayerThrowState>());
 	}

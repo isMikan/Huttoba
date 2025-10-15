@@ -44,4 +44,5 @@ private:
 private:
 	std::unique_ptr<CInput>				m_pInput;		//“ü—Í.
 
+	int		m_PlayerID;
 };

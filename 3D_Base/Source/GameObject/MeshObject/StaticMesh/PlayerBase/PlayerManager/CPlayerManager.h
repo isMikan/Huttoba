@@ -1,8 +1,8 @@
 #pragma once
 
-#include "GameObject/MeshObject/StaticMesh/CCharacter/CCharacter.h"
+#include "GameObject/MeshObject/StaticMesh/PlayerBase/CPlayerBase.h"
 
-#include "GameObject//MeshObject/StaticMesh/CCharacter/PlayerObserver/IPlayerObserver.h"
+#include "GameObject//MeshObject/StaticMesh/PlayerBase/PlayerObserver/IPlayerObserver.h"
 
 class CPlayerManager
 {
@@ -42,10 +42,10 @@ public:
 	//void ManageEffectLaser(static::EsHandle hEffect);
 
 private:
-	//キャラクターの色を設定する関数.
+	//--- キャラクターの色を設定する関数 ---.
 	CCharacter::ObjectColor SetCharacterColor(int index);
 
-	//初期位置を設定する関数.
+	//--- 初期位置を設定する関数 ---.
 	D3DXVECTOR3 SetDefaultPosition(int index);
 
 	//

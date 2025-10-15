@@ -1,8 +1,8 @@
 #include "CPlayerManager.h"
 
-#include "CCharacter/CPlayer/PlayerState/PlayerMoveState/PlayerMoveIdelState/CPlayerMoveIdleState.h"
-#include "CCharacter/CPlayer/PlayerState/PlayerTurnState/PlayerTurnIdleState/CPlayerTurnIdleState.h"
-#include "CCharacter/CPlayer/PlayerState/PlayerActionState/PlayerActionIdleState/CPlayerActionIdleState.h"
+#include "PlayerBase/PlayerState/PlayerMoveState/PlayerMoveIdelState/CPlayerMoveIdleState.h"
+#include "PlayerBase/PlayerState/PlayerTurnState/PlayerTurnIdleState/CPlayerTurnIdleState.h"
+#include "PlayerBase/PlayerState/PlayerActionState/PlayerActionIdleState/CPlayerActionIdleState.h"
 				  
 CPlayerManager::CPlayerManager(int index)
 	: m_pPlayers	()
@@ -15,7 +15,7 @@ CPlayerManager::~CPlayerManager()
 {
 }
 
-//構築関数.
+//--- 構築関数 ---.
 void CPlayerManager::Create()
 {
 	//プレイヤーのインスタンス生成.
@@ -31,14 +31,14 @@ void CPlayerManager::Create()
 			m_pPlayers = std::make_ptr<CPlayerAI>(pNo);
 		}
 
-		if (!m_pPlayers[pNo]) return ;
+		if (!m_pPlayers[pNo]) return;
 
 		m_pPlayers[pNo]->SetObjectColor(SetCharacterColor(pNo));
 		m_pPlayers[pNo]->SetPosition(SetDefaultPosition(pNo));
 	}
 }
 
-//データの読み込み関数.
+//--- 読込関数 ---.
 void CPlayerManager::LoadData()
 {
 	//プレイヤー.
@@ -60,12 +60,12 @@ void CPlayerManager::LoadData()
 	}
 }
 
-//破棄関数.
+//--- 破棄関数 ---.
 void CPlayerManager::Destroy()
 {
 }
 
-//更新関数.
+//--- 更新関数 ---.
 void CPlayerManager::Update()
 {
 	for (auto& player : m_pPlayers)
@@ -78,7 +78,7 @@ void CPlayerManager::Update()
 	}
 }
 
-//描画関数.
+//--- 描画関数 ---.
 void CPlayerManager::Draw(D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAMERA& Camera)
 {
 	for (auto& player : m_pPlayers)
@@ -94,6 +94,7 @@ void CPlayerManager::Draw(D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAME
 	}
 }
 
+//--- 衝突判定関数 ---.
 void CPlayerManager::Collision()
 {
 	for (int pNo = 0;pNo < Player_Max;pNo++)
@@ -139,7 +140,7 @@ void CPlayerManager::Collision()
 //	}
 //}
 
-//キャラクターの色を設定する関数.
+//--- キャラクターの色を設定する関数 ---.
 CCharacter::ObjectColor CPlayerManager::SetCharacterColor(int index)
 {
 	//プレイヤーの色.
@@ -185,7 +186,7 @@ CCharacter::ObjectColor CPlayerManager::SetCharacterColor(int index)
 	return playerColor[index];
 }
 
-//初期位置を設定する関数.
+//--- 初期位置を設定する関数 ---.
 D3DXVECTOR3 CPlayerManager::SetDefaultPosition(int index)
 {
 	std::array<D3DXVECTOR3, Player_Max> playerPos{};	//プレイヤーの位置.
