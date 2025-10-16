@@ -55,9 +55,16 @@ private:
 	float Clamp(float value, float min, float max);
 
 private:
+	ObjectColor	m_DefaultColor;		//初期色.
+
 	float	m_FallSpeed;			//落下速度.
 	float	m_Gravity;				//重力.
 	float	m_Velocity;				//重力速度.
+
+	float	m_ChabgeColorSpeed;		//色を変える速度.
+	float	m_ChabgeColorInterval;	//色を変える間隔.
+	float	m_VibrateSpeed;			//揺れる速度.
+	float	m_VibrateWidth;			//揺れる幅.
 
 	float	m_ChangeColorStartTime;	//色が変わり始めた時間.
 	float	m_VibrateStartTime;		//揺れ始めた時間.

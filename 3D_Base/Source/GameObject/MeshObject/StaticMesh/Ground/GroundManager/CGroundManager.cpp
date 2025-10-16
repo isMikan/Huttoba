@@ -2,9 +2,8 @@
 
 CGroundManager::CGroundManager()
 	: m_pGrounds			()
-
-	, m_FallTime			()
 {
+	m_FallTime = { 10.f, 20.f, 30.f, 99.f };
 }
 
 CGroundManager::~CGroundManager()
@@ -23,11 +22,6 @@ void CGroundManager::Create()
 
 		//’n–Ê‚ÌˆÊ’u‚ðÝ’è.
 		ground->SetPosition(0.f, -0.5f, 10.f);
-
-		m_FallTime[FirstFallGround] = 10.f;
-		m_FallTime[SecondFallGround] = 20.f;
-		m_FallTime[ThirdFallGround] = 30.f;
-		m_FallTime[SafeGround] = 99.f;
 	}
 }
 
