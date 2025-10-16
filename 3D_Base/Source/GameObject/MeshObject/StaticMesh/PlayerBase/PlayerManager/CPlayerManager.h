@@ -10,19 +10,6 @@ public:
 	CPlayerManager();
 	~CPlayerManager();
 
-	//唯一のインスタンスを作成.
-	static CPlayerManager& Instance()
-	{
-		static CPlayerManager* s_Instance = new CPlayerManager;
-		return *s_Instance;
-	}
-
-	//通知を外部から設定.
-	void SetNotify(IPlayerObserver::HitEvent event)
-	{
-		Instance().Notify(event);
-	}
-
 	//--- 構築関数 ---.
 	void Create();
 	//--- 読込関数 ---.
