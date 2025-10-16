@@ -21,6 +21,7 @@ public:
 		Push,			//押し出し.
 		Knockback,		//吹き飛ばし.
 		Down,			//ダウン.
+
 		None = -1		//なし.
 	};
 
@@ -73,7 +74,7 @@ public:
 		float			tiltAngle);	//傾きの角度.
 
 	//--- 押された時の移動量を計算する関数 ---.
-	D3DXVECTOR3 Knockback();
+	D3DXVECTOR3 Pushed();
 
 	//--- 攻撃を受けた時のの移動量 ---.
 	D3DXVECTOR3 GetVelocity();
@@ -86,19 +87,29 @@ public:
 
 	//攻撃を受けた情報を取得と設定.
 	HitInfo GetHitInfo() const { return m_HitInfo; }
+	//状況を設定用.
 	void SetHitInfo(
 		bool isHit, PlayerEvent anim)
 	{
 		m_HitInfo.isHit = isHit;
 		m_HitInfo.animName = anim;
 	}
+	//押し出し用.
+	void SetHitInfo(
+		D3DXVECTOR3 pos, bool isHit, PlayerEvent anim)
+	{
+		m_HitInfo.position = pos;
+		m_HitInfo.isHit = isHit;
+		m_HitInfo.animName = anim;
+	}
+	//吹き飛ばし用.
 	void SetHitInfo(
 		D3DXVECTOR3 pos, D3DXVECTOR3 velocity,
 		float force, bool isHit, PlayerEvent anim)
 	{
 		m_HitInfo.position = pos;
 		m_HitInfo.velocity = velocity;
-		m_HitInfo.force = force;	//7 以上、15 以下推奨.
+		m_HitInfo.force = force;	// 7 ～ 15 推奨.
 		m_HitInfo.isHit = isHit;
 		m_HitInfo.animName = anim;
 	}
@@ -161,4 +172,5 @@ protected:
 
 	HitInfo		m_HitInfo;			//攻撃を受けた情報.
 
+	static constexpr float		m_PushForce = 0.05f;	//押し出す力.
 };

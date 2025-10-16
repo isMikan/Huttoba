@@ -1,9 +1,14 @@
 #include "CPlayerManager.h"
 
+#include "PlayerBase/Player/CPlayer.h"
+#include "PlayerBase/PlayerAI/CPlayerAI.h"
+
 #include "PlayerBase/PlayerState/PlayerMoveState/PlayerMoveIdelState/CPlayerMoveIdleState.h"
 #include "PlayerBase/PlayerState/PlayerTurnState/PlayerTurnIdleState/CPlayerTurnIdleState.h"
 #include "PlayerBase/PlayerState/PlayerActionState/PlayerActionIdleState/CPlayerActionIdleState.h"
-				  
+
+#include "Input//CInputManager.h"
+
 CPlayerManager::CPlayerManager(int index)
 	: m_pPlayers	()
 	, m_PlayerID	( index )
@@ -19,16 +24,17 @@ CPlayerManager::~CPlayerManager()
 void CPlayerManager::Create()
 {
 	//プレイヤーのインスタンス生成.
+	m_pPlayers.clear();
 	m_pPlayers.resize(Player_Max);
 	for (int pNo = 0; pNo < Player_Max; pNo++)
 	{
-		if (m_pInput->IsConnect())
+		if (CInputManager::Instance().IsConnect(pNo))
 		{
 			m_pPlayers[pNo] = std::make_unique<CPlayer>(pNo);
 		}
 		else
 		{
-			m_pPlayers = std::make_ptr<CPlayerAI>(pNo);
+			m_pPlayers[pNo] = std::make_unique<CPlayerAI>(pNo);
 		}
 
 		if (!m_pPlayers[pNo]) return;
@@ -108,10 +114,11 @@ void CPlayerManager::Collision()
 				IsHit(*m_pPlayers[pNo]->GetBSphere()))
 			{
 				m_pPlayers[pNo]->SetHitInfo(
-					m_pPlayers[aNo]->GetPosition(), 0.05f, true);
+					m_pPlayers[aNo]->GetPosition(), true, CPlayerBase::PlayerEvent::Push);
 
-				m_pPlayers[aNo]->SetHitInfo(
-					m_pPlayers[aNo]->GetPosition(), 0.f, true);
+
+				//m_pPlayers[aNo]->SetHitInfo(
+					//m_pPlayers[aNo]->GetPosition(), true, CPlayerBase::PlayerEvent::None);
 			}
 		}
 	}
@@ -141,7 +148,7 @@ void CPlayerManager::Collision()
 //}
 
 //--- キャラクターの色を設定する関数 ---.
-CCharacter::ObjectColor CPlayerManager::SetCharacterColor(int index)
+CPlayerBase::ObjectColor CPlayerManager::SetCharacterColor(int index)
 {
 	//プレイヤーの色.
 	std::array<CStaticMeshObject::ObjectColor, Player_Max>	playerColor{};
@@ -214,4 +221,13 @@ D3DXVECTOR3 CPlayerManager::SetDefaultPosition(int index)
 	}
 
 	return playerPos[index];
+}
+
+//--- オブサーバに通知する ---.
+void CPlayerManager::Notify(IPlayerObserver::PlayerEvent event)
+{
+	for (auto& observer : m_pObserver)
+	{
+		observer->OnNotify(event);
+	}
 }

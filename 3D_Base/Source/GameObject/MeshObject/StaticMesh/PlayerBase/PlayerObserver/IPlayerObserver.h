@@ -11,8 +11,8 @@ public:
 	};
 
 public:
-	~IPlayerObserver() = default;
-	void OnNotify(PlayerEvent event) = 0;
+	 virtual void OnNotify(PlayerEvent event) = 0;
+	 virtual ~IPlayerObserver() = default;
 
 private:
 
