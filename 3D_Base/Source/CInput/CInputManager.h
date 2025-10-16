@@ -36,6 +36,7 @@ public:
     //指定したInputをとれる
     CInput& GetInput(int index) { return *m_pInputs[index]; }
     //全部のInputに入力設定
+    //残していると問題起こしそうなので消していきます
     void BindKey(Action action, const InputBinding& binding);
 
     //第2引数で指定のInputに入力設定
@@ -59,6 +60,9 @@ public:
     //引数で指定したパッドの右スティックの正規化したY軸を取得
     float GetRightSthikY(int index);
     
+    //引数で指定したパッドが接続されているかを取得
+    bool IsConnect(int index) { return m_pInputs[index]->IsConnect(); }
+
     //別の場所に追加するべき----------
     PlayerSlot& GetSlot(int index) { return m_Slot[index]; }
 
@@ -94,7 +98,7 @@ private:
     CInputManager& operator=(const CInputManager&) = delete;
 
 private:
-    std::array<std::unique_ptr<CInput>, 4> m_pInputs;
+    std::array<std::unique_ptr<CInput>, 4>  m_pInputs;
 
     std::array<PlayerSlot, 4>                m_Slot;    //仮置き
 };

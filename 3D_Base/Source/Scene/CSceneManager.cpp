@@ -30,6 +30,8 @@ HRESULT CSceneManager::LoadData()
 
 void CSceneManager::Update()
 {
+	//CInputManager::Instance().Update();
+
 	//シーンが変更されてるか？
 	if (m_pScene->GetChangetScene() == true)
 	{

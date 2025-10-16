@@ -40,8 +40,6 @@ void CPlayer::Update()
 	//頭の位置を設定.
 	GetPlayerHead().SetPosition(GetObjectPos(headOffsetPos));
 
-	m_pInput->Update();
-
 	HandleInput();
 
 	m_pMoveState->Update(*this);
@@ -66,16 +64,16 @@ void CPlayer::HandleInput()
 	float x = 0.f;	//x軸.
 	float z = 0.f;	//z軸.
 
-	if (m_pInput->IsRepeat(Action::MoveUp))		z += 1.f;
-	if (m_pInput->IsRepeat(Action::MoveDown))	z -= 1.f;
-	if (m_pInput->IsRepeat(Action::MoveLeft))	x -= 1.f;
-	if (m_pInput->IsRepeat(Action::MoveRight))	x += 1.f;
+	if (CInputManager::Instance().IsRepeat(Action::MoveUp, m_PlayerID))		z += 1.f;
+	if (CInputManager::Instance().IsRepeat(Action::MoveDown, m_PlayerID))	z -= 1.f;
+	if (CInputManager::Instance().IsRepeat(Action::MoveLeft, m_PlayerID))	x -= 1.f;
+	if (CInputManager::Instance().IsRepeat(Action::MoveRight, m_PlayerID))	x += 1.f;
 
 	//接続されていたら数値を受け取る.
-	//if (m_pInput->IsConnect())
+	if (CInputManager::Instance().IsConnect(m_PlayerID))
 	{
-		x = m_pInput->GetLeftSthikX();
-		z = m_pInput->GetLeftSthikY();
+		x = CInputManager::Instance().GetLeftSthikX(m_PlayerID);
+		z = CInputManager::Instance().GetLeftSthikY(m_PlayerID);
 	}
 
 	if(!m_IsStopping)
@@ -85,19 +83,19 @@ void CPlayer::HandleInput()
 	}
 
 	//アイテムを持っていないなら攻撃.
-	if (m_pInput->IsDown(Action::Attack, m_PlayerID)
+	if (CInputManager::Instance().IsDown(Action::Attack, m_PlayerID)
 		&& !m_IsHoldingItem
 		&& !m_IsAttacking)
 	{
 		SetActionState(std::make_unique<CPlayerHandAttackState>());
 	}
 	//アイテムを持っていないなら拾う.
-	if (m_pInput->IsDown(Action::ToggleItem, m_PlayerID) && !m_IsHoldingItem)
+	if (CInputManager::Instance().IsDown(Action::ToggleItem, m_PlayerID) && !m_IsHoldingItem)
 	{
 		SetActionState(std::make_unique<CPlayerPickupState>());
 	}
 	//アイテムを持っているなら捨てる.
-	else if (m_pInput->IsDown(Action::ToggleItem, m_PlayerID) && m_IsHoldingItem)
+	else if (CInputManager::Instance().IsDown(Action::ToggleItem, m_PlayerID) && m_IsHoldingItem)
 	{
 		SetActionState(std::make_unique<CPlayerThrowState>());
 	}
@@ -219,14 +217,17 @@ void CPlayer::SetPlayerInputBinding(int index)
 			const Action action = key.first;
 			const int code = key.second;
 
-			m_pInput->BindKey(
-				action, InputBinding(InputDevice::Keyboard, code));
+			//m_pInput->BindKey(
+			//	action, InputBinding(InputDevice::Keyboard, code));
+
+			CInputManager::Instance().BindKey(
+				action, InputBinding(InputDevice::Keyboard, code), m_PlayerID);
 		}
 	}
 
 	//コントローラ操作.
 	CInputManager::Instance().BindKey(Action::Attack,
-		InputBinding(InputDevice::GamePad, CXInput::B));	//攻撃.
+		InputBinding(InputDevice::GamePad, CXInput::B), m_PlayerID);	//攻撃.
 	CInputManager::Instance().BindKey(Action::ToggleItem,	
-		InputBinding(InputDevice::GamePad, CXInput::A));	//拾う/捨てる.
+		InputBinding(InputDevice::GamePad, CXInput::A), m_PlayerID);	//拾う/捨てる.
 }

@@ -150,6 +150,9 @@ void CSceneGameMain::Update()
 
 	CTimeManager::Update();
 
+	//後でシーンマネージャーにアップデートに接地する
+	CInputManager::Instance().Update();
+
 	//地面メネージャーの更新処理.
 	m_pGroundManager->Update();
 
