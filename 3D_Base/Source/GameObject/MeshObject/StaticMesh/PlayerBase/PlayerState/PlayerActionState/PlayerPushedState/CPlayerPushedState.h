@@ -37,4 +37,9 @@ private:
 
 	D3DXQUATERNION	m_StartQuat;			//開始時の回転.
 
+private:
+	CPlayerPushedState() = delete;	//デフォルトコンストラクタ禁止.
+	CPlayerPushedState(const CPlayerPushedState&) = delete;
+	CPlayerPushedState& operator = (const CPlayerPushedState& rhs) = delete;
+
 };

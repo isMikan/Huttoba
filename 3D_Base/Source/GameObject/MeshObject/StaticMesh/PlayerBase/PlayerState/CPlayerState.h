@@ -26,4 +26,10 @@ public:
 
 protected:
 	CPlayerBase&	m_pPlayer;		//プレイヤーを参照.
+
+protected:
+	CPlayerState() = delete;	//デフォルトコンストラクタ禁止.
+	CPlayerState(const CPlayerState&) = delete;
+	CPlayerState& operator = (const CPlayerState& rhs) = delete;
+
 };

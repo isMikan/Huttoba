@@ -35,4 +35,10 @@ private:
 	float			m_CurrentTiltAngle;		//現在の傾き角度.
 
 	D3DXQUATERNION	m_StartQuat;			//開始時の回転.
+
+private:
+	CPlayerKnockbackState() = delete;	//デフォルトコンストラクタ禁止.
+	CPlayerKnockbackState(const CPlayerKnockbackState&) = delete;
+	CPlayerKnockbackState& operator = (const CPlayerKnockbackState& rhs) = delete;
+
 };

@@ -32,4 +32,10 @@ private:
 
 	D3DXQUATERNION	m_StartQuat;			//開始時の回転.
 	D3DXQUATERNION	m_DefaultQuat;			//元の回転.
+
+private:
+	CPlayerHandHitState() = delete;	//デフォルトコンストラクタ禁止.
+	CPlayerHandHitState(const CPlayerHandHitState&) = delete;
+	CPlayerHandHitState& operator = (const CPlayerHandHitState& rhs) = delete;
+
 };

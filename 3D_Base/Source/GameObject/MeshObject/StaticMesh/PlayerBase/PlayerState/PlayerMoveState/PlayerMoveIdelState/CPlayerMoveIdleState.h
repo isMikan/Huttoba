@@ -24,4 +24,8 @@ public:
 	void Update() override;
 
 private:
+	CPlayerMoveIdleState() = delete;	//デフォルトコンストラクタ禁止.
+	CPlayerMoveIdleState(const CPlayerMoveIdleState&) = delete;
+	CPlayerMoveIdleState& operator = (const CPlayerMoveIdleState& rhs) = delete;
+
 };

@@ -33,4 +33,10 @@ private:
 	D3DXVECTOR3		m_LeftHandStartPos;		//左手の元の位置.
 	D3DXVECTOR3		m_RightHandEndPos;		//右手の元の位置.
 	D3DXVECTOR3		m_LeftHandEndPos;		//左手の元の位置.
+
+private:
+	CPlayerGetUpState() = delete;	//デフォルトコンストラクタ禁止.
+	CPlayerGetUpState(const CPlayerGetUpState&) = delete;
+	CPlayerGetUpState& operator = (const CPlayerGetUpState& rhs) = delete;
+
 };

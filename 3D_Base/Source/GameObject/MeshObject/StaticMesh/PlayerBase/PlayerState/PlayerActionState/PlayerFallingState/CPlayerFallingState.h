@@ -40,4 +40,9 @@ private:
 
 	D3DXQUATERNION	m_StartQuat;			//開始時の回転.
 
+private:
+	CPlayerFallingState() = delete;	//デフォルトコンストラクタ禁止.
+	CPlayerFallingState(const CPlayerFallingState&) = delete;
+	CPlayerFallingState& operator = (const CPlayerFallingState& rhs) = delete;
+
 };

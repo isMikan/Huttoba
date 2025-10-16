@@ -37,4 +37,10 @@ private:
 	D3DXVECTOR3		m_LeftHandEndPos;		//左手の元の位置.
 
 	D3DXQUATERNION	m_StartQuat;			//開始時の回転.
+
+private:
+	CPlayerHandAttackState() = delete;	//デフォルトコンストラクタ禁止.
+	CPlayerHandAttackState(const CPlayerHandAttackState&) = delete;
+	CPlayerHandAttackState& operator = (const CPlayerHandAttackState& rhs) = delete;
+
 };
