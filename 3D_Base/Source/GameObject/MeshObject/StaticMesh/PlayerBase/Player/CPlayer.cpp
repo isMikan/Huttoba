@@ -204,9 +204,6 @@ void CPlayer::SetPlayerInputBinding(int index) const
 			const Action action = key.first;
 			const int code = key.second;
 
-			//m_pInput->BindKey(
-			//	action, InputBinding(InputDevice::Keyboard, code));
-
 			CInputManager::BindKey(
 				action, InputBinding(InputDevice::Keyboard, code), m_PlayerID);
 		}

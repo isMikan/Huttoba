@@ -28,13 +28,13 @@ void CPlayerManager::Create()
 	m_pPlayers.resize(Player_Max);
 	for (int pNo = 0; pNo < Player_Max; pNo++)
 	{
-		if (CInputManager::IsConnect(pNo))
+		//if (CInputManager::IsConnect(pNo))
 		{
 			m_pPlayers[pNo] = std::make_unique<CPlayer>(pNo);
 		}
-		else
+		//else
 		{
-			m_pPlayers[pNo] = std::make_unique<CPlayerAI>(pNo);
+			//m_pPlayers[pNo] = std::make_unique<CPlayerAI>(pNo);
 		}
 
 		if (!m_pPlayers[pNo]) return;
