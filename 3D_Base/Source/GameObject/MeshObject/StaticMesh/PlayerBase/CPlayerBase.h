@@ -2,6 +2,8 @@
 
 #include "GameObject/MeshObject/StaticMesh/CStaticMeshObject.h"
 
+#include "GameObject//MeshObject/StaticMesh/PlayerBase/PlayerObserver/IPlayerObserver.h"
+
 #include "PlayerHead/CPlayerHead.h"
 #include "PlayerHand/PlayerRightHand/CPlayerRightHand.h"
 #include "PlayerHand/PlayerLeftHand/CPlayerLeftHand.h"
@@ -9,7 +11,7 @@
 #include "PlayerState/CPlayerState.h"
 
 /**************************************************
-*   キャラクタークラス
+*   プレイヤーベースクラス.
 **/
 class CPlayerBase
 	: public CStaticMeshObject
@@ -47,8 +49,20 @@ public:
 	CPlayerBase( int index );
 	virtual ~CPlayerBase();
 
+	//--- 更新処理 ---.
 	virtual void Update() override;
-	virtual void Draw(D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAMERA& Camera) override;
+	//--- 描画処理 ---.
+	virtual void Draw(
+		D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAMERA& Camera) override;
+
+	//--- オブサーバを追加 ---.
+	void AddObserver(IPlayerObserver* observer);
+
+	//--- オブサーバを削除 ---.
+	void RemoveObserver(IPlayerObserver* observer);
+
+	//--- オブサーバに通知する ---.
+	void Notify(IPlayerObserver::PlayerEvent event);
 
 	//--- 移動状態を設定する関数 ---.
 	void SetMoveState(std::unique_ptr<CPlayerState> newState);
@@ -156,6 +170,8 @@ protected:
 		std::unique_ptr<CPlayerState> newScene);
 
 protected:
+	std::vector<IPlayerObserver*>	m_pObserver;	//プレイヤーのオブサーバ.
+
 	std::unique_ptr<CPlayerHead>		m_pHead;		//頭.
 	std::unique_ptr<CPlayerRightHand>	m_pRightHand;	//右手.
 	std::unique_ptr<CPlayerLeftHand>	m_pLeftHand;	//左手.

@@ -5,13 +5,15 @@
 #include "PlayerState/PlayerActionState/PlayerActionIdleState/CPlayerActionIdleState.h"
 
 CPlayerBase::CPlayerBase( int index )
-	: m_pHead			( std::make_unique<CPlayerHead>() )
+	: m_pObserver		()
+	
+	, m_pHead			( std::make_unique<CPlayerHead>() )
 	, m_pRightHand		( std::make_unique<CPlayerRightHand>() )
 	, m_pLeftHand		( std::make_unique<CPlayerLeftHand>() )
 
-	, m_pMoveState		( std::make_unique<CPlayerMoveIdleState>( 0.f, 0.f ) )
-	, m_pTurnState		( std::make_unique<CPlayerTurnIdleState>( 0.f, 0.f ) )
-	, m_pActionState	( std::make_unique<CPlayerActionIdleState>() )
+	, m_pMoveState		( std::make_unique<CPlayerMoveIdleState>( *this, 0.f, 0.f ) )
+	, m_pTurnState		( std::make_unique<CPlayerTurnIdleState>( *this, 0.f, 0.f ) )
+	, m_pActionState	( std::make_unique<CPlayerActionIdleState>( *this ) )
 
 	, m_IsMoving		( false )
 	, m_IsRotating		( false )
@@ -27,6 +29,7 @@ CPlayerBase::~CPlayerBase()
 {
 }
 
+//--- 更新処理 ---.
 void CPlayerBase::Update()
 {
 	//頭の調整位置を取得.
@@ -35,28 +38,52 @@ void CPlayerBase::Update()
 	GetPlayerHead().SetPosition(GetObjectPos(headOffsetPos));
 
 	//移動の状態を更新.
-	m_pMoveState->Update(*this);
+	m_pMoveState->Update();
 	//回転の状態を更新.
-	m_pTurnState->Update(*this);
+	m_pTurnState->Update();
 	//行動の状態を更新.
-	m_pActionState->Update(*this);
+	m_pActionState->Update();
 
 	CStaticMeshObject::Update();
 }
 
+//--- 描画処理 ---.
 void CPlayerBase::Draw(D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAMERA& Camera)
 {
 	CStaticMeshObject::Draw(View, Proj, Light, Camera);
 }
 
+//--- オブサーバを追加 ---.
+void CPlayerBase::AddObserver(IPlayerObserver* observer)
+{
+	m_pObserver.push_back(observer);
+}
+
+//--- オブサーバを削除 ---.
+void CPlayerBase::RemoveObserver(IPlayerObserver* observer)
+{
+	m_pObserver.erase(
+		std::remove(m_pObserver.begin(), m_pObserver.end(), observer),
+		m_pObserver.end());
+}
+
+//--- オブサーバに通知する ---.
+void CPlayerBase::Notify(IPlayerObserver::PlayerEvent event)
+{
+	for (auto& observer : m_pObserver)
+	{
+		observer->OnNotify(event);
+	}
+}
+
 //--- 移動状態を設定する関数 ---.
-void CPlayerBase::SetMoveState(std::unique_ptr< CPlayerState> newState)
+void CPlayerBase::SetMoveState(std::unique_ptr<CPlayerState> newState)
 {
 	ChangeState(m_pMoveState, std::move(newState));
 }
 
 //--- 回転状態を設定する関数 ---.
-void CPlayerBase::SetTurnState(std::unique_ptr< CPlayerState> newState)
+void CPlayerBase::SetTurnState(std::unique_ptr<CPlayerState> newState)
 {
 	ChangeState(m_pTurnState, std::move(newState));
 }
@@ -75,7 +102,9 @@ void CPlayerBase::ChangeState(
 	if (currentState != nullptr)
 	{
 		//状態の終了処理.
-		currentState->Exit(*this);
+		currentState->Exit();
+		//現在の状態削除.
+		RemoveObserver(currentState.get());
 	}
 
 	//新しい状態にする.
@@ -83,8 +112,10 @@ void CPlayerBase::ChangeState(
 
 	if (currentState != nullptr)
 	{
+		//現在の状態追加.
+		AddObserver(currentState.get());
 		//状態の開始処理.
-		currentState->Enter(*this);
+		currentState->Enter();
 	}
 }
 

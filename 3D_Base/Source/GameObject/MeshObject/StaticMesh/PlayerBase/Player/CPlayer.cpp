@@ -65,8 +65,8 @@ void CPlayer::HandleInput()
 
 	if(!m_IsStopping)
 	{
-		SetMoveState(std::make_unique<CPlayerMoveState>(x, z));
-		SetTurnState(std::make_unique<CPlayerTurnState>(x, z));
+		SetMoveState(std::make_unique<CPlayerMoveState>(*this, x, z));
+		SetTurnState(std::make_unique<CPlayerTurnState>(*this, x, z));
 	}
 
 	//アイテムを持っていないなら攻撃.
@@ -74,23 +74,23 @@ void CPlayer::HandleInput()
 		&& !m_IsHoldingItem
 		&& !m_IsAttacking)
 	{
-		SetActionState(std::make_unique<CPlayerHandAttackState>());
+		SetActionState(std::make_unique<CPlayerHandAttackState>(*this));
 	}
 	//アイテムを持っていないなら拾う.
 	if (CInputManager::IsDown(Action::ToggleItem, m_PlayerID) && !m_IsHoldingItem)
 	{
-		SetActionState(std::make_unique<CPlayerPickupState>());
+		SetActionState(std::make_unique<CPlayerPickupState>(*this));
 	}
 	//アイテムを持っているなら捨てる.
 	else if (CInputManager::IsDown(Action::ToggleItem, m_PlayerID) && m_IsHoldingItem)
 	{
-		SetActionState(std::make_unique<CPlayerThrowState>());
+		SetActionState(std::make_unique<CPlayerThrowState>(*this));
 	}
 	//押された時の処理.
 	if (m_HitInfo.isHit == true
 		&& m_HitInfo.hitEvent == HitEvent::Push)
 	{
-		SetActionState(std::make_unique<CPlayerPushedState>());
+		SetActionState(std::make_unique<CPlayerPushedState>(*this));
 	}
 }
 

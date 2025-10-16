@@ -223,12 +223,3 @@ D3DXVECTOR3 CPlayerManager::SetDefaultPosition(int index)
 
 	return playerPos[index];
 }
-
-//--- オブサーバに通知する ---.
-void CPlayerManager::Notify(IPlayerObserver::HitEvent event)
-{
-	for (auto& observer : m_pObserver)
-	{
-		observer->OnNotify(event);
-	}
-}

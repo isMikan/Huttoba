@@ -4,8 +4,9 @@
 
 #include "GameObject/MeshObject/StaticMesh/PlayerBase/PlayerState/PlayerTurnState/PlayerTurnIdleState/CPlayerTurnIdleState.h"
 
-CPlayerTurnState::CPlayerTurnState(float x, float z)
-	:  m_Dir			( x, 0.f, z )
+CPlayerTurnState::CPlayerTurnState(CPlayerBase& pPlayer, float x, float z)
+	: CPlayerState		( pPlayer )
+	, m_Dir				( x, 0.f, z )
 	, m_TurnSpeed		( D3DXToRadian( 5.f ) )
 	, m_TurnDir			()
 {
@@ -15,20 +16,24 @@ CPlayerTurnState::~CPlayerTurnState()
 {
 }
 
-void CPlayerTurnState::Enter(CPlayerBase& pPlayerBase)
+void CPlayerTurnState::OnNotify(IPlayerObserver::PlayerEvent event)
 {
 }
 
-void CPlayerTurnState::Exit(CPlayerBase& pPlayerBase)
+void CPlayerTurnState::Enter()
 {
-	pPlayerBase.SetRotation(pPlayerBase.GetRotation());
 }
 
-void CPlayerTurnState::Update(CPlayerBase& pPlayerBase)
+void CPlayerTurnState::Exit()
+{
+	m_pPlayer.SetRotation(m_pPlayer.GetRotation());
+}
+
+void CPlayerTurnState::Update()
 {
 	if (m_Dir.x == 0 && m_Dir.z == 0)
 	{
-		pPlayerBase.SetTurnState(std::make_unique<CPlayerTurnIdleState>());
+		m_pPlayer.SetTurnState(std::make_unique<CPlayerTurnIdleState>(m_pPlayer));
 		return;
 	}
 
@@ -36,13 +41,13 @@ void CPlayerTurnState::Update(CPlayerBase& pPlayerBase)
 	m_TurnDir = atan2f(m_Dir.x, m_Dir.z);
 
 	//回転しているかを true に設定.
-	pPlayerBase.SetRotating(true);
+	m_pPlayer.SetRotating(true);
 
 	//ローカル軸の取得.
-	CPlayerBase::LocalAxes axes = pPlayerBase.GetLocalAxes();
+	CPlayerBase::LocalAxes axes = m_pPlayer.GetLocalAxes();
 
 	//クォータニオンの回転を取得.
-	D3DXQUATERNION currentQuat = pPlayerBase.GetQuaternion();
+	D3DXQUATERNION currentQuat = m_pPlayer.GetQuaternion();
 
 	//目標の角度.
 	D3DXQUATERNION targetQuat;
@@ -56,5 +61,5 @@ void CPlayerTurnState::Update(CPlayerBase& pPlayerBase)
 	D3DXQuaternionNormalize(&quat, &quat);
 
 	//クォータニオンの回転を設定.
-	pPlayerBase.SetQuaternion(quat);
+	m_pPlayer.SetQuaternion(quat);
 }

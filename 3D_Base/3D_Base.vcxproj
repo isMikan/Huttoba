@@ -253,6 +253,7 @@
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\PlayerBase\PlayerAI\CPlayerAI.cpp" />
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\PlayerBase\PlayerManager\CPlayerManager.cpp" />
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\PlayerBase\PlayerObserver\IPlayerObserver.cpp" />
+    <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\PlayerBase\PlayerState\CPlayerState.cpp" />
     <ClCompile Include="Source\Input\CInput.cpp" />
     <ClCompile Include="Source\Input\CInputManager.cpp" />
     <ClCompile Include="Source\Input\XInput\CXInput.cpp" />
