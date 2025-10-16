@@ -17,6 +17,7 @@ CPlayerBase::CPlayerBase( int index )
 	, m_IsRotating		( false )
 	, m_IsHoldingItem	( false )
 	, m_IsAttacking		( false )
+	, m_IsStopping		( false )
 
 	, m_HitInfo			()
 {
@@ -28,6 +29,18 @@ CPlayerBase::~CPlayerBase()
 
 void CPlayerBase::Update()
 {
+	//頭の調整位置を取得.
+	D3DXVECTOR3 headOffsetPos = GetPlayerHead().GetOffsetPos();
+	//頭の位置を設定.
+	GetPlayerHead().SetPosition(GetObjectPos(headOffsetPos));
+
+	//移動の状態を更新.
+	m_pMoveState->Update(*this);
+	//回転の状態を更新.
+	m_pTurnState->Update(*this);
+	//行動の状態を更新.
+	m_pActionState->Update(*this);
+
 	CStaticMeshObject::Update();
 }
 
@@ -155,14 +168,14 @@ D3DXQUATERNION CPlayerBase::TiltedQuat(
 }
 
 //--- 押された時の移動量を計算する関数 ---.
-D3DXVECTOR3 CPlayerBase::Knockback()
+D3DXVECTOR3 CPlayerBase::Pushed()
 {
 	//押されるベクトル.
 	D3DXVECTOR3 dir = m_vPosition - m_HitInfo.position;
 	//正規化.
 	D3DXVec3Normalize(&dir, &dir);
 	//方向へ吹き飛び量分の位置へ.
-	D3DXVECTOR3 pos = dir * m_HitInfo.force;
+	D3DXVECTOR3 pos = dir * m_PushForce;
 
 	return pos;
 }

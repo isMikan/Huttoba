@@ -55,7 +55,7 @@ void CPlayerKnockbackState::Enter(CPlayerBase& pPlayerBase)
 	//à íuÇê›íË.
 	pPlayerBase.SetHitInfo(
 		hitInfo.position, m_Velocity, hitInfo.force,
-		false, hitInfo.animName);
+		false, hitInfo.hitEvent);
 }
 
 void CPlayerKnockbackState::Exit(CPlayerBase& pPlayerBase)

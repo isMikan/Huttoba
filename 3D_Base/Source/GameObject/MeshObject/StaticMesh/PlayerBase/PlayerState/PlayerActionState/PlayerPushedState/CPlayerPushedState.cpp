@@ -11,7 +11,7 @@ CPlayerPushedState::CPlayerPushedState()
 	, m_EndTime				( 0.5f )
 
 	, m_CurrentTiltAngle	()
-	, m_TiltAngleMax		( D3DXToRadian(-30.f) )
+	, m_TiltAngleMax		( D3DXToRadian( -30.f ) )
 	, m_PhaseSplit			( 0.5f )
 
 	, m_RightHandStartPos	( 0.f, 0.f, 0.f )
@@ -52,7 +52,7 @@ void CPlayerPushedState::Enter(CPlayerBase& pPlayerBase)
 	m_LeftHandEndPos += m_LeftHandStartPos;
 
 	//false を入れて、いつでも攻撃が受けられる状態にする
-	pPlayerBase.SetHitInfo(false, CPlayerBase::PlayerEvent::None);
+	pPlayerBase.SetHitInfo(false, CPlayerBase::HitEvent::None);
 }
 
 void CPlayerPushedState::Exit(CPlayerBase& pPlayerBase)
@@ -126,7 +126,7 @@ void CPlayerPushedState::Update(CPlayerBase& pPlayerBase)
 	pPlayerBase.GetPlayerLeftHand().SetPosition(leftHandPos);
 
 	//プレイヤーの位置と押された移動量を足す.
-	playerPos += pPlayerBase.Knockback();
+	playerPos += pPlayerBase.Pushed();
 
 	//プレイヤーの位置を設定.
 	pPlayerBase.SetPosition(playerPos);

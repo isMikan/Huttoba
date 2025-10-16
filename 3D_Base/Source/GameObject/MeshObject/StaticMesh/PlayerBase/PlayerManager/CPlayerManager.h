@@ -7,7 +7,7 @@
 class CPlayerManager
 {
 public:
-	CPlayerManager(int index);
+	CPlayerManager();
 	~CPlayerManager();
 
 	//--- 構築関数 ---.
@@ -27,7 +27,7 @@ public:
 	
 	void AddObserver(std::unique_ptr<IPlayerObserver> observer) 
 	{
-		m_pObserver.push_back(observer);
+		m_pObserver.push_back(std::move(observer));
 	}
 
 	void RemoveObserver(std::unique_ptr<IPlayerObserver> observer)
@@ -43,23 +43,17 @@ public:
 
 private:
 	//--- キャラクターの色を設定する関数 ---.
-	CCharacter::ObjectColor SetCharacterColor(int index);
+	CPlayerBase::ObjectColor SetCharacterColor(int index);
 
 	//--- 初期位置を設定する関数 ---.
 	D3DXVECTOR3 SetDefaultPosition(int index);
 
-	//
-	void Notify(IPlayerObserver::PlayerEvent event)
-	{
-		for (auto& observer : m_pObserver)
-		{
-			observer->OnNotify(event);
-		}
-	}
+	//--- オブサーバに通知する ---.
+	void Notify(IPlayerObserver::HitEvent event);
 
 private:
-	std::vector<std::unique_ptr<IPlayerObserver>>	m_pObserver;	//プレイヤー0のオブサーバ.
-	std::vector<std::unique_ptr<CCharacter>>		m_pPlayers;		//プレイヤー.
+	std::vector<std::unique_ptr<IPlayerObserver>>	m_pObserver;	//プレイヤーのオブサーバ.
+	std::vector<std::unique_ptr<CPlayerBase>>		m_pPlayers;		//プレイヤー.
 
 	int		m_PlayerID;		//プレイヤー番号.
 };

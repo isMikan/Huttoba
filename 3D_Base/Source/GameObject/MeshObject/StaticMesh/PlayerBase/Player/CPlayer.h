@@ -39,7 +39,7 @@ public:
 
 private:
 	//--- キーバインドを設定する関数 ---.
-	void SetPlayerInputBinding(int index);
+	void SetPlayerInputBinding(int index) const;
 
 private:
 	std::unique_ptr<CInput>				m_pInput;		//入力.

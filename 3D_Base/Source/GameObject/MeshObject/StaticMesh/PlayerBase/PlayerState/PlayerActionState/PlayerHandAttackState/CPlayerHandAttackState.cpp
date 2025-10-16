@@ -78,7 +78,7 @@ void CPlayerHandAttackState::Update(CPlayerBase& pPlayerBase)
 	{
 		pPlayerBase.SetAttacking(false);
 		pPlayerBase.SetActionState(std::make_unique<CPlayerHandHitState>());
-		pPlayerBase.SetHitInfo(false, CPlayerBase::PlayerEvent::None);
+		pPlayerBase.SetHitInfo(false, CPlayerBase::HitEvent::None);
 		return;
 	}
 	//UŒ‚‚ª“–‚½‚Á‚Ä‚¢‚È‚¢ê‡.
