@@ -16,7 +16,7 @@ class CPlayerBase
 {
 public:
 	//攻撃を受けたアニメーションパターン.
-	enum class PlayerEvent
+	enum class HitEvent
 	{
 		Push,			//押し出し.
 		Knockback,		//吹き飛ばし.
@@ -40,7 +40,7 @@ public:
 		D3DXVECTOR3		velocity;					//初速度.
 		float			force = 0.f;				//攻撃力.
 		bool			isHit = false;				//攻撃を受けたか.
-		PlayerEvent	animName = PlayerEvent::None;	//アニメーション.
+		HitEvent		hitEvent = HitEvent::None;	//アニメーション.
 	};
 
 public:
@@ -89,29 +89,29 @@ public:
 	HitInfo GetHitInfo() const { return m_HitInfo; }
 	//状況を設定用.
 	void SetHitInfo(
-		bool isHit, PlayerEvent anim)
+		bool isHit, HitEvent anim)
 	{
 		m_HitInfo.isHit = isHit;
-		m_HitInfo.animName = anim;
+		m_HitInfo.hitEvent = anim;
 	}
 	//押し出し用.
 	void SetHitInfo(
-		D3DXVECTOR3 pos, bool isHit, PlayerEvent anim)
+		D3DXVECTOR3 pos, bool isHit, HitEvent anim)
 	{
 		m_HitInfo.position = pos;
 		m_HitInfo.isHit = isHit;
-		m_HitInfo.animName = anim;
+		m_HitInfo.hitEvent = anim;
 	}
 	//吹き飛ばし用.
 	void SetHitInfo(
 		D3DXVECTOR3 pos, D3DXVECTOR3 velocity,
-		float force, bool isHit, PlayerEvent anim)
+		float force, bool isHit, HitEvent anim)
 	{
 		m_HitInfo.position = pos;
 		m_HitInfo.velocity = velocity;
 		m_HitInfo.force = force;	// 7 ～ 15 推奨.
 		m_HitInfo.isHit = isHit;
-		m_HitInfo.animName = anim;
+		m_HitInfo.hitEvent = anim;
 	}
 
 	//プレイヤーが頭を持っている(書き込み用).

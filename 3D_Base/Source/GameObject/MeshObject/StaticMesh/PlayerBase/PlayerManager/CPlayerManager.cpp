@@ -9,9 +9,9 @@
 
 #include "Input//CInputManager.h"
 
-CPlayerManager::CPlayerManager(int index)
+CPlayerManager::CPlayerManager()
 	: m_pPlayers	()
-	, m_PlayerID	( index )
+
 {
 	Create();
 }
@@ -28,13 +28,13 @@ void CPlayerManager::Create()
 	m_pPlayers.resize(Player_Max);
 	for (int pNo = 0; pNo < Player_Max; pNo++)
 	{
-		if (CInputManager::Instance().IsConnect(pNo))
+		//if (CInputManager::Instance().IsConnect(pNo))
 		{
 			m_pPlayers[pNo] = std::make_unique<CPlayer>(pNo);
 		}
-		else
+		//else
 		{
-			m_pPlayers[pNo] = std::make_unique<CPlayerAI>(pNo);
+			//m_pPlayers[pNo] = std::make_unique<CPlayerAI>(pNo);
 		}
 
 		if (!m_pPlayers[pNo]) return;
@@ -82,6 +82,7 @@ void CPlayerManager::Update()
 		player->GetPlayerRightHand().Update();	//右手.
 		player->GetPlayerLeftHand().Update();	//左手.
 	}
+	Collision();
 }
 
 //--- 描画関数 ---.
@@ -114,11 +115,11 @@ void CPlayerManager::Collision()
 				IsHit(*m_pPlayers[pNo]->GetBSphere()))
 			{
 				m_pPlayers[pNo]->SetHitInfo(
-					m_pPlayers[aNo]->GetPosition(), true, CPlayerBase::PlayerEvent::Push);
+					m_pPlayers[aNo]->GetPosition(), true, CPlayerBase::HitEvent::Push);
 
 
-				//m_pPlayers[aNo]->SetHitInfo(
-					//m_pPlayers[aNo]->GetPosition(), true, CPlayerBase::PlayerEvent::None);
+				m_pPlayers[aNo]->SetHitInfo(
+					m_pPlayers[aNo]->GetPosition(), true, CPlayerBase::HitEvent::None);
 			}
 		}
 	}
@@ -224,7 +225,7 @@ D3DXVECTOR3 CPlayerManager::SetDefaultPosition(int index)
 }
 
 //--- オブサーバに通知する ---.
-void CPlayerManager::Notify(IPlayerObserver::PlayerEvent event)
+void CPlayerManager::Notify(IPlayerObserver::HitEvent event)
 {
 	for (auto& observer : m_pObserver)
 	{

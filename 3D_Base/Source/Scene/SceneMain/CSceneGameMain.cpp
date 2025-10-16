@@ -12,7 +12,7 @@ CSceneGameMain::CSceneGameMain( HWND hWnd)
 
 	, m_pUIMap			()
 
-	, m_pPlayers		()
+	, m_pPlayerManager	()
 
 	, m_pExplosiones	()
 
@@ -87,40 +87,7 @@ HRESULT CSceneGameMain::LoadData()
 	}
 
 	//プレイヤー.
-	for (int pNo = 0;pNo < Player_Max;pNo++)
-	{
-		//胴体のスタティックメッシュを設定.
-		m_pPlayers[pNo]->AttachMesh(AssetManager::Mesh(StaticMeshList::PBody));
-		//頭のスタティックメッシュを設定.
-		m_pPlayers[pNo]->GetPlayerHead().
-			AttachMesh(AssetManager::Mesh(StaticMeshList::PHead));
-		//右手のスタティックメッシュを設定.
-		m_pPlayers[pNo]->GetPlayerRightHand().
-			AttachMesh(AssetManager::Mesh(StaticMeshList::PHand));
-		//左手のスタティックメッシュを設定.
-		m_pPlayers[pNo]->GetPlayerLeftHand().
-			AttachMesh(AssetManager::Mesh(StaticMeshList::PHand));
-		//バウンディングスフィアの作成
-		m_pPlayers[pNo]->CreateBSphereForMesh(AssetManager::Mesh(StaticMeshList::BSphere));
-
-		if (!CInputManager::GetSlot(pNo).ready)
-		{
-			//キャラクターの初期座標を設定
-			switch (pNo)
-			{
-			case 0:
-				m_pPlayers[0]->SetPosition(0.f, 0.f, 0.f);
-			case 1:
-				m_pPlayers[1]->SetPosition(0.f, 0.f, 0.f);
-			case 2:
-				m_pPlayers[2]->SetPosition(0.f, 0.f, 0.f);
-			case 3:
-				m_pPlayers[3]->SetPosition(0.f, 0.f, 0.f);
-			default:
-				break;
-			}
-		}
-	}
+	m_pPlayerManager->LoadData();
 
 	//地面マネージャーの読み込み.
 	m_pGroundManager->LoadData();
@@ -152,13 +119,7 @@ void CSceneGameMain::Update()
 	m_pGroundManager->Update();
 
 	//プレイヤーの動作.
-	for (auto& player : m_pPlayers)
-	{
-		player->Update();
-		player->GetPlayerHead().Update();		//頭.
-		player->GetPlayerRightHand().Update();	//右手.
-		player->GetPlayerLeftHand().Update();	//左手.
-	}
+	m_pPlayerManager->Update();
 
 	//m_pItemManager->Update(m_pPlayers);
 
@@ -206,15 +167,8 @@ void CSceneGameMain::Draw()
 	m_pGroundManager->Draw(mView, mProj, light, camera);
 
 	//プレイヤーの描画.
-	for (auto& player : m_pPlayers)
-	{
-		player->Draw(mView, mProj, light, camera);
-		player->GetPlayerHead().Draw(mView, mProj, light, camera);		//頭.
-		player->GetPlayerRightHand().Draw(mView, mProj, light, camera);	//右手.
-		player->GetPlayerLeftHand().Draw(mView, mProj, light, camera);	//左手.
-		//当たり判定の中心座標を更新する
-		player->UpdateBSpherePos();
-	}
+	m_pPlayerManager->Draw(mView, mProj, light, camera);
+	m_pPlayerManager->Collision();
 
 	m_pItemManager->Draw(mView, mProj, light, camera);
 	m_pDrawCollision->Draw(mView, mProj, light, camera);
@@ -233,28 +187,6 @@ void CSceneGameMain::Draw()
 
 	//やりたいことが終わったので、深度テストを有効にしておく
 	m_pDx11->SetDepth(true);
-
-
-	for (int pNo = 0;pNo < Player_Max;pNo++)
-	{
-		for (int aNo = 0;aNo < Player_Max;aNo++)
-		{
-			if (pNo == aNo) continue;
-
-			if (m_pPlayers[aNo]->IsAttacking()
-				&& m_pPlayers[aNo]->GetBSphere()->
-				IsHit(*m_pPlayers[pNo]->GetBSphere()))
-			{
-				D3DXVECTOR3 hitPos = m_pPlayers[aNo]->GetPosition();
-
-				m_pPlayers[pNo]->SetHitInfo(
-					hitPos, hitPos, 0.05f, true, CPlayerBase::PlayerEvent::Push);
-
-				m_pPlayers[aNo]->SetHitInfo(
-					hitPos, hitPos, 0.f, true, CPlayerBase::PlayerEvent::Push);
-			}
-		}
-	}
 
 	for (auto& exp : m_pExplosiones)
 	{
@@ -306,15 +238,8 @@ HRESULT CSceneGameMain::CteateExplosion()
 HRESULT CSceneGameMain::CreateCharactor()
 {
 	//キャラクター関連のインスタンス作成
-
-	//プレイヤーのインスタンス生成.
-	m_pPlayers.clear();
-	m_pPlayers.resize(Player_Max);
-	for (int pNo = 0;pNo < Player_Max;pNo++)
-	{
-		m_pPlayers[pNo] = std::make_unique<CPlayer>(pNo);
-		if (!m_pPlayers[pNo]) return E_POINTER;
-	}
+	m_pPlayerManager = std::make_unique<CPlayerManager>();
+	m_pPlayerManager->Create();
 
 	return S_OK;
 }
@@ -324,25 +249,25 @@ void CSceneGameMain::ManageEffectLaser()
 	//ほんとはメンバ変数で作ってあげる
 	//エフェクトのインスタンスごとに必要になるハンドル
 	//※3つ制御するなら3つ必要
-	static ::EsHandle hEffect = -1;
+	//static ::EsHandle hEffect = -1;
 
-	if (GetAsyncKeyState('Y') & 0x0001)
-	{
-		for (auto& player : m_pPlayers)
-		{
-			hEffect = AssetManager::Effect()->Play("Laser", player->GetPosition());
-		}
+	//if (GetAsyncKeyState('Y') & 0x0001)
+	//{
+	//	for (auto& player : m_pPlayers)
+	//	{
+	//		hEffect = AssetManager::Effect()->Play("Laser", player->GetPosition());
+	//	}
 
-		//拡縮
-		AssetManager::Effect()->SetScale(hEffect, D3DXVECTOR3(0.8f, 0.8f, 0.8f));
-		AssetManager::Effect()->SetRotation(hEffect, D3DXVECTOR3(D3DXToRadian(-90.f), 0.f, 0.f));
-		AssetManager::Effect()->SetLocation(hEffect, D3DXVECTOR3(0.f, 1.f, 1.f));
-	}
+	//	//拡縮
+	//	AssetManager::Effect()->SetScale(hEffect, D3DXVECTOR3(0.8f, 0.8f, 0.8f));
+	//	AssetManager::Effect()->SetRotation(hEffect, D3DXVECTOR3(D3DXToRadian(-90.f), 0.f, 0.f));
+	//	AssetManager::Effect()->SetLocation(hEffect, D3DXVECTOR3(0.f, 1.f, 1.f));
+	//}
 
-	//Effect制御
-	if (GetAsyncKeyState('T') & 0x0001)
-	{
-		AssetManager::Effect()->Stop(hEffect);
-	}
+	////Effect制御
+	//if (GetAsyncKeyState('T') & 0x0001)
+	//{
+	//	AssetManager::Effect()->Stop(hEffect);
+	//}
 
 }

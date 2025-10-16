@@ -15,8 +15,8 @@
 #include "Assets/Mesh/StaticMesh/CStaticMesh.h"
 #include "GameObject/MeshObject/StaticMesh/CStaticMeshObject.h"
 
+#include "GameObject/MeshObject/StaticMesh/PlayerBase/PlayerManager/CPlayerManager.h"
 #include "GameObject/MeshObject/StaticMesh/PlayerBase/CPlayerBase.h"
-#include "GameObject/MeshObject/StaticMesh/PlayerBase/Player/CPlayer.h"
 
 #include "GameObject/MeshObject/StaticMesh/Ground/GroundManager/CGroundManager.h"
 
@@ -70,7 +70,8 @@ private:
 	std::unordered_map<UIList, std::unique_ptr<CUIObject> > m_pUIMap;
 
 	//キャラクタークラス
-	std::vector<std::unique_ptr<CPlayerBase>>	m_pPlayers;
+	std::unique_ptr<CPlayerManager>		m_pPlayerManager;
+	//std::vector<std::unique_ptr<CPlayerBase>>	m_pPlayers;
 
 	//地面クラス
 	std::unique_ptr<CGroundManager> 	m_pGroundManager;

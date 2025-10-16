@@ -29,6 +29,18 @@ CPlayerBase::~CPlayerBase()
 
 void CPlayerBase::Update()
 {
+	//頭の調整位置を取得.
+	D3DXVECTOR3 headOffsetPos = GetPlayerHead().GetOffsetPos();
+	//頭の位置を設定.
+	GetPlayerHead().SetPosition(GetObjectPos(headOffsetPos));
+
+	//移動の状態を更新.
+	m_pMoveState->Update(*this);
+	//回転の状態を更新.
+	m_pTurnState->Update(*this);
+	//行動の状態を更新.
+	m_pActionState->Update(*this);
+
 	CStaticMeshObject::Update();
 }
 

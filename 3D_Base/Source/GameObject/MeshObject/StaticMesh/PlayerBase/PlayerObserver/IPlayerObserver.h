@@ -3,7 +3,7 @@
 class IPlayerObserver
 {
 public:
-	enum class PlayerEvent
+	enum class HitEvent
 	{
 
 		Attack,
@@ -11,7 +11,7 @@ public:
 	};
 
 public:
-	 virtual void OnNotify(PlayerEvent event) = 0;
+	 virtual void OnNotify(HitEvent event) = 0;
 	 virtual ~IPlayerObserver() = default;
 
 private:

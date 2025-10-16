@@ -7,26 +7,20 @@
 class CPlayerManager
 {
 public:
-	CPlayerManager(int index);
+	CPlayerManager();
 	~CPlayerManager();
 
 	//唯一のインスタンスを作成.
-	static CPlayerManager& Instance(int index)
+	static CPlayerManager& Instance()
 	{
-		static std::map<int, std::unique_ptr<CPlayerManager>> Instance;
-
-		if (Instance.find(index) == Instance.end())
-		{
-			Instance[index] = std::make_unique<CPlayerManager>(index);
-		}
-
-		return *Instance[index];
+		static CPlayerManager* s_Instance = new CPlayerManager;
+		return *s_Instance;
 	}
 
 	//通知を外部から設定.
-	void SetNotify(IPlayerObserver::PlayerEvent event, int index)
+	void SetNotify(IPlayerObserver::HitEvent event)
 	{
-		Instance(index).Notify(event);
+		Instance().Notify(event);
 	}
 
 	//--- 構築関数 ---.
@@ -68,7 +62,7 @@ private:
 	D3DXVECTOR3 SetDefaultPosition(int index);
 
 	//--- オブサーバに通知する ---.
-	void Notify(IPlayerObserver::PlayerEvent event);
+	void Notify(IPlayerObserver::HitEvent event);
 
 private:
 	std::vector<std::unique_ptr<IPlayerObserver>>	m_pObserver;	//プレイヤーのオブサーバ.

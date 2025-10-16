@@ -23,8 +23,6 @@ CPlayer::CPlayer(int index)
 
 
 {
-	SetCharacterDefault(m_PlayerID);
-
 	SetPlayerInputBinding(m_PlayerID);
 }
 
@@ -35,18 +33,7 @@ CPlayer::~CPlayer()
 //--- 毎フレームの動作する関数 ---.
 void CPlayer::Update()
 {
-	//頭の調整位置を取得.
-	D3DXVECTOR3 headOffsetPos = GetPlayerHead().GetOffsetPos();
-	//頭の位置を設定.
-	GetPlayerHead().SetPosition(GetObjectPos(headOffsetPos));
-
 	HandleInput();
-
-	m_pMoveState->Update(*this);
-
-	m_pTurnState->Update(*this);
-
-	m_pActionState->Update(*this);
 
 	CPlayerBase::Update();
 }
@@ -101,7 +88,7 @@ void CPlayer::HandleInput()
 	}
 	//押された時の処理.
 	if (m_HitInfo.isHit == true
-		&& m_HitInfo.force > 0.f)
+		&& m_HitInfo.hitEvent == HitEvent::Push)
 	{
 		SetActionState(std::make_unique<CPlayerPushedState>());
 	}
@@ -160,7 +147,7 @@ void CPlayer::SetCharacterDefault(int index)
 }
 
 //--- キーバインドを設定する関数 ---.
-void CPlayer::SetPlayerInputBinding(int index)
+void CPlayer::SetPlayerInputBinding(int index) const
 {
 	//キーボード操作.
 	{
