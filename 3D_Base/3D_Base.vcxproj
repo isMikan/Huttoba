@@ -86,7 +86,8 @@
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(ProjectDir)Source;$(ProjectDir)Source/DirectX;$(ProjectDir)Source/Assets;$(ProjectDir)Source/Assets/Effect/Effekseer/include;$(ProjectDir)Assets\Effect\Effekseer\lib;$(ProjectDir)..\Sourse\Assets\Effect\Effekseer\include</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
-      <LanguageStandard>Default</LanguageStandard>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <EnableModules>true</EnableModules>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -104,7 +105,8 @@
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(ProjectDir)Source;$(ProjectDir)Source/DirectX;$(ProjectDir)Source/Assets;$(ProjectDir)Source/Assets/Effect/Effekseer/include;$(ProjectDir)Assets\Effect\Effekseer\lib;$(ProjectDir)..\Sourse\Assets\Effect\Effekseer\include</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <LanguageStandard>Default</LanguageStandard>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <EnableModules>true</EnableModules>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -124,7 +126,8 @@
       <ForcedIncludeFiles>stdafx.h</ForcedIncludeFiles>
       <AdditionalIncludeDirectories>$(ProjectDir)Source;$(ProjectDir)Source/DirectX;$(ProjectDir)Source/Assets;$(ProjectDir)Source/Assets/Effect/Effekseer/include;$(ProjectDir)Sourse/Assets/Effect/Effekseer/lib;$(ProjectDir)Sourse/Assets/Effect/Effekseer/include;$(ProjectDir)Source/GameObject/MeshObject/StaticMesh</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
-      <LanguageStandard>stdcpp14</LanguageStandard>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <EnableModules>true</EnableModules>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -144,7 +147,8 @@
       <ForcedIncludeFiles>stdafx.h</ForcedIncludeFiles>
       <AdditionalIncludeDirectories>$(ProjectDir)Source;$(ProjectDir)Source/DirectX;$(ProjectDir)Source/Assets;$(ProjectDir)Source/Assets/Effect/Effekseer/include;$(ProjectDir)Assets\Effect\Effekseer\lib;$(ProjectDir)..\Sourse\Assets\Effect\Effekseer\include</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <LanguageStandard>stdcpp14</LanguageStandard>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <EnableModules>true</EnableModules>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -246,6 +250,9 @@
     <ClCompile Include="Source\Assets\Sprite\Sprite3D\CSprite3D.cpp" />
     <ClCompile Include="Source\Camera\CCamera.cpp" />
     <ClCompile Include="Source\Assets\Sprite\SpriteManager.cpp" />
+    <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\PlayerBase\PlayerAI\CPlayerAI.cpp" />
+    <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\PlayerBase\PlayerManager\CPlayerManager.cpp" />
+    <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\PlayerBase\PlayerObserver\IPlayerObserver.cpp" />
     <ClCompile Include="Source\Input\CInput.cpp" />
     <ClCompile Include="Source\Input\CInputManager.cpp" />
     <ClCompile Include="Source\Input\XInput\CXInput.cpp" />
@@ -329,6 +336,9 @@
     <ClInclude Include="Source\Assets\Sprite\Sprite3D\CSprite3D.h" />
     <ClInclude Include="Source\Camera\CCamera.h" />
     <ClInclude Include="Source\Assets\Sprite\SpriteManager.h" />
+    <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\PlayerBase\PlayerAI\CPlayerAI.h" />
+    <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\PlayerBase\PlayerManager\CPlayerManager.h" />
+    <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\PlayerBase\PlayerObserver\IPlayerObserver.h" />
     <ClInclude Include="Source\Input\CInput.h" />
     <ClInclude Include="Source\Input\CInputManager.h" />
     <ClInclude Include="Source\Input\XInput\CXInput.h" />
