@@ -3,7 +3,7 @@
 #include "Assets/Sound/CSoundManager.h"
 #include "Item/ItemManager/ItemManager.h"
 
-CSceneGameMain::CSceneGameMain( HWND hWnd, CInputManager& inputManager)
+CSceneGameMain::CSceneGameMain( HWND hWnd)
 	: m_hWnd			( hWnd )
 
 	, m_pDbgText		( nullptr )
@@ -21,8 +21,6 @@ CSceneGameMain::CSceneGameMain( HWND hWnd, CInputManager& inputManager)
 	, m_pItemManager	( nullptr )
 
 	, m_pDrawCollision	()
-
-	, m_pInputManager	( inputManager )
 {
 	m_pDx9 = CDirectX9::GetInstance();
 	m_pDx11 = CDirectX11::GetInstance();
@@ -105,7 +103,7 @@ HRESULT CSceneGameMain::LoadData()
 		//バウンディングスフィアの作成
 		m_pPlayers[pNo]->CreateBSphereForMesh(AssetManager::Mesh(StaticMeshList::BSphere));
 
-		if (!m_pInputManager.GetSlot(pNo).ready)
+		if (!CInputManager::GetSlot(pNo).ready)
 		{
 			//キャラクターの初期座標を設定
 			switch (pNo)
@@ -149,9 +147,6 @@ void CSceneGameMain::Update()
 	AssetManager::Sound()->PlayLoop(enSoundList::BGM_SceneMain);
 
 	CTimeManager::Update();
-
-	//後でシーンマネージャーにアップデートに接地する
-	CInputManager::Instance().Update();
 
 	//地面メネージャーの更新処理.
 	m_pGroundManager->Update();

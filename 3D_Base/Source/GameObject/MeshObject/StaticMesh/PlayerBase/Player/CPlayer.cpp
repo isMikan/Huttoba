@@ -64,16 +64,16 @@ void CPlayer::HandleInput()
 	float x = 0.f;	//x軸.
 	float z = 0.f;	//z軸.
 
-	if (CInputManager::Instance().IsRepeat(Action::MoveUp, m_PlayerID))		z += 1.f;
-	if (CInputManager::Instance().IsRepeat(Action::MoveDown, m_PlayerID))	z -= 1.f;
-	if (CInputManager::Instance().IsRepeat(Action::MoveLeft, m_PlayerID))	x -= 1.f;
-	if (CInputManager::Instance().IsRepeat(Action::MoveRight, m_PlayerID))	x += 1.f;
+	if (CInputManager::IsRepeat(Action::MoveUp, m_PlayerID))	z += 1.f;
+	if (CInputManager::IsRepeat(Action::MoveDown, m_PlayerID))	z -= 1.f;
+	if (CInputManager::IsRepeat(Action::MoveLeft, m_PlayerID))	x -= 1.f;
+	if (CInputManager::IsRepeat(Action::MoveRight, m_PlayerID))	x += 1.f;
 
 	//接続されていたら数値を受け取る.
-	if (CInputManager::Instance().IsConnect(m_PlayerID))
+	if (CInputManager::IsConnect(m_PlayerID))
 	{
-		x = CInputManager::Instance().GetLeftSthikX(m_PlayerID);
-		z = CInputManager::Instance().GetLeftSthikY(m_PlayerID);
+		x = CInputManager::GetLeftSthikX(m_PlayerID);
+		z = CInputManager::GetLeftSthikY(m_PlayerID);
 	}
 
 	if(!m_IsStopping)
@@ -83,19 +83,19 @@ void CPlayer::HandleInput()
 	}
 
 	//アイテムを持っていないなら攻撃.
-	if (CInputManager::Instance().IsDown(Action::Attack, m_PlayerID)
+	if (CInputManager::IsDown(Action::Attack, m_PlayerID)
 		&& !m_IsHoldingItem
 		&& !m_IsAttacking)
 	{
 		SetActionState(std::make_unique<CPlayerHandAttackState>());
 	}
 	//アイテムを持っていないなら拾う.
-	if (CInputManager::Instance().IsDown(Action::ToggleItem, m_PlayerID) && !m_IsHoldingItem)
+	if (CInputManager::IsDown(Action::ToggleItem, m_PlayerID) && !m_IsHoldingItem)
 	{
 		SetActionState(std::make_unique<CPlayerPickupState>());
 	}
 	//アイテムを持っているなら捨てる.
-	else if (CInputManager::Instance().IsDown(Action::ToggleItem, m_PlayerID) && m_IsHoldingItem)
+	else if (CInputManager::IsDown(Action::ToggleItem, m_PlayerID) && m_IsHoldingItem)
 	{
 		SetActionState(std::make_unique<CPlayerThrowState>());
 	}
@@ -220,14 +220,14 @@ void CPlayer::SetPlayerInputBinding(int index)
 			//m_pInput->BindKey(
 			//	action, InputBinding(InputDevice::Keyboard, code));
 
-			CInputManager::Instance().BindKey(
+			CInputManager::BindKey(
 				action, InputBinding(InputDevice::Keyboard, code), m_PlayerID);
 		}
 	}
 
 	//コントローラ操作.
-	CInputManager::Instance().BindKey(Action::Attack,
+	CInputManager::BindKey(Action::Attack,
 		InputBinding(InputDevice::GamePad, CXInput::B), m_PlayerID);	//攻撃.
-	CInputManager::Instance().BindKey(Action::ToggleItem,	
+	CInputManager::BindKey(Action::ToggleItem,	
 		InputBinding(InputDevice::GamePad, CXInput::A), m_PlayerID);	//拾う/捨てる.
 }

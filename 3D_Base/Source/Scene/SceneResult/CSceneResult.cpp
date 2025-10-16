@@ -1,14 +1,12 @@
 #include "Scene/SceneResult/CSceneResult.h"
 
-CSceneResult::CSceneResult(CInputManager& input)
+CSceneResult::CSceneResult()
 	: m_Action				()
 
 	, m_pSpriteResultImg	( nullptr )
 	, m_pSpriteSelector		( nullptr )
 
 	//, m_pPlayer				()
-
-	, m_InputManager		( input )
 
 	, m_SelectorPos			()
 
@@ -47,16 +45,9 @@ HRESULT CSceneResult::LoadData()
 
 void CSceneResult::Update()
 {
-	m_InputManager.Update();
-
 	MoveSelector();
 
 	SelectorControl();
-
-	//if (m_InputManager.GetInput(0).IsDown(Action::Decide, true))
-	//{
-	//	SetNextScene(Title);
-	//}
 
 	//関数を入れる
 	m_Action =
@@ -68,7 +59,7 @@ void CSceneResult::Update()
 		[this]() {SetNextScene(Title);}
 	};
 
-	if (m_InputManager.GetInput(0).IsDown(Action::Decide))
+	if (CInputManager::IsDown(Action::Decide,0))
 	{
 		//選択中の番号で処理される関数が変わる.
 		m_Action[m_SelectorNumber]();
@@ -95,12 +86,12 @@ void CSceneResult::SetSelectorPos()
 
 void CSceneResult::MoveSelector()
 {
-	if (m_InputManager.GetInput(0).IsDown(Action::NavigateUp)/* || 0 < m_InputManager.GetInput(0).GetLeftSthikY()*/)
+	if (CInputManager::IsDown(Action::NavigateUp,0)/* || 0 < m_InputManager.GetInput(0).GetLeftSthikY()*/)
 	{
 		if (m_SelectorNumber > 0)
 			m_SelectorNumber--;
 	}
-	if (m_InputManager.GetInput(0).IsDown(Action::NavigateDown)/* || 0 > m_InputManager.GetInput(0).GetLeftSthikY()*/)
+	if (CInputManager::IsDown(Action::NavigateDown,0)/* || 0 > m_InputManager.GetInput(0).GetLeftSthikY()*/)
 	{
 		if (m_SelectorNumber < m_SelectorPos.size() - 1)
 			m_SelectorNumber++;
@@ -111,7 +102,7 @@ void CSceneResult::MoveSelector()
 
 void CSceneResult::SelectorControl()
 {
-	float stickY = m_InputManager.GetInput(0).GetLeftSthikY();
+	float stickY = CInputManager::GetLeftSthikY(0);
 
 	// パラメータ
 	const float threshold = 0.5f; // 入力と判定するスティックの倒し量

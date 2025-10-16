@@ -37,7 +37,7 @@ class CSceneGameMain
 	: public CScene
 {
 public:
-	CSceneGameMain(HWND hWnd, CInputManager& inputManager);
+	CSceneGameMain(HWND hWnd);
 	~CSceneGameMain() override;
 
 	HRESULT Create() override;
@@ -80,6 +80,4 @@ private:
 	
 	//“–‚½‚è”»’è•`‰æƒNƒ‰ƒX
 	std::unique_ptr<DrawCollision>	m_pDrawCollision;
-
-	CInputManager&					m_pInputManager;
 };

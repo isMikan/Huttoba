@@ -1,18 +1,14 @@
 #include "CSceneStandby.h"
 
-CSceneStandby::CSceneStandby(CInputManager& input)
+CSceneStandby::CSceneStandby()
 	: m_pSpriteStandbyImg	( nullptr )
 
-	, m_pRedyFontImg		( )
+	, m_pRedyFontImg		()
 	, m_pNotRedyFontImg		()
 
-	, m_pSpriteSelector		(nullptr)
+	, m_pSpriteSelector		( nullptr )
 
 	, m_pCamera				( nullptr )
-
-	, m_pPlayer				()
-
-	, m_InputManager		( input )
 
 	, m_Action				()
 
@@ -79,16 +75,9 @@ HRESULT CSceneStandby::LoadData()
 
 void CSceneStandby::Update()
 {
-	m_InputManager.Update();
-
 	MoveSelector();
 
-	auto& input = m_InputManager.GetInput(0);
-
-	// コントローラー0は「決定可能」
-	auto& input0 = m_InputManager.GetInput(0);
-	auto& slot0 = m_InputManager.GetSlot(0);
-	if (input0.IsDown(Action::Decide)/* && slot0.ready*/)
+	if (CInputManager::IsDown(Action::Decide,0)/* && slot0.ready*/)
 	{
 		//SetNextScene(GameMain);
 		//選択中の番号で処理される関数が変わる.
@@ -98,11 +87,9 @@ void CSceneStandby::Update()
 	//コントローラーで準備状態切り替え.
 	for (int i = 0; i < 4; ++i)
 	{
-		auto& input = m_InputManager.GetInput(i);
-
-		if (input.IsDown(Action::Switch))
+		if (CInputManager::IsDown(Action::Switch,i))
 		{
-			m_InputManager.ChangeSlot(i);
+			CInputManager::ChangeSlot(i);
 		}
 	}
 }
@@ -118,7 +105,7 @@ void CSceneStandby::Draw()
 
 	for (int i = 0;i < 4;i++)
 	{
-		if (m_InputManager.GetSlot(i).ready)
+		if (CInputManager::GetSlot(i).ready)
 		{
 			m_pRedyFontImg[i]->Draw();
 		}
@@ -138,17 +125,6 @@ void CSceneStandby::Destroy()
 {
 }
 
-//void CSceneStandby::InitializePlayers()
-//{
-//	////プレイヤーの人数だけ処理(マジックナンバーなのを後で変える).
-//	//for (int i = 0;i < 4;i++)
-//	//{
-//	//	m_pPlayer.push_back(std::make_unique<CPlayerBase>());
-//	//	m_pPlayer[i]->AttachMesh(AssetManager::Mesh(StaticMeshList::Player));
-//	//	m_pPlayer[i]->SetPosition(-12.f + (9.f * i), 1.f, 6.f);
-//	//}
-//}
-
 void CSceneStandby::InitializeRedyFont()
 {
 	for (int i = 0;i < 4;i++)
@@ -166,12 +142,12 @@ void CSceneStandby::SetSelectorPos()
 
 void CSceneStandby::MoveSelector()
 {
-	if (m_InputManager.GetInput(0).IsDown(Action::NavigateUp) || 0 < m_InputManager.GetInput(0).GetLeftSthikY())
+	if (CInputManager::IsDown(Action::NavigateUp,0) || 0 < CInputManager::GetLeftSthikY(0))
 	{
 		if (m_SelectorNumber > 0)
 			m_SelectorNumber--;
 	}
-	if (m_InputManager.GetInput(0).IsDown(Action::NavigateDown) || 0 > m_InputManager.GetInput(0).GetLeftSthikY())
+	if (CInputManager::IsDown(Action::NavigateDown,0) || 0 > CInputManager::GetLeftSthikY(0))
 	{
 		if (m_SelectorNumber < m_SelectorPos.size() - 1)
 			m_SelectorNumber++;

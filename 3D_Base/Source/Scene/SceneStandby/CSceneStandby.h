@@ -15,7 +15,7 @@ class CSceneStandby
 	: public CScene
 {
 public:
-	CSceneStandby(CInputManager& input);
+	CSceneStandby();
 	~CSceneStandby() override;
 
 	HRESULT Create() override;
@@ -34,25 +34,27 @@ private:
 
 	void MoveSelector();
 private:
-	std::unique_ptr<CUIObject>	m_pSpriteStandbyImg;	//待機画面.
+	//待機画面画像.
+	std::unique_ptr<CUIObject>	m_pSpriteStandbyImg;	
 
 	//プレイヤーの人数の4がマジックナンバーなので後で変更しておく.
-	std::array < std::unique_ptr<CUIObject>,4 >		m_pRedyFontImg;		//準備完了画像.
-	std::array < std::unique_ptr<CUIObject>,4 >		m_pNotRedyFontImg;	//準備中画像.
+	//準備完了画像.
+	std::array < std::unique_ptr<CUIObject>,4 >		m_pRedyFontImg;
+	//準備中画像.
+	std::array < std::unique_ptr<CUIObject>,4 >		m_pNotRedyFontImg;	
 
-	std::unique_ptr<CUIObject>	m_pSpriteSelector;	//選択矢印.
+	//選択矢印.
+	std::unique_ptr<CUIObject>	m_pSpriteSelector;	
 
-	std::unique_ptr<CCamera>	m_pCamera;	//カメラ.
+	//カメラ.
+	std::unique_ptr<CCamera>	m_pCamera;	
 
-	//キャラクタークラス
-	std::array< std::unique_ptr<CPlayerBase>,4 >		m_pPlayer;
+	//画面遷移時の動作を入れる.
+	std::vector<std::function<void()>>	m_Action;	
 
-	CInputManager&									m_InputManager;
-
-	std::vector<std::function<void()>>	m_Action;	//画面遷移時の動作を入れる.
-
-	//8ビットの符号付整数型.
-	uint8_t						m_SelectorNumber;	//現在選択中の番号.
-
-	std::vector<D3DXVECTOR3>	m_SelectorPos;		//選択矢印の座標.
+	//8ビットの符号付整数型の現在選択中の番号.
+	uint8_t						m_SelectorNumber;	
+	
+	//選択矢印の座標.
+	std::vector<D3DXVECTOR3>	m_SelectorPos;		
 };

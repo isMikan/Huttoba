@@ -12,7 +12,7 @@ class CSceneResult
 	: public CScene
 {
 public:
-	CSceneResult(CInputManager& input);
+	CSceneResult();
 	~CSceneResult() override;
 
 	HRESULT Create()	override;
@@ -38,8 +38,6 @@ private:
 
 	//キャラクタークラス
 	//std::vector< std::unique_ptr<CPlayerBase> >	m_pPlayer;
-
-	CInputManager&				m_InputManager;
 
 	std::vector<D3DXVECTOR3>	m_SelectorPos;		//選択矢印の座標.
 

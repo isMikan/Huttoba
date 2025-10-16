@@ -1,6 +1,6 @@
 #include "CSceneTitle.h"
 
-CSceneTitle::CSceneTitle(HWND hWnd, CInputManager& inputmanager)
+CSceneTitle::CSceneTitle(HWND hWnd)
 	: m_hWnd			(hWnd)
 
 	, m_Action			()
@@ -11,8 +11,6 @@ CSceneTitle::CSceneTitle(HWND hWnd, CInputManager& inputmanager)
 	, m_pSpriteTitleFont( nullptr )
 	, m_pSpriteStartFont( nullptr )
 	, m_pSpriteEndFont	( nullptr )
-	
-	, m_InputManager	( inputmanager )
 
 	, m_SelectorPos		()
 
@@ -64,7 +62,7 @@ HRESULT CSceneTitle::LoadData()
 	//関数を入れる
 	m_Action =
 	{
-		//ラムダ式で関数にしてm_Actionの中に入れている(SetNextScene(Standby);ではだめ).
+		//ラムダ式で関数にしてm_Actionの中に入れている[this]でメンバ関数が触れるようになる.
 		//画面に表示される選択肢の文字と同じ順番に処理を入れていく
 		[this]() {SetNextScene(Standby);},
 		[this]() {DestroyWindow(m_hWnd);}
@@ -75,11 +73,9 @@ HRESULT CSceneTitle::LoadData()
 
 void CSceneTitle::Update()
 {
-	m_InputManager.Update();
-
 	MoveSelector();
 
-	if (m_InputManager.GetInput(0).IsDown(Action::Decide))
+	if (CInputManager::IsDown(Action::Decide,0))
 	{
 		//選択中の番号で処理される関数が変わる.
 		m_Action[m_SelectorNumber]();
@@ -109,12 +105,12 @@ void CSceneTitle::SetSelectorPos()
 
 void CSceneTitle::MoveSelector()
 {
-	if (m_InputManager.GetInput(0).IsDown(Action::NavigateUp) || 0 < m_InputManager.GetInput(0).GetLeftSthikY())
+	if (CInputManager::IsDown(Action::NavigateUp,0) || 0 < CInputManager::GetLeftSthikY(0))
 	{
 		if (m_SelectorNumber > 0)
 			m_SelectorNumber--;
 	}
-	if (m_InputManager.GetInput(0).IsDown(Action::NavigateDown) || 0 > m_InputManager.GetInput(0).GetLeftSthikY())
+	if (CInputManager::IsDown(Action::NavigateDown,0) || 0 > CInputManager::GetLeftSthikY(0))
 	{
 		if (m_SelectorNumber < m_SelectorPos.size() - 1)
 			m_SelectorNumber++;

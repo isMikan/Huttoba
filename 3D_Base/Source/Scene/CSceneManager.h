@@ -29,7 +29,6 @@ private:
 
 private:
 	std::unique_ptr<CScene>		m_pScene;
-	CInputManager&				m_pInputManager;
 
 	HWND	m_hWnd;
 };

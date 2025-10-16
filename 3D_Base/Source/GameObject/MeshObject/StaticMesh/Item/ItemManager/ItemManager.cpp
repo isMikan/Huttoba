@@ -27,10 +27,12 @@ HRESULT ItemManager::Create()
 	m_pItems.push_back(ItemFactory::GetInstance()->CreateItem("SmashBat"));
 	m_pItems.push_back(ItemFactory::GetInstance()->CreateItem("Bomb"));
 
-	CInputManager::Instance().BindKey(Action::Have, InputBinding(InputDevice::GamePad, CXInput::A));
-	CInputManager::Instance().BindKey(Action::HaeAttack, InputBinding(InputDevice::GamePad, CXInput::Y));
-	CInputManager::Instance().BindKey(Action::Have, InputBinding(InputDevice::Keyboard, 'Z'));
-
+	for (int i = 0;i < 4;i++)
+	{
+		CInputManager::BindKey(Action::Have, InputBinding(InputDevice::GamePad, CXInput::A),i);
+		CInputManager::BindKey(Action::HaeAttack, InputBinding(InputDevice::GamePad, CXInput::Y),i);
+		CInputManager::BindKey(Action::Have, InputBinding(InputDevice::Keyboard, 'Z'),i);
+	}
 	return S_OK;
 }
 
@@ -60,19 +62,17 @@ void ItemManager::Update(std::vector<std::unique_ptr<CPlayerBase>>& players)
 		//ˆê’UPlayer0‚µ‚©Ž‚Ä‚È‚¢‚æ‚¤‚É‚·‚é
 		item->Update(players);
 
-		CInputManager::Instance().Update();
-
 		for (auto& player : players)
 		{
 			// “–‚½‚è”»’è
 			if (item->GetBSphere()->IsHit(*player->GetBSphere()))
 			{
-				if (CInputManager::Instance().GetInput(0).IsDown(Action::Have))
+				if(CInputManager::IsDown(Action::Have,0))
 				{
 					item->SetState(ItemBase::State::Have);
 				}
 			}
-			if (CInputManager::Instance().GetInput(0).IsDown(Action::HaeAttack))
+			if (CInputManager::IsDown(Action::HaeAttack,0))
 			{
 				item->SetState(ItemBase::State::Use);
 			}

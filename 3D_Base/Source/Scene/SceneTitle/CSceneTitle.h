@@ -9,7 +9,7 @@ class CSceneTitle
 	: public CScene
 {
 public:
-	CSceneTitle(HWND hWnd, CInputManager& input);
+	CSceneTitle(HWND hWnd);
 	~CSceneTitle() override;
 
 	HRESULT Create() override;
@@ -35,8 +35,6 @@ private:
 	std::unique_ptr<CUIObject>	m_pSpriteTitleFont;
 	std::unique_ptr<CUIObject>	m_pSpriteStartFont;
 	std::unique_ptr<CUIObject>	m_pSpriteEndFont;
-
-	CInputManager&				m_InputManager;
 
 	std::vector<D3DXVECTOR3>	m_SelectorPos;		//‘I‘ğ–îˆó‚ÌÀ•W.
 
