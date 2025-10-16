@@ -24,7 +24,7 @@
 
 #include "Assets/Mesh/SkinMesh/CSkinMesh.h"
 #include "Scene/CSceneManager.h"
-#include "CInput/CInputManager.h"
+#include "Input/CInputManager.h"
 
 class ItemManager;
 

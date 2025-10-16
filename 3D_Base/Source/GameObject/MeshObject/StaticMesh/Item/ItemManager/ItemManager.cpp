@@ -2,7 +2,7 @@
 #include "ItemManager.h"
 #include "Item/ItemBase.h"	
 #include "PlayerBase/CPlayerBase.h"
-#include "CInput/CInputManager.h"
+#include "Input/CInputManager.h"
 
 
 //--------------------------------------------------------------------------------------------------------------

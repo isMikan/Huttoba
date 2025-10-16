@@ -9,7 +9,7 @@
 #include "GameObject/MeshObject/StaticMesh/PlayerBase/PlayerState/PlayerActionState/PlayerThrowState/CPlayerThrowState.h"
 #include "GameObject/MeshObject/StaticMesh/PlayerBase/PlayerState/PlayerActionState/PlayerPushedState/CPlayerPushedState.h"
 
-#include "CInput/CInputManager.h"
+#include "Input/CInputManager.h"
 #include "Sound/CSoundManager.h"
 
 #include <unordered_map>

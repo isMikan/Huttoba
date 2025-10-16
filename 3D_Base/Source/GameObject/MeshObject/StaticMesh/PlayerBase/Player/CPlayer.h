@@ -1,6 +1,6 @@
 #pragma once
 
-#include "CInput/CInput.h"
+#include "Input/CInput.h"
 
 #include "GameObject/MeshObject/StaticMesh/PlayerBase/CPlayerBase.h"
 

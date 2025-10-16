@@ -8,7 +8,7 @@
 #include "Scene/SceneStandby/CSceneStandby.h"
 #include "Scene/SceneMain/CSceneGameMain.h"
 #include "Scene/SceneResult/CSceneResult.h"
-#include "CInput/CInputManager.h"
+#include "Input/CInputManager.h"
 
 class CSceneManager final
 {

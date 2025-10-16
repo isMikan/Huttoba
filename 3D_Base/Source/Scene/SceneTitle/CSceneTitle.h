@@ -3,7 +3,7 @@
 
 #include "GameObject/UIObject/CUIObject.h"
 #include "Assets/AssetManager.h"
-#include "CInput/CInputManager.h"
+#include "Input/CInputManager.h"
 
 class CSceneTitle
 	: public CScene

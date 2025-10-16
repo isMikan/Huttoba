@@ -42,8 +42,8 @@
     <ClCompile Include="Source\Scene\SceneResult\CSceneResult.cpp" />
     <ClCompile Include="Source\Scene\SceneTitle\CSceneTitle.cpp" />
     <ClCompile Include="Source\stdafx.cpp" />
-    <ClCompile Include="Source\CInput\CInput.cpp" />
-    <ClCompile Include="Source\CInput\XInput\CXInput.cpp" />
+    <ClCompile Include="Source\Input\CInput.cpp" />
+    <ClCompile Include="Source\Input\XInput\CXInput.cpp" />
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\Item\ItemBase.cpp" />
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\Item\ItemFactory\ItemFactory.cpp" />
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\Item\ItemManager\ItemManager.cpp" />
@@ -54,7 +54,7 @@
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\Item\ItemState\ItemStateUse\ItemStateUse.cpp" />
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\Item\Items\Haetataki\Haetataki.cpp" />
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\Item\Items\SmashBat\SmashBat.cpp" />
-    <ClCompile Include="Source\CInput\CInputManager.cpp" />
+    <ClCompile Include="Source\Input\CInputManager.cpp" />
     <ClCompile Include="Source\TimeManager\CTimeManager.cpp" />
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\DrawCollision\DrawCollision.cpp" />
     <ClCompile Include="Source\Collision\CollisionManager\CollisionManager.cpp" />
@@ -120,9 +120,9 @@
     <ClInclude Include="Source\Scene\SceneResult\CSceneResult.h" />
     <ClInclude Include="Source\Scene\SceneTitle\CSceneTitle.h" />
     <ClInclude Include="Source\stdafx.h" />
-    <ClInclude Include="Source\CInput\CInput.h" />
-    <ClInclude Include="Source\CInput\XInput\CXInput.h" />
-    <ClInclude Include="Source\CInput\InputDevice\InputDevice.h" />
+    <ClInclude Include="Source\Input\CInput.h" />
+    <ClInclude Include="Source\Input\XInput\CXInput.h" />
+    <ClInclude Include="Source\Input\InputDevice\InputDevice.h" />
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\Item\ItemBase.h" />
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\Item\ItemFactory\ItemFactory.h" />
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\Item\ItemManager\ItemManager.h" />
@@ -133,7 +133,7 @@
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\Item\ItemState\ItemStateUse\ItemStateUse.h" />
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\Item\Items\Haetataki\Haetataki.h" />
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\Item\Items\SmashBat\SmashBat.h" />
-    <ClInclude Include="Source\CInput\CInputManager.h" />
+    <ClInclude Include="Source\Input\CInputManager.h" />
     <ClInclude Include="Source\TimeManager\CTimeManager.h" />
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\DrawCollision\DrawCollision.h" />
     <ClInclude Include="Source\Collision\CollisionManager\CollisionManager.h" />
