@@ -9,15 +9,15 @@ class CPlayerPickupState
 	: public CPlayerState	//プレイヤー状態継承クラス.
 {
 public:
-	CPlayerPickupState();
+	CPlayerPickupState(CPlayerBase& pPlayer);
 	~CPlayerPickupState() override;
 
-	//状態が始めるときだけ呼び出される.
-	void Enter(CPlayerBase& pPlayerBase) override;
-	//状態が終わるときだけ呼び出される.
-	void Exit(CPlayerBase& pPlayerBase) override;
-	//この状態の間は毎フレーム呼び出される.
-	void Update(CPlayerBase& pPlayerBase) override;
+	//--- 状態の開始時に呼び出す関数 ---.
+	void Enter() override;
+	//--- 状態の終了時に呼び出す関数 ---.
+	void Exit() override;
+	//--- この状態の間に呼び出す関数 ---.
+	void Update() override;
 
 private:
 	float			m_CenterHandOffset;		//手の中心寄りに調整.
@@ -35,4 +35,10 @@ private:
 	D3DXVECTOR3		m_LeftHandEndPos;		//左手の元の位置.
 
 	D3DXQUATERNION	m_StartQuat;			//開始時の回転.
+
+private:
+	CPlayerPickupState() = delete;	//デフォルトコンストラクタ禁止.
+	CPlayerPickupState(const CPlayerPickupState&) = delete;
+	CPlayerPickupState& operator = (const CPlayerPickupState& rhs) = delete;
+
 };

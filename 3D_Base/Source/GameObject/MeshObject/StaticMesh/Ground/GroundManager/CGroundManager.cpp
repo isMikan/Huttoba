@@ -47,6 +47,16 @@ void CGroundManager::Update()
 
 	for (int gNo = 0; gNo < m_pGrounds.size(); gNo++)
 	{
+		//‚È‚©‚Á‚½‚çŽŸ‚Ö.
+		if (!m_pGrounds[gNo]) continue;
+
+		//§ŒÀ‚Ì‚Æ‚±‚ë‚Ü‚Å‚«‚½‚çÁ‚·.
+		if (m_pGrounds[gNo]->GetPosition().y < -30.f)
+		{
+			m_pGrounds[gNo].reset();
+			return;
+		}
+
 		//—Ž‚¿‚éŽžŠÔ‚ª‰ß‚¬‚½‚ç.
 		if (m_FallTime[gNo] <= t)
 		{
@@ -57,7 +67,7 @@ void CGroundManager::Update()
 				m_pGrounds[gNo]->SetIsFallDown(true);
 			}
 		}
-
+		//—Ž‚¿‚éŽžŠÔ‚æ‚è(VibrateTime•b)‘O‚©‚ç—Ž‚¿‚é‚Ü‚Å.
 		else if (m_FallTime[gNo] - CGround::m_VibrateTime <= t)
 		{
 			if (!m_pGrounds[gNo]->GetIsVibrate())
@@ -66,6 +76,7 @@ void CGroundManager::Update()
 				m_pGrounds[gNo]->SetIsVibrate(true);
 			}
 		}
+		//—Ž‚¿‚éŽžŠÔ‚æ‚è(ChangeColorTime•b)‘O‚É—Ž‚¿‚é‚Ü‚Å.
 		else if (m_FallTime[gNo] - CGround::m_ChangeColorTime <= t
 			&& !m_pGrounds[gNo]->GetIsChangeColor())
 		{
@@ -84,6 +95,9 @@ void CGroundManager::Draw(
 {
 	for (auto& ground : m_pGrounds)
 	{
+		//‚È‚©‚Á‚½‚çŽŸ‚Ö.
+		if (!ground) continue;
+
 		ground->Draw(View, Proj, Light, Camera);
 	}
 }

@@ -2,11 +2,13 @@
 
 #include "GameObject/MeshObject/StaticMesh/PlayerBase/CPlayerBase.h"
 
-CPlayerTurnIdleState::CPlayerTurnIdleState()
+CPlayerTurnIdleState::CPlayerTurnIdleState(CPlayerBase& pPlayer)
+	: CPlayerState		( pPlayer )
 {
 }
 
-CPlayerTurnIdleState::CPlayerTurnIdleState(float x, float z)
+CPlayerTurnIdleState::CPlayerTurnIdleState(CPlayerBase& pPlayer, float x, float z)
+	: CPlayerState			( pPlayer )
 {
 }
 
@@ -14,14 +16,14 @@ CPlayerTurnIdleState::~CPlayerTurnIdleState()
 {
 }
 
-void CPlayerTurnIdleState::Enter(CPlayerBase& pPlayerBase)
+void CPlayerTurnIdleState::Enter()
 {
 }
 
-void CPlayerTurnIdleState::Exit(CPlayerBase& pPlayerBase)
+void CPlayerTurnIdleState::Exit()
 {
 }
 
-void CPlayerTurnIdleState::Update(CPlayerBase& pPlayerBase)
+void CPlayerTurnIdleState::Update()
 {
 }

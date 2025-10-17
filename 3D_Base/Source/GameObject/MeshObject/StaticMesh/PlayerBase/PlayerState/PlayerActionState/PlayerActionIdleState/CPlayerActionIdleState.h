@@ -9,16 +9,19 @@ class CPlayerActionIdleState
 	: public CPlayerState	//プレイヤー状態継承クラス.
 {
 public:
-	CPlayerActionIdleState();
+	CPlayerActionIdleState(CPlayerBase& pPlayer);
 	~CPlayerActionIdleState() override;
 
-	//状態が始めるときだけ呼び出される.
-	void Enter(CPlayerBase& pPlayerBase) override;
-	//状態が終わるときだけ呼び出される.
-	void Exit(CPlayerBase& pPlayerBase) override;
-	//この状態の間は毎フレーム呼び出される.
-	void Update(CPlayerBase& pPlayerBase) override;
+	//--- 状態の開始時に呼び出す関数 ---.
+	void Enter() override;
+	//--- 状態の終了時に呼び出す関数 ---.
+	void Exit() override;
+	//--- この状態の間に呼び出す関数 ---.
+	void Update() override;
 
 private:
+	CPlayerActionIdleState() = delete;	//デフォルトコンストラクタ禁止.
+	CPlayerActionIdleState(const CPlayerActionIdleState&) = delete;
+	CPlayerActionIdleState& operator = (const CPlayerActionIdleState& rhs) = delete;
 
 };

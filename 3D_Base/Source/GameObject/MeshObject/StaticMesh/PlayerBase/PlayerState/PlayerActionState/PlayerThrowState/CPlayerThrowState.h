@@ -9,15 +9,15 @@ class CPlayerThrowState
 	: public CPlayerState	//プレイヤー状態継承クラス.
 {
 public:
-	CPlayerThrowState();
+	CPlayerThrowState(CPlayerBase& pPlayer);
 	~CPlayerThrowState() override;
 
-	//状態が始めるときだけ呼び出される.
-	void Enter(CPlayerBase& pPlayerBase) override;
-	//状態が終わるときだけ呼び出される.
-	void Exit(CPlayerBase& pPlayerBase) override;
-	//この状態の間は毎フレーム呼び出される.
-	void Update(CPlayerBase& pPlayerBase) override;
+	//--- 状態の開始時に呼び出す関数 ---.
+	void Enter() override;
+	//--- 状態の終了時に呼び出す関数 ---.
+	void Exit() override;
+	//--- この状態の間に呼び出す関数 ---.
+	void Update() override;
 
 private:
 	float			m_StartTime;			//開始時間.
@@ -33,4 +33,10 @@ private:
 	D3DXVECTOR3		m_LeftHandEndPos;		//左手の元の位置.
 
 	D3DXQUATERNION	m_StartQuat;			//開始時の回転.
+
+private:
+	CPlayerThrowState() = delete;	//デフォルトコンストラクタ禁止.
+	CPlayerThrowState(const CPlayerThrowState&) = delete;
+	CPlayerThrowState& operator = (const CPlayerThrowState& rhs) = delete;
+
 };

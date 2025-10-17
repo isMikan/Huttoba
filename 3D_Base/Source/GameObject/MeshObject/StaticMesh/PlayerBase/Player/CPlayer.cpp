@@ -1,13 +1,14 @@
 #include "CPlayer.h"
 
 
-#include "GameObject/MeshObject/StaticMesh/PlayerBase/PlayerState/PlayerMoveState/PlayerMoveState/CPlayerMoveState.h"
-#include "GameObject/MeshObject/StaticMesh/PlayerBase/PlayerState/PlayerTurnState/PlayerTurnState/CPlayerTurnState.h"
+#include "PlayerBase/PlayerState/PlayerMoveState/PlayerMoveState/CPlayerMoveState.h"
+#include "PlayerBase/PlayerState/PlayerTurnState/PlayerTurnState/CPlayerTurnState.h"
+#include "PlayerBase/PlayerState/PlayerMoveState/PlayerMoveIdelState/CPlayerMoveIdleState.h"
+#include "PlayerBase/PlayerState/PlayerTurnState/PlayerTurnIdleState/CPlayerTurnIdleState.h"
 
-#include "GameObject/MeshObject/StaticMesh/PlayerBase/PlayerState/PlayerActionState/PlayerHandAttackState/CPlayerHandAttackState.h"
-#include "GameObject/MeshObject/StaticMesh/PlayerBase/PlayerState/PlayerActionState/PlayerPickupState/CPlayerPickupState.h"
-#include "GameObject/MeshObject/StaticMesh/PlayerBase/PlayerState/PlayerActionState/PlayerThrowState/CPlayerThrowState.h"
-#include "GameObject/MeshObject/StaticMesh/PlayerBase/PlayerState/PlayerActionState/PlayerPushedState/CPlayerPushedState.h"
+#include "PlayerBase/PlayerState/PlayerActionState/PlayerHandAttackState/CPlayerHandAttackState.h"
+#include "PlayerBase/PlayerState/PlayerActionState/PlayerPickupState/CPlayerPickupState.h"
+#include "PlayerBase/PlayerState/PlayerActionState/PlayerThrowState/CPlayerThrowState.h"
 
 #include "Input/CInputManager.h"
 #include "Sound/CSoundManager.h"
@@ -19,9 +20,6 @@ CPlayer::CPlayer(int index)
 	: CPlayerBase			( index )
 
 	, m_PlayerID			( index )
-	, m_pInput				( std::make_unique<CInput>( index ) )
-
-
 {
 	SetPlayerInputBinding(m_PlayerID);
 }
@@ -63,87 +61,53 @@ void CPlayer::HandleInput()
 		z = CInputManager::GetLeftSthikY(m_PlayerID);
 	}
 
-	if(!m_IsStopping)
+	//移動回転をしない場合.
+	if(m_PlayerEvent == PlayerEvent::HandWhiff
+		|| m_PlayerEvent == PlayerEvent::Knockback
+		|| m_PlayerEvent == PlayerEvent::Getup
+		|| m_PlayerEvent == PlayerEvent::Knockdown)
 	{
-		SetMoveState(std::make_unique<CPlayerMoveState>(x, z));
-		SetTurnState(std::make_unique<CPlayerTurnState>(x, z));
+		SetMoveState(std::make_unique<CPlayerMoveIdleState>(*this));
+		SetTurnState(std::make_unique<CPlayerTurnIdleState>(*this));
+	}
+	//移動だけする場合.
+	else
+	{
+		SetMoveState(std::make_unique<CPlayerMoveState>(*this, x, z));
+
+		//回転だけしない場合.
+		if (m_PlayerEvent == PlayerEvent::Falling)
+		{
+			SetTurnState(std::make_unique<CPlayerTurnIdleState>(*this));
+		}
+		//移動回転する場合.
+		else
+		{
+			SetTurnState(std::make_unique<CPlayerTurnState>(*this, x, z));
+		}
 	}
 
 	//アイテムを持っていないなら攻撃.
 	if (CInputManager::IsDown(Action::Attack, m_PlayerID)
 		&& !m_IsHoldingItem
-		&& !m_IsAttacking)
+		&& m_PlayerEvent == PlayerEvent::Idle)
 	{
-		SetActionState(std::make_unique<CPlayerHandAttackState>());
+		SetActionState(std::make_unique<CPlayerHandAttackState>(*this));
 	}
 	//アイテムを持っていないなら拾う.
-	if (CInputManager::IsDown(Action::ToggleItem, m_PlayerID) && !m_IsHoldingItem)
+	if (CInputManager::IsDown(Action::ToggleItem, m_PlayerID)
+		&& !m_IsHoldingItem
+		&& m_PlayerEvent == PlayerEvent::Idle)
 	{
-		SetActionState(std::make_unique<CPlayerPickupState>());
+		SetActionState(std::make_unique<CPlayerPickupState>(*this));
 	}
 	//アイテムを持っているなら捨てる.
-	else if (CInputManager::IsDown(Action::ToggleItem, m_PlayerID) && m_IsHoldingItem)
+	else if (CInputManager::IsDown(Action::ToggleItem, m_PlayerID)
+		&& m_IsHoldingItem
+		&& m_PlayerEvent == PlayerEvent::Idle)
 	{
-		SetActionState(std::make_unique<CPlayerThrowState>());
+		SetActionState(std::make_unique<CPlayerThrowState>(*this));
 	}
-	//押された時の処理.
-	if (m_HitInfo.isHit == true
-		&& m_HitInfo.hitEvent == HitEvent::Push)
-	{
-		SetActionState(std::make_unique<CPlayerPushedState>());
-	}
-}
-
-//--- キャラクターの色を設定する関数 ---.
-void CPlayer::SetCharacterDefault(int index)
-{
-	std::array<D3DXVECTOR3, Player_Max> playerPos;							//プレイヤーの位置.
-	std::array<CStaticMeshObject::ObjectColor, Player_Max>	playerColor;	//プレイヤーの色.
-
-	switch (index)
-	{
-	case 0:
-		playerPos[index] = D3DXVECTOR3(-5.f, 0.f, 5.f);
-		playerColor[index] = {
-			D3DXVECTOR4(1.f, 0.f, 0.f, 1.f), // 赤
-			D3DXVECTOR4(0.5f, 0.f, 0.f, 1.f), // 少し暗めの赤
-			D3DXVECTOR4(0.1f, 0.1f, 0.1f, 1.f),
-		};
-
-		break;
-	case 1:
-		playerPos[index] = D3DXVECTOR3(5.f, 0.f, 5.f);
-		playerColor[index] = {
-			D3DXVECTOR4(0.f, 0.f, 1.f, 1.f),  // 青
-			D3DXVECTOR4(0.f, 0.f, 0.5f, 1.f),  // 少し暗めの青
-			D3DXVECTOR4(0.1f, 0.1f, 0.1f, 1.f),  // 白っぽい光沢
-		};
-
-		break;
-	case 2:
-		playerPos[index] = D3DXVECTOR3(-5.f, 0.f, 10.f);
-		playerColor[index] = {
-			D3DXVECTOR4(1.0f, 0.5f, 0.f, 1.f),  // オレンジ
-			D3DXVECTOR4(0.5f, 0.3f, 0.f, 1.f), // 少し暗めのオレンジ
-			D3DXVECTOR4(0.1f, 0.1f, 0.1f, 1.f),  // 白っぽい光沢
-		};
-
-		break;
-	case 3:
-		playerPos[index] = D3DXVECTOR3(5.f, 0.f, 10.f);
-		playerColor[index] = {
-			D3DXVECTOR4(0.0f, 1.0f, 0.0f, 1.f),  // 緑
-			D3DXVECTOR4(0.0f, 0.5f, 0.0f, 1.f),  // 少し暗めの緑
-			D3DXVECTOR4(0.1f, 0.1f, 0.1f, 1.f),  // 白っぽい光沢
-		};
-
-		break;
-	default:
-		break;
-	}
-
-	m_vPosition = playerPos[index];
-	m_ObjColor = playerColor[index];
 }
 
 //--- キーバインドを設定する関数 ---.
@@ -167,7 +131,6 @@ void CPlayer::SetPlayerInputBinding(int index) const
 				{Action::ToggleItem,	'E'},	//拾う/捨てる.
 			},
 			//プレイヤー2.
-			keyMap
 			{
 				{Action::MoveUp,		'T'},	//上移動.
 				{Action::MoveDown,		'G'},	//下移動.
@@ -177,7 +140,6 @@ void CPlayer::SetPlayerInputBinding(int index) const
 				{Action::ToggleItem,	'Y'}, 	//拾う/捨てる.
 			},
 			//プレイヤー3.
-			keyMap
 			{
 				{Action::MoveUp,		'I'},	//上移動.
 				{Action::MoveDown,		'K'},	//下移動.
@@ -187,7 +149,6 @@ void CPlayer::SetPlayerInputBinding(int index) const
 				{Action::ToggleItem,	'O'}, 	//拾う/捨てる.
 			},
 			//プレイヤー4.
-			keyMap
 			{
 				{Action::MoveUp,		VK_OEM_3},		//上移動.
 				{Action::MoveDown,		VK_OEM_1},		//下移動.
@@ -203,9 +164,6 @@ void CPlayer::SetPlayerInputBinding(int index) const
 		{
 			const Action action = key.first;
 			const int code = key.second;
-
-			//m_pInput->BindKey(
-			//	action, InputBinding(InputDevice::Keyboard, code));
 
 			CInputManager::BindKey(
 				action, InputBinding(InputDevice::Keyboard, code), m_PlayerID);

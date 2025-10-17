@@ -33,16 +33,10 @@ public:
 	//--- キー操作 ---.
 	void HandleInput();
 
-
-	//--- キャラクターの色を設定する関数 ---.
-	void SetCharacterDefault(int index);
-
 private:
 	//--- キーバインドを設定する関数 ---.
 	void SetPlayerInputBinding(int index) const;
 
 private:
-	std::unique_ptr<CInput>				m_pInput;		//入力.
-
-	int		m_PlayerID;
+	int		m_PlayerID;		//プレイヤー番号.
 };
