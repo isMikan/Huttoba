@@ -248,10 +248,13 @@ D3DXVECTOR3 CPlayerBase::GetVelocity()
 //--- 角度を0～360度にする関数 ---.
 float CPlayerBase::WrapAngle(float value)
 {
-	//360度以上なら引く.
-	if (value >= 2.f * D3DX_PI) return value - 2.f * D3DX_PI;
-	//0度以上なら足す.
-	if (value < 0.f) return value + 2.f * D3DX_PI;
+	//360度.
+	const float twoPi = 2.f * D3DX_PI;
+
+	//360度での余り.
+	value = fmodf(value, twoPi);
+	//余りが 0 未満なら足す.
+	if (value < 0.f) value += twoPi;
 
 	return value;
 }

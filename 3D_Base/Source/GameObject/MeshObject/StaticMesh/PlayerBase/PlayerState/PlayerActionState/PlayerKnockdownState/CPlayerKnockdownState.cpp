@@ -8,7 +8,7 @@ CPlayerKnockdownState::CPlayerKnockdownState(CPlayerBase& pPlayer)
 	: CPlayerState			( pPlayer )
 	
 	, m_StartTime			()
-	, m_EndTime				( 2.f )
+	, m_EndTime				( 1.f )
 
 	, m_StartQuat			( 0.f, 0.f, 0.f, 1.f )
 
@@ -41,6 +41,8 @@ void CPlayerKnockdownState::Enter()
 	//éËÇÃäJénà íuÇê›íË.
 	m_RightHandStartPos = rightHandOffset;
 	m_LeftHandStartPos = leftHandOffset;
+
+	//m_EndTime = m_pPlayer.GetHitInfo().force * 0.5;
 }
 
 void CPlayerKnockdownState::Exit()

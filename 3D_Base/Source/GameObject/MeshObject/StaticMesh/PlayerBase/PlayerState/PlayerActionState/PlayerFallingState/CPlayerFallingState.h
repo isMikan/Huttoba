@@ -20,7 +20,6 @@ public:
 	void Update() override;
 
 private:
-
 	//--- ワールドでの角度を求める関数 ---.
 	float WorldAngle();
 
@@ -42,6 +41,8 @@ private:
 	float			m_Gravity;				//重力.
 	float			m_RotateSpeed;			//回転する速度.
 	float			m_CurrentTiltAngle;		//現在の傾き角度.
+
+	float			m_GroundPos;			//地面の位置(仮).
 
 	D3DXQUATERNION	m_StartQuat;			//開始時の回転.
 

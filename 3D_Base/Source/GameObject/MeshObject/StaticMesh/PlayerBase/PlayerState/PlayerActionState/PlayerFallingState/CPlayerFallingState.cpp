@@ -23,6 +23,8 @@ CPlayerFallingState::CPlayerFallingState(CPlayerBase& pPlayer)
 	, m_RotateSpeed			( 40.f )	//20回転.
 	, m_CurrentTiltAngle	()
 
+	, m_GroundPos			( 0.1f )
+
 	, m_StartQuat			( 0.f, 0.f, 0.f, 1.f )
 {
 }
@@ -63,7 +65,7 @@ void CPlayerFallingState::Exit()
 	//プレイヤーの位置を取得.
 	D3DXVECTOR3 playerPos = m_pPlayer.GetPosition();
 	//地面に着地.
-	m_pPlayer.SetPosition(playerPos.x, 0.f, playerPos.z);
+	m_pPlayer.SetPosition(playerPos.x, m_GroundPos, playerPos.z);
 }
 
 void CPlayerFallingState::Update()
@@ -95,7 +97,7 @@ void CPlayerFallingState::Update()
 	m_CurrentTiltAngle = m_pPlayer.WrapAngle(m_CurrentTiltAngle);
 	//地面近くかつ90度に近づいたら.
 	if (playerPos.y < m_GroundRange
-		&& fabsf(WorldAngle() - D3DXToRadian(90.f)) < m_RotateRange)
+		&& fabsf(WorldAngle() + D3DXToRadian(90.f)) < m_RotateRange)
 	{
 		//正規化.
 		D3DXQuaternionNormalize(&quat, &quat);
@@ -133,41 +135,35 @@ void CPlayerFallingState::Update()
 	//1フレームの速さを取得.
 	float dt = static_cast<float>(CTimeManager::GetDeltaTime());
 
-	if (playerPos.y <= 0.f)
+	//地面についた場合.
+	if (playerPos.y <= m_GroundPos)
 	{
-		playerPos.y = 0.f;
+		playerPos.y = m_GroundPos;	//位置をそろえておく.
 	}
 	else
 	{
-		//攻撃された情報の取得.
+		//飛んでいく移動量の計算.
 		m_Velocity.y += m_Gravity * dt;
+		//プレイヤーに移動量を足す.
 		playerPos += m_Velocity * dt;
 	}
-
 	//プレイヤーの位置を設定.
 	m_pPlayer.SetPosition(playerPos);
 }
 
 float CPlayerFallingState::WorldAngle()
 {
+	//上方向のローカル軸を取得.
+	D3DXVECTOR3 localUp = m_pPlayer.GetLocalAxes().up;
 	//上方向.
 	D3DXVECTOR3 up(0.f, 1.f, 0.f);
-	D3DXVECTOR3 worldUp;
 
-	//クォータニオンを取得.
-	D3DXQUATERNION quat = m_pPlayer.GetQuaternion();
-
-	D3DXMATRIX rot{};
-	//クォータニオンを行列に変換.
-	D3DXMatrixRotationQuaternion(&rot, &quat);
-
-	D3DXVec3TransformNormal(&worldUp, &up, &rot);
-
-	float dot = D3DXVec3Dot(&up, &worldUp);
+	float dot = D3DXVec3Dot(&localUp, &up);
 	dot = std::clamp(dot, -1.f, 1.f);
+
 	float angle = acosf(dot);
 
-	return angle;
+	return -angle;
 }
 
 bool CPlayerFallingState::IsEnd()
@@ -175,9 +171,9 @@ bool CPlayerFallingState::IsEnd()
 	//プレイヤーの位置を取得.
 	D3DXVECTOR3 playerPos = m_pPlayer.GetPosition();
 
-	//回転を止め、位置が地面についたら.
-	if (fabsf(WorldAngle() - D3DXToRadian(90.f)) < m_RotateRange
-		&& playerPos.y <= 0.f)
+	//回転を90度付近で止め、位置が地面についたら.
+	if (fabsf(WorldAngle() + D3DXToRadian(90.f)) < m_RotateRange
+		&& playerPos.y <= m_GroundPos)
 	{
 		return true;
 	}

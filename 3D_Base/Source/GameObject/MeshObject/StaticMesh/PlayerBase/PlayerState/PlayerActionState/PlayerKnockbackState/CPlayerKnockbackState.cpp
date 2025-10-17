@@ -93,10 +93,10 @@ void CPlayerKnockbackState::Update()
 
 	float dt = static_cast<float>(CTimeManager::GetDeltaTime());
 
-	//攻撃された情報の取得.
+	//飛んでいく移動量の計算.
 	m_Velocity.y += m_Gravity * dt;
+	//プレイヤーに移動量を足す.
 	playerPos += m_Velocity * dt;
-
 	//プレイヤーの位置を設定.
 	m_pPlayer.SetPosition(playerPos);
 
