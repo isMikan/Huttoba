@@ -5,6 +5,8 @@
 
 #include "GameObject/CGameObject.h"
 
+class ICollisionListener;
+
 class CollisionBase
 {
 public:
@@ -24,6 +26,16 @@ public:
 		Magnet,
 		Boomerang,
 		RatRobot,
+
+		None,
+	};
+
+	enum class CollisionType
+	{
+		Capsule,
+		OBB,
+		Ray,
+		Sphere,
 
 		None,
 	};
@@ -74,20 +86,20 @@ public:
 	//Œ»İÀ•W‚Ì’†S‚ğæ“¾
 	virtual D3DXVECTOR3 GetWorldPos() const = 0;
 
-
 	//“–‚½‚è”»’è‚Ìå‚ğİ’è
-	void SetOwner(const CGameObject* obj) { Owner = obj; }
-	const CGameObject* GetOwner() const { return Owner; }
+	void SetOwner(const CGameObject* obj) { m_Owner = obj; }
+	const CGameObject* GetOwner() const { return m_Owner; }
 
 	//å‚Ìí—Ş‚ğİ’è
-	void SetTag(ColliderTag tag) { Tag = tag; }
+	void SetTag(ColliderTag tag) { m_Tag = tag; }
 
 	//‘¶İ‚µ‚Ä‚¢‚é‚©İ’è
-	void SetActive(bool flag) { IsActive = flag; }
+	void SetActive(bool flag) { m_IsActive = flag; }
 
 
-	ColliderTag GetTag() const { return Tag; }
-	bool GetActive() const { return IsActive; }
+	ColliderTag GetTag() const { return m_Tag; }
+	bool GetActive() const { return m_IsActive; }
+
 
 public:
 
@@ -98,10 +110,9 @@ public:
 
 protected:
 
-	const CGameObject* Owner;
-	ColliderTag Tag;
-	bool IsActive;
-
+	const CGameObject* m_Owner;
+	ColliderTag m_Tag;
+	bool m_IsActive;
 private:
 
 };

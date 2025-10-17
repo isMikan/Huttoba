@@ -1,13 +1,14 @@
 #include "stdafx.h"
 #include "CollisionBase.h"
+#include "Collision/CollisionListener/ICollisionListener.h"
 
 CollisionBase::CollisionBase()
 	: m_vPosition	{}
 	, m_vRotation	{}
 	, m_vScale		{}
-	, Owner			{ nullptr }
-	, Tag			{ ColliderTag::None }
-	, IsActive		{ false }
+	, m_Owner			{ nullptr }
+	, m_Tag			{ ColliderTag::None }
+	, m_IsActive		{ false }
 {
 	
 }
