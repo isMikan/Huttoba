@@ -1,4 +1,6 @@
 #include "CollisionStrategyFactory.h"
+#include "Collision/CollisionStrategy/CollisionStrategyBase.h"
+#include "Collision/Collider/CollisionBase.h"
 
 void CollisionStrategyFactory::RegisterStrategy(CollisionBase::ColliderType typeA,
     CollisionBase::ColliderType typeB,

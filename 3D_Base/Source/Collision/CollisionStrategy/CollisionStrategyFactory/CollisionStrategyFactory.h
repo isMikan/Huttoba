@@ -1,8 +1,9 @@
 #pragma once
 #include <unordered_map>
 #include <memory>
-#include "Collision/CollisionStrategy/CollisionStrategyBase.h"
-#include "Collision/Collider/CollisionBase.h"
+#include "../../Collider/CollisionBase.h" // CollisionBase の完全な定義をインクルード
+
+class CollisionStrategyBase;
 
 class CollisionStrategyFactory
 {
@@ -36,8 +37,9 @@ private:
 
             // よく使われる「Boost式ハッシュ合成」
             return h1 ^ (h2 << 1);
+        }
     };
 
     std::unordered_map<std::pair<CollisionBase::ColliderType, CollisionBase::ColliderType>,
         StrategyPtr, PairHash> m_Strategies;
-};
+}; // クラス定義の末尾にセミコロンを追加

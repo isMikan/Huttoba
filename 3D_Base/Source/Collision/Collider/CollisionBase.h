@@ -3,8 +3,7 @@
 #include<string>
 #include<memory>
 
-#include "GameObject/CGameObject.h"
-
+class CGameObject;
 class ICollisionListener;
 
 class CollisionBase

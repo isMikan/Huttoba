@@ -1,11 +1,11 @@
 #pragma once
 #include <vector>
 #include <memory>
-#include "Collision/Collider/CollisionBase.h"
-#include "Collision/CollisionResult/CollisionResult.h"
-#include "Collision/CollisionListener/ICollisionListener.h"
-#include "Collision/CollisionStrategy/CollisionStrategyBase.h"
-#include "Collision/CollisionStrategy/CollisionStrategyFactory/CollisionStrategyFactory.h"
+
+class CollisionBase;
+class CollisionResult;
+class ICollisionListener;
+class CollisionStrategyBase;
 
 class CollisionManager
 {

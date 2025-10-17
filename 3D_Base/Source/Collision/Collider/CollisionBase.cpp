@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "CollisionBase.h"
+#include "GameObject/CGameObject.h"
 #include "Collision/CollisionListener/ICollisionListener.h"
 
 CollisionBase::CollisionBase()

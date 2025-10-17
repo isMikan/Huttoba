@@ -1,4 +1,10 @@
 #include "CollisionManager.h"
+#include "Collision/Collider/CollisionBase.h"
+#include "Collision/CollisionResult/CollisionResult.h"
+#include "Collision/CollisionListener/ICollisionListener.h"
+#include "Collision/CollisionStrategy/CollisionStrategyBase.h"
+#include "Collision/CollisionStrategy/CollisionStrategyFactory/CollisionStrategyFactory.h"
+
 #include <algorithm>
 
 
