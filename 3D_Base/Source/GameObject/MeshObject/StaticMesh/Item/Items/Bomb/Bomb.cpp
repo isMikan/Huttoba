@@ -1,11 +1,16 @@
 #include "stdafx.h"
 #include "Bomb.h"
+#include "PlayerBase/CPlayerBase.h"
+
+#include "TimeManager/CTimeManager.h"
 
 //Factory‚É“o˜^
 namespace { const bool regist = ItemBase::AutoRegister<Bomb>("Bomb"); }
 
 Bomb::Bomb()
-	: m_IsTake	( false )
+	: m_IsTake		( false )
+	, m_PickUpTime	( 1.0f )	//ŠÔ‚ğ•Ï‚¦‚é‚ÆƒAƒCƒeƒ€‚ªè‚É‚Â‚Ü‚Å‚ÌŠÔ‚ª•Ï‰»
+	, m_PickUpCnt	( 0.0f )
 {
 	Init();
 }
@@ -67,7 +72,7 @@ void Bomb::Have(std::vector<std::unique_ptr<CPlayerBase>>& playiers)
 	if (m_IsTake)
 		TakeMotion();
 	else
-		PossessionMotion();
+		PossessionMotion(playiers);
 }
 
 void Bomb::Use(std::vector<std::unique_ptr<CPlayerBase>>& playiers)
@@ -84,12 +89,25 @@ void Bomb::Destroy()
 
 void Bomb::TakeMotion()
 {
-	m_vPosition.x += 0.1;
-	m_vPosition.y += 0.1;
+	if (m_IsTake)
+	{
+		m_PickUpCnt += CTimeManager::GetDeltaTime();
+		m_vPosition.x += 0.1;
+		m_vPosition.z += 0.1;
+
+		if (m_PickUpCnt >= m_PickUpTime)
+		{
+			m_IsTake = false;
+		}
+	}
 }
 
-void Bomb::PossessionMotion()
+void Bomb::PossessionMotion(std::vector<std::unique_ptr<CPlayerBase>>& playiers)
 {
+	if (!m_IsTake)
+	{
+		m_vPosition = playiers[0]->GetPlayerRightHand().GetPosition();
+	}
 }
 
 void Bomb::UseMotion()
