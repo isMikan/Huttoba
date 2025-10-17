@@ -150,74 +150,54 @@ void CPlayerManager::Collision()
 CPlayerBase::ObjectColor CPlayerManager::SetCharacterColor(int index)
 {
 	//プレイヤーの色.
-	std::array<CStaticMeshObject::ObjectColor, Player_Max>	playerColor{};
-
-	switch (index)
+	std::array<CStaticMeshObject::ObjectColor, Player_Max>	playerColor =
 	{
-	case 0:
-		playerColor[index] = {
-			D3DXVECTOR4(1.f, 0.f, 0.f, 1.f), // 赤
-			D3DXVECTOR4(0.5f, 0.f, 0.f, 1.f), // 少し暗めの赤
+		CStaticMeshObject::ObjectColor
+		//プレイヤー1.
+		{
+			D3DXVECTOR4(1.f, 0.f, 0.f, 1.f),	
+			D3DXVECTOR4(0.5f, 0.f, 0.f, 1.f),	
 			D3DXVECTOR4(0.1f, 0.1f, 0.1f, 1.f),
-		};
+		},
+		//プレイヤー2.
+		{
+			D3DXVECTOR4(0.f, 0.f, 1.f, 1.f),	
+			D3DXVECTOR4(0.f, 0.f, 0.5f, 1.f),	
+			D3DXVECTOR4(0.1f, 0.1f, 0.1f, 1.f), 
+		},
+		//プレイヤー3.
+		{
+			D3DXVECTOR4(1.0f, 0.5f, 0.f, 1.f),		
+			D3DXVECTOR4(0.5f, 0.3f, 0.f, 1.f),	
+			D3DXVECTOR4(0.1f, 0.1f, 0.1f, 1.f), 
+		},
+		//プレイヤー4.
+		{
+			D3DXVECTOR4(0.0f, 1.0f, 0.0f, 1.f), 
+			D3DXVECTOR4(0.0f, 0.5f, 0.0f, 1.f), 
+			D3DXVECTOR4(0.1f, 0.1f, 0.1f, 1.f), 
+		}
+	};
 
-		break;
-	case 1:
-		playerColor[index] = {
-			D3DXVECTOR4(0.f, 0.f, 1.f, 1.f),  // 青
-			D3DXVECTOR4(0.f, 0.f, 0.5f, 1.f),  // 少し暗めの青
-			D3DXVECTOR4(0.1f, 0.1f, 0.1f, 1.f),  // 白っぽい光沢
-		};
-
-		break;
-	case 2:
-		playerColor[index] = {
-			D3DXVECTOR4(1.0f, 0.5f, 0.f, 1.f),  // オレンジ
-			D3DXVECTOR4(0.5f, 0.3f, 0.f, 1.f), // 少し暗めのオレンジ
-			D3DXVECTOR4(0.1f, 0.1f, 0.1f, 1.f),  // 白っぽい光沢
-		};
-
-		break;
-	case 3:
-		playerColor[index] = {
-			D3DXVECTOR4(0.0f, 1.0f, 0.0f, 1.f),  // 緑
-			D3DXVECTOR4(0.0f, 0.5f, 0.0f, 1.f),  // 少し暗めの緑
-			D3DXVECTOR4(0.1f, 0.1f, 0.1f, 1.f),  // 白っぽい光沢
-		};
-
-		break;
-	default:
-		break;
-	}
 	return playerColor[index];
 }
 
 //--- 初期位置を設定する関数 ---.
 D3DXVECTOR3 CPlayerManager::SetDefaultPosition(int index)
 {
-	std::array<D3DXVECTOR3, Player_Max> playerPos{};	//プレイヤーの位置.
-
-	switch (index)
+	//プレイヤーの位置.
+	std::array<D3DXVECTOR3, Player_Max> playerPos =
 	{
-	case 0:
-		playerPos[index] = D3DXVECTOR3(-5.f, 0.f, 5.f);
-
-		break;
-	case 1:
-		playerPos[index] = D3DXVECTOR3(5.f, 0.f, 5.f);
-
-		break;
-	case 2:
-		playerPos[index] = D3DXVECTOR3(-5.f, 0.f, 10.f);
-
-		break;
-	case 3:
-		playerPos[index] = D3DXVECTOR3(5.f, 0.f, 10.f);
-
-		break;
-	default:
-		break;
-	}
+		D3DXVECTOR3
+		//プレイヤー1.
+		{ -5.f, 0.f, 5.f },
+		//プレイヤー2.
+		{ 5.f, 0.f, 5.f },
+		//プレイヤー3.
+		{ -5.f, 0.f, 10.f },
+		//プレイヤー4.
+		{ 5.f, 0.f, 10.f }
+	};
 
 	return playerPos[index];
 }
