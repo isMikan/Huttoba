@@ -66,7 +66,7 @@ void CPlayerGetUpState::Update()
 
 	//‘S‘Ì‚ÌŠÔ‚ÌŒ»İ‚ÌŠ„‡.
 	float progress = (t - m_StartTime) / m_EndTime;
-	progress = m_pPlayer.Clamp(progress, 0.f, 1.f);
+	progress = std::clamp(progress, 0.f, 1.f);
 
 	//ŠŠ‚ç‚©‚É³í‚ÌˆÊ’u‚É–ß‚·.
 	D3DXQUATERNION quat;

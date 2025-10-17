@@ -6,7 +6,7 @@
 *	プレイヤーの落ちる状態クラス.
 **/
 class CPlayerFallingState
-	: public CPlayerState
+	: public CPlayerState	//プレイヤー状態を継承.
 {
 public:
 	CPlayerFallingState(CPlayerBase& pPlayer);
@@ -19,6 +19,12 @@ public:
 	//--- この状態の間に呼び出す関数 ---.
 	void Update() override;
 
+private:
+
+	//--- ワールドでの角度を求める関数 ---.
+	float WorldAngle();
+
+	//--- この状態を終了する関数 ---.
 	bool IsEnd();
 
 private:

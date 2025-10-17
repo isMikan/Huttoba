@@ -40,7 +40,7 @@ public:
 	{
 		Pushed,			//押し出し.
 		Knockback,		//吹き飛ばし.
-		Down,			//ダウン.
+		Knockdown,		//ダウン.
 
 		None = -1		//なし(攻撃側の接触).
 	};
@@ -110,9 +110,6 @@ public:
 
 	//--- 攻撃を受けた時のの移動量 ---.
 	D3DXVECTOR3 GetVelocity();
-
-	//--- 数値の領域を指定する関数 ---.
-	float Clamp(float value, float min, float max);
 
 	//--- 角度を0～360度にする関数 ---.
 	float WrapAngle(float value);

@@ -6,7 +6,7 @@
 *	プレイヤーが何も行動していない状態クラス.
 **/
 class CPlayerActionIdleState
-	: public CPlayerState	//プレイヤー状態継承クラス.
+	: public CPlayerState	//プレイヤー状態を継承.
 {
 public:
 	CPlayerActionIdleState(CPlayerBase& pPlayer);

@@ -3,7 +3,7 @@
 #include "GameObject/MeshObject/StaticMesh/PlayerBase/PlayerState/CPlayerState.h"
 
 class CPlayerHandHitState
-	: public CPlayerState	//プレイヤー状態継承クラス.
+	: public CPlayerState	//プレイヤー状態を継承.
 {
 public:
 	CPlayerHandHitState(CPlayerBase& pPlayer);

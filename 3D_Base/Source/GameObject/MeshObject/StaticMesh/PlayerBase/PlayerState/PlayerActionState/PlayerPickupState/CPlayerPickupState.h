@@ -6,7 +6,7 @@
 *	プレイヤーがアイテムを拾う状態クラス.
 **/
 class CPlayerPickupState
-	: public CPlayerState	//プレイヤー状態継承クラス.
+	: public CPlayerState	//プレイヤー状態を継承.
 {
 public:
 	CPlayerPickupState(CPlayerBase& pPlayer);
