@@ -177,6 +177,13 @@ public:
 	//レイとの当たり判定用のメッシュを取得.
 	LPD3DXMESH GetMeshForRay() const { return m_ModelForRay.pMesh; }
 	
+	//お試しで指定したマテリアルの色の変更
+	void SetMaterialColor(size_t index, const D3DXVECTOR4& color)
+	{
+		if (index >= m_pMaterials.size()) return;
+		m_pMaterials[index].Diffuse = color;
+	}
+
 private:
 	//メッシュ読み込み.
 	HRESULT LoadXMesh( LPCTSTR lpFileName );

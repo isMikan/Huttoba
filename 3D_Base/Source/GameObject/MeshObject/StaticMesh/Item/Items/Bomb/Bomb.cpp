@@ -13,6 +13,13 @@ Bomb::Bomb()
 	, m_PickUpCnt	( 0.0f )
 {
 	Init();
+	// Ô‚­Œõ‚ç‚¹‚½‚¢ê‡
+	D3DXVECTOR4 diffuse(1.0f, 0.0f, 0.0f, 1.0f);
+	D3DXVECTOR4 ambient(0.5f, 0.0f, 0.0f, 1.0f);
+	D3DXVECTOR4 specular(0.5f, 0.2f, 0.2f, 1.0f);
+	//SetObjectColor(diffuse, ambient, specular);
+
+	m_pMesh->SetMaterialColor(0, D3DXVECTOR4(1, 0, 0, 1));
 }
 
 Bomb::~Bomb()
