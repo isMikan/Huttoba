@@ -16,10 +16,6 @@ CPlayerTurnState::~CPlayerTurnState()
 {
 }
 
-void CPlayerTurnState::OnNotify(IPlayerObserver::PlayerEvent event)
-{
-}
-
 void CPlayerTurnState::Enter()
 {
 }

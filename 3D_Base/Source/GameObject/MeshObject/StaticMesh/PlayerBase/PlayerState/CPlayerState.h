@@ -1,6 +1,5 @@
 #pragma once
 
-#include "GameObject/MeshObject/StaticMesh/PlayerBase/PlayerObserver/IPlayerObserver.h"
 
 class CPlayerBase;
 
@@ -8,14 +7,10 @@ class CPlayerBase;
 *	プレイヤー状態継承クラス.
 **/
 class CPlayerState
-	: public IPlayerObserver	//オブサーバを継承.
 {
 public:
 	CPlayerState(CPlayerBase& pPlayer);
 	virtual ~CPlayerState();
-
-	//--- 通知 ---.
-	virtual void OnNotify(IPlayerObserver::PlayerEvent event) override {};
 
 	//--- 状態の開始時に呼び出す関数 ---.
 	virtual void Enter() = 0;

@@ -30,16 +30,12 @@ CPlayerHandAttackState::~CPlayerHandAttackState()
 {
 }
 
-void CPlayerHandAttackState::OnNotify(IPlayerObserver::PlayerEvent event)
-{
-}
-
 void CPlayerHandAttackState::Enter()
 {
 	//SE‚ğ–Â‚ç‚·.
 	AssetManager::Sound()->PlaySE(enSoundList::SE_AttackHand);
 
-	m_pPlayer.SetAttacking(true);
+	m_pPlayer.SetPlayerEvent(CPlayerBase::PlayerEvent::HandAttack);
 
 	//UŒ‚‚ÌŠJnŠÔ‚ğæ“¾.
 	m_StartTime = static_cast<float>(CTimeManager::GetTotalTime());
@@ -82,7 +78,6 @@ void CPlayerHandAttackState::Update()
 	if (t - m_StartTime > m_EndTime
 		&& isHit)
 	{
-		m_pPlayer.SetAttacking(false);
 		m_pPlayer.SetHitInfo(false, CPlayerBase::HitEvent::None);
 		m_pPlayer.SetActionState(std::make_unique<CPlayerHandHitState>(m_pPlayer));
 		return;

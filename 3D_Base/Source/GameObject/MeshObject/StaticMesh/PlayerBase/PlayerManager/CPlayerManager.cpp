@@ -110,13 +110,11 @@ void CPlayerManager::Collision()
 		{
 			if (pNo == aNo) continue;
 
-			if (m_pPlayers[aNo]->IsAttacking()
-				&& m_pPlayers[aNo]->GetBSphere()->
-				IsHit(*m_pPlayers[pNo]->GetBSphere()))
+			if (m_pPlayers[aNo]->GetPlayerEvent() == CPlayerBase::PlayerEvent::HandAttack
+				&& m_pPlayers[aNo]->GetBSphere()->IsHit(*m_pPlayers[pNo]->GetBSphere()))
 			{
 				m_pPlayers[pNo]->SetHitInfo(
-					m_pPlayers[aNo]->GetPosition(), true, CPlayerBase::HitEvent::Push);
-
+					m_pPlayers[aNo]->GetPosition(), true, CPlayerBase::HitEvent::Pushed);
 
 				m_pPlayers[aNo]->SetHitInfo(
 					m_pPlayers[aNo]->GetPosition(), true, CPlayerBase::HitEvent::None);

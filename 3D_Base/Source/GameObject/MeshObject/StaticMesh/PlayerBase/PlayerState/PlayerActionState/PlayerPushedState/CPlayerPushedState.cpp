@@ -29,13 +29,9 @@ CPlayerPushedState::~CPlayerPushedState()
 {
 }
 
-void CPlayerPushedState::OnNotify(IPlayerObserver::PlayerEvent event)
-{
-}
-
 void CPlayerPushedState::Enter()
 {
-	m_pPlayer.SetStopping(true);
+	m_pPlayer.SetPlayerEvent(CPlayerBase::PlayerEvent::Pushed);
 
 	//SE‚ð–Â‚ç‚·.
 	AssetManager::Sound()->PlaySE(enSoundList::SE_HitHand);
@@ -63,7 +59,6 @@ void CPlayerPushedState::Enter()
 
 void CPlayerPushedState::Exit()
 {
-	m_pPlayer.SetStopping(false);
 }
 
 void CPlayerPushedState::Update()

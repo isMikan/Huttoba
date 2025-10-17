@@ -42,7 +42,5 @@ private:
 	void SetPlayerInputBinding(int index) const;
 
 private:
-	std::unique_ptr<CInput>				m_pInput;		//“ü—Í.
-
-	int		m_PlayerID;
+	int		m_PlayerID;		//ƒvƒŒƒCƒ„[”Ô†.
 };

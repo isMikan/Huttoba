@@ -13,12 +13,10 @@ CPlayerActionIdleState::~CPlayerActionIdleState()
 {
 }
 
-void CPlayerActionIdleState::OnNotify(IPlayerObserver::PlayerEvent event)
-{
-}
-
 void CPlayerActionIdleState::Enter()
 {
+	m_pPlayer.SetPlayerEvent(CPlayerBase::PlayerEvent::Idle);
+
 	m_pPlayer.SetQuaternion(
 		0.f, m_pPlayer.GetQuaternion().y, 0.f, m_pPlayer.GetQuaternion().w);
 }

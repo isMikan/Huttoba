@@ -27,7 +27,3 @@ void CPlayerMoveIdleState::Exit()
 void CPlayerMoveIdleState::Update()
 {
 }
-
-void CPlayerMoveIdleState::OnNotify(IPlayerObserver::PlayerEvent event)
-{
-}

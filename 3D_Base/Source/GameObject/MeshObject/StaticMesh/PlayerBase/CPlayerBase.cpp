@@ -17,9 +17,6 @@ CPlayerBase::CPlayerBase( int index )
 
 	, m_IsMoving		( false )
 	, m_IsRotating		( false )
-	, m_IsHoldingItem	( false )
-	, m_IsAttacking		( false )
-	, m_IsStopping		( false )
 
 	, m_HitInfo			()
 {
@@ -72,7 +69,7 @@ void CPlayerBase::Notify(IPlayerObserver::PlayerEvent event)
 {
 	for (auto& observer : m_pObserver)
 	{
-		observer->OnNotify(event);
+		//observer->OnNotify(event);
 	}
 }
 
@@ -103,8 +100,6 @@ void CPlayerBase::ChangeState(
 	{
 		//状態の終了処理.
 		currentState->Exit();
-		//現在の状態削除.
-		RemoveObserver(currentState.get());
 	}
 
 	//新しい状態にする.
@@ -112,8 +107,6 @@ void CPlayerBase::ChangeState(
 
 	if (currentState != nullptr)
 	{
-		//現在の状態追加.
-		AddObserver(currentState.get());
 		//状態の開始処理.
 		currentState->Enter();
 	}

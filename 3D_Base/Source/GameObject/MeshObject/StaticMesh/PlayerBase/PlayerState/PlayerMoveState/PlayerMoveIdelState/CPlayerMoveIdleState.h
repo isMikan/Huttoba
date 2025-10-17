@@ -13,9 +13,6 @@ public:
 	CPlayerMoveIdleState(CPlayerBase& pPlayer, float x, float z);
 	~CPlayerMoveIdleState() override;
 
-	//--- 通知 ---.
-	void OnNotify(IPlayerObserver::PlayerEvent event) override;
-
 	//--- 状態の開始時に呼び出す関数 ---.
 	void Enter() override;
 	//--- 状態の終了時に呼び出す関数 ---.

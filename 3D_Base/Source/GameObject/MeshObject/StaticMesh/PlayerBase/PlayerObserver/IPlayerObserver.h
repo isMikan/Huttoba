@@ -3,6 +3,7 @@
 class IPlayerObserver
 {
 public:
+	//ƒvƒŒƒCƒ„[‚Ìó‘Ô.
 	enum class PlayerEvent
 	{
 		Whiff,

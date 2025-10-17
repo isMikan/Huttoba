@@ -29,14 +29,10 @@ CPlayerHandWhiffState::~CPlayerHandWhiffState()
 {
 }
 
-void CPlayerHandWhiffState::OnNotify(IPlayerObserver::PlayerEvent event)
-{
-}
-
 void CPlayerHandWhiffState::Enter()
 {
-	m_pPlayer.SetStopping(true);
-		
+	m_pPlayer.SetPlayerEvent(CPlayerBase::PlayerEvent::HandWhiff);
+	
 	//ŒX‚«Šp“x‚Ì‰Šú‰».
 	m_CurrentTiltAngle = 0.f;
 
@@ -94,8 +90,6 @@ void CPlayerHandWhiffState::Enter()
 
 void CPlayerHandWhiffState::Exit()
 {
-	m_pPlayer.SetStopping(false);
-	m_pPlayer.SetAttacking(false);
 }
 
 void CPlayerHandWhiffState::Update()

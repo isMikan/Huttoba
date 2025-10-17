@@ -2,7 +2,7 @@
 
 #include "GameObject/MeshObject/StaticMesh/CStaticMeshObject.h"
 
-#include "GameObject//MeshObject/StaticMesh/PlayerBase/PlayerObserver/IPlayerObserver.h"
+#include "PlayerObserver/IPlayerObserver.h"
 
 #include "PlayerHead/CPlayerHead.h"
 #include "PlayerHand/PlayerRightHand/CPlayerRightHand.h"
@@ -17,14 +17,32 @@ class CPlayerBase
 	: public CStaticMeshObject
 {
 public:
-	//攻撃を受けたアニメーションパターン.
+	//プレイヤーの状態イベント.
+	enum class PlayerEvent
+	{
+		Idle,
+		Pickup,
+		Throw,
+		HandAttack,
+		HandHit,
+		HandWhiff,
+		Pushed,
+		Knockback,
+		Falling,
+		Knockdown,
+		Getup,
+
+		None = -1,
+	};
+
+	//接触イベント.
 	enum class HitEvent
 	{
-		Push,			//押し出し.
+		Pushed,			//押し出し.
 		Knockback,		//吹き飛ばし.
 		Down,			//ダウン.
 
-		None = -1		//なし.
+		None = -1		//なし(攻撃側の接触).
 	};
 
 	//ローカル軸の構造体.
@@ -99,6 +117,37 @@ public:
 	//--- 角度を0～360度にする関数 ---.
 	float WrapAngle(float value);
 
+	//プレイヤーが頭を持っている(書き込み用).
+	CPlayerHead& GetPlayerHead() { return *m_pHead; }
+	//プレイヤーが頭を持っている(読み込み用).
+	const CPlayerHead& GetPlayerHead() const { return *m_pHead; }
+
+	//プレイヤーが右手を持っている(書き込み用).
+	CPlayerRightHand& GetPlayerRightHand() { return *m_pRightHand; }
+	//プレイヤーが右手を持っている(読み込み用).
+	const CPlayerRightHand& GetPlayerRightHand() const { return *m_pRightHand; }
+
+	//プレイヤーが左手を持っている(書き込み用).
+	CPlayerLeftHand& GetPlayerLeftHand() { return *m_pLeftHand; }
+	//プレイヤーが左手を持っている(読み込み用).
+	const CPlayerLeftHand& GetPlayerLeftHand() const { return *m_pLeftHand; }
+
+	//移動しているかの所得と設定.
+	bool IsMoving() const { return m_IsMoving; }
+	void SetMoving(bool moving) { m_IsMoving = moving; }
+
+	//回転しているかの所得と設定.
+	bool IsRotating() const { return m_IsRotating; }
+	void SetRotating(bool rotating) { m_IsRotating = rotating; }
+
+	//アイテムを所持しているかの所得と設定.
+	bool IsHoldingItem() const { return m_IsHoldingItem; }
+	void SetHoldingItem(bool holding) { m_IsHoldingItem = holding; }
+
+	//プレイヤーのイベントの所得と設定.
+	PlayerEvent GetPlayerEvent() const { return m_PlayerEvent; }
+	void SetPlayerEvent(PlayerEvent state) { m_PlayerEvent = state; }
+	
 	//攻撃を受けた情報を取得と設定.
 	HitInfo GetHitInfo() const { return m_HitInfo; }
 	//状況を設定用.
@@ -128,41 +177,6 @@ public:
 		m_HitInfo.hitEvent = anim;
 	}
 
-	//プレイヤーが頭を持っている(書き込み用).
-	CPlayerHead& GetPlayerHead() { return *m_pHead; }
-	//プレイヤーが頭を持っている(読み込み用).
-	const CPlayerHead& GetPlayerHead() const { return *m_pHead; }
-
-	//プレイヤーが右手を持っている(書き込み用).
-	CPlayerRightHand& GetPlayerRightHand() { return *m_pRightHand; }
-	//プレイヤーが右手を持っている(読み込み用).
-	const CPlayerRightHand& GetPlayerRightHand() const { return *m_pRightHand; }
-
-	//プレイヤーが左手を持っている(書き込み用).
-	CPlayerLeftHand& GetPlayerLeftHand() { return *m_pLeftHand; }
-	//プレイヤーが左手を持っている(読み込み用).
-	const CPlayerLeftHand& GetPlayerLeftHand() const { return *m_pLeftHand; }
-
-	//--- 移動しているかの所得と設定 ---.
-	bool IsMoving() const { return m_IsMoving; }
-	void SetMoving(bool moving) { m_IsMoving = moving; }
-
-	//--- 回転しているかの所得と設定 ---.
-	bool IsRotating() const { return m_IsRotating; }
-	void SetRotating(bool rotating) { m_IsRotating = rotating; }
-
-	//--- アイテムを手に入れているかの取得と設定 ---.
-	bool IsHoldingItem() const { return m_IsHoldingItem; }
-	void SetHoldingItem(bool holdingItem) { m_IsHoldingItem = holdingItem; }
-
-	//--- 攻撃しているかの取得と設定 ---.
-	bool IsAttacking() const { return m_IsAttacking; }
-	void SetAttacking(bool attacking) { m_IsAttacking = attacking; }
-
-	//--- 攻撃しているかの取得と設定 ---.
-	bool IsStopping() const { return m_IsStopping; }
-	void SetStopping(bool stopping) { m_IsStopping = stopping; }
-
 protected:
 	//--- 状態を変更を処理する関数 ---.
 	void ChangeState(
@@ -170,7 +184,7 @@ protected:
 		std::unique_ptr<CPlayerState> newScene);
 
 protected:
-	std::vector<IPlayerObserver*>	m_pObserver;	//プレイヤーのオブサーバ.
+	std::vector<IPlayerObserver*>		m_pObserver;	//プレイヤーのオブサーバ.
 
 	std::unique_ptr<CPlayerHead>		m_pHead;		//頭.
 	std::unique_ptr<CPlayerRightHand>	m_pRightHand;	//右手.
@@ -180,13 +194,12 @@ protected:
 	std::unique_ptr<CPlayerState>	m_pTurnState;		//回転.
 	std::unique_ptr<CPlayerState>	m_pActionState;		//行動.
 
-	bool		m_IsMoving;			//移動しているか.
-	bool		m_IsRotating;		//回転しているか.
-	bool		m_IsHoldingItem;	//アイテムを持っているか.
-	bool		m_IsAttacking;		//攻撃しているか.
-	bool		m_IsStopping;		//止まるとき.
+	bool			m_IsMoving;		//移動しているか.
+	bool			m_IsRotating;	//回転しているか.
+	bool			m_IsHoldingItem;//アイテムを所持してるか.
 
-	HitInfo		m_HitInfo;			//攻撃を受けた情報.
+	PlayerEvent		m_PlayerEvent;	//プレイヤー状態.
+	HitInfo			m_HitInfo;		//攻撃を受けた情報.
 
 	static constexpr float		m_PushForce = 0.05f;	//押し出す力.
 };

@@ -1,13 +1,15 @@
 #include "CPlayer.h"
 
 
-#include "GameObject/MeshObject/StaticMesh/PlayerBase/PlayerState/PlayerMoveState/PlayerMoveState/CPlayerMoveState.h"
-#include "GameObject/MeshObject/StaticMesh/PlayerBase/PlayerState/PlayerTurnState/PlayerTurnState/CPlayerTurnState.h"
+#include "PlayerBase/PlayerState/PlayerMoveState/PlayerMoveState/CPlayerMoveState.h"
+#include "PlayerBase/PlayerState/PlayerTurnState/PlayerTurnState/CPlayerTurnState.h"
+#include "PlayerBase/PlayerState/PlayerMoveState/PlayerMoveIdelState/CPlayerMoveIdleState.h"
+#include "PlayerBase/PlayerState/PlayerTurnState/PlayerTurnIdleState/CPlayerTurnIdleState.h"
 
-#include "GameObject/MeshObject/StaticMesh/PlayerBase/PlayerState/PlayerActionState/PlayerHandAttackState/CPlayerHandAttackState.h"
-#include "GameObject/MeshObject/StaticMesh/PlayerBase/PlayerState/PlayerActionState/PlayerPickupState/CPlayerPickupState.h"
-#include "GameObject/MeshObject/StaticMesh/PlayerBase/PlayerState/PlayerActionState/PlayerThrowState/CPlayerThrowState.h"
-#include "GameObject/MeshObject/StaticMesh/PlayerBase/PlayerState/PlayerActionState/PlayerPushedState/CPlayerPushedState.h"
+#include "PlayerBase/PlayerState/PlayerActionState/PlayerHandAttackState/CPlayerHandAttackState.h"
+#include "PlayerBase/PlayerState/PlayerActionState/PlayerPickupState/CPlayerPickupState.h"
+#include "PlayerBase/PlayerState/PlayerActionState/PlayerThrowState/CPlayerThrowState.h"
+#include "PlayerBase/PlayerState/PlayerActionState/PlayerPushedState/CPlayerPushedState.h"
 
 #include "Input/CInputManager.h"
 #include "Sound/CSoundManager.h"
@@ -19,9 +21,6 @@ CPlayer::CPlayer(int index)
 	: CPlayerBase			( index )
 
 	, m_PlayerID			( index )
-	, m_pInput				( std::make_unique<CInput>( index ) )
-
-
 {
 	SetPlayerInputBinding(m_PlayerID);
 }
@@ -63,7 +62,15 @@ void CPlayer::HandleInput()
 		z = CInputManager::GetLeftSthikY(m_PlayerID);
 	}
 
-	if(!m_IsStopping)
+	if(m_PlayerEvent == PlayerEvent::HandWhiff
+		|| m_PlayerEvent == PlayerEvent::Knockback
+		|| m_PlayerEvent == PlayerEvent::Getup
+		|| m_PlayerEvent == PlayerEvent::Knockdown)
+	{
+		SetMoveState(std::make_unique<CPlayerMoveIdleState>(*this));
+		SetTurnState(std::make_unique<CPlayerTurnIdleState>(*this));
+	}
+	else
 	{
 		SetMoveState(std::make_unique<CPlayerMoveState>(*this, x, z));
 		SetTurnState(std::make_unique<CPlayerTurnState>(*this, x, z));
@@ -72,7 +79,8 @@ void CPlayer::HandleInput()
 	//ÉAÉCÉeÉÄÇéùÇ¡ÇƒÇ¢Ç»Ç¢Ç»ÇÁçUåÇ.
 	if (CInputManager::IsDown(Action::Attack, m_PlayerID)
 		&& !m_IsHoldingItem
-		&& !m_IsAttacking)
+		&& m_PlayerEvent != PlayerEvent::HandAttack
+		&& m_PlayerEvent != PlayerEvent::HandWhiff)
 	{
 		SetActionState(std::make_unique<CPlayerHandAttackState>(*this));
 	}
@@ -87,8 +95,8 @@ void CPlayer::HandleInput()
 		SetActionState(std::make_unique<CPlayerThrowState>(*this));
 	}
 	//âüÇ≥ÇÍÇΩéûÇÃèàóù.
-	if (m_HitInfo.isHit == true
-		&& m_HitInfo.hitEvent == HitEvent::Push)
+	if (m_HitInfo.isHit
+		&& m_HitInfo.hitEvent == HitEvent::Pushed)
 	{
 		SetActionState(std::make_unique<CPlayerPushedState>(*this));
 	}

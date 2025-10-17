@@ -64,12 +64,3 @@ void CPlayerMoveState::Update()
 
 	m_pPlayer.SetPosition(pos);
 }
-
-void CPlayerMoveState::OnNotify(IPlayerObserver::PlayerEvent event)
-{
-	if (event == PlayerEvent::Whiff)
-	{
-		//SetMoveState(std::make_unique<CPlayerMoveIdleState>(m_pPlayer));
-		return;
-	}
-}

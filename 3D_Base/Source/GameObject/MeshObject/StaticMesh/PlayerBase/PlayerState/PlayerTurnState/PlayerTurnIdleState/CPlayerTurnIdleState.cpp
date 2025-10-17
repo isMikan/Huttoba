@@ -16,10 +16,6 @@ CPlayerTurnIdleState::~CPlayerTurnIdleState()
 {
 }
 
-void CPlayerTurnIdleState::OnNotify(IPlayerObserver::PlayerEvent event)
-{
-}
-
 void CPlayerTurnIdleState::Enter()
 {
 }
