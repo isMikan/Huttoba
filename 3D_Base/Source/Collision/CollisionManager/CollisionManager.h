@@ -1,20 +1,34 @@
 #pragma once
+#include <vector>
+#include <memory>
 
-//ˆê’UŠÔ‚É‡‚í‚È‚¢‚©‚çƒXƒ‹[‚»‚Ì‚¤‚¿II
-
-class CBoundingSphere;
-class CPlayerBase;
-class CItemManager;
+class CollisionBase;
+class CollisionResult;
+class ICollisionListener;
+class CollisionStrategyBase;
 
 class CollisionManager
 {
 public:
-	CollisionManager();
-	~CollisionManager();
 
-	//‘¼‚Ì‹…‘Ì‚Æ‚Ì“–‚½‚è”»’è
-	bool IsHit(const CBoundingSphere& pBSphere);
+    static CollisionManager* GetInstance()
+    {
+        static CollisionManager instance;
+        return &instance;
+    }
+
+    // Collider ‚Ì“o˜^/íœ
+    void AddCollider(CollisionBase* col);
+    void RemoveCollider(CollisionBase* col);
+
+    // ”»’èÀs
+    void CheckCollisions();
 
 private:
+    CollisionManager() {}
+    ~CollisionManager() {}
+
+    // “o˜^‚³‚ê‚Ä‚¢‚é Collider ƒŠƒXƒg
+    std::vector<CollisionBase*> m_Colliders;
 
 };

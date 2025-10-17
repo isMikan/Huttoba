@@ -80,6 +80,17 @@
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\PlayerBase\PlayerState\PlayerTurnState\PlayerTurnIdleState\CPlayerTurnIdleState.cpp" />
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\PlayerBase\PlayerState\PlayerTurnState\PlayerTurnState\CPlayerTurnState.cpp" />
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\PlayerBase\Player\CPlayer.cpp" />
+    <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\PlayerBase\PlayerAI\CPlayerAI.cpp" />
+    <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\PlayerBase\PlayerManager\CPlayerManager.cpp" />
+    <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\PlayerBase\PlayerObserver\IPlayerObserver.cpp" />
+<<<<<<< HEAD
+    <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\PlayerBase\PlayerState\CPlayerState.cpp" />
+=======
+    <ClCompile Include="Source\Collision\CollisionBase.cpp" />
+    <ClCompile Include="Source\Collision\Collider\CollisionOBB\CollisionOBB.cpp" />
+    <ClCompile Include="Source\Collision\Collider\CollisionCapsule\CollisionCapsule.cpp" />
+    <ClCompile Include="Source\Collision\Collider\CollisionRay\CollisionRay.cpp" />
+>>>>>>> CreateCollision
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Assets\AssetManager.h" />
@@ -164,12 +175,15 @@
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\PlayerBase\PlayerAI\CPlayerAI.h" />
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\PlayerBase\PlayerManager\CPlayerManager.h" />
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\PlayerBase\PlayerObserver\IPlayerObserver.h" />
+<<<<<<< HEAD
+=======
     <ClInclude Include="Source\Collision\CollisionBase.h" />
     <ClInclude Include="Source\Collision\Collider\CollisionOBB\CollisionOBB.h" />
     <ClInclude Include="Source\Collision\Collider\CollisionCapsule\CollisionCapsule.h" />
     <ClInclude Include="Source\Collision\Collider\CollisionRay\CollisionRay.h" />
     <ClInclude Include="Source\Collision\CollisionResult\CollisionResult.h" />
     <ClInclude Include="Source\Collision\CollisionStrategy\CollisionStrategyBase\CollisionStrategyBase.h" />
+>>>>>>> CreateCollision
   </ItemGroup>
   <ItemGroup>
     <Text Include="ChangeSourse.txt" />
