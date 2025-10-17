@@ -75,7 +75,7 @@ void CGround::ChangeColorOfGround()
 	//‘S‘Ì‚ÌŠÔ‚ÌŒ»İ‚ÌŠ„‡.
 	float progress =
 		(t - m_ChangeColorStartTime) / m_ChangeColorTime;
-	progress = Clamp(progress, 0.f, 1.f);
+	progress = std::clamp(progress, 0.f, 1.f);
 
 	D3DXVECTOR4	groundColor = m_ObjColor.diffuse;
 
@@ -99,7 +99,7 @@ void CGround::VibrateGround()
 	//—h‚ê‚Ä‚¢‚éŠÔ‚ÌŒ»İ‚ÌŠ„‡.
 	float progress = 
 		(t - m_VibrateStartTime) / m_VibrateTime;
-	progress = Clamp(progress, 0.f, 1.f);
+	progress = std::clamp(progress, 0.f, 1.f);
 
 	//¶‰E‚É—h‚ê‚é.
 	m_vPosition.x += cosf(progress * D3DX_PI * m_VibrateSpeed) * m_VibrateWidth;

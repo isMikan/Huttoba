@@ -6,7 +6,7 @@
 *	プレイヤーが移動する状態クラス.
 **/
 class CPlayerMoveState
-	: public CPlayerState	//プレイヤー状態継承クラス.
+	: public CPlayerState	//プレイヤー状態を継承.
 {
 public:
 	CPlayerMoveState(CPlayerBase& pPlayer, float x, float z);	//引数:移動方向のx軸、z軸.

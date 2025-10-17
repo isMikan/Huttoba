@@ -93,15 +93,17 @@ void CPlayerKnockbackState::Update()
 
 	float dt = static_cast<float>(CTimeManager::GetDeltaTime());
 
-	//攻撃された情報の取得.
+	//飛んでいく移動量の計算.
 	m_Velocity.y += m_Gravity * dt;
+	//プレイヤーに移動量を足す.
 	playerPos += m_Velocity * dt;
-
 	//プレイヤーの位置を設定.
 	m_pPlayer.SetPosition(playerPos);
 
 	//全体の時間の現在の割合.
 	float progress = (t - m_StartTime) / m_EndTime;
+	progress = std::clamp(progress, 0.f, 1.f);
+	
 	//時間以内に回数分回転するように.
 	m_CurrentTiltAngle = m_pPlayer.WrapAngle(progress * D3DX_PI * m_RotateSpeed);
 

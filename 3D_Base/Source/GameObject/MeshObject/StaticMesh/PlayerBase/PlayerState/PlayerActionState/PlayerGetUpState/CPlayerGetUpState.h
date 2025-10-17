@@ -6,7 +6,7 @@
 *	プレイヤーの起き上がる状態クラス.
 **/
 class CPlayerGetUpState
-	: public CPlayerState
+	: public CPlayerState	//プレイヤー状態を継承.
 {
 public:
 	CPlayerGetUpState(CPlayerBase& pPlayer);

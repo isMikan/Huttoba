@@ -6,7 +6,7 @@
 *	プレイヤーがアイテムを投げ捨てるの状態クラス.
 **/
 class CPlayerThrowState
-	: public CPlayerState	//プレイヤー状態継承クラス.
+	: public CPlayerState	//プレイヤー状態を継承.
 {
 public:
 	CPlayerThrowState(CPlayerBase& pPlayer);

@@ -3,6 +3,7 @@
 #include "GameObject/MeshObject/StaticMesh/PlayerBase/CPlayerBase.h"
 										   
 #include "GameObject/MeshObject/StaticMesh/PlayerBase/PlayerState/PlayerActionState/PlayerGetUpState/CPlayerGetUpState.h"
+#include "GameObject/MeshObject/StaticMesh/PlayerBase/PlayerState/PlayerActionState/PlayerKnockdownState/CPlayerKnockdownState.h"
 
 CPlayerFallingState::CPlayerFallingState(CPlayerBase& pPlayer)
 	: CPlayerState			( pPlayer )
@@ -14,13 +15,15 @@ CPlayerFallingState::CPlayerFallingState(CPlayerBase& pPlayer)
 	, m_StartTime			()
 	, m_EndTime				( 10.f )	//吹き飛ばし量によって着地時間が変わるので多めに.
 
-	, m_GroundRange			( 1.5f )	//この位置を下回るまで回転. 
-	, m_RotateRange			( 15.f )	//この角度の範囲内で止まる.
-	, m_ForceMax			( 15.f )	//想定.
+	, m_GroundRange			( 1.5f )					//この位置を下回るまで回転. 
+	, m_RotateRange			( D3DXToRadian( 15.f ) )	//この角度の範囲内で止まる.
+	, m_ForceMax			( 15.f )					//想定.
 
 	, m_Gravity				( -9.8f )
 	, m_RotateSpeed			( 40.f )	//20回転.
 	, m_CurrentTiltAngle	()
+
+	, m_GroundPos			( 0.1f )
 
 	, m_StartQuat			( 0.f, 0.f, 0.f, 1.f )
 {
@@ -61,8 +64,8 @@ void CPlayerFallingState::Exit()
 {
 	//プレイヤーの位置を取得.
 	D3DXVECTOR3 playerPos = m_pPlayer.GetPosition();
-	//床に着地.
-	m_pPlayer.SetPosition(playerPos.x, 0.f, playerPos.z);
+	//地面に着地.
+	m_pPlayer.SetPosition(playerPos.x, m_GroundPos, playerPos.z);
 }
 
 void CPlayerFallingState::Update()
@@ -77,7 +80,14 @@ void CPlayerFallingState::Update()
 	if (t - m_StartTime > m_EndTime
 		|| IsEnd())
 	{
-		m_pPlayer.SetActionState(std::make_unique<CPlayerGetUpState>(m_pPlayer));
+		if (m_pPlayer.GetHitInfo().hitEvent == CPlayerBase::HitEvent::Knockback)
+		{
+			m_pPlayer.SetActionState(std::make_unique<CPlayerGetUpState>(m_pPlayer));
+		}
+		else if(m_pPlayer.GetHitInfo().hitEvent == CPlayerBase::HitEvent::Knockdown)
+		{
+			m_pPlayer.SetActionState(std::make_unique<CPlayerKnockdownState>(m_pPlayer));
+		}
 		return;
 	}
 
@@ -87,7 +97,7 @@ void CPlayerFallingState::Update()
 	m_CurrentTiltAngle = m_pPlayer.WrapAngle(m_CurrentTiltAngle);
 	//地面近くかつ90度に近づいたら.
 	if (playerPos.y < m_GroundRange
-		&& fabsf(D3DXToDegree(m_CurrentTiltAngle) - 90.f) < m_RotateRange)
+		&& fabsf(WorldAngle() + D3DXToRadian(90.f)) < m_RotateRange)
 	{
 		//正規化.
 		D3DXQuaternionNormalize(&quat, &quat);
@@ -98,6 +108,8 @@ void CPlayerFallingState::Update()
 	{
 		//全体の時間の現在の割合.
 		float progress = (t - m_StartTime) / m_EndTime;
+		progress = std::clamp(progress, 0.f, 1.f);
+
 		//時間以内に回数分回転するように.
 		m_CurrentTiltAngle = m_pPlayer.WrapAngle(progress * D3DX_PI * m_RotateSpeed);
 
@@ -123,19 +135,35 @@ void CPlayerFallingState::Update()
 	//1フレームの速さを取得.
 	float dt = static_cast<float>(CTimeManager::GetDeltaTime());
 
-	if (playerPos.y <= 0.f)
+	//地面についた場合.
+	if (playerPos.y <= m_GroundPos)
 	{
-		playerPos.y == 0.f;
+		playerPos.y = m_GroundPos;	//位置をそろえておく.
 	}
 	else
 	{
-		//攻撃された情報の取得.
+		//飛んでいく移動量の計算.
 		m_Velocity.y += m_Gravity * dt;
+		//プレイヤーに移動量を足す.
 		playerPos += m_Velocity * dt;
 	}
-
 	//プレイヤーの位置を設定.
 	m_pPlayer.SetPosition(playerPos);
+}
+
+float CPlayerFallingState::WorldAngle()
+{
+	//上方向のローカル軸を取得.
+	D3DXVECTOR3 localUp = m_pPlayer.GetLocalAxes().up;
+	//上方向.
+	D3DXVECTOR3 up(0.f, 1.f, 0.f);
+
+	float dot = D3DXVec3Dot(&localUp, &up);
+	dot = std::clamp(dot, -1.f, 1.f);
+
+	float angle = acosf(dot);
+
+	return -angle;
 }
 
 bool CPlayerFallingState::IsEnd()
@@ -143,9 +171,9 @@ bool CPlayerFallingState::IsEnd()
 	//プレイヤーの位置を取得.
 	D3DXVECTOR3 playerPos = m_pPlayer.GetPosition();
 
-	//回転を止め、位置が地面についたら.
-	if (fabsf(D3DXToDegree(m_CurrentTiltAngle) - 90.f) < m_RotateRange
-		&& playerPos.y <= 0.f)
+	//回転を90度付近で止め、位置が地面についたら.
+	if (fabsf(WorldAngle() + D3DXToRadian(90.f)) < m_RotateRange
+		&& playerPos.y <= m_GroundPos)
 	{
 		return true;
 	}
