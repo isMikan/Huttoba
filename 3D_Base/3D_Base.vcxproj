@@ -236,11 +236,11 @@
     <Text Include="ChangeSourse.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Source\Collision\CollisionRay\CollisionRay.cpp" />
-    <ClCompile Include="Source\Collision\CollisionCapsule\CollisionCapsule.cpp" />
-    <ClCompile Include="Source\Collision\CollisionOBB\CollisionOBB.cpp" />
+    <ClCompile Include="Source\Collision\Collider\CollisionRay\CollisionRay.cpp" />
+    <ClCompile Include="Source\Collision\Collider\CollisionCapsule\CollisionCapsule.cpp" />
+    <ClCompile Include="Source\Collision\Collider\CollisionOBB\CollisionOBB.cpp" />
     <ClCompile Include="Source\Collision\CollisionBase.cpp" />
-    <ClCompile Include="Source\Collision\CollisionManager\CollisionManager.cpp" />
+    <ClCompile Include="Source\Collision\Collider\CollisionManager\CollisionManager.cpp" />
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\DrawCollision\DrawCollision.cpp" />
     <ClCompile Include="Source\Assets\AssetManager.cpp" />
     <ClCompile Include="Source\Assets\Effect\CEffect.cpp" />
@@ -322,12 +322,12 @@
     <ClCompile Include="Source\TimeManager\CTimeManager.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Source\Collision\CollisionRay\CollisionRay.h" />
-    <ClInclude Include="Source\Collision\CollisionCapsule\CollisionCapsule.h" />
-    <ClInclude Include="Source\Collision\CollisionOBB\CollisionOBB.h" />
+    <ClInclude Include="Source\Collision\Collider\CollisionRay\CollisionRay.h" />
+    <ClInclude Include="Source\Collision\Collider\CollisionCapsule\CollisionCapsule.h" />
+    <ClInclude Include="Source\Collision\Collider\CollisionOBB\CollisionOBB.h" />
     <ClInclude Include="Source\Assets\Mesh\StaticMesh\CStaticMesh.h" />
     <ClInclude Include="Source\Collision\CollisionBase.h" />
-    <ClInclude Include="Source\Collision\CollisionManager\CollisionManager.h" />
+    <ClInclude Include="Source\Collision\Collider\CollisionManager\CollisionManager.h" />
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\DrawCollision\DrawCollision.h" />
     <ClInclude Include="Source\Assets\AssetManager.h" />
     <ClInclude Include="Source\Assets\Effect\CEffect.h" />
