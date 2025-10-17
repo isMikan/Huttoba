@@ -4,6 +4,9 @@
 #include "PlayerState/PlayerTurnState/PlayerTurnIdleState/CPlayerTurnIdleState.h"
 #include "PlayerState/PlayerActionState/PlayerActionIdleState/CPlayerActionIdleState.h"
 
+#include "PlayerBase/PlayerState/PlayerActionState/PlayerPushedState/CPlayerPushedState.h"
+#include "PlayerBase/PlayerState/PlayerActionState/PlayerKnockbackState/CPlayerKnockbackState.h"
+
 CPlayerBase::CPlayerBase( int index )
 	: m_pObserver		()
 	
@@ -17,6 +20,9 @@ CPlayerBase::CPlayerBase( int index )
 
 	, m_IsMoving		( false )
 	, m_IsRotating		( false )
+	, m_IsHoldingItem	( false )
+
+	, m_PlayerEvent		( PlayerEvent::Idle )
 
 	, m_HitInfo			()
 {
@@ -33,6 +39,13 @@ void CPlayerBase::Update()
 	D3DXVECTOR3 headOffsetPos = GetPlayerHead().GetOffsetPos();
 	//“ª‚ÌˆÊ’u‚ğİ’è.
 	GetPlayerHead().SetPosition(GetObjectPos(headOffsetPos));
+
+	//‰Ÿ‚³‚ê‚½‚Ìˆ—.
+	if (m_HitInfo.isHit
+		&& m_HitInfo.hitEvent == HitEvent::Knockback)
+	{
+		SetActionState(std::make_unique<CPlayerKnockbackState>(*this));
+	}
 
 	//ˆÚ“®‚Ìó‘Ô‚ğXV.
 	m_pMoveState->Update();

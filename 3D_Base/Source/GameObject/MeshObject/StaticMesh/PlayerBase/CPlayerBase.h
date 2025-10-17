@@ -20,19 +20,19 @@ public:
 	//プレイヤーの状態イベント.
 	enum class PlayerEvent
 	{
-		Idle,
-		Pickup,
-		Throw,
-		HandAttack,
-		HandHit,
-		HandWhiff,
-		Pushed,
-		Knockback,
-		Falling,
-		Knockdown,
-		Getup,
+		Idle,		//何もしていない.
+		Pickup,		//拾う.
+		Throw,		//投げる.
+		HandAttack,	//手の攻撃.
+		HandHit,	//手の攻撃ヒット.
+		HandWhiff,	//手の攻撃空振り.
+		Pushed,		//押された.
+		Knockback,	//吹き飛ばされた.
+		Falling,	//落ちる.
+		Knockdown,	//ダウン状態.
+		Getup,		//起き上がる.
 
-		None = -1,
+		None = -1,	//なし.
 	};
 
 	//接触イベント.

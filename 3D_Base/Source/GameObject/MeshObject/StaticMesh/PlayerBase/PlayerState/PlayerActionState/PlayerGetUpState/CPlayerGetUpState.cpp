@@ -2,8 +2,6 @@
 
 #include "GameObject/MeshObject/StaticMesh/PlayerBase/CPlayerBase.h"
 
-#include "GameObject/MeshObject/StaticMesh/PlayerBase/PlayerState/PlayerMoveState/PlayerMoveIdelState/CPlayerMoveIdleState.h"
-#include "GameObject/MeshObject/StaticMesh/PlayerBase/PlayerState/PlayerTurnState/PlayerTurnIdleState/CPlayerTurnIdleState.h"
 #include "GameObject/MeshObject/StaticMesh/PlayerBase/PlayerState/PlayerActionState/PlayerActionIdleState/CPlayerActionIdleState.h"
 
 CPlayerGetUpState::CPlayerGetUpState(CPlayerBase& pPlayer)
@@ -50,14 +48,10 @@ void CPlayerGetUpState::Enter()
 
 void CPlayerGetUpState::Exit()
 {
-	m_pPlayer.SetQuaternion(0.f, m_StartQuat.y, 0.f, m_StartQuat.w);
 }
 
 void CPlayerGetUpState::Update()
 {
-	m_pPlayer.SetMoveState(std::make_unique<CPlayerMoveIdleState>(m_pPlayer));
-	m_pPlayer.SetTurnState(std::make_unique<CPlayerTurnIdleState>(m_pPlayer));
-
 	float t = static_cast<float>(CTimeManager::GetTotalTime());
 
 	//現在の経過時間と開始時間の差が終了時間を上回ったら.
@@ -77,6 +71,8 @@ void CPlayerGetUpState::Update()
 	//滑らかに正常の位置に戻す.
 	D3DXQUATERNION quat;
 	D3DXQuaternionSlerp(&quat, &m_StartQuat, &m_DefaultQuat, progress);
+	//正規化.
+	D3DXQuaternionNormalize(&quat, &quat);
 	m_pPlayer.SetQuaternion(quat);
 
 	if (progress > 0.7f)

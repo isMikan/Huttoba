@@ -20,7 +20,7 @@ public:
 	void Update() override;
 
 private:
-	D3DXVECTOR3		m_Dir;			//方向キーの入力.
+	D3DXVECTOR3		m_KeyDir;			//方向キーの入力.
 
 	float			m_TurnSpeed;	//回転速度.
 	float			m_TurnDir;		//目的の方向.

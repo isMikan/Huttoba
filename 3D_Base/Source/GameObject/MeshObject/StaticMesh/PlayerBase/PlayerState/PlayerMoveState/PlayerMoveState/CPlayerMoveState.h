@@ -20,14 +20,14 @@ public:
 	void Update() override;
 
 private:
-	D3DXVECTOR3 m_Dir;				//方向キーの入力.
+	D3DXVECTOR3 m_KeyDir;			//方向キーの入力.
+	D3DXVECTOR3	m_MoveDir;			//目的の方向.
 
 	float		m_CurrentSpeed;		//現在の速さ.
 	float		m_MoveSpeed;		//移動速度.
 	float		m_RotatingMoveSpeed;//回転している時の速度.
-	float		m_MoveSpeedScale;	//移動量.
+	float		m_HitingMoveSpeed;	//攻撃を受けている時の速度.
 
-	D3DXVECTOR3	m_MoveDir;			//目的の方向.
 
 private:
 	CPlayerMoveState() = delete;	//デフォルトコンストラクタ禁止.

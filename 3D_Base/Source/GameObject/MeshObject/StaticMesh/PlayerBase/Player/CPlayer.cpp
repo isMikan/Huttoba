@@ -9,7 +9,6 @@
 #include "PlayerBase/PlayerState/PlayerActionState/PlayerHandAttackState/CPlayerHandAttackState.h"
 #include "PlayerBase/PlayerState/PlayerActionState/PlayerPickupState/CPlayerPickupState.h"
 #include "PlayerBase/PlayerState/PlayerActionState/PlayerThrowState/CPlayerThrowState.h"
-#include "PlayerBase/PlayerState/PlayerActionState/PlayerPushedState/CPlayerPushedState.h"
 
 #include "Input/CInputManager.h"
 #include "Sound/CSoundManager.h"
@@ -62,6 +61,7 @@ void CPlayer::HandleInput()
 		z = CInputManager::GetLeftSthikY(m_PlayerID);
 	}
 
+	//移動回転をしない場合.
 	if(m_PlayerEvent == PlayerEvent::HandWhiff
 		|| m_PlayerEvent == PlayerEvent::Knockback
 		|| m_PlayerEvent == PlayerEvent::Getup
@@ -70,35 +70,43 @@ void CPlayer::HandleInput()
 		SetMoveState(std::make_unique<CPlayerMoveIdleState>(*this));
 		SetTurnState(std::make_unique<CPlayerTurnIdleState>(*this));
 	}
+	//移動だけする場合.
 	else
 	{
 		SetMoveState(std::make_unique<CPlayerMoveState>(*this, x, z));
-		SetTurnState(std::make_unique<CPlayerTurnState>(*this, x, z));
+
+		//回転だけしない場合.
+		if (m_PlayerEvent == PlayerEvent::Falling)
+		{
+			SetTurnState(std::make_unique<CPlayerTurnIdleState>(*this));
+		}
+		//移動回転する場合.
+		else
+		{
+			SetTurnState(std::make_unique<CPlayerTurnState>(*this, x, z));
+		}
 	}
 
 	//アイテムを持っていないなら攻撃.
 	if (CInputManager::IsDown(Action::Attack, m_PlayerID)
 		&& !m_IsHoldingItem
-		&& m_PlayerEvent != PlayerEvent::HandAttack
-		&& m_PlayerEvent != PlayerEvent::HandWhiff)
+		&& m_PlayerEvent == PlayerEvent::Idle)
 	{
 		SetActionState(std::make_unique<CPlayerHandAttackState>(*this));
 	}
 	//アイテムを持っていないなら拾う.
-	if (CInputManager::IsDown(Action::ToggleItem, m_PlayerID) && !m_IsHoldingItem)
+	if (CInputManager::IsDown(Action::ToggleItem, m_PlayerID)
+		&& !m_IsHoldingItem
+		&& m_PlayerEvent == PlayerEvent::Idle)
 	{
 		SetActionState(std::make_unique<CPlayerPickupState>(*this));
 	}
 	//アイテムを持っているなら捨てる.
-	else if (CInputManager::IsDown(Action::ToggleItem, m_PlayerID) && m_IsHoldingItem)
+	else if (CInputManager::IsDown(Action::ToggleItem, m_PlayerID)
+		&& m_IsHoldingItem
+		&& m_PlayerEvent == PlayerEvent::Idle)
 	{
 		SetActionState(std::make_unique<CPlayerThrowState>(*this));
-	}
-	//押された時の処理.
-	if (m_HitInfo.isHit
-		&& m_HitInfo.hitEvent == HitEvent::Pushed)
-	{
-		SetActionState(std::make_unique<CPlayerPushedState>(*this));
 	}
 }
 

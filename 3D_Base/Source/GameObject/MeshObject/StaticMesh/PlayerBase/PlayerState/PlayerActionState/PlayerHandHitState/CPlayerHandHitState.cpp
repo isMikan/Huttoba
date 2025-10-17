@@ -69,6 +69,8 @@ void CPlayerHandHitState::Update()
 	//滑らかに正常の位置に戻す.
 	D3DXQUATERNION quat;
 	D3DXQuaternionSlerp(&quat, &m_StartQuat, &m_DefaultQuat, progress);
+	//正規化.
+	D3DXQuaternionNormalize(&quat, &quat);
 	m_pPlayer.SetQuaternion(quat);
 
 	//プレイヤーの位置を取得.

@@ -19,6 +19,8 @@ public:
 	//--- この状態の間に呼び出す関数 ---.
 	void Update() override;
 
+	bool IsEnd();
+
 private:
 	D3DXVECTOR3		m_UpHandOffset;			//上に調整.
 	D3DXVECTOR3		m_StartRightAxis;		//開始時の右軸.

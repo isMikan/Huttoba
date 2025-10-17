@@ -2,8 +2,6 @@
 
 #include "GameObject/MeshObject/StaticMesh/PlayerBase/CPlayerBase.h"
 
-#include "GameObject/MeshObject/StaticMesh/PlayerBase/PlayerState/PlayerMoveState/PlayerMoveIdelState/CPlayerMoveIdleState.h"
-#include "GameObject/MeshObject/StaticMesh/PlayerBase/PlayerState/PlayerTurnState/PlayerTurnIdleState/CPlayerTurnIdleState.h"
 #include "GameObject/MeshObject/StaticMesh/PlayerBase/PlayerState/PlayerActionState/PlayerActionIdleState/CPlayerActionIdleState.h"
 
 CPlayerPushedState::CPlayerPushedState(CPlayerBase& pPlayer)
@@ -63,9 +61,6 @@ void CPlayerPushedState::Exit()
 
 void CPlayerPushedState::Update()
 {
-	m_pPlayer.SetMoveState(std::make_unique<CPlayerMoveIdleState>(m_pPlayer));
-	m_pPlayer.SetTurnState(std::make_unique<CPlayerTurnIdleState>(m_pPlayer));
-
 	//ÉQÅ[ÉÄëSëÃÇÃåoâﬂéûä‘.
 	float t = static_cast<float>(CTimeManager::GetTotalTime());
 

@@ -1,10 +1,6 @@
 #include "CPlayerFallingState.h"
 
 #include "GameObject/MeshObject/StaticMesh/PlayerBase/CPlayerBase.h"
-
-#include "GameObject/MeshObject/StaticMesh/PlayerBase/PlayerState/PlayerMoveState/PlayerMoveIdelState/CPlayerMoveIdleState.h"
-#include "GameObject/MeshObject/StaticMesh/PlayerBase/PlayerState/PlayerTurnState/PlayerTurnIdleState/CPlayerTurnIdleState.h"
-#include "GameObject/MeshObject/StaticMesh/PlayerBase/PlayerState/PlayerActionState/PlayerActionIdleState/CPlayerActionIdleState.h"
 										   
 #include "GameObject/MeshObject/StaticMesh/PlayerBase/PlayerState/PlayerActionState/PlayerGetUpState/CPlayerGetUpState.h"
 
@@ -20,7 +16,7 @@ CPlayerFallingState::CPlayerFallingState(CPlayerBase& pPlayer)
 
 	, m_GroundRange			( 1.5f )	//この位置を下回るまで回転. 
 	, m_RotateRange			( 15.f )	//この角度の範囲内で止まる.
-	, m_ForceMax			( 14.f )	//想定.
+	, m_ForceMax			( 15.f )	//想定.
 
 	, m_Gravity				( -9.8f )
 	, m_RotateSpeed			( 40.f )	//20回転.
@@ -71,9 +67,6 @@ void CPlayerFallingState::Exit()
 
 void CPlayerFallingState::Update()
 {
-	m_pPlayer.SetMoveState(std::make_unique<CPlayerMoveIdleState>(m_pPlayer));
-	m_pPlayer.SetTurnState(std::make_unique<CPlayerTurnIdleState>(m_pPlayer));
-
 	//経過時間を取得.
 	float t = static_cast<float>(CTimeManager::GetTotalTime());
 
@@ -82,7 +75,7 @@ void CPlayerFallingState::Update()
 
 	//現在の経過時間と開始時間の差が終了時間を上回ったら.
 	if (t - m_StartTime > m_EndTime
-		|| playerPos.y < 0.f)
+		|| IsEnd())
 	{
 		m_pPlayer.SetActionState(std::make_unique<CPlayerGetUpState>(m_pPlayer));
 		return;
@@ -96,6 +89,8 @@ void CPlayerFallingState::Update()
 	if (playerPos.y < m_GroundRange
 		&& fabsf(D3DXToDegree(m_CurrentTiltAngle) - 90.f) < m_RotateRange)
 	{
+		//正規化.
+		D3DXQuaternionNormalize(&quat, &quat);
 		//現在のクォータニオンを設定.
 		m_pPlayer.SetQuaternion(quat);
 	}
@@ -128,10 +123,32 @@ void CPlayerFallingState::Update()
 	//1フレームの速さを取得.
 	float dt = static_cast<float>(CTimeManager::GetDeltaTime());
 
-	//攻撃された情報の取得.
-	m_Velocity.y += m_Gravity * dt;
-	playerPos += m_Velocity * dt;
+	if (playerPos.y <= 0.f)
+	{
+		playerPos.y == 0.f;
+	}
+	else
+	{
+		//攻撃された情報の取得.
+		m_Velocity.y += m_Gravity * dt;
+		playerPos += m_Velocity * dt;
+	}
 
 	//プレイヤーの位置を設定.
 	m_pPlayer.SetPosition(playerPos);
+}
+
+bool CPlayerFallingState::IsEnd()
+{
+	//プレイヤーの位置を取得.
+	D3DXVECTOR3 playerPos = m_pPlayer.GetPosition();
+
+	//回転を止め、位置が地面についたら.
+	if (fabsf(D3DXToDegree(m_CurrentTiltAngle) - 90.f) < m_RotateRange
+		&& playerPos.y <= 0.f)
+	{
+		return true;
+	}
+
+	return false;
 }

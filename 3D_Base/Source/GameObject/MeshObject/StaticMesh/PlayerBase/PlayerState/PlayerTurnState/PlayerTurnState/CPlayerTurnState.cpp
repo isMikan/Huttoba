@@ -6,7 +6,7 @@
 
 CPlayerTurnState::CPlayerTurnState(CPlayerBase& pPlayer, float x, float z)
 	: CPlayerState		( pPlayer )
-	, m_Dir				( x, 0.f, z )
+	, m_KeyDir				( x, 0.f, z )
 	, m_TurnSpeed		( D3DXToRadian( 5.f ) )
 	, m_TurnDir			()
 {
@@ -27,14 +27,14 @@ void CPlayerTurnState::Exit()
 
 void CPlayerTurnState::Update()
 {
-	if (m_Dir.x == 0 && m_Dir.z == 0)
+	if (m_KeyDir.x == 0 && m_KeyDir.z == 0)
 	{
 		m_pPlayer.SetTurnState(std::make_unique<CPlayerTurnIdleState>(m_pPlayer));
 		return;
 	}
 
 	//ÅI‚Ì‰ñ“]•ûŒü.
-	m_TurnDir = atan2f(m_Dir.x, m_Dir.z);
+	m_TurnDir = atan2f(m_KeyDir.x, m_KeyDir.z);
 
 	//‰ñ“]‚µ‚Ä‚¢‚é‚©‚ğ true ‚Éİ’è.
 	m_pPlayer.SetRotating(true);
