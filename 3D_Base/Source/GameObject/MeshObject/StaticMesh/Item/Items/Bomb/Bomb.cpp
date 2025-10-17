@@ -5,6 +5,7 @@
 namespace { const bool regist = ItemBase::AutoRegister<Bomb>("Bomb"); }
 
 Bomb::Bomb()
+	: m_IsTake	( false )
 {
 	Init();
 }
@@ -45,16 +46,28 @@ void Bomb::Spawn()
 	}
 	else
 	{
+		//ó‘Ô‚ğ’n–Ê‚É‚Â‚¢‚½‚Æ‚«‚É•ÏX
 		m_State = ItemBase::State::OnGround;
 	}
 }
 
 void Bomb::OnGround()
 {
+	if (GetAsyncKeyState('M') & 0x8000)
+	{
+		//ó‘Ô‚ğæ“¾’†‚É•Ï‰»
+		m_State = ItemBase::State::Have;
+		
+		m_IsTake = true;
+	}
 }
 
 void Bomb::Have(std::vector<std::unique_ptr<CPlayerBase>>& playiers)
 {
+	if (m_IsTake)
+		TakeMotion();
+	else
+		PossessionMotion();
 }
 
 void Bomb::Use(std::vector<std::unique_ptr<CPlayerBase>>& playiers)
@@ -66,5 +79,23 @@ void Bomb::Throw()
 }
 
 void Bomb::Destroy()
+{
+}
+
+void Bomb::TakeMotion()
+{
+	m_vPosition.x += 0.1;
+	m_vPosition.y += 0.1;
+}
+
+void Bomb::PossessionMotion()
+{
+}
+
+void Bomb::UseMotion()
+{
+}
+
+void Bomb::ThrowMotion()
 {
 }
