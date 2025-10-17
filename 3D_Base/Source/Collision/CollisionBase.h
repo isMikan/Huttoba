@@ -25,7 +25,7 @@ public:
 		Boomerang,
 		RatRobot,
 
-		Unknown,
+		None,
 	};
 
 	//座標設定関数.
@@ -65,19 +65,29 @@ public:
 
 	//--------------------------------------------------------------------------------------------------------------
 
+	//ローカル座標をワールド座標に変換
 	virtual void UpdateWorldMat() = 0;
+
+	//ワールド行列取得
 	virtual const D3DXMATRIX& GetWorldMat() const = 0;
+
+	//現在座標の中心を取得
 	virtual D3DXVECTOR3 GetWorldPos() const = 0;
 
+
+	//当たり判定の主を設定
 	void SetOwner(const CGameObject* obj) { Owner = obj; }
 	const CGameObject* GetOwner() const { return Owner; }
 
+	//主の種類を設定
 	void SetTag(ColliderTag tag) { Tag = tag; }
-	ColliderTag GetTag() const { return Tag; }
 
+	//存在しているか設定
 	void SetActive(bool flag) { IsActive = flag; }
-	bool GetActive() const { return IsActive; }
 
+
+	ColliderTag GetTag() const { return Tag; }
+	bool GetActive() const { return IsActive; }
 
 public:
 
@@ -89,7 +99,7 @@ public:
 protected:
 
 	const CGameObject* Owner;
-	ColliderTag Tag = ColliderTag::Unknown;
+	ColliderTag Tag;
 	bool IsActive;
 
 private:

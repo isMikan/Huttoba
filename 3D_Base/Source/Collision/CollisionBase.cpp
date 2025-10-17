@@ -6,7 +6,7 @@ CollisionBase::CollisionBase()
 	, m_vRotation	{}
 	, m_vScale		{}
 	, Owner			{ nullptr }
-	, Tag			{ ColliderTag::Unknown }
+	, Tag			{ ColliderTag::None }
 	, IsActive		{ false }
 {
 	

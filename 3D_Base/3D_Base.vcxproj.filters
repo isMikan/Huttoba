@@ -85,6 +85,8 @@
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\PlayerBase\PlayerObserver\IPlayerObserver.cpp" />
     <ClCompile Include="Source\Collision\CollisionBase.cpp" />
     <ClCompile Include="Source\Collision\CollisionOBB\CollisionOBB.cpp" />
+    <ClCompile Include="Source\Collision\CollisionCapsule\CollisionCapsule.cpp" />
+    <ClCompile Include="Source\Collision\CollisionRay\CollisionRay.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Assets\AssetManager.h" />
@@ -171,6 +173,8 @@
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\PlayerBase\PlayerObserver\IPlayerObserver.h" />
     <ClInclude Include="Source\Collision\CollisionBase.h" />
     <ClInclude Include="Source\Collision\CollisionOBB\CollisionOBB.h" />
+    <ClInclude Include="Source\Collision\CollisionCapsule\CollisionCapsule.h" />
+    <ClInclude Include="Source\Collision\CollisionRay\CollisionRay.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="ChangeSourse.txt" />

@@ -17,6 +17,7 @@ CollisionObb::~CollisionObb()
 {
 }
 
+
 void CollisionObb::UpdateWorldMat()
 {
 	//スケール・回転・移動の行列作成
