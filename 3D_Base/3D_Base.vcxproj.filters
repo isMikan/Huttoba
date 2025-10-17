@@ -175,6 +175,8 @@
     <ClInclude Include="Source\Collision\Collider\CollisionOBB\CollisionOBB.h" />
     <ClInclude Include="Source\Collision\Collider\CollisionCapsule\CollisionCapsule.h" />
     <ClInclude Include="Source\Collision\Collider\CollisionRay\CollisionRay.h" />
+    <ClInclude Include="Source\Collision\CollisionResult\CollisionResult.h" />
+    <ClInclude Include="Source\Collision\CollisionStrategy\CollisionStrategyBase\CollisionStrategyBase.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="ChangeSourse.txt" />
