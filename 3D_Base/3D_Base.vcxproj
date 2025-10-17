@@ -236,11 +236,12 @@
     <Text Include="ChangeSourse.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Source\Collision\CollisionStrategy\CollisionRaySphere\CollisionRaySphere.cpp" />
-    <ClCompile Include="Source\Collision\CollisionStrategy\CollisionCapsuleSphere\CollisionCapsuleSphere.cpp" />
-    <ClCompile Include="Source\Collision\CollisionStrategy\CollisionCapsuleRay\CollisionCapsuleRay.cpp" />
-    <ClCompile Include="Source\Collision\CollisionStrategy\CollisionCapsuleOBB\CollisionCapsuleOBB.cpp" />
-    <ClCompile Include="Source\Collision\CollisionStrategy\CollisionCapsuleCapsule\CollisionCapsuleCapsule.cpp" />
+    <ClCompile Include="Source\Collision\CollisionStrategy\CollisionStrategyFactory\CollisionStrategyFactory.cpp" />
+    <ClCompile Include="Source\Collision\CollisionStrategy\CollisionPattern\CollisionRaySphere\CollisionRaySphere.cpp" />
+    <ClCompile Include="Source\Collision\CollisionStrategy\CollisionPattern\CollisionCapsuleSphere\CollisionCapsuleSphere.cpp" />
+    <ClCompile Include="Source\Collision\CollisionStrategy\CollisionPattern\CollisionCapsuleRay\CollisionCapsuleRay.cpp" />
+    <ClCompile Include="Source\Collision\CollisionStrategy\CollisionPattern\CollisionCapsuleOBB\CollisionCapsuleOBB.cpp" />
+    <ClCompile Include="Source\Collision\CollisionStrategy\CollisionPattern\CollisionCapsuleCapsule\CollisionCapsuleCapsule.cpp" />
     <ClCompile Include="Source\Collision\Collider\CollisionRay\CollisionRay.cpp" />
     <ClCompile Include="Source\Collision\Collider\CollisionCapsule\CollisionCapsule.cpp" />
     <ClCompile Include="Source\Collision\Collider\CollisionOBB\CollisionOBB.cpp" />
@@ -327,11 +328,12 @@
     <ClCompile Include="Source\TimeManager\CTimeManager.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Source\Collision\CollisionStrategy\CollisionRaySphere\CollisionRaySphere.h" />
-    <ClInclude Include="Source\Collision\CollisionStrategy\CollisionCapsuleSphere\CollisionCapsuleSphere.h" />
-    <ClInclude Include="Source\Collision\CollisionStrategy\CollisionCapsuleRay\CollisionCapsuleRay.h" />
-    <ClInclude Include="Source\Collision\CollisionStrategy\CollisionCapsuleOBB\CollisionCapsuleOBB.h" />
-    <ClInclude Include="Source\Collision\CollisionStrategy\CollisionCapsuleCapsule\CollisionCapsuleCapsule.h" />
+    <ClInclude Include="Source\Collision\CollisionStrategy\CollisionStrategyFactory\CollisionStrategyFactory.h" />
+    <ClInclude Include="Source\Collision\CollisionStrategy\CollisionPattern\CollisionRaySphere\CollisionRaySphere.h" />
+    <ClInclude Include="Source\Collision\CollisionStrategy\CollisionPattern\CollisionCapsuleSphere\CollisionCapsuleSphere.h" />
+    <ClInclude Include="Source\Collision\CollisionStrategy\CollisionPattern\CollisionCapsuleRay\CollisionCapsuleRay.h" />
+    <ClInclude Include="Source\Collision\CollisionStrategy\CollisionPattern\CollisionCapsuleOBB\CollisionCapsuleOBB.h" />
+    <ClInclude Include="Source\Collision\CollisionStrategy\CollisionPattern\CollisionCapsuleCapsule\CollisionCapsuleCapsule.h" />
     <ClInclude Include="Source\Collision\CollisionStrategy\CollisionStrategyBase.h" />
     <ClInclude Include="Source\Collision\Collider\CollisionRay\CollisionRay.h" />
     <ClInclude Include="Source\Collision\Collider\CollisionCapsule\CollisionCapsule.h" />
