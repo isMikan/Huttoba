@@ -94,7 +94,7 @@ void CPlayerHandAttackState::Update()
 
 	//‘S‘Ì‚ÌŠÔ‚ÌŒ»İ‚ÌŠ„‡.
 	float progress = (t - m_StartTime) / m_EndTime;
-	progress = m_pPlayer.Clamp(progress, 0.f, 1.f);
+	progress = std::clamp(progress, 0.f, 1.f);
 
 	//Œ»İ‚ÌŒX‚« = Å‘åŒX‚«Šp“x * Š„‡.
 	m_CurrentTiltAngle = m_pPlayer.WrapAngle(m_TiltAngleMax * progress);

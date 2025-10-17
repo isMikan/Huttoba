@@ -6,7 +6,7 @@
 *	プレイヤーがアイテム未所持の攻撃状態クラス.
 **/
 class CPlayerHandAttackState
-	: public CPlayerState	//プレイヤー状態継承クラス.
+	: public CPlayerState	//プレイヤー状態を継承.
 {
 public:
 	CPlayerHandAttackState(CPlayerBase& pPlayer);

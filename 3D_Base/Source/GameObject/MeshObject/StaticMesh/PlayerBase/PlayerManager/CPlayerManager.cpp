@@ -114,7 +114,7 @@ void CPlayerManager::Collision()
 				&& m_pPlayers[aNo]->GetBSphere()->IsHit(*m_pPlayers[pNo]->GetBSphere()))
 			{
 				m_pPlayers[pNo]->SetHitInfo(
-					m_pPlayers[aNo]->GetPosition(), true, CPlayerBase::HitEvent::Pushed);
+					m_pPlayers[aNo]->GetPosition(), m_pPlayers[aNo]->GetPosition(), 10.f, true, CPlayerBase::HitEvent::Knockdown);
 
 				m_pPlayers[aNo]->SetHitInfo(
 					m_pPlayers[aNo]->GetPosition(), true, CPlayerBase::HitEvent::None);

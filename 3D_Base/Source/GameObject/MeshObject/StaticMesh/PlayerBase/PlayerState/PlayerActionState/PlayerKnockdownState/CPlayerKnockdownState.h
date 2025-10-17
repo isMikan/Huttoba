@@ -5,12 +5,12 @@
 /**************************************************
 *	プレイヤーの起き上がる状態クラス.
 **/
-class CPlayerGetUpState
+class CPlayerKnockdownState
 	: public CPlayerState	//プレイヤー状態を継承.
 {
 public:
-	CPlayerGetUpState(CPlayerBase& pPlayer);
-	~CPlayerGetUpState();
+	CPlayerKnockdownState(CPlayerBase& pPlayer);
+	~CPlayerKnockdownState();
 
 	//--- 状態の開始時に呼び出す関数 ---.
 	void Enter() override;
@@ -24,7 +24,6 @@ private:
 	float			m_EndTime;			//終了時間.
 
 	D3DXQUATERNION	m_StartQuat;		//開始時の回転.
-	D3DXQUATERNION	m_DefaultQuat;		//元の回転.
 
 	D3DXVECTOR3		m_RightHandStartPos;	//右手の元の位置.
 	D3DXVECTOR3		m_LeftHandStartPos;		//左手の元の位置.
@@ -32,8 +31,8 @@ private:
 	D3DXVECTOR3		m_LeftHandEndPos;		//左手の元の位置.
 
 private:
-	CPlayerGetUpState() = delete;	//デフォルトコンストラクタ禁止.
-	CPlayerGetUpState(const CPlayerGetUpState&) = delete;
-	CPlayerGetUpState& operator = (const CPlayerGetUpState& rhs) = delete;
+	CPlayerKnockdownState() = delete;	//デフォルトコンストラクタ禁止.
+	CPlayerKnockdownState(const CPlayerKnockdownState&) = delete;
+	CPlayerKnockdownState& operator = (const CPlayerKnockdownState& rhs) = delete;
 
 };

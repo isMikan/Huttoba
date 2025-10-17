@@ -6,7 +6,7 @@
 *	プレイヤーが回転する状態クラス.
 **/
 class CPlayerTurnState
-	: public CPlayerState	//プレイヤー状態継承クラス.
+	: public CPlayerState	//プレイヤー状態を継承.
 {
 public:
 	CPlayerTurnState(CPlayerBase& pPlayer, float x, float z);	//引数:回転方向のx軸、z軸.

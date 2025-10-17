@@ -6,6 +6,7 @@
 
 #include "PlayerBase/PlayerState/PlayerActionState/PlayerPushedState/CPlayerPushedState.h"
 #include "PlayerBase/PlayerState/PlayerActionState/PlayerKnockbackState/CPlayerKnockbackState.h"
+#include "PlayerBase/PlayerState/PlayerActionState/PlayerKnockdownState/CPlayerKnockdownState.h"
 
 CPlayerBase::CPlayerBase( int index )
 	: m_pObserver		()
@@ -40,9 +41,16 @@ void CPlayerBase::Update()
 	//頭の位置を設定.
 	GetPlayerHead().SetPosition(GetObjectPos(headOffsetPos));
 
-	//押された時の処理.
+	//押された場合の処理.
 	if (m_HitInfo.isHit
-		&& m_HitInfo.hitEvent == HitEvent::Knockback)
+		&& m_HitInfo.hitEvent == HitEvent::Pushed)
+	{
+		SetActionState(std::make_unique<CPlayerPushedState>(*this));
+	}
+	//吹き飛ばされた場合の処理.
+	if (m_HitInfo.isHit
+		&& (m_HitInfo.hitEvent == HitEvent::Knockback
+			|| m_HitInfo.hitEvent == HitEvent::Knockdown))
 	{
 		SetActionState(std::make_unique<CPlayerKnockbackState>(*this));
 	}
@@ -237,24 +245,16 @@ D3DXVECTOR3 CPlayerBase::GetVelocity()
 	return velocity;
 }
 
-//--- 数値の領域を指定する関数 ---.
-float CPlayerBase::Clamp(float value, float min, float max)
-{
-	//最小値より小さかったら最小値を返す.
-	if (value < min) return min;
-	//最大値より大きかったら最大値を返す.
-	if (value > max) return max;
-
-	return value;
-}
-
 //--- 角度を0～360度にする関数 ---.
 float CPlayerBase::WrapAngle(float value)
 {
-	//360度以上なら引く.
-	if (value >= 2.f * D3DX_PI) return value - 2.f * D3DX_PI;
-	//0度以上なら足す.
-	if (value < 0.f) return value + 2.f * D3DX_PI;
+	//360度.
+	const float twoPi = 2.f * D3DX_PI;
+
+	//360度での余り.
+	value = fmodf(value, twoPi);
+	//余りが 0 未満なら足す.
+	if (value < 0.f) value += twoPi;
 
 	return value;
 }

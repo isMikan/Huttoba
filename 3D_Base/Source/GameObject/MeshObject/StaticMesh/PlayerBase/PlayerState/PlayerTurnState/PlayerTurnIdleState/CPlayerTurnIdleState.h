@@ -6,7 +6,7 @@
 *	プレイヤーが回転しない状態クラス.
 **/
 class CPlayerTurnIdleState
-	: public CPlayerState	//プレイヤー状態継承クラス.
+	: public CPlayerState	//プレイヤー状態を継承.
 {
 public:
 	CPlayerTurnIdleState(CPlayerBase& pPlayer);

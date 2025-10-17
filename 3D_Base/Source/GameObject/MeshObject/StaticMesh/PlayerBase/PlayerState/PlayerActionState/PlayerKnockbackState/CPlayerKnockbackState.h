@@ -6,7 +6,7 @@
 *	プレイヤーの吹き飛ばされた状態クラス.
 **/
 class CPlayerKnockbackState
-	: public CPlayerState
+	: public CPlayerState	//プレイヤー状態を継承.
 {
 public:
 	CPlayerKnockbackState(CPlayerBase& pPlayer);

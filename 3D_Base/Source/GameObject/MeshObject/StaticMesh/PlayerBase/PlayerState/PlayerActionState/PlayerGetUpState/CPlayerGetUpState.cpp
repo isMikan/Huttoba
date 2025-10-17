@@ -15,8 +15,8 @@ CPlayerGetUpState::CPlayerGetUpState(CPlayerBase& pPlayer)
 
 	, m_RightHandStartPos	()
 	, m_LeftHandStartPos	()
-	, m_RightHandEndPos		( 0.f, 1.f, 0.5f )
-	, m_LeftHandEndPos		( 0.f, 1.f, 0.5f )
+	, m_RightHandEndPos		( 0.f, 0.f, 0.5f )
+	, m_LeftHandEndPos		( 0.f, 0.f, 0.5f )
 {
 }
 
@@ -48,6 +48,10 @@ void CPlayerGetUpState::Enter()
 
 void CPlayerGetUpState::Exit()
 {
+	//プレイヤーの位置を取得.
+	D3DXVECTOR3 playerPos = m_pPlayer.GetPosition();
+	//地面に着地.
+	m_pPlayer.SetPosition(playerPos.x, 0.f, playerPos.z);
 }
 
 void CPlayerGetUpState::Update()
@@ -66,7 +70,7 @@ void CPlayerGetUpState::Update()
 
 	//全体の時間の現在の割合.
 	float progress = (t - m_StartTime) / m_EndTime;
-	progress = m_pPlayer.Clamp(progress, 0.f, 1.f);
+	progress = std::clamp(progress, 0.f, 1.f);
 
 	//滑らかに正常の位置に戻す.
 	D3DXQUATERNION quat;
@@ -75,17 +79,9 @@ void CPlayerGetUpState::Update()
 	D3DXQuaternionNormalize(&quat, &quat);
 	m_pPlayer.SetQuaternion(quat);
 
-	if (progress > 0.7f)
-	{
-		m_RightHandEndPos = D3DXVECTOR3(0.f, 0.f, 0.f);
-		m_LeftHandEndPos = D3DXVECTOR3(0.f, 0.f, 0.f);
-	}
-	else
-	{
-		m_RightHandEndPos = D3DXVECTOR3(0.f, 0.3f, -0.5f);
-		m_LeftHandEndPos = D3DXVECTOR3(0.f, 0.3f, -0.5f);
-	}
-	float eased = sinf(progress * D3DX_PI * 0.5f);	//それぞれの手の軌道の計算.	
+	m_RightHandEndPos = D3DXVECTOR3(0.f, 0.f, 0.5f);
+	m_LeftHandEndPos = D3DXVECTOR3(0.f, 0.f, 0.5f);
+	float eased = sinf(progress * D3DX_PI);	//それぞれの手の軌道の計算.	
 
 	//手の終了位置を設定.
 	m_RightHandEndPos = m_RightHandStartPos + m_RightHandEndPos;

@@ -81,7 +81,7 @@ void CPlayerThrowState::Update()
 
 	//‘S‘Ì‚ÌŠÔ‚ÌŒ»İ‚ÌŠ„‡.
 	float progress = (t - m_StartTime) / m_EndTime;
-	progress = m_pPlayer.Clamp(progress, 0.f, 1.f);
+	progress = std::clamp(progress, 0.f, 1.f);
 
 	//ŠÔ‚ÌŠ„‡‚ª”¼•ª‚æ‚è‘O‚È‚ç(“|‚ê‚é“®‚«).
 	if (progress < m_PhaseSplit)

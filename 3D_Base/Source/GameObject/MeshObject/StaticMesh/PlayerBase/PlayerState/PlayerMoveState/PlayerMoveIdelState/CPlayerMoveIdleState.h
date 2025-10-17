@@ -6,7 +6,7 @@
 *	プレイヤーが移動しない状態クラス.
 **/
 class CPlayerMoveIdleState
-	: public CPlayerState	//プレイヤー状態継承クラス.
+	: public CPlayerState	//プレイヤー状態を継承.
 {
 public:
 	CPlayerMoveIdleState(CPlayerBase& pPlayer);

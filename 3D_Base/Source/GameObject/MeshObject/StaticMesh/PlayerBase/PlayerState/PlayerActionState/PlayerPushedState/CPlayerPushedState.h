@@ -6,7 +6,7 @@
 *	プレイヤーが押される状態クラス.
 **/
 class CPlayerPushedState
-	: public CPlayerState	//プレイヤー状態継承クラス.
+	: public CPlayerState	//プレイヤー状態を継承.
 {
 public:
 	CPlayerPushedState(CPlayerBase& pPlayer);

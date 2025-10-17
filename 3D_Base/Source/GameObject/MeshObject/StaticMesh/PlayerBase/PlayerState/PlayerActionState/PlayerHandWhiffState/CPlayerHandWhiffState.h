@@ -6,7 +6,7 @@
 *	プレイヤーがアイテム未所持の攻撃を空振りする状態クラス.
 **/
 class CPlayerHandWhiffState
-	: public CPlayerState	//プレイヤー状態継承クラス.
+	: public CPlayerState	//プレイヤー状態を継承.
 {
 public:
 	CPlayerHandWhiffState(CPlayerBase& pPlayer);
