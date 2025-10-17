@@ -236,6 +236,7 @@
     <Text Include="ChangeSourse.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Collision\Collider\CollisionSphere\CollisionSphere.cpp" />
     <ClCompile Include="Source\Collision\CollisionStrategy\CollisionStrategyFactory\CollisionStrategyFactory.cpp" />
     <ClCompile Include="Source\Collision\CollisionStrategy\CollisionPattern\CollisionRaySphere\CollisionRaySphere.cpp" />
     <ClCompile Include="Source\Collision\CollisionStrategy\CollisionPattern\CollisionCapsuleSphere\CollisionCapsuleSphere.cpp" />
@@ -328,6 +329,7 @@
     <ClCompile Include="Source\TimeManager\CTimeManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Collision\Collider\CollisionSphere\CollisionSphere.h" />
     <ClInclude Include="Source\Collision\CollisionStrategy\CollisionStrategyFactory\CollisionStrategyFactory.h" />
     <ClInclude Include="Source\Collision\CollisionStrategy\CollisionPattern\CollisionRaySphere\CollisionRaySphere.h" />
     <ClInclude Include="Source\Collision\CollisionStrategy\CollisionPattern\CollisionCapsuleSphere\CollisionCapsuleSphere.h" />

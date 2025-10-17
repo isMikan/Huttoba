@@ -31,11 +31,13 @@ private:
     {
         size_t operator()(const std::pair<CollisionBase::ColliderType, CollisionBase::ColliderType>& p) const noexcept
         {
-            // 各要素を個別にハッシュ化
             size_t h1 = std::hash<int>()(static_cast<int>(p.first));
             size_t h2 = std::hash<int>()(static_cast<int>(p.second));
 
-            // よく使われる「Boost式ハッシュ合成」
+            // 並び替えて常に小さい方を先に
+            if (h1 > h2) std::swap(h1, h2);
+
+            // Boost式合成
             return h1 ^ (h2 << 1);
         }
     };

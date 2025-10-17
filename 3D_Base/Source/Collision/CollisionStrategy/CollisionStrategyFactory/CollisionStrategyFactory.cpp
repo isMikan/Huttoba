@@ -9,10 +9,16 @@ void CollisionStrategyFactory::RegisterStrategy(CollisionBase::ColliderType type
     m_Strategies[{typeA, typeB}] = std::move(strategy);
 }
 
-CollisionStrategyBase* CollisionStrategyFactory::GetStrategy(CollisionBase::ColliderType typeA,
+CollisionStrategyBase* CollisionStrategyFactory::GetStrategy(
+    CollisionBase::ColliderType typeA,
     CollisionBase::ColliderType typeB)
 {
     auto it = m_Strategies.find({ typeA, typeB });
+    if (it != m_Strategies.end())
+        return it->second.get();
+
+    // ‹t‡ƒyƒA‚à’T‚·
+    it = m_Strategies.find({ typeB, typeA });
     if (it != m_Strategies.end())
         return it->second.get();
     return nullptr;
