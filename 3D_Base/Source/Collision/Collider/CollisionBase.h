@@ -30,7 +30,7 @@ public:
 		None,
 	};
 
-	enum class CollisionType
+	enum class ColliderType
 	{
 		Capsule,
 		OBB,
@@ -86,9 +86,11 @@ public:
 	//現在座標の中心を取得
 	virtual D3DXVECTOR3 GetWorldPos() const = 0;
 
+	virtual ColliderType GetType() = 0;
+
 	//当たり判定の主を設定
-	void SetOwner(const CGameObject* obj) { m_Owner = obj; }
-	const CGameObject* GetOwner() const { return m_Owner; }
+	void SetOwner(ICollisionListener* obj) { m_Owner = obj; }
+	 ICollisionListener* GetOwner() { return m_Owner; }
 
 	//主の種類を設定
 	void SetTag(ColliderTag tag) { m_Tag = tag; }
@@ -100,7 +102,6 @@ public:
 	ColliderTag GetTag() const { return m_Tag; }
 	bool GetActive() const { return m_IsActive; }
 
-
 public:
 
 	//トランスフォーム系
@@ -110,7 +111,7 @@ public:
 
 protected:
 
-	const CGameObject* m_Owner;
+	ICollisionListener* m_Owner;
 	ColliderTag m_Tag;
 	bool m_IsActive;
 private:

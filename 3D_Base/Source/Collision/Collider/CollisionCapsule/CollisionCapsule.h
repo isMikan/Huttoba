@@ -22,6 +22,7 @@ public:
 	const D3DXVECTOR3& GetStart	() const { return m_Start; }
 	const D3DXVECTOR3& GetEnd	() const { return m_End; }
 	float GetRadius() const { return m_Radius; }
+	ColliderType GetType() { return ColliderType::Capsule; }
 
 	// セッター
 	void SetStart (const D3DXVECTOR3& s) { m_Start = s; }

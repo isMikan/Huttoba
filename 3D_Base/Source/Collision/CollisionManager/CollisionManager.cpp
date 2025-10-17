@@ -1,31 +1,68 @@
-#include "stdafx.h"
 #include "CollisionManager.h"
-#include "Collision/CBoundingSphere.h"
-#include "PlayerBase/CPlayerBase.h"
-#include "Item/ItemBase.h"
+#include <algorithm>
 
-CollisionManager::CollisionManager()
+
+void CollisionManager::AddCollider(CollisionBase* col)
 {
+    if (col && std::find(m_Colliders.begin(), m_Colliders.end(), col) == m_Colliders.end())
+        m_Colliders.push_back(col);
 }
 
-CollisionManager::~CollisionManager()
+void CollisionManager::RemoveCollider(CollisionBase* col)
 {
+    auto it = std::find(m_Colliders.begin(), m_Colliders.end(), col);
+    if (it != m_Colliders.end())
+        m_Colliders.erase(it);
 }
 
-bool CollisionManager::IsHit(const CBoundingSphere& pBSphere)
+void CollisionManager::CheckCollisions()
 {
-	////２つの球体の中心間の距離を求める
-	//D3DXVECTOR3 vLength = m_Position - pBSphere.GetPosition();
-	////上記のベクトルから長さに変換
-	//float Length = D3DXVec3Length(&vLength);
+    for (size_t i = 0; i < m_Colliders.size(); ++i)
+    {
+        CollisionBase* colA = m_Colliders[i];
+        if (!colA->GetActive()) continue;
 
-	////「２つの球体の距離」が「２つの球体のそれぞれの半径を足したもの」より、
-	////小さいということは、球体同士が重なっている（衝突している）ということ
-	//if (Length <= m_Radius + pBSphere.GetRadius())
-	//{
-	//	return true;	//衝突している
-	//}
-	//return false;	//衝突していない
+        for (size_t j = i + 1; j < m_Colliders.size(); ++j)
+        {
+            CollisionBase* colB = m_Colliders[j];
+            if (!colB->GetActive()) continue;
 
-	return false;
+            auto tagA = colA->GetTag();
+            auto tagB = colB->GetTag();
+
+            // ===== タグで衝突判定するかフィルタ =====
+            bool shouldCheck = false;
+
+            switch (tagA)
+            {
+            case CollisionBase::ColliderTag::Player:
+                shouldCheck = (tagB == CollisionBase::ColliderTag::Item ||
+                    tagB == CollisionBase::ColliderTag::Haetataki);
+                break;
+
+            case CollisionBase::ColliderTag::Ground:
+                shouldCheck = (tagB == CollisionBase::ColliderTag::Player ||
+                    tagB == CollisionBase::ColliderTag::Item);
+                break;
+
+                // 必要に応じて追加
+            default:
+                break;
+            }
+
+            if (!shouldCheck) continue;
+
+            // ===== Strategyを選択 =====
+            auto strategy = CollisionStrategyFactory::GetInstance()->GetStrategy(colA->GetType(), colB->GetType());
+            if (!strategy) continue;
+
+            CollisionResult result = strategy->CheckCollision(colA, colB);
+
+            if (result.IsHit)
+            {
+                colA->GetOwner()->OnCollision(result);
+                colB->GetOwner()->OnCollision(result);
+            }
+        }
+    }
 }

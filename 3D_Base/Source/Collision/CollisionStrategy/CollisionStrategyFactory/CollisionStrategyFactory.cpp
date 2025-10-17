@@ -1,14 +1,16 @@
-#include "stdafx.h"
 #include "CollisionStrategyFactory.h"
 
-void CollisionStrategyFactory::RegisterStrategy(const std::string& key, StrategyPtr strategy)
+void CollisionStrategyFactory::RegisterStrategy(CollisionBase::ColliderType typeA,
+    CollisionBase::ColliderType typeB,
+    StrategyPtr strategy)
 {
-	m_Strategies[key] = std::move(strategy);
+    m_Strategies[{typeA, typeB}] = std::move(strategy);
 }
 
-CollisionStrategyBase* CollisionStrategyFactory::GetStrategy(const std::string& key)
+CollisionStrategyBase* CollisionStrategyFactory::GetStrategy(CollisionBase::ColliderType typeA,
+    CollisionBase::ColliderType typeB)
 {
-    auto it = m_Strategies.find(key);
+    auto it = m_Strategies.find({ typeA, typeB });
     if (it != m_Strategies.end())
         return it->second.get();
     return nullptr;

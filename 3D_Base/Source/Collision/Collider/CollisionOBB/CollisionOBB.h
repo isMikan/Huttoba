@@ -23,6 +23,7 @@ public:
 	const D3DXVECTOR3& GetSize() const { return m_Size; }
 	D3DXVECTOR3 GetHalfSize() const { return m_Size * 0.5f; }
 	const D3DXVECTOR3& GetAxis(int index) const { return m_LocalAxes[index]; }
+	ColliderType GetType() { return ColliderType::OBB; }
 
 private:
 

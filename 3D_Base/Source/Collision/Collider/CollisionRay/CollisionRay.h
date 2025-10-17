@@ -26,6 +26,7 @@ public:
     const D3DXVECTOR3& GetOrigin() const { return m_WorldOrigin; }
     const D3DXVECTOR3& GetDirection() const { return m_Direction; }
     float GetLength() const { return m_Length; }
+    ColliderType GetType() { return ColliderType::Ray; }
 
     // ワールド空間上の終点を取得
     D3DXVECTOR3 GetEndPoint() const;

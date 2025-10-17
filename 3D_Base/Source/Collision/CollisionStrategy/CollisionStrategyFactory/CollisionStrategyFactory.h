@@ -9,20 +9,35 @@ class CollisionStrategyFactory
 public:
     using StrategyPtr = std::unique_ptr<CollisionStrategyBase>;
 
-    // シングルトンにする場合
-    static CollisionStrategyFactory& GetInstance()
+    static CollisionStrategyFactory* GetInstance()
     {
         static CollisionStrategyFactory instance;
-        return instance;
+        return &instance;
     }
 
-    // Strategy 登録
-    void RegisterStrategy(const std::string& key, StrategyPtr strategy);
+    void RegisterStrategy(CollisionBase::ColliderType typeA,
+        CollisionBase::ColliderType typeB,
+        StrategyPtr strategy);
 
-    // Strategy 取得
-    CollisionStrategyBase* GetStrategy(const std::string& key);
+    CollisionStrategyBase* GetStrategy(CollisionBase::ColliderType typeA,
+        CollisionBase::ColliderType typeB);
 
 private:
-    CollisionStrategyFactory() {}
-    std::unordered_map<std::string, StrategyPtr> m_Strategies;
+    CollisionStrategyFactory() = default;
+    ~CollisionStrategyFactory() = default;
+
+    struct PairHash
+    {
+        size_t operator()(const std::pair<CollisionBase::ColliderType, CollisionBase::ColliderType>& p) const noexcept
+        {
+            // 各要素を個別にハッシュ化
+            size_t h1 = std::hash<int>()(static_cast<int>(p.first));
+            size_t h2 = std::hash<int>()(static_cast<int>(p.second));
+
+            // よく使われる「Boost式ハッシュ合成」
+            return h1 ^ (h2 << 1);
+    };
+
+    std::unordered_map<std::pair<CollisionBase::ColliderType, CollisionBase::ColliderType>,
+        StrategyPtr, PairHash> m_Strategies;
 };
