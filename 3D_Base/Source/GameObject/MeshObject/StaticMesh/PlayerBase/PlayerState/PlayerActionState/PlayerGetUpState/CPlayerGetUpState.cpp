@@ -13,10 +13,10 @@ CPlayerGetUpState::CPlayerGetUpState(CPlayerBase& pPlayer)
 	, m_StartQuat			( 0.f, 0.f, 0.f, 1.f )
 	, m_DefaultQuat			( 0.f, 0.f, 0.f, 1.f )
 
-	, m_RightHandStartPos	()
-	, m_LeftHandStartPos	()
-	, m_RightHandEndPos		( 0.f, 0.f, 0.5f )
-	, m_LeftHandEndPos		( 0.f, 0.f, 0.5f )
+	, m_RightHandStartPos	( -0.1f, 0.1f, 0.1f )
+	, m_LeftHandStartPos	(  0.1f, 0.1f, 0.1f )
+	, m_RightHandEndPos		( -0.1f, 0.2f, 0.5f )
+	, m_LeftHandEndPos		(  0.1f, 0.2f, 0.5f )
 {
 }
 
@@ -42,8 +42,11 @@ void CPlayerGetUpState::Enter()
 	D3DXVECTOR3 rightHandOffset = m_pPlayer.GetPlayerRightHand().GetOffsetPos();
 	D3DXVECTOR3 leftHandOffset = m_pPlayer.GetPlayerLeftHand().GetOffsetPos();
 	//手の開始位置を設定.
-	m_RightHandStartPos = rightHandOffset;
-	m_LeftHandStartPos = leftHandOffset;
+	m_RightHandStartPos += rightHandOffset;
+	m_LeftHandStartPos += leftHandOffset;
+	//手の終了位置を設定.
+	m_RightHandEndPos += m_RightHandStartPos;
+	m_LeftHandEndPos += m_LeftHandStartPos;
 }
 
 void CPlayerGetUpState::Exit()
@@ -79,13 +82,8 @@ void CPlayerGetUpState::Update()
 	D3DXQuaternionNormalize(&quat, &quat);
 	m_pPlayer.SetQuaternion(quat);
 
-	m_RightHandEndPos = D3DXVECTOR3(0.f, 0.f, 0.5f);
-	m_LeftHandEndPos = D3DXVECTOR3(0.f, 0.f, 0.5f);
 	float eased = sinf(progress * D3DX_PI);	//それぞれの手の軌道の計算.	
 
-	//手の終了位置を設定.
-	m_RightHandEndPos = m_RightHandStartPos + m_RightHandEndPos;
-	m_LeftHandEndPos = m_LeftHandStartPos + m_LeftHandEndPos;
 	//右手と左手の調整位置だけの計算.
 	D3DXVECTOR3 rightHandOffsetPos;
 	D3DXVec3Lerp(&rightHandOffsetPos, &m_RightHandStartPos, &m_RightHandEndPos, eased);

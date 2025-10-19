@@ -12,10 +12,8 @@ CPlayerKnockdownState::CPlayerKnockdownState(CPlayerBase& pPlayer)
 
 	, m_StartQuat			( 0.f, 0.f, 0.f, 1.f )
 
-	, m_RightHandStartPos	()
-	, m_LeftHandStartPos	()
-	, m_RightHandEndPos		( 0.f, 1.f, 0.5f )
-	, m_LeftHandEndPos		( 0.f, 1.f, 0.5f )
+	, m_RightHandPos		( -0.1f, 0.3f, 0.1f )
+	, m_LeftHandPos			( 0.1f, 0.3f, 0.1f )
 {
 }
 
@@ -32,15 +30,14 @@ void CPlayerKnockdownState::Enter()
 
 	//クォータニオン型の回転を取得.
 	m_StartQuat = m_pPlayer.GetQuaternion();
-
 	m_pPlayer.SetQuaternion(m_StartQuat);
 
 	//手の位置を調整するための数値を取得.
 	D3DXVECTOR3 rightHandOffset = m_pPlayer.GetPlayerRightHand().GetOffsetPos();
 	D3DXVECTOR3 leftHandOffset = m_pPlayer.GetPlayerLeftHand().GetOffsetPos();
 	//手の開始位置を設定.
-	m_RightHandStartPos = rightHandOffset;
-	m_LeftHandStartPos = leftHandOffset;
+	m_RightHandPos += rightHandOffset;
+	m_LeftHandPos += leftHandOffset;
 
 	//m_EndTime = m_pPlayer.GetHitInfo().force * 0.5;
 }
@@ -95,11 +92,7 @@ void CPlayerKnockdownState::Update()
 	//D3DXVECTOR3 leftHandOffsetPos;
 	//D3DXVec3Lerp(&leftHandOffsetPos, &m_LeftHandStartPos, &m_LeftHandEndPos, eased);
 
-	////プレイヤーの位置と手の調整位置を合わせる.
-	//D3DXVECTOR3 rightHandPos = m_pPlayer.GetObjectPos(rightHandOffsetPos);
-	//D3DXVECTOR3 leftHandPos = m_pPlayer.GetObjectPos(leftHandOffsetPos);
-
-	////手の位置を設定.
-	//m_pPlayer.GetPlayerRightHand().SetPosition(rightHandPos);
-	//m_pPlayer.GetPlayerLeftHand().SetPosition(leftHandPos);
+	//手の位置を設定.
+	m_pPlayer.GetPlayerRightHand().SetPosition(m_pPlayer.GetObjectPos(m_RightHandPos));
+	m_pPlayer.GetPlayerLeftHand().SetPosition(m_pPlayer.GetObjectPos(m_LeftHandPos));
 }

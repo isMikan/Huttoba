@@ -11,8 +11,8 @@ public:
 	//唯一のインスタンスを作成.
 	static CTimeManager& Instance()
 	{
-		static CTimeManager* s_Instance = new CTimeManager;
-		return *s_Instance;
+		static CTimeManager s_Instance;
+		return s_Instance;
 	}
 
 	//リセット関数を外部へ.

@@ -16,14 +16,15 @@ CPlayerFallingState::CPlayerFallingState(CPlayerBase& pPlayer)
 	, m_EndTime				( 10.f )	//吹き飛ばし量によって着地時間が変わるので多めに.
 
 	, m_GroundRange			( 1.5f )					//この位置を下回るまで回転. 
-	, m_RotateRange			( D3DXToRadian( 15.f ) )	//この角度の範囲内で止まる.
+	, m_RotateRangeMax		( D3DXToRadian( -85.f ) )	//この角度の範囲内で止まる.
+	, m_RotateRangeMin		( D3DXToRadian( -95.f ) )	//この角度の範囲内で止まる.
 	, m_ForceMax			( 15.f )					//想定.
 
 	, m_Gravity				( -9.8f )
 	, m_RotateSpeed			( 40.f )	//20回転.
 	, m_CurrentTiltAngle	()
 
-	, m_GroundPos			( 0.1f )
+	, m_GroundPos			( 0.2f )
 
 	, m_StartQuat			( 0.f, 0.f, 0.f, 1.f )
 {
@@ -95,9 +96,10 @@ void CPlayerFallingState::Update()
 	D3DXQUATERNION quat = m_pPlayer.GetQuaternion();
 
 	m_CurrentTiltAngle = m_pPlayer.WrapAngle(m_CurrentTiltAngle);
-	//地面近くかつ90度に近づいたら.
-	if (playerPos.y < m_GroundRange
-		&& fabsf(WorldAngle() + D3DXToRadian(90.f)) < m_RotateRange)
+	//地面近くかつ90度付近の場合.
+	if (WorldAngle() > m_RotateRangeMin
+		&& WorldAngle() < m_RotateRangeMax
+		&& playerPos.y < m_GroundRange)
 	{
 		//正規化.
 		D3DXQuaternionNormalize(&quat, &quat);
@@ -158,6 +160,7 @@ float CPlayerFallingState::WorldAngle()
 	//上方向.
 	D3DXVECTOR3 up(0.f, 1.f, 0.f);
 
+	//向きを計算.
 	float dot = D3DXVec3Dot(&localUp, &up);
 	dot = std::clamp(dot, -1.f, 1.f);
 
@@ -171,8 +174,9 @@ bool CPlayerFallingState::IsEnd()
 	//プレイヤーの位置を取得.
 	D3DXVECTOR3 playerPos = m_pPlayer.GetPosition();
 
-	//回転を90度付近で止め、位置が地面についたら.
-	if (fabsf(WorldAngle() + D3DXToRadian(90.f)) < m_RotateRange
+	//回転を90度付近で止め、位置が地面についた場合.
+	if (WorldAngle() > m_RotateRangeMin
+		&& WorldAngle() < m_RotateRangeMax
 		&& playerPos.y <= m_GroundPos)
 	{
 		return true;

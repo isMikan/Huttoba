@@ -35,7 +35,8 @@ private:
 	float			m_EndTime;				//終了時間.
 
 	float			m_GroundRange;			//地面の許容範囲.
-	float			m_RotateRange;			//回転の許容範囲.
+	float			m_RotateRangeMax;		//回転の最大許容範囲.
+	float			m_RotateRangeMin;		//回転の最小許容範囲.
 	float			m_ForceMax;				//吹き飛ばし量の最大.
 
 	float			m_Gravity;				//重力.
