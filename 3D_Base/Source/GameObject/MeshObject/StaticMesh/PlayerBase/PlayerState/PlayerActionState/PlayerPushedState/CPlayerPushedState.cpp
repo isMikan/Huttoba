@@ -113,13 +113,9 @@ void CPlayerPushedState::Update()
 	D3DXVECTOR3 leftHandOffsetPos;
 	D3DXVec3Lerp(&leftHandOffsetPos, &m_LeftHandStartPos, &m_LeftHandEndPos, eased);
 
-	//プレイヤーの位置と手の調整位置を合わせる.
-	D3DXVECTOR3 rightHandPos = m_pPlayer.GetObjectPos(rightHandOffsetPos);
-	D3DXVECTOR3 leftHandPos = m_pPlayer.GetObjectPos(leftHandOffsetPos);
-
-	//手の位置を設定.
-	m_pPlayer.GetPlayerRightHand().SetPosition(rightHandPos);
-	m_pPlayer.GetPlayerLeftHand().SetPosition(leftHandPos);
+	//手の位置を調整して設定.
+	m_pPlayer.GetPlayerRightHand().SetPosition(m_pPlayer.GetObjectPos(rightHandOffsetPos));
+	m_pPlayer.GetPlayerLeftHand().SetPosition(m_pPlayer.GetObjectPos(leftHandOffsetPos));
 
 	//プレイヤーの位置と押された移動量を足す.
 	playerPos += m_pPlayer.Pushed();

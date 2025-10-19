@@ -92,7 +92,7 @@ void CPlayerKnockdownState::Update()
 	//D3DXVECTOR3 leftHandOffsetPos;
 	//D3DXVec3Lerp(&leftHandOffsetPos, &m_LeftHandStartPos, &m_LeftHandEndPos, eased);
 
-	//è‚ÌˆÊ’u‚ğİ’è.
+	//è‚ÌˆÊ’u‚ğ’²®‚µ‚Äİ’è.
 	m_pPlayer.GetPlayerRightHand().SetPosition(m_pPlayer.GetObjectPos(m_RightHandPos));
 	m_pPlayer.GetPlayerLeftHand().SetPosition(m_pPlayer.GetObjectPos(m_LeftHandPos));
 }

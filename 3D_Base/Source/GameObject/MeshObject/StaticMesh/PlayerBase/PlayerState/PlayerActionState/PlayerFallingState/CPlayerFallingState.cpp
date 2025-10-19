@@ -126,13 +126,9 @@ void CPlayerFallingState::Update()
 	D3DXVECTOR3 rightHandOffsetPos = m_UpHandOffset + m_pPlayer.GetPlayerRightHand().GetOffsetPos();
 	D3DXVECTOR3 leftHandOffsetPos = m_UpHandOffset + m_pPlayer.GetPlayerLeftHand().GetOffsetPos();
 
-	//プレイヤーの位置と手の調整位置を合わせる.
-	D3DXVECTOR3 rightHandPos = m_pPlayer.GetObjectPos(rightHandOffsetPos);
-	D3DXVECTOR3 leftHandPos = m_pPlayer.GetObjectPos(leftHandOffsetPos);
-
-	//手の位置を設定.
-	m_pPlayer.GetPlayerRightHand().SetPosition(rightHandPos);
-	m_pPlayer.GetPlayerLeftHand().SetPosition(leftHandPos);
+	//手の位置を調整して設定.
+	m_pPlayer.GetPlayerRightHand().SetPosition(m_pPlayer.GetObjectPos(rightHandOffsetPos));
+	m_pPlayer.GetPlayerLeftHand().SetPosition(m_pPlayer.GetObjectPos(leftHandOffsetPos));
 
 	//1フレームの速さを取得.
 	float dt = static_cast<float>(CTimeManager::GetDeltaTime());
