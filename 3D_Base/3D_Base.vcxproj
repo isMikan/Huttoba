@@ -84,7 +84,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)Source;$(ProjectDir)Source/DirectX;$(ProjectDir)Source/Assets;$(ProjectDir)Source/Assets/Effect/Effekseer/include;$(ProjectDir)Assets\Effect\Effekseer\lib;$(ProjectDir)..\Sourse\Assets\Effect\Effekseer\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Source;$(ProjectDir)Source/DirectX;$(ProjectDir)Source/Assets;$(ProjectDir)Source/Assets/Effect/Effekseer/include;$(ProjectDir)Assets\Effect\Effekseer\lib;$(ProjectDir)..\Source\Assets\Effect\Effekseer\include</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <EnableModules>true</EnableModules>
@@ -92,7 +92,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(ProjectDir)..\Sourse\Assets\Effect\Effekseer\lib</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ProjectDir)..\Source\Assets\Effect\Effekseer\lib</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -103,7 +103,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)Source;$(ProjectDir)Source/DirectX;$(ProjectDir)Source/Assets;$(ProjectDir)Source/Assets/Effect/Effekseer/include;$(ProjectDir)Assets\Effect\Effekseer\lib;$(ProjectDir)..\Sourse\Assets\Effect\Effekseer\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Source;$(ProjectDir)Source/DirectX;$(ProjectDir)Source/Assets;$(ProjectDir)Source/Assets/Effect/Effekseer/include;$(ProjectDir)Assets\Effect\Effekseer\lib;$(ProjectDir)..\Source\Assets\Effect\Effekseer\include</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <EnableModules>true</EnableModules>
@@ -113,7 +113,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(ProjectDir)..\Sourse\Assets\Effect\Effekseer\lib</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ProjectDir)..\Source\Assets\Effect\Effekseer\lib</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -124,7 +124,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <ForcedIncludeFiles>stdafx.h</ForcedIncludeFiles>
-      <AdditionalIncludeDirectories>$(ProjectDir)Source;$(ProjectDir)Source/DirectX;$(ProjectDir)Source/Assets;$(ProjectDir)Source/Assets/Effect/Effekseer/include;$(ProjectDir)Sourse/Assets/Effect/Effekseer/lib;$(ProjectDir)Sourse/Assets/Effect/Effekseer/include;$(ProjectDir)Source/GameObject/MeshObject/StaticMesh</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Source;$(ProjectDir)Source/DirectX;$(ProjectDir)Source/Assets;$(ProjectDir)Source/Assets/Effect/Effekseer/include;$(ProjectDir)Source/Assets/Effect/Effekseer/lib;$(ProjectDir)Source/Assets/Effect/Effekseer/include;$(ProjectDir)Source/GameObject/MeshObject/StaticMesh</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <EnableModules>true</EnableModules>
@@ -145,7 +145,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <ForcedIncludeFiles>stdafx.h</ForcedIncludeFiles>
-      <AdditionalIncludeDirectories>$(ProjectDir)Source;$(ProjectDir)Source/DirectX;$(ProjectDir)Source/Assets;$(ProjectDir)Source/Assets/Effect/Effekseer/include;$(ProjectDir)Assets\Effect\Effekseer\lib;$(ProjectDir)..\Sourse\Assets\Effect\Effekseer\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Source;$(ProjectDir)Source/DirectX;$(ProjectDir)Source/Assets;$(ProjectDir)Source/Assets/Effect/Effekseer/include;$(ProjectDir)Assets\Effect\Effekseer\lib;$(ProjectDir)..\Source\Assets\Effect\Effekseer\include</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <EnableModules>true</EnableModules>
@@ -155,7 +155,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(ProjectDir)..\Sourse\Assets\Effect\Effekseer\lib</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ProjectDir)..\Source\Assets\Effect\Effekseer\lib</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -233,11 +233,7 @@
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="ChangeSourse.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="Source\Collision\Collider\CollisionSphere\CollisionSphere.cpp" />
-    <ClCompile Include="Source\Collision\CollisionManager\CollisionManager.cpp" />
     <ClCompile Include="Source\Collision\CollisionStrategy\CollisionStrategyFactory\CollisionStrategyFactory.cpp" />
     <ClCompile Include="Source\Collision\CollisionStrategy\CollisionPattern\CollisionRaySphere\CollisionRaySphere.cpp" />
     <ClCompile Include="Source\Collision\CollisionStrategy\CollisionPattern\CollisionCapsuleSphere\CollisionCapsuleSphere.cpp" />
