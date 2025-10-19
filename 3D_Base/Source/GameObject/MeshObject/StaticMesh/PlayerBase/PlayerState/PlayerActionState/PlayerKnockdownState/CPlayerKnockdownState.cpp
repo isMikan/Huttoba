@@ -1,14 +1,25 @@
 #include "CPlayerKnockdownState.h"
 
 #include "GameObject/MeshObject/StaticMesh/PlayerBase/CPlayerBase.h"
+#include "GameObject/MeshObject/StaticMesh/PlayerBase/Player/CPlayer.h"
 
 #include "GameObject/MeshObject/StaticMesh/PlayerBase/PlayerState/PlayerActionState/PlayerGetUpState/CPlayerGetUpState.h"
+
+#include "Input/CInputManager.h"
 
 CPlayerKnockdownState::CPlayerKnockdownState(CPlayerBase& pPlayer)
 	: CPlayerState			( pPlayer )
 	
 	, m_StartTime			()
-	, m_EndTime				( 1.f )
+	, m_EndTime				( 0.7f )	//終了させる割合.
+
+	, m_DecreaseTriggerTime	()
+	, m_DecreaseTime		( 0.2f )
+
+	, m_ShakeSpeed			( 2.f )
+	, m_ShakeWidth			( 0.8f )
+
+	, m_IsTimeDecreasing	( false )
 
 	, m_StartQuat			( 0.f, 0.f, 0.f, 1.f )
 
@@ -39,7 +50,8 @@ void CPlayerKnockdownState::Enter()
 	m_RightHandPos += rightHandOffset;
 	m_LeftHandPos += leftHandOffset;
 
-	//m_EndTime = m_pPlayer.GetHitInfo().force * 0.5;
+	//吹き飛ばされ量から終了する時間を計算.
+	m_EndTime = m_pPlayer.GetHitInfo().force * m_EndTime;
 }
 
 void CPlayerKnockdownState::Exit()
@@ -55,6 +67,16 @@ void CPlayerKnockdownState::Update()
 	{
 		m_pPlayer.SetActionState(std::make_unique<CPlayerGetUpState>(m_pPlayer));
 		return;
+	}
+
+	if(dynamic_cast<CPlayer*>(&m_pPlayer))
+	{
+		ChildPlayer(m_pPlayer.GetPlayerID());
+	}
+
+	if(m_IsTimeDecreasing)
+	{
+		DecreaseTime();
 	}
 
 	////プレイヤーのローカル軸を取得.
@@ -95,4 +117,55 @@ void CPlayerKnockdownState::Update()
 	//手の位置を調整して設定.
 	m_pPlayer.GetPlayerRightHand().SetPosition(m_pPlayer.GetObjectPos(m_RightHandPos));
 	m_pPlayer.GetPlayerLeftHand().SetPosition(m_pPlayer.GetObjectPos(m_LeftHandPos));
+}
+
+void CPlayerKnockdownState::ChildPlayer(int index)
+{
+	if (CInputManager::IsDown(Action::MoveUp, index)
+		|| CInputManager::IsDown(Action::MoveDown, index)
+		|| CInputManager::IsDown(Action::MoveLeft, index)
+		|| CInputManager::IsDown(Action::MoveRight, index))
+	{
+		OutputDebugStringA("レバガチャ入力検知！\n");
+		if(!m_IsTimeDecreasing)
+		{
+			OutputDebugStringA("レバガチャture！\n");
+			m_EndTime -= 0.5f;
+			m_DecreaseTriggerTime = static_cast<float>(CTimeManager::GetTotalTime());
+			m_IsTimeDecreasing = true;
+		}
+	}
+}
+
+void CPlayerKnockdownState::DecreaseTime()
+{
+	//経過時間を取得.
+	float t = static_cast<float>(CTimeManager::GetTotalTime());
+
+	if (t - m_DecreaseTriggerTime > m_DecreaseTime)
+	{
+		OutputDebugStringA("レバガチャfalse！\n");
+		m_IsTimeDecreasing = false;
+		return;
+	}
+
+	//全体の時間の現在の割合.
+	float progress = (t - m_DecreaseTriggerTime) / m_DecreaseTime;
+	progress = std::clamp(progress, 0.f, 1.f);
+
+	//揺れる動作を計算.
+	float offset = cosf(progress * D3DX_PI * m_ShakeSpeed) * m_ShakeWidth;
+
+	//プレイヤーのローカル軸を取得.
+	CPlayerBase::LocalAxes axes = m_pPlayer.GetLocalAxes();
+	//プレイヤーの位置を取得.
+	D3DXVECTOR3 playerPos = m_pPlayer.GetPosition();
+
+	float dt = static_cast<float>(CTimeManager::GetDeltaTime());
+
+	//横軸に揺らす.
+	playerPos += axes.right * offset * dt;
+
+	m_pPlayer.SetPosition(playerPos);
+
 }

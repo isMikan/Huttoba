@@ -63,24 +63,24 @@ void CGroundManager::Update()
 			if (!m_pGrounds[gNo]->GetIsFallDown())
 			{
 				m_pGrounds[gNo]->SetIsChangeColor(false);
-				m_pGrounds[gNo]->SetIsVibrate(false);
+				m_pGrounds[gNo]->SetIsShake(false);
 				m_pGrounds[gNo]->SetIsFallDown(true);
 			}
 		}
-		//—Ž‚¿‚éŽžŠÔ‚æ‚è(VibrateTime•b)‘O‚©‚ç—Ž‚¿‚é‚Ü‚Å.
-		else if (m_FallTime[gNo] - CGround::m_VibrateTime <= t)
+		//—Ž‚¿‚éŽžŠÔ‚æ‚è(ShakeTime•b)‘O‚©‚ç—Ž‚¿‚é‚Ü‚Å.
+		else if (m_FallTime[gNo] - CGround::m_ShakeTime <= t)
 		{
-			if (!m_pGrounds[gNo]->GetIsVibrate())
+			if (!m_pGrounds[gNo]->GetIsShake())
 			{
-				m_pGrounds[gNo]->SetVibrateStartTime(t);
-				m_pGrounds[gNo]->SetIsVibrate(true);
+				m_pGrounds[gNo]->SetShakeTriggerTime(t);
+				m_pGrounds[gNo]->SetIsShake(true);
 			}
 		}
 		//—Ž‚¿‚éŽžŠÔ‚æ‚è(ChangeColorTime•b)‘O‚É—Ž‚¿‚é‚Ü‚Å.
 		else if (m_FallTime[gNo] - CGround::m_ChangeColorTime <= t
 			&& !m_pGrounds[gNo]->GetIsChangeColor())
 		{
-			m_pGrounds[gNo]->SetChangeColorStartTime(t);
+			m_pGrounds[gNo]->SetChangeColorTriggerTime(t);
 			m_pGrounds[gNo]->SetIsChangeColor(true);
 		}
 

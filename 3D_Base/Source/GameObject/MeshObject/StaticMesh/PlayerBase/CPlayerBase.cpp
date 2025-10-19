@@ -9,7 +9,9 @@
 #include "PlayerBase/PlayerState/PlayerActionState/PlayerKnockdownState/CPlayerKnockdownState.h"
 
 CPlayerBase::CPlayerBase( int index )
-	: m_pObserver		()
+	: m_PlayerID		( index )
+	
+	, m_pObserver		()
 	
 	, m_pHead			( std::make_unique<CPlayerHead>() )
 	, m_pRightHand		( std::make_unique<CPlayerRightHand>() )

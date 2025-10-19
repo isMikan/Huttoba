@@ -18,8 +18,6 @@
 
 CPlayer::CPlayer(int index)
 	: CPlayerBase			( index )
-
-	, m_PlayerID			( index )
 {
 	SetPlayerInputBinding(m_PlayerID);
 }
@@ -49,20 +47,8 @@ void CPlayer::HandleInput()
 	float x = 0.f;	//x².
 	float z = 0.f;	//z².
 
-	if (CInputManager::IsRepeat(Action::MoveUp, m_PlayerID))	z += 1.f;
-	if (CInputManager::IsRepeat(Action::MoveDown, m_PlayerID))	z -= 1.f;
-	if (CInputManager::IsRepeat(Action::MoveLeft, m_PlayerID))	x -= 1.f;
-	if (CInputManager::IsRepeat(Action::MoveRight, m_PlayerID))	x += 1.f;
-
-	//Ú‘±‚³‚ê‚Ä‚¢‚½‚ç”’l‚ğó‚¯æ‚é.
-	if (CInputManager::IsConnect(m_PlayerID))
-	{
-		x = CInputManager::GetLeftSthikX(m_PlayerID);
-		z = CInputManager::GetLeftSthikY(m_PlayerID);
-	}
-
 	//ˆÚ“®‰ñ“]‚ğ‚µ‚È‚¢ê‡.
-	if(m_PlayerEvent == PlayerEvent::HandWhiff
+	if (m_PlayerEvent == PlayerEvent::HandWhiff
 		|| m_PlayerEvent == PlayerEvent::Knockback
 		|| m_PlayerEvent == PlayerEvent::Getup
 		|| m_PlayerEvent == PlayerEvent::Knockdown)
@@ -70,21 +56,32 @@ void CPlayer::HandleInput()
 		SetMoveState(std::make_unique<CPlayerMoveIdleState>(*this));
 		SetTurnState(std::make_unique<CPlayerTurnIdleState>(*this));
 	}
-	//ˆÚ“®‚¾‚¯‚·‚éê‡.
 	else
 	{
-		SetMoveState(std::make_unique<CPlayerMoveState>(*this, x, z));
+		if (CInputManager::IsRepeat(Action::MoveUp, m_PlayerID))	z += 1.f;
+		if (CInputManager::IsRepeat(Action::MoveDown, m_PlayerID))	z -= 1.f;
+		if (CInputManager::IsRepeat(Action::MoveLeft, m_PlayerID))	x -= 1.f;
+		if (CInputManager::IsRepeat(Action::MoveRight, m_PlayerID))	x += 1.f;
 
-		//‰ñ“]‚¾‚¯‚µ‚È‚¢ê‡.
-		if (m_PlayerEvent == PlayerEvent::Falling)
+		//Ú‘±‚³‚ê‚Ä‚¢‚½‚ç”’l‚ğó‚¯æ‚é.
+		if (CInputManager::IsConnect(m_PlayerID))
 		{
-			SetTurnState(std::make_unique<CPlayerTurnIdleState>(*this));
+			x = CInputManager::GetLeftSthikX(m_PlayerID);
+			z = CInputManager::GetLeftSthikY(m_PlayerID);
 		}
-		//ˆÚ“®‰ñ“]‚·‚éê‡.
-		else
-		{
-			SetTurnState(std::make_unique<CPlayerTurnState>(*this, x, z));
-		}
+	}
+
+	//ˆÚ“®‚¾‚¯‚·‚éê‡.
+	SetMoveState(std::make_unique<CPlayerMoveState>(*this, x, z));
+	//‰ñ“]‚¾‚¯‚µ‚È‚¢ê‡.
+	if (m_PlayerEvent == PlayerEvent::Falling)
+	{
+		SetTurnState(std::make_unique<CPlayerTurnIdleState>(*this));
+	}
+	//ˆÚ“®‰ñ“]‚·‚éê‡.
+	else
+	{
+		SetTurnState(std::make_unique<CPlayerTurnState>(*this, x, z));
 	}
 
 	//ƒAƒCƒeƒ€‚ğ‚Á‚Ä‚¢‚È‚¢‚È‚çUŒ‚.

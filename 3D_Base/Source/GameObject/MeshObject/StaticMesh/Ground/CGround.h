@@ -12,7 +12,7 @@ public:
 	//色が変わる時間.
 	static constexpr float	m_ChangeColorTime = 5.f;	
 	//揺れる時間.
-	static constexpr float	m_VibrateTime = 2.f;
+	static constexpr float	m_ShakeTime = 2.f;
 
 public:
 	CGround();
@@ -30,23 +30,23 @@ public:
 	bool GetIsChangeColor() const { return m_IsChangeColor; }
 	void SetIsChangeColor(bool change) { m_IsChangeColor = change; }
 	//地面が揺れるか取得と設定.
-	bool GetIsVibrate() const { return m_IsVibrate; }
-	void SetIsVibrate(bool vibrate) { m_IsVibrate = vibrate; }
+	bool GetIsShake() const { return m_IsShake; }
+	void SetIsShake(bool vibrate) { m_IsShake = vibrate; }
 	//地面が落ちるか取得と設定.
 	bool GetIsFallDown() const { return m_IsFallDown; }
 	void SetIsFallDown(bool fall) { m_IsFallDown = fall; }
 
 	//地面の色が変わり始めた時間を設定.
-	void SetChangeColorStartTime(float time) { m_ChangeColorStartTime = time; }
+	void SetChangeColorTriggerTime(float time) { m_ChangeColorTriggerTime = time; }
 	//地面が揺れ始めた時間を設定.
-	void SetVibrateStartTime(float time) { m_VibrateStartTime = time; }
+	void SetShakeTriggerTime(float time) { m_ShakeTriggerTime = time; }
 
 private:
 	//--- 地面の色が変わる ---.
 	void ChangeColorOfGround();
 
 	//--- 地面が揺れる ---.
-	void VibrateGround();
+	void ShakeGround();
 
 	//--- 地面が落ちる ---.
 	void FallDownGround();
@@ -63,13 +63,13 @@ private:
 
 	float	m_ChabgeColorSpeed;		//色を変える速度.
 	float	m_ChabgeColorInterval;	//色を変える間隔.
-	float	m_VibrateSpeed;			//揺れる速度.
-	float	m_VibrateWidth;			//揺れる幅.
+	float	m_ShakeSpeed;			//揺れる速度.
+	float	m_ShakeWidth;			//揺れる幅.
 
-	float	m_ChangeColorStartTime;	//色が変わり始めた時間.
-	float	m_VibrateStartTime;		//揺れ始めた時間.
+	float	m_ChangeColorTriggerTime;	//色が変わり始めた時間.
+	float	m_ShakeTriggerTime;		//揺れ始めた時間.
 
 	bool	m_IsChangeColor;		//色が変わるか.
-	bool	m_IsVibrate;			//揺れるか.
+	bool	m_IsShake;				//揺れるか.
 	bool	m_IsFallDown;			//落ちるか.
 };

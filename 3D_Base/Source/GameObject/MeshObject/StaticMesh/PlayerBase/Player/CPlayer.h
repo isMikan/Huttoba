@@ -33,10 +33,9 @@ public:
 	//--- キー操作 ---.
 	void HandleInput();
 
-private:
 	//--- キーバインドを設定する関数 ---.
 	void SetPlayerInputBinding(int index) const;
 
 private:
-	int		m_PlayerID;		//プレイヤー番号.
+
 };

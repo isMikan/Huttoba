@@ -20,13 +20,28 @@ public:
 	void Update() override;
 
 private:
-	float			m_StartTime;		//開始時間.
-	float			m_EndTime;			//終了時間.
 
-	D3DXQUATERNION	m_StartQuat;		//開始時の回転.
+	void ChildPlayer(int index);
 
-	D3DXVECTOR3		m_RightHandPos;		//右手の元の位置.
-	D3DXVECTOR3		m_LeftHandPos;		//左手の元の位置.
+
+	void DecreaseTime();
+
+private:
+	float	m_StartTime;			//開始時間.
+	float	m_EndTime;				//終了時間.
+
+	float	m_DecreaseTriggerTime;	//減少が開始時間.
+	float	m_DecreaseTime;			//減少する時間.
+
+	float	m_ShakeSpeed;			//揺れる速度.
+	float	m_ShakeWidth;			//揺れる幅.
+
+	bool	m_IsTimeDecreasing;		//時間を減少するか.
+
+	D3DXQUATERNION	m_StartQuat;	//開始時の回転.
+
+	D3DXVECTOR3		m_RightHandPos;	//右手の元の位置.
+	D3DXVECTOR3		m_LeftHandPos;	//左手の元の位置.
 
 private:
 	CPlayerKnockdownState() = delete;	//デフォルトコンストラクタ禁止.

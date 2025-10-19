@@ -81,10 +81,12 @@ void CPlayerFallingState::Update()
 	if (t - m_StartTime > m_EndTime
 		|| IsEnd())
 	{
+		//‚«”ò‚Î‚·UŒ‚‚ğó‚¯‚½ê‡.
 		if (m_pPlayer.GetHitInfo().hitEvent == CPlayerBase::HitEvent::Knockback)
 		{
 			m_pPlayer.SetActionState(std::make_unique<CPlayerGetUpState>(m_pPlayer));
 		}
+		//ƒ_ƒEƒ“ó‘Ô•t‚«‚ÌUŒ‚‚ğó‚¯‚½ê‡.
 		else if(m_pPlayer.GetHitInfo().hitEvent == CPlayerBase::HitEvent::Knockdown)
 		{
 			m_pPlayer.SetActionState(std::make_unique<CPlayerKnockdownState>(m_pPlayer));

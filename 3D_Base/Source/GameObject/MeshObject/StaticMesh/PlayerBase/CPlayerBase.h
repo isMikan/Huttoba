@@ -79,7 +79,7 @@ public:
 	//--- オブサーバを削除 ---.
 	void RemoveObserver(IPlayerObserver* observer);
 
-	//--- オブサーバに通知する ---.
+	//--- オブサーバに通知 ---.
 	void Notify(IPlayerObserver::PlayerEvent event);
 
 	//--- 移動状態を設定する関数 ---.
@@ -128,6 +128,9 @@ public:
 	CPlayerLeftHand& GetPlayerLeftHand() { return *m_pLeftHand; }
 	//プレイヤーが左手を持っている(読み込み用).
 	const CPlayerLeftHand& GetPlayerLeftHand() const { return *m_pLeftHand; }
+
+	//プレイヤー番号を取得.
+	int GetPlayerID() const { return m_PlayerID; }
 
 	//移動しているかの所得と設定.
 	bool IsMoving() const { return m_IsMoving; }
@@ -181,6 +184,8 @@ protected:
 		std::unique_ptr<CPlayerState> newScene);
 
 protected:
+	int		m_PlayerID;		//プレイヤー番号.
+
 	std::vector<IPlayerObserver*>		m_pObserver;	//プレイヤーのオブサーバ.
 
 	std::unique_ptr<CPlayerHead>		m_pHead;		//頭.

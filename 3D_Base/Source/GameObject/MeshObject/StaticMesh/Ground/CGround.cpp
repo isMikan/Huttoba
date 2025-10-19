@@ -7,14 +7,14 @@ CGround::CGround()
 
 	, m_ChabgeColorSpeed		( 15.f )
 	, m_ChabgeColorInterval		( 0.1f )
-	, m_VibrateSpeed			( 50.f )
-	, m_VibrateWidth			( 0.05f )
+	, m_ShakeSpeed				( 50.f )
+	, m_ShakeWidth				( 0.05f )
 
-	, m_ChangeColorStartTime	()
-	, m_VibrateStartTime		()
+	, m_ChangeColorTriggerTime	()
+	, m_ShakeTriggerTime		()
 
 	, m_IsChangeColor			( false )
-	, m_IsVibrate				( false )
+	, m_IsShake					( false )
 	, m_IsFallDown				( false )
 {
 	m_DefaultColor =
@@ -47,9 +47,9 @@ void CGround::Update()
 	}
 
 	//地面が揺れる場合.
-	if (m_IsVibrate)
+	if (m_IsShake)
 	{
-		VibrateGround();
+		ShakeGround();
 	}
 
 	//地面が落ちる場合.
@@ -74,7 +74,7 @@ void CGround::ChangeColorOfGround()
 
 	//全体の時間の現在の割合.
 	float progress =
-		(t - m_ChangeColorStartTime) / m_ChangeColorTime;
+		(t - m_ChangeColorTriggerTime) / m_ChangeColorTime;
 	progress = std::clamp(progress, 0.f, 1.f);
 
 	D3DXVECTOR4	groundColor = m_ObjColor.diffuse;
@@ -91,18 +91,18 @@ void CGround::ChangeColorOfGround()
 }
 
 //--- 地面が揺れる ---.
-void CGround::VibrateGround()
+void CGround::ShakeGround()
 {
 	//経過時間を取得.
 	float t = static_cast<float>(CTimeManager::GetTotalTime());
 
 	//揺れている時間の現在の割合.
 	float progress = 
-		(t - m_VibrateStartTime) / m_VibrateTime;
+		(t - m_ShakeTriggerTime) / m_ShakeTime;
 	progress = std::clamp(progress, 0.f, 1.f);
 
 	//左右に揺れる.
-	m_vPosition.x += cosf(progress * D3DX_PI * m_VibrateSpeed) * m_VibrateWidth;
+	m_vPosition.x += cosf(progress * D3DX_PI * m_ShakeSpeed) * m_ShakeWidth;
 }
 
 //--- 地面が落ちる ---.
