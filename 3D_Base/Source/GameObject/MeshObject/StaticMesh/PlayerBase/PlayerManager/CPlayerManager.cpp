@@ -104,17 +104,32 @@ void CPlayerManager::Draw(D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAME
 //--- 衝突判定関数 ---.
 void CPlayerManager::Collision()
 {
-	for (int pNo = 0;pNo < Player_Max;pNo++)
+	//攻撃を受けるプレイヤー.
+	for (int hNo = 0;hNo < Player_Max;hNo++)
 	{
+		//攻撃するプレイヤー.
 		for (int aNo = 0;aNo < Player_Max;aNo++)
 		{
-			if (pNo == aNo) continue;
+			if (hNo == aNo) continue;
 
 			if (m_pPlayers[aNo]->GetPlayerEvent() == CPlayerBase::PlayerEvent::HandAttack
-				&& m_pPlayers[aNo]->GetBSphere()->IsHit(*m_pPlayers[pNo]->GetBSphere()))
+				&& m_pPlayers[aNo]->GetBSphere()->IsHit(*m_pPlayers[hNo]->GetBSphere()))
 			{
-				m_pPlayers[pNo]->SetHitInfo(
-					m_pPlayers[aNo]->GetPosition(), m_pPlayers[aNo]->GetPosition(), 10.f, true, CPlayerBase::HitEvent::Knockdown);
+				switch(hNo)
+				{
+				case 2:
+					m_pPlayers[hNo]->SetHitInfo(
+						m_pPlayers[aNo]->GetPosition(), m_pPlayers[aNo]->GetPosition(), 7.f, true, CPlayerBase::HitEvent::Knockback);
+					break;
+				case 3:
+					m_pPlayers[hNo]->SetHitInfo(
+						m_pPlayers[aNo]->GetPosition(), m_pPlayers[aNo]->GetPosition(), 10.f, true, CPlayerBase::HitEvent::Knockdown);
+					break;
+				default:
+					m_pPlayers[hNo]->SetHitInfo(
+						m_pPlayers[aNo]->GetPosition(), true, CPlayerBase::HitEvent::Pushed);
+					break;
+				}
 
 				m_pPlayers[aNo]->SetHitInfo(
 					m_pPlayers[aNo]->GetPosition(), true, CPlayerBase::HitEvent::None);

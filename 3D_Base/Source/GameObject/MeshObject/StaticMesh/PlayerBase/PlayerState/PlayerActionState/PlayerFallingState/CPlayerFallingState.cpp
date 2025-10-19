@@ -63,6 +63,9 @@ void CPlayerFallingState::Enter()
 
 void CPlayerFallingState::Exit()
 {
+	//SEを鳴らす.
+	AssetManager::Sound()->PlaySE(enSoundList::SE_Down);
+
 	//プレイヤーの位置を取得.
 	D3DXVECTOR3 playerPos = m_pPlayer.GetPosition();
 	//地面に着地.

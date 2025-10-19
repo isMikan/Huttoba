@@ -29,6 +29,9 @@ CPlayerHandWhiffState::~CPlayerHandWhiffState()
 
 void CPlayerHandWhiffState::Enter()
 {
+	//SE‚ğ–Â‚ç‚·.
+	AssetManager::Sound()->PlaySE(enSoundList::SE_Whiff);
+	
 	m_pPlayer.SetPlayerEvent(CPlayerBase::PlayerEvent::HandWhiff);
 	
 	//ŒX‚«Šp“x‚Ì‰Šú‰».

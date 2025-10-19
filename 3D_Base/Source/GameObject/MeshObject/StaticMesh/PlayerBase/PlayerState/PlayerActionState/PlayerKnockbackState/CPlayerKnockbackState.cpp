@@ -28,6 +28,9 @@ CPlayerKnockbackState::~CPlayerKnockbackState()
 
 void CPlayerKnockbackState::Enter()
 {
+	//SE‚ğ–Â‚ç‚·.
+	AssetManager::Sound()->PlaySE(enSoundList::SE_Knockback);
+	
 	m_pPlayer.SetPlayerEvent(CPlayerBase::PlayerEvent::Knockback);
 
 	//UŒ‚‚ÌŠJnŠÔ‚ğæ“¾.

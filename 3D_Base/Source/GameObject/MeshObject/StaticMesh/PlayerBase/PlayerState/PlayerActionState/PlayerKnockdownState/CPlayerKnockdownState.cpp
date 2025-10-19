@@ -34,6 +34,9 @@ CPlayerKnockdownState::~CPlayerKnockdownState()
 
 void CPlayerKnockdownState::Enter()
 {
+	//SE‚ð–Â‚ç‚·.
+	AssetManager::Sound()->PlayLoop(enSoundList::SE_Knockdown);
+
 	m_pPlayer.SetPlayerEvent(CPlayerBase::PlayerEvent::Knockdown);
 
 	//UŒ‚‚ÌŠJŽnŽžŠÔ‚ðŽæ“¾.
@@ -56,6 +59,8 @@ void CPlayerKnockdownState::Enter()
 
 void CPlayerKnockdownState::Exit()
 {
+	//SE‚ðŽ~‚ß‚é.
+	AssetManager::Sound()->Stop(enSoundList::SE_Knockdown);
 }
 
 void CPlayerKnockdownState::Update()
