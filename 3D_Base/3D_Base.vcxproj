@@ -237,6 +237,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Collision\Collider\CollisionSphere\CollisionSphere.cpp" />
+    <ClCompile Include="Source\Collision\CollisionManager\CollisionManager.cpp" />
     <ClCompile Include="Source\Collision\CollisionStrategy\CollisionStrategyFactory\CollisionStrategyFactory.cpp" />
     <ClCompile Include="Source\Collision\CollisionStrategy\CollisionPattern\CollisionRaySphere\CollisionRaySphere.cpp" />
     <ClCompile Include="Source\Collision\CollisionStrategy\CollisionPattern\CollisionCapsuleSphere\CollisionCapsuleSphere.cpp" />

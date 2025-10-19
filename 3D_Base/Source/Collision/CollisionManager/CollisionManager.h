@@ -28,7 +28,7 @@ private:
     CollisionManager() {}
     ~CollisionManager() {}
 
-    // “o˜^‚³‚ê‚Ä‚¢‚é Collider ƒŠƒXƒg
+    // “o˜^‚³‚ê‚Ä‚¢‚éCollider‚ÌƒŠƒXƒg
     std::vector<CollisionBase*> m_Colliders;
 
 };
