@@ -12,6 +12,8 @@ CSceneGameMain::CSceneGameMain( HWND hWnd)
 
 	, m_pUIMap			()
 
+	, m_pGauge			()
+
 	, m_pPlayerManager	()
 
 	, m_pExplosiones	()
@@ -45,6 +47,9 @@ HRESULT CSceneGameMain::Create()
 
 	//カメラのインスタンス作成.
 	m_pCamera = std::make_unique<CCamera>();
+
+	//ゲージのインスタンス作成.
+	m_pGauge = std::make_unique<CGaugeBase>();
 
 	//アイテムマネージャーの作成
 	m_pItemManager = std::make_unique<ItemManager>();
@@ -85,6 +90,8 @@ HRESULT CSceneGameMain::LoadData()
 	{
 		UI.second->AttachSprite(AssetManager::Sprite(Sprite2DList::PMon));
 	}
+
+	m_pGauge->AttachSprite(AssetManager::Sprite(Sprite2DList::Gauge));
 
 	//プレイヤー.
 	m_pPlayerManager->LoadData();
@@ -142,6 +149,8 @@ void CSceneGameMain::Update()
 	{
 		UI.second->Update();
 	}
+
+	m_pGauge->Update();
 
 	//レーザーの管理
 	ManageEffectLaser();
@@ -216,6 +225,9 @@ void CSceneGameMain::Draw()
 	{
 		//UI.second->Draw();
 	}
+
+	m_pGauge->SetWorldPos(m_pPlayerManager->GetPlayer(0)->GetPosition());
+	m_pGauge->Draw(mView, mProj);
 
 	//やりたいことが終わったので、深度テストを有効にしておく
 	m_pDx11->SetDepth(true);

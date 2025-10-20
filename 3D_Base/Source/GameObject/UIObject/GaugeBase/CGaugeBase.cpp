@@ -5,29 +5,30 @@ CGaugeBase::CGaugeBase()
 	, m_WorldPos		( 0.f, 0.f, 0.f )
 
 {
-	m_pContext11 = m_pSprite->GetContext11();
 }
 
 CGaugeBase::~CGaugeBase()
 {
 }
 
+//--- 更新処理 ---.
 void CGaugeBase::Update()
 {
 	CUIObject::Update();
 }
 
+//--- 描画処理 ---.
 void CGaugeBase::Draw(
-	D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAMERA& Camera)
+	D3DXMATRIX& View, D3DXMATRIX& Proj)
 {
 	D3D11_VIEWPORT vp;	//ビューポート（描画領域）情報を格納.
 	UINT num = 1;		//取得するビューポート数.
+	m_pContext11 = m_pSprite->GetContext11();
 	//ビューポートの取得.
 	m_pContext11->RSGetViewports(&num, &vp);
 
 	//変換して設定する.
 	D3DXVECTOR3 screenPos = WorldToScreen(m_WorldPos, View, Proj, vp);
-
 	m_pSprite->SetPosition(D3DXVECTOR3(screenPos.x, screenPos.y, 0.f));
 
 	CUIObject::Draw();
@@ -57,4 +58,8 @@ D3DXVECTOR3 CGaugeBase::WorldToScreen(
 	screenPos.z = clipPos.z;
 
 	return screenPos;
+}
+
+void CGaugeBase::Draw()
+{
 }

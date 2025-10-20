@@ -107,7 +107,7 @@ public:
 	//最大パターン数(マス目)を取得
 	POINTS GetPatternMax() const { return m_PatternMax; }
 
-	ComPtr<ID3D11DeviceContext> GetContext11() const { return m_pContext11; }
+	ID3D11DeviceContext* GetContext11() const { return m_pContext11.Get(); }
 
 private:
 	CDirectX11*					m_pDx11;

@@ -20,6 +20,8 @@
 
 #include "GameObject/MeshObject/StaticMesh/Ground/GroundManager/CGroundManager.h"
 
+#include "GameObject/UIObject/GaugeBase/CGaugeBase.h"
+
 #include "GameObject/MeshObject/StaticMesh/DrawCollision/DrawCollision.h"
 
 #include "Assets/Mesh/SkinMesh/CSkinMesh.h"
@@ -68,6 +70,9 @@ private:
 
 	//UIオブジェクトクラス
 	std::unordered_map<UIList, std::unique_ptr<CUIObject> > m_pUIMap;
+
+	//ゲージクラス.
+	std::unique_ptr<CGaugeBase>			m_pGauge;
 
 	//キャラクタークラス
 	std::unique_ptr<CPlayerManager>		m_pPlayerManager;
