@@ -108,6 +108,9 @@ enum class StaticMeshList
 	BSphere,
 	Haetataki,
 	Bomb,
+	Fun,
+	Mushroom,
+	TrackingRobot,
 };
 
 enum class UIList

@@ -84,6 +84,10 @@ void Bomb::Have(std::vector<std::unique_ptr<CPlayerBase>>& playiers)
 
 void Bomb::Use(std::vector<std::unique_ptr<CPlayerBase>>& playiers)
 {
+	if (GetAsyncKeyState('N') & 0x8000)
+	{
+		m_pPlayer->GetVelocity();
+	}
 }
 
 void Bomb::Throw()

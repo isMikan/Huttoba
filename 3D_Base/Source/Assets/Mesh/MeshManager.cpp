@@ -76,6 +76,9 @@ HRESULT MeshManager::CreateStaticMesh()
 	RegisterStaticMesh(StaticMeshList::BSphere,			_T("Data\\Collision\\Sphere.x"));
 	RegisterStaticMesh(StaticMeshList::Haetataki,		_T("Data\\Mesh\\Static\\Item\\Haetataki.x"));
 	RegisterStaticMesh(StaticMeshList::Bomb,			_T("Data\\Mesh\\Static\\Item\\Bomb.x"));
+	RegisterStaticMesh(StaticMeshList::Fun,				_T("Data\\Mesh\\Static\\Item\\Fun.x"));
+	RegisterStaticMesh(StaticMeshList::Mushroom,		_T("Data\\Mesh\\Static\\Item\\Mushroom.x"));
+	RegisterStaticMesh(StaticMeshList::TrackingRobot,	_T("Data\\Mesh\\Static\\Item\\TrackingRobot.x"));
 //Å™-----------------------------------------------------------------------------------------------------------------------------Å™
 
 	for (auto& mesh : m_StaticMeshInfoList)
