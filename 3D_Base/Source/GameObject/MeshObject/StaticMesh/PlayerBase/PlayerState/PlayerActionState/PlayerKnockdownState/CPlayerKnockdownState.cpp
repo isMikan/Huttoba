@@ -151,7 +151,7 @@ void CPlayerKnockdownState::TimeDecrease()
 
 }
 
-bool CPlayerKnockdownState::IsInput(float x, float y, int index)
+bool CPlayerKnockdownState::IsInput(float x, float y, int index) const
 {
 	//ƒRƒ“ƒgƒ[ƒ‰‚ªÚ‘±‚³‚ê‚Ä‚¢‚éê‡.
 	if (CInputManager::IsConnect(index))

@@ -107,10 +107,11 @@ public:
 	//最大パターン数(マス目)を取得
 	POINTS GetPatternMax() const { return m_PatternMax; }
 
+	ComPtr<ID3D11DeviceContext> GetContext11() const { return m_pContext11; }
 
 private:
-	CDirectX11*				m_pDx11;
-	ComPtr<ID3D11Device>			m_pDevice11;
+	CDirectX11*					m_pDx11;
+	ComPtr<ID3D11Device>		m_pDevice11;
 	ComPtr<ID3D11DeviceContext>	m_pContext11;
 
 	ComPtr<ID3D11VertexShader>		m_pVertexShader;	//頂点シェーダ.
