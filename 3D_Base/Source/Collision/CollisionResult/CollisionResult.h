@@ -19,7 +19,7 @@ struct CollisionResult
 	bool IsHit;             // 衝突したか
 	D3DXVECTOR3 HitPoint;   // 衝突位置
 	D3DXVECTOR3 HitNormal;  // 衝突面の法線
-	float Penetration;      // めり込み深さ（任意）
+	float Penetration;      // めり込み深さ
 
 	CollisionResult()
 		: IsHit(false)

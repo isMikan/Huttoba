@@ -96,6 +96,7 @@
     <ClCompile Include="Source\Collision\Collider\CollisionOBB\CollisionOBB.cpp" />
     <ClCompile Include="Source\Collision\Collider\CollisionBase.cpp" />
     <ClCompile Include="Source\Collision\CollisionManager\CollisionManager.cpp" />
+    <ClCompile Include="Source\DebugText\DebugDrawManager\DebugDrawManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Assets\AssetManager.h" />
@@ -195,5 +196,6 @@
     <ClInclude Include="Source\Collision\CollisionManager\CollisionManager.h" />
     <ClInclude Include="Source\Collision\CollisionListener\ICollisionListener.h" />
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\PlayerBase\PlayerState\PlayerActionState\PlayerKnockdownState\CPlayerKnockdownState.h" />
+    <ClInclude Include="Source\DebugText\DebugDrawManager\DebugDrawManager.h" />
   </ItemGroup>
 </Project>
