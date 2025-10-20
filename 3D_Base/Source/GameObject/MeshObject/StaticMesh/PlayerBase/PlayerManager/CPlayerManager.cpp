@@ -119,15 +119,15 @@ void CPlayerManager::Collision()
 				{
 				case 2:
 					m_pPlayers[hNo]->SetHitInfo(
-						m_pPlayers[aNo]->GetPosition(), m_pPlayers[aNo]->GetPosition(), 7.f, true, CPlayerBase::HitEvent::Knockback);
+						m_pPlayers[aNo]->GetPosition(), true, CPlayerBase::HitEvent::Pushed);
 					break;
 				case 3:
 					m_pPlayers[hNo]->SetHitInfo(
-						m_pPlayers[aNo]->GetPosition(), m_pPlayers[aNo]->GetPosition(), 10.f, true, CPlayerBase::HitEvent::Knockdown);
+						m_pPlayers[aNo]->GetPosition(), m_pPlayers[aNo]->GetPosition(), 7.f, true, CPlayerBase::HitEvent::Knockback);
 					break;
 				default:
 					m_pPlayers[hNo]->SetHitInfo(
-						m_pPlayers[aNo]->GetPosition(), true, CPlayerBase::HitEvent::Pushed);
+						m_pPlayers[aNo]->GetPosition(), m_pPlayers[aNo]->GetPosition(), 10.f, true, CPlayerBase::HitEvent::Knockdown);
 					break;
 				}
 

@@ -14,10 +14,13 @@ CPlayerKnockdownState::CPlayerKnockdownState(CPlayerBase& pPlayer)
 	, m_EndTime				( 0.7f )	//終了させる割合.
 
 	, m_DecreaseTriggerTime	()
-	, m_DecreaseTime		( 0.2f )
+	, m_TimeDecrease		( 0.2f )
 
-	, m_ShakeSpeed			( 2.f )
-	, m_ShakeWidth			( 0.8f )
+	, m_ShakeSpeed			( 3.f )
+	, m_ShakeWidth			( 1.2f )
+
+	, m_PrevSthikX			( 0.1f )	//0 にすると積が変わらないので.
+	, m_PrevSthikY			( 0.1f )	//0 にすると積が変わらないので.
 
 	, m_IsTimeDecreasing	( false )
 
@@ -74,50 +77,17 @@ void CPlayerKnockdownState::Update()
 		return;
 	}
 
+	//プレイヤークラスの場合.
 	if(dynamic_cast<CPlayer*>(&m_pPlayer))
 	{
 		ChildPlayer(m_pPlayer.GetPlayerID());
 	}
 
+	//フラグが ture の間減らす.
 	if(m_IsTimeDecreasing)
 	{
-		DecreaseTime();
+		TimeDecrease();
 	}
-
-	////プレイヤーのローカル軸を取得.
-	//CPlayerBase::LocalAxes axes = m_pPlayer.GetLocalAxes();
-
-	////全体の時間の現在の割合.
-	//float progress = (t - m_StartTime) / m_EndTime;
-	//progress = m_pPlayer.Clamp(progress, 0.f, 1.f);
-
-	////滑らかに正常の位置に戻す.
-	//D3DXQUATERNION quat;
-	//D3DXQuaternionSlerp(&quat, &m_StartQuat, &m_DefaultQuat, progress);
-	////正規化.
-	//D3DXQuaternionNormalize(&quat, &quat);
-	//m_pPlayer.SetQuaternion(quat);
-
-	//if (progress > 0.7f)
-	//{
-	//	m_RightHandEndPos = D3DXVECTOR3(0.f, 0.f, 0.f);
-	//	m_LeftHandEndPos = D3DXVECTOR3(0.f, 0.f, 0.f);
-	//}
-	//else
-	//{
-	//	m_RightHandEndPos = D3DXVECTOR3(0.f, 0.3f, -0.5f);
-	//	m_LeftHandEndPos = D3DXVECTOR3(0.f, 0.3f, -0.5f);
-	//}
-	//float eased = sinf(progress * D3DX_PI * 0.5f);	//それぞれの手の軌道の計算.	
-
-	////手の終了位置を設定.
-	//m_RightHandEndPos = m_RightHandStartPos + m_RightHandEndPos;
-	//m_LeftHandEndPos = m_LeftHandStartPos + m_LeftHandEndPos;
-	////右手と左手の調整位置だけの計算.
-	//D3DXVECTOR3 rightHandOffsetPos;
-	//D3DXVec3Lerp(&rightHandOffsetPos, &m_RightHandStartPos, &m_RightHandEndPos, eased);
-	//D3DXVECTOR3 leftHandOffsetPos;
-	//D3DXVec3Lerp(&leftHandOffsetPos, &m_LeftHandStartPos, &m_LeftHandEndPos, eased);
 
 	//手の位置を調整して設定.
 	m_pPlayer.GetPlayerRightHand().SetPosition(m_pPlayer.GetObjectPos(m_RightHandPos));
@@ -126,15 +96,20 @@ void CPlayerKnockdownState::Update()
 
 void CPlayerKnockdownState::ChildPlayer(int index)
 {
-	if (CInputManager::IsDown(Action::MoveUp, index)
-		|| CInputManager::IsDown(Action::MoveDown, index)
-		|| CInputManager::IsDown(Action::MoveLeft, index)
-		|| CInputManager::IsDown(Action::MoveRight, index))
+	float x = CInputManager::GetLeftSthikX(index);
+	float y = CInputManager::GetLeftSthikY(index);
+
+	if (IsInput(x, y, index))
 	{
 		OutputDebugStringA("レバガチャ入力検知！\n");
-		if(!m_IsTimeDecreasing)
+		if (!m_IsTimeDecreasing)
 		{
-			OutputDebugStringA("レバガチャture！\n");
+			OutputDebugStringA("レバガチャtrue！\n");
+
+			//レバガチャ成功時の値を保存.
+			m_PrevSthikX = x;
+			m_PrevSthikY = y;
+
 			m_EndTime -= 0.5f;
 			m_DecreaseTriggerTime = static_cast<float>(CTimeManager::GetTotalTime());
 			m_IsTimeDecreasing = true;
@@ -142,12 +117,13 @@ void CPlayerKnockdownState::ChildPlayer(int index)
 	}
 }
 
-void CPlayerKnockdownState::DecreaseTime()
+void CPlayerKnockdownState::TimeDecrease()
 {
 	//経過時間を取得.
 	float t = static_cast<float>(CTimeManager::GetTotalTime());
 
-	if (t - m_DecreaseTriggerTime > m_DecreaseTime)
+	//終了時間が過ぎたら終わる.
+	if (t - m_DecreaseTriggerTime > m_TimeDecrease)
 	{
 		OutputDebugStringA("レバガチャfalse！\n");
 		m_IsTimeDecreasing = false;
@@ -155,7 +131,7 @@ void CPlayerKnockdownState::DecreaseTime()
 	}
 
 	//全体の時間の現在の割合.
-	float progress = (t - m_DecreaseTriggerTime) / m_DecreaseTime;
+	float progress = (t - m_DecreaseTriggerTime) / m_TimeDecrease;
 	progress = std::clamp(progress, 0.f, 1.f);
 
 	//揺れる動作を計算.
@@ -173,4 +149,27 @@ void CPlayerKnockdownState::DecreaseTime()
 
 	m_pPlayer.SetPosition(playerPos);
 
+}
+
+bool CPlayerKnockdownState::IsInput(float x, float y, int index)
+{
+	//コントローラが接続されている場合.
+	if (CInputManager::IsConnect(index))
+	{
+		//積がマイナスになったら、以前と現在のスティック数値の符号が異なる.
+		if (m_PrevSthikX * x < 0.f 
+			|| m_PrevSthikY * y < 0.f)
+		{
+			return true;
+		}
+	}
+	else if (CInputManager::IsDown(Action::MoveUp, index)
+		|| CInputManager::IsDown(Action::MoveDown, index)
+		|| CInputManager::IsDown(Action::MoveLeft, index)
+		|| CInputManager::IsDown(Action::MoveRight, index))
+	{
+		return true;
+	}
+
+	return false;
 }
