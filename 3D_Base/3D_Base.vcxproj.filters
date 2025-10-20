@@ -96,6 +96,9 @@
     <ClCompile Include="Source\Collision\Collider\CollisionOBB\CollisionOBB.cpp" />
     <ClCompile Include="Source\Collision\Collider\CollisionBase.cpp" />
     <ClCompile Include="Source\Collision\CollisionManager\CollisionManager.cpp" />
+    <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\Item\Items\Fun\Fun.cpp" />
+    <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\Item\Items\Mushroom\Mushroom.cpp" />
+    <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\Item\Items\TrackingRobot\TrackingRobot.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Assets\AssetManager.h" />
@@ -195,5 +198,8 @@
     <ClInclude Include="Source\Collision\CollisionManager\CollisionManager.h" />
     <ClInclude Include="Source\Collision\CollisionListener\ICollisionListener.h" />
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\PlayerBase\PlayerState\PlayerActionState\PlayerKnockdownState\CPlayerKnockdownState.h" />
+    <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\Item\Items\Fun\Fun.h" />
+    <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\Item\Items\Mushroom\Mushroom.h" />
+    <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\Item\Items\TrackingRobot\TrackingRobot.h" />
   </ItemGroup>
 </Project>

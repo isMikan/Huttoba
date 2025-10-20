@@ -1,12 +1,12 @@
 #pragma once
 #include "Item/ItemBase.h"
 
-class Bomb
+class Mushroom 
     : public ItemBase
 {
 public:
-    Bomb();
-    ~Bomb();
+    Mushroom();
+    ~Mushroom();
 
     void Init()override;
 
@@ -20,9 +20,9 @@ public:
     //æ“¾‘Ò‹@
     void OnGround()override;
     //æ“¾
-    void Have(std::vector<std::unique_ptr<CPlayerBase>>& playiers)override; 
+    void Have(std::vector<std::unique_ptr<CPlayerBase>>& playiers)override;
     //g—p
-    void Use(std::vector<std::unique_ptr<CPlayerBase>>& playiers)override; 
+    void Use(std::vector<std::unique_ptr<CPlayerBase>>& playiers)override;
     //“Š±
     void Throw()override;
     //Á–Å
