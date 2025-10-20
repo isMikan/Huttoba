@@ -20,21 +20,27 @@ public:
 	void Update() override;
 
 private:
-
+	//--- クラスがプレイヤーの場合の関数 ---.
 	void ChildPlayer(int index);
 
+	//--- ダウン時間を減少する関数 ---.
+	void TimeDecrease();
 
-	void DecreaseTime();
+	//--- 入力を受け付けるか判断する関数 ---.
+	bool IsInput(float x, float y, int index);
 
 private:
 	float	m_StartTime;			//開始時間.
 	float	m_EndTime;				//終了時間.
 
 	float	m_DecreaseTriggerTime;	//減少が開始時間.
-	float	m_DecreaseTime;			//減少する時間.
+	float	m_TimeDecrease;			//減少する時間.
 
 	float	m_ShakeSpeed;			//揺れる速度.
 	float	m_ShakeWidth;			//揺れる幅.
+
+	float	m_PrevSthikX;			//以前に入力されたスティックX軸.
+	float	m_PrevSthikY;			//以前に入力されたスティックY軸.
 
 	bool	m_IsTimeDecreasing;		//時間を減少するか.
 

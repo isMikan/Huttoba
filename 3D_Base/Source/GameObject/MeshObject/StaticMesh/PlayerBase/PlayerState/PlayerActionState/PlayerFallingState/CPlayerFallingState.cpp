@@ -16,7 +16,7 @@ CPlayerFallingState::CPlayerFallingState(CPlayerBase& pPlayer)
 	, m_EndTime				( 10.f )	//‚«”ò‚Î‚µ—Ê‚É‚æ‚Á‚Ä’…’nŠÔ‚ª•Ï‚í‚é‚Ì‚Å‘½‚ß‚É.
 
 	, m_GroundRange			( 1.5f )					//‚±‚ÌˆÊ’u‚ğ‰º‰ñ‚é‚Ü‚Å‰ñ“]. 
-	, m_RotateRangeMax		( D3DXToRadian( -85.f ) )	//‚±‚ÌŠp“x‚Ì”ÍˆÍ“à‚Å~‚Ü‚é.
+	, m_RotateRangeMax		( D3DXToRadian( -80.f ) )	//‚±‚ÌŠp“x‚Ì”ÍˆÍ“à‚Å~‚Ü‚é.
 	, m_RotateRangeMin		( D3DXToRadian( -95.f ) )	//‚±‚ÌŠp“x‚Ì”ÍˆÍ“à‚Å~‚Ü‚é.
 	, m_ForceMax			( 15.f )					//‘z’è.
 
