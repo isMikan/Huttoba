@@ -22,13 +22,14 @@ public:
 
 	const D3DXVECTOR3& GetSize() const { return m_Size; }
 	D3DXVECTOR3 GetHalfSize() const { return m_Size * 0.5f; }
-	const D3DXVECTOR3& GetAxis(int index) const { return m_LocalAxes[index]; }
+	const D3DXVECTOR3& GetAxis(int index) const { return m_WorldAxes[index]; }
 	ColliderType GetType() { return ColliderType::OBB; }
 
+	D3DXVECTOR3 GetHalfSizeScaled() const;
 private:
 
 	D3DXVECTOR3 m_Size;
-	D3DXVECTOR3 m_LocalAxes[3];
+	D3DXVECTOR3 m_WorldAxes[3];
 	D3DXMATRIX m_World;
 };
 

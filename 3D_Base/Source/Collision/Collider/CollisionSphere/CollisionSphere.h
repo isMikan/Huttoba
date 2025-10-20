@@ -22,6 +22,7 @@ public:
     // 半径設定・取得
     void SetRadius(float r) { m_Radius = r; }
     float GetRadius() const { return m_Radius; }
+    float GetWouldRadius() const { return m_WorldRadius; }
 
     void DrawDebug();
 
@@ -36,4 +37,5 @@ private:
     D3DXVECTOR3 m_LocalCenter; // ローカル座標での中心
     D3DXVECTOR3 m_WorldCenter; // ワールド座標での中心
     float m_Radius;            // 球の半径
+    float m_WorldRadius;       // ワールドの球の半径
 };

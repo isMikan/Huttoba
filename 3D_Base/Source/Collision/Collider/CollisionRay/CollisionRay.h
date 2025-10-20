@@ -14,13 +14,13 @@ public:
     const D3DXMATRIX& GetWorldMat() const override { return m_World; }
 
     //現在座標の始点を取得
-    D3DXVECTOR3 GetWorldPos() const override { return D3DXVECTOR3(m_World._41, m_World._42, m_World._43); }
+    D3DXVECTOR3 GetWorldPos() const override { return m_WorldOrigin; }
 
 
     // 設定関数
-    void SetOrigin(const D3DXVECTOR3& origin) { m_WorldOrigin = origin; }
-    void SetDirection(const D3DXVECTOR3& dir) { m_Direction = dir; NormalizeDirection(); }
-    void SetLength(float length) { m_Length = length; }
+    //Ray がオブジェクト（CollisionBase の継承元）のローカル座標に依存せず、ワールド座標で直接生成される場合に使用
+    void SetOrigin(const D3DXVECTOR3& origin) { m_LocalOrigin = origin; }
+    void SetDirection(const D3DXVECTOR3& dir) { m_LocalDirection = dir; }
 
     // 取得関数
     const D3DXVECTOR3& GetOrigin() const { return m_WorldOrigin; }
@@ -32,14 +32,12 @@ public:
     D3DXVECTOR3 GetEndPoint() const;
 
 private:
-    void NormalizeDirection();
-
-private:
 
     D3DXVECTOR3 m_LocalOrigin;   // モデル内での始点
     D3DXVECTOR3 m_WorldOrigin;   // ワールド空間での始点
 
     D3DXVECTOR3 m_Direction;   // 方向ベクトル（正規化済み）
+    D3DXVECTOR3 m_LocalDirection;   // ローカル方向ベクトル（正規化済み）
     float m_Length;            // レイの長さ
     D3DXMATRIX m_World;        // ワールド行列
 };

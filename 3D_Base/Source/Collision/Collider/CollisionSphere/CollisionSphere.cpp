@@ -6,6 +6,7 @@ CollisionSphere::CollisionSphere()
     : m_LocalCenter(0.0f, 0.0f, 0.0f)
     , m_WorldCenter(0.0f, 0.0f, 0.0f)
     , m_Radius(1.0f)
+    , m_WorldRadius(1.0f)
 {
     D3DXMatrixIdentity(&m_World);
 }
@@ -26,6 +27,10 @@ void CollisionSphere::UpdateWorldMat()
 
     // ワールド座標上の中心更新
     D3DXVec3TransformCoord(&m_WorldCenter, &m_LocalCenter, &m_World);
+
+    //ワールド半径を更新 (ローカル半径 * 最大ワールドスケール)
+    float maxScale = std::max(m_vScale.x, std::max(m_vScale.y, m_vScale.z));
+    m_WorldRadius = m_Radius * maxScale;
 }
 
 void CollisionSphere::DrawDebug()
@@ -43,7 +48,7 @@ void CollisionSphere::DrawDebug()
     // ワールド座標上の中心と半径
     // m_WorldCenter のみを使用し、回転は無視する
     D3DXVECTOR3 center = m_WorldCenter;
-    float r = m_Radius;
+    float r = m_WorldRadius; 
 
     // 3軸（XY / XZ / YZ）平面の輪を描く
     for (int plane = 0; plane < 3; ++plane)

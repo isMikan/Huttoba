@@ -30,20 +30,6 @@ void CollisionCapsule::UpdateWorldMat()
 	D3DXVec3TransformCoord(&m_EndWorld, &m_End, &m_World);
 }
 
-D3DXVECTOR3 CollisionCapsule::GetStartWorld() const
-{
-	D3DXVECTOR3 result;
-	D3DXVec3TransformCoord(&result, &m_Start, &m_World);
-	return result;
-}
-
-D3DXVECTOR3 CollisionCapsule::GetEndWorld() const
-{
-	D3DXVECTOR3 result;
-	D3DXVec3TransformCoord(&result, &m_End, &m_World);
-	return result;
-}
-
 float CollisionCapsule::GetWorldRadius() const
 {
 	// スケールの平均値を半径に適用（概算）

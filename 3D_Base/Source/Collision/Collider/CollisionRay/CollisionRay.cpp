@@ -4,11 +4,11 @@
 CollisionRay::CollisionRay()
     : m_WorldOrigin(0.0f, 0.0f, 0.0f)
     , m_LocalOrigin(0.0f, 0.0f, 0.0f)
-    , m_Direction(0.0f, -1.0f, 0.0f) // 下方向をデフォルト
+    , m_LocalDirection(0.0f, -1.0f, 0.0f) // ローカル方向をデフォルトに設定
+    , m_Direction(0.0f, 0.0f, 0.0f)       // ワールド方向は初期化時に空、UpdateWorldMatで設定
     , m_Length(10.0f)
 {
     D3DXMatrixIdentity(&m_World);
-    NormalizeDirection();
 }
 
 CollisionRay::~CollisionRay()
@@ -25,14 +25,16 @@ void CollisionRay::UpdateWorldMat()
 
     m_World = matS * matR * matT;
 
-    // 始点のワールド座標を更新
+    // 1. 始点のワールド座標を更新
     D3DXVec3TransformCoord(&m_WorldOrigin, &m_LocalOrigin, &m_World);
-}
 
-void CollisionRay::NormalizeDirection()
-{
-    if (D3DXVec3LengthSq(&m_Direction) > 0.0001f)
-        D3DXVec3Normalize(&m_Direction, &m_Direction);
+    // 2. 方向ベクトルのワールド座標への変換 (回転とスケールのみ適用)
+    D3DXVECTOR3 tempDirection;
+    D3DXVec3TransformNormal(&tempDirection, &m_LocalDirection, &m_World);
+
+    // 3. ワールド変換後の方向を正規化して m_Direction に格納
+    // レイの方向は必ず単位ベクトルである必要がある
+    D3DXVec3Normalize(&m_Direction, &tempDirection);
 }
 
 D3DXVECTOR3 CollisionRay::GetEndPoint() const

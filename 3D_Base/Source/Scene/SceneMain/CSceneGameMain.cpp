@@ -190,7 +190,6 @@ void CSceneGameMain::Draw()
 
 	std::cout << "box_max" << std::endl;
 
-
 	// 描画実行とステート復元
 	DebugDrawManager::GetInstance()->End();
 

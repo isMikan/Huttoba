@@ -53,7 +53,6 @@ void CMain::Update()
 
 	//バックバッファをクリアにする.
 	CDirectX11::GetInstance()->ClearBackBuffer();
-
 	//描画処理.
 	m_pGame->Draw();
 	

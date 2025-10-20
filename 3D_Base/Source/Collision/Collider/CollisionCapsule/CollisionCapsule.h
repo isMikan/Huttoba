@@ -14,8 +14,8 @@ public:
 	//ワールド行列を取得
 	const D3DXMATRIX& GetWorldMat() const override { return m_World; }
 
-	//現在座標の中心を取得
-	D3DXVECTOR3 GetWorldPos() const override { return D3DXVECTOR3(m_World._41, m_World._42, m_World._43); }
+	//現在座標の中心を取得 線分の中心を返す
+	D3DXVECTOR3 GetWorldPos() const override {  return (m_StartWorld + m_EndWorld) / 2.0f;}
 
 
 	// ゲッター
@@ -31,8 +31,8 @@ public:
 
 
 	// ワールド座標変換後の線分情報取得
-	D3DXVECTOR3 GetStartWorld() const;
-	D3DXVECTOR3 GetEndWorld() const;
+	D3DXVECTOR3 GetStartWorld() const { return m_StartWorld; }
+	D3DXVECTOR3 GetEndWorld() const { return m_EndWorld; }
 
 	float GetWorldRadius() const;
 private:
