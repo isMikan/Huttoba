@@ -1,6 +1,8 @@
 #include "MyMacro.h"
 #include "CDirectX11.h"
 #include "Main/CCreateWindow.h"
+#include "DebugText/DebugDrawManager/DebugDrawManager.h"
+
 //コンストラクタ.
 CDirectX11::CDirectX11()
 	: m_pDevice11				( nullptr )
@@ -95,6 +97,8 @@ HRESULT CDirectX11::Create(HWND hWnd)
 		return E_FAIL;
 	}
 
+	DebugDrawManager::GetInstance()->Init(m_pDevice11);
+
 	return S_OK;
 }
 
@@ -136,7 +140,7 @@ HRESULT CDirectX11::CreateDeviceAndSwapChain(
 			1,							//↑の要素数.
 			D3D11_SDK_VERSION,			//SDKのバージョン.
 			&sd,						//スワップチェーンの初期化パラメータのポインタ.
-			m_pSwapChain.GetAddressOf(),				//(out)レンダリングに使用するスワップチェーン.
+			m_pSwapChain.GetAddressOf(),			//(out)レンダリングに使用するスワップチェーン.
 			m_pDevice11.GetAddressOf(),				//(out)作成されたデバイス.
 			pFeatureLevel,				//機能レベルの配列にある最初の要素を表すポインタ.
 			m_pContext11.GetAddressOf() ) ) )			//(out)デバイス　コンテキスト.
