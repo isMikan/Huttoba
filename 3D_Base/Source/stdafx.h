@@ -15,6 +15,7 @@
 #include<unordered_map>
 #include<memory>
 #include<string>
+#include<iostream>
 
 
 #include <wrl/client.h>

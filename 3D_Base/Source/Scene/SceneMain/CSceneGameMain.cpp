@@ -191,6 +191,8 @@ void CSceneGameMain::Draw()
 	float box_max[] = { 1.0f, 2.0f, 1.0f };
 	float yellow[] = { 1.0f, 1.0f, 0.0f, 1.0f };
 
+	std::cout << "box_max" << std::endl;
+
 	// 描画実行とステート復元
 	DebugDrawManager::GetInstance()->End();
 

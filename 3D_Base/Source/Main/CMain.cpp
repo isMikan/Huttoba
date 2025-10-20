@@ -3,7 +3,7 @@
 #include "CDirectX9.h"
 #include "CDirectX11.h"
 #include "Game/CGame.h"
-
+#include <iostream>
 //ウィンドウを画面中央で起動を有効にする.
 //#define ENABLE_WINDOWS_CENTERING
 
@@ -18,8 +18,22 @@ CMain::CMain()
 	//初期化リスト.
 	: m_pGame	( nullptr )
 {
-}
+	// コンソールを作成・coutを設定
+	AllocConsole();
+	FILE* fp;
+	freopen_s(&fp, "CONOUT$", "w", stdout);
 
+	// コンソール位置の調整 
+	HWND hConsole = GetConsoleWindow();
+
+	if (hConsole != NULL)
+	{
+		SetWindowPos(hConsole, NULL,
+			1280, 0,      // X, Y 座標
+			600, 400,  // 幅, 高さ
+			SWP_NOZORDER);
+	}
+}
 
 //=================================================
 //	デストラクタ.
@@ -33,6 +47,7 @@ CMain::~CMain()
 //更新処理.
 void CMain::Update()
 {
+
 	//更新処理.
 	m_pGame->Update();
 
@@ -127,5 +142,6 @@ void CMain::Loop()
 		}
 	}
 	//アプリケーションの終了.
+	FreeConsole();
 	Release();
 }
