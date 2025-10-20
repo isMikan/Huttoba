@@ -2,6 +2,7 @@
 #include "Assets/Effect/CEffect.h"
 #include "Assets/Sound/CSoundManager.h"
 #include "Item/ItemManager/ItemManager.h"
+#include "DebugText/DebugDrawManager/DebugDrawManager.h"
 
 CSceneGameMain::CSceneGameMain( HWND hWnd)
 	: m_hWnd			( hWnd )
@@ -155,6 +156,8 @@ void CSceneGameMain::Update()
 
 void CSceneGameMain::Draw()
 {
+	DebugDrawManager* ddm = DebugDrawManager::GetInstance();
+
 	//カメラの処理.
 	m_pCamera->Update();
 	//情報を取得.
@@ -162,6 +165,36 @@ void CSceneGameMain::Draw()
 	LIGHT light = m_pCamera->GetLight();
 	D3DXMATRIX mView = m_pCamera->GetView();
 	D3DXMATRIX mProj = m_pCamera->GetProj();
+
+	// 2. ViewProj 行列を作成
+	D3DXMATRIX mViewProj;
+	D3DXMatrixMultiply(&mViewProj, &mView, &mProj);
+
+	DebugDrawManager::GetInstance()->Begin(CDirectX11::GetInstance()->GetContext(), mViewProj);
+
+	// 例 1: X/Y/Z 座標軸を描画
+	float origin[] = { 0.0f, 0.0f, 0.0f };
+	float x_end[] = { 5.0f, 0.0f, 0.0f };
+	float y_end[] = { 0.0f, 5.0f, 0.0f }; // ★Y軸の終点を修正 (Y方向へ)
+	float z_end[] = { 0.0f, 0.0f, 5.0f };
+
+	float red[] = { 1.0f, 0.0f, 0.0f, 1.0f }; // ★X軸の色を赤に修正
+	float green[] = { 0.0f, 1.0f, 0.0f, 1.0f };
+	float blue[] = { 0.0f, 0.0f, 1.0f, 1.0f };
+
+	ddm->DrawLine(origin, x_end, red);   // X軸 (赤)
+	ddm->DrawLine(origin, y_end, green); // Y軸 (緑)
+	ddm->DrawLine(origin, z_end, blue);  // Z軸 (青)
+
+	// 例 2: プレイヤーの当たり判定ボックスを描画
+	float box_min[] = { -1.0f, 0.0f, -1.0f };
+	float box_max[] = { 1.0f, 2.0f, 1.0f };
+	float yellow[] = { 1.0f, 1.0f, 0.0f, 1.0f };
+
+	std::cout << "box_max" << std::endl;
+
+	// 描画実行とステート復元
+	DebugDrawManager::GetInstance()->End();
 
 	//地面マネージャーの描画.
 	m_pGroundManager->Draw(mView, mProj, light, camera);
