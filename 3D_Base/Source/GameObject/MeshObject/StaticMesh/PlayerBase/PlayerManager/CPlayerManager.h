@@ -30,6 +30,9 @@ public:
 	//エフェクトを表示するための関数.
 	//void ManageEffectLaser(static::EsHandle hEffect);
 
+	//一人のプレイヤーを取得.
+	CPlayerBase* GetPlayer(int id) { return m_pPlayers[id].get(); }
+
 private:
 	//--- キャラクターの色を設定する関数 ---.
 	CPlayerBase::ObjectColor SetCharacterColor(int index);

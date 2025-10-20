@@ -268,6 +268,7 @@
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\PlayerBase\PlayerState\CPlayerState.cpp" />
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\PlayerBase\PlayerState\PlayerActionState\PlayerKnockdownState\CPlayerKnockdownState.cpp" />
     <ClCompile Include="Source\GameObject\UIObject\GaugeBase\CGaugeBase.cpp" />
+    <ClCompile Include="Source\GameObject\UIObject\GaugeBase\TimerGauge\CTimerGauge.cpp" />
     <ClCompile Include="Source\Input\CInput.cpp" />
     <ClCompile Include="Source\Input\CInputManager.cpp" />
     <ClCompile Include="Source\Input\XInput\CXInput.cpp" />
@@ -374,6 +375,7 @@
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\PlayerBase\PlayerObserver\IPlayerObserver.h" />
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\PlayerBase\PlayerState\PlayerActionState\PlayerKnockdownState\CPlayerKnockdownState.h" />
     <ClInclude Include="Source\GameObject\UIObject\GaugeBase\CGaugeBase.h" />
+    <ClInclude Include="Source\GameObject\UIObject\GaugeBase\TimerGauge\CTimerGauge.h" />
     <ClInclude Include="Source\Input\CInput.h" />
     <ClInclude Include="Source\Input\CInputManager.h" />
     <ClInclude Include="Source\Input\XInput\CXInput.h" />
