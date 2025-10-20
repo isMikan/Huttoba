@@ -27,7 +27,7 @@ private:
 	void TimeDecrease();
 
 	//--- “ü—Í‚ğó‚¯•t‚¯‚é‚©”»’f‚·‚éŠÖ” ---.
-	bool IsInput(float x, float y, int index);
+	bool IsInput(float x, float y, int index) const;
 
 private:
 	float	m_StartTime;			//ŠJnŠÔ.
