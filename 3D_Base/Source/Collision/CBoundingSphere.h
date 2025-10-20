@@ -27,6 +27,7 @@ public:
 	//”¼Œa(’·‚³)‚ğİ’è‚·‚é
 	void SetRadius(float Radius) { m_Radius = Radius; }
 
+
 private:
 	D3DXVECTOR3		m_Position;	//’†SÀ•W
 	float			m_Radius;	//”¼Œa(’·‚³)

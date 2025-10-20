@@ -82,6 +82,7 @@ enum EnSceneList
 	Standby,
 	GameMain,
 	Result,
+	Test,
 
 	Max,
 	None = -1

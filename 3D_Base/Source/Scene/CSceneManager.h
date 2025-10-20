@@ -8,6 +8,7 @@
 #include "Scene/SceneStandby/CSceneStandby.h"
 #include "Scene/SceneMain/CSceneGameMain.h"
 #include "Scene/SceneResult/CSceneResult.h"
+#include "Scene/TestScene/TestScene.h"
 #include "Input/CInputManager.h"
 
 class CSceneManager final

@@ -60,7 +60,8 @@ void CSceneManager::CreateScene(int Scene)
 	case Title:		m_pScene = std::make_unique<CSceneTitle>	(m_hWnd);	break;
 	case Standby:	m_pScene = std::make_unique<CSceneStandby>	();			break;
 	case GameMain:  m_pScene = std::make_unique<CSceneGameMain>	(m_hWnd);	break;
-	case Result:	m_pScene = std::make_unique<CSceneResult>	();			break;
+	case Result:	m_pScene = std::make_unique<CSceneResult>();			break;
+	case Test:		m_pScene = std::make_unique<CollisionTestScene>();		break;
 	default: 
 		//èIóπ
 		return;

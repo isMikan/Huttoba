@@ -56,8 +56,6 @@ void CollisionManager::CheckCollisions()
             CollisionResult result = strategy->CheckCollision(colA, colB);
             if (!result.IsHit) continue;
 
-            // コンソールにログ出力
-            std::cout << "HIT " << std::endl;
             // Listener通知
             if (auto listenerA = colA->GetOwner())
             {

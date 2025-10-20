@@ -23,6 +23,14 @@ public:
     void SetRadius(float r) { m_Radius = r; }
     float GetRadius() const { return m_Radius; }
 
+    void DrawDebug();
+
+    // ローカル中心設定
+    void SetCenter(const D3DXVECTOR3& center) { m_LocalCenter = center; }
+
+    // ローカル中心取得
+    D3DXVECTOR3 GetCenter() const { return m_LocalCenter; }
+
 private:
     D3DXMATRIX m_World;       // ワールド行列
     D3DXVECTOR3 m_LocalCenter; // ローカル座標での中心
