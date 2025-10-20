@@ -24,5 +24,6 @@ using Microsoft::WRL::ComPtr;
 #include "Global.h"
 #include "MyMacro.h"
 #include "Assets/AssetManager.h"
+#include "DebugText/DebugDrawManager/DebugDrawManager.h"
 #include "CDirectX11.h"
 #include "CDirectX9.h"

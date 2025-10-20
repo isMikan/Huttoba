@@ -36,30 +36,41 @@ void CollisionManager::CheckCollisions()
 
     for (size_t i = 0; i < Colliders; ++i)
     {
+        //ColAを設定。
         CollisionBase* colA = m_Colliders[i];
         if (!colA || !colA->GetActive()) continue;
 
         for (size_t j = i + 1; j < Colliders; ++j)
         {
+            //ColBを設定。
             CollisionBase* colB = m_Colliders[j];
             if (!colB || !colB->GetActive()) continue;
-            if (colA->GetOwner() == colB->GetOwner()) continue; 
+            if (colA->GetOwner() == colB->GetOwner()) continue;
 
             // Strategyを取得
             auto strategy = CollisionStrategyFactory::GetInstance()->GetStrategy(
                 colA->GetType(), colB->GetType());
-            if (!strategy) continue; 
+            if (!strategy) continue;
 
             // 衝突判定
             CollisionResult result = strategy->CheckCollision(colA, colB);
             if (!result.IsHit) continue;
 
+            // コンソールにログ出力
+            std::cout << "HIT " << std::endl;
             // Listener通知
             if (auto listenerA = colA->GetOwner())
-                listenerA->OnCollision(colB,result);
+            {
+                listenerA->OnCollision(colB, result);
+            }
 
             if (auto listenerB = colB->GetOwner())
-                listenerB->OnCollision(colA,result);
+                listenerB->OnCollision(colA, result);
+
+            if (result.IsHit)
+            {
+                std::cout << "Hit" << std::endl;
+            }
         }
     }
 }

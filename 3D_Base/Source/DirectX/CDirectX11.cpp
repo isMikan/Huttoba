@@ -1,7 +1,6 @@
 #include "MyMacro.h"
 #include "CDirectX11.h"
 #include "Main/CCreateWindow.h"
-#include "DebugText/DebugDrawManager/DebugDrawManager.h"
 
 //コンストラクタ.
 CDirectX11::CDirectX11()

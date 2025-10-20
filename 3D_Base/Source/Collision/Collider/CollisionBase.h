@@ -97,9 +97,11 @@ public:
 	//ë∂ç›ÇµÇƒÇ¢ÇÈÇ©ê›íË
 	void SetActive(bool flag) { m_IsActive = flag; }
 
-
 	ColliderTag GetTag() const { return m_Tag; }
 	bool GetActive() const { return m_IsActive; }
+
+	void SetHit(bool isHit) { m_IsHit = isHit; }
+
 
 public:
 
@@ -113,6 +115,9 @@ protected:
 	ICollisionListener* m_Owner;
 	ColliderTag m_Tag;
 	bool m_IsActive;
+
+	bool m_IsHit;
+
 private:
 
 };
