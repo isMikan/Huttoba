@@ -16,8 +16,8 @@ CPlayerFallingState::CPlayerFallingState(CPlayerBase& pPlayer)
 	, m_EndTime				( 10.f )	//吹き飛ばし量によって着地時間が変わるので多めに.
 
 	, m_GroundRange			( 1.5f )					//この位置を下回るまで回転. 
-	, m_RotateRangeMax		( D3DXToRadian( -80.f ) )	//この角度の範囲内で止まる.
-	, m_RotateRangeMin		( D3DXToRadian( -95.f ) )	//この角度の範囲内で止まる.
+	, m_RotateRangeMax		( D3DXToRadian( 95.f ) )	//この角度の範囲内で止まる.
+	, m_RotateRangeMin		( D3DXToRadian( 80.f ) )	//この角度の範囲内で止まる.
 	, m_ForceMax			( 15.f )					//想定.
 
 	, m_Gravity				( -9.8f )
@@ -49,8 +49,9 @@ void CPlayerFallingState::Enter()
 
 	//プレイヤーのローカル軸を取得.
 	CPlayerBase::LocalAxes axes = m_pPlayer.GetLocalAxes();
+
 	//開始時の右軸を設定.
-	m_StartRightAxis = -axes.right;
+	m_StartRightAxis = axes.right;
 
 	//初速度を設定.
 	m_Velocity = m_pPlayer.GetHitInfo().velocity;
@@ -104,7 +105,7 @@ void CPlayerFallingState::Update()
 	//地面近くかつ90度付近の場合.
 	if (WorldAngle() > m_RotateRangeMin
 		&& WorldAngle() < m_RotateRangeMax
-		&& playerPos.y < m_GroundRange)
+		&& playerPos.y <= m_GroundRange)
 	{
 		//正規化.
 		D3DXQuaternionNormalize(&quat, &quat);
@@ -121,7 +122,7 @@ void CPlayerFallingState::Update()
 		m_CurrentTiltAngle = m_pPlayer.WrapAngle(progress * D3DX_PI * m_RotateSpeed);
 
 		//クォータニオンの回転を計算して設定.
-		m_pPlayer.SetQuaternion(m_pPlayer.TiltedQuat(m_StartQuat, m_StartRightAxis, m_CurrentTiltAngle));
+		m_pPlayer.SetQuaternion(m_pPlayer.TiltedQuat(m_StartQuat, -m_StartRightAxis, m_CurrentTiltAngle));
 	}
 
 	//プレイヤーのローカル軸を取得.
@@ -167,7 +168,7 @@ float CPlayerFallingState::WorldAngle()
 
 	float angle = acosf(dot);
 
-	return -angle;
+	return angle;
 }
 
 bool CPlayerFallingState::IsEnd()
