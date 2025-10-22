@@ -4,12 +4,11 @@
 #include "Collision/CollisionListener/ICollisionListener.h"
 
 CollisionBase::CollisionBase()
-	: m_vPosition	{}
-	, m_vRotation	{}
-	, m_vScale		{}
-	, m_Owner			{ nullptr }
-	, m_Tag			{ ColliderTag::None }
-	, m_IsActive		{ false }
+        : m_vLocalOffset(0.0f, 0.0f, 0.0f)
+        , m_Owner(nullptr)
+        , m_Tag(ColliderTag::None)
+        , m_IsActive(true)
+        , m_IsHit(false)
 {
 	
 }

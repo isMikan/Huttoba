@@ -1,41 +1,54 @@
 #pragma once
-#include "Collision/Collider/CollisionBase.h"
 
+#include "Collision/Collider/CollisionBase.h" 
+
+/**
+ * 球体の衝突情報クラス。
+ * 役割: CollisionBase の共通情報に加え、球体固有のデータ（半径）を保持する。
+ */
 class CollisionSphere : public CollisionBase
 {
+
 public:
-    CollisionSphere();
-    ~CollisionSphere();
+    // コンストラクタ
+    CollisionSphere(
+        float radius = 1.0f,
+        ColliderTag tag = ColliderTag::None,
+        const D3DXVECTOR3& localOffset = D3DXVECTOR3(0.0f, 0.0f, 0.0f)
+    );
+    // ----------------------------------------------------
+    // 球体固有のデータアクセス
+    // ----------------------------------------------------
 
-    // ワールド行列更新
-    void UpdateWorldMat() override;
-
-    // ワールド行列取得
-    const D3DXMATRIX& GetWorldMat() const override { return m_World; }
-
-    // ワールド空間上の中心点取得
-    D3DXVECTOR3 GetWorldPos() const override { return m_WorldCenter; }
-
-    // ColliderType
-    ColliderType GetType() override { return ColliderType::Sphere; }
-
-    // 半径設定・取得
-    void SetRadius(float r) { m_Radius = r; }
+    /**
+     * 球体の半径を取得します。
+     * @return 半径の値
+     */
     float GetRadius() const { return m_Radius; }
-    float GetWouldRadius() const { return m_WorldRadius; }
 
-    void DrawDebug();
+    /**
+     * 球体の半径を設定します。
+     * @param radius 設定する半径
+     */
+    void SetRadius(float radius) {
+        // 半径が負にならないよう簡単なチェックを行う
+        m_Radius = (radius > 0.0f) ? radius : 0.0f;
+    }
 
-    // ローカル中心設定
-    void SetCenter(const D3DXVECTOR3& center) { m_LocalCenter = center; }
+    // ----------------------------------------------------
+    // 基底クラスの純粋仮想関数の実装
+    // ----------------------------------------------------
 
-    // ローカル中心取得
-    D3DXVECTOR3 GetCenter() const { return m_LocalCenter; }
+    /**
+     * この衝突形状のタイプを返します。（必須実装）
+     * @return ColliderType::Sphere
+     */
+    virtual ColliderType GetType() const override {
+        return ColliderType::Sphere;
+    }
 
 private:
-    D3DXMATRIX m_World;       // ワールド行列
-    D3DXVECTOR3 m_LocalCenter; // ローカル座標での中心
-    D3DXVECTOR3 m_WorldCenter; // ワールド座標での中心
-    float m_Radius;            // 球の半径
-    float m_WorldRadius;       // ワールドの球の半径
+    // 球体固有のデータ
+    float m_Radius;
+
 };
