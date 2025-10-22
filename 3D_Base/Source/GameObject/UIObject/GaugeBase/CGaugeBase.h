@@ -46,4 +46,5 @@ protected:
 	ComPtr<ID3D11DeviceContext> m_pContext11;	//コンテキスト.
 
 	D3DXVECTOR3		m_WorldPos;		//世界座標.
+	D3DXVECTOR3		m_OffsetPos;	//調整座標.
 };

@@ -4,6 +4,9 @@
 
 #include "GameObject/MeshObject/StaticMesh/PlayerBase/PlayerState/PlayerMoveState/PlayerMoveIdelState/CPlayerMoveIdleState.h"
 
+#include "GameObject/MeshObject/StaticMesh/PlayerBase/PlayerState/PlayerActionState/PlayerPushedState/CPlayerPushedState.h"
+#include "GameObject/MeshObject/StaticMesh/PlayerBase/PlayerState/PlayerActionState/PlayerFallingState/CPlayerFallingState.h"
+
 CPlayerMoveState::CPlayerMoveState(CPlayerBase& pPlayer, float x, float z)
 	: CPlayerState			( pPlayer )
 
@@ -56,8 +59,7 @@ void CPlayerMoveState::Update()
 	{
 		m_CurrentSpeed = m_RotatingMoveSpeed;
 	}
-	if (m_pPlayer.GetPlayerEvent() == CPlayerBase::PlayerEvent::Pushed
-		|| m_pPlayer.GetPlayerEvent() == CPlayerBase::PlayerEvent::Falling)
+	if (m_pPlayer.IsAnyActionState<CPlayerPushedState, CPlayerFallingState>())
 	{
 		m_CurrentSpeed = m_HitingMoveSpeed;
 	}

@@ -29,8 +29,6 @@ CPlayerPushedState::~CPlayerPushedState()
 
 void CPlayerPushedState::Enter()
 {
-	m_pPlayer.SetPlayerEvent(CPlayerBase::PlayerEvent::Pushed);
-
 	//SE‚ð–Â‚ç‚·.
 	AssetManager::Sound()->PlaySE(enSoundList::SE_HitHand);
 

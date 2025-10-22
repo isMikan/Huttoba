@@ -7,6 +7,8 @@
 #include "PlayerBase/PlayerState/PlayerTurnState/PlayerTurnIdleState/CPlayerTurnIdleState.h"
 #include "PlayerBase/PlayerState/PlayerActionState/PlayerActionIdleState/CPlayerActionIdleState.h"
 
+#include "PlayerBase/PlayerState/PlayerActionState/PlayerHandAttackState/CPlayerHandAttackState.h"
+
 #include "Input//CInputManager.h"
 
 CPlayerManager::CPlayerManager()
@@ -112,7 +114,7 @@ void CPlayerManager::Collision()
 		{
 			if (hNo == aNo) continue;
 
-			if (m_pPlayers[aNo]->GetPlayerEvent() == CPlayerBase::PlayerEvent::HandAttack
+			if (m_pPlayers[aNo]->IsAnyActionState<CPlayerHandAttackState>()
 				&& m_pPlayers[aNo]->GetBSphere()->IsHit(*m_pPlayers[hNo]->GetBSphere()))
 			{
 				switch(hNo)

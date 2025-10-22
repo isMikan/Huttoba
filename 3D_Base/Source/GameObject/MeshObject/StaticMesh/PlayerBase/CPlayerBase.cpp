@@ -10,9 +10,7 @@
 
 CPlayerBase::CPlayerBase( int index )
 	: m_PlayerID		( index )
-	
-	, m_pObserver		()
-	
+		
 	, m_pHead			( std::make_unique<CPlayerHead>() )
 	, m_pRightHand		( std::make_unique<CPlayerRightHand>() )
 	, m_pLeftHand		( std::make_unique<CPlayerLeftHand>() )
@@ -25,9 +23,9 @@ CPlayerBase::CPlayerBase( int index )
 	, m_IsRotating		( false )
 	, m_IsHoldingItem	( false )
 
-	, m_PlayerEvent		( PlayerEvent::Idle )
-
 	, m_HitInfo			()
+
+	, m_Bus				( GetBus() )
 {
 }
 
@@ -73,29 +71,6 @@ void CPlayerBase::Draw(D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAMERA&
 	CStaticMeshObject::Draw(View, Proj, Light, Camera);
 }
 
-//--- オブサーバを追加 ---.
-void CPlayerBase::AddObserver(IPlayerObserver* observer)
-{
-	m_pObserver.push_back(observer);
-}
-
-//--- オブサーバを削除 ---.
-void CPlayerBase::RemoveObserver(IPlayerObserver* observer)
-{
-	m_pObserver.erase(
-		std::remove(m_pObserver.begin(), m_pObserver.end(), observer),
-		m_pObserver.end());
-}
-
-//--- オブサーバに通知する ---.
-void CPlayerBase::Notify(IPlayerObserver::PlayerEvent event)
-{
-	for (auto& observer : m_pObserver)
-	{
-		//observer->OnNotify(event);
-	}
-}
-
 //--- 移動状態を設定する関数 ---.
 void CPlayerBase::SetMoveState(std::unique_ptr<CPlayerState> newState)
 {
@@ -132,6 +107,8 @@ void CPlayerBase::ChangeState(
 	{
 		//状態の開始処理.
 		currentState->Enter();
+
+		m_Bus.Publish(currentState.get());
 	}
 }
 

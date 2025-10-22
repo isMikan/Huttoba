@@ -36,8 +36,6 @@ CPlayerFallingState::~CPlayerFallingState()
 
 void CPlayerFallingState::Enter()
 {
-	m_pPlayer.SetPlayerEvent(CPlayerBase::PlayerEvent::Falling);
-
 	//UŒ‚‚ÌŠJnŠÔ‚ğæ“¾.
 	m_StartTime = static_cast<float>(CTimeManager::GetTotalTime());
 

@@ -40,8 +40,6 @@ void CPlayerKnockdownState::Enter()
 	//SE‚ğ–Â‚ç‚·.
 	AssetManager::Sound()->PlayLoop(enSoundList::SE_Knockdown);
 
-	m_pPlayer.SetPlayerEvent(CPlayerBase::PlayerEvent::Knockdown);
-
 	//UŒ‚‚ÌŠJnŠÔ‚ğæ“¾.
 	m_StartTime = static_cast<float>(CTimeManager::GetTotalTime());
 

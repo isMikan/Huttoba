@@ -14,9 +14,9 @@ public:
 	//オブジェクトの色の構造体.
 	struct ObjectColor
 	{
-		D3DXVECTOR4 diffuse;
-		D3DXVECTOR4 ambient;
-		D3DXVECTOR4 specular;
+		D3DXVECTOR4	diffuse;	//拡散反射.
+		D3DXVECTOR4	ambient;	//環境光.
+		D3DXVECTOR4	specular;	//鏡面反射.
 	};
 
 public:

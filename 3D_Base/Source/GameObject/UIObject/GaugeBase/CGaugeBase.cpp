@@ -2,8 +2,9 @@
 
 CGaugeBase::CGaugeBase()
 	: m_pContext11		()
-	, m_WorldPos		( 0.f, 0.f, 0.f )
 
+	, m_WorldPos		( 0.f, 0.f, 0.f )
+	, m_OffsetPos		( 0.f, 2.f, 0.f )
 {
 }
 
@@ -27,9 +28,16 @@ void CGaugeBase::Draw(
 	//ビューポートの取得.
 	m_pContext11->RSGetViewports(&num, &vp);
 
-	//変換して設定する.
+	//プレイヤーの上に位置調整.
+	m_WorldPos += m_OffsetPos;
+	//2Dに変換.
 	D3DXVECTOR3 screenPos = WorldToScreen(m_WorldPos, View, Proj, vp);
-	m_pSprite->SetPosition(D3DXVECTOR3(screenPos.x, screenPos.y, 0.f));
+
+	//画像幅の半分を引いて真ん中にする.
+	screenPos.x -= 102.5f;
+
+	//変換された位置を設定.
+	m_vPosition = D3DXVECTOR3(screenPos.x, screenPos.y, 0.f);
 
 	CUIObject::Draw();
 }

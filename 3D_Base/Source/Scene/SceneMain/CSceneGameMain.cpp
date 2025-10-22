@@ -197,7 +197,7 @@ void CSceneGameMain::Draw()
 	ddm->DrawLine(origin, y_end, green); // Y軸 (緑)
 	ddm->DrawLine(origin, z_end, blue);  // Z軸 (青)
 
-	std::cout << "box_max" << std::endl;
+	//std::cout << "box_max" << std::endl;
 
 	// 描画実行とステート復元
 	DebugDrawManager::GetInstance()->End();

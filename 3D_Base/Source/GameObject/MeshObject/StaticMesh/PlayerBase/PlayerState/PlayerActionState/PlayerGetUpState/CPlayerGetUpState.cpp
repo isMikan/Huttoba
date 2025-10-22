@@ -26,8 +26,6 @@ CPlayerGetUpState::~CPlayerGetUpState()
 
 void CPlayerGetUpState::Enter()
 {
-	m_pPlayer.SetPlayerEvent(CPlayerBase::PlayerEvent::Getup);
-
 	//UŒ‚‚ÌŠJnŠÔ‚ğæ“¾.
 	m_StartTime = static_cast<float>(CTimeManager::GetTotalTime());
 

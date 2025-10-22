@@ -2,7 +2,7 @@
 
 #include "GameObject/MeshObject/StaticMesh/CStaticMeshObject.h"
 
-#include "PlayerObserver/IPlayerObserver.h"
+#include "PlayerEventBus/CPlayerEventBus.h"
 
 #include "PlayerHead/CPlayerHead.h"
 #include "PlayerHand/PlayerRightHand/CPlayerRightHand.h"
@@ -17,24 +17,6 @@ class CPlayerBase
 	: public CStaticMeshObject
 {
 public:
-	//プレイヤーの状態イベント.
-	enum class PlayerEvent
-	{
-		Idle,		//何もしていない.
-		Pickup,		//拾う.
-		Throw,		//投げる.
-		HandAttack,	//手の攻撃.
-		HandHit,	//手の攻撃ヒット.
-		HandWhiff,	//手の攻撃空振り.
-		Pushed,		//押された.
-		Knockback,	//吹き飛ばされた.
-		Falling,	//落ちる.
-		Knockdown,	//ダウン状態.
-		Getup,		//起き上がる.
-
-		None = -1,	//なし.
-	};
-
 	//接触イベント.
 	enum class HitEvent
 	{
@@ -72,15 +54,6 @@ public:
 	//--- 描画処理 ---.
 	virtual void Draw(
 		D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAMERA& Camera) override;
-
-	//--- オブサーバを追加 ---.
-	void AddObserver(IPlayerObserver* observer);
-
-	//--- オブサーバを削除 ---.
-	void RemoveObserver(IPlayerObserver* observer);
-
-	//--- オブサーバに通知 ---.
-	void Notify(IPlayerObserver::PlayerEvent event);
 
 	//--- 移動状態を設定する関数 ---.
 	void SetMoveState(std::unique_ptr<CPlayerState> newState);
@@ -131,22 +104,6 @@ public:
 
 	//プレイヤー番号を取得.
 	int GetPlayerID() const { return m_PlayerID; }
-
-	//移動しているかの所得と設定.
-	bool IsMoving() const { return m_IsMoving; }
-	void SetMoving(bool moving) { m_IsMoving = moving; }
-
-	//回転しているかの所得と設定.
-	bool IsRotating() const { return m_IsRotating; }
-	void SetRotating(bool rotating) { m_IsRotating = rotating; }
-
-	//アイテムを所持しているかの所得と設定.
-	bool IsHoldingItem() const { return m_IsHoldingItem; }
-	void SetHoldingItem(bool holding) { m_IsHoldingItem = holding; }
-
-	//プレイヤーのイベントの所得と設定.
-	PlayerEvent GetPlayerEvent() const { return m_PlayerEvent; }
-	void SetPlayerEvent(PlayerEvent state) { m_PlayerEvent = state; }
 	
 	//攻撃を受けた情報を取得と設定.
 	HitInfo GetHitInfo() const { return m_HitInfo; }
@@ -177,6 +134,34 @@ public:
 		m_HitInfo.hitEvent = anim;
 	}
 
+	//移動しているかの所得と設定.
+	bool IsMoving() const { return m_IsMoving; }
+	void SetMoving(bool moving) { m_IsMoving = moving; }
+
+	//回転しているかの所得と設定.
+	bool IsRotating() const { return m_IsRotating; }
+	void SetRotating(bool rotating) { m_IsRotating = rotating; }
+
+	//アイテムを所持しているかの所得と設定.
+	bool IsHoldingItem() const { return m_IsHoldingItem; }
+	void SetHoldingItem(bool holding) { m_IsHoldingItem = holding; }
+
+	//nullptr ではないかチェック.
+	template<typename T>
+	bool IsActionState() const {
+		return (m_pActionState
+			&& dynamic_cast<T*>(m_pActionState.get()) != nullptr);
+	}
+
+	//複数のテンプレート.
+	template<typename... Ts>
+	//複数の条件に対応して結果を返す.
+	bool IsAnyActionState() const { 
+		return ( ... || IsActionState<Ts>());	//... 条件にしたいStateを入れる.
+	}
+
+	CPlayerEventBus<CPlayerState>& GetBus() { return m_Bus; }
+
 protected:
 	//--- 状態を変更を処理する関数 ---.
 	void ChangeState(
@@ -186,7 +171,7 @@ protected:
 protected:
 	int		m_PlayerID;		//プレイヤー番号.
 
-	std::vector<IPlayerObserver*>		m_pObserver;	//プレイヤーのオブサーバ.
+	CPlayerEventBus<CPlayerState>		m_Bus;			//プレイヤー状態.
 
 	std::unique_ptr<CPlayerHead>		m_pHead;		//頭.
 	std::unique_ptr<CPlayerRightHand>	m_pRightHand;	//右手.
@@ -196,12 +181,11 @@ protected:
 	std::unique_ptr<CPlayerState>	m_pTurnState;		//回転.
 	std::unique_ptr<CPlayerState>	m_pActionState;		//行動.
 
-	bool			m_IsMoving;		//移動しているか.
-	bool			m_IsRotating;	//回転しているか.
-	bool			m_IsHoldingItem;//アイテムを所持してるか.
+	HitInfo							m_HitInfo;			//攻撃を受けた情報.
 
-	PlayerEvent		m_PlayerEvent;	//プレイヤー状態.
-	HitInfo			m_HitInfo;		//攻撃を受けた情報.
+	bool	m_IsMoving;			//移動しているか.
+	bool	m_IsRotating;		//回転しているか.
+	bool	m_IsHoldingItem;	//アイテムを所持してるか.
 
 	static constexpr float		m_PushForce = 0.05f;	//押し出す力.
 };

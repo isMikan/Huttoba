@@ -35,8 +35,6 @@ void CPlayerHandAttackState::Enter()
 	//SE‚ğ–Â‚ç‚·.
 	AssetManager::Sound()->PlaySE(enSoundList::SE_AttackHand);
 
-	m_pPlayer.SetPlayerEvent(CPlayerBase::PlayerEvent::HandAttack);
-
 	//UŒ‚‚ÌŠJnŠÔ‚ğæ“¾.
 	m_StartTime = static_cast<float>(CTimeManager::GetTotalTime());
 

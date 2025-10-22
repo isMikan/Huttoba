@@ -81,7 +81,6 @@
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\PlayerBase\Player\CPlayer.cpp" />
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\PlayerBase\PlayerAI\CPlayerAI.cpp" />
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\PlayerBase\PlayerManager\CPlayerManager.cpp" />
-    <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\PlayerBase\PlayerObserver\IPlayerObserver.cpp" />
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\PlayerBase\PlayerState\CPlayerState.cpp" />
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\PlayerBase\PlayerState\PlayerActionState\PlayerKnockdownState\CPlayerKnockdownState.cpp" />
     <ClCompile Include="Source\Collision\Collider\CollisionSphere\CollisionSphere.cpp" />
@@ -100,6 +99,11 @@
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\Item\Items\Mushroom\Mushroom.cpp" />
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\Item\Items\TrackingRobot\TrackingRobot.cpp" />
     <ClCompile Include="Source\DebugText\DebugDrawManager\DebugDrawManager.cpp" />
+    <ClCompile Include="Source\GameObject\UIObject\GaugeBase\CGaugeBase.cpp" />
+    <ClCompile Include="Source\GameObject\UIObject\GaugeBase\TimerGauge\CTimerGauge.cpp" />
+    <ClCompile Include="Source\Scene\TestScene\TestScene.cpp" />
+    <ClCompile Include="Source\GameObject\UIObject\GaugeBase\GaugeManager\CGaugeManager.cpp" />
+    <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\PlayerBase\PlayerEventBus\CPlayerEventBus.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Assets\AssetManager.h" />
@@ -182,7 +186,6 @@
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\PlayerBase\Player\CPlayer.h" />
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\PlayerBase\PlayerAI\CPlayerAI.h" />
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\PlayerBase\PlayerManager\CPlayerManager.h" />
-    <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\PlayerBase\PlayerObserver\IPlayerObserver.h" />
     <ClInclude Include="Source\Collision\Collider\CollisionOBB\CollisionOBB.h" />
     <ClInclude Include="Source\Collision\Collider\CollisionCapsule\CollisionCapsule.h" />
     <ClInclude Include="Source\Collision\Collider\CollisionRay\CollisionRay.h" />
@@ -203,5 +206,10 @@
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\Item\Items\Mushroom\Mushroom.h" />
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\Item\Items\TrackingRobot\TrackingRobot.h" />
     <ClInclude Include="Source\DebugText\DebugDrawManager\DebugDrawManager.h" />
+    <ClInclude Include="Source\GameObject\UIObject\GaugeBase\CGaugeBase.h" />
+    <ClInclude Include="Source\GameObject\UIObject\GaugeBase\TimerGauge\CTimerGauge.h" />
+    <ClInclude Include="Source\Scene\TestScene\TestScene.h" />
+    <ClInclude Include="Source\GameObject\UIObject\GaugeBase\GaugeManager\CGaugeManager.h" />
+    <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\PlayerBase\PlayerEventBus\CPlayerEventBus.h" />
   </ItemGroup>
 </Project>

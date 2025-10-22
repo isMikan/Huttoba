@@ -34,7 +34,6 @@ void CPlayerPickupState::Enter()
 	//SE‚ğ–Â‚ç‚·.
 	AssetManager::Sound()->PlaySE(enSoundList::SE_Pickup);
 
-	m_pPlayer.SetPlayerEvent(CPlayerBase::PlayerEvent::Pickup);
 	m_pPlayer.SetHoldingItem(true);
 
 	//ŒX‚«Šp“x‚Ì‰Šú‰».

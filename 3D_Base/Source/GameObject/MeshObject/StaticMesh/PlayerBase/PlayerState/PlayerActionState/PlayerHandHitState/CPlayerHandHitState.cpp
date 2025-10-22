@@ -28,8 +28,6 @@ CPlayerHandHitState::~CPlayerHandHitState()
 
 void CPlayerHandHitState::Enter()
 {
-	m_pPlayer.SetPlayerEvent(CPlayerBase::PlayerEvent::HandHit);
-
 	//クォータニオン型の回転を取得.
     m_StartQuat = m_pPlayer.GetQuaternion();
 

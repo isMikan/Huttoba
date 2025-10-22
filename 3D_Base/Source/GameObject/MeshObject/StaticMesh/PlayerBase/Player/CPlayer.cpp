@@ -5,10 +5,16 @@
 #include "PlayerBase/PlayerState/PlayerTurnState/PlayerTurnState/CPlayerTurnState.h"
 #include "PlayerBase/PlayerState/PlayerMoveState/PlayerMoveIdelState/CPlayerMoveIdleState.h"
 #include "PlayerBase/PlayerState/PlayerTurnState/PlayerTurnIdleState/CPlayerTurnIdleState.h"
+#include "PlayerBase/PlayerState/PlayerActionState/PlayerActionIdleState/CPlayerActionIdleState.h"
 
-#include "PlayerBase/PlayerState/PlayerActionState/PlayerHandAttackState/CPlayerHandAttackState.h"
 #include "PlayerBase/PlayerState/PlayerActionState/PlayerPickupState/CPlayerPickupState.h"
 #include "PlayerBase/PlayerState/PlayerActionState/PlayerThrowState/CPlayerThrowState.h"
+#include "PlayerBase/PlayerState/PlayerActionState/PlayerHandAttackState/CPlayerHandAttackState.h"
+#include "PlayerBase/PlayerState/PlayerActionState/PlayerHandWhiffState/CPlayerHandWhiffState.h"
+#include "PlayerBase/PlayerState/PlayerActionState/PlayerKnockbackState/CPlayerKnockbackState.h"
+#include "PlayerBase/PlayerState/PlayerActionState/PlayerFallingState/CPlayerFallingState.h"
+#include "PlayerBase/PlayerState/PlayerActionState/PlayerGetUpState/CPlayerGetUpState.h"
+#include "PlayerBase/PlayerState/PlayerActionState/PlayerKnockdownState/CPlayerKnockdownState.h"
 
 #include "Input/CInputManager.h"
 #include "Sound/CSoundManager.h"
@@ -48,10 +54,11 @@ void CPlayer::HandleInput()
 	float z = 0.f;	//z軸.
 
 	//移動回転をしない場合.
-	if (m_PlayerEvent == PlayerEvent::HandWhiff
-		|| m_PlayerEvent == PlayerEvent::Knockback
-		|| m_PlayerEvent == PlayerEvent::Getup
-		|| m_PlayerEvent == PlayerEvent::Knockdown)
+	if (IsAnyActionState<
+		CPlayerHandWhiffState,
+		CPlayerKnockbackState,
+		CPlayerGetUpState,
+		CPlayerKnockdownState>())
 	{
 		SetMoveState(std::make_unique<CPlayerMoveIdleState>(*this));
 		SetTurnState(std::make_unique<CPlayerTurnIdleState>(*this));
@@ -74,7 +81,7 @@ void CPlayer::HandleInput()
 	//移動だけする場合.
 	SetMoveState(std::make_unique<CPlayerMoveState>(*this, x, z));
 	//回転だけしない場合.
-	if (m_PlayerEvent == PlayerEvent::Falling)
+	if (IsActionState<CPlayerFallingState>())
 	{
 		SetTurnState(std::make_unique<CPlayerTurnIdleState>(*this));
 	}
@@ -87,21 +94,21 @@ void CPlayer::HandleInput()
 	//アイテムを持っていないなら攻撃.
 	if (CInputManager::IsDown(Action::Attack, m_PlayerID)
 		&& !m_IsHoldingItem
-		&& m_PlayerEvent == PlayerEvent::Idle)
+		&& IsActionState<CPlayerActionIdleState>())
 	{
 		SetActionState(std::make_unique<CPlayerHandAttackState>(*this));
 	}
 	//アイテムを持っていないなら拾う.
 	if (CInputManager::IsDown(Action::ToggleItem, m_PlayerID)
 		&& !m_IsHoldingItem
-		&& m_PlayerEvent == PlayerEvent::Idle)
+		&& IsActionState<CPlayerActionIdleState>())
 	{
 		SetActionState(std::make_unique<CPlayerPickupState>(*this));
 	}
 	//アイテムを持っているなら捨てる.
 	else if (CInputManager::IsDown(Action::ToggleItem, m_PlayerID)
 		&& m_IsHoldingItem
-		&& m_PlayerEvent == PlayerEvent::Idle)
+		&& IsActionState<CPlayerActionIdleState>())
 	{
 		SetActionState(std::make_unique<CPlayerThrowState>(*this));
 	}
