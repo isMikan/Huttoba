@@ -1,7 +1,7 @@
 #pragma once
 #include <unordered_map>
 #include <memory>
-#include "../../Collider/CollisionBase.h" // CollisionBase の完全な定義をインクルード
+#include "../../Collider/CollisionBase.h"
 
 class CollisionStrategyBase;
 

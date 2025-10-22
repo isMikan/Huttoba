@@ -1,123 +1,113 @@
 #pragma once
 
-#include<string>
-#include<memory>
+#include <d3dx9math.h> // D3DXVECTOR3, D3DXMATRIX を使用
+#include <memory>
+#include <string>
 
-class CGameObject;
+// 前方宣言: 衝突イベントの通知先となるオブジェクト
 class ICollisionListener;
 
+/**
+ * コリジョンオブジェクトの基底クラス (データコンテナ層)。
+ * * 役割: 衝突形状の種類、識別タグ、および親オブジェクトからの
+ * 相対的な位置（オフセット）といった「情報」のみを保持する。
+ * * 注意: ワールド座標、回転、拡縮といった「絶対トランスフォーム」は
+ * 親となる CGameObject が保持し、Strategyで利用される。
+ */
 class CollisionBase
 {
 public:
-	CollisionBase();
-	virtual ~CollisionBase();
+    // ----------------------------------------------------
+    // 識別子 (メタ情報)
+    // ----------------------------------------------------
 
-	enum class ColliderTag
-	{
-		Player,
-		Item,
-		Ground,
+    enum class ColliderTag
+    {
+        Player = 0,
+        Item, 
+        Ground, 
+        Haetataki, 
+        SmashBat, 
+        Fan,
+        Mushroom, 
+        Magnet,
+        Boomerang,
+        RatRobot, 
 
-		Haetataki,
-		SmashBat,
-		Fan,
-		Mushroom,
-		Magnet,
-		Boomerang,
-		RatRobot,
+        Max,
+        None = -1
+    };
 
-		None,
-	};
+    enum class ColliderType
+    {
+        Capsule = 0,
+        OBB, 
+        Ray,
+        Sphere,
 
-	enum class ColliderType
-	{
-		Capsule,
-		OBB,
-		Ray,
-		Sphere,
+        None = -1,
+    };
 
-		None,
-	};
+    // コンストラクタ / デストラクタ
+    CollisionBase();
+    virtual ~CollisionBase() = default;
 
-	//座標設定関数.
-	void SetPosition(float x, float y, float z) {
-		m_vPosition.x = x;
-		m_vPosition.y = y;
-		m_vPosition.z = z;
-	};
-	void SetPosition(const D3DXVECTOR3& pos) {
-		m_vPosition = pos;
-	}
+    // ----------------------------------------------------
+    // トランスフォーム情報 (相対座標: オフセット)
+    // ----------------------------------------------------
+    // コリダーの中心が、親オブジェクトの中心からどれだけズレているかを示す相対座標。
+    // WorldPosition = CGameObject::GetPosition() + GetLocalOffset() で計算される。
+    void SetLocalOffset(float x, float y, float z) {
+        m_vLocalOffset.x = x;
+        m_vLocalOffset.y = y;
+        m_vLocalOffset.z = z;
+    };
+    void SetLocalOffset(const D3DXVECTOR3& offset) {
+        m_vLocalOffset = offset;
+    }
 
-	//回転設定関数.
-	void SetRotation(float x, float y, float z) {
-		m_vRotation.x = x;
-		m_vRotation.y = y;
-		m_vRotation.z = z;
-	};
-	void SetRotation(const D3DXVECTOR3& rot) {
-		m_vRotation = rot;
-	}
+    const D3DXVECTOR3& GetLocalOffset() const { return m_vLocalOffset; }
 
-	//拡縮設定関数.
-	void SetScale(float x, float y, float z) {
-		m_vScale.x = x;
-		m_vScale.y = y;
-		m_vScale.z = z;
-	}
-	void SetScale(float xyz) {
-		m_vScale = D3DXVECTOR3(xyz, xyz, xyz);
-	}
+    // ----------------------------------------------------
+    // 必須情報 / 状態
+    // ----------------------------------------------------
 
-	//取得関数.
-	const D3DXVECTOR3& GetPosition() const {return m_vPosition;}
-	const D3DXVECTOR3& GetRotation() const {return m_vRotation;}
-	const D3DXVECTOR3& GetScale() const {return m_vScale;}
+    // コリダーがどの種類の形状であるかを返す (純粋仮想関数)
+    virtual ColliderType GetType() const = 0;
 
-	//--------------------------------------------------------------------------------------------------------------
+    // 当たり判定の主を設定 (ICollisionListenerへ通知するため)
+    void SetOwner(ICollisionListener* obj) { m_Owner = obj; }
+    ICollisionListener* GetOwner() const { return m_Owner; }
 
-	//ローカル座標をワールド座標に変換
-	virtual void UpdateWorldMat() = 0;
+    // 主の種類を設定 (フィルタリング用)
+    void SetTag(ColliderTag tag) { m_Tag = tag; }
+    ColliderTag GetTag() const { return m_Tag; }
 
-	//ワールド行列取得
-	virtual const D3DXMATRIX& GetWorldMat() const = 0;
+    // 存在しているか設定 (判定の有効/無効を切り替える)
+    void SetActive(bool flag) { m_IsActive = flag; }
+    bool GetActive() const { return m_IsActive; }
 
-	//現在座標の中心を取得
-	virtual D3DXVECTOR3 GetWorldPos() const = 0;
+    // 判定結果の一時的なフラグ (Strategyが設定し、システムがリセットする)
+    void SetHit(bool isHit) { m_IsHit = isHit; }
+    bool GetHit() const { return m_IsHit; }
 
-	virtual ColliderType GetType() = 0;
-
-	//当たり判定の主を設定
-	void SetOwner(ICollisionListener* obj) { m_Owner = obj; }
-	 ICollisionListener* GetOwner() { return m_Owner; }
-
-	//主の種類を設定
-	void SetTag(ColliderTag tag) { m_Tag = tag; }
-
-	//存在しているか設定
-	void SetActive(bool flag) { m_IsActive = flag; }
-
-	ColliderTag GetTag() const { return m_Tag; }
-	bool GetActive() const { return m_IsActive; }
-
-	void SetHit(bool isHit) { m_IsHit = isHit; }
-
-
-public:
-
-	//トランスフォーム系
-	D3DXVECTOR3	m_vPosition;
-	D3DXVECTOR3	m_vRotation;
-	D3DXVECTOR3	m_vScale;
 
 protected:
 
-	ICollisionListener* m_Owner;
-	ColliderTag m_Tag;
-	bool m_IsActive;
+    // 形状の相対位置 (親オブジェクトからの微調整オフセット)
+    D3DXVECTOR3	m_vLocalOffset;
 
-	bool m_IsHit;
+    // コリジョンイベントの通知先
+    ICollisionListener* m_Owner;
+
+    // コリジョンの種類を識別するタグ (例: プレイヤー、アイテム)
+    ColliderTag m_Tag;
+
+    // 判定の有効/無効フラグ
+    bool m_IsActive;
+
+    // 直前の判定でヒットしたかどうかのフラグ
+    bool m_IsHit;
 
 private:
-
 };

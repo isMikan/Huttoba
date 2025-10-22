@@ -101,6 +101,10 @@
     <ClCompile Include="Source\DebugText\DebugDrawManager\DebugDrawManager.cpp" />
     <ClCompile Include="Source\GameObject\UIObject\GaugeBase\CGaugeBase.cpp" />
     <ClCompile Include="Source\GameObject\UIObject\GaugeBase\TimerGauge\CTimerGauge.cpp" />
+    <ClCompile Include="Source\Collision\CollisionStrategy\CollisionPattern\CollisionSphereSphere\CollisionStrategySphereSphere.cpp" />
+    <ClCompile Include="Source\Collision\CollisionData\CollisionDataFactory\CollisionDataFactory.cpp" />
+    <ClCompile Include="Source\GameObject\UIObject\GaugeBase\CGaugeBase.cpp" />
+    <ClCompile Include="Source\GameObject\UIObject\GaugeBase\TimerGauge\CTimerGauge.cpp" />
     <ClCompile Include="Source\Scene\TestScene\TestScene.cpp" />
     <ClCompile Include="Source\GameObject\UIObject\GaugeBase\GaugeManager\CGaugeManager.cpp" />
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\PlayerBase\PlayerEventBus\CPlayerEventBus.cpp" />
@@ -206,6 +210,10 @@
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\Item\Items\Mushroom\Mushroom.h" />
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\Item\Items\TrackingRobot\TrackingRobot.h" />
     <ClInclude Include="Source\DebugText\DebugDrawManager\DebugDrawManager.h" />
+    <ClInclude Include="Source\GameObject\UIObject\GaugeBase\CGaugeBase.h" />
+    <ClInclude Include="Source\GameObject\UIObject\GaugeBase\TimerGauge\CTimerGauge.h" />
+    <ClInclude Include="Source\Collision\CollisionStrategy\CollisionPattern\CollisionSphereSphere\CollisionStrategySphereSphere.h" />
+    <ClInclude Include="Source\Collision\CollisionData\CollisionDataFactory\CollisionDataFactory.h" />
     <ClInclude Include="Source\GameObject\UIObject\GaugeBase\CGaugeBase.h" />
     <ClInclude Include="Source\GameObject\UIObject\GaugeBase\TimerGauge\CTimerGauge.h" />
     <ClInclude Include="Source\Scene\TestScene\TestScene.h" />

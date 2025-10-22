@@ -8,16 +8,6 @@ public:
 	CollisionCapsule();
 	~CollisionCapsule();
 
-	//ローカル座標をワールドに変換
-	void UpdateWorldMat() override;
-
-	//ワールド行列を取得
-	const D3DXMATRIX& GetWorldMat() const override { return m_World; }
-
-	//現在座標の中心を取得 線分の中心を返す
-	D3DXVECTOR3 GetWorldPos() const override {  return (m_StartWorld + m_EndWorld) / 2.0f;}
-
-
 	// ゲッター
 	const D3DXVECTOR3& GetStart	() const { return m_Start; }
 	const D3DXVECTOR3& GetEnd	() const { return m_End; }
