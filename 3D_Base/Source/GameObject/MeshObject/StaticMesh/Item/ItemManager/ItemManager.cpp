@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "ItemManager.h"
 #include "Item/ItemBase.h"	
-#include "PlayerBase/CPlayerBase.h"
+#include "PlayerBase/PlayerManager/CPlayerManager.h"
 #include "Input/CInputManager.h"
 
 
@@ -58,27 +58,24 @@ void ItemManager::Init()
 
 //--------------------------------------------------------------------------------------------------------------
 
-void ItemManager::Update(std::vector<std::unique_ptr<CPlayerBase>>& players)
+void ItemManager::Update(std::unique_ptr<CPlayerManager>& players)
 {
 	for (auto& item : m_pItems)
 	{
 		//ˆê’UPlayer0‚µ‚©Ž‚Ä‚È‚¢‚æ‚¤‚É‚·‚é
 		item->Update(players);
 
-		for (auto& player : players)
+		// “–‚½‚è”»’è
+		if (item->GetBSphere()->IsHit(*players->GetPlayer(0)->GetBSphere()))
 		{
-			// “–‚½‚è”»’è
-			if (item->GetBSphere()->IsHit(*player->GetBSphere()))
+			if (CInputManager::IsDown(Action::Have, 0))
 			{
-				if(CInputManager::IsDown(Action::Have,0))
-				{
-					item->SetState(ItemBase::State::Have);
-				}
+				item->SetState(ItemBase::State::Have);
 			}
-			if (CInputManager::IsDown(Action::HaeAttack,0))
-			{
-				item->SetState(ItemBase::State::Use);
-			}
+		}
+		if (CInputManager::IsDown(Action::HaeAttack, 0))
+		{
+			item->SetState(ItemBase::State::Use);
 		}
 	}
 

@@ -33,7 +33,7 @@ void Mushroom::Init()
 	m_tGravity = 0.01;
 }
 
-void Mushroom::Update(std::vector<std::unique_ptr<CPlayerBase>>& playiers)
+void Mushroom::Update(std::unique_ptr<CPlayerManager>& playiers)
 {
 	ItemBase::Update(playiers);
 }
@@ -69,7 +69,7 @@ void Mushroom::OnGround()
 	}
 }
 
-void Mushroom::Have(std::vector<std::unique_ptr<CPlayerBase>>& playiers)
+void Mushroom::Have(std::unique_ptr<CPlayerManager>& playiers)
 {
 	if (m_IsTake)
 		TakeMotion();
@@ -77,11 +77,11 @@ void Mushroom::Have(std::vector<std::unique_ptr<CPlayerBase>>& playiers)
 		PossessionMotion(playiers);
 }
 
-void Mushroom::Use(std::vector<std::unique_ptr<CPlayerBase>>& playiers)
+void Mushroom::Use(std::unique_ptr<CPlayerManager>& playiers)
 {
 	if (GetAsyncKeyState('N') & 0x8000)
 	{
-		m_pPlayer->GetVelocity();
+		//m_pPlayer->GetVelocity();
 	}
 }
 
@@ -108,11 +108,11 @@ void Mushroom::TakeMotion()
 	}
 }
 
-void Mushroom::PossessionMotion(std::vector<std::unique_ptr<CPlayerBase>>& playiers)
+void Mushroom::PossessionMotion(std::unique_ptr<CPlayerManager>& playiers)
 {
 	if (!m_IsTake)
 	{
-		m_vPosition = playiers[0]->GetPlayerRightHand().GetPosition();
+		//m_vPosition = playiers[0]->GetPlayerRightHand().GetPosition();
 	}
 }
 

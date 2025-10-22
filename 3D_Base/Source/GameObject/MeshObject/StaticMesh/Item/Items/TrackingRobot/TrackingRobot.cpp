@@ -33,7 +33,7 @@ void TrackingRobot::Init()
 	m_tGravity = 0.01;
 }
 
-void TrackingRobot::Update(std::vector<std::unique_ptr<CPlayerBase>>& playiers)
+void TrackingRobot::Update(std::unique_ptr<CPlayerManager>& playiers)
 {
 	ItemBase::Update(playiers);
 }
@@ -69,7 +69,7 @@ void TrackingRobot::OnGround()
 	}
 }
 
-void TrackingRobot::Have(std::vector<std::unique_ptr<CPlayerBase>>& playiers)
+void TrackingRobot::Have(std::unique_ptr<CPlayerManager>& playiers)
 {
 	if (m_IsTake)
 		TakeMotion();
@@ -77,11 +77,11 @@ void TrackingRobot::Have(std::vector<std::unique_ptr<CPlayerBase>>& playiers)
 		PossessionMotion(playiers);
 }
 
-void TrackingRobot::Use(std::vector<std::unique_ptr<CPlayerBase>>& playiers)
+void TrackingRobot::Use(std::unique_ptr<CPlayerManager>& playiers)
 {
 	if (GetAsyncKeyState('N') & 0x8000)
 	{
-		m_pPlayer->GetVelocity();
+		//m_pPlayer->GetVelocity();
 	}
 }
 
@@ -108,11 +108,11 @@ void TrackingRobot::TakeMotion()
 	}
 }
 
-void TrackingRobot::PossessionMotion(std::vector<std::unique_ptr<CPlayerBase>>& playiers)
+void TrackingRobot::PossessionMotion(std::unique_ptr<CPlayerManager>& playiers)
 {
 	if (!m_IsTake)
 	{
-		m_vPosition = playiers[0]->GetPlayerRightHand().GetPosition();
+		//m_vPosition = playiers[0]->GetPlayerRightHand().GetPosition();
 	}
 }
 

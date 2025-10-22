@@ -128,7 +128,7 @@ void CSceneGameMain::Update()
 	//ƒvƒŒƒCƒ„[‚Ì“®ì.
 	m_pPlayerManager->Update();
 
-	//m_pItemManager->Update(m_pPlayers);
+	m_pItemManager->Update(m_pPlayerManager);
 
 	//”š”­
 	for (auto& exp : m_pExplosiones)

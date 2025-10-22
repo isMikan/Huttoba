@@ -38,7 +38,7 @@ void Bomb::Init()
 	m_tGravity = 0.01;
 }
 
-void Bomb::Update(std::vector<std::unique_ptr<CPlayerBase>>& playiers)
+void Bomb::Update(std::unique_ptr<CPlayerManager>& playiers)
 {
 	ItemBase::Update(playiers);
 }
@@ -74,7 +74,7 @@ void Bomb::OnGround()
 	}
 }
 
-void Bomb::Have(std::vector<std::unique_ptr<CPlayerBase>>& playiers)
+void Bomb::Have(std::unique_ptr<CPlayerManager>& playiers)
 {
 	if (m_IsTake)
 		TakeMotion();
@@ -82,11 +82,11 @@ void Bomb::Have(std::vector<std::unique_ptr<CPlayerBase>>& playiers)
 		PossessionMotion(playiers);
 }
 
-void Bomb::Use(std::vector<std::unique_ptr<CPlayerBase>>& playiers)
+void Bomb::Use(std::unique_ptr<CPlayerManager>& playiers)
 {
 	if (GetAsyncKeyState('N') & 0x8000)
 	{
-		m_pPlayer->GetVelocity();
+		//m_pPlayer->GetVelocity();
 	}
 }
 
@@ -113,11 +113,11 @@ void Bomb::TakeMotion()
 	}
 }
 
-void Bomb::PossessionMotion(std::vector<std::unique_ptr<CPlayerBase>>& playiers)
+void Bomb::PossessionMotion(std::unique_ptr<CPlayerManager>& playiers)
 {
 	if (!m_IsTake)
 	{
-		m_vPosition = playiers[0]->GetPlayerRightHand().GetPosition();
+		//m_vPosition = playiers[0]->GetPlayerRightHand().GetPosition();
 	}
 }
 
