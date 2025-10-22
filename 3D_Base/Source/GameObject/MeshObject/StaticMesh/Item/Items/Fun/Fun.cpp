@@ -33,7 +33,7 @@ void Fun::Init()
 	m_tGravity = 0.01;
 }
 
-void Fun::Update(std::vector<std::unique_ptr<CPlayerBase>>& playiers)
+void Fun::Update(std::unique_ptr<CPlayerManager>& playiers)
 {
 	ItemBase::Update(playiers);
 }
@@ -69,7 +69,7 @@ void Fun::OnGround()
 	}
 }
 
-void Fun::Have(std::vector<std::unique_ptr<CPlayerBase>>& playiers)
+void Fun::Have(std::unique_ptr<CPlayerManager>& playiers)
 {
 	if (m_IsTake)
 		TakeMotion();
@@ -77,11 +77,11 @@ void Fun::Have(std::vector<std::unique_ptr<CPlayerBase>>& playiers)
 		PossessionMotion(playiers);
 }
 
-void Fun::Use(std::vector<std::unique_ptr<CPlayerBase>>& playiers)
+void Fun::Use(std::unique_ptr<CPlayerManager>& playiers)
 {
 	if (GetAsyncKeyState('N') & 0x8000)
 	{
-		m_pPlayer->GetVelocity();
+		//m_pPlayer->GetVelocity();
 	}
 }
 
@@ -108,11 +108,11 @@ void Fun::TakeMotion()
 	}
 }
 
-void Fun::PossessionMotion(std::vector<std::unique_ptr<CPlayerBase>>& playiers)
+void Fun::PossessionMotion(std::unique_ptr<CPlayerManager>& playiers)
 {
 	if (!m_IsTake)
 	{
-		m_vPosition = playiers[0]->GetPlayerRightHand().GetPosition();
+		//m_vPosition = playiers[0]->GetPlayerRightHand().GetPosition();
 	}
 }
 

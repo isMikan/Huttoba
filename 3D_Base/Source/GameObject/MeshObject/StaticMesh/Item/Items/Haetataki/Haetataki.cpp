@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "Haetataki.h"
-#include "PlayerBase/CPlayerBase.h"
+#include "PlayerBase/PlayerManager/CPlayerManager.h"
 
 //--------------------------------------------------------------------------------------------------------------
 
@@ -75,7 +75,7 @@ void Haetataki::Init()
 
 //--------------------------------------------------------------------------------------------------------------
 
-void Haetataki::Update(std::vector<std::unique_ptr<CPlayerBase>>& playiers)
+void Haetataki::Update(std::unique_ptr<CPlayerManager>& playiers)
 {
 	//アイテム共通のUpdate
 	ItemBase::Update(playiers);
@@ -117,13 +117,13 @@ void Haetataki::OnGround()
 
 //--------------------------------------------------------------------------------------------------------------
 
-void Haetataki::Have(std::vector<std::unique_ptr<CPlayerBase>>& playiers)
+void Haetataki::Have(std::unique_ptr<CPlayerManager>& playiers)
 {
 	//アイテムを拾うモーション
 	TakeMostion();
 
 	//アイテムをプレイヤーの位置に合わせる
-	m_vPosition = playiers[0]->GetPosition() + m_Offset;
+	m_vPosition = playiers->GetPlayer(0)->GetPosition() + m_Offset;
 
 	//Nキーで使用状態へ
 	if (GetAsyncKeyState('N') & 0x0001)
@@ -134,36 +134,34 @@ void Haetataki::Have(std::vector<std::unique_ptr<CPlayerBase>>& playiers)
 
 //--------------------------------------------------------------------------------------------------------------
 
-void Haetataki::Use(std::vector<std::unique_ptr<CPlayerBase>>& playiers)
+void Haetataki::Use(std::unique_ptr<CPlayerManager>& playiers)
 {
 	//アイテムをプレイヤーの位置に合わせる
-	m_vPosition = playiers[0]->GetPosition() + m_Offset;
+	m_vPosition = playiers->GetPlayer(0)->GetPosition() + m_Offset;
 
-	//プレイヤーとの当たり判定
-	for (auto& player : playiers)
-	{
-		if (GetBSphere()->IsHit(*player->GetBSphere()) && playiers[0] != player)
-		{
-			//当たったときの吹っ飛び座標格納(仮)
-			D3DXVECTOR3 newPos = player->GetPosition();
-			newPos.x -= 5.f;	
 
-			//敵に当たったときの処理
-			player->SetPosition(newPos);
-			AssetManager::Sound()->PlaySE(enSoundList::SE_HitHaetataki);
-			continue;
-		}
-		else
-		{
-			//外れたときのSE(1回だけ鳴るように)
-			if (!m_IsMissAttack)
-			{
-				AssetManager::Sound()->PlaySE(enSoundList::SE_MissHaetataki);
-				m_IsMissAttack = true;
-			}
-			continue;
-		}
-	}
+	////プレイヤーとの当たり判定
+	//	if (GetBSphere()->IsHit(*playiers->GetPlayer(0)->GetBSphere()) && playiers[0] != player)
+	//	{
+	//		//当たったときの吹っ飛び座標格納(仮)
+	//		D3DXVECTOR3 newPos = player->GetPosition();
+	//		newPos.x -= 5.f;	
+
+	//		//敵に当たったときの処理
+	//		player->SetPosition(newPos);
+	//		AssetManager::Sound()->PlaySE(enSoundList::SE_HitHaetataki);
+	//		continue;
+	//	}
+	//	else
+	//	{
+	//		//外れたときのSE(1回だけ鳴るように)
+	//		if (!m_IsMissAttack)
+	//		{
+	//			AssetManager::Sound()->PlaySE(enSoundList::SE_MissHaetataki);
+	//			m_IsMissAttack = true;
+	//		}
+	//		continue;
+	//	}
 
 	//モーション終了で所持状態へ戻る
 	if (!AttackMostion())

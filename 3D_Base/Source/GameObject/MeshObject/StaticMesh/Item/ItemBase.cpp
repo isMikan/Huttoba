@@ -19,7 +19,7 @@ void ItemBase::Init()
 {
 }
 
-void ItemBase::Update(std::vector<std::unique_ptr<CPlayerBase>>& playiers)
+void ItemBase::Update(std::unique_ptr<CPlayerManager>& playiers)
 {
 	//‰Šú‰»
 	if (GetAsyncKeyState('R') & 0x8000)
