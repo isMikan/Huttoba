@@ -233,6 +233,7 @@
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Collision\CollisionData\CollisionDataFactory\CollisionDataFactory.cpp" />
     <ClCompile Include="Source\Collision\CollisionStrategy\CollisionPattern\CollisionSphereSphere\CollisionStrategySphereSphere.cpp" />
     <ClCompile Include="Source\DebugText\DebugDrawManager\DebugDrawManager.cpp" />
     <ClCompile Include="Source\Collision\Collider\CollisionSphere\CollisionSphere.cpp" />
@@ -326,7 +327,6 @@
     <ClCompile Include="Source\Scene\SceneStandby\CSceneStandby.cpp" />
     <ClCompile Include="Source\Scene\SceneResult\CSceneResult.cpp" />
     <ClCompile Include="Source\Scene\SceneTitle\CSceneTitle.cpp" />
-    <ClCompile Include="Source\Scene\TestScene\TestScene.cpp" />
     <ClCompile Include="Source\stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
@@ -336,6 +336,7 @@
     <ClCompile Include="Source\TimeManager\CTimeManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Collision\CollisionData\CollisionDataFactory\CollisionDataFactory.h" />
     <ClInclude Include="Source\Collision\CollisionStrategy\CollisionPattern\CollisionSphereSphere\CollisionStrategySphereSphere.h" />
     <ClInclude Include="Source\DebugText\DebugDrawManager\DebugDrawManager.h" />
     <ClInclude Include="Source\Collision\Collider\CollisionSphere\CollisionSphere.h" />
@@ -438,7 +439,6 @@
     <ClInclude Include="Source\Scene\SceneStandby\CSceneStandby.h" />
     <ClInclude Include="Source\Scene\SceneResult\CSceneResult.h" />
     <ClInclude Include="Source\Scene\SceneTitle\CSceneTitle.h" />
-    <ClInclude Include="Source\Scene\TestScene\TestScene.h" />
     <ClInclude Include="Source\stdafx.h" />
     <ClInclude Include="Source\TimeManager\CTimeManager.h" />
   </ItemGroup>

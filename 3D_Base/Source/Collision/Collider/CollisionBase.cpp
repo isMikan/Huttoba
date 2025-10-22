@@ -12,7 +12,3 @@ CollisionBase::CollisionBase()
 {
 	
 }
-
-CollisionBase::~CollisionBase()
-{
-}
