@@ -16,14 +16,7 @@ public:
 	virtual ~CollisionStrategyBase() = default;
 
 	// Õ“Ë”»’èŠÖ”
-	virtual CollisionResult CheckCollision(
+	virtual bool CheckCollision(
 		const CollisionBase* colA,
 		const CollisionBase* colB) const = 0;
-
-	// Õ“Ë‚µ‚½‚©‚ğ•Ô‚·ŠÖ”
-	bool IsCollide(const CollisionBase* colA, const CollisionBase* colB) const
-	{
-		if (!colA || !colB) return false;
-		return CheckCollision(colA, colB).IsHit;
-	}
 };

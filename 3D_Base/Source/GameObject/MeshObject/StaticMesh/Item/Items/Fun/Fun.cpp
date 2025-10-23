@@ -23,7 +23,6 @@ Fun::~Fun()
 void Fun::Init()
 {
 	AttachMesh(AssetManager::Mesh(StaticMeshList::Fun));
-	CreateBSphereForMesh(AssetManager::Mesh(StaticMeshList::Fun));
 
 	//SetPosition(2, 5, 2);
 	SetPosition(0, 15, 0);

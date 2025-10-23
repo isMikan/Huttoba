@@ -24,7 +24,7 @@ public:
     void RemoveCollider(CollisionBase* pColliderToRemove);
 
     // メインループから毎フレーム呼び出される更新処理
-    void Update(float deltaTime);
+    void Update();
 
     // 衝突判定ロジックを実行する関数 (Strategyの切り替えを含む)
     bool CheckCollision(CollisionBase* a, CollisionBase* b);

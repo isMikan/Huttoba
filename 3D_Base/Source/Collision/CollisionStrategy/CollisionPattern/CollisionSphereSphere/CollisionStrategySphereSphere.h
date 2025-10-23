@@ -19,20 +19,15 @@ public:
     /*****************************************************************************************
     * @brief    2つの球体が衝突しているかどうかを判定
     * 
-    * @param    objA    球Aを所有するゲームオブジェクト (ワールド絶対座標の取得元)
-    *           sphereA 1つ目の球体情報 (半径とローカルオフセットの取得元)
-    *           objB    球Bを所有するゲームオブジェクト
+    * @param    sphereA 1つ目の球体情報 (半径とローカルオフセットの取得元)
     *           sphereB 2つ目の球体情報
     * 
     * @return   true  : 衝突
     *           false : 衝突していない 
     *****************************************************************************************/
-    static bool CheckCollision(
-        const CGameObject* objA,
-        const CollisionSphere* sphereA,
-        const CGameObject* objB,
-        const CollisionSphere* sphereB);
-
+    virtual bool CheckCollision(
+        const CollisionBase* colA,
+        const CollisionBase* colB) const override;
 private:
 
     /*****************************************************************************************

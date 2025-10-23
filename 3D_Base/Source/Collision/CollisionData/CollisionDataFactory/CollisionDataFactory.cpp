@@ -1,29 +1,36 @@
 #include "stdafx.h"
 #include "CollisionDataFactory.h"
 
-std::shared_ptr<CollisionBase> CollisionDataFactory::CreateSphere(
+std::shared_ptr<CollisionBase> CollisionDataFactory::CreateSphereForMesh(
     CGameObject* pOwner,
-    float radius,
-    CollisionBase::ColliderTag tag, 
-    const D3DXVECTOR3& localOffset
-)
+    std::shared_ptr<CStaticMesh> pMesh,
+    CollisionBase::ColliderTag tag)
 {
-    // 親オブジェクトがICollisionListenerを実装しているかチェックし、ポインタを取得
-    ICollisionListener* listener = dynamic_cast<ICollisionListener*>(pOwner);
+    D3DXVECTOR3 calculatedCenter(0.0f, 0.0f, 0.0f);
+    float calculatedRadius = 0.0f;
 
-    // 親オブジェクトからワールド位置へのconst参照を取得
+    // ユーティリティ関数を呼び出して中心と半径を計算
+    if (!MeshCollisionUtility::CalculateBoundingSphere(
+        pMesh, calculatedCenter, calculatedRadius))
+    {
+        // 計算失敗時はnullptrを返すか、エラー処理を行う
+        return nullptr;
+    }
+
+    ICollisionListener* listener = dynamic_cast<ICollisionListener*>(pOwner);
     const D3DXVECTOR3& posRef = pOwner->GetPosition();
 
-    // shared_ptrを使って具象クラス (CollisionSphere) のインスタンスを生成
-    // 生成と同時に、参照とタグを渡して初期化する
+    // CStaticMeshObjectの中心座標は通常(0,0,0)だが、モデル原点がオフセットされている場合は
+    // calculatedCenterをlocalOffsetとして渡す
+
+    // CollisionSphereのインスタンスを生成 (計算結果を利用)
     std::shared_ptr<CollisionBase> newCollider = std::make_shared<CollisionSphere>(
-        listener,        // 親のポインタ
-        posRef,          // 親の座標(参照で初期化してる変数)
-        tag,             // 識別タグ
-        radius,          // 半径
-        localOffset      // 微調整用
+        listener,
+        posRef,
+        tag,
+        calculatedRadius,      // 計算された半径
+        calculatedCenter       // 計算されたオフセット
     );
 
-    return newCollider; // 所有権を呼び出し元（CollisionManager）に移譲
-
+    return newCollider;
 }

@@ -105,9 +105,9 @@
     <ClCompile Include="Source\Collision\CollisionData\CollisionDataFactory\CollisionDataFactory.cpp" />
     <ClCompile Include="Source\GameObject\UIObject\GaugeBase\CGaugeBase.cpp" />
     <ClCompile Include="Source\GameObject\UIObject\GaugeBase\TimerGauge\CTimerGauge.cpp" />
-    <ClCompile Include="Source\Scene\TestScene\TestScene.cpp" />
     <ClCompile Include="Source\GameObject\UIObject\GaugeBase\GaugeManager\CGaugeManager.cpp" />
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\PlayerBase\PlayerEventBus\CPlayerEventBus.cpp" />
+    <ClCompile Include="Source\Collision\CollisionMeshUtility\MeshCollisionUtility.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Assets\AssetManager.h" />
@@ -216,8 +216,8 @@
     <ClInclude Include="Source\Collision\CollisionData\CollisionDataFactory\CollisionDataFactory.h" />
     <ClInclude Include="Source\GameObject\UIObject\GaugeBase\CGaugeBase.h" />
     <ClInclude Include="Source\GameObject\UIObject\GaugeBase\TimerGauge\CTimerGauge.h" />
-    <ClInclude Include="Source\Scene\TestScene\TestScene.h" />
     <ClInclude Include="Source\GameObject\UIObject\GaugeBase\GaugeManager\CGaugeManager.h" />
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\PlayerBase\PlayerEventBus\CPlayerEventBus.h" />
+    <ClInclude Include="Source\Collision\CollisionMeshUtility\MeshCollisionUtility.h" />
   </ItemGroup>
 </Project>

@@ -233,6 +233,7 @@
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Collision\CollisionMeshUtility\MeshCollisionUtility.cpp" />
     <ClCompile Include="Source\Collision\CollisionData\CollisionDataFactory\CollisionDataFactory.cpp" />
     <ClCompile Include="Source\Collision\CollisionStrategy\CollisionPattern\CollisionSphereSphere\CollisionStrategySphereSphere.cpp" />
     <ClCompile Include="Source\DebugText\DebugDrawManager\DebugDrawManager.cpp" />
@@ -337,6 +338,7 @@
     <ClCompile Include="Source\TimeManager\CTimeManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Collision\CollisionMeshUtility\MeshCollisionUtility.h" />
     <ClInclude Include="Source\Collision\CollisionData\CollisionDataFactory\CollisionDataFactory.h" />
     <ClInclude Include="Source\Collision\CollisionStrategy\CollisionPattern\CollisionSphereSphere\CollisionStrategySphereSphere.h" />
     <ClInclude Include="Source\DebugText\DebugDrawManager\DebugDrawManager.h" />

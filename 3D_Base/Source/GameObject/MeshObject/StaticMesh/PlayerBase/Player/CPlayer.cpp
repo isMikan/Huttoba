@@ -143,24 +143,24 @@ void CPlayer::SetPlayerInputBinding(int index) const
 				{Action::Attack,		'R'}, 	//攻撃.
 				{Action::ToggleItem,	'Y'}, 	//拾う/捨てる.
 			},
-			//プレイヤー3.
-			{
-				{Action::MoveUp,		'I'},	//上移動.
-				{Action::MoveDown,		'K'},	//下移動.
-				{Action::MoveLeft,		'J'},	//左移動.
-				{Action::MoveRight,		'L'},	//右移動.
-				{Action::Attack,		'U'}, 	//攻撃.
-				{Action::ToggleItem,	'O'}, 	//拾う/捨てる.
-			},
-			//プレイヤー4.
-			{
-				{Action::MoveUp,		VK_OEM_3},		//上移動.
-				{Action::MoveDown,		VK_OEM_1},		//下移動.
-				{Action::MoveLeft,		VK_OEM_PLUS},	//左移動.
-				{Action::MoveRight,		VK_OEM_6},		//右移動.
-				{Action::Attack,		'P'},			//攻撃.
-				{Action::ToggleItem,	VK_OEM_4},		//拾う/捨てる.
-			},
+			////プレイヤー3.突貫
+			//{
+			//	{Action::MoveUp,		'I'},	//上移動.
+			//	{Action::MoveDown,		'K'},	//下移動.
+			//	{Action::MoveLeft,		'J'},	//左移動.
+			//	{Action::MoveRight,		'L'},	//右移動.
+			//	{Action::Attack,		'U'}, 	//攻撃.
+			//	{Action::ToggleItem,	'O'}, 	//拾う/捨てる.
+			//},
+			////プレイヤー4.
+			//{
+			//	{Action::MoveUp,		VK_OEM_3},		//上移動.
+			//	{Action::MoveDown,		VK_OEM_1},		//下移動.
+			//	{Action::MoveLeft,		VK_OEM_PLUS},	//左移動.
+			//	{Action::MoveRight,		VK_OEM_6},		//右移動.
+			//	{Action::Attack,		'P'},			//攻撃.
+			//	{Action::ToggleItem,	VK_OEM_4},		//拾う/捨てる.
+			//},
 		};
 
 		//プレイヤーにキーを設定.
@@ -179,4 +179,16 @@ void CPlayer::SetPlayerInputBinding(int index) const
 		InputBinding(InputDevice::GamePad, CXInput::B), m_PlayerID);	//攻撃.
 	CInputManager::BindKey(Action::ToggleItem,	
 		InputBinding(InputDevice::GamePad, CXInput::A), m_PlayerID);	//拾う/捨てる.
+}
+
+void CPlayer::OnCollision(CollisionBase* pOtherCollider)
+{
+	// 衝突相手のタグをチェックし、応答を切り替える
+	switch (pOtherCollider->GetTag())
+	{
+	case CollisionBase::ColliderTag::Player:
+		std::cout << "Playerにヒット！" << std::endl;
+
+		break;
+	}
 }

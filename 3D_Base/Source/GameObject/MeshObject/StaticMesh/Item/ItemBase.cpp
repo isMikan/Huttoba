@@ -43,7 +43,6 @@ void ItemBase::Update(std::unique_ptr<CPlayerManager>& playiers)
 	//ハエたたき限定当たり判定の座標を調整+更新
 	static D3DXVECTOR3 offSet;
 	offSet = {0.f,0.f,1.f};
-	UpdateBSpherePos(offSet);
 }
 
 

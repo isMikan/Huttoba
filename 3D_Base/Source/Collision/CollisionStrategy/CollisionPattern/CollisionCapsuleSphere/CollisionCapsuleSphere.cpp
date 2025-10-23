@@ -1,13 +1,11 @@
 #include "stdafx.h"
 #include "CollisionCapsuleSphere.h"
 
-CollisionResult CollisionCapsuleSphere::CheckCollision(
+bool CollisionCapsuleSphere::CheckCollision(
     const CollisionBase* colA,
     const CollisionBase* colB) const
 {
-    CollisionResult result;
 
-    // TODO: Capsule vs Sphere ”»’èƒAƒ‹ƒSƒŠƒYƒ€‚ðŽÀ‘•
 
-    return result;
+    return false;
 }

@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "CollisionCapsuleRay.h"
 
-CollisionResult CollisionCapsuleRay::CheckCollision(
+bool CollisionCapsuleRay::CheckCollision(
     const CollisionBase* colA,
     const CollisionBase* colB) const
 {
@@ -9,5 +9,5 @@ CollisionResult CollisionCapsuleRay::CheckCollision(
 
     // TODO: Capsule vs Ray ”»’èƒAƒ‹ƒSƒŠƒYƒ€‚ðŽÀ‘•
 
-    return result;
+    return false;
 }

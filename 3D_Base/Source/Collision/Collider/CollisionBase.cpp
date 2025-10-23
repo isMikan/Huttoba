@@ -7,8 +7,7 @@ CollisionBase::CollisionBase(
     ICollisionListener* pListener,
     const D3DXVECTOR3& syncPosition, // eGameObject‚Ìm_vPosition‚Ö‚ÌconstQÆ
     ColliderTag tag,
-    const D3DXVECTOR3& localOffset = D3DXVECTOR3(0.0f, 0.0f, 0.0f)
-)
+    const D3DXVECTOR3& localOffset)
     : m_pListener(pListener)
     ,m_SyncPosition(syncPosition) // constQÆ‚Ì‰Šú‰»
     ,m_Tag(tag)

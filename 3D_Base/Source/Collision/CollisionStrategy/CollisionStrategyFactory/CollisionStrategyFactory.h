@@ -44,4 +44,4 @@ private:
 
     std::unordered_map<std::pair<CollisionBase::ColliderType, CollisionBase::ColliderType>,
         StrategyPtr, PairHash> m_Strategies;
-}; // クラス定義の末尾にセミコロンを追加
+};

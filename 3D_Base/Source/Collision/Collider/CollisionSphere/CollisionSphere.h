@@ -12,9 +12,11 @@ class CollisionSphere : public CollisionBase
 public:
     // コンストラクタ
     CollisionSphere(
-        float radius = 1.0f,
-        ColliderTag tag = ColliderTag::None,
-        const D3DXVECTOR3& localOffset = D3DXVECTOR3(0.0f, 0.0f, 0.0f)
+        ICollisionListener* pListener,
+        const D3DXVECTOR3& syncPosition,
+        ColliderTag tag,
+        float radius,
+        const D3DXVECTOR3& localOffset
     );
     // ----------------------------------------------------
     // 球体固有のデータアクセス

@@ -1,13 +1,13 @@
 #include "CollisionSphere.h"
 
 CollisionSphere::CollisionSphere(
+    ICollisionListener* pListener,
+    const D3DXVECTOR3& syncPosition,
+    ColliderTag tag,
     float radius,
-    ColliderTag tag, 
     const D3DXVECTOR3& localOffset
-)
-    : m_Radius(radius)
+) 
+    : CollisionBase(pListener, syncPosition, tag, localOffset),
+      m_Radius(radius)
 {
-    // Šî’êƒNƒ‰ƒX‚Ìƒƒ“ƒo‚ğİ’è
-    SetTag(tag);
-    SetLocalOffset(localOffset);
 }

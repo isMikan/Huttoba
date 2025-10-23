@@ -2,28 +2,33 @@
 #include "GameObject/CGameObject.h"
 #include "Collision/Collider/CollisionSphere/CollisionSphere.h"
 
+// 【修正】戻り値の型を bool に変更
 bool CollisionStrategySphereSphere::CheckCollision(
-    const CGameObject* objA, 
-    const CollisionSphere* sphereA,
-    const CGameObject* objB, 
-    const CollisionSphere* sphereB)
+    const CollisionBase* colA,
+    const CollisionBase* colB) const
 {
     {
-        if (!objA || !sphereA || !objB || !sphereB)  return false;
+        const CollisionSphere* sphereA = dynamic_cast<const CollisionSphere*>(colA);
+        const CollisionSphere* sphereB = dynamic_cast<const CollisionSphere*>(colB);
 
-        // 親の絶対座標 + コリダーのローカルオフセット
-        D3DXVECTOR3 centerA = objA->GetPosition() + sphereA->GetLocalOffset();
-        D3DXVECTOR3 centerB = objB->GetPosition() + sphereB->GetLocalOffset();
+        if (!sphereA || !sphereB)
+        {
+            return false;
+        }
 
-        // 中心間の距離の2乗を計算
-        float distSq = GetDistanceSq(centerA, centerB);
+        const D3DXVECTOR3& centerA = sphereA->GetWorldPosition();
+        const D3DXVECTOR3& centerB = sphereB->GetWorldPosition();
 
-        // 2つの半径の合計とその2乗を計算
+        D3DXVECTOR3 diff = centerA - centerB;
+        float distanceSq = D3DXVec3LengthSq(&diff);
+
         float radiiSum = sphereA->GetRadius() + sphereB->GetRadius();
         float radiiSumSq = radiiSum * radiiSum;
 
-        // 距離の2乗が半径の合計の2乗以下であれば衝突
-        return distSq <= radiiSumSq;
+        std::cout << distanceSq << std::endl;
+
+        // 衝突判定の結果を直接返す
+        return distanceSq <= radiiSumSq;
     }
 }
 

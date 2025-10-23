@@ -29,7 +29,6 @@ Bomb::~Bomb()
 void Bomb::Init()
 {
 	AttachMesh(AssetManager::Mesh(StaticMeshList::Bomb));
-	CreateBSphereForMesh(AssetManager::Mesh(StaticMeshList::Bomb));
 
 	SetPosition(1, 5, 2);
 

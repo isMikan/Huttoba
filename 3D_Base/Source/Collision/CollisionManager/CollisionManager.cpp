@@ -2,6 +2,8 @@
 #include "CollisionManager.h"
 #include <algorithm>
 #include <iostream> // デバッグ用
+#include "Collision/CollisionStrategy/CollisionStrategyFactory/CollisionStrategyFactory.h"
+#include "Collision/CollisionStrategy/CollisionStrategyBase.h"
 
 void CollisionManager::AddCollider(std::shared_ptr<CollisionBase> pCollider)
 {
@@ -24,37 +26,24 @@ void CollisionManager::RemoveCollider(CollisionBase* pColliderToRemove)
         m_Colliders.end());
 }
 
-// 衝突判定ロジック (Strategyパターンの簡易シミュレーション)
+// 衝突判定ロジック
 bool CollisionManager::CheckCollision(CollisionBase* a, CollisionBase* b)
 {
-    // 不要な判定をスキップ
-    if (a->GetTag() == CollisionBase::ColliderTag::Ground && b->GetTag() == CollisionBase::ColliderTag::Ground)
-    {
-        return false;
-    }
+    // 1. StrategyFactoryから判定ストラテジーを取得
+    CollisionStrategyBase* strategy = CollisionStrategyFactory::GetInstance()->GetStrategy(
+        a->GetType(),
+        b->GetType()
+    );
 
-    // 2. 【Strategy切替】形状タイプに応じて判定関数を呼び出す
-    //    これはタグだけでなく、タイプ(Sphere, OBBなど)の組み合わせによって決定されます。
-    //    例: SphereとSphereの判定
-    if (a->GetType() == CollisionBase::ColliderType::Sphere && b->GetType() == CollisionBase::ColliderType::Sphere)
-    {
-        // ここで具体的なSphere-Sphere判定ロジックを呼び出す
-        CollisionSphere* sphereA = static_cast<CollisionSphere*>(a);
-        CollisionSphere* sphereB = static_cast<CollisionSphere*>(b);
+    // 2. 判定ロジックが存在しない（未対応の組み合わせ）場合はスキップ
+    if (strategy == nullptr){return false;}
 
-        D3DXVECTOR3 diff = sphereA->GetWorldPosition() - sphereB->GetWorldPosition();
-        float distSq = D3DXVec3LengthSq(&diff);
-        float radiusSum = sphereA->GetRadius() + sphereB->GetRadius();
+    // 3. 判定ロジックが存在する場合は、StrategyオブジェクトのCheckCollisionを呼び出す
+    return strategy->CheckCollision(a, b);
 
-        return distSq <= (radiusSum * radiusSum);
-    }
-
-    // 他の組み合わせ (Sphere-Box, Box-Capsuleなど) のStrategyがここに追加される...
-
-    return false; // 未対応の組み合わせは衝突なしとする
 }
 
-void CollisionManager::Update(float deltaTime)
+void CollisionManager::Update()
 {
     // 1. 【位置同期】 全てのコリジョンデータを更新
     for (const auto& pCollider : m_Colliders)
