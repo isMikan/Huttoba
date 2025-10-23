@@ -24,7 +24,7 @@ public:
     //g—p
     void Use(std::unique_ptr<CPlayerManager>& playiers)override;
     //“Š±
-    void Throw()override;
+    void Throw(std::unique_ptr<CPlayerManager>& playiers)override;
     //Á–Å
     void Destroy()override;
 

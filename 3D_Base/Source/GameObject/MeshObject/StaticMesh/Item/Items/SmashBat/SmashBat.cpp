@@ -61,7 +61,7 @@ void SmashBat::Use(std::unique_ptr<CPlayerManager>& playiers)
 
 //--------------------------------------------------------------------------------------------------------------
 
-void SmashBat::Throw()
+void SmashBat::Throw(std::unique_ptr<CPlayerManager>& playiers)
 {
 }
 

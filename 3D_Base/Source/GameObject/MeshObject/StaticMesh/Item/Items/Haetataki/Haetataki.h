@@ -35,7 +35,7 @@ public:
 	void OnGround() override; // æ“¾‘Ò‹@
 	void Have(std::unique_ptr<CPlayerManager>& playiers)	override; // æ“¾
 	void Use(std::unique_ptr<CPlayerManager>& playiers)	override; // g—p
-	void Throw()	override; // “Š±
+	void Throw(std::unique_ptr<CPlayerManager>& playiers)	override; // “Š±
 	void Destroy()	override; // Á–Å
 
 	/*****************************************************************************************

@@ -24,7 +24,7 @@ public:
     //使用
     void Use(std::unique_ptr<CPlayerManager>& playiers)override;
     //投擲
-    void Throw()override;
+    void Throw(std::unique_ptr<CPlayerManager>& playiers)override;
     //消滅
     void Destroy()override;
 
@@ -38,11 +38,45 @@ private:
     //投擲モーション
     void ThrowMotion();
 
+    //使用と投擲が同じ処理なのでひとまとめにする
+    void UseAndThrow(std::unique_ptr<CPlayerManager>& playiers);
+
+    //爆発処理
+    void Explosion(std::unique_ptr<CPlayerManager>& playiers);
+
+    //吹き飛ばし処理(仮)
+    void Blow_Away(std::unique_ptr<CPlayerManager>& playiers);
+
+    //爆弾の爆発前の色の変更処理
+    void ChangeColor();
+
+    //爆弾とプレイヤーの距離に応じて吹き飛ばし力を計算
+    //逆2乗の法則を使用
+    float CalculateKnockBackPower(float distance);
+
 private:
     //アイテムを取得したときかを判定
     bool        m_IsTake;
     //アイテムを手に持つまでの時間
     float       m_PickUpTime;
     //アイテムを手に持つまでのカウント
-    float       m_PickUpCnt;
+    double      m_PickUpCnt;
+
+    //移動速度
+    D3DXVECTOR3 m_Velocity;
+
+    //投げた時の移動速度
+    float       m_MoveSpeed;
+
+    //投げる時に一度だけ処理するものがあるので追加
+    bool        m_IsThrow;
+
+    //投げてから爆発するまでの時間
+    float       m_ExplosionTime;
+
+    //爆発するまでのカウント
+    float       m_ExplosionCnt;
+
+    //爆発の吹き飛ばしの力
+    float       m_KnockBackPower;
 };

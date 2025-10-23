@@ -85,7 +85,7 @@ void Fun::Use(std::unique_ptr<CPlayerManager>& playiers)
 	}
 }
 
-void Fun::Throw()
+void Fun::Throw(std::unique_ptr<CPlayerManager>& playiers)
 {
 }
 

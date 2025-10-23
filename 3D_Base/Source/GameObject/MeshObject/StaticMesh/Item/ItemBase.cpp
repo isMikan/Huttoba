@@ -35,7 +35,7 @@ void ItemBase::Update(std::unique_ptr<CPlayerManager>& playiers)
 	case ItemBase::State::OnGround: OnGround();		break;
 	case ItemBase::State::Have:		Have(playiers);	break;
 	case ItemBase::State::Use:		Use(playiers);	break;
-	case ItemBase::State::Throw:	Throw();		break;
+	case ItemBase::State::Throw:	Throw(playiers);break;
 	case ItemBase::State::Destroy:	Destroy();		break;
 	default: break;
 	}

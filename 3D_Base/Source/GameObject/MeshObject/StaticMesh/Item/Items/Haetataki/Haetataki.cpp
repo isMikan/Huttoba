@@ -173,7 +173,7 @@ void Haetataki::Use(std::unique_ptr<CPlayerManager>& playiers)
 
 //--------------------------------------------------------------------------------------------------------------
 
-void Haetataki::Throw()
+void Haetataki::Throw(std::unique_ptr<CPlayerManager>& playiers)
 {
 	if (GetAsyncKeyState('N') & 0x8000)
 	{

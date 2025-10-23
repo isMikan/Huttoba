@@ -35,7 +35,7 @@ void Bomb::Init()
 
 	m_State = ItemBase::State::Spawn;
 
-	m_tGravity = 0.01;
+	m_tGravity = 0.01f;
 }
 
 void Bomb::Update(std::unique_ptr<CPlayerManager>& playiers)
@@ -90,7 +90,7 @@ void Bomb::Use(std::unique_ptr<CPlayerManager>& playiers)
 	}
 }
 
-void Bomb::Throw()
+void Bomb::Throw(std::unique_ptr<CPlayerManager>& playiers)
 {
 }
 
@@ -103,8 +103,8 @@ void Bomb::TakeMotion()
 	if (m_IsTake)
 	{
 		m_PickUpCnt += CTimeManager::GetDeltaTime();
-		m_vPosition.x += 0.1;
-		m_vPosition.z += 0.1;
+		m_vPosition.x += 0.1f;
+		m_vPosition.z += 0.1f;
 
 		if (m_PickUpCnt >= m_PickUpTime)
 		{

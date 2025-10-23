@@ -85,7 +85,7 @@ void Mushroom::Use(std::unique_ptr<CPlayerManager>& playiers)
 	}
 }
 
-void Mushroom::Throw()
+void Mushroom::Throw(std::unique_ptr<CPlayerManager>& playiers)
 {
 }
 

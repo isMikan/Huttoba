@@ -85,7 +85,7 @@ void TrackingRobot::Use(std::unique_ptr<CPlayerManager>& playiers)
 	}
 }
 
-void TrackingRobot::Throw()
+void TrackingRobot::Throw(std::unique_ptr<CPlayerManager>& playiers)
 {
 }
 

@@ -100,7 +100,7 @@ protected:
 	virtual void OnGround()	= 0; // æ“¾‘Ò‹@
 	virtual void Have	 (std::unique_ptr<CPlayerManager>& playiers)	= 0; // æ“¾
 	virtual void Use	 (std::unique_ptr<CPlayerManager>& playiers)	= 0; // g—p
-	virtual void Throw	 ()	= 0; // “Š±
+	virtual void Throw	 (std::unique_ptr<CPlayerManager>& playiers)	= 0; // “Š±
 	virtual void Destroy ()	= 0; // Á–Å
 
 protected:
