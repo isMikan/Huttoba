@@ -6,7 +6,7 @@ bool CollisionRaySphere::CheckCollision(
     const CollisionBase* colB) const
 {
 
-    // TODO: Ray vs Sphere 判定アルゴリズムを実装
+    // Ray vs Sphere 判定アルゴリズムを実装
 
     return false;
 }

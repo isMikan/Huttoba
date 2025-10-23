@@ -6,7 +6,7 @@ bool CollisionCapsuleCapsule::CheckCollision(
     const CollisionBase* colB) const
 {
 
-    // TODO: Capsule vs Capsule 判定アルゴリズムを実装
+    // Capsule vs Capsule 判定アルゴリズムを実装
 
     return false;
 }

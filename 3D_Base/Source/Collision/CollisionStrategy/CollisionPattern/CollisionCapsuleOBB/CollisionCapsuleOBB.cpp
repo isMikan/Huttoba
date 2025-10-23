@@ -6,7 +6,7 @@ bool CollisionCapsuleOBB::CheckCollision(
     const CollisionBase* colB) const
 {
 
-    // TODO: Capsule vs OBB 判定アルゴリズムを実装
+    //Capsule vs OBB 判定アルゴリズムを実装
 
     return false;
 }

@@ -356,7 +356,6 @@
     <ClInclude Include="Source\Assets\Mesh\StaticMesh\CStaticMesh.h" />
     <ClInclude Include="Source\Collision\Collider\CollisionBase.h" />
     <ClInclude Include="Source\Collision\CollisionManager\CollisionManager.h" />
-    <ClInclude Include="Source\Collision\CollisionResult\CollisionResult.h" />
     <ClInclude Include="Source\Collision\CollisionListener\ICollisionListener.h" />
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\DrawCollision\DrawCollision.h" />
     <ClInclude Include="Source\Assets\AssetManager.h" />

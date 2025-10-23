@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Collision/Collider/CollisionBase.h" // CollisionBase, ColliderTag, ColliderType が必要
-#include "Collision/Collider/CollisionSphere/CollisionSphere.h" // 判定ロジック内で具体的に利用される可能性を考慮
+#include "Collision/Collider/CollisionBase.h"
+#include "Collision/Collider/CollisionSphere/CollisionSphere.h" 
 
 class CollisionBase;
 class CollisionResult;

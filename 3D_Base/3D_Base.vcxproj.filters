@@ -193,7 +193,6 @@
     <ClInclude Include="Source\Collision\Collider\CollisionOBB\CollisionOBB.h" />
     <ClInclude Include="Source\Collision\Collider\CollisionCapsule\CollisionCapsule.h" />
     <ClInclude Include="Source\Collision\Collider\CollisionRay\CollisionRay.h" />
-    <ClInclude Include="Source\Collision\CollisionResult\CollisionResult.h" />
     <ClInclude Include="Source\Collision\Collider\CollisionSphere\CollisionSphere.h" />
     <ClInclude Include="Source\Collision\CollisionStrategy\CollisionStrategyFactory\CollisionStrategyFactory.h" />
     <ClInclude Include="Source\Collision\CollisionStrategy\CollisionPattern\CollisionRaySphere\CollisionRaySphere.h" />

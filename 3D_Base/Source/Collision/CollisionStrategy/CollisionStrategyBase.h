@@ -1,6 +1,5 @@
 #pragma once
 #include "Collision/Collider/CollisionBase.h"
-#include "Collision/CollisionResult/CollisionResult.h"
 
 //=====================================
 // CollisionStrategyBase
