@@ -1,7 +1,7 @@
 #include "Fun.h"
 
 #include "stdafx.h"
-#include "PlayerBase/CPlayerBase.h"
+#include "PlayerBase/PlayerManager/CPlayerManager.h"
 
 #include "TimeManager/CTimeManager.h"
 
@@ -12,8 +12,12 @@ Fun::Fun()
 	: m_IsTake(false)
 	, m_PickUpTime(1.0f)	//ŠÔ‚ğ•Ï‚¦‚é‚ÆƒAƒCƒeƒ€‚ªè‚É‚Â‚Ü‚Å‚ÌŠÔ‚ª•Ï‰»
 	, m_PickUpCnt(0.0f)
+
+	, m_HaveOffset()
 {
 	Init();
+
+	m_HaveOffset = D3DXVECTOR3(0.0, 0.2f, 0.0f);
 }
 
 Fun::~Fun()
@@ -26,7 +30,7 @@ void Fun::Init()
 	CreateBSphereForMesh(AssetManager::Mesh(StaticMeshList::Fun));
 
 	//SetPosition(2, 5, 2);
-	SetPosition(0, 15, 0);
+	SetPosition(1, 15, 0);
 
 	m_State = ItemBase::State::Spawn;
 
@@ -60,7 +64,7 @@ void Fun::Spawn()
 
 void Fun::OnGround()
 {
-	if (GetAsyncKeyState('M') & 0x8000)
+	if (GetAsyncKeyState('1') & 0x8000)
 	{
 		//ó‘Ô‚ğæ“¾’†‚É•Ï‰»
 		m_State = ItemBase::State::Have;
@@ -79,9 +83,15 @@ void Fun::Have(std::unique_ptr<CPlayerManager>& playiers)
 
 void Fun::Use(std::unique_ptr<CPlayerManager>& playiers)
 {
-	if (GetAsyncKeyState('N') & 0x8000)
+	//’·‰Ÿ‚µ‚µ‚Ä‚½‚ç“–‚½‚è‘±‚¯‚é
+	if (GetAsyncKeyState('2') & 0x8000)
 	{
-		//m_pPlayer->GetVelocity();
+		Hit(playiers);
+	}
+	else
+	{
+		//—£‚·‚ÆŠ’†‚É•Ï‰»
+		m_State = ItemBase::State::Have;
 	}
 }
 
@@ -98,8 +108,6 @@ void Fun::TakeMotion()
 	if (m_IsTake)
 	{
 		m_PickUpCnt += CTimeManager::GetDeltaTime();
-		m_vPosition.x += 0.1;
-		m_vPosition.z += 0.1;
 
 		if (m_PickUpCnt >= m_PickUpTime)
 		{
@@ -112,7 +120,16 @@ void Fun::PossessionMotion(std::unique_ptr<CPlayerManager>& playiers)
 {
 	if (!m_IsTake)
 	{
-		//m_vPosition = playiers[0]->GetPlayerRightHand().GetPosition();
+		m_vPosition = playiers->GetPlayer(0)->GetPlayerRightHand().GetPosition() + m_HaveOffset;
+		m_vQuaternion = playiers->GetPlayer(0)->GetQuaternion();
+	}
+	if (GetAsyncKeyState('2') & 0x8000)
+	{
+		m_State = ItemBase::State::Use;
+	}
+	if (GetAsyncKeyState('3') & 0x8000)
+	{
+		m_State = ItemBase::State::Throw;
 	}
 }
 
@@ -122,4 +139,12 @@ void Fun::UseMotion()
 
 void Fun::ThrowMotion()
 {
+}
+
+void Fun::Hit(std::unique_ptr<CPlayerManager>& playiers)
+{
+	playiers->GetPlayer(1)->SetHitInfo(
+		m_vPosition, playiers->GetPlayer(1)->GetPosition(),
+		1,
+		true, CPlayerBase::HitEvent::Pushed);
 }

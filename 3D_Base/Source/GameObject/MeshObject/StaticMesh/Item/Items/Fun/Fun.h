@@ -38,6 +38,9 @@ private:
     //投擲モーション
     void ThrowMotion();
 
+    //当たった際の処理
+    void Hit(std::unique_ptr<CPlayerManager>& playiers);
+
 private:
     //アイテムを取得したときかを判定
     bool        m_IsTake;
@@ -45,4 +48,7 @@ private:
     float       m_PickUpTime;
     //アイテムを手に持つまでのカウント
     float       m_PickUpCnt;
+
+    //アイテムを持った際の補正値
+    D3DXVECTOR3 m_HaveOffset;
 };

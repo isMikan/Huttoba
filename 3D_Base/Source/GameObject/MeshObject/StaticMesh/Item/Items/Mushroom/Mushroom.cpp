@@ -98,8 +98,6 @@ void Mushroom::TakeMotion()
 	if (m_IsTake)
 	{
 		m_PickUpCnt += CTimeManager::GetDeltaTime();
-		m_vPosition.x += 0.1;
-		m_vPosition.z += 0.1;
 
 		if (m_PickUpCnt >= m_PickUpTime)
 		{
