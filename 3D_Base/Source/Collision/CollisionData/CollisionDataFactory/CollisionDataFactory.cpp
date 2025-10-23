@@ -1,46 +1,29 @@
 #include "stdafx.h"
 #include "CollisionDataFactory.h"
 
-HRESULT CollisionDataFactory::CreateSphereDataFromMesh(const std::shared_ptr<CStaticMesh> pMesh, CollisionSphere* outSphere)
+std::shared_ptr<CollisionBase> CollisionDataFactory::CreateSphere(
+    CGameObject* pOwner,
+    float radius,
+    CollisionBase::ColliderTag tag, 
+    const D3DXVECTOR3& localOffset
+)
 {
-	if (!pMesh || !outSphere) return E_FAIL; // Nullチェック
+    // 親オブジェクトがICollisionListenerを実装しているかチェックし、ポインタを取得
+    ICollisionListener* listener = dynamic_cast<ICollisionListener*>(pOwner);
 
-	LPDIRECT3DVERTEXBUFFER9 pVB = nullptr;	// 頂点バッファ
-	void* pVertices = nullptr;				// 頂点データへのポインタ
-	D3DXVECTOR3 Center(0.f, 0.f, 0.f);		// 計算された中心座標
-	float Radius = 0.f;						// 計算された半径
+    // 親オブジェクトからワールド位置へのconst参照を取得
+    const D3DXVECTOR3& posRef = pOwner->GetPosition();
 
-	// 頂点バッファを取得
-	if (FAILED(pMesh->GetMesh()->GetVertexBuffer(&pVB)))
-	{
-		return E_FAIL;
-	}
+    // shared_ptrを使って具象クラス (CollisionSphere) のインスタンスを生成
+    // 生成と同時に、参照とタグを渡して初期化する
+    std::shared_ptr<CollisionBase> newCollider = std::make_shared<CollisionSphere>(
+        listener,        // 親のポインタ
+        posRef,          // 親の座標(参照で初期化してる変数)
+        tag,             // 識別タグ
+        radius,          // 半径
+        localOffset      // 微調整用
+    );
 
-	// メッシュの頂点バッファをロックする
-	if (FAILED(pVB->Lock(0, 0, &pVertices, 0)))
-	{
-		SAFE_RELEASE(pVB);
-		return E_FAIL;
-	}
+    return newCollider; // 所有権を呼び出し元（CollisionManager）に移譲
 
-	// メッシュの外接円の中心と半径を計算する（ロジックの本体）
-	D3DXComputeBoundingSphere(
-		static_cast<const D3DXVECTOR3*>(pVertices),		// 頂点データ
-		pMesh->GetMesh()->GetNumVertices(),				// 頂点の数
-		D3DXGetFVFVertexSize(pMesh->GetMesh()->GetFVF()), // 頂点サイズ
-		&Center,										// (out) 中心座標
-		&Radius);										// (out) 半径
-
-	// メッシュの頂点バッファをアンロックし、解放する
-	if (pVB != nullptr) {
-		pVB->Unlock();
-		SAFE_RELEASE(pVB);
-	}
-
-	// 計算結果を CollisionSphere データクラスに設定する
-	//    メッシュのローカル座標の中心を、親オブジェクトからのオフセットとして設定
-	outSphere->SetLocalOffset(Center);
-	outSphere->SetRadius(Radius);
-
-	return S_OK;
 }

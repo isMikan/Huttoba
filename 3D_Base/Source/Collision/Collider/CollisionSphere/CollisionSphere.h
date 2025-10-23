@@ -47,6 +47,7 @@ public:
         return ColliderType::Sphere;
     }
 
+
 private:
     // 球体固有のデータ
     float m_Radius;
