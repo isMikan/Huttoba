@@ -38,6 +38,15 @@ private:
     //投擲モーション
     void ThrowMotion();
 
+    //使用と投擲が同じ処理なのでひとまとめにする
+    void UseAndThrow(std::unique_ptr<CPlayerManager>& playiers);
+
+    //当たった際の処理
+    void Hit(std::unique_ptr<CPlayerManager>& playiers);
+
+    //キノコとプレイヤーの距離に応じて吹き飛ばし力を計算
+    float CalculateKnockBackPower(float distance);
+
 private:
     //アイテムを取得したときかを判定
     bool        m_IsTake;
@@ -45,4 +54,16 @@ private:
     float       m_PickUpTime;
     //アイテムを手に持つまでのカウント
     float       m_PickUpCnt;
+
+    //アイテムを持った際の補正値
+    D3DXVECTOR3 m_HaveOffset;
+
+    //移動速度
+    D3DXVECTOR3 m_Velocity;
+
+    //投げた時の移動速度
+    float       m_MoveSpeed;
+
+    //投げる時に一度だけ処理するものがあるので追加
+    bool        m_IsThrow;
 };

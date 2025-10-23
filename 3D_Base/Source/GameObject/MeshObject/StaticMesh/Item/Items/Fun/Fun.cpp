@@ -21,8 +21,6 @@ Fun::Fun()
 	, m_IsThrow		( false )
 {
 	Init();
-
-	m_HaveOffset = D3DXVECTOR3(0.0, 0.2f, 0.0f);
 }
 
 Fun::~Fun()
@@ -39,6 +37,8 @@ void Fun::Init()
 	m_State = ItemBase::State::Spawn;
 
 	m_tGravity = 0.01;
+
+	m_HaveOffset = D3DXVECTOR3(0.0, 0.2f, 0.0f);
 }
 
 void Fun::Update(std::unique_ptr<CPlayerManager>& playiers)
@@ -87,6 +87,9 @@ void Fun::Have(std::unique_ptr<CPlayerManager>& playiers)
 
 void Fun::Use(std::unique_ptr<CPlayerManager>& playiers)
 {
+	m_vPosition = playiers->GetPlayer(0)->GetPlayerRightHand().GetPosition() + m_HaveOffset;
+	m_vQuaternion = playiers->GetPlayer(0)->GetQuaternion();
+
 	//’·‰Ÿ‚µ‚µ‚Ä‚½‚ç“–‚½‚è‘±‚¯‚é
 	if (GetAsyncKeyState('2') & 0x8000)
 	{
@@ -122,18 +125,22 @@ void Fun::Throw(std::unique_ptr<CPlayerManager>& playiers)
 		m_IsThrow = false;
 	}
 
-	m_vPosition += m_Velocity * static_cast<float>(CTimeManager::GetDeltaTime());
 
 	//‚Ä‚«‚Æ‚¤‚ÉˆÚ“®‘¬“x‚ğŒ¸­‚³‚¹‚Ä‚¢‚é
 	//m_Velocity -= m_Velocity * static_cast<float>(CTimeManager::GetDeltaTime());
 
-
-	if (m_vPosition.y > .2f)
+	if (m_vPosition.y > 0.5f)
 	{
 		m_tGravity += 0.001f;
 		m_vPosition.y -= m_tGravity;
 		//m_State = State::OnGround;
 	}
+	else
+	{
+		m_vPosition.y = 0;
+	}
+
+	m_vPosition += m_Velocity * static_cast<float>(CTimeManager::GetDeltaTime()) + m_HaveOffset;
 }
 
 void Fun::Destroy()
@@ -143,7 +150,6 @@ void Fun::Destroy()
 
 void Fun::TakeMotion()
 {
-
 	m_PickUpCnt += CTimeManager::GetDeltaTime();
 
 	if (m_PickUpCnt >= m_PickUpTime)

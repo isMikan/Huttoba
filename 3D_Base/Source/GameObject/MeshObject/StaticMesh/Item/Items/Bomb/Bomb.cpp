@@ -57,7 +57,7 @@ void Bomb::Draw(D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAMERA& Camera
 void Bomb::Spawn()
 {
 	//落下処理
-	if (m_vPosition.y > 1.2)
+	if (m_vPosition.y > 0.5f)
 	{
 		m_vPosition.y -= m_tGravity;
 		m_tGravity += 0.001f;
@@ -163,28 +163,36 @@ void Bomb::UseAndThrow(std::unique_ptr<CPlayerManager>& playiers)
 
 		m_Velocity = forward * m_MoveSpeed;
 
+		m_Velocity.y = 15.0f;
+
 		m_IsThrow = false;
 	}
-
-	m_vPosition += m_Velocity * static_cast<float>(CTimeManager::GetDeltaTime());
 
 	//てきとうに移動速度を減少させている
 	m_Velocity -= m_Velocity * static_cast<float>(CTimeManager::GetDeltaTime());
 
-	if (m_vPosition.y > .2f)
+	if (m_vPosition.y > 0.5f)
 	{
-		m_vPosition.y -= m_tGravity;
+		//m_vPosition.y -= m_tGravity;
+		m_Velocity.y -= m_tGravity;
 		m_tGravity += 0.001f;
 	}
+	else 
+	{
+		m_Velocity.y = 0;
+		Explosion(playiers);
+	}
+
+	m_vPosition += m_Velocity * static_cast<float>(CTimeManager::GetDeltaTime());
 
 	ChangeColor();
 
-	m_ExplosionCnt += CTimeManager::GetDeltaTime();
+	//m_ExplosionCnt += CTimeManager::GetDeltaTime();
 
-	if (m_ExplosionCnt >= m_ExplosionTime)
-	{
-		Explosion(playiers);
-	}
+	//if (m_ExplosionCnt >= m_ExplosionTime)
+	//{
+	//	Explosion(playiers);
+	//}
 }
 
 void Bomb::Explosion(std::unique_ptr<CPlayerManager>& playiers)
@@ -217,7 +225,7 @@ void Bomb::Blow_Away(std::unique_ptr<CPlayerManager>& playiers)
 	float len = D3DXVec3Length(&vecLen);
 
 	playiers->GetPlayer(0)->SetHitInfo(
-		a, playiers->GetPlayer(0)->GetPosition(),
+		m_vPosition, playiers->GetPlayer(0)->GetPosition(),
 		CalculateKnockBackPower(len),
 		true, CPlayerBase::HitEvent::Knockback);
 }
@@ -251,11 +259,22 @@ void Bomb::ChangeColor()
 
 float Bomb::CalculateKnockBackPower(float distance)
 {
-	//引数が0の時にゼロ除算しないようにするための最小距離の2乗
-	float minDistanceSq = 1;
+	//線形補間で計算
 
-	//吹き飛ばし力を
-	float denominator = distance * distance + minDistanceSq;
+	//爆発の当たる範囲を仮設定
+	//当たり判定用メッシュの大きさにする
+	float maxDist = 6;
 
-	return m_KnockBackPower / denominator;
+	//0.0~1.0の間で距離の割合を出す
+	float ratio = 1.0f - (distance / maxDist);
+
+	//爆発の最小吹き飛ばし力
+	float minPower = 6.0f;
+
+	//爆発の最大吹き飛ばし力
+	float maxPower = m_KnockBackPower;
+
+	float power = minPower + (maxPower - minPower) * ratio;
+
+	return power;
 }

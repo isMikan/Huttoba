@@ -51,7 +51,7 @@ private:
     void ChangeColor();
 
     //爆弾とプレイヤーの距離に応じて吹き飛ばし力を計算
-    //逆2乗の法則を使用
+    //線形補間を使用
     float CalculateKnockBackPower(float distance);
 
 private:
