@@ -1,14 +1,25 @@
 #include "CGaugeBase.h"
 
+#include "GameObject/MeshObject/StaticMesh/PlayerBase/PlayerState/PlayerActionState/PlayerKnockdownState/CPlayerKnockdownState.h"
+
 CGaugeBase::CGaugeBase()
 	: m_pContext11		()
+	, m_pPlayerManager	( std::make_unique<CPlayerManager>() )
 
 	, m_WorldPos		( 0.f, 0.f, 0.f )
 	, m_OffsetPos		( 0.f, 2.f, 0.f )
+
+	, m_IsDisplayGauge	( false )
 {
+	Init();
 }
 
 CGaugeBase::~CGaugeBase()
+{
+}
+
+//--- 初期化処理 ---.
+void CGaugeBase::Init()
 {
 }
 
@@ -22,6 +33,8 @@ void CGaugeBase::Update()
 void CGaugeBase::Draw(
 	D3DXMATRIX& View, D3DXMATRIX& Proj)
 {
+	if (!m_IsDisplayGauge) return;
+
 	D3D11_VIEWPORT vp;	//ビューポート（描画領域）情報を格納.
 	UINT num = 1;		//取得するビューポート数.
 	m_pContext11 = m_pSprite->GetContext11();
@@ -29,9 +42,9 @@ void CGaugeBase::Draw(
 	m_pContext11->RSGetViewports(&num, &vp);
 
 	//プレイヤーの上に位置調整.
-	m_WorldPos += m_OffsetPos;
+	D3DXVECTOR3 pos = m_WorldPos + m_OffsetPos;
 	//2Dに変換.
-	D3DXVECTOR3 screenPos = WorldToScreen(m_WorldPos, View, Proj, vp);
+	D3DXVECTOR3 screenPos = WorldToScreen(pos, View, Proj, vp);
 
 	//画像幅の半分を引いて真ん中にする.
 	screenPos.x -= 102.5f;
@@ -66,6 +79,25 @@ D3DXVECTOR3 CGaugeBase::WorldToScreen(
 	screenPos.z = clipPos.z;
 
 	return screenPos;
+}
+
+//--- プレイヤーイベントの通知受け取りに加入 ---.
+void CGaugeBase::SubscribePlayerEvent(CPlayerBase* player)
+{
+	std::cout << "プレイヤーゲット" << std::endl;
+	auto& bus = player->GetBus();
+	bus.Subscribe([this](CPlayerState* state)
+		{
+			if (dynamic_cast<CPlayerKnockdownState*>(state))
+			{
+				std::cout << "ダウン受け取り成功" << std::endl;
+				m_IsDisplayGauge = true;
+			}
+			else
+			{
+				m_IsDisplayGauge = false;
+			}
+		});
 }
 
 void CGaugeBase::Draw()
