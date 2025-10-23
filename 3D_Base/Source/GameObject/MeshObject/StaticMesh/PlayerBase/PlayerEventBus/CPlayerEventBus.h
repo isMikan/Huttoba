@@ -23,7 +23,7 @@ public:
 			callback(data);
 		}
 	}
-
+	
 private:
 	std::vector<Callback>	m_EventMap;
 

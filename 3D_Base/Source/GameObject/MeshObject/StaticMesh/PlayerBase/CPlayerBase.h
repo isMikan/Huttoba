@@ -160,6 +160,7 @@ public:
 		return ( ... || IsActionState<Ts>());	//... 条件にしたいStateを入れる.
 	}
 
+	//イベントバスを持つ.
 	CPlayerEventBus<CPlayerState>& GetBus() { return m_Bus; }
 
 protected:

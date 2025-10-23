@@ -2,6 +2,7 @@
 
 #include "GameObject/UIObject/GaugeBase/CGaugeBase.h"
 
+
 class CGaugeManager
 {
 public:
@@ -15,12 +16,15 @@ public:
 	//--- ”jŠüŠÖ” ---.
 	void Destroy();
 	//--- XVŠÖ” ---.
-	void Update();
+	void Update(
+		CPlayerManager* playerManager);
 	//--- •`‰æˆ— ---.
 	virtual void Draw(
 		D3DXMATRIX& View, D3DXMATRIX& Proj);
 
 protected:
-	std::unique_ptr<CGaugeBase>		m_pGauge;	//ƒQ[ƒW.
+	std::vector<std::unique_ptr<CGaugeBase>>	m_pGauge;	//ƒQ[ƒW.
+
+	bool	m_IsSubscribe;			//“o˜^‚µ‚½‚©.
 
 };

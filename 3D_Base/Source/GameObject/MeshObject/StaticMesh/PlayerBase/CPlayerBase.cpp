@@ -87,6 +87,9 @@ void CPlayerBase::SetTurnState(std::unique_ptr<CPlayerState> newState)
 void CPlayerBase::SetActionState(std::unique_ptr<CPlayerState> newState)
 {
 	ChangeState(m_pActionState, std::move(newState));
+	m_Bus.Publish(m_pActionState.get());
+	
+	std::cout << typeid(*m_pActionState).name() << std::endl;
 }
 
 //--- ó‘Ô‘JˆÚ‚Ìˆ—ŠÖ” ---.
@@ -107,8 +110,6 @@ void CPlayerBase::ChangeState(
 	{
 		//ó‘Ô‚ÌŠJŽnˆ—.
 		currentState->Enter();
-
-		m_Bus.Publish(currentState.get());
 	}
 }
 

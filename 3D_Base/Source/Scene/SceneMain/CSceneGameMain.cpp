@@ -12,7 +12,7 @@ CSceneGameMain::CSceneGameMain( HWND hWnd)
 
 	, m_pUIMap			()
 
-	, m_pGauge			()
+	, m_pGaugeManager	()
 
 	, m_pPlayerManager	()
 
@@ -48,8 +48,11 @@ HRESULT CSceneGameMain::Create()
 	//カメラのインスタンス作成.
 	m_pCamera = std::make_unique<CCamera>();
 
-	//ゲージのインスタンス作成.
-	m_pGauge = std::make_unique<CGaugeBase>();
+	//ゲージマネージャーのインスタンス作成.
+	m_pGaugeManager = std::make_unique<CGaugeManager>();
+
+	//地面マネージャークラスのインスタンス作成.
+	m_pGroundManager = std::make_unique<CGroundManager>();
 
 	//アイテムマネージャーの作成
 	m_pItemManager = std::make_unique<ItemManager>();
@@ -60,10 +63,6 @@ HRESULT CSceneGameMain::Create()
 	CreateUI();
 	CteateExplosion();
 	CreateCharactor();
-
-	//地面マネージャークラスのインスタンス作成.
-	m_pGroundManager = std::make_unique<CGroundManager>();
-	m_pGroundManager->Create();
 
 	return S_OK;
 }
@@ -91,9 +90,10 @@ HRESULT CSceneGameMain::LoadData()
 		UI.second->AttachSprite(AssetManager::Sprite(Sprite2DList::PMon));
 	}
 
-	m_pGauge->AttachSprite(AssetManager::Sprite(Sprite2DList::Gauge));
+	//ゲージマネージャーの読み込み.
+	m_pGaugeManager->LoadData();
 
-	//プレイヤー.
+	//プレイヤーマネージャーの読み込み.
 	m_pPlayerManager->LoadData();
 
 	//地面マネージャーの読み込み.
@@ -150,7 +150,7 @@ void CSceneGameMain::Update()
 		UI.second->Update();
 	}
 
-	m_pGauge->Update();
+	m_pGaugeManager->Update(m_pPlayerManager.get());
 
 	//レーザーの管理
 	ManageEffectLaser();
@@ -226,8 +226,7 @@ void CSceneGameMain::Draw()
 		//UI.second->Draw();
 	}
 
-	m_pGauge->SetWorldPos(m_pPlayerManager->GetPlayer(0)->GetPosition());
-	m_pGauge->Draw(mView, mProj);
+	m_pGaugeManager->Draw(mView, mProj);
 
 	//やりたいことが終わったので、深度テストを有効にしておく
 	m_pDx11->SetDepth(true);
@@ -281,9 +280,8 @@ HRESULT CSceneGameMain::CteateExplosion()
 
 HRESULT CSceneGameMain::CreateCharactor()
 {
-	//キャラクター関連のインスタンス作成
+	//プレイヤーマネージャーのインスタンス作成.
 	m_pPlayerManager = std::make_unique<CPlayerManager>();
-	m_pPlayerManager->Create();
 
 	return S_OK;
 }

@@ -20,7 +20,7 @@
 
 #include "GameObject/MeshObject/StaticMesh/Ground/GroundManager/CGroundManager.h"
 
-#include "GameObject/UIObject/GaugeBase/CGaugeBase.h"
+#include "GameObject/UIObject/GaugeBase/GaugeManager/CGaugeManager.h"
 
 #include "GameObject/MeshObject/StaticMesh/DrawCollision/DrawCollision.h"
 
@@ -71,14 +71,13 @@ private:
 	//UIオブジェクトクラス
 	std::unordered_map<UIList, std::unique_ptr<CUIObject> > m_pUIMap;
 
-	//ゲージクラス.
-	std::unique_ptr<CGaugeBase>			m_pGauge;
+	//ゲージマネージャークラス.
+	std::unique_ptr<CGaugeManager>		m_pGaugeManager;
 
-	//キャラクタークラス
+	//プレイヤーマネージャークラス
 	std::unique_ptr<CPlayerManager>		m_pPlayerManager;
-	//std::vector<std::unique_ptr<CPlayerBase>>	m_pPlayers;
 
-	//地面クラス
+	//地面マネージャークラス
 	std::unique_ptr<CGroundManager> 	m_pGroundManager;
 
 	//アイテムクラス
