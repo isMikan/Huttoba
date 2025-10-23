@@ -11,7 +11,6 @@
 
 #include "Input//CInputManager.h"
 
-#include "Collision/CollisionManager/CollisionManager.h"      
 #include "Collision/CollisionData/CollisionDataFactory/CollisionDataFactory.h" 
 
 CPlayerManager::CPlayerManager()

@@ -19,7 +19,7 @@
 *	プレイヤークラス.
 **/
 class CPlayer
-	: public CPlayerBase,ICollisionListener
+	: public CPlayerBase,public ICollisionListener
 {
 
 public:

@@ -2,7 +2,6 @@
 #include "Assets/Effect/CEffect.h"
 #include "Assets/Sound/CSoundManager.h"
 #include "Item/ItemManager/ItemManager.h"
-#include "Collision/CollisionManager/CollisionManager.h"
 #include "Collision/CollisionStrategy/CollisionStrategyFactory/CollisionStrategyFactory.h"
 #include "Collision/CollisionStrategy/CollisionPattern/CollisionSphereSphere/CollisionStrategySphereSphere.h"
 

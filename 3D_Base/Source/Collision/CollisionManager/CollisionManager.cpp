@@ -29,23 +29,23 @@ void CollisionManager::RemoveCollider(CollisionBase* pColliderToRemove)
 // 衝突判定ロジック
 bool CollisionManager::CheckCollision(CollisionBase* a, CollisionBase* b)
 {
-    // 1. StrategyFactoryから判定ストラテジーを取得
+    //  StrategyFactoryから判定ストラテジーを取得
     CollisionStrategyBase* strategy = CollisionStrategyFactory::GetInstance()->GetStrategy(
         a->GetType(),
         b->GetType()
     );
 
-    // 2. 判定ロジックが存在しない（未対応の組み合わせ）場合はスキップ
+    //  判定ロジックが存在しない（未対応の組み合わせ）場合はスキップ
     if (strategy == nullptr){return false;}
 
-    // 3. 判定ロジックが存在する場合は、StrategyオブジェクトのCheckCollisionを呼び出す
+    //  判定ロジックが存在する場合は、StrategyオブジェクトのCheckCollisionを呼び出す
     return strategy->CheckCollision(a, b);
 
 }
 
 void CollisionManager::Update()
 {
-    // 1. 【位置同期】 全てのコリジョンデータを更新
+    //【位置同期】 全てのコリジョンデータを更新
     for (const auto& pCollider : m_Colliders)
     {
         if (pCollider->GetActive())
@@ -56,7 +56,7 @@ void CollisionManager::Update()
         }
     }
 
-    // 2. 【衝突判定】 全ての有効なペアをチェック
+    // 【衝突判定】 全ての有効なペアをチェック
     for (size_t i = 0; i < m_Colliders.size(); ++i)
     {
         CollisionBase* colliderA = m_Colliders[i].get();
@@ -69,7 +69,7 @@ void CollisionManager::Update()
 
             if (!colliderB->GetActive()) continue; // 非アクティブなものはスキップ
 
-            // 3. 判定実行と応答
+            // 判定実行と応答
             if (CheckCollision(colliderA, colliderB))
             {
                 // 衝突があった場合
@@ -88,6 +88,6 @@ void CollisionManager::Update()
         }
     }
 
-    // 4. (必要に応じて) 削除待ちのオブジェクトをクリーンアップ
+    //  (必要に応じて) 削除待ちのオブジェクトをクリーンアップ
     // ...
 }

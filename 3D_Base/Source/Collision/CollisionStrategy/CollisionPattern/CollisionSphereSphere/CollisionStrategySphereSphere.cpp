@@ -25,6 +25,7 @@ bool CollisionStrategySphereSphere::CheckCollision(
         float radiiSum = sphereA->GetRadius() + sphereB->GetRadius();
         float radiiSumSq = radiiSum * radiiSum;
 
+        std::cout << radiiSum << std::endl;
         std::cout << distanceSq << std::endl;
 
         // Õ“Ë”»’è‚ÌŒ‹‰Ê‚ð’¼Ú•Ô‚·

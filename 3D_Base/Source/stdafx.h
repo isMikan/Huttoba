@@ -25,5 +25,6 @@ using Microsoft::WRL::ComPtr;
 #include "MyMacro.h"
 #include "Assets/AssetManager.h"
 #include "DebugText/DebugDrawManager/DebugDrawManager.h"
+#include "Collision/CollisionManager/CollisionManager.h"
 #include "CDirectX11.h"
 #include "CDirectX9.h"

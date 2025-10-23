@@ -14,6 +14,7 @@ Fun::Fun()
 	, m_PickUpCnt(0.0f)
 {
 	Init();
+
 }
 
 Fun::~Fun()

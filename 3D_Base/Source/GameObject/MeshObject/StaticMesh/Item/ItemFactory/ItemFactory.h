@@ -44,6 +44,12 @@ public:
 	* @param    ItemId : 生成したいアイテム名
 	* @return   作成したアイテムへのポインタ
 	*****************************************************************************************/
+
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="ItemId"></param>
+	/// <returns></returns>
 	std::unique_ptr<ItemBase> CreateItem(const std::string& ItemId);
 
 private:
