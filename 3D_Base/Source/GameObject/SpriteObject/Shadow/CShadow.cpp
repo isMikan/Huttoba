@@ -12,7 +12,7 @@ void CShadow::Update(D3DXVECTOR3 objectPos)
 {
 	//影の位置.
 	D3DXVECTOR3 pos = objectPos;
-	pos.y += 0.01f;	//地面の位置に揃える.
+	pos.y = 0.01f;	//地面の位置に揃える.
 	m_vPosition = pos;
 	std::cout << "影の位置設定" << std::endl;
 }
