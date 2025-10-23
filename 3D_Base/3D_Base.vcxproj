@@ -265,10 +265,11 @@
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\Item\Items\Mushroom\Mushroom.cpp" />
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\Item\Items\TrackingRobot\TrackingRobot.cpp" />
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\PlayerBase\PlayerAI\CPlayerAI.cpp" />
-    <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\PlayerBase\PlayerEventBus\CPlayerEventBus.cpp" />
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\PlayerBase\PlayerManager\CPlayerManager.cpp" />
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\PlayerBase\PlayerState\CPlayerState.cpp" />
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\PlayerBase\PlayerState\PlayerActionState\PlayerKnockdownState\CPlayerKnockdownState.cpp" />
+    <ClCompile Include="Source\GameObject\SpriteObject\Shadow\CShadow.cpp" />
+    <ClCompile Include="Source\GameObject\SpriteObject\Shadow\ShadowManager\CShadowManager.cpp" />
     <ClCompile Include="Source\GameObject\UIObject\GaugeBase\CGaugeBase.cpp" />
     <ClCompile Include="Source\GameObject\UIObject\GaugeBase\GaugeManager\CGaugeManager.cpp" />
     <ClCompile Include="Source\GameObject\UIObject\GaugeBase\TimerGauge\CTimerGauge.cpp" />
@@ -379,6 +380,8 @@
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\PlayerBase\PlayerEventBus\CPlayerEventBus.h" />
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\PlayerBase\PlayerManager\CPlayerManager.h" />
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\PlayerBase\PlayerState\PlayerActionState\PlayerKnockdownState\CPlayerKnockdownState.h" />
+    <ClInclude Include="Source\GameObject\SpriteObject\Shadow\CShadow.h" />
+    <ClInclude Include="Source\GameObject\SpriteObject\Shadow\ShadowManager\CShadowManager.h" />
     <ClInclude Include="Source\GameObject\UIObject\GaugeBase\CGaugeBase.h" />
     <ClInclude Include="Source\GameObject\UIObject\GaugeBase\GaugeManager\CGaugeManager.h" />
     <ClInclude Include="Source\GameObject\UIObject\GaugeBase\TimerGauge\CTimerGauge.h" />

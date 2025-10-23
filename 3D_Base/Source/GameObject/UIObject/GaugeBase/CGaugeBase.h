@@ -46,6 +46,7 @@ protected:
 		const D3DXMATRIX& proj,
 		const D3D11_VIEWPORT& vp);
 
+	//使用しない override 関数(これ以降も使用しない).
 	void Draw() override final;
 
 protected:
@@ -56,6 +57,6 @@ protected:
 	D3DXVECTOR3		m_WorldPos;		//世界座標.
 	D3DXVECTOR3		m_OffsetPos;	//調整座標.
 
-	bool	m_IsDisplayGauge;		//ゲージを表示するか.
+	bool		m_IsDisplayGauge;	//ゲージを表示するか.
 
 };

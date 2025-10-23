@@ -12,11 +12,13 @@ CSceneGameMain::CSceneGameMain( HWND hWnd)
 
 	, m_pUIMap			()
 
+	, m_pExplosiones	()
+
+	, m_pShadowManager	()
+
 	, m_pGaugeManager	()
 
 	, m_pPlayerManager	()
-
-	, m_pExplosiones	()
 
 	, m_pGroundManager	()
 
@@ -47,6 +49,9 @@ HRESULT CSceneGameMain::Create()
 
 	//カメラのインスタンス作成.
 	m_pCamera = std::make_unique<CCamera>();
+
+	//影マネージャーのインスタンス作成
+	m_pShadowManager = std::make_unique<CShadowManager>();
 
 	//ゲージマネージャーのインスタンス作成.
 	m_pGaugeManager = std::make_unique<CGaugeManager>();
@@ -84,11 +89,15 @@ HRESULT CSceneGameMain::LoadData()
 		exp->AttachSprite(AssetManager::Sprite(Sprite3DList::Explosion));
 	}
 
+
 	//Pモンスプライトを設定
 	for (auto& UI : m_pUIMap)
 	{
 		UI.second->AttachSprite(AssetManager::Sprite(Sprite2DList::PMon));
 	}
+
+	//影マネージャーの読み込み.
+	m_pShadowManager->LoadData();
 
 	//ゲージマネージャーの読み込み.
 	m_pGaugeManager->LoadData();
@@ -150,6 +159,7 @@ void CSceneGameMain::Update()
 		UI.second->Update();
 	}
 
+	m_pShadowManager->Update(m_pPlayerManager.get(), m_pItemManager.get());
 	m_pGaugeManager->Update(m_pPlayerManager.get());
 
 	//レーザーの管理
@@ -230,6 +240,10 @@ void CSceneGameMain::Draw()
 
 	//やりたいことが終わったので、深度テストを有効にしておく
 	m_pDx11->SetDepth(true);
+
+	m_pDx11->SetAlphaBlend(true);
+	m_pShadowManager->Draw(mView, mProj);
+	m_pDx11->SetAlphaBlend(false);
 
 	for (auto& exp : m_pExplosiones)
 	{

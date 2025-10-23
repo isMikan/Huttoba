@@ -4,6 +4,8 @@
 #include "Assets/Mesh/StaticMesh/CStaticMesh.h"
 #include "Collision/CBoundingSphere.h"
 
+#include "GameObject/SpriteObject/Shadow/CShadow.h"
+
 /************************************************************
 *	スタティックメッシュオブジェクトクラス.
 **/
@@ -54,7 +56,6 @@ public:
 		m_pBSphere->SetPosition(m_vPosition + offset + + D3DXVECTOR3(0.f, 5.f, 0.f));
 	}
 
-
 	//オブジェクトの色を設定する関数.
 	void SetObjectColor(
 		D3DXVECTOR4& diffuse, D3DXVECTOR4& ambient, D3DXVECTOR4& specular){
@@ -66,13 +67,11 @@ public:
 		m_ObjColor = color;
 	}
 	//オブジェクトの色を取得する関数.
-	ObjectColor GetObjectColor() const {
-		return m_ObjColor;
-	}
+	ObjectColor GetObjectColor() const { return m_ObjColor; }
 
 protected:
 	std::shared_ptr<CStaticMesh>	m_pMesh;
-	CBoundingSphere*	m_pBSphere;
+	CBoundingSphere*		m_pBSphere;
 
-	ObjectColor			m_ObjColor;		//オブジェクトの色.
+	ObjectColor				m_ObjColor;		//オブジェクトの色.
 };

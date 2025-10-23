@@ -9,22 +9,22 @@
 #include "DebugText/CDebugText.h"
 #include "Assets/Sprite/Sprite3D/CSprite3D.h"
 #include "Assets/Sprite/Sprite2D/CSprite2D.h"
+#include "Assets/Mesh/StaticMesh/CStaticMesh.h"
+#include "Assets/Mesh/SkinMesh/CSkinMesh.h"
+
 #include "GameObject/SpriteObject/CSpriteObject.h"
 #include "GameObject/SpriteObject/Explosion/CExplosion.h"
+
 #include "GameObject/UIObject/CUIObject.h"
-#include "Assets/Mesh/StaticMesh/CStaticMesh.h"
-#include "GameObject/MeshObject/StaticMesh/CStaticMeshObject.h"
+
+#include "GameObject/SpriteObject/Shadow/ShadowManager/CShadowManager.h"
+#include "GameObject/UIObject/GaugeBase/GaugeManager/CGaugeManager.h"
 
 #include "GameObject/MeshObject/StaticMesh/PlayerBase/PlayerManager/CPlayerManager.h"
-#include "GameObject/MeshObject/StaticMesh/PlayerBase/CPlayerBase.h"
-
 #include "GameObject/MeshObject/StaticMesh/Ground/GroundManager/CGroundManager.h"
-
-#include "GameObject/UIObject/GaugeBase/GaugeManager/CGaugeManager.h"
 
 #include "GameObject/MeshObject/StaticMesh/DrawCollision/DrawCollision.h"
 
-#include "Assets/Mesh/SkinMesh/CSkinMesh.h"
 #include "Scene/CSceneManager.h"
 #include "Input/CInputManager.h"
 
@@ -71,13 +71,16 @@ private:
 	//UIオブジェクトクラス
 	std::unordered_map<UIList, std::unique_ptr<CUIObject> > m_pUIMap;
 
+	//影クラス.
+	std::unique_ptr<CShadowManager>		m_pShadowManager;
+
 	//ゲージマネージャークラス.
 	std::unique_ptr<CGaugeManager>		m_pGaugeManager;
 
-	//プレイヤーマネージャークラス
+	//プレイヤーマネージャークラス.
 	std::unique_ptr<CPlayerManager>		m_pPlayerManager;
 
-	//地面マネージャークラス
+	//地面マネージャークラス.
 	std::unique_ptr<CGroundManager> 	m_pGroundManager;
 
 	//アイテムクラス
