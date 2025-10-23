@@ -199,7 +199,7 @@ void Bomb::Explosion(std::unique_ptr<CPlayerManager>& playiers)
 
 		static ::EsHandle hEffect = -1;
 
-		hEffect = AssetManager::Effect()->Play("Bomb", m_vPosition);
+		hEffect = AssetManager::Effect()->Play("Explosion", m_vPosition);
 
 		//ŠgkÝ’è
 		AssetManager::Effect()->SetScale(hEffect, D3DXVECTOR3(0.6f, 0.6f, 0.6f));
