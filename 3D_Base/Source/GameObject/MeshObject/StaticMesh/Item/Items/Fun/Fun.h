@@ -51,4 +51,13 @@ private:
 
     //アイテムを持った際の補正値
     D3DXVECTOR3 m_HaveOffset;
+
+    //移動速度
+    D3DXVECTOR3 m_Velocity;
+
+    //投げた時の移動速度
+    float       m_MoveSpeed;
+
+    //投げる時に一度だけ処理するものがあるので追加
+    bool        m_IsThrow;
 };

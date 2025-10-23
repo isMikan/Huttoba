@@ -22,6 +22,8 @@ Bomb::Bomb()
 	, m_ExplosionCnt	( 0.0f )
 
 	, m_KnockBackPower	( 10.0f )	//値を変えるとプレイヤーの吹き飛ばし力が変化
+
+	, m_ColorTimer		( 0.0 )
 {
 	Init();
 }
@@ -55,7 +57,7 @@ void Bomb::Draw(D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAMERA& Camera
 void Bomb::Spawn()
 {
 	//落下処理
-	if (m_vPosition.y > 1.2)
+	if (m_vPosition.y > 0.5f)
 	{
 		m_vPosition.y -= m_tGravity;
 		m_tGravity += 0.001f;
@@ -161,28 +163,36 @@ void Bomb::UseAndThrow(std::unique_ptr<CPlayerManager>& playiers)
 
 		m_Velocity = forward * m_MoveSpeed;
 
+		m_Velocity.y = 15.0f;
+
 		m_IsThrow = false;
 	}
 
-	m_vPosition += m_Velocity * CTimeManager::GetDeltaTime();
-
 	//てきとうに移動速度を減少させている
-	m_Velocity -= m_Velocity * CTimeManager::GetDeltaTime();
+	m_Velocity -= m_Velocity * static_cast<float>(CTimeManager::GetDeltaTime());
 
-	if (m_vPosition.y > .2f)
+	if (m_vPosition.y > 0.5f)
 	{
-		m_vPosition.y -= m_tGravity;
+		//m_vPosition.y -= m_tGravity;
+		m_Velocity.y -= m_tGravity;
 		m_tGravity += 0.001f;
 	}
+	else 
+	{
+		m_Velocity.y = 0;
+		Explosion(playiers);
+	}
+
+	m_vPosition += m_Velocity * static_cast<float>(CTimeManager::GetDeltaTime());
 
 	ChangeColor();
 
-	m_ExplosionCnt += CTimeManager::GetDeltaTime();
+	//m_ExplosionCnt += CTimeManager::GetDeltaTime();
 
-	if (m_ExplosionCnt >= m_ExplosionTime)
-	{
-		Explosion(playiers);
-	}
+	//if (m_ExplosionCnt >= m_ExplosionTime)
+	//{
+	//	Explosion(playiers);
+	//}
 }
 
 void Bomb::Explosion(std::unique_ptr<CPlayerManager>& playiers)
@@ -197,7 +207,7 @@ void Bomb::Explosion(std::unique_ptr<CPlayerManager>& playiers)
 
 		static ::EsHandle hEffect = -1;
 
-		hEffect = AssetManager::Effect()->Play("Bomb", m_vPosition);
+		hEffect = AssetManager::Effect()->Play("Explosion", m_vPosition);
 
 		//拡縮設定
 		AssetManager::Effect()->SetScale(hEffect, D3DXVECTOR3(0.6f, 0.6f, 0.6f));
@@ -209,6 +219,8 @@ void Bomb::Explosion(std::unique_ptr<CPlayerManager>& playiers)
 void Bomb::Blow_Away(std::unique_ptr<CPlayerManager>& playiers)
 {
 	D3DXVECTOR3 vecLen = m_vPosition - playiers->GetPlayer(0)->GetPosition();
+
+	D3DXVECTOR3 a = D3DXVECTOR3(m_vPosition.x, 0, m_vPosition.z);
 
 	float len = D3DXVec3Length(&vecLen);
 
@@ -225,37 +237,44 @@ void Bomb::ChangeColor()
 	//黒色(全て0.5が元の色)
 	//m_pMesh->SetMaterialColor(0, D3DXVECTOR4(.5f, .5f, .5f, .5f));
 
-	//動作確認でてきとうに追加
-	static float time = 0;
-	time += CTimeManager::GetDeltaTime();
+	m_ColorTimer += CTimeManager::GetDeltaTime();
 
-	//点滅のスピードをデルタタイム/爆発するまでの時間をして割合で出す
-	float speed = 10.0f * (time / m_ExplosionTime);
+	//点滅のスピードを経過時間/爆発するまでの時間をして割合で出す
+	double speed = 10.0f * (m_ColorTimer / m_ExplosionTime);
 
 	//+1.0fをすることで、sinの値が0~2の間の値になり、*0.25で0~0.5の値がtに入る
-	float t = (sinf(time * speed) + 1.0f) * 0.25f;
+	double blinkRate = (sin(m_ColorTimer * speed) + 1.0) * 0.25;
 
 	//カラー増加変数
-	float up = std::clamp(0.5f + t, .5f, 1.0f);
+	float up = std::clamp(0.5f + static_cast<float>(blinkRate), .5f, 1.0f);
 
 	//カラー減少変数
-	float down = std::clamp(0.5f - t, 0.0f, 0.5f);
+	float down = std::clamp(0.5f - static_cast<float>(blinkRate), 0.0f, 0.5f);
 
 	//値が増加と減少がそれぞれあるので使いわけていく
-	D3DXVECTOR4 a = D3DXVECTOR4(up, down, down, up);
+	D3DXVECTOR4 color = D3DXVECTOR4(up, down, down, up);
 
-	m_pMesh->SetMaterialColor(0, a);
-
-	//m_pMesh->SetMaterialColor(0, D3DXVECTOR4(.6f, .4f, .4f, .6f));
+	m_pMesh->SetMaterialColor(0, color);
 }
 
 float Bomb::CalculateKnockBackPower(float distance)
 {
-	//引数が0の時にゼロ除算しないようにするための最小距離の2乗
-	float minDistanceSq = 1;
+	//線形補間で計算
 
-	//吹き飛ばし力を
-	float denominator = distance * distance + minDistanceSq;
+	//爆発の当たる範囲を仮設定
+	//当たり判定用メッシュの大きさにする
+	float maxDist = 6;
 
-	return m_KnockBackPower / denominator;
+	//0.0~1.0の間で距離の割合を出す
+	float ratio = 1.0f - (distance / maxDist);
+
+	//爆発の最小吹き飛ばし力
+	float minPower = 6.0f;
+
+	//爆発の最大吹き飛ばし力
+	float maxPower = m_KnockBackPower;
+
+	float power = minPower + (maxPower - minPower) * ratio;
+
+	return power;
 }

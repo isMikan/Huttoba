@@ -51,7 +51,7 @@ private:
     void ChangeColor();
 
     //爆弾とプレイヤーの距離に応じて吹き飛ばし力を計算
-    //逆2乗の法則を使用
+    //線形補間を使用
     float CalculateKnockBackPower(float distance);
 
 private:
@@ -72,11 +72,14 @@ private:
     bool        m_IsThrow;
 
     //投げてから爆発するまでの時間
-    float       m_ExplosionTime;
+    double       m_ExplosionTime;
 
     //爆発するまでのカウント
-    float       m_ExplosionCnt;
+    double       m_ExplosionCnt;
 
     //爆発の吹き飛ばしの力
     float       m_KnockBackPower;
+
+    //点滅の経過時間を記録
+    double      m_ColorTimer;
 };
