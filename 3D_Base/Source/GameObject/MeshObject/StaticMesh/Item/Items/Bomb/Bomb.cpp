@@ -22,6 +22,8 @@ Bomb::Bomb()
 	, m_ExplosionCnt	( 0.0f )
 
 	, m_KnockBackPower	( 10.0f )	//値を変えるとプレイヤーの吹き飛ばし力が変化
+
+	, m_ColorTimer		( 0.0 )
 {
 	Init();
 }
@@ -164,10 +166,10 @@ void Bomb::UseAndThrow(std::unique_ptr<CPlayerManager>& playiers)
 		m_IsThrow = false;
 	}
 
-	m_vPosition += m_Velocity * CTimeManager::GetDeltaTime();
+	m_vPosition += m_Velocity * static_cast<float>(CTimeManager::GetDeltaTime());
 
 	//てきとうに移動速度を減少させている
-	m_Velocity -= m_Velocity * CTimeManager::GetDeltaTime();
+	m_Velocity -= m_Velocity * static_cast<float>(CTimeManager::GetDeltaTime());
 
 	if (m_vPosition.y > .2f)
 	{
@@ -210,10 +212,12 @@ void Bomb::Blow_Away(std::unique_ptr<CPlayerManager>& playiers)
 {
 	D3DXVECTOR3 vecLen = m_vPosition - playiers->GetPlayer(0)->GetPosition();
 
+	D3DXVECTOR3 a = D3DXVECTOR3(m_vPosition.x, 0, m_vPosition.z);
+
 	float len = D3DXVec3Length(&vecLen);
 
 	playiers->GetPlayer(0)->SetHitInfo(
-		m_vPosition, playiers->GetPlayer(0)->GetPosition(),
+		a, playiers->GetPlayer(0)->GetPosition(),
 		CalculateKnockBackPower(len),
 		true, CPlayerBase::HitEvent::Knockback);
 }
@@ -225,28 +229,24 @@ void Bomb::ChangeColor()
 	//黒色(全て0.5が元の色)
 	//m_pMesh->SetMaterialColor(0, D3DXVECTOR4(.5f, .5f, .5f, .5f));
 
-	//動作確認でてきとうに追加
-	static float time = 0;
-	time += CTimeManager::GetDeltaTime();
+	m_ColorTimer += CTimeManager::GetDeltaTime();
 
-	//点滅のスピードをデルタタイム/爆発するまでの時間をして割合で出す
-	float speed = 10.0f * (time / m_ExplosionTime);
+	//点滅のスピードを経過時間/爆発するまでの時間をして割合で出す
+	double speed = 10.0f * (m_ColorTimer / m_ExplosionTime);
 
 	//+1.0fをすることで、sinの値が0~2の間の値になり、*0.25で0~0.5の値がtに入る
-	float t = (sinf(time * speed) + 1.0f) * 0.25f;
+	double blinkRate = (sin(m_ColorTimer * speed) + 1.0) * 0.25;
 
 	//カラー増加変数
-	float up = std::clamp(0.5f + t, .5f, 1.0f);
+	float up = std::clamp(0.5f + static_cast<float>(blinkRate), .5f, 1.0f);
 
 	//カラー減少変数
-	float down = std::clamp(0.5f - t, 0.0f, 0.5f);
+	float down = std::clamp(0.5f - static_cast<float>(blinkRate), 0.0f, 0.5f);
 
 	//値が増加と減少がそれぞれあるので使いわけていく
-	D3DXVECTOR4 a = D3DXVECTOR4(up, down, down, up);
+	D3DXVECTOR4 color = D3DXVECTOR4(up, down, down, up);
 
-	m_pMesh->SetMaterialColor(0, a);
-
-	//m_pMesh->SetMaterialColor(0, D3DXVECTOR4(.6f, .4f, .4f, .6f));
+	m_pMesh->SetMaterialColor(0, color);
 }
 
 float Bomb::CalculateKnockBackPower(float distance)

@@ -72,11 +72,14 @@ private:
     bool        m_IsThrow;
 
     //投げてから爆発するまでの時間
-    float       m_ExplosionTime;
+    double       m_ExplosionTime;
 
     //爆発するまでのカウント
-    float       m_ExplosionCnt;
+    double       m_ExplosionCnt;
 
     //爆発の吹き飛ばしの力
     float       m_KnockBackPower;
+
+    //点滅の経過時間を記録
+    double      m_ColorTimer;
 };
