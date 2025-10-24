@@ -5,7 +5,3 @@ CPlayerState::CPlayerState(CPlayerBase& pPlayer)
 	: m_pPlayer		( pPlayer )
 {
 }
-
-CPlayerState::~CPlayerState()
-{
-}

@@ -8,82 +8,112 @@
 CGaugeManager::CGaugeManager()
 	: m_pGauge				()
 {
-	Create();
 }
 
 CGaugeManager::~CGaugeManager()
 {
 }
 
-void CGaugeManager::Create()
+//--- 構築関数 ---.
+void CGaugeManager::Create(CPlayerManager* playerManager)
 {
 	//ゲージのインスタンス作成.
 	m_pGauge.clear();
 	m_pGauge.resize(Gauge_Max);
-	for (auto& gauge : m_pGauge)
+
+	for (int pNo = 0; pNo < Player_Max; pNo++)
 	{
-		gauge = std::make_unique<CGaugeBase>();
+		CPlayerBase* player = playerManager->GetPlayer(pNo);
+		if (!player) continue;	//存在しなかったら次へ.
+
+		auto& bus = player->GetBus();
+		bus.Subscribe([this, player](CPlayerState* state) {
+			std::cout << "サブスクライブ" << std::endl;
+			if (dynamic_cast<CPlayerKnockdownState*>(state))
+			{
+				for (int gNo = 0; gNo < Gauge_Max; gNo++)
+				{
+					if (m_pGauge[gNo]) continue;	//作成されていたら次へ.
+
+					int nextId = gNo + 1;
+
+					//ゲージフレームの作成.
+					m_pGauge[gNo] = std::make_unique<CGaugeFrame>();
+					m_pGauge[gNo]->AttachSprite(AssetManager::Sprite(Sprite2DList::GaugeFrame));
+					std::cout << typeid(m_pGauge[gNo].get()).name() << std::endl;
+
+					//ゲージの作成.
+					m_pGauge[nextId] = std::make_unique<CTimerGauge>();
+					m_pGauge[nextId]->AttachSprite(AssetManager::Sprite(Sprite2DList::Gauge));
+					m_pGauge[nextId]->SetGaugeInfo(player->GetKnockdownTime());
+					std::cout << typeid(m_pGauge[gNo].get()).name() << std::endl;
+
+					std::cout << "ゲージを作成" << std::endl;
+				}
+			}
+			else
+			{
+				for (int gNo = 0; gNo < Gauge_Max; gNo++)
+				{
+					if (!m_pGauge[gNo]) continue;	//作成いなかったら次へ.
+
+					int nextId = gNo + 1;
+					m_pGauge[gNo].reset();
+					m_pGauge[nextId].reset();
+				}
+			}
+		});
 	}
 }
 
+//--- 読込関数 ---.
 void CGaugeManager::LoadData(CPlayerManager* playerManager)
 {
 	for (int gNo = 0; gNo < Gauge_Max; gNo++)
 	{
-	//	if (gNo % 2 == 0)
-	//	{
-			//m_pGauge[gNo] = std::make_unique<CGaugeFrame>();
-			//ゲージフレームのスプライトを設定.
-			m_pGauge[gNo]->AttachSprite(AssetManager::Sprite(Sprite2DList::Gauge));
-	//	}
-	//	else
-	//	{
-	//		//ゲージスプライトを設定.
-	//		m_pGauge[gNo]->AttachSprite(AssetManager::Sprite(Sprite2DList::Gauge));
-	//	}
-
-		for (int pNo = 0; pNo < Player_Max; pNo++)
+		if (gNo % 2 == 0)
 		{
-			CPlayerBase* player = playerManager->GetPlayer(pNo);
-			if (!player) continue;
-
-			auto& bus = player->GetBus();
-			bus.Subscribe([this, player](CPlayerState* state)
-				{
-					if (dynamic_cast<CPlayerKnockdownState*>(state))
-					{
-						int id = player->GetPlayerID();
-						m_pGauge[static_cast<size_t>(id) + 1] = std::make_unique<CTimerGauge>();
-					}
-				});
-
-			int gNo = pNo * 2 + 1;
-			m_pGauge[gNo]->SubscribePlayerEvent(player);
+			m_pGauge[gNo] = std::make_unique<CGaugeFrame>();
+			//ゲージフレームのスプライトを設定.
+			m_pGauge[gNo]->AttachSprite(AssetManager::Sprite(Sprite2DList::GaugeFrame));
+		}
+		else
+		{
+			//ゲージスプライトを設定.
+			m_pGauge[gNo]->AttachSprite(AssetManager::Sprite(Sprite2DList::Gauge));
 		}
 	}
 }
 
+//--- 破棄関数 ---.
 void CGaugeManager::Destroy()
 {
+	for (auto& gauge : m_pGauge)
+	{
+		gauge.reset();
+	}
 }
 
 //--- 更新処理 ---.
 void CGaugeManager::Update(CPlayerManager* playerManager)
 {
-	for (auto& gauge : m_pGauge)
+	for (int pNo = 0; pNo < Player_Max; pNo++)
 	{
-		gauge->Update();
+		CPlayerBase* player = playerManager->GetPlayer(pNo);
 
-		for (int pNo = 0; pNo < Player_Max; pNo++)
+		if (!player) continue;	//存在しなかったら次へ.
+
+		for (int gNo = 0; gNo < Gauge_Max; gNo++)
 		{
-			CPlayerBase* player = playerManager->GetPlayer(pNo);
+			if (!m_pGauge[gNo]) continue;
 
-			if (!player) continue;
-			int gNo = pNo * 2;
-			m_pGauge[gNo]->SetWorldPos(player->GetPosition());
-			
-			m_pGauge[static_cast<size_t>(gNo) + 1]->SetGaugeInfo(player->GetKnockdownTime());
-			m_pGauge[static_cast<size_t>(gNo) + 1]->SetWorldPos(player->GetPosition());
+			//std::cout << typeid( m_pGauge[gNo].get()).name() << std::endl;
+			//if (dynamic_cast<CTimerGauge*>(m_pGauge[gNo].get()))
+			{
+				m_pGauge[gNo]->Update();
+				m_pGauge[gNo]->SetGaugeInfo(player->GetKnockdownTime());
+				m_pGauge[gNo]->SetWorldPos(player->GetPosition());
+			}
 		}
 	}
 }
@@ -94,6 +124,8 @@ void CGaugeManager::Draw(
 {
 	for (auto& gauge : m_pGauge)
 	{
+		if (!gauge) continue;	//存在しなかったら次へ.
+
 		gauge->Draw(View, Proj);
 	}
 }

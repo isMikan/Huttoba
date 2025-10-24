@@ -9,14 +9,8 @@ CGaugeBase::CGaugeBase()
 
 	, m_WorldPos		( 0.f, 0.f, 0.f )
 	, m_OffsetPos		( 0.f, 2.f, 0.f )
-
-	, m_IsDisplayGauge	( false )
 {
 	Init();
-}
-
-CGaugeBase::~CGaugeBase()
-{
 }
 
 //--- 初期化処理 ---.
@@ -34,8 +28,6 @@ void CGaugeBase::Update()
 void CGaugeBase::Draw(
 	D3DXMATRIX& View, D3DXMATRIX& Proj)
 {
-	//if (!m_IsDisplayGauge) return;
-
 	D3D11_VIEWPORT vp;	//ビューポート（描画領域）情報を格納.
 	UINT num = 1;		//取得するビューポート数.
 	m_pContext11 = m_pSprite->GetContext11();
@@ -80,23 +72,4 @@ D3DXVECTOR3 CGaugeBase::WorldToScreen(
 	screenPos.z = clipPos.z;
 
 	return screenPos;
-}
-
-//--- プレイヤーイベントの通知受け取りに加入 ---.
-void CGaugeBase::SubscribePlayerEvent(CPlayerBase* player)
-{
-	std::cout << "プレイヤーゲット" << std::endl;
-	auto& bus = player->GetBus();
-	bus.Subscribe([this](CPlayerState* state)
-		{
-			if (dynamic_cast<CPlayerKnockdownState*>(state))
-			{
-				std::cout << "ダウン受け取り成功" << std::endl;
-				m_IsDisplayGauge = true;
-			}
-			else
-			{
-				m_IsDisplayGauge = false;
-			}
-		});
 }

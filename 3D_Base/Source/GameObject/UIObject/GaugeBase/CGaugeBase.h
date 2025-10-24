@@ -9,18 +9,15 @@ class CGaugeBase
 {
 public:
 	CGaugeBase();
-	virtual ~CGaugeBase() override;
+	virtual ~CGaugeBase() = default;
 
 	//--- 初期化処理 ---.
 	virtual void Init();
 	//--- 更新処理 ---.
-	virtual void Update() override;
+	virtual void Update() = 0;
 	//--- 描画処理 ---.
 	virtual void Draw(
-		D3DXMATRIX& View, D3DXMATRIX& Proj);
-
-	//--- プレイヤーイベントの通知受け取りに加入 ---.
-	void SubscribePlayerEvent(CPlayerBase* player);
+		D3DXMATRIX& View, D3DXMATRIX& Proj) = 0;
 
 	//ワールド座標を設定する関数.
 	void SetWorldPos(D3DXVECTOR3 pos) { m_WorldPos = pos; }
@@ -51,7 +48,5 @@ protected:
 
 	D3DXVECTOR3		m_WorldPos;		//世界座標.
 	D3DXVECTOR3		m_OffsetPos;	//調整座標.
-
-	bool		m_IsDisplayGauge;	//ゲージを表示するか.
 
 };

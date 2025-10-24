@@ -50,7 +50,7 @@ static constexpr int Explosion_Max = 20;
 static constexpr int Shadow_Max = 20;	//影.
 static constexpr int Ground_Max = 4;	//地面.
 static constexpr int Player_Max = 4;	//プレイヤー.
-static constexpr int Gauge_Max = Player_Max * 2;	//ゲージとフレーム.
+static constexpr int Gauge_Max = 20;	//ゲージとフレーム.
 
 //弾のインターバル
 static constexpr float Player_Shot_Interval = 15;

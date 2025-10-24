@@ -19,7 +19,7 @@ CPlayerKnockdownState::CPlayerKnockdownState(CPlayerBase& pPlayer)
 	, m_TimeDecreaseByMashing	( 0.5f )
 
 	, m_ShakeSpeed				( 3.f )
-	, m_ShakeWidth				( 1.2f )
+	, m_ShakeWidth				( 3.f )
 
 	, m_PrevSthikX				( 0.1f )	//0 ‚É‚·‚é‚ÆÏ‚ª•Ï‚í‚ç‚È‚¢‚Ì‚Å.
 	, m_PrevSthikY				( 0.1f )	//0 ‚É‚·‚é‚ÆÏ‚ª•Ï‚í‚ç‚È‚¢‚Ì‚Å.

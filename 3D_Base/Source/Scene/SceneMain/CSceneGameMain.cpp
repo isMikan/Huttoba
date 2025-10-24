@@ -69,6 +69,9 @@ HRESULT CSceneGameMain::Create()
 	CteateExplosion();
 	CreateCharactor();
 
+	//ゲージを作成.
+	m_pGaugeManager->Create(m_pPlayerManager.get());
+
 	return S_OK;
 }
 
@@ -98,9 +101,6 @@ HRESULT CSceneGameMain::LoadData()
 
 	//影マネージャーの読み込み.
 	m_pShadowManager->LoadData();
-
-	//ゲージマネージャーの読み込み.
-	m_pGaugeManager->LoadData(m_pPlayerManager.get());
 
 	//プレイヤーマネージャーの読み込み.
 	m_pPlayerManager->LoadData();

@@ -3,6 +3,7 @@
 #include "GameObject/UIObject/GaugeBase/CGaugeBase.h"
 
 #include "GameObject/MeshObject/StaticMesh/PlayerBase/PlayerManager/CPlayerManager.h"
+#include "GameObject/MeshObject/StaticMesh/PlayerBase/CPlayerBase.h"
 
 class CGaugeManager
 {
@@ -11,7 +12,8 @@ public:
 	~CGaugeManager();
 
 	//--- \’zŠÖ” ---.
-	void Create();
+	void Create(
+		CPlayerManager* playerManager);
 	//--- “ÇŠÖ” ---.
 	void LoadData(
 		CPlayerManager* playerManager);
