@@ -112,6 +112,8 @@ enum class StaticMeshList
 	Fun,
 	Mushroom,
 	TrackingRobot,
+
+	ExplosionCol,
 };
 
 enum class UIList

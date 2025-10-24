@@ -22,6 +22,7 @@ public:
         Magnet,
         Boomerang,
         RatRobot, 
+        Bomb,
 
         Max,
         None = -1

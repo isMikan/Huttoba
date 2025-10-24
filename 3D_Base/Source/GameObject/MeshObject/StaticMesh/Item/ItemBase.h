@@ -3,10 +3,12 @@
 #include "ItemFactory/ItemFactory.h"
 #include "GameObject/MeshObject/StaticMesh/CStaticMeshObject.h"
 
+
 class CPlayerManager;
 
 class ItemBase :
 	public CStaticMeshObject
+	
 {
 public:
 	ItemBase();

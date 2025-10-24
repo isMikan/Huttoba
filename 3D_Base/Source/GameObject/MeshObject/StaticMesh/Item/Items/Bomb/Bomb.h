@@ -2,7 +2,7 @@
 #include "Item/ItemBase.h"
 
 class Bomb
-    : public ItemBase
+    : public ItemBase,public ICollisionListener
 {
 public:
     Bomb();
@@ -29,6 +29,8 @@ public:
     void Destroy()override;
 
 private:
+    void OnCollision(CollisionBase* other)override;
+
     //取得モーション
     void TakeMotion();
     //所持中モーション
@@ -51,8 +53,8 @@ private:
     void ChangeColor();
 
     //爆弾とプレイヤーの距離に応じて吹き飛ばし力を計算
-    //線形補間を使用
-    float CalculateKnockBackPower(float distance);
+    //線形補間を使用、スカラーの計算
+    float CalculateForceScalar(float distance);
 
 private:
     //アイテムを取得したときかを判定
@@ -82,4 +84,7 @@ private:
 
     //点滅の経過時間を記録
     double      m_ColorTimer;
+
+    //爆発の処理で一度だけ処理するものがあるので追加
+    bool        m_OneExplosion;
 };

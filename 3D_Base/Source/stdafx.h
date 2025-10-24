@@ -26,5 +26,7 @@ using Microsoft::WRL::ComPtr;
 #include "Assets/AssetManager.h"
 #include "DebugText/DebugDrawManager/DebugDrawManager.h"
 #include "Collision/CollisionManager/CollisionManager.h"
+#include "Collision/CollisionData/CollisionDataFactory/CollisionDataFactory.h" 
+#include "Collision/CollisionListener/ICollisionListener.h"
 #include "CDirectX11.h"
 #include "CDirectX9.h"

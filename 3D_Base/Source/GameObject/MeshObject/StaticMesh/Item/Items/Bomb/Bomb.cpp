@@ -24,6 +24,8 @@ Bomb::Bomb()
 	, m_KnockBackPower	( 10.0f )	//値を変えるとプレイヤーの吹き飛ばし力が変化
 
 	, m_ColorTimer		( 0.0 )
+	
+	, m_OneExplosion	( false )
 {
 	Init();
 }
@@ -41,6 +43,17 @@ void Bomb::Init()
 	m_State = ItemBase::State::Spawn;
 
 	m_tGravity = 0.01f;
+
+	std::shared_ptr<CStaticMesh> mesh = AssetManager::Mesh(StaticMeshList::ExplosionCol);
+
+	std::shared_ptr<CollisionBase> col =
+		CollisionDataFactory::CreateSphereForMesh(
+			this,
+			mesh,
+			CollisionBase::ColliderTag::Bomb
+		);
+
+	CollisionManager::GetInstance()->AddCollider(col);
 }
 
 void Bomb::Update(std::unique_ptr<CPlayerManager>& playiers)
@@ -102,6 +115,13 @@ void Bomb::Throw(std::unique_ptr<CPlayerManager>& playiers)
 void Bomb::Destroy()
 {
 	m_IsDestroy = true;
+}
+
+void Bomb::OnCollision(CollisionBase* other)
+{
+	//int a;
+	std::cout << "i" << std::endl;
+	//Explosion();
 }
 
 void Bomb::TakeMotion()
@@ -196,13 +216,10 @@ void Bomb::UseAndThrow(std::unique_ptr<CPlayerManager>& playiers)
 
 void Bomb::Explosion(std::unique_ptr<CPlayerManager>& playiers)
 {
-	//一度だけ処理させるために追加
-	static bool a = true;
-
-	if (a)
+	if (!m_OneExplosion)
 	{
 		Blow_Away(playiers);
-		a = false;
+		m_OneExplosion = true;
 
 		static ::EsHandle hEffect = -1;
 
@@ -219,13 +236,11 @@ void Bomb::Blow_Away(std::unique_ptr<CPlayerManager>& playiers)
 {
 	D3DXVECTOR3 vecLen = m_vPosition - playiers->GetPlayer(0)->GetPosition();
 
-	D3DXVECTOR3 a = D3DXVECTOR3(m_vPosition.x, 0, m_vPosition.z);
-
 	float len = D3DXVec3Length(&vecLen);
 
 	playiers->GetPlayer(0)->SetHitInfo(
 		m_vPosition, playiers->GetPlayer(0)->GetPosition(),
-		CalculateKnockBackPower(len),
+		CalculateForceScalar(len),
 		true, CPlayerBase::HitEvent::Knockdown);
 }
 
@@ -256,7 +271,7 @@ void Bomb::ChangeColor()
 	m_pMesh->SetMaterialColor(0, color);
 }
 
-float Bomb::CalculateKnockBackPower(float distance)
+float Bomb::CalculateForceScalar(float distance)
 {
 	//線形補間で計算
 

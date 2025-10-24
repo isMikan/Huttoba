@@ -269,7 +269,7 @@ float Mushroom::CalculateForceScalar(float distance)
 	float minPower = 6.0f;
 
 	//Å‘å‚«”ò‚Î‚µ—Í
-	float maxPower = 10;
+	float maxPower = 15.0f;
 
 	float power = minPower + (maxPower - minPower) * ratio;
 

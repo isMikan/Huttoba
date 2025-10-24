@@ -11,7 +11,7 @@
 
 #include "Input//CInputManager.h"
 
-#include "Collision/CollisionData/CollisionDataFactory/CollisionDataFactory.h" 
+
 
 CPlayerManager::CPlayerManager()
 	: m_pPlayers	()
