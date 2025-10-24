@@ -2,7 +2,6 @@
 
 #include "GameObject/CGameObject.h"
 #include "Assets/Mesh/StaticMesh/CStaticMesh.h"
-#include "Collision/CBoundingSphere.h"
 
 /************************************************************
 *	スタティックメッシュオブジェクトクラス.

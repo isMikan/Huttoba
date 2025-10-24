@@ -4,15 +4,18 @@
 #include "Collision/CollisionListener/ICollisionListener.h"
 
 CollisionBase::CollisionBase(
-    ICollisionListener* pListener,
-    const D3DXVECTOR3& syncPosition, // êeGameObjectÇÃm_vPositionÇ÷ÇÃconstéQè∆
-    ColliderTag tag,
-    const D3DXVECTOR3& localOffset)
-    : m_pListener(pListener)
-    , m_SyncPosition(syncPosition) // constéQè∆ÇÃèâä˙âª
-    , m_Tag(tag)
-    , m_LocalOffset(localOffset)
+    ICollisionListener*     pListener,
+    const D3DXVECTOR3&      syncPosition,
+    ColliderTag             tag,
+    const D3DXVECTOR3&      localOffset
+)
+    : m_pListener   (pListener)
+    , m_SyncPosition(syncPosition)
+    , m_Tag         (tag)
+    , m_LocalOffset (localOffset)
     , m_WorldPosition(0.0f, 0.0f, 0.0f)
+    , m_IsActive    (false)
+    , m_IsHit       (false)
 {
 }
 

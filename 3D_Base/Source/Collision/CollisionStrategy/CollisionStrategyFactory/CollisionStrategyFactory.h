@@ -9,36 +9,38 @@ class CollisionStrategyFactory
 {
 public:
 
-    //各判定クラスを入れるための型
+    //各クラスの衝突戦略を入れるための型
     using StrategyPtr = std::unique_ptr<CollisionStrategyBase>;
 
-    /// <summary>
-    /// シングルトンインスタンスを取得
-    /// </summary>
-    /// 
-    /// <returns>CollisionStrategyFactory クラスの唯一のインスタンスへのポインタ。</returns>
+
+    /*****************************************************************************************
+    * @brief    シングルトンインスタンスを取得
+    *****************************************************************************************/
     static CollisionStrategyFactory* GetInstance()
     {
         static CollisionStrategyFactory instance;
         return &instance;
     }
 
-    /// <summary>
-    /// 2つのコライダータイプ間の衝突判定を登録。
-    /// </summary>
-    /// <param name="typeA">最初のコライダーのタイプ。</param>
-    /// <param name="typeB">2番目のコライダーのタイプ。</param>
-    /// <param name="strategy">登録する衝突戦略のポインタ。</param>
+
+    /*****************************************************************************************
+    * @brief    2つのコライダータイプ間の衝突判定を登録
+    * @param    typeA   : 1つ目のコライダーのタイプ
+    *           typeB   : 2つ目のコライダーのタイプ
+    *           strategy: 登録する衝突戦略のポインタ
+    *****************************************************************************************/
     void RegisterStrategy(CollisionBase::ColliderType typeA,
         CollisionBase::ColliderType typeB,
         StrategyPtr strategy);
 
-    /// <summary>
-    /// 2つのコライダータイプに基づいて衝突判定を取得します。
-    /// </summary>
-    /// <param name="typeA">最初のコライダーのタイプ。</param>
-    /// <param name="typeB">2番目のコライダーのタイプ。</param>
-    /// <returns>指定されたコライダータイプに対応するCollisionStrategyBaseのポインタ。</returns>
+
+    /*****************************************************************************************
+    * @brief    2つのコライダータイプに基づいて衝突判定を取得
+    * @param     typeA   : 1つ目のコライダーのタイプ
+    *            typeB   : 2つ目のコライダーのタイプ
+    *
+    * @return   指定されたコライダータイプに対応するクラス(衝突戦略)のポインタ
+    *****************************************************************************************/
     CollisionStrategyBase* GetStrategy(CollisionBase::ColliderType typeA,
         CollisionBase::ColliderType typeB);
 
@@ -46,7 +48,7 @@ private:
     CollisionStrategyFactory() = default;
     ~CollisionStrategyFactory() = default;
 
-    // ペアのハッシュ値を計算する関数オブジェクト。
+    // mapに入れるためpairをハッシュ値に
     struct PairHash
     {
         size_t operator()(const std::pair<CollisionBase::ColliderType, CollisionBase::ColliderType>& p) const noexcept

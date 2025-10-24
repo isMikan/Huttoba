@@ -276,7 +276,6 @@
     <ClCompile Include="Source\Input\CInput.cpp" />
     <ClCompile Include="Source\Input\CInputManager.cpp" />
     <ClCompile Include="Source\Input\XInput\CXInput.cpp" />
-    <ClCompile Include="Source\Collision\CBoundingSphere.cpp" />
     <ClCompile Include="Source\DebugText\CDebugText.cpp" />
     <ClCompile Include="Source\DirectX\CDirectX11.cpp" />
     <ClCompile Include="Source\DirectX\CDirectX9.cpp" />
@@ -387,7 +386,6 @@
     <ClInclude Include="Source\Input\CInputManager.h" />
     <ClInclude Include="Source\Input\XInput\CXInput.h" />
     <ClInclude Include="Source\Input\InputDevice\InputDevice.h" />
-    <ClInclude Include="Source\Collision\CBoundingSphere.h" />
     <ClInclude Include="Source\DebugText\CDebugText.h" />
     <ClInclude Include="Source\DirectX\CDirectX11.h" />
     <ClInclude Include="Source\DirectX\CDirectX9.h" />
