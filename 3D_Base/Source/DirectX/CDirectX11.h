@@ -49,6 +49,11 @@ public:
 	//デバイスコンテキストを取得.
 	ID3D11DeviceContext* GetContext() const { return m_pContext11.Get(); }
 
+	// ワイヤーフレーム描画に切り替える
+	void SetRasterizerWireframe() { m_pContext11->RSSetState(m_pRasterStateWireframe.Get()); }
+	// ソリッド描画に戻す
+	void SetRasterizerSolid() { m_pContext11->RSSetState(m_pRasterStateSolid.Get()); }
+
 private:
 	CDirectX11();
 	~CDirectX11();
@@ -93,4 +98,8 @@ private:
 	//アルファブレンド.
 	ComPtr<ID3D11BlendState>		m_pAlphaBlendOn;	//有効設定.
 	ComPtr<ID3D11BlendState>		m_pAlphaBlendOff;	//無効設定.
+
+	//ラスタライザステート.
+	ComPtr<ID3D11RasterizerState>	m_pRasterStateSolid;
+	ComPtr<ID3D11RasterizerState>	m_pRasterStateWireframe;
 };

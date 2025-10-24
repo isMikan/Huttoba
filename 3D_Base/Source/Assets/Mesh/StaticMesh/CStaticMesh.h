@@ -115,6 +115,16 @@ public:
 	//解放関数.
 	void Release();
 
+	// デバッグ描画用の関数。外部から行列と色情報を直接渡して描画する。
+	void DrawDebug(
+		const D3DXMATRIX& mWorld,
+		D3DXMATRIX& mView, D3DXMATRIX& mProj,
+		LIGHT& Light, D3DXVECTOR3& CamPos,
+		const D3DXVECTOR4& diffuse,
+		const D3DXVECTOR4& ambient,
+		const D3DXVECTOR4& specular
+	);
+
 	//レンダリング用.
 	void Render(D3DXMATRIX& mView, D3DXMATRIX& mProj,
 		LIGHT& Light, D3DXVECTOR3& CamPos);
@@ -209,7 +219,7 @@ private:
 	//Dx9.
 	CDirectX9*			m_pDx9;
 	LPDIRECT3DDEVICE9	m_pDevice9;	//Dx9デバイスオブジェクト.
-
+	
 	//Dx11.
 	CDirectX11*						m_pDx11;
 	ComPtr<ID3D11Device>			m_pDevice11;	//デバイスｵﾌﾞｼﾞｪｸﾄ.

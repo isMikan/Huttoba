@@ -1,7 +1,5 @@
 #include "stdafx.h"
 #include "MeshManager.h"
-
-
 MeshManager::MeshManager()
 	: m_pStaticMeshMap	()
 	, m_pSkinMeshMap()
