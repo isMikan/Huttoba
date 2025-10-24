@@ -9,10 +9,10 @@ CollisionBase::CollisionBase(
     ColliderTag tag,
     const D3DXVECTOR3& localOffset)
     : m_pListener(pListener)
-    ,m_SyncPosition(syncPosition) // constQÆ‚Ì‰Šú‰»
-    ,m_Tag(tag)
-    ,m_LocalOffset(localOffset)
-    ,m_WorldPosition(0.0f, 0.0f, 0.0f)
+    , m_SyncPosition(syncPosition) // constQÆ‚Ì‰Šú‰»
+    , m_Tag(tag)
+    , m_LocalOffset(localOffset)
+    , m_WorldPosition(0.0f, 0.0f, 0.0f)
 {
 }
 

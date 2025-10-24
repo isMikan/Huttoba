@@ -14,15 +14,15 @@ public:
     enum class ColliderTag
     {
         Player = 0,
-        Item, 
-        Ground, 
-        Haetataki, 
-        SmashBat, 
+        Item,
+        Ground,
+        Haetataki,
+        SmashBat,
         Fan,
-        Mushroom, 
+        Mushroom,
         Magnet,
         Boomerang,
-        RatRobot, 
+        RatRobot,
 
         Max,
         None = -1
@@ -32,7 +32,7 @@ public:
     enum class ColliderType
     {
         Capsule = 0,
-        OBB, 
+        OBB,
         Ray,
         Sphere,
 
@@ -40,21 +40,21 @@ public:
     };
 
     // コンストラクタ / デストラクタ
-    CollisionBase(ICollisionListener*   pListener,
-        const D3DXVECTOR3&  syncPosition,
+    CollisionBase(ICollisionListener* pListener,
+        const D3DXVECTOR3& syncPosition,
         ColliderTag         tag,
-        const D3DXVECTOR3&  localOffset = D3DXVECTOR3(0.0f, 0.0f, 0.0f)
+        const D3DXVECTOR3& localOffset = D3DXVECTOR3(0.0f, 0.0f, 0.0f)
     );
     virtual ~CollisionBase() = default;
 
     /*****************************************************************************************
-    * @brief     形状タイプを取得 
+    * @brief     形状タイプを取得
     *****************************************************************************************/
     virtual ColliderType GetType() const = 0;
 
 
     /*****************************************************************************************
-    * @brief     当たり判定の主を設定 
+    * @brief     当たり判定の主を設定
     *****************************************************************************************/
     void SetListener(ICollisionListener* obj) { m_pListener = obj; }
 
@@ -67,7 +67,7 @@ public:
 
 
     /*****************************************************************************************
-    * @brief     当たり判定の形状を設定 
+    * @brief     当たり判定の形状を設定
     *****************************************************************************************/
     void SetTag(ColliderTag tag) { m_Tag = tag; }
 
@@ -98,10 +98,10 @@ public:
     void SetHit(bool isHit) { m_IsHit = isHit; }
 
 
-        /*****************************************************************************************
-    * @brief    当たり判定の主のタグを取得
-    * @return   当たり判定の主のタグ
-    *****************************************************************************************/
+    /*****************************************************************************************
+* @brief    当たり判定の主のタグを取得
+* @return   当たり判定の主のタグ
+*****************************************************************************************/
 
     bool GetHit() const { return m_IsHit; }
 
