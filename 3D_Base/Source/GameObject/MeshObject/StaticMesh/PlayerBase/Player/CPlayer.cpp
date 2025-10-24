@@ -187,7 +187,6 @@ void CPlayer::OnCollision(CollisionBase* pOtherCollider)
 	switch (pOtherCollider->GetTag())
 	{
 	case CollisionBase::ColliderTag::Player:
-		std::cout << "Player‚ÉƒqƒbƒgI" << std::endl;
 
 		break;
 	}
