@@ -38,8 +38,9 @@ public:
 	//--- キーバインドを設定する関数 ---.
 	void SetPlayerInputBinding(int index) const;
 
-	// 【追加】ICollisionListener の実装
+	// ICollisionListener の実装
 	void OnCollision(CollisionBase* pOtherCollider) override;
+
 private:
 
 };

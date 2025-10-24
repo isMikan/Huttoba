@@ -71,9 +71,9 @@ void CPlayerManager::LoadData()
 
 		std::shared_ptr<CollisionBase> collider =
 			CollisionDataFactory::CreateSphereForMesh(
-				player.get(),
-				mesh,
-				CollisionBase::ColliderTag::Player
+				player.get(),	//当たり判定の主
+				mesh,			//当たり判定用メッシュ
+				CollisionBase::ColliderTag::Player	//主のタグ
 			);
 
 		CollisionManager::GetInstance()->AddCollider(collider);
