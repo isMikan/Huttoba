@@ -10,7 +10,7 @@ class CPlayerState
 {
 public:
 	CPlayerState(CPlayerBase& pPlayer);
-	virtual ~CPlayerState();
+	virtual ~CPlayerState() = default;
 
 	//--- ó‘Ô‚ÌŠJn‚ÉŒÄ‚Ño‚·ŠÖ” ---.
 	virtual void Enter() = 0;

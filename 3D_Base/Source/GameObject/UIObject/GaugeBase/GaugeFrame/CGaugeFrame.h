@@ -2,12 +2,12 @@
 
 #include "GameObject/UIObject/GaugeBase/CGaugeBase.h"
 
-class CTimerGauge
+class CGaugeFrame
 	: public CGaugeBase
 {
 public:
-	CTimerGauge();
-	~CTimerGauge() override;
+	CGaugeFrame();
+	~CGaugeFrame() override;
 
 	//--- XVˆ— ---.
 	void Update() override;

@@ -134,6 +134,12 @@ public:
 		m_HitInfo.hitEvent = anim;
 	}
 
+	//ダウン状態の時間を取得と設定.
+	Gauge GetKnockdownTime() const { return m_KnockdownTime; }
+	void SetKnockdownTime(int remaining, int max) {
+		m_KnockdownTime.remaining = remaining; 
+		m_KnockdownTime.max = max; }
+
 	//移動しているかの所得と設定.
 	bool IsMoving() const { return m_IsMoving; }
 	void SetMoving(bool moving) { m_IsMoving = moving; }
@@ -152,7 +158,6 @@ public:
 		return (m_pActionState
 			&& dynamic_cast<T*>(m_pActionState.get()) != nullptr);
 	}
-
 	//複数のテンプレート.
 	template<typename... Ts>
 	//複数の条件に対応して結果を返す.
@@ -182,7 +187,8 @@ protected:
 	std::unique_ptr<CPlayerState>	m_pTurnState;		//回転.
 	std::unique_ptr<CPlayerState>	m_pActionState;		//行動.
 
-	HitInfo							m_HitInfo;			//攻撃を受けた情報.
+	HitInfo	m_HitInfo;			//攻撃を受けた情報.
+	Gauge	m_KnockdownTime;	//ダウン状態の時間を保存.
 
 	bool	m_IsMoving;			//移動しているか.
 	bool	m_IsRotating;		//回転しているか.
