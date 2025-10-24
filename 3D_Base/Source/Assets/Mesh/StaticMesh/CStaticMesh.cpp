@@ -443,7 +443,107 @@ void CStaticMesh::Release()
 	m_pDx9 = nullptr;
 }
 
-//===========================================================
+void CStaticMesh::DrawDebug(
+	const D3DXMATRIX& mWorld,
+	D3DXMATRIX& mView,
+	D3DXMATRIX& mProj,
+	LIGHT& Light,
+	D3DXVECTOR3& CamPos,
+	const D3DXVECTOR4& diffuse,
+	const D3DXVECTOR4& ambient,
+	const D3DXVECTOR4& specular)
+{
+	// シェーダのセット
+	m_pContext11->VSSetShader(m_pVertexShader.Get(), nullptr, 0);
+	m_pContext11->PSSetShader(m_pPixelShader.Get(), nullptr, 0);
+
+	// フレームコンスタントバッファ (CBUFFER_PER_FRAME) の更新とセット
+	D3D11_MAPPED_SUBRESOURCE pData;
+	if (SUCCEEDED(m_pContext11->Map(m_pCBufferPerFrame.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &pData)))
+	{
+		CBUFFER_PER_FRAME cb;
+		cb.CameraPos = D3DXVECTOR4(CamPos.x, CamPos.y, CamPos.z, 0.0f);
+		cb.vLightDir = D3DXVECTOR4(Light.vDirection.x, Light.vDirection.y, Light.vDirection.z, 0.0f);
+		D3DXVec4Normalize(&cb.vLightDir, &cb.vLightDir);
+		memcpy_s(pData.pData, pData.RowPitch, (void*)(&cb), sizeof(cb));
+		m_pContext11->Unmap(m_pCBufferPerFrame.Get(), 0);
+	}
+	ID3D11Buffer* pCBufferPerFrame[1] = { m_pCBufferPerFrame.Get() };
+	m_pContext11->VSSetConstantBuffers(2, 1, pCBufferPerFrame);
+	m_pContext11->PSSetConstantBuffers(2, 1, pCBufferPerFrame);
+
+	// メッシュコンスタントバッファ (CBUFFER_PER_MESH) の更新とセット
+	D3D11_MAPPED_SUBRESOURCE pMeshCData;
+	if (SUCCEEDED(m_pContext11->Map(m_pCBufferPerMesh.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &pMeshCData)))
+	{
+		CBUFFER_PER_MESH cb;
+		cb.mW = mWorld;
+		D3DXMatrixTranspose(&cb.mW, &cb.mW);
+		D3DXMATRIX mWVP = mWorld * mView * mProj;
+		D3DXMatrixTranspose(&mWVP, &mWVP);
+		cb.mWVP = mWVP;
+		memcpy_s(pMeshCData.pData, pMeshCData.RowPitch, (void*)(&cb), sizeof(cb));
+		m_pContext11->Unmap(m_pCBufferPerMesh.Get(), 0);
+	}
+	ID3D11Buffer* pCBufferPerMesh[1] = { m_pCBufferPerMesh.Get() };
+	m_pContext11->VSSetConstantBuffers(0, 1, pCBufferPerMesh);
+	m_pContext11->PSSetConstantBuffers(0, 1, pCBufferPerMesh);
+
+	// ラスタライザをワイヤーフレームに設定
+	CDirectX11::GetInstance()->SetRasterizerWireframe();
+
+	// 頂点/トポロジーのセット
+	m_pContext11->IASetInputLayout(m_pVertexLayout.Get());
+	m_pContext11->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	UINT stride = m_Model.pMesh->GetNumBytesPerVertex();
+	UINT offset = 0;
+	m_pContext11->IASetVertexBuffers(0, 1, m_pVertexBuffer.GetAddressOf(), &stride, &offset);
+
+	// 属性の数だけループして描画
+	for (DWORD No = 0; No < m_NumAttr; No++)
+	{
+		if (m_pMaterials[m_AttrID[No]].dwNumFace == 0) {
+			continue;
+		}
+		m_pContext11->IASetIndexBuffer(
+			m_ppIndexBuffer[No].Get(), DXGI_FORMAT_R32_UINT, 0);
+
+		// マテリアルコンスタントバッファをデバッグ色で上書き
+		D3D11_MAPPED_SUBRESOURCE pDataMat;
+		if (SUCCEEDED(
+			m_pContext11->Map(m_pCBufferPerMaterial.Get(),
+				0, D3D11_MAP_WRITE_DISCARD, 0, &pDataMat)))
+		{
+			CBUFFER_PER_MATERIAL cb;
+
+			// DrawDebugに渡されたデバッグ色を強制的に使用
+			cb.Diffuse = diffuse;
+			cb.Ambient = ambient;
+			cb.Specular = specular;
+
+			memcpy_s(pDataMat.pData, pDataMat.RowPitch,
+				(void*)&cb, sizeof(cb));
+
+			m_pContext11->Unmap(m_pCBufferPerMaterial.Get(), 0);
+		}
+
+		ID3D11Buffer* pCBuffer[1] = { m_pCBufferPerMaterial.Get() };
+		m_pContext11->VSSetConstantBuffers(1, 1, pCBuffer);
+		m_pContext11->PSSetConstantBuffers(1, 1, pCBuffer);
+
+		// デバッグ描画ではテクスチャを貼らないため、テクスチャをNULLにする。
+		ID3D11ShaderResourceView* pNothing[1] = { 0 };
+		m_pContext11->PSSetShaderResources(0, 1, pNothing);
+
+
+		// プリミティブ(ポリゴン)をレンダリング.
+		m_pContext11->DrawIndexed(
+			m_pMaterials[m_AttrID[No]].dwNumFace * 3, 0, 0);
+	}
+
+	// ラスタライザをソリッド（通常描画）に戻す
+	CDirectX11::GetInstance()->SetRasterizerSolid();
+}//===========================================================
 //	HLSLファイルを読み込みシェーダを作成する.
 //	HLSL: High Level Shading Language の略.
 //===========================================================

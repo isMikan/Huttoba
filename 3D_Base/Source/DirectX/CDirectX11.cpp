@@ -16,6 +16,8 @@ CDirectX11::CDirectX11()
 
 	, m_pAlphaBlendOn			( nullptr )
 	, m_pAlphaBlendOff			( nullptr )
+	, m_pRasterStateSolid		( nullptr )
+	, m_pRasterStateWireframe	( nullptr )
 {
 	Create(CCreateWindow::GetInstance()->GetHundle());
 }
@@ -180,27 +182,33 @@ HRESULT CDirectX11::CreateDeviceAndSwapChain(
 HRESULT CDirectX11::CreateRasterizer()
 {
 	D3D11_RASTERIZER_DESC rdc;
-	ZeroMemory( &rdc, sizeof( rdc ) );
-	rdc.FillMode = D3D11_FILL_SOLID;//塗りつぶし（ソリッド）.
+	ZeroMemory(&rdc, sizeof(rdc));
 
-	//カリングの設定.
-	//D3D11_CULL_BACK	:背面を描画しない.
-	//D3D11_CULL_FRONT	:正面を描画しない.
-	//D3D11_CULL_NONE	:カリングを切る（正背面を描画する）.
-	rdc.CullMode = D3D11_CULL_NONE;
-
-	//ポリゴンの表裏を決定するフラグ.
-	//TRUE	:左回りなら前向き。右回りなら後ろ向き。
-	//FALSE	:逆になる.
+	//	ソリッド（通常描画用）の作成
+	rdc.FillMode = D3D11_FILL_SOLID;
+	rdc.CullMode = D3D11_CULL_NONE; // あなたの元の設定
 	rdc.FrontCounterClockwise = FALSE;
-
-	//距離についてのクリッピング有効.
 	rdc.DepthClipEnable = FALSE;
 
-	ID3D11RasterizerState* pRs = nullptr;
-	m_pDevice11->CreateRasterizerState( &rdc, &pRs );
-	m_pContext11->RSSetState( pRs );
-	SAFE_RELEASE( pRs );
+	// ソリッドステートをメンバ変数に保存
+	if (FAILED(m_pDevice11->CreateRasterizerState(&rdc, m_pRasterStateSolid.GetAddressOf())))
+	{
+		return E_FAIL;
+	}
+
+	// ワイヤーフレーム（デバッグ用）の作成
+	rdc.FillMode = D3D11_FILL_WIREFRAME; // ★ここを変更
+	// デバッグ時は裏面も見せるため、CullMode=D3D11_CULL_NONEが望ましい
+	rdc.CullMode = D3D11_CULL_NONE;
+
+	// ワイヤーフレームステートをメンバ変数に保存
+	if (FAILED(m_pDevice11->CreateRasterizerState(&rdc, m_pRasterStateWireframe.GetAddressOf())))
+	{
+		return E_FAIL;
+	}
+
+	// 初期状態はソリッドをセット
+	m_pContext11->RSSetState(m_pRasterStateSolid.Get());
 
 	return S_OK;
 }

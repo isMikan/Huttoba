@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Collision/Collider/CollisionBase.h" 
+#include "GameObject/MeshObject/StaticMesh/CStaticMeshObject.h" // ObjectColor型を使用するため
 
 /***************************************
  * 球体の衝突情報クラス。
@@ -41,14 +42,27 @@ public:
     * 
     * @return   当たり判定識別のタグを返す   
     *****************************************************************************************/
-
     virtual ColliderType GetType() const override {
         return ColliderType::Sphere;
     }
+
+    // 【追加】描画用メッシュのポインタを受け取る
+    void AttachDebugMesh(std::shared_ptr<CStaticMesh> pMesh);
+
+    // 【追加】描画関数 (CStaticMeshObject::Drawと同じシグネチャを使用)
+    void DrawDebug(
+        D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAMERA& Camera) const;
+
 
 
 private:
     // 球体固有のデータ
     float m_Radius;
+
+    // デバッグ描画用のメッシュ
+    std::shared_ptr<CStaticMesh> m_pDebugMesh;
+
+    // デバッグ描画用の色情報
+    CStaticMeshObject::ObjectColor m_DebugColor;
 
 };
