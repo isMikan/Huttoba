@@ -21,6 +21,7 @@ Fun::Fun()
 	, m_IsThrow		( false )
 {
 	Init();
+
 }
 
 Fun::~Fun()
@@ -30,7 +31,6 @@ Fun::~Fun()
 void Fun::Init()
 {
 	AttachMesh(AssetManager::Mesh(StaticMeshList::Fun));
-	CreateBSphereForMesh(AssetManager::Mesh(StaticMeshList::Fun));
 
 	SetPosition(1, 15, 0);
 

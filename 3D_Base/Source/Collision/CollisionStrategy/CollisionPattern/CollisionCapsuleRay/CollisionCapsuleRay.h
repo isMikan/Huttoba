@@ -7,8 +7,8 @@ public:
     CollisionCapsuleRay() {}
     ~CollisionCapsuleRay() {}
 
-    CollisionResult CheckCollision(
+    bool CheckCollision(
         const CollisionBase* colA,
-        const CollisionBase* colB) const override;
+        const CollisionBase* colB) const = 0;
 };
 

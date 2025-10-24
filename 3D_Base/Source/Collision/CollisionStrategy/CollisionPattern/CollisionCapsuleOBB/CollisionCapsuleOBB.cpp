@@ -1,13 +1,12 @@
 #include "stdafx.h"
 #include "CollisionCapsuleOBB.h"
 
-CollisionResult CollisionCapsuleOBB::CheckCollision(
+bool CollisionCapsuleOBB::CheckCollision(
     const CollisionBase* colA,
     const CollisionBase* colB) const
 {
-    CollisionResult result;
 
-    // TODO: Capsule vs OBB 判定アルゴリズムを実装
+    //Capsule vs OBB 判定アルゴリズムを実装
 
-    return result;
+    return false;
 }

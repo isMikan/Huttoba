@@ -23,9 +23,6 @@ public:
 	void Draw(
 		D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAMERA& Camera);
 
-	//--- 衝突判定関数 ---.
-	void Collision();
-
 	//今は実際使うかわからないのでコメント化.
 	//エフェクトを表示するための関数.
 	//void ManageEffectLaser(static::EsHandle hEffect);

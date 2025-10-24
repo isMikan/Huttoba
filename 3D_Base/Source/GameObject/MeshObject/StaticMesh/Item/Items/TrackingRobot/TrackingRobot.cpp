@@ -23,7 +23,6 @@ TrackingRobot::~TrackingRobot()
 void TrackingRobot::Init()
 {
 	AttachMesh(AssetManager::Mesh(StaticMeshList::TrackingRobot));
-	CreateBSphereForMesh(AssetManager::Mesh(StaticMeshList::TrackingRobot));
 
 	//SetPosition(4, 5, 2);
 	SetPosition(0, 15, 0);

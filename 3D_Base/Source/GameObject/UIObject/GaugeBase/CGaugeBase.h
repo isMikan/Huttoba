@@ -2,6 +2,8 @@
 
 #include "GameObject/UIObject/CUIObject.h"
 
+#include "GameObject/MeshObject/StaticMesh/PlayerBase/PlayerManager/CPlayerManager.h"
+
 class CGaugeBase
 	: public CUIObject
 {
@@ -17,12 +19,16 @@ public:
 	CGaugeBase();
 	virtual ~CGaugeBase() override;
 
+	//--- 初期化処理 ---.
+	virtual void Init();
 	//--- 更新処理 ---.
 	virtual void Update() override;
-
 	//--- 描画処理 ---.
 	virtual void Draw(
 		D3DXMATRIX& View, D3DXMATRIX& Proj);
+
+	//--- プレイヤーイベントの通知受け取りに加入 ---.
+	void SubscribePlayerEvent(CPlayerBase* player);
 
 	//ワールド座標を設定する関数.
 	void SetWorldPos(D3DXVECTOR3 pos) { m_WorldPos = pos; }
@@ -40,11 +46,17 @@ protected:
 		const D3DXMATRIX& proj,
 		const D3D11_VIEWPORT& vp);
 
+	//使用しない override 関数(これ以降も使用しない).
 	void Draw() override final;
 
 protected:
-	ComPtr<ID3D11DeviceContext> m_pContext11;	//コンテキスト.
+	ComPtr<ID3D11DeviceContext>		m_pContext11;		//コンテキスト.
+
+	std::unique_ptr<CPlayerManager>	m_pPlayerManager;	//プレイヤー.
 
 	D3DXVECTOR3		m_WorldPos;		//世界座標.
 	D3DXVECTOR3		m_OffsetPos;	//調整座標.
+
+	bool		m_IsDisplayGauge;	//ゲージを表示するか.
+
 };

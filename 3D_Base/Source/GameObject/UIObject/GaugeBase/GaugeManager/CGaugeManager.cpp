@@ -1,8 +1,11 @@
 #include "CGaugeManager.h"
 
 CGaugeManager::CGaugeManager()
-	: m_pGauge		()
+	: m_pGauge				()
+
+	, m_IsSubscribe			( false )
 {
+	Create();
 }
 
 CGaugeManager::~CGaugeManager()
@@ -11,10 +14,22 @@ CGaugeManager::~CGaugeManager()
 
 void CGaugeManager::Create()
 {
+	//ゲージのインスタンス作成.
+	m_pGauge.clear();
+	m_pGauge.resize(Player_Max);
+	for (auto& gauge : m_pGauge)
+	{
+		gauge = std::make_unique<CGaugeBase>();
+	}
 }
 
 void CGaugeManager::LoadData()
 {
+	for (auto& gauge : m_pGauge)
+	{
+		//スプライトを設定.
+		gauge->AttachSprite(AssetManager::Sprite(Sprite2DList::Gauge));
+	}
 }
 
 void CGaugeManager::Destroy()
@@ -22,12 +37,38 @@ void CGaugeManager::Destroy()
 }
 
 //--- 更新処理 ---.
-void CGaugeManager::Update()
+void CGaugeManager::Update(CPlayerManager* playerManager)
 {
+	for (auto& gauge : m_pGauge)
+	{
+		gauge->Update();
+
+		if (!m_IsSubscribe)
+		{
+			for (int pNo = 0; pNo < Player_Max; pNo++)
+			{
+				CPlayerBase* player = playerManager->GetPlayer(pNo);
+				if (!player) continue;
+				m_pGauge[pNo]->SubscribePlayerEvent(player);
+			}
+			m_IsSubscribe = true;
+		}
+
+		for (int pNo = 0; pNo < Player_Max; pNo++)
+		{
+			CPlayerBase* player = playerManager->GetPlayer(pNo);
+			if (!player) continue;
+			m_pGauge[pNo]->SetWorldPos(player->GetPosition());
+		}
+	}
 }
 
 //--- 描画処理 ---.
 void CGaugeManager::Draw(
 	D3DXMATRIX& View, D3DXMATRIX& Proj)
 {
+	for (auto& gauge : m_pGauge)
+	{
+		gauge->Draw(View, Proj);
+	}
 }

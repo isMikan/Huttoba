@@ -2,6 +2,8 @@
 #include "Assets/Effect/CEffect.h"
 #include "Assets/Sound/CSoundManager.h"
 #include "Item/ItemManager/ItemManager.h"
+#include "Collision/CollisionStrategy/CollisionStrategyFactory/CollisionStrategyFactory.h"
+#include "Collision/CollisionStrategy/CollisionPattern/CollisionSphereSphere/CollisionStrategySphereSphere.h"
 
 CSceneGameMain::CSceneGameMain( HWND hWnd)
 	: m_hWnd			( hWnd )
@@ -12,11 +14,13 @@ CSceneGameMain::CSceneGameMain( HWND hWnd)
 
 	, m_pUIMap			()
 
-	, m_pGauge			()
+	, m_pExplosiones	()
+
+	, m_pShadowManager	()
+
+	, m_pGaugeManager	()
 
 	, m_pPlayerManager	()
-
-	, m_pExplosiones	()
 
 	, m_pGroundManager	()
 
@@ -48,8 +52,14 @@ HRESULT CSceneGameMain::Create()
 	//カメラのインスタンス作成.
 	m_pCamera = std::make_unique<CCamera>();
 
-	//ゲージのインスタンス作成.
-	m_pGauge = std::make_unique<CGaugeBase>();
+	//影マネージャーのインスタンス作成
+	m_pShadowManager = std::make_unique<CShadowManager>();
+
+	//ゲージマネージャーのインスタンス作成.
+	m_pGaugeManager = std::make_unique<CGaugeManager>();
+
+	//地面マネージャークラスのインスタンス作成.
+	m_pGroundManager = std::make_unique<CGroundManager>();
 
 	//アイテムマネージャーの作成
 	m_pItemManager = std::make_unique<ItemManager>();
@@ -60,10 +70,6 @@ HRESULT CSceneGameMain::Create()
 	CreateUI();
 	CteateExplosion();
 	CreateCharactor();
-
-	//地面マネージャークラスのインスタンス作成.
-	m_pGroundManager = std::make_unique<CGroundManager>();
-	m_pGroundManager->Create();
 
 	return S_OK;
 }
@@ -85,15 +91,20 @@ HRESULT CSceneGameMain::LoadData()
 		exp->AttachSprite(AssetManager::Sprite(Sprite3DList::Explosion));
 	}
 
+
 	//Pモンスプライトを設定
 	for (auto& UI : m_pUIMap)
 	{
 		UI.second->AttachSprite(AssetManager::Sprite(Sprite2DList::PMon));
 	}
 
-	m_pGauge->AttachSprite(AssetManager::Sprite(Sprite2DList::Gauge));
+	//影マネージャーの読み込み.
+	m_pShadowManager->LoadData();
 
-	//プレイヤー.
+	//ゲージマネージャーの読み込み.
+	m_pGaugeManager->LoadData();
+
+	//プレイヤーマネージャーの読み込み.
 	m_pPlayerManager->LoadData();
 
 	//地面マネージャーの読み込み.
@@ -101,6 +112,14 @@ HRESULT CSceneGameMain::LoadData()
 
 	m_pItemManager->LoadData();
 	m_pDrawCollision->LoadData();
+
+
+	//当たり判定の作成
+	CollisionStrategyFactory::GetInstance()->RegisterStrategy(
+		CollisionBase::ColliderType::Sphere,
+		CollisionBase::ColliderType::Sphere,
+		std::make_unique<CollisionStrategySphereSphere>()
+	);
 
 	return S_OK;
 }
@@ -130,6 +149,8 @@ void CSceneGameMain::Update()
 
 	m_pItemManager->Update(m_pPlayerManager);
 
+	CollisionManager::GetInstance()->Update();
+
 	//爆発
 	for (auto& exp : m_pExplosiones)
 	{
@@ -150,7 +171,8 @@ void CSceneGameMain::Update()
 		UI.second->Update();
 	}
 
-	m_pGauge->Update();
+	m_pShadowManager->Update(m_pPlayerManager.get(), m_pItemManager.get());
+	m_pGaugeManager->Update(m_pPlayerManager.get());
 
 	//レーザーの管理
 	ManageEffectLaser();
@@ -160,6 +182,7 @@ void CSceneGameMain::Update()
 	{
 		SetNextScene(Result);
 	}
+
 }
 
 void CSceneGameMain::Draw()
@@ -209,7 +232,6 @@ void CSceneGameMain::Draw()
 
 	//プレイヤーの描画.
 	m_pPlayerManager->Draw(mView, mProj, light, camera);
-	m_pPlayerManager->Collision();
 
 	m_pItemManager->Draw(mView, mProj, light, camera);
 	m_pDrawCollision->Draw(mView, mProj, light, camera);
@@ -226,11 +248,14 @@ void CSceneGameMain::Draw()
 		//UI.second->Draw();
 	}
 
-	m_pGauge->SetWorldPos(m_pPlayerManager->GetPlayer(0)->GetPosition());
-	m_pGauge->Draw(mView, mProj);
+	m_pGaugeManager->Draw(mView, mProj);
 
 	//やりたいことが終わったので、深度テストを有効にしておく
 	m_pDx11->SetDepth(true);
+
+	m_pDx11->SetAlphaBlend(true);
+	m_pShadowManager->Draw(mView, mProj);
+	m_pDx11->SetAlphaBlend(false);
 
 	for (auto& exp : m_pExplosiones)
 	{
@@ -281,9 +306,8 @@ HRESULT CSceneGameMain::CteateExplosion()
 
 HRESULT CSceneGameMain::CreateCharactor()
 {
-	//キャラクター関連のインスタンス作成
+	//プレイヤーマネージャーのインスタンス作成.
 	m_pPlayerManager = std::make_unique<CPlayerManager>();
-	m_pPlayerManager->Create();
 
 	return S_OK;
 }

@@ -11,6 +11,8 @@
 
 #include "Input//CInputManager.h"
 
+#include "Collision/CollisionData/CollisionDataFactory/CollisionDataFactory.h" 
+
 CPlayerManager::CPlayerManager()
 	: m_pPlayers	()
 
@@ -63,8 +65,18 @@ void CPlayerManager::LoadData()
 		//左手のスタティックメッシュを設定.
 		player->GetPlayerLeftHand().
 			AttachMesh(AssetManager::Mesh(StaticMeshList::PHand));
-		//バウンディングスフィアの作成
-		player->CreateBSphereForMesh(AssetManager::Mesh(StaticMeshList::BSphere));
+
+		// 新しい CollisionDataFactory を使ったコリジョンデータの生成と登録
+		std::shared_ptr<CStaticMesh> mesh = AssetManager::Mesh(StaticMeshList::BSphere); 
+
+		std::shared_ptr<CollisionBase> collider =
+			CollisionDataFactory::CreateSphereForMesh(
+				player.get(),
+				mesh,
+				CollisionBase::ColliderTag::Player
+			);
+
+		CollisionManager::GetInstance()->AddCollider(collider);
 	}
 }
 
@@ -84,7 +96,6 @@ void CPlayerManager::Update()
 		player->GetPlayerRightHand().Update();	//右手.
 		player->GetPlayerLeftHand().Update();	//左手.
 	}
-	Collision();
 }
 
 //--- 描画関数 ---.
@@ -97,48 +108,9 @@ void CPlayerManager::Draw(D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAME
 		player->GetPlayerHead().Draw( View, Proj, Light, Camera );		//頭.
 		player->GetPlayerRightHand().Draw( View, Proj, Light, Camera );	//右手.
 		player->GetPlayerLeftHand().Draw( View, Proj, Light, Camera );	//左手.
-
-		//当たり判定の中心座標を更新する
-		player->UpdateBSpherePos();
 	}
 }
 
-//--- 衝突判定関数 ---.
-void CPlayerManager::Collision()
-{
-	//攻撃を受けるプレイヤー.
-	for (int hNo = 0;hNo < Player_Max;hNo++)
-	{
-		//攻撃するプレイヤー.
-		for (int aNo = 0;aNo < Player_Max;aNo++)
-		{
-			if (hNo == aNo) continue;
-
-			if (m_pPlayers[aNo]->IsAnyActionState<CPlayerHandAttackState>()
-				&& m_pPlayers[aNo]->GetBSphere()->IsHit(*m_pPlayers[hNo]->GetBSphere()))
-			{
-				switch(hNo)
-				{
-				case 2:
-					m_pPlayers[hNo]->SetHitInfo(
-						m_pPlayers[aNo]->GetPosition(), true, CPlayerBase::HitEvent::Pushed);
-					break;
-				case 3:
-					m_pPlayers[hNo]->SetHitInfo(
-						m_pPlayers[aNo]->GetPosition(), m_pPlayers[aNo]->GetPosition(), 7.f, true, CPlayerBase::HitEvent::Knockback);
-					break;
-				default:
-					m_pPlayers[hNo]->SetHitInfo(
-						m_pPlayers[aNo]->GetPosition(), m_pPlayers[aNo]->GetPosition(), 10.f, true, CPlayerBase::HitEvent::Knockdown);
-					break;
-				}
-
-				m_pPlayers[aNo]->SetHitInfo(
-					m_pPlayers[aNo]->GetPosition(), true, CPlayerBase::HitEvent::None);
-			}
-		}
-	}
-}
 
 //エフェクトを表示するための関数.
 //void CPlayerManager::ManageEffectLaser(static::EsHandle hEffect)
@@ -210,6 +182,7 @@ D3DXVECTOR3 CPlayerManager::SetDefaultPosition(int index)
 		{ -5.f, 0.f, 5.f },
 		//プレイヤー2.
 		{ 5.f, 0.f, 5.f },
+
 		//プレイヤー3.
 		{ -5.f, 0.f, 10.f },
 		//プレイヤー4.

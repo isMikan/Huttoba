@@ -3,6 +3,8 @@
 CGroundManager::CGroundManager()
 	: m_pGrounds			()
 {
+	Create();
+
 	m_FallTime = { 10.f, 20.f, 30.f, 99.f };
 }
 
