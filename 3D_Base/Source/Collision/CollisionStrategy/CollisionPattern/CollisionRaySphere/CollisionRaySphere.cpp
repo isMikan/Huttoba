@@ -1,13 +1,12 @@
 #include "stdafx.h"
 #include "CollisionRaySphere.h"
 
-CollisionResult CollisionRaySphere::CheckCollision(
+bool CollisionRaySphere::CheckCollision(
     const CollisionBase* colA,
     const CollisionBase* colB) const
 {
-    CollisionResult result;
 
-    // TODO: Ray vs Sphere 判定アルゴリズムを実装
+    // Ray vs Sphere 判定アルゴリズムを実装
 
-    return result;
+    return false;
 }

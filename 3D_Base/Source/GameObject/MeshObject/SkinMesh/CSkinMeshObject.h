@@ -2,7 +2,6 @@
 
 #include "GameObject/CGameObject.h"
 #include "Assets/Mesh/SkinMesh/CSkinMesh.h"
-#include "Collision/CBoundingSphere.h"
 
 /************************************************************
 *	スキンメッシュオブジェクトクラス.
@@ -23,22 +22,7 @@ public:
 	//メッシュを切り離す.
 	void DetachMesh();
 
-	//バウンディングスフィア取得
-	CBoundingSphere* GetBSphere() const {
-		return m_pBSphere;
-	}
-	//モデルに合わせたバウンディングスフィア作成のラッパー関数
-	HRESULT CreateBSphereForMesh(const std::shared_ptr<CStaticMesh> pMesh) {
-		return m_pBSphere->CreateSphereForMesh(pMesh);
-	}
-	//バウンディングスフィアをオブジェクト位置に合わせる
-	//※モデルの原点が中心の場合を想定
-	void UpdateBSpherePos() {
-		m_pBSphere->SetPosition(m_vPosition);
-	}
-
 protected:
 	std::shared_ptr<CSkinMesh>		m_pMesh;
-	CBoundingSphere*	m_pBSphere;
 	LPD3DXANIMATIONCONTROLLER	m_pAnimCtrl;
 };

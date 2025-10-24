@@ -2,7 +2,6 @@
 
 #include "GameObject/CGameObject.h"
 #include "Assets/Mesh/StaticMesh/CStaticMesh.h"
-#include "Collision/CBoundingSphere.h"
 
 #include "GameObject/SpriteObject/Shadow/CShadow.h"
 
@@ -37,24 +36,6 @@ public:
 	void DetachMesh(){
 		m_pMesh = nullptr;
 	}
-	//バウンディングスフィア取得
-	CBoundingSphere* GetBSphere() const {
-		return m_pBSphere;
-	}
-	//モデルに合わせたバウンディングスフィア作成のラッパー関数
-	HRESULT CreateBSphereForMesh(const std::shared_ptr<CStaticMesh> pMesh) {
-		return m_pBSphere->CreateSphereForMesh(pMesh);
-	}
-	//バウンディングスフィアをオブジェクト位置に合わせる
-	//※モデルの原点が中心の場合を想定
-	void UpdateBSpherePos() {
-		m_pBSphere->SetPosition(m_vPosition + D3DXVECTOR3(0.f,5.f,0.f));
-	}
-
-	//バウンディングスフィアをオブジェクト位置に合わせる
-	void UpdateBSpherePos(D3DXVECTOR3 offset) {
-		m_pBSphere->SetPosition(m_vPosition + offset + + D3DXVECTOR3(0.f, 5.f, 0.f));
-	}
 
 	//オブジェクトの色を設定する関数.
 	void SetObjectColor(
@@ -71,7 +52,6 @@ public:
 
 protected:
 	std::shared_ptr<CStaticMesh>	m_pMesh;
-	CBoundingSphere*		m_pBSphere;
 
 	ObjectColor				m_ObjColor;		//オブジェクトの色.
 };

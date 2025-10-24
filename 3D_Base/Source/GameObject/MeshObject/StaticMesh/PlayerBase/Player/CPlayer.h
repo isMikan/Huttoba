@@ -3,6 +3,8 @@
 #include "Input/CInput.h"
 
 #include "GameObject/MeshObject/StaticMesh/PlayerBase/CPlayerBase.h"
+#include "Collision/CollisionListener/ICollisionListener.h" 
+#include "Collision/Collider/CollisionBase.h"
 
 /**************************************************
 *	サイズ後々消す(メタセコイアでアイテム作るとき参考にしてください)
@@ -17,7 +19,7 @@
 *	プレイヤークラス.
 **/
 class CPlayer
-	: public CPlayerBase	//プレイヤーベースクラスを継承.
+	: public CPlayerBase,public ICollisionListener
 {
 
 public:
@@ -36,6 +38,8 @@ public:
 	//--- キーバインドを設定する関数 ---.
 	void SetPlayerInputBinding(int index) const;
 
+	// 【追加】ICollisionListener の実装
+	void OnCollision(CollisionBase* pOtherCollider) override;
 private:
 
 };

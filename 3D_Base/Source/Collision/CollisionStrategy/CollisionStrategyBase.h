@@ -1,6 +1,5 @@
 #pragma once
 #include "Collision/Collider/CollisionBase.h"
-#include "Collision/CollisionResult/CollisionResult.h"
 
 //=====================================
 // CollisionStrategyBase
@@ -16,14 +15,7 @@ public:
 	virtual ~CollisionStrategyBase() = default;
 
 	// è’ìÀîªíËä÷êî
-	virtual CollisionResult CheckCollision(
+	virtual bool CheckCollision(
 		const CollisionBase* colA,
 		const CollisionBase* colB) const = 0;
-
-	// è’ìÀÇµÇΩÇ©Çï‘Ç∑ä÷êî
-	bool IsCollide(const CollisionBase* colA, const CollisionBase* colB) const
-	{
-		if (!colA || !colB) return false;
-		return CheckCollision(colA, colB).IsHit;
-	}
 };

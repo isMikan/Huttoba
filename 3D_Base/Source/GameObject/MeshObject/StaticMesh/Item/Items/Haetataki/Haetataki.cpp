@@ -64,7 +64,6 @@ Haetataki::~Haetataki()
 void Haetataki::Init()
 {
 	AttachMesh(AssetManager::Mesh(StaticMeshList::Haetataki));
-	CreateBSphereForMesh(AssetManager::Mesh(StaticMeshList::BSphere));
 
 	SetPosition(INITAL_POS_X, INITAL_POS_Y, INITAL_POS_Z);
 	SetRotation(INITAL_ROT_X, INITAL_ROT_Y, INITAL_ROT_Z);

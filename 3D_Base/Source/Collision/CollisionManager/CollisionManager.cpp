@@ -1,73 +1,86 @@
+#include "stdafx.h"
 #include "CollisionManager.h"
-#include "Collision/Collider/CollisionBase.h"
-#include "Collision/CollisionResult/CollisionResult.h"
-#include "Collision/CollisionListener/ICollisionListener.h"
-#include "Collision/CollisionStrategy/CollisionStrategyBase.h"
-#include "Collision/CollisionStrategy/CollisionStrategyFactory/CollisionStrategyFactory.h"
-
 #include <algorithm>
+#include <iostream> // デバッグ用
+#include "Collision/CollisionStrategy/CollisionStrategyFactory/CollisionStrategyFactory.h"
+#include "Collision/CollisionStrategy/CollisionStrategyBase.h"
 
-// Collider登録
-void CollisionManager::AddCollider(CollisionBase* col)
+void CollisionManager::AddCollider(std::shared_ptr<CollisionBase> pCollider)
 {
-    if (!col) return;
-
-    // 重複登録防止
-    auto it = std::find(m_Colliders.begin(), m_Colliders.end(), col);
-    if (it == m_Colliders.end())
-        m_Colliders.push_back(col);
-}
-
-// Collider削除
-void CollisionManager::RemoveCollider(CollisionBase* col)
-{
-    if (!col) return;
-
-    auto it = std::find(m_Colliders.begin(), m_Colliders.end(), col);
-    if (it != m_Colliders.end())
-        m_Colliders.erase(it);
-}
-
-// 衝突判定実行
-void CollisionManager::CheckCollisions()
-{
-    //呼び出しが多いのでキャッシュ
-    const size_t Colliders = m_Colliders.size();
-
-    for (size_t i = 0; i < Colliders; ++i)
+    if (pCollider)
     {
-        //ColAを設定。
-        CollisionBase* colA = m_Colliders[i];
-        if (!colA || !colA->GetActive()) continue;
+        m_Colliders.push_back(pCollider);
+    }
+}
 
-        for (size_t j = i + 1; j < Colliders; ++j)
+void CollisionManager::RemoveCollider(CollisionBase* pColliderToRemove)
+{
+    if (!pColliderToRemove) return;
+
+    // 生ポインタが指す要素をリストからスマートポインタの比較で検索し、削除する
+    m_Colliders.erase(
+        std::remove_if(m_Colliders.begin(), m_Colliders.end(),
+            [pColliderToRemove](const std::shared_ptr<CollisionBase>& pCollider) {
+                return pCollider.get() == pColliderToRemove;
+            }),
+        m_Colliders.end());
+}
+
+// 衝突判定ロジック
+bool CollisionManager::CheckCollision(CollisionBase* a, CollisionBase* b)
+{
+    //  StrategyFactoryから判定ストラテジーを取得
+    CollisionStrategyBase* strategy = CollisionStrategyFactory::GetInstance()->GetStrategy(
+        a->GetType(),
+        b->GetType()
+    );
+
+    // 判定ロジックが存在しない（未対応の組み合わせ）場合はスキップ
+    if (strategy == nullptr){return false;}
+
+    // 判定ロジックが存在する場合は、StrategyオブジェクトのCheckCollisionを呼び出す
+    return strategy->CheckCollision(a, b);
+
+}
+
+void CollisionManager::Update()
+{
+    //判定の位置同期
+    for (const auto& pCollider : m_Colliders)
+    {
+        if (pCollider->GetActive())
         {
-            //ColBを設定。
-            CollisionBase* colB = m_Colliders[j];
-            if (!colB || !colB->GetActive()) continue;
-            if (colA->GetOwner() == colB->GetOwner()) continue;
+            // 親GameObjectの現在位置に追従
+            pCollider->UpdateWorldPosition(); 
+            // ヒットフラグをリセット(一旦)
+            pCollider->SetHit(false);
+        }
+    }
 
-            // Strategyを取得
-            auto strategy = CollisionStrategyFactory::GetInstance()->GetStrategy(
-                colA->GetType(), colB->GetType());
-            if (!strategy) continue;
+    // 衝突判定
+    for (size_t i = 0; i < m_Colliders.size(); ++i)
+    {
+        //この判定はアクティブか？
+        CollisionBase* colliderA = m_Colliders[i].get();
+        if (!colliderA->GetActive()) continue;
 
-            // 衝突判定
-            CollisionResult result = strategy->CheckCollision(colA, colB);
-            if (!result.IsHit) continue;
+        for (size_t j = i + 1; j < m_Colliders.size(); ++j)
+        {
+            //この判定はアクティブか？
+            CollisionBase* colliderB = m_Colliders[j].get();
+            if (!colliderB->GetActive()) continue;
 
-            // Listener通知
-            if (auto listenerA = colA->GetOwner())
+            // 判定実行と応答
+            if (CheckCollision(colliderA, colliderB))
             {
-                listenerA->OnCollision(colB, result);
-            }
+                // コリジョン応答 (リスナーを呼び出す)
+                colliderA->InvokeCollision(colliderB);
+                colliderB->InvokeCollision(colliderA);
 
-            if (auto listenerB = colB->GetOwner())
-                listenerB->OnCollision(colA, result);
+                // ヒットフラグを設定
+                colliderA->SetHit(true);
+                colliderB->SetHit(true);
 
-            if (result.IsHit)
-            {
-                std::cout << "Hit" << std::endl;
             }
         }
     }

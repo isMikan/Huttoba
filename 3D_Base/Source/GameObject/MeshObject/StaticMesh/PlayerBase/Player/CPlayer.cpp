@@ -180,3 +180,15 @@ void CPlayer::SetPlayerInputBinding(int index) const
 	CInputManager::BindKey(Action::ToggleItem,	
 		InputBinding(InputDevice::GamePad, CXInput::A), m_PlayerID);	//拾う/捨てる.
 }
+
+void CPlayer::OnCollision(CollisionBase* pOtherCollider)
+{
+	// 衝突相手のタグをチェックし、応答を切り替える
+	switch (pOtherCollider->GetTag())
+	{
+	case CollisionBase::ColliderTag::Player:
+		std::cout << "Playerにヒット！" << std::endl;
+
+		break;
+	}
+}

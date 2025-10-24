@@ -20,7 +20,6 @@
     <ClCompile Include="Source\Assets\Sprite\Sprite3D\CSprite3D.cpp" />
     <ClCompile Include="Source\Camera\CCamera.cpp" />
     <ClCompile Include="Source\Assets\Sprite\SpriteManager.cpp" />
-    <ClCompile Include="Source\Collision\CBoundingSphere.cpp" />
     <ClCompile Include="Source\DebugText\CDebugText.cpp" />
     <ClCompile Include="Source\DirectX\CDirectX11.cpp" />
     <ClCompile Include="Source\DirectX\CDirectX9.cpp" />
@@ -106,6 +105,8 @@
     <ClCompile Include="Source\GameObject\UIObject\GaugeBase\CGaugeBase.cpp" />
     <ClCompile Include="Source\GameObject\UIObject\GaugeBase\TimerGauge\CTimerGauge.cpp" />
     <ClCompile Include="Source\GameObject\UIObject\GaugeBase\GaugeManager\CGaugeManager.cpp" />
+    <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\PlayerBase\PlayerEventBus\CPlayerEventBus.cpp" />
+    <ClCompile Include="Source\Collision\CollisionMeshUtility\MeshCollisionUtility.cpp" />
     <ClCompile Include="Source\GameObject\SpriteObject\Shadow\CShadow.cpp" />
     <ClCompile Include="Source\GameObject\SpriteObject\Shadow\ShadowManager\CShadowManager.cpp" />
   </ItemGroup>
@@ -125,7 +126,6 @@
     <ClInclude Include="Source\Assets\Sprite\Sprite3D\CSprite3D.h" />
     <ClInclude Include="Source\Camera\CCamera.h" />
     <ClInclude Include="Source\Assets\Sprite\SpriteManager.h" />
-    <ClInclude Include="Source\Collision\CBoundingSphere.h" />
     <ClInclude Include="Source\DebugText\CDebugText.h" />
     <ClInclude Include="Source\DirectX\CDirectX11.h" />
     <ClInclude Include="Source\DirectX\CDirectX9.h" />
@@ -193,7 +193,6 @@
     <ClInclude Include="Source\Collision\Collider\CollisionOBB\CollisionOBB.h" />
     <ClInclude Include="Source\Collision\Collider\CollisionCapsule\CollisionCapsule.h" />
     <ClInclude Include="Source\Collision\Collider\CollisionRay\CollisionRay.h" />
-    <ClInclude Include="Source\Collision\CollisionResult\CollisionResult.h" />
     <ClInclude Include="Source\Collision\Collider\CollisionSphere\CollisionSphere.h" />
     <ClInclude Include="Source\Collision\CollisionStrategy\CollisionStrategyFactory\CollisionStrategyFactory.h" />
     <ClInclude Include="Source\Collision\CollisionStrategy\CollisionPattern\CollisionRaySphere\CollisionRaySphere.h" />
@@ -218,6 +217,7 @@
     <ClInclude Include="Source\GameObject\UIObject\GaugeBase\TimerGauge\CTimerGauge.h" />
     <ClInclude Include="Source\GameObject\UIObject\GaugeBase\GaugeManager\CGaugeManager.h" />
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\PlayerBase\PlayerEventBus\CPlayerEventBus.h" />
+    <ClInclude Include="Source\Collision\CollisionMeshUtility\MeshCollisionUtility.h" />
     <ClInclude Include="Source\GameObject\SpriteObject\Shadow\CShadow.h" />
     <ClInclude Include="Source\GameObject\SpriteObject\Shadow\ShadowManager\CShadowManager.h" />
   </ItemGroup>

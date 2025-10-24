@@ -2,6 +2,8 @@
 #include "Assets/Effect/CEffect.h"
 #include "Assets/Sound/CSoundManager.h"
 #include "Item/ItemManager/ItemManager.h"
+#include "Collision/CollisionStrategy/CollisionStrategyFactory/CollisionStrategyFactory.h"
+#include "Collision/CollisionStrategy/CollisionPattern/CollisionSphereSphere/CollisionStrategySphereSphere.h"
 
 CSceneGameMain::CSceneGameMain( HWND hWnd)
 	: m_hWnd			( hWnd )
@@ -111,6 +113,14 @@ HRESULT CSceneGameMain::LoadData()
 	m_pItemManager->LoadData();
 	m_pDrawCollision->LoadData();
 
+
+	//“–‚½‚è”»’è‚Ìì¬
+	CollisionStrategyFactory::GetInstance()->RegisterStrategy(
+		CollisionBase::ColliderType::Sphere,
+		CollisionBase::ColliderType::Sphere,
+		std::make_unique<CollisionStrategySphereSphere>()
+	);
+
 	return S_OK;
 }
 
@@ -138,6 +148,8 @@ void CSceneGameMain::Update()
 	m_pPlayerManager->Update();
 
 	m_pItemManager->Update(m_pPlayerManager);
+
+	CollisionManager::GetInstance()->Update();
 
 	//”š”­
 	for (auto& exp : m_pExplosiones)
@@ -170,6 +182,7 @@ void CSceneGameMain::Update()
 	{
 		SetNextScene(Result);
 	}
+
 }
 
 void CSceneGameMain::Draw()
@@ -219,7 +232,6 @@ void CSceneGameMain::Draw()
 
 	//ƒvƒŒƒCƒ„[‚Ì•`‰æ.
 	m_pPlayerManager->Draw(mView, mProj, light, camera);
-	m_pPlayerManager->Collision();
 
 	m_pItemManager->Draw(mView, mProj, light, camera);
 	m_pDrawCollision->Draw(mView, mProj, light, camera);

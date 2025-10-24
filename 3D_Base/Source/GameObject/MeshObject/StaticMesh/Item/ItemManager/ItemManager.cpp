@@ -65,14 +65,6 @@ void ItemManager::Update(std::unique_ptr<CPlayerManager>& players)
 		//ˆê’UPlayer0‚µ‚©Ž‚Ä‚È‚¢‚æ‚¤‚É‚·‚é
 		item->Update(players);
 
-		// “–‚½‚è”»’è
-		if (item->GetBSphere()->IsHit(*players->GetPlayer(0)->GetBSphere()))
-		{
-			if (CInputManager::IsDown(Action::Have, 0))
-			{
-				item->SetState(ItemBase::State::Have);
-			}
-		}
 		if (CInputManager::IsDown(Action::HaeAttack, 0))
 		{
 			item->SetState(ItemBase::State::Use);

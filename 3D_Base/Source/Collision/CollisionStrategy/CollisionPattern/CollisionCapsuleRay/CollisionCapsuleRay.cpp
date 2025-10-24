@@ -1,13 +1,11 @@
 #include "stdafx.h"
 #include "CollisionCapsuleRay.h"
 
-CollisionResult CollisionCapsuleRay::CheckCollision(
+bool CollisionCapsuleRay::CheckCollision(
     const CollisionBase* colA,
     const CollisionBase* colB) const
 {
-    CollisionResult result;
+    // Capsule vs Ray 判定アルゴリズムを実装
 
-    // TODO: Capsule vs Ray 判定アルゴリズムを実装
-
-    return result;
+    return false;
 }

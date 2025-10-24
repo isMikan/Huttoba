@@ -30,7 +30,6 @@ Mushroom::~Mushroom()
 void Mushroom::Init()
 {
 	AttachMesh(AssetManager::Mesh(StaticMeshList::Mushroom));
-	CreateBSphereForMesh(AssetManager::Mesh(StaticMeshList::Mushroom));
 
 	SetPosition(3, 15, 0);
 

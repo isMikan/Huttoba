@@ -233,6 +233,7 @@
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Collision\CollisionMeshUtility\MeshCollisionUtility.cpp" />
     <ClCompile Include="Source\Collision\CollisionData\CollisionDataFactory\CollisionDataFactory.cpp" />
     <ClCompile Include="Source\Collision\CollisionStrategy\CollisionPattern\CollisionSphereSphere\CollisionStrategySphereSphere.cpp" />
     <ClCompile Include="Source\DebugText\DebugDrawManager\DebugDrawManager.cpp" />
@@ -276,7 +277,6 @@
     <ClCompile Include="Source\Input\CInput.cpp" />
     <ClCompile Include="Source\Input\CInputManager.cpp" />
     <ClCompile Include="Source\Input\XInput\CXInput.cpp" />
-    <ClCompile Include="Source\Collision\CBoundingSphere.cpp" />
     <ClCompile Include="Source\DebugText\CDebugText.cpp" />
     <ClCompile Include="Source\DirectX\CDirectX11.cpp" />
     <ClCompile Include="Source\DirectX\CDirectX9.cpp" />
@@ -338,6 +338,7 @@
     <ClCompile Include="Source\TimeManager\CTimeManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Collision\CollisionMeshUtility\MeshCollisionUtility.h" />
     <ClInclude Include="Source\Collision\CollisionData\CollisionDataFactory\CollisionDataFactory.h" />
     <ClInclude Include="Source\Collision\CollisionStrategy\CollisionPattern\CollisionSphereSphere\CollisionStrategySphereSphere.h" />
     <ClInclude Include="Source\DebugText\DebugDrawManager\DebugDrawManager.h" />
@@ -355,7 +356,6 @@
     <ClInclude Include="Source\Assets\Mesh\StaticMesh\CStaticMesh.h" />
     <ClInclude Include="Source\Collision\Collider\CollisionBase.h" />
     <ClInclude Include="Source\Collision\CollisionManager\CollisionManager.h" />
-    <ClInclude Include="Source\Collision\CollisionResult\CollisionResult.h" />
     <ClInclude Include="Source\Collision\CollisionListener\ICollisionListener.h" />
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\DrawCollision\DrawCollision.h" />
     <ClInclude Include="Source\Assets\AssetManager.h" />
@@ -389,7 +389,6 @@
     <ClInclude Include="Source\Input\CInputManager.h" />
     <ClInclude Include="Source\Input\XInput\CXInput.h" />
     <ClInclude Include="Source\Input\InputDevice\InputDevice.h" />
-    <ClInclude Include="Source\Collision\CBoundingSphere.h" />
     <ClInclude Include="Source\DebugText\CDebugText.h" />
     <ClInclude Include="Source\DirectX\CDirectX11.h" />
     <ClInclude Include="Source\DirectX\CDirectX9.h" />
