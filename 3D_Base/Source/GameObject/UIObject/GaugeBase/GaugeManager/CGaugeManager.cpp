@@ -1,9 +1,12 @@
 #include "CGaugeManager.h"
 
+#include "GameObject/UIObject/GaugeBase/GaugeFrame/CGaugeFrame.h"
+#include "GameObject/UIObject/GaugeBase/TimerGauge/CTimerGauge.h"
+
+#include "GameObject/MeshObject/StaticMesh/PlayerBase/PlayerState/PlayerActionState/PlayerKnockdownState/CPlayerKnockdownState.h"
+
 CGaugeManager::CGaugeManager()
 	: m_pGauge				()
-
-	, m_IsSubscribe			( false )
 {
 	Create();
 }
@@ -16,19 +19,47 @@ void CGaugeManager::Create()
 {
 	//ゲージのインスタンス作成.
 	m_pGauge.clear();
-	m_pGauge.resize(Player_Max);
+	m_pGauge.resize(Gauge_Max);
 	for (auto& gauge : m_pGauge)
 	{
 		gauge = std::make_unique<CGaugeBase>();
 	}
 }
 
-void CGaugeManager::LoadData()
+void CGaugeManager::LoadData(CPlayerManager* playerManager)
 {
-	for (auto& gauge : m_pGauge)
+	for (int gNo = 0; gNo < Gauge_Max; gNo++)
 	{
-		//スプライトを設定.
-		gauge->AttachSprite(AssetManager::Sprite(Sprite2DList::Gauge));
+	//	if (gNo % 2 == 0)
+	//	{
+			//m_pGauge[gNo] = std::make_unique<CGaugeFrame>();
+			//ゲージフレームのスプライトを設定.
+			m_pGauge[gNo]->AttachSprite(AssetManager::Sprite(Sprite2DList::Gauge));
+	//	}
+	//	else
+	//	{
+	//		//ゲージスプライトを設定.
+	//		m_pGauge[gNo]->AttachSprite(AssetManager::Sprite(Sprite2DList::Gauge));
+	//	}
+
+		for (int pNo = 0; pNo < Player_Max; pNo++)
+		{
+			CPlayerBase* player = playerManager->GetPlayer(pNo);
+			if (!player) continue;
+
+			auto& bus = player->GetBus();
+			bus.Subscribe([this, player](CPlayerState* state)
+				{
+					if (dynamic_cast<CPlayerKnockdownState*>(state))
+					{
+						int id = player->GetPlayerID();
+						m_pGauge[static_cast<size_t>(id) + 1] = std::make_unique<CTimerGauge>();
+					}
+				});
+
+			int gNo = pNo * 2 + 1;
+			m_pGauge[gNo]->SubscribePlayerEvent(player);
+		}
 	}
 }
 
@@ -43,22 +74,16 @@ void CGaugeManager::Update(CPlayerManager* playerManager)
 	{
 		gauge->Update();
 
-		if (!m_IsSubscribe)
-		{
-			for (int pNo = 0; pNo < Player_Max; pNo++)
-			{
-				CPlayerBase* player = playerManager->GetPlayer(pNo);
-				if (!player) continue;
-				m_pGauge[pNo]->SubscribePlayerEvent(player);
-			}
-			m_IsSubscribe = true;
-		}
-
 		for (int pNo = 0; pNo < Player_Max; pNo++)
 		{
 			CPlayerBase* player = playerManager->GetPlayer(pNo);
+
 			if (!player) continue;
-			m_pGauge[pNo]->SetWorldPos(player->GetPosition());
+			int gNo = pNo * 2;
+			m_pGauge[gNo]->SetWorldPos(player->GetPosition());
+			
+			m_pGauge[static_cast<size_t>(gNo) + 1]->SetGaugeInfo(player->GetKnockdownTime());
+			m_pGauge[static_cast<size_t>(gNo) + 1]->SetWorldPos(player->GetPosition());
 		}
 	}
 }

@@ -100,7 +100,7 @@ HRESULT CSceneGameMain::LoadData()
 	m_pShadowManager->LoadData();
 
 	//ゲージマネージャーの読み込み.
-	m_pGaugeManager->LoadData();
+	m_pGaugeManager->LoadData(m_pPlayerManager.get());
 
 	//プレイヤーマネージャーの読み込み.
 	m_pPlayerManager->LoadData();

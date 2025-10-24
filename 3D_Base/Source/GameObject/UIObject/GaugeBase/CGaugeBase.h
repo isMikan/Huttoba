@@ -2,19 +2,11 @@
 
 #include "GameObject/UIObject/CUIObject.h"
 
-#include "GameObject/MeshObject/StaticMesh/PlayerBase/PlayerManager/CPlayerManager.h"
+#include "GameObject/MeshObject/StaticMesh/PlayerBase/CPlayerBase.h"
 
 class CGaugeBase
 	: public CUIObject
 {
-public:
-	//ゲージの構造体.
-	struct Gauge
-	{
-		float remaining;	//残り.
-		float max;			//最大.
-	};
-
 public:
 	CGaugeBase();
 	virtual ~CGaugeBase() override;
@@ -38,6 +30,9 @@ public:
 		m_WorldPos.z = z;
 	}
 
+	//ゲージの必要情報を設定.
+	void SetGaugeInfo(Gauge gauge) { m_GaugeInfo = gauge; }
+
 protected:
 	//--- ワールド座標を変換する関数 ---.
 	D3DXVECTOR3 WorldToScreen(
@@ -47,12 +42,12 @@ protected:
 		const D3D11_VIEWPORT& vp);
 
 	//使用しない override 関数(これ以降も使用しない).
-	void Draw() override final;
+	void Draw() override final {};
 
 protected:
 	ComPtr<ID3D11DeviceContext>		m_pContext11;		//コンテキスト.
 
-	std::unique_ptr<CPlayerManager>	m_pPlayerManager;	//プレイヤー.
+	Gauge			m_GaugeInfo;	//ゲージの情報.
 
 	D3DXVECTOR3		m_WorldPos;		//世界座標.
 	D3DXVECTOR3		m_OffsetPos;	//調整座標.

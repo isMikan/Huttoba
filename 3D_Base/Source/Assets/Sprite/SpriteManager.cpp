@@ -38,6 +38,7 @@ HRESULT SpriteManager::CreateSprite3D()
 	//äesprite3DÇÃèÓïÒÇìoò^
 //Å´-----------------------------------------------------------------------------------------------------------------------------Å´
 	RegisterSprite3D(Sprite3DList::Explosion,	_T("Data\\Texture\\explosion.png"), { 1.f, 1.f, 256.f, 256.f, 32.f, 32.f	});
+	RegisterSprite3D(Sprite3DList::Shadow,		_T("Data\\Texture\\shadow.png"),	{ 80.f, 80.f, 80.f, 80.f, 80.f, 80.f	});
 //Å™-----------------------------------------------------------------------------------------------------------------------------Å™
 
 	//ìoò^ÇµÇΩsprite3DÇÃÉCÉìÉXÉ^ÉìÉXçÏê¨.
@@ -56,16 +57,17 @@ HRESULT SpriteManager::CreateSprite2D()
 {
 	//äesprite2DÇÃèÓïÒÇìoò^(Ç±Ç±Ç…sprite2Dìoò^)
 //Å´-----------------------------------------------------------------------------------------------------------------------------Å´
-	RegisterSprite2D(Sprite2DList::PMon,_T("Data\\Texture\\pmon.png"),{ 64.f, 64.f, 896.f, 560.f, 896.f / 16.f, 560.f / 10.f });
-	RegisterSprite2D(Sprite2DList::Gauge, _T("Data\\Texture\\gauge.png"), { 205.f, 11.f, 205.f, 22.f, 205.f, 11.f });
-	RegisterSprite2D(Sprite2DList::Title, _T("Data\\Texture\\Title_kari.png"), { WND_W,WND_H,WND_W,WND_H,WND_W,WND_H });
-	RegisterSprite2D(Sprite2DList::Standby, _T("Data\\Texture\\Standby_kari.png"), { WND_W,WND_H,WND_W,WND_H,WND_W,WND_H });
-	RegisterSprite2D(Sprite2DList::RedyFont, _T("Data\\Texture\\Ready_kari.png"), { 200,100, 200,100, 200,100 });
+	RegisterSprite2D(Sprite2DList::PMon,		_T("Data\\Texture\\pmon.png"),			{ 64.f, 64.f, 896.f, 560.f, 896.f / 16.f, 560.f / 10.f });
+	RegisterSprite2D(Sprite2DList::GaugeFrame,	_T("Data\\Texture\\gauge_frame.png"),	{ 160.f, 30.f, 160.f, 30.f, 160.f, 30.f });
+	RegisterSprite2D(Sprite2DList::Gauge,		_T("Data\\Texture\\gauge.png"),			{ 160.f, 30.f, 160.f, 30.f, 160.f, 30.f });
+	RegisterSprite2D(Sprite2DList::Title,		_T("Data\\Texture\\Title_kari.png"),	{ WND_W,WND_H,WND_W,WND_H,WND_W,WND_H });
+	RegisterSprite2D(Sprite2DList::Standby,		_T("Data\\Texture\\Standby_kari.png"),	{ WND_W,WND_H,WND_W,WND_H,WND_W,WND_H });
+	RegisterSprite2D(Sprite2DList::RedyFont,	_T("Data\\Texture\\Ready_kari.png"),	{ 200,100, 200,100, 200,100 });
 	RegisterSprite2D(Sprite2DList::NotRedyFont, _T("Data\\Texture\\NotReady_kari.png"), { 200,100, 200,100, 200,100 });
-	RegisterSprite2D(Sprite2DList::Result, _T("Data\\Texture\\Result_kari.png"), { WND_W,WND_H,WND_W,WND_H,WND_W,WND_H });
-	RegisterSprite2D(Sprite2DList::Selector, _T("Data\\Texture\\yajirusi_kari.png"), { 64,64,64,64,64,64 });
-	RegisterSprite2D(Sprite2DList::FontUI, _T("Data\\Texture\\UI.png"), { 400,64,400,544,400,64 });
-	RegisterSprite2D(Sprite2DList::BigFontUI, _T("Data\\Texture\\BigUI.png"), { 800,200,800,620,800,200 });
+	RegisterSprite2D(Sprite2DList::Result,		_T("Data\\Texture\\Result_kari.png"),	{ WND_W,WND_H,WND_W,WND_H,WND_W,WND_H });
+	RegisterSprite2D(Sprite2DList::Selector,	_T("Data\\Texture\\yajirusi_kari.png"), { 64,64,64,64,64,64 });
+	RegisterSprite2D(Sprite2DList::FontUI,		_T("Data\\Texture\\UI.png"),			{ 400,64,400,544,400,64 });
+	RegisterSprite2D(Sprite2DList::BigFontUI,	_T("Data\\Texture\\BigUI.png"),			{ 800,200,800,620,800,200 });
 //Å™-----------------------------------------------------------------------------------------------------------------------------Å™
 
 	//äesprite2DÇÃÉCÉìÉXÉ^ÉìÉXçÏê¨.

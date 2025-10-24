@@ -2,6 +2,7 @@
 
 #include "GameObject/UIObject/GaugeBase/CGaugeBase.h"
 
+#include "GameObject/MeshObject/StaticMesh/PlayerBase/PlayerManager/CPlayerManager.h"
 
 class CGaugeManager
 {
@@ -12,7 +13,8 @@ public:
 	//--- \’zŠÖ” ---.
 	void Create();
 	//--- “ÇŠÖ” ---.
-	void LoadData();
+	void LoadData(
+		CPlayerManager* playerManager);
 	//--- ”jŠüŠÖ” ---.
 	void Destroy();
 	//--- XVŠÖ” ---.
@@ -24,7 +26,5 @@ public:
 
 protected:
 	std::vector<std::unique_ptr<CGaugeBase>>	m_pGauge;	//ƒQ[ƒW.
-
-	bool	m_IsSubscribe;			//“o˜^‚µ‚½‚©.
 
 };

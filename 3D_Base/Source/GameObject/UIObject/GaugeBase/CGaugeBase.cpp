@@ -4,7 +4,8 @@
 
 CGaugeBase::CGaugeBase()
 	: m_pContext11		()
-	, m_pPlayerManager	( std::make_unique<CPlayerManager>() )
+
+	, m_GaugeInfo		()
 
 	, m_WorldPos		( 0.f, 0.f, 0.f )
 	, m_OffsetPos		( 0.f, 2.f, 0.f )
@@ -33,7 +34,7 @@ void CGaugeBase::Update()
 void CGaugeBase::Draw(
 	D3DXMATRIX& View, D3DXMATRIX& Proj)
 {
-	if (!m_IsDisplayGauge) return;
+	//if (!m_IsDisplayGauge) return;
 
 	D3D11_VIEWPORT vp;	//ビューポート（描画領域）情報を格納.
 	UINT num = 1;		//取得するビューポート数.
@@ -47,7 +48,7 @@ void CGaugeBase::Draw(
 	D3DXVECTOR3 screenPos = WorldToScreen(pos, View, Proj, vp);
 
 	//画像幅の半分を引いて真ん中にする.
-	screenPos.x -= 102.5f;
+	screenPos.x -= 40.f;
 
 	//変換された位置を設定.
 	m_vPosition = D3DXVECTOR3(screenPos.x, screenPos.y, 0.f);
@@ -98,8 +99,4 @@ void CGaugeBase::SubscribePlayerEvent(CPlayerBase* player)
 				m_IsDisplayGauge = false;
 			}
 		});
-}
-
-void CGaugeBase::Draw()
-{
 }
