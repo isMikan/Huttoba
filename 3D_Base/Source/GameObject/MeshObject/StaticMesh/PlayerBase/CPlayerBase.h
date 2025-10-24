@@ -136,7 +136,7 @@ public:
 
 	//ƒ_ƒEƒ“ó‘Ô‚ÌŠÔ‚ğæ“¾‚Æİ’è.
 	Gauge GetKnockdownTime() const { return m_KnockdownTime; }
-	void SetKnockdownTime(int remaining, int max) {
+	void SetKnockdownTime(float remaining, float max) {
 		m_KnockdownTime.remaining = remaining; 
 		m_KnockdownTime.max = max; }
 

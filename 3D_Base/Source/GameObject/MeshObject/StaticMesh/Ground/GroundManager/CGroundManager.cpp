@@ -45,7 +45,7 @@ void CGroundManager::Destroy()
 //--- XVŠÖ” ---.
 void CGroundManager::Update()
 {
-	float t = static_cast<float>(CTimeManager::GetTotalTime());
+	float t = CTimeManager::GetTotalTime();
 
 	for (int gNo = 0; gNo < m_pGrounds.size(); gNo++)
 	{

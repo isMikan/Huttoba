@@ -65,7 +65,7 @@ void CPlayerKnockbackState::Exit()
 
 void CPlayerKnockbackState::Update()
 {
-	float t = static_cast<float>(CTimeManager::GetTotalTime());
+	float t = CTimeManager::GetTotalTime();
 
 	//プレイヤーの位置を取得.
 	D3DXVECTOR3 playerPos = m_pPlayer.GetPosition();
@@ -88,7 +88,7 @@ void CPlayerKnockbackState::Update()
 	m_pPlayer.GetPlayerRightHand().SetPosition(m_pPlayer.GetObjectPos(rightHandOffsetPos));
 	m_pPlayer.GetPlayerLeftHand().SetPosition(m_pPlayer.GetObjectPos(leftHandOffsetPos));
 
-	float dt = static_cast<float>(CTimeManager::GetDeltaTime());
+	float dt = CTimeManager::GetDeltaTime();
 
 	//飛んでいく移動量の計算.
 	m_Velocity.y += m_Gravity * dt;

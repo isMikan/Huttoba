@@ -74,7 +74,7 @@ void CPlayerFallingState::Exit()
 void CPlayerFallingState::Update()
 {
 	//経過時間を取得.
-	float t = static_cast<float>(CTimeManager::GetTotalTime());
+	float t = CTimeManager::GetTotalTime();
 
 	//プレイヤーの位置を取得.
 	D3DXVECTOR3 playerPos = m_pPlayer.GetPosition();
@@ -135,7 +135,7 @@ void CPlayerFallingState::Update()
 	m_pPlayer.GetPlayerLeftHand().SetPosition(m_pPlayer.GetObjectPos(leftHandOffsetPos));
 
 	//1フレームの速さを取得.
-	float dt = static_cast<float>(CTimeManager::GetDeltaTime());
+	float dt = CTimeManager::GetDeltaTime();
 
 	//地面についた場合.
 	if (playerPos.y <= m_GroundPos)

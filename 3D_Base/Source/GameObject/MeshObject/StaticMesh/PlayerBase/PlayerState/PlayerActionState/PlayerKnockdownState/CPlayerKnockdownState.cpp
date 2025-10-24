@@ -71,7 +71,7 @@ void CPlayerKnockdownState::Exit()
 
 void CPlayerKnockdownState::Update()
 {
-	float t = static_cast<float>(CTimeManager::GetTotalTime());
+	float t = CTimeManager::GetTotalTime();
 
 	//残り時間と最大時間を設定.
 	m_pPlayer.SetKnockdownTime(m_EndTime, m_MaxTime);
@@ -125,7 +125,7 @@ void CPlayerKnockdownState::ChildPlayer(int index)
 void CPlayerKnockdownState::TimeDecrease()
 {
 	//経過時間を取得.
-	float t = static_cast<float>(CTimeManager::GetTotalTime());
+	float t = CTimeManager::GetTotalTime();
 
 	//終了時間が過ぎたら終わる.
 	if (t - m_DecreaseTriggerTime > m_TimeDecrease)
@@ -147,7 +147,7 @@ void CPlayerKnockdownState::TimeDecrease()
 	//プレイヤーの位置を取得.
 	D3DXVECTOR3 playerPos = m_pPlayer.GetPosition();
 
-	float dt = static_cast<float>(CTimeManager::GetDeltaTime());
+	float dt = CTimeManager::GetDeltaTime();
 
 	//横軸に揺らす.
 	playerPos += axes.right * offset * dt;

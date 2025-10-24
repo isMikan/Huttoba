@@ -25,9 +25,9 @@ public:
 	static void Update() { Instance().Update_Internal(); }
 
 	//デルタタイムを取得.
-	static double GetDeltaTime() { return Instance().m_DeltaTime; }
+	static double GetDeltaTime() { return static_cast<float>(Instance().m_DeltaTime); }
 	//経過時間を取得.
-	static double GetTotalTime() { return Instance().m_TotalTime; }
+	static double GetTotalTime() { return static_cast<float>(Instance().m_TotalTime); }
 
 private:
 	//--- リセット関数 ---.

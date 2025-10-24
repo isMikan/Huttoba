@@ -63,7 +63,7 @@ void CPlayerThrowState::Exit()
 void CPlayerThrowState::Update()
 {
 	//ゲーム全体の経過時間.
-	float t = static_cast<float>(CTimeManager::GetTotalTime());
+	float t = CTimeManager::GetTotalTime();
 
 	//現在の経過時間と開始時間の差が終了時間を上回ったら.
 	if (t - m_StartTime > m_EndTime)
@@ -73,7 +73,7 @@ void CPlayerThrowState::Update()
 	}
 
 	//前回のフレームからの経過時間.
-	float deltaTime = static_cast<float>(CTimeManager::GetDeltaTime());
+	float dt = CTimeManager::GetDeltaTime();
 
 	//ローカル軸を取得.
 	CPlayerBase::LocalAxes axes = m_pPlayer.GetLocalAxes();

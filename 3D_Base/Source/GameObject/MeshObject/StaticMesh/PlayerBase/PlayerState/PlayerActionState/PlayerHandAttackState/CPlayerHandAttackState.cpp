@@ -67,7 +67,7 @@ void CPlayerHandAttackState::Exit()
 void CPlayerHandAttackState::Update()
 {
 	//ƒQ[ƒ€‘S‘Ì‚ÌŒo‰ßŠÔ.
-	float t = static_cast<float>(CTimeManager::GetTotalTime());
+	float t = CTimeManager::GetTotalTime();
 
 	bool isHit = m_pPlayer.GetHitInfo().isHit;
 
