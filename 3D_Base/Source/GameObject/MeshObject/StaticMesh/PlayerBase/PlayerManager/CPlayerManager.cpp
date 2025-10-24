@@ -154,18 +154,18 @@ CPlayerBase::ObjectColor CPlayerManager::SetCharacterColor(int index)
 			D3DXVECTOR4(0.f, 0.f, 0.5f, 1.f),	
 			D3DXVECTOR4(0.1f, 0.1f, 0.1f, 1.f), 
 		},
-		////プレイヤー3.　突貫
-		//{
-		//	D3DXVECTOR4(1.0f, 0.5f, 0.f, 1.f),		
-		//	D3DXVECTOR4(0.5f, 0.3f, 0.f, 1.f),	
-		//	D3DXVECTOR4(0.1f, 0.1f, 0.1f, 1.f), 
-		//},
-		////プレイヤー4.
-		//{
-		//	D3DXVECTOR4(0.0f, 1.0f, 0.0f, 1.f), 
-		//	D3DXVECTOR4(0.0f, 0.5f, 0.0f, 1.f), 
-		//	D3DXVECTOR4(0.1f, 0.1f, 0.1f, 1.f), 
-		//}
+		//プレイヤー3.
+		{
+			D3DXVECTOR4(1.0f, 0.5f, 0.f, 1.f),		
+			D3DXVECTOR4(0.5f, 0.3f, 0.f, 1.f),	
+			D3DXVECTOR4(0.1f, 0.1f, 0.1f, 1.f), 
+		},
+		//プレイヤー4.
+		{
+			D3DXVECTOR4(0.0f, 1.0f, 0.0f, 1.f), 
+			D3DXVECTOR4(0.0f, 0.5f, 0.0f, 1.f), 
+			D3DXVECTOR4(0.1f, 0.1f, 0.1f, 1.f), 
+		}
 	};
 
 	return playerColor[index];
@@ -183,11 +183,10 @@ D3DXVECTOR3 CPlayerManager::SetDefaultPosition(int index)
 		//プレイヤー2.
 		{ 5.f, 0.f, 5.f },
 
-		//突貫
-		////プレイヤー3.
-		//{ -5.f, 0.f, 10.f },
-		////プレイヤー4.
-		//{ 5.f, 0.f, 10.f }
+		//プレイヤー3.
+		{ -5.f, 0.f, 10.f },
+		//プレイヤー4.
+		{ 5.f, 0.f, 10.f }
 	};
 
 	return playerPos[index];
