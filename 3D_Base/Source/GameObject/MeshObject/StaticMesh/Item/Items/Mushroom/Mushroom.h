@@ -43,9 +43,14 @@ private:
 
     //当たった際の処理
     void Hit(std::unique_ptr<CPlayerManager>& playiers);
+    
+    //スカラーの計算
+    float CalculateForceScalar(float distance);
 
-    //キノコとプレイヤーの距離に応じて吹き飛ばし力を計算
-    float CalculateKnockBackPower(float distance);
+    //反射方向の計算
+    //第一引数に入射ベクトル、第二引数に法線ベクトルをいれる
+    //戻り値が正規化した方向ベクトルを返す
+    D3DXVECTOR3 CalculateReflectionDirection(const D3DXVECTOR3& vIncomingDir, const D3DXVECTOR3& vNormal);
 
 private:
     //アイテムを取得したときかを判定

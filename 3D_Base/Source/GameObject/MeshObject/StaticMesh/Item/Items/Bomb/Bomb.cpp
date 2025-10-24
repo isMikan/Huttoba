@@ -227,7 +227,7 @@ void Bomb::Blow_Away(std::unique_ptr<CPlayerManager>& playiers)
 	playiers->GetPlayer(0)->SetHitInfo(
 		m_vPosition, playiers->GetPlayer(0)->GetPosition(),
 		CalculateKnockBackPower(len),
-		true, CPlayerBase::HitEvent::Knockback);
+		true, CPlayerBase::HitEvent::Knockdown);
 }
 
 void Bomb::ChangeColor()

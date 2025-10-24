@@ -9,14 +9,14 @@
 namespace { const bool regist = ItemBase::AutoRegister<Fun>("Fun"); }
 
 Fun::Fun()
-	: m_IsTake(false)
+	: m_IsTake		(false)
 	, m_PickUpTime	(0.5f)	//時間を変えるとアイテムが手に持つまでの時間が変化
 	, m_PickUpCnt	(0.0f)
 
 	, m_HaveOffset	()
 
 	, m_Velocity	()
-	, m_MoveSpeed	( 6.0 )		//値を変えると爆弾の移動相度が変化
+	, m_MoveSpeed	( 6.0 )		//値を変えると投げた時の移動速度が変化
 
 	, m_IsThrow		( false )
 {
