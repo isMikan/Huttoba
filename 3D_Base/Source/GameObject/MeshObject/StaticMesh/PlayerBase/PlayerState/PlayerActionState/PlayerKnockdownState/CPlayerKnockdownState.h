@@ -32,9 +32,11 @@ private:
 private:
 	float	m_StartTime;			//開始時間.
 	float	m_EndTime;				//終了時間.
+	float	m_MaxTime;				//最大時間.
 
 	float	m_DecreaseTriggerTime;	//減少が開始時間.
 	float	m_TimeDecrease;			//減少する時間.
+	float	m_TimeDecreaseByMashing;//連打操作によって減少する時間.
 
 	float	m_ShakeSpeed;			//揺れる速度.
 	float	m_ShakeWidth;			//揺れる幅.

@@ -19,6 +19,7 @@ void CShadowManager::Create()
 	for (auto& shadow : m_pShadow)
 	{
 		shadow = std::make_unique<CShadow>();
+		shadow->SetScale(0.01f, 0.01f, 1.f);
 	}
 }
 
@@ -28,7 +29,7 @@ void CShadowManager::LoadData()
 	//影スプライトを設定.
 	for (const auto& shadow : m_pShadow)
 	{
-		shadow->AttachSprite(AssetManager::Sprite(Sprite3DList::Explosion));
+		shadow->AttachSprite(AssetManager::Sprite(Sprite3DList::Shadow));
 	}
 }
 
