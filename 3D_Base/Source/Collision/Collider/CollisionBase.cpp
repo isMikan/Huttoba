@@ -14,7 +14,7 @@ CollisionBase::CollisionBase(
     , m_Tag         (tag)
     , m_LocalOffset (localOffset)
     , m_WorldPosition(0.0f, 0.0f, 0.0f)
-    , m_IsActive    (false)
+    , m_IsActive    (true)
     , m_IsHit       (false)
 {
 }
