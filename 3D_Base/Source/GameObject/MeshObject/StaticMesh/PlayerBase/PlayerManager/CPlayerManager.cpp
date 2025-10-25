@@ -24,10 +24,6 @@ CPlayerManager::~CPlayerManager()
 {
 }
 
-void CPlayerManager::OnCollision(CollisionBase* other)
-{
-}
-
 //--- ç\ízä÷êî ---.
 void CPlayerManager::Create()
 {

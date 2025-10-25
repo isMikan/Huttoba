@@ -6,13 +6,10 @@
 *   プレイヤーマネージャークラス.
 **/
 class CPlayerManager
-	: public ICollisionListener
 {
 public:
 	CPlayerManager();
 	~CPlayerManager();
-
-	void OnCollision(CollisionBase* other) override;
 
 	//--- 構築関数 ---.
 	void Create();
