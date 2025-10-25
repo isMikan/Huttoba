@@ -17,7 +17,7 @@
 *	プレイヤークラス.
 **/
 class CPlayer
-	: public CPlayerBase
+	: public CPlayerBase,public ICollisionListener
 {
 
 public:
@@ -35,6 +35,9 @@ public:
 
 	//--- キーバインドを設定する関数 ---.
 	void SetPlayerInputBinding(int index) const;
+
+	//--- 衝突判定の実装 ---.
+	void OnCollision(CollisionBase* pOtherCollider) override;
 
 private:
 
