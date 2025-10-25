@@ -6,6 +6,7 @@
 *   プレイヤーマネージャークラス.
 **/
 class CPlayerManager
+	: public ICollisionListener
 {
 public:
 	CPlayerManager();
@@ -22,6 +23,9 @@ public:
 	//--- 描画関数 ---.
 	void Draw(
 		D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAMERA& Camera);
+
+	//--- 衝突判定の実装 ---.
+	void OnCollision(CollisionBase* pOtherCollider) override;
 
 	//今は実際使うかわからないのでコメント化.
 	//エフェクトを表示するための関数.

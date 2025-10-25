@@ -233,7 +233,7 @@ void CSceneGameMain::Draw()
 	//プレイヤーの描画.
 	m_pPlayerManager->Draw(mView, mProj, light, camera);
 
-	m_pItemManager->Draw(mView, mProj, light, camera);
+	//m_pItemManager->Draw(mView, mProj, light, camera);
 	m_pDrawCollision->Draw(mView, mProj, light, camera);
 
 	////ボーン座標に合わせて球体を表示
@@ -248,7 +248,7 @@ void CSceneGameMain::Draw()
 		//UI.second->Draw();
 	}
 
-	m_pGaugeManager->Draw(mView, mProj);
+	//m_pGaugeManager->Draw(mView, mProj);
 
 	//やりたいことが終わったので、深度テストを有効にしておく
 	m_pDx11->SetDepth(true);

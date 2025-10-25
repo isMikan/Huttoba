@@ -111,7 +111,50 @@ void CPlayerManager::Draw(D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAME
 	}
 }
 
-
+void CPlayerManager::OnCollision(CollisionBase* pOtherCollider)
+{
+	//			{
+	//				switch (hNo)
+	//				{
+	//				case 2:
+	//					m_pPlayers[hNo]->SetHitInfo(
+	//						m_pPlayers[aNo]->GetPosition(), true, CPlayerBase::HitEvent::Pushed);
+	//					break;
+	//				case 3:
+	//					break;
+	//				default:
+	//					m_pPlayers[hNo]->SetHitInfo(
+	//						m_pPlayers[aNo]->GetPosition(), m_pPlayers[aNo]->GetPosition(), 10.f, true, CPlayerBase::HitEvent::Knockdown);
+	//					break;
+	//				}
+	//
+	//				m_pPlayers[aNo]->SetHitInfo(
+	//					m_pPlayers[aNo]->GetPosition(), true, CPlayerBase::HitEvent::None);
+	//			}
+	//		}
+	//	}
+		// 衝突相手のタグをチェックし、応答を切り替える
+	//攻撃を受けるプレイヤー.
+	for (int hNo = 0;hNo < Player_Max;hNo++)
+	{
+		//攻撃するプレイヤー.
+		for (int aNo = 0;aNo < Player_Max;aNo++)
+		{
+			if (hNo == aNo) continue;
+		
+			switch (pOtherCollider->GetTag())
+			{
+			case CollisionBase::ColliderTag::Player:
+				if (m_pPlayers[hNo]->IsAnyActionState<CPlayerHandAttackState>())
+				{
+					m_pPlayers[aNo]->SetHitInfo(
+						pOtherCollider->GetWorldPosition(), pOtherCollider->GetWorldPosition(), 10.f, true, CPlayerBase::HitEvent::Knockdown);
+				}
+				break;
+			}
+		}
+	}
+}
 //エフェクトを表示するための関数.
 //void CPlayerManager::ManageEffectLaser(static::EsHandle hEffect)
 //{
