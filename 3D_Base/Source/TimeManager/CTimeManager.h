@@ -15,6 +15,9 @@ public:
 		return s_Instance;
 	}
 
+//======================================================================
+// 	   外部で呼び出す関数.
+//======================================================================
 	//リセット関数を外部へ.
 	static void Reset() { Instance().Reset_Internal(); }
 	//一時停止関数を外部へ.
@@ -24,22 +27,30 @@ public:
 	//更新関数を外部へ.
 	static void Update() { Instance().Update_Internal(); }
 
+//======================================================================
+		
 	//デルタタイムを取得.
 	static double GetDeltaTime() { return static_cast<float>(Instance().m_DeltaTime); }
 	//経過時間を取得.
 	static double GetTotalTime() { return static_cast<float>(Instance().m_TotalTime); }
 
 private:
-	//--- リセット関数 ---.
+//======================================================================
+// 	   内部で呼び出す関数.
+//======================================================================
+	//--- リセット ---.
 	void Reset_Internal();
-	//--- 一時停止関数 ---.
+	//--- 一時停止（ポーズ開始） ---.
 	void Pause_Internal();
-	//--- 再開関数 ---.
+	//--- 再開（ポーズ終了） ---.
 	void Resume_Internal();
-	//--- 更新関数 ---.
+	//--- 更新処理 ---.
 	void Update_Internal();
 
 private:
+//======================================================================
+// 	   内部で使用する変数.
+//======================================================================
 	//長いので using で短くする.
 	using Clock = std::chrono::high_resolution_clock;	//高精度タイマー.
 	using TimePoint = std::chrono::time_point<Clock>;	//ある時点.

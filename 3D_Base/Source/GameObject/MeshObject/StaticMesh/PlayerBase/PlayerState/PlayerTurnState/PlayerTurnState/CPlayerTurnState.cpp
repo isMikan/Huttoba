@@ -18,16 +18,23 @@ CPlayerTurnState::~CPlayerTurnState()
 {
 }
 
+//======================================================================
+// 	   外部で呼び出す関数.
+//======================================================================
+
+//--- 状態の開始時に呼び出す ---.
 void CPlayerTurnState::Enter()
 {
 }
 
+//--- 状態の終了時に呼び出す ---.
 void CPlayerTurnState::Exit()
 {
 	//回転していない.
 	m_pPlayer.SetTurning(false);
 }
-
+	
+//--- この状態の間に呼び出す ---.
 void CPlayerTurnState::Update()
 {
 	//入力されていなかった場合.
@@ -75,6 +82,11 @@ void CPlayerTurnState::Update()
 	m_pPlayer.SetQuaternion(tiltQuat);
 }
 
+//======================================================================
+// 	   内部で呼び出す関数.
+//======================================================================
+
+//--- 目的の方向に達成している場合 ---.
 bool CPlayerTurnState::IsSmallTurn(D3DXVECTOR3 forward)
 {
 	//入力方向を3D空間と同じように設定.

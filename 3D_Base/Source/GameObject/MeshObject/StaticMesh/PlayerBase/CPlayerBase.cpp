@@ -33,6 +33,10 @@ CPlayerBase::~CPlayerBase()
 {
 }
 
+//======================================================================
+// 	   外部で呼び出す関数.
+//======================================================================
+
 //--- 更新処理 ---.
 void CPlayerBase::Update()
 {
@@ -71,19 +75,19 @@ void CPlayerBase::Draw(D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAMERA&
 	CStaticMeshObject::Draw(View, Proj, Light, Camera);
 }
 
-//--- 移動状態を設定する関数 ---.
+//--- 移動状態を設定 ---.
 void CPlayerBase::SetMoveState(std::unique_ptr<CPlayerState> newState)
 {
 	ChangeState(m_pMoveState, std::move(newState));
 }
 
-//--- 回転状態を設定する関数 ---.
+//--- 回転状態を設定 ---.
 void CPlayerBase::SetTurnState(std::unique_ptr<CPlayerState> newState)
 {
 	ChangeState(m_pTurnState, std::move(newState));
 }
 
-//--- 行動状態を設定する関数 ---.
+//--- 行動状態を設定 ---.
 void CPlayerBase::SetActionState(std::unique_ptr<CPlayerState> newState)
 {
 	ChangeState(m_pActionState, std::move(newState));
@@ -92,28 +96,7 @@ void CPlayerBase::SetActionState(std::unique_ptr<CPlayerState> newState)
 	std::cout << typeid(*m_pActionState).name() << std::endl;
 }
 
-//--- 状態遷移の処理関数 ---.
-void CPlayerBase::ChangeState(
-	std::unique_ptr<CPlayerState>& currentState,
-	std::unique_ptr<CPlayerState> newState)
-{
-	if (currentState != nullptr)
-	{
-		//状態の終了処理.
-		currentState->Exit();
-	}
-
-	//新しい状態にする.
-	currentState = std::move(newState);
-
-	if (currentState != nullptr)
-	{
-		//状態の開始処理.
-		currentState->Enter();
-	}
-}
-
-//--- 位置を設定するために計算する関数 ---.
+//--- 位置を設定するために計算 ---.
 D3DXVECTOR3 CPlayerBase::GetObjectPos(D3DXVECTOR3 offset)
 {
 	//ローカル軸を取得.
@@ -149,7 +132,7 @@ CPlayerBase::LocalAxes CPlayerBase::GetLocalAxes()
 	return axes;
 }
 
-//--- クォータニオンによるベクトル回転の関数 ---.
+//--- クォータニオンによるベクトル回転 ---.
 D3DXVECTOR3 CPlayerBase::RotateVectorByQuat(
 	D3DXVECTOR3 vector, D3DXQUATERNION quat)
 {
@@ -176,7 +159,7 @@ D3DXVECTOR3 CPlayerBase::RotateVectorByQuat(
 	return D3DXVECTOR3(result.x, result.y, result.z);
 }
 
-//--- プレイヤーの初期角度から傾きを計算する関数 ---.
+//--- プレイヤーの初期角度から傾きを計算する ---.
 D3DXQUATERNION CPlayerBase::TiltedQuat(
 	D3DXQUATERNION baseQuat, D3DXVECTOR3 localAxes, float tiltAngle)
 {
@@ -192,7 +175,7 @@ D3DXQUATERNION CPlayerBase::TiltedQuat(
 	return quat;
 }
 
-//--- 押された時の移動量を計算する関数 ---.
+//--- 押された時の移動量を計算する ---.
 D3DXVECTOR3 CPlayerBase::Pushed()
 {
 	//押されるベクトル.
@@ -225,7 +208,7 @@ D3DXVECTOR3 CPlayerBase::GetVelocity()
 	return velocity;
 }
 
-//--- 角度を0～360度にする関数 ---.
+//--- 角度を0～360度にする ---.
 float CPlayerBase::WrapAngle(float value)
 {
 	//360度.
@@ -237,4 +220,29 @@ float CPlayerBase::WrapAngle(float value)
 	if (value < 0.f) value += twoPi;
 
 	return value;
+}
+
+//======================================================================
+// 	   内部で呼び出す関数.
+//======================================================================
+
+//--- 状態遷移の処理関数 ---.
+void CPlayerBase::ChangeState(
+	std::unique_ptr<CPlayerState>& currentState,
+	std::unique_ptr<CPlayerState> newState)
+{
+	if (currentState != nullptr)
+	{
+		//状態の終了処理.
+		currentState->Exit();
+	}
+
+	//新しい状態にする.
+	currentState = std::move(newState);
+
+	if (currentState != nullptr)
+	{
+		//状態の開始処理.
+		currentState->Enter();
+	}
 }

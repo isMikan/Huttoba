@@ -33,7 +33,11 @@ CPlayer::~CPlayer()
 {
 }
 
-//--- 毎フレームの動作する関数 ---.
+//======================================================================
+// 	   外部で呼び出す関数.
+//======================================================================
+
+//--- 毎フレームの動作する ---.
 void CPlayer::Update()
 {
 	HandleInput();
@@ -41,7 +45,7 @@ void CPlayer::Update()
 	CPlayerBase::Update();
 }
 
-//--- 毎フレームの描画する関数 ---.
+//--- 毎フレームの描画する ---.
 void CPlayer::Draw(
 	D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAMERA& Camera )
 {
@@ -135,7 +139,7 @@ void CPlayer::HandleInput()
 	}
 }
 
-//--- キーバインドを設定する関数 ---.
+//--- キーバインドを設定する ---.
 void CPlayer::SetPlayerInputBinding(int index) const
 {
 	//キーボード操作.
@@ -202,6 +206,7 @@ void CPlayer::SetPlayerInputBinding(int index) const
 		InputBinding(InputDevice::GamePad, CXInput::A), m_PlayerID);	//拾う/捨てる.
 }
 
+//--- 衝突判定 ---.
 void CPlayer::OnCollision(CollisionBase* pOtherCollider)
 {
 //	//攻撃を受けるプレイヤー.

@@ -30,6 +30,11 @@ CPlayerHandAttackState::~CPlayerHandAttackState()
 {
 }
 
+//======================================================================
+// 	   外部で呼び出す関数.
+//======================================================================
+
+//--- 状態の開始時に呼び出す ---.
 void CPlayerHandAttackState::Enter()
 {
 	//SEを鳴らす.
@@ -60,10 +65,12 @@ void CPlayerHandAttackState::Enter()
 	m_LeftHandEndPos = m_LeftHandStartPos + m_LeftHandEndPos;
 }
 
+//--- 状態の終了時に呼び出す ---.
 void CPlayerHandAttackState::Exit()
 {
 }
 
+//--- この状態の間に呼び出す ---.
 void CPlayerHandAttackState::Update()
 {
 	//ゲーム全体の経過時間.

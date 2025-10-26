@@ -1,4 +1,3 @@
-#include "stdafx.h"
 #include "CPlayerState.h"
 
 CPlayerState::CPlayerState(CPlayerBase& pPlayer)

@@ -24,6 +24,11 @@ CPlayerGetUpState::~CPlayerGetUpState()
 {
 }
 
+//======================================================================
+// 	   外部で呼び出す関数.
+//======================================================================
+
+//--- 状態の開始時に呼び出す ---.
 void CPlayerGetUpState::Enter()
 {
 	//攻撃の開始時間を取得.
@@ -47,6 +52,7 @@ void CPlayerGetUpState::Enter()
 	m_LeftHandEndPos += m_LeftHandStartPos;
 }
 
+//--- 状態の終了時に呼び出す ---.
 void CPlayerGetUpState::Exit()
 {
 	//プレイヤーの位置を取得.
@@ -55,6 +61,7 @@ void CPlayerGetUpState::Exit()
 	m_pPlayer.SetPosition(playerPos.x, 0.f, playerPos.z);
 }
 
+//--- この状態の間に呼び出す ---.
 void CPlayerGetUpState::Update()
 {
 	float t = CTimeManager::GetTotalTime();

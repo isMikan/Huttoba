@@ -4,6 +4,9 @@
 
 #include "GameObject/MeshObject/StaticMesh/PlayerBase/CPlayerBase.h"
 
+/***********************************************************************
+*	ゲージベースクラス.
+**/
 class CGaugeBase
 	: public CUIObject
 {
@@ -11,6 +14,9 @@ public:
 	CGaugeBase();
 	virtual ~CGaugeBase() = default;
 
+//======================================================================
+// 	   外部で呼び出す関数.
+//======================================================================
 	//--- 初期化処理 ---.
 	virtual void Init();
 	//--- 更新処理 ---.
@@ -31,6 +37,9 @@ public:
 	void SetGaugeInfo(Gauge gauge) { m_GaugeInfo = gauge; }
 
 protected:
+//======================================================================
+// 	   内部で呼び出す関数.
+//======================================================================
 	//--- ワールド座標を変換する関数 ---.
 	D3DXVECTOR3 WorldToScreen(
 		const D3DXVECTOR3& worldPos,
@@ -42,6 +51,9 @@ protected:
 	void Draw() override final {};
 
 protected:
+//======================================================================
+// 	   内部で使用する変数.
+//======================================================================
 	ComPtr<ID3D11DeviceContext>		m_pContext11;		//コンテキスト.
 
 	Gauge			m_GaugeInfo;	//ゲージの情報.

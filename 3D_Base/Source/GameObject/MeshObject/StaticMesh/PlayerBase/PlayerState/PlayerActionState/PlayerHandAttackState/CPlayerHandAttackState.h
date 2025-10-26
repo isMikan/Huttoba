@@ -9,6 +9,9 @@ class CPlayerHandAttackState
 	: public CPlayerState	//プレイヤー状態を継承.
 {
 public:
+//======================================================================
+// 	   外部で呼び出す関数.
+//======================================================================
 	CPlayerHandAttackState(CPlayerBase& pPlayer);
 	~CPlayerHandAttackState();
 
@@ -20,6 +23,9 @@ public:
 	void Update() override;
 
 private:
+//======================================================================
+// 	   内部で使用する変数.
+//======================================================================
 	float			m_CenterHandOffset;		//手を中心寄りに調整.
 
 	float			m_StartTime;			//開始時間.
@@ -36,6 +42,9 @@ private:
 	D3DXQUATERNION	m_StartQuat;			//開始時の回転.
 
 private:
+//======================================================================
+// 	   呼び出しを禁止するコンストラクタ.
+//======================================================================
 	CPlayerHandAttackState() = delete;	//デフォルトコンストラクタ削除.
 	CPlayerHandAttackState(const CPlayerHandAttackState&) = delete;
 	CPlayerHandAttackState& operator = (const CPlayerHandAttackState& rhs) = delete;

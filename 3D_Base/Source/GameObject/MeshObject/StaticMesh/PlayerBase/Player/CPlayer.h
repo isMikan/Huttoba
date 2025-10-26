@@ -24,19 +24,22 @@ public:
 	CPlayer(int index);		//引数はコントローラ番号.
 	~CPlayer() override;
 
-	//--- 毎フレームの動作する関数 ---.
+//======================================================================
+// 	   外部で呼び出す関数.
+//======================================================================
+	//--- 毎フレームの動作 ---.
 	void Update() override;
-	//--- 毎フレームの描画する関数 ---.
+	//--- 毎フレームの描画 ---.
 	void Draw(
 		D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAMERA& Camera ) override;
 
 	//--- キー操作 ---.
 	void HandleInput();
 
-	//--- キーバインドを設定する関数 ---.
+	//--- キーバインドを設定する ---.
 	void SetPlayerInputBinding(int index) const;
 
-	//--- 衝突判定の実装 ---.
+	//--- 衝突判定 ---.
 	void OnCollision(CollisionBase* pOtherCollider) override;
 
 private:

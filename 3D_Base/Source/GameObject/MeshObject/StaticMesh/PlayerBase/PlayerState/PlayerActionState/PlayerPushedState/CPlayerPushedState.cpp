@@ -27,6 +27,11 @@ CPlayerPushedState::~CPlayerPushedState()
 {
 }
 
+//======================================================================
+// 	   外部で呼び出す関数.
+//======================================================================
+
+//--- 状態の開始時に呼び出す ---.
 void CPlayerPushedState::Enter()
 {
 	//SEを鳴らす.
@@ -53,10 +58,12 @@ void CPlayerPushedState::Enter()
 	m_pPlayer.SetHitInfo(false, CPlayerBase::HitEvent::None);
 }
 
+//--- 状態の終了時に呼び出す ---.
 void CPlayerPushedState::Exit()
 {
 }
 
+//--- この状態の間に呼び出す ---.
 void CPlayerPushedState::Update()
 {
 	//ゲーム全体の経過時間.

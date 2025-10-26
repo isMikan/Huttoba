@@ -14,6 +14,10 @@ CGaugeManager::~CGaugeManager()
 {
 }
 
+//======================================================================
+// 	   外部で呼び出す関数.
+//======================================================================
+
 //--- 構築関数 ---.
 void CGaugeManager::Create(CPlayerManager* playerManager)
 {
@@ -28,7 +32,6 @@ void CGaugeManager::Create(CPlayerManager* playerManager)
 
 		auto& bus = player->GetBus();
 		bus.Subscribe([this, player](CPlayerState* state) {
-			std::cout << "サブスクライブ" << std::endl;
 			if (dynamic_cast<CPlayerKnockdownState*>(state))
 			{
 				for (int gNo = 0; gNo < Gauge_Max; gNo++)

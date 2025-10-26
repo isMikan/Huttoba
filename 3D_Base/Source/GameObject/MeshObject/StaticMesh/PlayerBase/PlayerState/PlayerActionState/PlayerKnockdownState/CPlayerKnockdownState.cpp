@@ -37,6 +37,11 @@ CPlayerKnockdownState::~CPlayerKnockdownState()
 {
 }
 
+//======================================================================
+// 	   外部で呼び出す関数.
+//======================================================================
+
+//--- 状態の開始時に呼び出す ---.
 void CPlayerKnockdownState::Enter()
 {
 	//SEを鳴らす.
@@ -63,12 +68,14 @@ void CPlayerKnockdownState::Enter()
 	m_MaxTime = m_EndTime;
 }
 
+//--- 状態の終了時に呼び出す ---.
 void CPlayerKnockdownState::Exit()
 {
 	//SEを止める.
 	AssetManager::Sound()->Stop(enSoundList::SE_Knockdown);
 }
 
+//--- この状態の間に呼び出す ---.
 void CPlayerKnockdownState::Update()
 {
 	float t = CTimeManager::GetTotalTime();
@@ -100,6 +107,11 @@ void CPlayerKnockdownState::Update()
 	m_pPlayer.GetPlayerLeftHand().SetPosition(m_pPlayer.GetObjectPos(m_LeftHandPos));
 }
 
+//======================================================================
+// 	   内部で呼び出す関数.
+//======================================================================
+
+//--- クラスがプレイヤーの場合の処理 ---.
 void CPlayerKnockdownState::ChildPlayer(int index)
 {
 	float x = CInputManager::GetLeftSthikX(index);
@@ -122,6 +134,7 @@ void CPlayerKnockdownState::ChildPlayer(int index)
 	}
 }
 
+//--- ダウン時間を減少する ---.
 void CPlayerKnockdownState::TimeDecrease()
 {
 	//経過時間を取得.
@@ -156,6 +169,7 @@ void CPlayerKnockdownState::TimeDecrease()
 
 }
 
+//--- 入力を受け付けるか判断する ---.
 bool CPlayerKnockdownState::IsInput(float x, float y, int index) const
 {
 	//コントローラが接続されている場合.

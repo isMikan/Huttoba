@@ -34,6 +34,11 @@ CPlayerFallingState::~CPlayerFallingState()
 {
 }
 
+//======================================================================
+// 	   外部で呼び出す関数.
+//======================================================================
+
+//--- 状態の開始時に呼び出す ---.
 void CPlayerFallingState::Enter()
 {
 	//攻撃の開始時間を取得.
@@ -60,6 +65,7 @@ void CPlayerFallingState::Enter()
 	m_RotateSpeed += m_ForceMax - force;	//最大量から引いて速さの調整.
 }
 
+//--- 状態の終了時に呼び出す ---.
 void CPlayerFallingState::Exit()
 {
 	//SEを鳴らす.
@@ -71,6 +77,7 @@ void CPlayerFallingState::Exit()
 	m_pPlayer.SetPosition(playerPos.x, m_GroundPos, playerPos.z);
 }
 
+//--- この状態の間に呼び出す ---.
 void CPlayerFallingState::Update()
 {
 	//経過時間を取得.
@@ -153,6 +160,11 @@ void CPlayerFallingState::Update()
 	m_pPlayer.SetPosition(playerPos);
 }
 
+//======================================================================
+// 	   内部で呼び出す関数.
+//======================================================================
+
+//--- ワールドでの角度を求める関数 ---.
 float CPlayerFallingState::WorldAngle()
 {
 	//上方向のローカル軸を取得.
@@ -169,6 +181,7 @@ float CPlayerFallingState::WorldAngle()
 	return angle;
 }
 
+//--- この状態を終了する関数 ---.
 bool CPlayerFallingState::IsEnd()
 {
 	//プレイヤーの位置を取得.

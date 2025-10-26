@@ -31,6 +31,9 @@ public:
 	CPlayerBase* GetPlayer(int id) { return m_pPlayers[id].get(); }
 
 private:
+//======================================================================
+// 	   内部で呼び出す関数.
+//======================================================================
 	//--- キャラクターの色を設定する関数 ---.
 	CPlayerBase::ObjectColor SetCharacterColor(int index);
 
@@ -38,6 +41,9 @@ private:
 	D3DXVECTOR3 SetDefaultPosition(int index);
 
 private:
+//======================================================================
+// 	   内部で使用する変数.
+//======================================================================
 	std::vector<std::unique_ptr<CPlayerBase>>		m_pPlayers;		//プレイヤー.
 
 	int		m_PlayerID;		//プレイヤー番号.

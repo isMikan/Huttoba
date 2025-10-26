@@ -26,6 +26,11 @@ CPlayerKnockbackState::~CPlayerKnockbackState()
 {
 }
 
+//======================================================================
+// 	   外部で呼び出す関数.
+//======================================================================
+
+//--- 状態の開始時に呼び出す ---.
 void CPlayerKnockbackState::Enter()
 {
 	//SEを鳴らす.
@@ -59,10 +64,12 @@ void CPlayerKnockbackState::Enter()
 		false, hitInfo.hitEvent);
 }
 
+//--- 状態の終了時に呼び出す ---.
 void CPlayerKnockbackState::Exit()
 {
 }
 
+//--- この状態の間に呼び出す ---.
 void CPlayerKnockbackState::Update()
 {
 	float t = CTimeManager::GetTotalTime();

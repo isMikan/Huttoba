@@ -15,7 +15,6 @@
 
 CPlayerManager::CPlayerManager()
 	: m_pPlayers	()
-
 {
 	Create();
 }
@@ -23,6 +22,10 @@ CPlayerManager::CPlayerManager()
 CPlayerManager::~CPlayerManager()
 {
 }
+
+//======================================================================
+// 	   外部で呼び出す関数.
+//======================================================================
 
 //--- 構築関数 ---.
 void CPlayerManager::Create()
@@ -134,7 +137,11 @@ void CPlayerManager::Draw(D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAME
 //	}
 //}
 
-//--- キャラクターの色を設定する関数 ---.
+//======================================================================
+// 	   内部で呼び出す関数.
+//======================================================================
+
+//--- キャラクターの色を設定 ---.
 CPlayerBase::ObjectColor CPlayerManager::SetCharacterColor(int index)
 {
 	//プレイヤーの色.
@@ -170,7 +177,7 @@ CPlayerBase::ObjectColor CPlayerManager::SetCharacterColor(int index)
 	return playerColor[index];
 }
 
-//--- 初期位置を設定する関数 ---.
+//--- 初期位置を設定 ---.
 D3DXVECTOR3 CPlayerManager::SetDefaultPosition(int index)
 {
 	//プレイヤーの位置.

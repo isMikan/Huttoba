@@ -27,6 +27,11 @@ CPlayerHandWhiffState::~CPlayerHandWhiffState()
 {
 }
 
+//======================================================================
+// 	   外部で呼び出す関数.
+//======================================================================
+
+//--- 状態の開始時に呼び出す ---.
 void CPlayerHandWhiffState::Enter()
 {
 	//SEを鳴らす.
@@ -87,10 +92,12 @@ void CPlayerHandWhiffState::Enter()
 	}
 }
 
+//--- 状態の終了時に呼び出す ---.
 void CPlayerHandWhiffState::Exit()
 {
 }
 
+//--- この状態の間に呼び出す ---.
 void CPlayerHandWhiffState::Update()
 {
 	//ゲーム全体の経過時間.

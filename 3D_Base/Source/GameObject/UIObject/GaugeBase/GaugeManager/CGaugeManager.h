@@ -5,12 +5,18 @@
 #include "GameObject/MeshObject/StaticMesh/PlayerBase/PlayerManager/CPlayerManager.h"
 #include "GameObject/MeshObject/StaticMesh/PlayerBase/CPlayerBase.h"
 
+/***********************************************************************
+*	ゲージマネージャークラス.
+**/
 class CGaugeManager
 {
 public:
 	CGaugeManager();
 	~CGaugeManager();
 
+//======================================================================
+// 	   外部で呼び出す関数.
+//======================================================================
 	//--- 構築関数 ---.
 	void Create(
 		CPlayerManager* playerManager);
@@ -27,6 +33,9 @@ public:
 		D3DXMATRIX& View, D3DXMATRIX& Proj);
 
 protected:
+//======================================================================
+// 	   内部で使用する変数.
+//======================================================================
 	std::vector<std::unique_ptr<CGaugeBase>>	m_pGauge;	//ゲージ.
 
 };
