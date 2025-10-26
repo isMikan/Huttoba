@@ -5,11 +5,6 @@
 #include "Collision/CollisionStrategy/CollisionStrategyFactory/CollisionStrategyFactory.h"
 #include "Collision/CollisionStrategy/CollisionStrategyBase.h"
 
-void CollisionManager::Init()
-{
-	m_Colliders.clear();
-}
-
 void CollisionManager::AddCollider(std::shared_ptr<CollisionBase> pCollider)
 {
     if (pCollider)
@@ -34,7 +29,7 @@ void CollisionManager::RemoveCollider(CollisionBase* pColliderToRemove)
 // 衝突判定ロジック
 bool CollisionManager::CheckCollision(CollisionBase* a, CollisionBase* b)
 {
-    // StrategyFactoryから判定ストラテジーを取得
+    //  StrategyFactoryから判定ストラテジーを取得
     CollisionStrategyBase* strategy = CollisionStrategyFactory::GetInstance()->GetStrategy(
         a->GetType(),
         b->GetType()
@@ -50,7 +45,7 @@ bool CollisionManager::CheckCollision(CollisionBase* a, CollisionBase* b)
 
 void CollisionManager::Update()
 {
-    // 判定の位置同期
+    //判定の位置同期
     for (const auto& pCollider : m_Colliders)
     {
         if (pCollider->GetActive())
@@ -65,13 +60,13 @@ void CollisionManager::Update()
     // 衝突判定
     for (size_t i = 0; i < m_Colliders.size(); ++i)
     {
-        // この判定はアクティブか？
+        //この判定はアクティブか？
         CollisionBase* colliderA = m_Colliders[i].get();
         if (!colliderA->GetActive()) continue;
 
         for (size_t j = i + 1; j < m_Colliders.size(); ++j)
         {
-            // この判定はアクティブか？
+            //この判定はアクティブか？
             CollisionBase* colliderB = m_Colliders[j].get();
             if (!colliderB->GetActive()) continue;
 
