@@ -13,7 +13,7 @@ std::shared_ptr<CollisionBase> CollisionDataFactory::CreateSphereForMesh(
     if (!MeshCollisionUtility::CalculateBoundingSphere(
         pMesh, calculatedCenter, calculatedRadius))
     {
-        // 計算失敗時はnullptrを返すか、エラー処理を行う
+        // 計算失敗時はnullptrを返す
         return nullptr;
     }
 
@@ -28,8 +28,8 @@ std::shared_ptr<CollisionBase> CollisionDataFactory::CreateSphereForMesh(
         listener,
         posRef,
         tag,
-        calculatedRadius,      // 計算された半径
-        calculatedCenter       // 計算されたオフセット
+        calculatedRadius, // 計算された半径
+        calculatedCenter  // 計算されたオフセット
     );
 
     return newCollider;
