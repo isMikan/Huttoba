@@ -20,7 +20,7 @@ CPlayerBase::CPlayerBase( int index )
 	, m_pActionState	( std::make_unique<CPlayerActionIdleState>( *this ) )
 
 	, m_IsMoving		( false )
-	, m_IsRotating		( false )
+	, m_IsTurning		( false )
 	, m_IsHoldingItem	( false )
 
 	, m_HitInfo			()

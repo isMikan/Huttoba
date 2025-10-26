@@ -24,6 +24,7 @@
 
 CPlayer::CPlayer(int index)
 	: CPlayerBase			( index )
+	, m_CurrentInput		( 0.f, 0.f, 0.f )
 {
 	SetPlayerInputBinding(m_PlayerID);
 }
@@ -53,43 +54,63 @@ void CPlayer::HandleInput()
 	float x = 0.f;	//x².
 	float z = 0.f;	//z².
 
-	//ˆÚ“®‰ñ“]‚ğ‚µ‚È‚¢ê‡.
-	if (IsAnyActionState<
-		CPlayerHandWhiffState,
-		CPlayerKnockbackState,
-		CPlayerGetUpState,
-		CPlayerKnockdownState>())
-	{
-		SetMoveState(std::make_unique<CPlayerMoveIdleState>(*this));
-		SetTurnState(std::make_unique<CPlayerTurnIdleState>(*this));
-	}
-	else
-	{
-		if (CInputManager::IsRepeat(Action::MoveUp, m_PlayerID))	z += 1.f;
-		if (CInputManager::IsRepeat(Action::MoveDown, m_PlayerID))	z -= 1.f;
-		if (CInputManager::IsRepeat(Action::MoveLeft, m_PlayerID))	x -= 1.f;
-		if (CInputManager::IsRepeat(Action::MoveRight, m_PlayerID))	x += 1.f;
-
-		//Ú‘±‚³‚ê‚Ä‚¢‚½‚ç”’l‚ğó‚¯æ‚é.
-		if (CInputManager::IsConnect(m_PlayerID))
+		//ˆÚ“®E‰ñ“]‚ğ‚µ‚È‚¢ê‡.
+		if (IsAnyActionState<
+			CPlayerHandWhiffState,
+			CPlayerKnockbackState,
+			CPlayerGetUpState,
+			CPlayerKnockdownState>())
 		{
-			x = CInputManager::GetLeftSthikX(m_PlayerID);
-			z = CInputManager::GetLeftSthikY(m_PlayerID);
-		}
-	}
+			//“ü—Í‚É•Ï‰»‚ª‚ ‚Á‚½ê‡.
+			if (m_CurrentInput != D3DXVECTOR3(x, 0.f, z))
+			{
+				SetMoveState(std::make_unique<CPlayerMoveIdleState>(*this));
+				SetTurnState(std::make_unique<CPlayerTurnIdleState>(*this));
 
-	//ˆÚ“®‚¾‚¯‚·‚éê‡.
-	SetMoveState(std::make_unique<CPlayerMoveState>(*this, x, z));
-	//‰ñ“]‚¾‚¯‚µ‚È‚¢ê‡.
-	if (IsActionState<CPlayerFallingState>())
-	{
-		SetTurnState(std::make_unique<CPlayerTurnIdleState>(*this));
-	}
-	//ˆÚ“®‰ñ“]‚·‚éê‡.
-	else
-	{
-		SetTurnState(std::make_unique<CPlayerTurnState>(*this, x, z));
-	}
+				m_CurrentInput = D3DXVECTOR3(x, 0.f, z);	//Œ»İ‚Ì“ü—Í‚ğ‹L˜^‚µ‚Ä‚¨‚­.
+			}
+		}
+		else
+		{
+			if (CInputManager::IsRepeat(Action::MoveUp, m_PlayerID))	z += 1.f;
+			if (CInputManager::IsRepeat(Action::MoveDown, m_PlayerID))	z -= 1.f;
+			if (CInputManager::IsRepeat(Action::MoveLeft, m_PlayerID))	x -= 1.f;
+			if (CInputManager::IsRepeat(Action::MoveRight, m_PlayerID))	x += 1.f;
+
+			//Ú‘±‚³‚ê‚Ä‚¢‚½‚ç”’l‚ğó‚¯æ‚é.
+			if (CInputManager::IsConnect(m_PlayerID))
+			{
+				x = CInputManager::GetLeftSthikX(m_PlayerID);
+				z = CInputManager::GetLeftSthikY(m_PlayerID);
+			}
+
+			//‰ñ“]‚¾‚¯‚µ‚È‚¢ê‡.
+			if (IsActionState<CPlayerFallingState>())
+			{
+				//“ü—Í‚É•Ï‰»‚ª‚ ‚Á‚½ê‡.
+				if (m_CurrentInput != D3DXVECTOR3(x, 0.f, z))
+				{
+					SetTurnState(std::make_unique<CPlayerTurnIdleState>(*this));
+				}
+			}
+			//ˆÚ“®E‰ñ“]‚·‚éê‡.
+			else
+			{
+				//“ü—Í‚É•Ï‰»‚ª‚ ‚Á‚½ê‡.
+				if (m_CurrentInput != D3DXVECTOR3(x, 0.f, z))
+				{
+					SetTurnState(std::make_unique<CPlayerTurnState>(*this, x, z));
+				}
+			}
+
+			//“ü—Í‚É•Ï‰»‚ª‚ ‚Á‚½ê‡.
+			if (m_CurrentInput != D3DXVECTOR3(x, 0.f, z))
+			{
+				//ˆÚ“®‚¾‚¯‚·‚éê‡.
+				SetMoveState(std::make_unique<CPlayerMoveState>(*this, x, z));
+				m_CurrentInput = D3DXVECTOR3(x, 0.f, z);	//Œ»İ‚Ì“ü—Í‚ğ‹L˜^‚µ‚Ä‚¨‚­.
+			}
+		}
 
 	//ƒAƒCƒeƒ€‚ğ‚Á‚Ä‚¢‚È‚¢‚È‚çUŒ‚.
 	if (CInputManager::IsDown(Action::Attack, m_PlayerID)

@@ -9,11 +9,11 @@ public:
 	CPlayerHandHitState(CPlayerBase& pPlayer);
 	~CPlayerHandHitState();
 
-	//--- 状態の開始時に呼び出す関数 ---.
+	//--- 状態の開始時に呼び出す ---.
 	void Enter() override;
-	//--- 状態の終了時に呼び出す関数 ---.
+	//--- 状態の終了時に呼び出す ---.
 	void Exit() override;
-	//--- この状態の間に呼び出す関数 ---.
+	//--- この状態の間に呼び出す ---.
 	void Update() override;
 
 private:
@@ -31,7 +31,7 @@ private:
 	D3DXQUATERNION	m_DefaultQuat;			//元の回転.
 
 private:
-	CPlayerHandHitState() = delete;	//デフォルトコンストラクタ禁止.
+	CPlayerHandHitState() = delete;	//デフォルトコンストラクタ削除.
 	CPlayerHandHitState(const CPlayerHandHitState&) = delete;
 	CPlayerHandHitState& operator = (const CPlayerHandHitState& rhs) = delete;
 

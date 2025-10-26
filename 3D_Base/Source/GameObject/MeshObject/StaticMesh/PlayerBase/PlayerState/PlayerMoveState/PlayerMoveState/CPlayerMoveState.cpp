@@ -10,8 +10,7 @@
 CPlayerMoveState::CPlayerMoveState(CPlayerBase& pPlayer, float x, float z)
 	: CPlayerState			( pPlayer )
 
-	, m_KeyDir				( x, 0.f, z )
-	, m_MoveDir				( 0.f, 0.f, 0.f )
+	, m_InputDir			( x, 0.f, z )
 	
 	, m_CurrentSpeed		()
 	, m_MoveSpeed			( 0.14f )
@@ -27,48 +26,75 @@ CPlayerMoveState::~CPlayerMoveState()
 
 void CPlayerMoveState::Enter()
 {
-	m_pPlayer.SetMoving(true);
 }
 
 void CPlayerMoveState::Exit()
 {
+	//歩いていない.
 	m_pPlayer.SetMoving(false);
 }
 
 void CPlayerMoveState::Update()
 {
-	if (m_KeyDir.x == 0 && m_KeyDir.z == 0)
+	//入力されていなかった場合.
+	if (m_InputDir.x == 0 && m_InputDir.z == 0)
 	{
+		//移動していない状態へ.
+		m_pPlayer.SetMoveState(std::make_unique<CPlayerMoveIdleState>(m_pPlayer));
+		return;
+	}
+	
+	//入力方向を3D空間と同じように設定.
+	D3DXVECTOR3 dir(m_InputDir.x, 0, m_InputDir.z);
+
+	//長さの二乗が誤差しきい値（0.001の二乗）より大きい場合.
+	if (D3DXVec3LengthSq(&dir) > 0.000001f)
+	{
+		//正規化.
+		D3DXVec3Normalize(&dir, &dir);
+	}
+	//異常値の場合.
+	else
+	{
+		//移動していない状態へ.
 		m_pPlayer.SetMoveState(std::make_unique<CPlayerMoveIdleState>(m_pPlayer));
 		return;
 	}
 
-	D3DXVECTOR3 dir(m_KeyDir.x, 0, m_KeyDir.z);
+	//歩いている.
+	m_pPlayer.SetMoving(true);
 
-	if (D3DXVec3Length(&dir) > 0)
-	{
-		D3DXVec3Normalize(&m_MoveDir, &dir);
-	}
-	else
-	{
-		m_MoveDir = D3DXVECTOR3(0, 0, 0);
-	}
+	//現在の速度を取得.
+	m_CurrentSpeed = GetMoveSpeed();
 
-	m_CurrentSpeed = m_MoveSpeed;
-	if (m_pPlayer.IsRotating())
+	//ベクトル量の計算.
+	D3DXVECTOR3 velocity = dir * m_CurrentSpeed;
+
+	//プレイヤーの位置を取得.
+	D3DXVECTOR3 playerPos = m_pPlayer.GetPosition();
+	//ベクトル量を足す.
+	playerPos += velocity;
+
+	//プレイヤーの位置の設定.
+	m_pPlayer.SetPosition(playerPos);
+}
+
+//--- 現在の速度にふさわしい数値を渡す ---.
+float CPlayerMoveState::GetMoveSpeed()
+{
+	//回転している場合.
+	if (m_pPlayer.IsTurning())
 	{
-		m_CurrentSpeed = m_RotatingMoveSpeed;
+		std::cout << "回転している速度" << std::endl;
+		return m_RotatingMoveSpeed;
 	}
+	//動作不可能（位置の微調整は可能）の場合.
 	if (m_pPlayer.IsAnyActionState<CPlayerPushedState, CPlayerFallingState>())
 	{
-		m_CurrentSpeed = m_HitingMoveSpeed;
+		std::cout << "攻撃を受けているときの速度" << std::endl;
+		return m_HitingMoveSpeed;
 	}
+	std::cout << "通常速度" << std::endl;
 
-	D3DXVECTOR3 pos = m_pPlayer.GetPosition();
-
-	D3DXVECTOR3 velocity = m_MoveDir * m_CurrentSpeed;
-
-	pos += velocity;
-
-	m_pPlayer.SetPosition(pos);
+	return m_MoveSpeed;	//通常速度.
 }

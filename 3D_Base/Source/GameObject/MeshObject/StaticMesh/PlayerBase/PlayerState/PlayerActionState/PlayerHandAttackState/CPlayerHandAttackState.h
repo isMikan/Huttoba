@@ -2,7 +2,7 @@
 
 #include "GameObject/MeshObject/StaticMesh/PlayerBase/PlayerState/CPlayerState.h"
 
-/**************************************************
+/***********************************************************************
 *	プレイヤーがアイテム未所持の攻撃状態クラス.
 **/
 class CPlayerHandAttackState
@@ -12,11 +12,11 @@ public:
 	CPlayerHandAttackState(CPlayerBase& pPlayer);
 	~CPlayerHandAttackState();
 
-	//--- 状態の開始時に呼び出す関数 ---.
+	//--- 状態の開始時に呼び出す ---.
 	void Enter() override;
-	//--- 状態の終了時に呼び出す関数 ---.
+	//--- 状態の終了時に呼び出す ---.
 	void Exit() override;
-	//--- この状態の間に呼び出す関数 ---.
+	//--- この状態の間に呼び出す ---.
 	void Update() override;
 
 private:
@@ -36,7 +36,7 @@ private:
 	D3DXQUATERNION	m_StartQuat;			//開始時の回転.
 
 private:
-	CPlayerHandAttackState() = delete;	//デフォルトコンストラクタ禁止.
+	CPlayerHandAttackState() = delete;	//デフォルトコンストラクタ削除.
 	CPlayerHandAttackState(const CPlayerHandAttackState&) = delete;
 	CPlayerHandAttackState& operator = (const CPlayerHandAttackState& rhs) = delete;
 

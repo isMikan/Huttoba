@@ -2,7 +2,7 @@
 
 #include "GameObject/MeshObject/StaticMesh/CStaticMeshObject.h"
 
-/**************************************************
+/***********************************************************************
 *	プレイヤーの手クラス.
 **/
 class CPlayerHand

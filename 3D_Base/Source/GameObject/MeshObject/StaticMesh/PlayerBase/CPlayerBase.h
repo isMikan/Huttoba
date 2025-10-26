@@ -10,7 +10,7 @@
 
 #include "PlayerState/CPlayerState.h"
 
-/**************************************************
+/***********************************************************************
 *   プレイヤーベースクラス.
 **/
 class CPlayerBase
@@ -145,8 +145,8 @@ public:
 	void SetMoving(bool moving) { m_IsMoving = moving; }
 
 	//回転しているかの所得と設定.
-	bool IsRotating() const { return m_IsRotating; }
-	void SetRotating(bool rotating) { m_IsRotating = rotating; }
+	bool IsTurning() const { return m_IsTurning; }
+	void SetTurning(bool turning) { m_IsTurning = turning; }
 
 	//アイテムを所持しているかの所得と設定.
 	bool IsHoldingItem() const { return m_IsHoldingItem; }
@@ -191,7 +191,7 @@ protected:
 	Gauge	m_KnockdownTime;	//ダウン状態の時間を保存.
 
 	bool	m_IsMoving;			//移動しているか.
-	bool	m_IsRotating;		//回転しているか.
+	bool	m_IsTurning;		//回転しているか.
 	bool	m_IsHoldingItem;	//アイテムを所持してるか.
 
 	static constexpr float		m_PushForce = 0.05f;	//押し出す力.

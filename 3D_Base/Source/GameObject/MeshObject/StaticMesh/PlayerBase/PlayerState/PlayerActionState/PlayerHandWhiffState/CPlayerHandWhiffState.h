@@ -2,7 +2,7 @@
 
 #include "GameObject/MeshObject/StaticMesh/PlayerBase/PlayerState/CPlayerState.h"
 
-/************************************************************
+/*********************************************************************************
 *	プレイヤーがアイテム未所持の攻撃を空振りする状態クラス.
 **/
 class CPlayerHandWhiffState
@@ -12,11 +12,11 @@ public:
 	CPlayerHandWhiffState(CPlayerBase& pPlayer);
 	~CPlayerHandWhiffState();
 
-	//--- 状態の開始時に呼び出す関数 ---.
+	//--- 状態の開始時に呼び出す ---.
 	void Enter() override;
-	//--- 状態の終了時に呼び出す関数 ---.
+	//--- 状態の終了時に呼び出す ---.
 	void Exit() override;
-	//--- この状態の間に呼び出す関数 ---.
+	//--- この状態の間に呼び出す ---.
 	void Update() override;
 
 private:
@@ -35,7 +35,7 @@ private:
 	D3DXQUATERNION	m_StartQuat;			//開始時の回転.
 
 private:
-	CPlayerHandWhiffState() = delete;	//デフォルトコンストラクタ禁止.
+	CPlayerHandWhiffState() = delete;	//デフォルトコンストラクタ削除.
 	CPlayerHandWhiffState(const CPlayerHandWhiffState&) = delete;
 	CPlayerHandWhiffState& operator = (const CPlayerHandWhiffState& rhs) = delete;
 

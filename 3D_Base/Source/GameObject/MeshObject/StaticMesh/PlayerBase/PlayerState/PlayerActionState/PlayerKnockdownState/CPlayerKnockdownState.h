@@ -2,7 +2,7 @@
 
 #include "GameObject/MeshObject/StaticMesh/PlayerBase/PlayerState/CPlayerState.h"
 
-/**************************************************
+/***********************************************************************
 *	プレイヤーの起き上がる状態クラス.
 **/
 class CPlayerKnockdownState
@@ -12,11 +12,11 @@ public:
 	CPlayerKnockdownState(CPlayerBase& pPlayer);
 	~CPlayerKnockdownState();
 
-	//--- 状態の開始時に呼び出す関数 ---.
+	//--- 状態の開始時に呼び出す ---.
 	void Enter() override;
-	//--- 状態の終了時に呼び出す関数 ---.
+	//--- 状態の終了時に呼び出す ---.
 	void Exit() override;
-	//--- この状態の間に呼び出す関数 ---.
+	//--- この状態の間に呼び出す ---.
 	void Update() override;
 
 private:
@@ -52,7 +52,7 @@ private:
 	D3DXVECTOR3		m_LeftHandPos;	//左手の元の位置.
 
 private:
-	CPlayerKnockdownState() = delete;	//デフォルトコンストラクタ禁止.
+	CPlayerKnockdownState() = delete;	//デフォルトコンストラクタ削除.
 	CPlayerKnockdownState(const CPlayerKnockdownState&) = delete;
 	CPlayerKnockdownState& operator = (const CPlayerKnockdownState& rhs) = delete;
 

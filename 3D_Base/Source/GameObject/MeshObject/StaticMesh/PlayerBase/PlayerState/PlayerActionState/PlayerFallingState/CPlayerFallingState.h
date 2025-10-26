@@ -2,7 +2,7 @@
 
 #include "GameObject/MeshObject/StaticMesh/PlayerBase/PlayerState/CPlayerState.h"
 
-/**************************************************
+/***********************************************************************
 *	プレイヤーの落ちる状態クラス.
 **/
 class CPlayerFallingState
@@ -12,11 +12,11 @@ public:
 	CPlayerFallingState(CPlayerBase& pPlayer);
 	~CPlayerFallingState() override;
 
-	//--- 状態の開始時に呼び出す関数 ---.
+	//--- 状態の開始時に呼び出す ---.
 	void Enter() override;
-	//--- 状態の終了時に呼び出す関数 ---.
+	//--- 状態の終了時に呼び出す ---.
 	void Exit() override;
-	//--- この状態の間に呼び出す関数 ---.
+	//--- この状態の間に呼び出す ---.
 	void Update() override;
 
 private:
@@ -48,7 +48,7 @@ private:
 	D3DXQUATERNION	m_StartQuat;			//開始時の回転.
 
 private:
-	CPlayerFallingState() = delete;	//デフォルトコンストラクタ禁止.
+	CPlayerFallingState() = delete;	//デフォルトコンストラクタ削除.
 	CPlayerFallingState(const CPlayerFallingState&) = delete;
 	CPlayerFallingState& operator = (const CPlayerFallingState& rhs) = delete;
 

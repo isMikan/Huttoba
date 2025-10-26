@@ -2,7 +2,7 @@
 
 #include "GameObject/MeshObject/StaticMesh/Ground/CGround.h"
 
-/**************************************************
+/***********************************************************************
 *	地面マネージャークラス.
 **/
 class CGroundManager

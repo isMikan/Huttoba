@@ -160,10 +160,10 @@ float CPlayerFallingState::WorldAngle()
 	//上方向.
 	D3DXVECTOR3 up(0.f, 1.f, 0.f);
 
-	//向きを計算.
+	//ローカル軸の上方向と世界軸の上方向の角度差を計算.
 	float dot = D3DXVec3Dot(&localUp, &up);
 	dot = std::clamp(dot, -1.f, 1.f);
-
+	//角度差の角度を計算.
 	float angle = acosf(dot);
 
 	return angle;

@@ -2,7 +2,7 @@
 
 #include "GameObject/MeshObject/StaticMesh/CStaticMeshObject.h"
 
-/**************************************************
+/***********************************************************************
 *	’n–ÊƒNƒ‰ƒX.
 **/
 class CGround

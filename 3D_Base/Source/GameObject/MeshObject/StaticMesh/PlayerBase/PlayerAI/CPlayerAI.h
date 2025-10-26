@@ -2,7 +2,7 @@
 
 #include "GameObject/MeshObject/StaticMesh/PlayerBase/CPlayerBase.h"
 
-/**************************************************
+/***********************************************************************
 *	プレイヤーAIクラス.
 **/
 class CPlayerAI
