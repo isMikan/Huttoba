@@ -42,7 +42,7 @@ CPlayerFallingState::~CPlayerFallingState()
 void CPlayerFallingState::Enter()
 {
 	//UŒ‚‚ÌŠJnŠÔ‚ğæ“¾.
-	m_StartTime = static_cast<float>(CTimeManager::GetTotalTime());
+	m_StartTime = CTimeManager::GetTotalTime();
 
 	//ŒX‚«Šp“x‚Ì‰Šú‰».
 	m_CurrentTiltAngle = 0.f;

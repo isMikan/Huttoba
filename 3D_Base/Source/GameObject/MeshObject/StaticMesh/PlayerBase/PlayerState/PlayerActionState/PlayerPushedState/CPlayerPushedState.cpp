@@ -44,7 +44,7 @@ void CPlayerPushedState::Enter()
 	m_StartQuat = m_pPlayer.GetQuaternion();
 
 	//攻撃の開始時間を取得.
-	m_StartTime = static_cast<float>(CTimeManager::GetTotalTime());
+	m_StartTime = CTimeManager::GetTotalTime();
 
 	//手の開始位置の設定.
 	m_RightHandStartPos = m_pPlayer.GetPlayerRightHand().GetOffsetPos();

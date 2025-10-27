@@ -37,7 +37,7 @@ void CPlayerHandHitState::Enter()
     m_StartQuat = m_pPlayer.GetQuaternion();
 
 	//攻撃の開始時間を取得.
-	m_StartTime = static_cast<float>(CTimeManager::GetTotalTime());
+	m_StartTime = CTimeManager::GetTotalTime();
 	//最終に戻る位置を設定.
 	m_DefaultQuat = D3DXQUATERNION(0.f, m_StartQuat.y, 0.f, m_StartQuat.w);
 

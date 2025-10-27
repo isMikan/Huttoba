@@ -48,7 +48,7 @@ void CPlayerPickupState::Enter()
 	m_StartQuat = m_pPlayer.GetQuaternion();
 
 	//攻撃の開始時間を取得.
-	m_StartTime = static_cast<float>(CTimeManager::GetTotalTime());
+	m_StartTime = CTimeManager::GetTotalTime();
 
 	//手の位置を調整するための数値を取得.
 	D3DXVECTOR3 rightHandOffset = m_pPlayer.GetPlayerRightHand().GetOffsetPos();

@@ -41,7 +41,7 @@ void CPlayerHandAttackState::Enter()
 	AssetManager::Sound()->PlaySE(enSoundList::SE_AttackHand);
 
 	//攻撃の開始時間を取得.
-	m_StartTime = static_cast<float>(CTimeManager::GetTotalTime());
+	m_StartTime = CTimeManager::GetTotalTime();
 
 	//プレイヤーの位置を取得.
 	D3DXVECTOR3 playerPos = m_pPlayer.GetPosition();
