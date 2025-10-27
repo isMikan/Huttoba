@@ -15,6 +15,7 @@
 **/
 class CPlayerBase
 	: public CStaticMeshObject
+	, public ICollisionListener
 {
 public:
 //======================================================================
@@ -187,6 +188,9 @@ protected:
 	void ChangeState(
 		std::unique_ptr<CPlayerState>& currentState,
 		std::unique_ptr<CPlayerState> newScene);
+
+	//--- è’ìÀîªíË ---.
+	void OnCollision(CollisionBase* pOtherCollider) override;
 
 protected:
 //======================================================================

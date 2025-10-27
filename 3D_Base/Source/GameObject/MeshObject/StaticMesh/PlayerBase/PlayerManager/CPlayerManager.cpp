@@ -21,6 +21,7 @@ CPlayerManager::CPlayerManager()
 
 CPlayerManager::~CPlayerManager()
 {
+	Destroy();
 }
 
 //======================================================================
@@ -86,6 +87,10 @@ void CPlayerManager::LoadData()
 //--- ”jŠüŠÖ” ---.
 void CPlayerManager::Destroy()
 {
+	for (auto& player : m_pPlayers)
+	{
+		player.reset();
+	}
 }
 
 //--- XVŠÖ” ---.

@@ -8,6 +8,7 @@ CShadowManager::CShadowManager()
 
 CShadowManager::~CShadowManager()
 {
+	Destroy();
 }
 
 //--- \’zŠÖ” ---.
@@ -36,7 +37,10 @@ void CShadowManager::LoadData()
 //--- ”jŠüŠÖ” ---.
 void CShadowManager::Destroy()
 {
-	m_pShadow.clear();
+	for (auto& shadow : m_pShadow)
+	{
+		shadow.reset();
+	}
 }
 
 //--- XVŠÖ” ---.

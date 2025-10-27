@@ -12,6 +12,7 @@ CGaugeManager::CGaugeManager()
 
 CGaugeManager::~CGaugeManager()
 {
+	Destroy();
 }
 
 //======================================================================
@@ -34,6 +35,10 @@ void CGaugeManager::Create(CPlayerManager* playerManager)
 		bus.Subscribe([this, player](CPlayerState* state) {
 			if (dynamic_cast<CPlayerKnockdownState*>(state))
 			{
+				if (m_SubscribePlayers.contains(player)) return;
+
+				m_SubscribePlayers.insert(player);
+
 				for (int gNo = 0; gNo < Gauge_Max; gNo++)
 				{
 					if (m_pGauge[gNo]) continue;	//ì¬‚³‚ê‚Ä‚¢‚½‚çŽŸ‚Ö.
@@ -51,11 +56,13 @@ void CGaugeManager::Create(CPlayerManager* playerManager)
 					m_pGauge[nextId]->SetGaugeInfo(player->GetKnockdownTime());
 					std::cout << typeid(m_pGauge[gNo].get()).name() << std::endl;
 
-					std::cout << "ƒQ[ƒW‚ðì¬" << std::endl;
+					std::cout << "ƒQ[ƒW‚ðì¬" << player->GetPlayerID() <<  std::endl;
 				}
 			}
 			else
 			{
+				//m_SubscribePlayers.erase(player);
+
 				for (int gNo = 0; gNo < Gauge_Max; gNo++)
 				{
 					if (!m_pGauge[gNo]) continue;	//ì¬‚¢‚È‚©‚Á‚½‚çŽŸ‚Ö.
@@ -110,13 +117,13 @@ void CGaugeManager::Update(CPlayerManager* playerManager)
 		{
 			if (!m_pGauge[gNo]) continue;
 
-			//std::cout << typeid( m_pGauge[gNo].get()).name() << std::endl;
-			//if (dynamic_cast<CTimerGauge*>(m_pGauge[gNo].get()))
+			if (dynamic_cast<CTimerGauge*>(m_pGauge[gNo].get()))
 			{
-				m_pGauge[gNo]->Update();
 				m_pGauge[gNo]->SetGaugeInfo(player->GetKnockdownTime());
-				m_pGauge[gNo]->SetWorldPos(player->GetPosition());
 			}
+			m_pGauge[gNo]->Update();
+			m_pGauge[gNo]->SetWorldPos(player->GetPosition());
+			//std::cout << typeid(player).name() << pNo << gNo << std::endl;
 		}
 	}
 }

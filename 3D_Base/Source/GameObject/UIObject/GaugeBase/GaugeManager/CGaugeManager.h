@@ -5,6 +5,8 @@
 #include "GameObject/MeshObject/StaticMesh/PlayerBase/PlayerManager/CPlayerManager.h"
 #include "GameObject/MeshObject/StaticMesh/PlayerBase/CPlayerBase.h"
 
+#include <unordered_set>
+
 /***********************************************************************
 *	ゲージマネージャークラス.
 **/
@@ -38,4 +40,5 @@ protected:
 //======================================================================
 	std::vector<std::unique_ptr<CGaugeBase>>	m_pGauge;	//ゲージ.
 
+	std::unordered_set<CPlayerBase*>	m_SubscribePlayers;	//プレイヤー.
 };

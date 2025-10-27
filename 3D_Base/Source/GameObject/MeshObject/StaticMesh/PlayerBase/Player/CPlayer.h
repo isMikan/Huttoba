@@ -17,7 +17,7 @@
 *	プレイヤークラス.
 **/
 class CPlayer
-	: public CPlayerBase,public ICollisionListener
+	: public CPlayerBase
 {
 
 public:
@@ -38,9 +38,6 @@ public:
 
 	//--- キーバインドを設定する ---.
 	void SetPlayerInputBinding(int index) const;
-
-	//--- 衝突判定 ---.
-	void OnCollision(CollisionBase* pOtherCollider) override;
 
 private:
 	D3DXVECTOR3		m_CurrentInput;	//現在の入力方向.

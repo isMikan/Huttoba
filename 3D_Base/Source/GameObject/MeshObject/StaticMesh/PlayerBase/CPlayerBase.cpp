@@ -4,6 +4,7 @@
 #include "PlayerState/PlayerTurnState/PlayerTurnIdleState/CPlayerTurnIdleState.h"
 #include "PlayerState/PlayerActionState/PlayerActionIdleState/CPlayerActionIdleState.h"
 
+#include "PlayerBase/PlayerState/PlayerActionState/PlayerHandAttackState/CPlayerHandAttackState.h"
 #include "PlayerBase/PlayerState/PlayerActionState/PlayerPushedState/CPlayerPushedState.h"
 #include "PlayerBase/PlayerState/PlayerActionState/PlayerKnockbackState/CPlayerKnockbackState.h"
 #include "PlayerBase/PlayerState/PlayerActionState/PlayerKnockdownState/CPlayerKnockdownState.h"
@@ -244,5 +245,53 @@ void CPlayerBase::ChangeState(
 	{
 		//状態の開始処理.
 		currentState->Enter();
+	}
+}
+
+void CPlayerBase::OnCollision(CollisionBase* pOtherCollider)
+{
+	//	//攻撃を受けるプレイヤー.
+	//	for (int hNo = 0;hNo < Player_Max;hNo++)
+	//	{
+	//		//攻撃するプレイヤー.
+	//		for (int aNo = 0;aNo < Player_Max;aNo++)
+	//		{
+	//			if (hNo == aNo) continue;
+	//			{
+	//				switch (hNo)
+	//				{
+	//				case 2:
+	//					m_pPlayers[hNo]->SetHitInfo(
+	//						m_pPlayers[aNo]->GetPosition(), true, CPlayerBase::HitEvent::Pushed);
+	//					break;
+	//				case 3:
+	//					break;
+	//				default:
+	//					m_pPlayers[hNo]->SetHitInfo(
+	//						m_pPlayers[aNo]->GetPosition(), m_pPlayers[aNo]->GetPosition(), 10.f, true, CPlayerBase::HitEvent::Knockdown);
+	//					break;
+	//				}
+	//
+	//				m_pPlayers[aNo]->SetHitInfo(
+	//					m_pPlayers[aNo]->GetPosition(), true, CPlayerBase::HitEvent::None);
+	//			}
+	//		}
+	//	}
+
+		// 衝突相手のタグをチェックし、応答を切り替える
+	switch (pOtherCollider->GetTag())
+	{
+	case CollisionBase::ColliderTag::Player:
+
+		if (CPlayerBase* player = dynamic_cast<CPlayerBase*>(pOtherCollider->GetListener()))
+		{
+			if (player->IsAnyActionState<CPlayerHandAttackState>())
+			{
+				SetHitInfo(
+					pOtherCollider->GetWorldPosition(), pOtherCollider->GetWorldPosition(), 10.f, true, CPlayerBase::HitEvent::Knockdown);
+			}
+		}
+
+		break;
 	}
 }

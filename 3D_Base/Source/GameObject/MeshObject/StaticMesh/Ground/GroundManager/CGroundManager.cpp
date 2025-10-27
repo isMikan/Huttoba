@@ -10,6 +10,7 @@ CGroundManager::CGroundManager()
 
 CGroundManager::~CGroundManager()
 {
+	Destroy();
 }
 
 //======================================================================
@@ -44,6 +45,10 @@ void CGroundManager::LoadData()
 //--- ”jŠüŠÖ” ---.
 void CGroundManager::Destroy()
 {
+	for (auto& ground : m_pGrounds)
+	{
+		ground.reset();
+	}
 }
 
 //--- XVŠÖ” ---.
