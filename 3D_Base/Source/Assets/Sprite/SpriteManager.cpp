@@ -38,7 +38,7 @@ HRESULT SpriteManager::CreateSprite3D()
 	//Šesprite3D‚Ìî•ñ‚ğ“o˜^
 //«-----------------------------------------------------------------------------------------------------------------------------«
 	RegisterSprite3D(Sprite3DList::Explosion,	_T("Data\\Texture\\explosion.png"), { 1.f, 1.f, 256.f, 256.f, 32.f, 32.f	});
-	RegisterSprite3D(Sprite3DList::Shadow,		_T("Data\\Texture\\shadow.png"),	{ 80.f, 80.f, 80.f, 80.f, 80.f, 80.f	});
+	RegisterSprite3D(Sprite3DList::Shadow,		_T("Data\\Texture\\shadow.png"),	{ 60.f, 60.f, 60.f, 60.f, 60.f, 60.f });
 //ª-----------------------------------------------------------------------------------------------------------------------------ª
 
 	//“o˜^‚µ‚½sprite3D‚ÌƒCƒ“ƒXƒ^ƒ“ƒXì¬.
@@ -58,8 +58,8 @@ HRESULT SpriteManager::CreateSprite2D()
 	//Šesprite2D‚Ìî•ñ‚ğ“o˜^(‚±‚±‚Ésprite2D“o˜^)
 //«-----------------------------------------------------------------------------------------------------------------------------«
 	RegisterSprite2D(Sprite2DList::PMon,		_T("Data\\Texture\\pmon.png"),			{ 64.f, 64.f, 896.f, 560.f, 896.f / 16.f, 560.f / 10.f });
-	RegisterSprite2D(Sprite2DList::GaugeFrame,	_T("Data\\Texture\\gauge_frame.png"),	{ 160.f, 30.f, 160.f, 30.f, 160.f, 30.f });
-	RegisterSprite2D(Sprite2DList::Gauge,		_T("Data\\Texture\\gauge.png"),			{ 160.f, 30.f, 160.f, 30.f, 160.f, 30.f });
+	RegisterSprite2D(Sprite2DList::GaugeFrame,	_T("Data\\Texture\\gauge_frame.png"),	{ 160.f, 24.f, 160.f, 24.f, 160.f, 24.f });
+	RegisterSprite2D(Sprite2DList::Gauge,		_T("Data\\Texture\\gauge.png"),			{ 160.f, 24.f, 160.f, 24.f, 160.f, 24.f });
 	RegisterSprite2D(Sprite2DList::Title,		_T("Data\\Texture\\Title_kari.png"),	{ WND_W,WND_H,WND_W,WND_H,WND_W,WND_H });
 	RegisterSprite2D(Sprite2DList::Standby,		_T("Data\\Texture\\Standby_kari.png"),	{ WND_W,WND_H,WND_W,WND_H,WND_W,WND_H });
 	RegisterSprite2D(Sprite2DList::RedyFont,	_T("Data\\Texture\\Ready_kari.png"),	{ 200,100, 200,100, 200,100 });

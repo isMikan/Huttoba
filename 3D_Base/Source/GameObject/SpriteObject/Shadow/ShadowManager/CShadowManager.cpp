@@ -20,7 +20,7 @@ void CShadowManager::Create()
 	for (auto& shadow : m_pShadow)
 	{
 		shadow = std::make_unique<CShadow>();
-		shadow->SetScale(0.01f, 0.01f, 1.f);
+		shadow->SetScale(0.015f, 0.015f, 1.f);
 	}
 }
 
