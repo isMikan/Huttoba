@@ -41,6 +41,7 @@ Bomb::~Bomb()
 void Bomb::Init()
 {
 	AttachMesh(AssetManager::Mesh(StaticMeshList::Bomb));
+	//AttachMesh(AssetManager::Mesh(StaticMeshList::ExplosionCol));
 
 	SetPosition(1, 5, 2);
 
@@ -48,7 +49,7 @@ void Bomb::Init()
 
 	m_tGravity = 0.01f;
 
-	std::shared_ptr<CStaticMesh> mesh = AssetManager::Mesh(StaticMeshList::BSphere);
+	std::shared_ptr<CStaticMesh> mesh = AssetManager::Mesh(StaticMeshList::ExplosionCol);
 
 	std::shared_ptr<CollisionBase> col =
 		CollisionDataFactory::CreateSphereForMesh(

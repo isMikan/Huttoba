@@ -109,4 +109,9 @@ void ItemManager::DestroyItem()
 	);
 }
 
+D3DXVECTOR3 ItemManager::GetItemPos(int i)
+{
+	return m_pItems[i].get()->GetPosition();
+}
+
 //--------------------------------------------------------------------------------------------------------------
