@@ -1,6 +1,8 @@
 #pragma once
 #include "Item/ItemBase.h"
 
+class CPlayer;
+
 class Bomb
     : public ItemBase,public ICollisionListener
 {
@@ -47,7 +49,7 @@ private:
     void Explosion(std::unique_ptr<CPlayerManager>& playiers);
 
     //吹き飛ばし処理(仮)
-    void Blow_Away(std::unique_ptr<CPlayerManager>& playiers);
+    void Blow_Away(CPlayer& playiers);
 
     //爆弾の爆発前の色の変更処理
     void ChangeColor();
@@ -87,4 +89,7 @@ private:
 
     //爆発の処理で一度だけ処理するものがあるので追加
     bool        m_OneExplosion;
+
+    //試し処理
+    bool        m_tamesi;
 };

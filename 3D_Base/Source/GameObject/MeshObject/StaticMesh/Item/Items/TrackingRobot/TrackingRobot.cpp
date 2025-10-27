@@ -95,7 +95,7 @@ void TrackingRobot::Have(std::unique_ptr<CPlayerManager>& playiers)
 
 void TrackingRobot::Use(std::unique_ptr<CPlayerManager>& playiers)
 {
-	if (GetAsyncKeyState('N') & 0x8000)
+	if (GetAsyncKeyState('0') & 0x8000)
 	{
 		//m_pPlayer->GetVelocity();
 	}

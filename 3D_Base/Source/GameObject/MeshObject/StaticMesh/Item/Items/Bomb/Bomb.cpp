@@ -5,6 +5,8 @@
 #include "TimeManager/CTimeManager.h"
 #include "Input/CInputManager.h"
 
+#include <PlayerBase/Player/CPlayer.h>
+
 //Factory‚É“o˜^
 namespace { const bool regist = ItemBase::AutoRegister<Bomb>("Bomb"); }
 
@@ -26,6 +28,8 @@ Bomb::Bomb()
 	, m_ColorTimer		( 0.0 )
 	
 	, m_OneExplosion	( false )
+
+	, m_tamesi			( false )
 {
 	Init();
 }
@@ -44,7 +48,7 @@ void Bomb::Init()
 
 	m_tGravity = 0.01f;
 
-	std::shared_ptr<CStaticMesh> mesh = AssetManager::Mesh(StaticMeshList::ExplosionCol);
+	std::shared_ptr<CStaticMesh> mesh = AssetManager::Mesh(StaticMeshList::BSphere);
 
 	std::shared_ptr<CollisionBase> col =
 		CollisionDataFactory::CreateSphereForMesh(
@@ -122,6 +126,15 @@ void Bomb::OnCollision(CollisionBase* other)
 	//int a;
 	std::cout << "i" << std::endl;
 	//Explosion();
+	
+	if (other->GetTag() == CollisionBase::ColliderTag::Player)
+	{
+		if(m_tamesi)
+			if (CPlayer* player = dynamic_cast<CPlayer*>(other->GetListener()))
+			{
+				Blow_Away(*player);
+			}
+	}
 }
 
 void Bomb::TakeMotion()
@@ -218,7 +231,8 @@ void Bomb::Explosion(std::unique_ptr<CPlayerManager>& playiers)
 {
 	if (!m_OneExplosion)
 	{
-		Blow_Away(playiers);
+		//Blow_Away(playiers);
+		m_tamesi = true;
 		m_OneExplosion = true;
 
 		static ::EsHandle hEffect = -1;
@@ -232,14 +246,14 @@ void Bomb::Explosion(std::unique_ptr<CPlayerManager>& playiers)
 	}
 }
 
-void Bomb::Blow_Away(std::unique_ptr<CPlayerManager>& playiers)
+void Bomb::Blow_Away(CPlayer& playiers)
 {
-	D3DXVECTOR3 vecLen = m_vPosition - playiers->GetPlayer(0)->GetPosition();
+	D3DXVECTOR3 vecLen = m_vPosition - GetPosition();
 
 	float len = D3DXVec3Length(&vecLen);
 
-	playiers->GetPlayer(0)->SetHitInfo(
-		m_vPosition, playiers->GetPlayer(0)->GetPosition(),
+	playiers.SetHitInfo(
+		m_vPosition, GetPosition(),
 		CalculateForceScalar(len),
 		true, CPlayerBase::HitEvent::Knockdown);
 }
