@@ -22,9 +22,6 @@ public:
 	//--- 構築関数 ---.
 	void Create(
 		CPlayerManager* playerManager);
-	//--- 読込関数 ---.
-	void LoadData(
-		CPlayerManager* playerManager);
 	//--- 破棄関数 ---.
 	void Destroy();
 	//--- 更新関数 ---.
@@ -38,7 +35,8 @@ protected:
 //======================================================================
 // 	   内部で使用する変数.
 //======================================================================
-	std::vector<std::unique_ptr<CGaugeBase>>	m_pGauge;	//ゲージ.
+	std::vector<std::unique_ptr<CGaugeBase>>	m_pGauge;			//ゲージ.
 
-	std::unordered_set<CPlayerBase*>	m_SubscribePlayers;	//プレイヤー.
+	std::unordered_map<CPlayerBase*, int>		m_PlayerGauge;		//プレイヤーとゲージを照らし合わせる.	
+	std::unordered_set<CPlayerBase*>			m_SubscribePlayers;	//プレイヤーの購買リスト.
 };
