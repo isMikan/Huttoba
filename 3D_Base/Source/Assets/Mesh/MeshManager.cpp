@@ -78,7 +78,7 @@ HRESULT MeshManager::CreateStaticMesh()
 	RegisterStaticMesh(StaticMeshList::Mushroom,		_T("Data\\Mesh\\Static\\Item\\Mushroom.x"));
 	RegisterStaticMesh(StaticMeshList::TrackingRobot,	_T("Data\\Mesh\\Static\\Item\\TrackingRobot.x"));
 
-	RegisterStaticMesh(StaticMeshList::ExplosionCol,	_T("Data\\Mesh\\Static\\Collision\\ExplosionCol.x"));
+	RegisterStaticMesh(StaticMeshList::ExplosionCol,	_T("Data\\Mesh\\Static\\Collision\\ExplosionCol1.5.x"));
 //Å™-----------------------------------------------------------------------------------------------------------------------------Å™
 
 	for (auto& mesh : m_StaticMeshInfoList)

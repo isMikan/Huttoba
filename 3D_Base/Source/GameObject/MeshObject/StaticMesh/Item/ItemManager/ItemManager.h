@@ -48,6 +48,13 @@ public:
 	* @brief    破壊フラグを参照して破壊を行う関数
 	*****************************************************************************************/
 	void DestroyItem(); 
+
+	//現在出現中のアイテムの数を取得
+	int GetItemVectorNum() { return m_pItems.size(); }
+
+	//出現中のアイテムの位置を取得
+	D3DXVECTOR3 GetItemPos(int i);
+
 private:
 
 	// アイテムのコンテナ
