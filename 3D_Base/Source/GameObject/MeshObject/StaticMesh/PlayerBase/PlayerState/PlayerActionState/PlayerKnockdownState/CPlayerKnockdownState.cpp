@@ -78,13 +78,16 @@ void CPlayerKnockdownState::Exit()
 //--- この状態の間に呼び出す ---.
 void CPlayerKnockdownState::Update()
 {
+	//経過時間を取得.
 	float t = CTimeManager::GetTotalTime();
+	//この状態の経過時間.
+	float stateTime = t - m_StartTime;
 
 	//残り時間と最大時間を設定.
-	m_pPlayer.SetKnockdownTime(m_EndTime, m_MaxTime);
-		
+	m_pPlayer.SetKnockdownTime(m_EndTime - stateTime, m_MaxTime);
+
 	//現在の経過時間と開始時間の差が終了時間を上回ったら.
-	if (t - m_StartTime > m_EndTime)
+	if (stateTime > m_EndTime)
 	{
 		m_pPlayer.SetActionState(std::make_unique<CPlayerGetUpState>(m_pPlayer));
 		return;
@@ -165,8 +168,8 @@ void CPlayerKnockdownState::TimeDecrease()
 	//横軸に揺らす.
 	playerPos += axes.right * offset * dt;
 
+	//プレイヤーの位置を設定.
 	m_pPlayer.SetPosition(playerPos);
-
 }
 
 //--- 入力を受け付けるか判断する ---.
