@@ -74,10 +74,10 @@ void Haetataki::Init()
 
 //--------------------------------------------------------------------------------------------------------------
 
-void Haetataki::Update(std::unique_ptr<CPlayerManager>& playiers)
+void Haetataki::Update()
 {
 	//アイテム共通のUpdate
-	ItemBase::Update(playiers);
+	ItemBase::Update();
 }
 
 //--------------------------------------------------------------------------------------------------------------
@@ -116,13 +116,13 @@ void Haetataki::OnGround()
 
 //--------------------------------------------------------------------------------------------------------------
 
-void Haetataki::Have(std::unique_ptr<CPlayerManager>& playiers)
+void Haetataki::Have()
 {
 	//アイテムを拾うモーション
 	TakeMostion();
 
 	//アイテムをプレイヤーの位置に合わせる
-	m_vPosition = playiers->GetPlayer(0)->GetPosition() + m_Offset;
+	m_vPosition = m_pPlayer->GetPosition() + m_Offset;
 
 	//Nキーで使用状態へ
 	if (GetAsyncKeyState('N') & 0x0001)
@@ -133,10 +133,10 @@ void Haetataki::Have(std::unique_ptr<CPlayerManager>& playiers)
 
 //--------------------------------------------------------------------------------------------------------------
 
-void Haetataki::Use(std::unique_ptr<CPlayerManager>& playiers)
+void Haetataki::Use()
 {
 	//アイテムをプレイヤーの位置に合わせる
-	m_vPosition = playiers->GetPlayer(0)->GetPosition() + m_Offset;
+	m_vPosition = m_pPlayer->GetPosition() + m_Offset;
 
 
 	////プレイヤーとの当たり判定
@@ -172,7 +172,7 @@ void Haetataki::Use(std::unique_ptr<CPlayerManager>& playiers)
 
 //--------------------------------------------------------------------------------------------------------------
 
-void Haetataki::Throw(std::unique_ptr<CPlayerManager>& playiers)
+void Haetataki::Throw()
 {
 	if (GetAsyncKeyState('N') & 0x8000)
 	{

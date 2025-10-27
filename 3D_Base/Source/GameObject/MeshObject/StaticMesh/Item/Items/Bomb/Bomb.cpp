@@ -61,9 +61,9 @@ void Bomb::Init()
 	CollisionManager::GetInstance()->AddCollider(col);
 }
 
-void Bomb::Update(std::unique_ptr<CPlayerManager>& playiers)
+void Bomb::Update()
 {
-	ItemBase::Update(playiers);
+	ItemBase::Update();
 }
 
 void Bomb::Draw(D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAMERA& Camera)
@@ -99,22 +99,22 @@ void Bomb::OnGround()
 	}
 }
 
-void Bomb::Have(std::unique_ptr<CPlayerManager>& playiers)
+void Bomb::Have()
 {
 	if (m_IsTake)
 		TakeMotion();
 	else
-		PossessionMotion(playiers);
+		PossessionMotion();
 }
 
-void Bomb::Use(std::unique_ptr<CPlayerManager>& playiers)
+void Bomb::Use()
 {
-	UseAndThrow(playiers);
+	UseAndThrow();
 }
 
-void Bomb::Throw(std::unique_ptr<CPlayerManager>& playiers)
+void Bomb::Throw()
 {
-	UseAndThrow(playiers);
+	UseAndThrow();
 }
 
 void Bomb::Destroy()
@@ -130,11 +130,13 @@ void Bomb::OnCollision(CollisionBase* other)
 	
 	if (other->GetTag() == CollisionBase::ColliderTag::Player)
 	{
-		if(m_tamesi)
-			if (CPlayer* player = dynamic_cast<CPlayer*>(other->GetListener()))
+		if (CPlayer* player = dynamic_cast<CPlayer*>(other->GetListener()))
+		{
+			if (m_tamesi)
 			{
 				Blow_Away(*player);
 			}
+		}
 	}
 }
 
@@ -148,9 +150,9 @@ void Bomb::TakeMotion()
 	}
 }
 
-void Bomb::PossessionMotion(std::unique_ptr<CPlayerManager>& playiers)
+void Bomb::PossessionMotion()
 {
-	m_vPosition = playiers->GetPlayer(0)->GetPlayerRightHand().GetPosition();
+	m_vPosition = m_pPlayer->GetPlayerRightHand().GetPosition();
 
 	if (GetAsyncKeyState('M') & 0x0001)
 	{
@@ -176,12 +178,12 @@ void Bomb::ThrowMotion()
 {
 }
 
-void Bomb::UseAndThrow(std::unique_ptr<CPlayerManager>& playiers)
+void Bomb::UseAndThrow()
 {
 	if (m_IsThrow)
 	{
 		//プレイヤーのクォータニオン(向いている方向)記録
-		m_vQuaternion = playiers->GetPlayer(0)->GetQuaternion();
+		m_vQuaternion = m_pPlayer->GetQuaternion();
 
 		D3DXMATRIX matRot;
 
@@ -213,7 +215,7 @@ void Bomb::UseAndThrow(std::unique_ptr<CPlayerManager>& playiers)
 	else 
 	{
 		m_Velocity.y = 0;
-		Explosion(playiers);
+		Explosion();
 	}
 
 	m_vPosition += m_Velocity * static_cast<float>(CTimeManager::GetDeltaTime());
@@ -228,7 +230,7 @@ void Bomb::UseAndThrow(std::unique_ptr<CPlayerManager>& playiers)
 	//}
 }
 
-void Bomb::Explosion(std::unique_ptr<CPlayerManager>& playiers)
+void Bomb::Explosion()
 {
 	if (!m_OneExplosion)
 	{

@@ -41,9 +41,9 @@ void Fun::Init()
 	m_HaveOffset = D3DXVECTOR3(0.0, 0.2f, 0.0f);
 }
 
-void Fun::Update(std::unique_ptr<CPlayerManager>& playiers)
+void Fun::Update()
 {
-	ItemBase::Update(playiers);
+	ItemBase::Update();
 }
 
 void Fun::Draw(D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAMERA& Camera)
@@ -77,23 +77,23 @@ void Fun::OnGround()
 	}
 }
 
-void Fun::Have(std::unique_ptr<CPlayerManager>& playiers)
+void Fun::Have()
 {
 	if (m_IsTake)
 		TakeMotion();
 	else
-		PossessionMotion(playiers);
+		PossessionMotion();
 }
 
-void Fun::Use(std::unique_ptr<CPlayerManager>& playiers)
+void Fun::Use()
 {
-	m_vPosition = playiers->GetPlayer(0)->GetPlayerRightHand().GetPosition() + m_HaveOffset;
-	m_vQuaternion = playiers->GetPlayer(0)->GetQuaternion();
+	m_vPosition = m_pPlayer->GetPlayerRightHand().GetPosition() + m_HaveOffset;
+	m_vQuaternion = m_pPlayer->GetQuaternion();
 
 	//長押ししてたら当たり続ける
 	if (GetAsyncKeyState('2') & 0x8000)
 	{
-		Hit(playiers);
+		Hit();
 	}
 	else
 	{
@@ -102,12 +102,12 @@ void Fun::Use(std::unique_ptr<CPlayerManager>& playiers)
 	}
 }
 
-void Fun::Throw(std::unique_ptr<CPlayerManager>& playiers)
+void Fun::Throw()
 {
 	if (m_IsThrow)
 	{
 		//プレイヤーのクォータニオン(向いている方向)記録
-		m_vQuaternion = playiers->GetPlayer(0)->GetQuaternion();
+		m_vQuaternion = m_pPlayer->GetQuaternion();
 
 		D3DXMATRIX matRot;
 
@@ -158,10 +158,10 @@ void Fun::TakeMotion()
 	}
 }
 
-void Fun::PossessionMotion(std::unique_ptr<CPlayerManager>& playiers)
+void Fun::PossessionMotion()
 {
-	m_vPosition = playiers->GetPlayer(0)->GetPlayerRightHand().GetPosition() + m_HaveOffset;
-	m_vQuaternion = playiers->GetPlayer(0)->GetQuaternion();
+	m_vPosition = m_pPlayer->GetPlayerRightHand().GetPosition() + m_HaveOffset;
+	m_vQuaternion = m_pPlayer->GetQuaternion();
 
 	if (GetAsyncKeyState('2') & 0x8000)
 	{
@@ -182,7 +182,7 @@ void Fun::ThrowMotion()
 {
 }
 
-void Fun::Hit(std::unique_ptr<CPlayerManager>& playiers)
+void Fun::Hit()
 {
 	D3DXVECTOR3 a = D3DXVECTOR3(m_vPosition.x, 0, m_vPosition.z);
 
@@ -191,8 +191,8 @@ void Fun::Hit(std::unique_ptr<CPlayerManager>& playiers)
 	//	1,	//動作確認で入れた1なので後でメンバ変数に変えておく
 	//	true, CPlayerBase::HitEvent::Pushed);
 
-	playiers->GetPlayer(1)->SetHitInfo(
-		a, playiers->GetPlayer(1)->GetPosition(),
+	m_pPlayer->SetHitInfo(
+		a, m_pPlayer->GetPosition(),
 		1,	//動作確認で入れた1なので後でメンバ変数に変えておく
 		true, CPlayerBase::HitEvent::Pushed);
 }

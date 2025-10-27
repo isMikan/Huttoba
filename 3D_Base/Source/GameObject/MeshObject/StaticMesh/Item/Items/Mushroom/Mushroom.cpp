@@ -40,9 +40,9 @@ void Mushroom::Init()
 	m_HaveOffset = D3DXVECTOR3(0.0, 0.2f, 0.0f);
 }
 
-void Mushroom::Update(std::unique_ptr<CPlayerManager>& playiers)
+void Mushroom::Update()
 {
-	ItemBase::Update(playiers);
+	ItemBase::Update();
 }
 
 void Mushroom::Draw(D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAMERA& Camera)
@@ -76,27 +76,27 @@ void Mushroom::OnGround()
 	}
 }
 
-void Mushroom::Have(std::unique_ptr<CPlayerManager>& playiers)
+void Mushroom::Have()
 {
 	if (m_IsTake)
 		TakeMotion();
 	else
-		PossessionMotion(playiers);
+		PossessionMotion();
 }
 
-void Mushroom::Use(std::unique_ptr<CPlayerManager>& playiers)
+void Mushroom::Use()
 {
-	UseAndThrow(playiers);
+	UseAndThrow();
 }
 
-void Mushroom::Throw(std::unique_ptr<CPlayerManager>& playiers)
+void Mushroom::Throw()
 {
 	//UseAndThrow(playiers);
 
 	if (m_IsThrow)
 	{
 		//プレイヤーのクォータニオン(向いている方向)記録
-		m_vQuaternion = playiers->GetPlayer(0)->GetQuaternion();
+		m_vQuaternion = m_pPlayer->GetQuaternion();
 
 		D3DXMATRIX matRot;
 
@@ -146,10 +146,10 @@ void Mushroom::TakeMotion()
 	}
 }
 
-void Mushroom::PossessionMotion(std::unique_ptr<CPlayerManager>& playiers)
+void Mushroom::PossessionMotion()
 {
-	m_vPosition = playiers->GetPlayer(0)->GetPlayerRightHand().GetPosition() + m_HaveOffset;
-	m_vQuaternion = playiers->GetPlayer(0)->GetQuaternion();
+	m_vPosition = m_pPlayer->GetPlayerRightHand().GetPosition() + m_HaveOffset;
+	m_vQuaternion = m_pPlayer->GetQuaternion();
 
 	if (GetAsyncKeyState('5') & 0x8000)
 	{
@@ -171,12 +171,12 @@ void Mushroom::ThrowMotion()
 {
 }
 
-void Mushroom::UseAndThrow(std::unique_ptr<CPlayerManager>& playiers)
+void Mushroom::UseAndThrow()
 {
 	if (m_IsThrow)
 	{
 		//プレイヤーのクォータニオン(向いている方向)記録
-		m_vQuaternion = playiers->GetPlayer(0)->GetQuaternion();
+		m_vQuaternion = m_pPlayer->GetQuaternion();
 
 		D3DXMATRIX matRot;
 
@@ -215,28 +215,28 @@ void Mushroom::UseAndThrow(std::unique_ptr<CPlayerManager>& playiers)
 
 	if (GetAsyncKeyState('7') & 0x8000)
 	{
-		Hit(playiers);
+		Hit();
 	}
 }
 
-void Mushroom::Hit(std::unique_ptr<CPlayerManager>& playiers)
+void Mushroom::Hit()
 {
 	//プレイヤーとキノコのぶつかった方向のベクトルを取得
-	D3DXVECTOR3 normal = playiers->GetPlayer(0)->GetPosition() - m_vPosition;
+	D3DXVECTOR3 normal = m_pPlayer->GetPosition() - m_vPosition;
 
 	//ノーマライズして法線ベクトルを取得
 	D3DXVec3Normalize(&normal, &normal);
 
 	//プレイヤーの移動方向を取得
-	D3DXVECTOR3 velPlayer = playiers->GetPlayer(0)->GetVelocity();
+	D3DXVECTOR3 velPlayer = m_pPlayer->GetVelocity();
 
 	D3DXVec3Normalize(&velPlayer, &velPlayer);
 	
 	//反射方向を記録
-	D3DXVECTOR3 reflectDir = CalculateReflectionDirection(playiers->GetPlayer(0)->GetVelocity(), normal);
+	D3DXVECTOR3 reflectDir = CalculateReflectionDirection(m_pPlayer->GetVelocity(), normal);
 
 
-	D3DXVECTOR3 a = playiers->GetPlayer(0)->GetPosition() - m_vPosition;
+	D3DXVECTOR3 a = m_pPlayer->GetPosition() - m_vPosition;
 	//ノックバックの強さを計算
 	float len = D3DXVec3Length(&a);
 	//距離に応じてパワー計算
@@ -244,7 +244,7 @@ void Mushroom::Hit(std::unique_ptr<CPlayerManager>& playiers)
 
 
 	//プレイヤーに吹き飛ばし情報を渡す
-	playiers->GetPlayer(0)->SetHitInfo(
+	m_pPlayer->SetHitInfo(
 		m_vPosition,
 		reflectDir,		
 		knockbackPower,

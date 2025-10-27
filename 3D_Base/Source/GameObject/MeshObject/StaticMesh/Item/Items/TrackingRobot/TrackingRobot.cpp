@@ -47,9 +47,9 @@ void TrackingRobot::Init()
 	m_tGravity = 0.01;
 }
 
-void TrackingRobot::Update(std::unique_ptr<CPlayerManager>& playiers)
+void TrackingRobot::Update()
 {
-	ItemBase::Update(playiers);
+	ItemBase::Update();
 }
 
 void TrackingRobot::Draw(D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAMERA& Camera)
@@ -85,15 +85,15 @@ void TrackingRobot::OnGround()
 	}
 }
 
-void TrackingRobot::Have(std::unique_ptr<CPlayerManager>& playiers)
+void TrackingRobot::Have()
 {
 	if (m_IsTake)
 		TakeMotion();
 	else
-		PossessionMotion(playiers);
+		PossessionMotion();
 }
 
-void TrackingRobot::Use(std::unique_ptr<CPlayerManager>& playiers)
+void TrackingRobot::Use()
 {
 	if (GetAsyncKeyState('0') & 0x8000)
 	{
@@ -101,7 +101,7 @@ void TrackingRobot::Use(std::unique_ptr<CPlayerManager>& playiers)
 	}
 }
 
-void TrackingRobot::Throw(std::unique_ptr<CPlayerManager>& playiers)
+void TrackingRobot::Throw()
 {
 }
 
@@ -122,9 +122,9 @@ void TrackingRobot::TakeMotion()
 	}
 }
 
-void TrackingRobot::PossessionMotion(std::unique_ptr<CPlayerManager>& playiers)
+void TrackingRobot::PossessionMotion()
 {
-	m_vPosition = playiers->GetPlayer(0)->GetPlayerRightHand().GetPosition();
+	m_vPosition = m_pPlayer->GetPlayerRightHand().GetPosition();
 
 	if (GetAsyncKeyState('8') & 0x0001)
 	{
@@ -150,11 +150,11 @@ void TrackingRobot::ThrowMotion()
 {
 }
 
-void TrackingRobot::Explosion(std::unique_ptr<CPlayerManager>& playiers)
+void TrackingRobot::Explosion()
 {
 	if (!m_OneExplosion)
 	{
-		Smash(playiers);
+		Smash();
 		m_OneExplosion = true;
 
 		static ::EsHandle hEffect = -1;
@@ -168,14 +168,14 @@ void TrackingRobot::Explosion(std::unique_ptr<CPlayerManager>& playiers)
 	}
 }
 
-void TrackingRobot::Smash(std::unique_ptr<CPlayerManager>& playiers)
+void TrackingRobot::Smash()
 {
-	D3DXVECTOR3 vecLen = m_vPosition - playiers->GetPlayer(0)->GetPosition();
+	D3DXVECTOR3 vecLen = m_vPosition - m_pPlayer->GetPosition();
 
 	float len = D3DXVec3Length(&vecLen);
 
-	playiers->GetPlayer(0)->SetHitInfo(
-		m_vPosition, playiers->GetPlayer(0)->GetPosition(),
+	m_pPlayer->SetHitInfo(
+		m_vPosition, m_pPlayer->GetPosition(),
 		CalculateForceScalar(len),
 		true, CPlayerBase::HitEvent::Knockdown);
 }

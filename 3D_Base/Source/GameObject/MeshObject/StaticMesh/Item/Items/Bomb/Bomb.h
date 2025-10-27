@@ -12,7 +12,7 @@ public:
 
     void Init()override;
 
-    void Update(std::unique_ptr<CPlayerManager>& playiers)override;
+    void Update()override;
 
     void Draw(D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAMERA& Camera)override;
 
@@ -22,11 +22,11 @@ public:
     //取得待機
     void OnGround()override;
     //取得
-    void Have(std::unique_ptr<CPlayerManager>& playiers)override;
+    void Have()override;
     //使用
-    void Use(std::unique_ptr<CPlayerManager>& playiers)override;
+    void Use()override;
     //投擲
-    void Throw(std::unique_ptr<CPlayerManager>& playiers)override;
+    void Throw()override;
     //消滅
     void Destroy()override;
 
@@ -36,17 +36,17 @@ private:
     //取得モーション
     void TakeMotion();
     //所持中モーション
-    void PossessionMotion(std::unique_ptr<CPlayerManager>& playiers);
+    void PossessionMotion();
     //使用モーション
     void UseMotion();
     //投擲モーション
     void ThrowMotion();
 
     //使用と投擲が同じ処理なのでひとまとめにする
-    void UseAndThrow(std::unique_ptr<CPlayerManager>& playiers);
+    void UseAndThrow();
 
     //爆発処理
-    void Explosion(std::unique_ptr<CPlayerManager>& playiers);
+    void Explosion();
 
     //吹き飛ばし処理(仮)
     void Blow_Away(CPlayer& playiers);
