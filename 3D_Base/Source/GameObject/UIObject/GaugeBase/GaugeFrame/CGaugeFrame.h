@@ -3,14 +3,14 @@
 #include "GameObject/UIObject/GaugeBase/CGaugeBase.h"
 
 /***********************************************************************
-*	時間経過型ゲージクラス.
+*	ゲージフレームクラス.
 **/
-class CTimerGauge
+class CGaugeFrame
 	: public CGaugeBase
 {
 public:
-	CTimerGauge();
-	~CTimerGauge() override;
+	CGaugeFrame();
+	~CGaugeFrame() override;
 
 //======================================================================
 // 	   外部で呼び出す関数.

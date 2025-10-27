@@ -10,13 +10,17 @@
 
 #include "PlayerState/CPlayerState.h"
 
-/**************************************************
+/***********************************************************************
 *   プレイヤーベースクラス.
 **/
 class CPlayerBase
 	: public CStaticMeshObject
+	, public ICollisionListener
 {
 public:
+//======================================================================
+// 	   列挙型.
+//======================================================================
 	//接触イベント.
 	enum class HitEvent
 	{
@@ -27,7 +31,10 @@ public:
 		None = -1		//なし(攻撃側の接触).
 	};
 
-	//ローカル軸の構造体.
+//======================================================================
+// 	   構造体.
+//======================================================================
+	//ローカル軸の情報.
 	struct LocalAxes
 	{
 		D3DXVECTOR3 right;		//ローカルX軸(右).
@@ -49,43 +56,48 @@ public:
 	CPlayerBase( int index );
 	virtual ~CPlayerBase();
 
+//======================================================================
+// 	   外部で呼び出す関数.
+//======================================================================
 	//--- 更新処理 ---.
 	virtual void Update() override;
 	//--- 描画処理 ---.
 	virtual void Draw(
 		D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAMERA& Camera) override;
 
-	//--- 移動状態を設定する関数 ---.
+	//--- 移動状態を設定 ---.
 	void SetMoveState(std::unique_ptr<CPlayerState> newState);
-	//--- 回転状態を設定する関数 ---.
+	//--- 回転状態を設定 ---.
 	void SetTurnState(std::unique_ptr<CPlayerState> newState);
-	//--- 行動状態を設定する関数 ---.
+	//--- 行動状態を設定 ---.
 	void SetActionState(std::unique_ptr<CPlayerState> newState);
 
-	//--- 位置を設定するために計算する関数 ---.
+	//--- 位置を設定するために計算 ---.
 	D3DXVECTOR3 GetObjectPos(D3DXVECTOR3 offset);
 
-	//--- ローカル座標軸を取得する関数 ---.
+	//--- ローカル座標軸を取得 ---.
 	LocalAxes GetLocalAxes();
 
-	//--- クォータニオンによるベクトル回転の関数 ---.
+	//--- クォータニオンによるベクトル回転 ---.
 	D3DXVECTOR3 RotateVectorByQuat(
 		D3DXVECTOR3 vector, D3DXQUATERNION quat);
 
-	//--- プレイヤーの初期角度から傾きを計算する関数 ---.
+	//--- プレイヤーの初期角度から傾きを計算する ---.
 	D3DXQUATERNION TiltedQuat(
 		D3DXQUATERNION	baseQuat,	//基準にする回転姿勢.
 		D3DXVECTOR3		localAxes,	//ローカル軸の方向.
 		float			tiltAngle);	//傾きの角度.
 
-	//--- 押された時の移動量を計算する関数 ---.
+	//--- 押された時の移動量を計算する ---.
 	D3DXVECTOR3 Pushed();
 
 	//--- 攻撃を受けた時のの移動量 ---.
 	D3DXVECTOR3 GetVelocity();
 
-	//--- 角度を0～360度にする関数 ---.
+	//--- 角度を0～360度にする ---.
 	float WrapAngle(float value);
+
+//======================================================================
 
 	//プレイヤーが頭を持っている(書き込み用).
 	CPlayerHead& GetPlayerHead() { return *m_pHead; }
@@ -134,13 +146,19 @@ public:
 		m_HitInfo.hitEvent = anim;
 	}
 
+	//ダウン状態の時間を取得と設定.
+	Gauge GetKnockdownTime() const { return m_KnockdownTime; }
+	void SetKnockdownTime(float remaining, float max) {
+		m_KnockdownTime.remaining = remaining; 
+		m_KnockdownTime.max = max; }
+
 	//移動しているかの所得と設定.
 	bool IsMoving() const { return m_IsMoving; }
 	void SetMoving(bool moving) { m_IsMoving = moving; }
 
 	//回転しているかの所得と設定.
-	bool IsRotating() const { return m_IsRotating; }
-	void SetRotating(bool rotating) { m_IsRotating = rotating; }
+	bool IsTurning() const { return m_IsTurning; }
+	void SetTurning(bool turning) { m_IsTurning = turning; }
 
 	//アイテムを所持しているかの所得と設定.
 	bool IsHoldingItem() const { return m_IsHoldingItem; }
@@ -152,7 +170,6 @@ public:
 		return (m_pActionState
 			&& dynamic_cast<T*>(m_pActionState.get()) != nullptr);
 	}
-
 	//複数のテンプレート.
 	template<typename... Ts>
 	//複数の条件に対応して結果を返す.
@@ -164,12 +181,21 @@ public:
 	CPlayerEventBus<CPlayerState>& GetBus() { return m_Bus; }
 
 protected:
-	//--- 状態を変更を処理する関数 ---.
+//======================================================================
+// 	   内部で呼び出す関数.
+//======================================================================
+	//--- 状態を変更を処理する ---.
 	void ChangeState(
 		std::unique_ptr<CPlayerState>& currentState,
 		std::unique_ptr<CPlayerState> newScene);
 
+	//--- 衝突判定 ---.
+	void OnCollision(CollisionBase* pOtherCollider) override;
+
 protected:
+//======================================================================
+// 	   内部で使用する変数.
+//======================================================================
 	int		m_PlayerID;		//プレイヤー番号.
 
 	CPlayerEventBus<CPlayerState>		m_Bus;			//プレイヤー状態.
@@ -182,10 +208,11 @@ protected:
 	std::unique_ptr<CPlayerState>	m_pTurnState;		//回転.
 	std::unique_ptr<CPlayerState>	m_pActionState;		//行動.
 
-	HitInfo							m_HitInfo;			//攻撃を受けた情報.
+	HitInfo	m_HitInfo;			//攻撃を受けた情報.
+	Gauge	m_KnockdownTime;	//ダウン状態の時間を保存.
 
 	bool	m_IsMoving;			//移動しているか.
-	bool	m_IsRotating;		//回転しているか.
+	bool	m_IsTurning;		//回転しているか.
 	bool	m_IsHoldingItem;	//アイテムを所持してるか.
 
 	static constexpr float		m_PushForce = 0.05f;	//押し出す力.

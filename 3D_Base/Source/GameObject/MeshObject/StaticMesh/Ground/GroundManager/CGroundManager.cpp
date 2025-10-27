@@ -10,7 +10,12 @@ CGroundManager::CGroundManager()
 
 CGroundManager::~CGroundManager()
 {
+	Destroy();
 }
+
+//======================================================================
+// 	   外部で呼び出す関数.
+//======================================================================
 
 //--- 構築関数 ---.
 void CGroundManager::Create()
@@ -40,12 +45,16 @@ void CGroundManager::LoadData()
 //--- 破棄関数 ---.
 void CGroundManager::Destroy()
 {
+	for (auto& ground : m_pGrounds)
+	{
+		ground.reset();
+	}
 }
 
 //--- 更新関数 ---.
 void CGroundManager::Update()
 {
-	float t = static_cast<float>(CTimeManager::GetTotalTime());
+	float t = CTimeManager::GetTotalTime();
 
 	for (int gNo = 0; gNo < m_pGrounds.size(); gNo++)
 	{

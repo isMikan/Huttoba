@@ -2,7 +2,7 @@
 
 #include "GameObject/MeshObject/StaticMesh/PlayerBase/PlayerState/CPlayerState.h"
 
-/**************************************************
+/***********************************************************************
 *	プレイヤーの吹き飛ばされた状態クラス.
 **/
 class CPlayerKnockbackState
@@ -12,14 +12,20 @@ public:
 	CPlayerKnockbackState(CPlayerBase& pPlayer);
 	~CPlayerKnockbackState() override;
 
-	//--- 状態の開始時に呼び出す関数 ---.
+//======================================================================
+// 	   外部で呼び出す関数.
+//======================================================================
+	//--- 状態の開始時に呼び出す ---.
 	void Enter() override;
-	//--- 状態の終了時に呼び出す関数 ---.
+	//--- 状態の終了時に呼び出す ---.
 	void Exit() override;
-	//--- この状態の間に呼び出す関数 ---.
+	//--- この状態の間に呼び出す ---.
 	void Update() override;
 
 private:
+//======================================================================
+// 	   内部で使用する変数.
+//======================================================================
 	D3DXVECTOR3		m_UpHandOffset;			//上に調整.
 	D3DXVECTOR3		m_StartRightAxis;		//開始時の右軸.
 	D3DXVECTOR3		m_Velocity;				//初速度.	
@@ -34,7 +40,10 @@ private:
 	D3DXQUATERNION	m_StartQuat;			//開始時の回転.
 
 private:
-	CPlayerKnockbackState() = delete;	//デフォルトコンストラクタ禁止.
+//======================================================================
+// 	   呼び出しを禁止するコンストラクタ.
+//======================================================================
+	CPlayerKnockbackState() = delete;	//デフォルトコンストラクタ削除.
 	CPlayerKnockbackState(const CPlayerKnockbackState&) = delete;
 	CPlayerKnockbackState& operator = (const CPlayerKnockbackState& rhs) = delete;
 

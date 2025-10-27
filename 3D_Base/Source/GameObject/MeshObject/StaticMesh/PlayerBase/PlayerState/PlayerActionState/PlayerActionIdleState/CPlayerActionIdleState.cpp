@@ -13,16 +13,23 @@ CPlayerActionIdleState::~CPlayerActionIdleState()
 {
 }
 
+//======================================================================
+// 	   外部で呼び出す関数.
+//======================================================================
+
+//--- 状態の開始時に呼び出す ---.
 void CPlayerActionIdleState::Enter()
 {
 	m_pPlayer.SetQuaternion(
 		0.f, m_pPlayer.GetQuaternion().y, 0.f, m_pPlayer.GetQuaternion().w);
 }
 
+//--- 状態の終了時に呼び出す ---.
 void CPlayerActionIdleState::Exit()
 {
 }
 
+//--- この状態の間に呼び出す ---.
 void CPlayerActionIdleState::Update()
 {
 	//プレイヤーの位置を取得.

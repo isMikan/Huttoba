@@ -26,6 +26,11 @@ CPlayerHandHitState::~CPlayerHandHitState()
 {
 }
 
+//======================================================================
+// 	   外部で呼び出す関数.
+//======================================================================
+
+//--- 状態の開始時に呼び出す ---.
 void CPlayerHandHitState::Enter()
 {
 	//クォータニオン型の回転を取得.
@@ -41,15 +46,17 @@ void CPlayerHandHitState::Enter()
 	m_LeftHandStartPos = m_pPlayer.GetPlayerLeftHand().GetPosition();
 }
 
+//--- 状態の終了時に呼び出す ---.
 void CPlayerHandHitState::Exit()
 {
 	m_pPlayer.SetQuaternion(0.f, m_StartQuat.y, 0.f, m_StartQuat.w);
 }
 
+//--- この状態の間に呼び出す ---.
 void CPlayerHandHitState::Update()
 {
 	//ゲーム全体の経過時間.
-	float t = static_cast<float>(CTimeManager::GetTotalTime());
+	float t = CTimeManager::GetTotalTime();
 
 	//現在の経過時間と開始時間の差が終了時間を上回ったら.
 	if (t - m_StartTime > m_EndTime

@@ -15,15 +15,3 @@ CPlayerMoveIdleState::CPlayerMoveIdleState(CPlayerBase& pPlayer, float x, float 
 CPlayerMoveIdleState::~CPlayerMoveIdleState()
 {
 }
-
-void CPlayerMoveIdleState::Enter()
-{
-}
-
-void CPlayerMoveIdleState::Exit()
-{
-}
-
-void CPlayerMoveIdleState::Update()
-{
-}

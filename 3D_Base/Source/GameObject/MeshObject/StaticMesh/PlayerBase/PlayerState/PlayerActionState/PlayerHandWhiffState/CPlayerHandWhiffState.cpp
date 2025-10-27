@@ -27,6 +27,11 @@ CPlayerHandWhiffState::~CPlayerHandWhiffState()
 {
 }
 
+//======================================================================
+// 	   外部で呼び出す関数.
+//======================================================================
+
+//--- 状態の開始時に呼び出す ---.
 void CPlayerHandWhiffState::Enter()
 {
 	//SEを鳴らす.
@@ -87,14 +92,16 @@ void CPlayerHandWhiffState::Enter()
 	}
 }
 
+//--- 状態の終了時に呼び出す ---.
 void CPlayerHandWhiffState::Exit()
 {
 }
 
+//--- この状態の間に呼び出す ---.
 void CPlayerHandWhiffState::Update()
 {
 	//ゲーム全体の経過時間.
-	float t = static_cast<float>(CTimeManager::GetTotalTime());
+	float t = CTimeManager::GetTotalTime();
 
 	//現在の経過時間と開始時間の差が終了時間を上回ったら.
 	if (t - m_StartTime > m_EndTime)

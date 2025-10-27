@@ -2,7 +2,7 @@
 
 #include "GameObject/MeshObject/StaticMesh/PlayerBase/PlayerState/CPlayerState.h"
 
-/**************************************************
+/***********************************************************************
 *	プレイヤーが回転する状態クラス.
 **/
 class CPlayerTurnState
@@ -12,21 +12,37 @@ public:
 	CPlayerTurnState(CPlayerBase& pPlayer, float x, float z);	//引数:回転方向のx軸、z軸.
 	~CPlayerTurnState() override;
 
-	//--- 状態の開始時に呼び出す関数 ---.
+//======================================================================
+// 	   外部で呼び出す関数.
+//======================================================================
+	//--- 状態の開始時に呼び出す ---.
 	void Enter() override;
-	//--- 状態の終了時に呼び出す関数 ---.
+	//--- 状態の終了時に呼び出す ---.
 	void Exit() override;
-	//--- この状態の間に呼び出す関数 ---.
+	//--- この状態の間に呼び出す ---.
 	void Update() override;
 
 private:
-	D3DXVECTOR3		m_KeyDir;			//方向キーの入力.
-
-	float			m_TurnSpeed;	//回転速度.
-	float			m_TurnDir;		//目的の方向.
+//======================================================================
+// 	   内部で呼び出す関数.
+//======================================================================
+	//--- 目的の方向に達成している場合 ---.
+	bool IsSmallTurn(D3DXVECTOR3 forward);
 
 private:
-	CPlayerTurnState() = delete;	//デフォルトコンストラクタ禁止.
+//======================================================================
+// 	   内部で使用する変数.
+//======================================================================
+	D3DXVECTOR3		m_InputDir;		//入力を受けた方向.
+
+	float			m_TurnSpeed;	//回転速度.
+	float			m_TurnDir;		//回転する目標の方向.
+
+private:
+//======================================================================
+// 	   呼び出しを禁止するコンストラクタ.
+//======================================================================
+	CPlayerTurnState() = delete;	//デフォルトコンストラクタ削除.
 	CPlayerTurnState(const CPlayerTurnState&) = delete;
 	CPlayerTurnState& operator = (const CPlayerTurnState& rhs) = delete;
 

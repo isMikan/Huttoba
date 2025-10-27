@@ -1,7 +1,7 @@
 #pragma once
 #include "GameObject/SpriteObject/CSpriteObject.h"
 
-/**************************************************
+/***********************************************************************
 *	”š”­ƒNƒ‰ƒX
 **/
 class CExplosion

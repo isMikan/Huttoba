@@ -2,7 +2,7 @@
 
 #include "GameObject/MeshObject/StaticMesh/PlayerBase/PlayerState/CPlayerState.h"
 
-/**************************************************
+/***********************************************************************
 *	プレイヤーが回転しない状態クラス.
 **/
 class CPlayerTurnIdleState
@@ -10,18 +10,24 @@ class CPlayerTurnIdleState
 {
 public:
 	CPlayerTurnIdleState(CPlayerBase& pPlayer);
-	CPlayerTurnIdleState(CPlayerBase& pPlayer, float x, float z);
+	CPlayerTurnIdleState(CPlayerBase& pPlayer, float x, float z);	//引数:移動方向のx軸、z軸.
 	~CPlayerTurnIdleState() override;
 
-	//--- 状態の開始時に呼び出す関数 ---.
-	void Enter() override;
-	//--- 状態の終了時に呼び出す関数 ---.
-	void Exit() override;
-	//--- この状態の間に呼び出す関数 ---.
-	void Update() override;
+//======================================================================
+// 	   外部で呼び出す関数.
+//======================================================================
+	//--- 状態の開始時に呼び出す ---.
+	void Enter() override {};
+	//--- 状態の終了時に呼び出す ---.
+	void Exit() override {};
+	//--- この状態の間に呼び出す ---.
+	void Update() override {};
 
 private:
-	CPlayerTurnIdleState() = delete;	//デフォルトコンストラクタ禁止.
+//======================================================================
+// 	   呼び出しを禁止するコンストラクタ.
+//======================================================================
+	CPlayerTurnIdleState() = delete;	//デフォルトコンストラクタ削除.
 	CPlayerTurnIdleState(const CPlayerTurnIdleState&) = delete;
 	CPlayerTurnIdleState& operator = (const CPlayerTurnIdleState& rhs) = delete;
 

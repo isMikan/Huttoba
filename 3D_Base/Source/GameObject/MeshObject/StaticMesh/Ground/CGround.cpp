@@ -31,6 +31,10 @@ CGround::~CGround()
 {
 }
 
+//======================================================================
+// 	   外部で呼び出す関数.
+//======================================================================
+
 //--- 更新処理 ---.
 void CGround::Update()
 {
@@ -66,11 +70,15 @@ void CGround::Draw(
 	CStaticMeshObject::Draw(View, Proj, Light, Camera);
 }
 
+//======================================================================
+// 	   内部で呼び出す関数.
+//======================================================================
+
 //--- 地面の色が変わる ---.
 void CGround::ChangeColorOfGround()
 {
 	//経過時間を取得.
-	float t = static_cast<float>(CTimeManager::GetTotalTime());
+	float t = CTimeManager::GetTotalTime();
 
 	//全体の時間の現在の割合.
 	float progress =
@@ -94,7 +102,7 @@ void CGround::ChangeColorOfGround()
 void CGround::ShakeGround()
 {
 	//経過時間を取得.
-	float t = static_cast<float>(CTimeManager::GetTotalTime());
+	float t = CTimeManager::GetTotalTime();
 
 	//揺れている時間の現在の割合.
 	float progress = 
@@ -109,7 +117,7 @@ void CGround::ShakeGround()
 void CGround::FallDownGround()
 {
 	//デルタタイムを取得.
-	float dt = static_cast<float>(CTimeManager::GetDeltaTime());
+	float dt = CTimeManager::GetDeltaTime();
 
 	m_Velocity += dt * -m_Gravity;
 	m_vPosition.y -= dt * m_Velocity * m_FallSpeed;	//地面を下へ.

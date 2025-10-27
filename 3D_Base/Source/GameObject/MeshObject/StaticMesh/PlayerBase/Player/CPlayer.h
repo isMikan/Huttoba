@@ -3,43 +3,42 @@
 #include "Input/CInput.h"
 
 #include "GameObject/MeshObject/StaticMesh/PlayerBase/CPlayerBase.h"
-#include "Collision/CollisionListener/ICollisionListener.h" 
-#include "Collision/Collider/CollisionBase.h"
 
-/**************************************************
+/***********************************************************************
 *	サイズ後々消す(メタセコイアでアイテム作るとき参考にしてください)
 * 
 *	プレイヤー	頭0.3
 *				体1.0
 *				手0.15
-/**************************************************
+/***********************************************************************
 
 
-/**************************************************
+/***********************************************************************
 *	プレイヤークラス.
 **/
 class CPlayer
-	: public CPlayerBase,public ICollisionListener
+	: public CPlayerBase
 {
 
 public:
 	CPlayer(int index);		//引数はコントローラ番号.
 	~CPlayer() override;
 
-	//--- 毎フレームの動作する関数 ---.
+//======================================================================
+// 	   外部で呼び出す関数.
+//======================================================================
+	//--- 毎フレームの動作 ---.
 	void Update() override;
-	//--- 毎フレームの描画する関数 ---.
+	//--- 毎フレームの描画 ---.
 	void Draw(
 		D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAMERA& Camera ) override;
 
 	//--- キー操作 ---.
 	void HandleInput();
 
-	//--- キーバインドを設定する関数 ---.
+	//--- キーバインドを設定する ---.
 	void SetPlayerInputBinding(int index) const;
 
-	// 【追加】ICollisionListener の実装
-	void OnCollision(CollisionBase* pOtherCollider) override;
 private:
-
+	D3DXVECTOR3		m_CurrentInput;	//現在の入力方向.
 };

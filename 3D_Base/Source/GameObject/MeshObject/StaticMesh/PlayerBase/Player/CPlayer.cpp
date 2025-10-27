@@ -24,6 +24,7 @@
 
 CPlayer::CPlayer(int index)
 	: CPlayerBase			( index )
+	, m_CurrentInput		( 0.f, 0.f, 0.f )
 {
 	SetPlayerInputBinding(m_PlayerID);
 }
@@ -32,7 +33,11 @@ CPlayer::~CPlayer()
 {
 }
 
-//--- 毎フレームの動作する関数 ---.
+//======================================================================
+// 	   外部で呼び出す関数.
+//======================================================================
+
+//--- 毎フレームの動作する ---.
 void CPlayer::Update()
 {
 	HandleInput();
@@ -40,7 +45,7 @@ void CPlayer::Update()
 	CPlayerBase::Update();
 }
 
-//--- 毎フレームの描画する関数 ---.
+//--- 毎フレームの描画する ---.
 void CPlayer::Draw(
 	D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAMERA& Camera )
 {
@@ -53,43 +58,63 @@ void CPlayer::HandleInput()
 	float x = 0.f;	//x軸.
 	float z = 0.f;	//z軸.
 
-	//移動回転をしない場合.
-	if (IsAnyActionState<
-		CPlayerHandWhiffState,
-		CPlayerKnockbackState,
-		CPlayerGetUpState,
-		CPlayerKnockdownState>())
-	{
-		SetMoveState(std::make_unique<CPlayerMoveIdleState>(*this));
-		SetTurnState(std::make_unique<CPlayerTurnIdleState>(*this));
-	}
-	else
-	{
-		if (CInputManager::IsRepeat(Action::MoveUp, m_PlayerID))	z += 1.f;
-		if (CInputManager::IsRepeat(Action::MoveDown, m_PlayerID))	z -= 1.f;
-		if (CInputManager::IsRepeat(Action::MoveLeft, m_PlayerID))	x -= 1.f;
-		if (CInputManager::IsRepeat(Action::MoveRight, m_PlayerID))	x += 1.f;
-
-		//接続されていたら数値を受け取る.
-		if (CInputManager::IsConnect(m_PlayerID))
+		//移動・回転をしない場合.
+		if (IsAnyActionState<
+			CPlayerHandWhiffState,
+			CPlayerKnockbackState,
+			CPlayerGetUpState,
+			CPlayerKnockdownState>())
 		{
-			x = CInputManager::GetLeftSthikX(m_PlayerID);
-			z = CInputManager::GetLeftSthikY(m_PlayerID);
-		}
-	}
+			//入力に変化があった場合.
+			if (m_CurrentInput != D3DXVECTOR3(x, 0.f, z))
+			{
+				SetMoveState(std::make_unique<CPlayerMoveIdleState>(*this));
+				SetTurnState(std::make_unique<CPlayerTurnIdleState>(*this));
 
-	//移動だけする場合.
-	SetMoveState(std::make_unique<CPlayerMoveState>(*this, x, z));
-	//回転だけしない場合.
-	if (IsActionState<CPlayerFallingState>())
-	{
-		SetTurnState(std::make_unique<CPlayerTurnIdleState>(*this));
-	}
-	//移動回転する場合.
-	else
-	{
-		SetTurnState(std::make_unique<CPlayerTurnState>(*this, x, z));
-	}
+				m_CurrentInput = D3DXVECTOR3(x, 0.f, z);	//現在の入力を記録しておく.
+			}
+		}
+		else
+		{
+			if (CInputManager::IsRepeat(Action::MoveUp, m_PlayerID))	z += 1.f;
+			if (CInputManager::IsRepeat(Action::MoveDown, m_PlayerID))	z -= 1.f;
+			if (CInputManager::IsRepeat(Action::MoveLeft, m_PlayerID))	x -= 1.f;
+			if (CInputManager::IsRepeat(Action::MoveRight, m_PlayerID))	x += 1.f;
+
+			//接続されていたら数値を受け取る.
+			if (CInputManager::IsConnect(m_PlayerID))
+			{
+				x = CInputManager::GetLeftSthikX(m_PlayerID);
+				z = CInputManager::GetLeftSthikY(m_PlayerID);
+			}
+
+			//回転だけしない場合.
+			if (IsActionState<CPlayerFallingState>())
+			{
+				//入力に変化があった場合.
+				if (m_CurrentInput != D3DXVECTOR3(x, 0.f, z))
+				{
+					SetTurnState(std::make_unique<CPlayerTurnIdleState>(*this));
+				}
+			}
+			//移動・回転する場合.
+			else
+			{
+				//入力に変化があった場合.
+				if (m_CurrentInput != D3DXVECTOR3(x, 0.f, z))
+				{
+					SetTurnState(std::make_unique<CPlayerTurnState>(*this, x, z));
+				}
+			}
+
+			//入力に変化があった場合.
+			if (m_CurrentInput != D3DXVECTOR3(x, 0.f, z))
+			{
+				//移動だけする場合.
+				SetMoveState(std::make_unique<CPlayerMoveState>(*this, x, z));
+				m_CurrentInput = D3DXVECTOR3(x, 0.f, z);	//現在の入力を記録しておく.
+			}
+		}
 
 	//アイテムを持っていないなら攻撃.
 	if (CInputManager::IsDown(Action::Attack, m_PlayerID)
@@ -114,7 +139,7 @@ void CPlayer::HandleInput()
 	}
 }
 
-//--- キーバインドを設定する関数 ---.
+//--- キーバインドを設定する ---.
 void CPlayer::SetPlayerInputBinding(int index) const
 {
 	//キーボード操作.
@@ -179,15 +204,4 @@ void CPlayer::SetPlayerInputBinding(int index) const
 		InputBinding(InputDevice::GamePad, CXInput::B), m_PlayerID);	//攻撃.
 	CInputManager::BindKey(Action::ToggleItem,	
 		InputBinding(InputDevice::GamePad, CXInput::A), m_PlayerID);	//拾う/捨てる.
-}
-
-void CPlayer::OnCollision(CollisionBase* pOtherCollider)
-{
-	// 衝突相手のタグをチェックし、応答を切り替える
-	switch (pOtherCollider->GetTag())
-	{
-	case CollisionBase::ColliderTag::Player:
-
-		break;
-	}
 }

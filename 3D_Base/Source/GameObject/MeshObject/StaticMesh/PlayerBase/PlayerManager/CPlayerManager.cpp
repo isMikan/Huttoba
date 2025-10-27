@@ -15,14 +15,18 @@
 
 CPlayerManager::CPlayerManager()
 	: m_pPlayers	()
-
 {
 	Create();
 }
 
 CPlayerManager::~CPlayerManager()
 {
+	Destroy();
 }
+
+//======================================================================
+// 	   外部で呼び出す関数.
+//======================================================================
 
 //--- 構築関数 ---.
 void CPlayerManager::Create()
@@ -66,14 +70,14 @@ void CPlayerManager::LoadData()
 		player->GetPlayerLeftHand().
 			AttachMesh(AssetManager::Mesh(StaticMeshList::PHand));
 
-		// 新しい CollisionDataFactory を使ったコリジョンデータの生成と登録
+		//新しい CollisionDataFactory を使ったコリジョンデータの生成と登録.
 		std::shared_ptr<CStaticMesh> mesh = AssetManager::Mesh(StaticMeshList::BSphere); 
 
 		std::shared_ptr<CollisionBase> collider =
 			CollisionDataFactory::CreateSphereForMesh(
-				player.get(),
-				mesh,
-				CollisionBase::ColliderTag::Player
+				player.get(),	//当たり判定の主.
+				mesh,			//当たり判定用メッシュ.
+				CollisionBase::ColliderTag::Player	//主のタグ.
 			);
 
 		CollisionManager::GetInstance()->AddCollider(collider);
@@ -83,6 +87,10 @@ void CPlayerManager::LoadData()
 //--- 破棄関数 ---.
 void CPlayerManager::Destroy()
 {
+	for (auto& player : m_pPlayers)
+	{
+		player.reset();
+	}
 }
 
 //--- 更新関数 ---.
@@ -111,7 +119,6 @@ void CPlayerManager::Draw(D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAME
 	}
 }
 
-
 //エフェクトを表示するための関数.
 //void CPlayerManager::ManageEffectLaser(static::EsHandle hEffect)
 //{
@@ -135,7 +142,11 @@ void CPlayerManager::Draw(D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAME
 //	}
 //}
 
-//--- キャラクターの色を設定する関数 ---.
+//======================================================================
+// 	   内部で呼び出す関数.
+//======================================================================
+
+//--- キャラクターの色を設定 ---.
 CPlayerBase::ObjectColor CPlayerManager::SetCharacterColor(int index)
 {
 	//プレイヤーの色.
@@ -171,7 +182,7 @@ CPlayerBase::ObjectColor CPlayerManager::SetCharacterColor(int index)
 	return playerColor[index];
 }
 
-//--- 初期位置を設定する関数 ---.
+//--- 初期位置を設定 ---.
 D3DXVECTOR3 CPlayerManager::SetDefaultPosition(int index)
 {
 	//プレイヤーの位置.

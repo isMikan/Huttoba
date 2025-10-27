@@ -39,6 +39,9 @@ CSceneGameMain::~CSceneGameMain()
 {
 	//外部で作成しているので、ここでは破棄しない
 	m_hWnd = nullptr;
+
+	//登録している当たり判定をすべて削除
+	CollisionManager::GetInstance()->Init();
 }
 
 HRESULT CSceneGameMain::Create()
@@ -71,6 +74,9 @@ HRESULT CSceneGameMain::Create()
 	CteateExplosion();
 	CreateCharactor();
 
+	//ゲージを作成.
+	m_pGaugeManager->Create(m_pPlayerManager.get());
+
 	return S_OK;
 }
 
@@ -100,9 +106,6 @@ HRESULT CSceneGameMain::LoadData()
 
 	//影マネージャーの読み込み.
 	m_pShadowManager->LoadData();
-
-	//ゲージマネージャーの読み込み.
-	m_pGaugeManager->LoadData();
 
 	//プレイヤーマネージャーの読み込み.
 	m_pPlayerManager->LoadData();

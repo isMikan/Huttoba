@@ -27,6 +27,11 @@ CPlayerThrowState::~CPlayerThrowState()
 {
 }
 
+//======================================================================
+// 	   外部で呼び出す関数.
+//======================================================================
+
+//--- 状態の開始時に呼び出す ---.
 void CPlayerThrowState::Enter()
 {
 	//SEを鳴らす.
@@ -55,15 +60,17 @@ void CPlayerThrowState::Enter()
 	m_LeftHandEndPos = m_LeftHandStartPos + m_LeftHandEndPos;
 }
 
+//--- 状態の終了時に呼び出す ---.
 void CPlayerThrowState::Exit()
 {
 	m_pPlayer.SetQuaternion(m_StartQuat);
 }
 
+//--- この状態の間に呼び出す ---.
 void CPlayerThrowState::Update()
 {
 	//ゲーム全体の経過時間.
-	float t = static_cast<float>(CTimeManager::GetTotalTime());
+	float t = CTimeManager::GetTotalTime();
 
 	//現在の経過時間と開始時間の差が終了時間を上回ったら.
 	if (t - m_StartTime > m_EndTime)
@@ -73,7 +80,7 @@ void CPlayerThrowState::Update()
 	}
 
 	//前回のフレームからの経過時間.
-	float deltaTime = static_cast<float>(CTimeManager::GetDeltaTime());
+	float dt = CTimeManager::GetDeltaTime();
 
 	//ローカル軸を取得.
 	CPlayerBase::LocalAxes axes = m_pPlayer.GetLocalAxes();

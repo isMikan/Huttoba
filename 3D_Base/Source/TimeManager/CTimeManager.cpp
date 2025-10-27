@@ -9,7 +9,11 @@ CTimeManager::~CTimeManager()
 {
 }
 
-//--- リセット関数 ---.
+//======================================================================
+// 	   内部で呼び出す関数.
+//======================================================================
+
+//--- リセット ---.
 void CTimeManager::Reset_Internal()
 {
 	m_StartTime = Clock::now();
@@ -21,7 +25,7 @@ void CTimeManager::Reset_Internal()
 	m_IsPaused = false;
 }
 
-//--- 一時停止関数 ---.
+//--- 一時停止（ポーズ開始） ---.
 void CTimeManager::Pause_Internal()
 {
 	//一時停止中でない.
@@ -31,7 +35,7 @@ void CTimeManager::Pause_Internal()
 	}
 }
 
-//--- 再開関数 ---.
+//--- 再開（ポーズ終了） ---.
 void CTimeManager::Resume_Internal()
 {
 	//一時停止中.
@@ -42,7 +46,7 @@ void CTimeManager::Resume_Internal()
 	}
 }
 
-//--- 更新関数 ---.
+//--- 更新処理 ---.
 void CTimeManager::Update_Internal()
 {
 	//一時停止中.

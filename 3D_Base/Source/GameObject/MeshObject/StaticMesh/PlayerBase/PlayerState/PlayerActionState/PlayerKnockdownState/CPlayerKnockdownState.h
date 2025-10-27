@@ -2,7 +2,7 @@
 
 #include "GameObject/MeshObject/StaticMesh/PlayerBase/PlayerState/CPlayerState.h"
 
-/**************************************************
+/***********************************************************************
 *	プレイヤーの起き上がる状態クラス.
 **/
 class CPlayerKnockdownState
@@ -12,29 +12,40 @@ public:
 	CPlayerKnockdownState(CPlayerBase& pPlayer);
 	~CPlayerKnockdownState();
 
-	//--- 状態の開始時に呼び出す関数 ---.
+//======================================================================
+// 	   外部で呼び出す関数.
+//======================================================================
+	//--- 状態の開始時に呼び出す ---.
 	void Enter() override;
-	//--- 状態の終了時に呼び出す関数 ---.
+	//--- 状態の終了時に呼び出す ---.
 	void Exit() override;
-	//--- この状態の間に呼び出す関数 ---.
+	//--- この状態の間に呼び出す ---.
 	void Update() override;
 
 private:
-	//--- クラスがプレイヤーの場合の関数 ---.
+//======================================================================
+// 	   内部で呼び出す関数.
+//======================================================================
+	//--- クラスがプレイヤーの場合の処理 ---.
 	void ChildPlayer(int index);
 
-	//--- ダウン時間を減少する関数 ---.
+	//--- ダウン時間を減少する ---.
 	void TimeDecrease();
 
-	//--- 入力を受け付けるか判断する関数 ---.
+	//--- 入力を受け付けるか判断する ---.
 	bool IsInput(float x, float y, int index) const;
 
 private:
+//======================================================================
+// 	   内部で使用する変数.
+//======================================================================
 	float	m_StartTime;			//開始時間.
 	float	m_EndTime;				//終了時間.
+	float	m_MaxTime;				//最大時間.
 
 	float	m_DecreaseTriggerTime;	//減少が開始時間.
 	float	m_TimeDecrease;			//減少する時間.
+	float	m_TimeDecreaseByMashing;//連打操作によって減少する時間.
 
 	float	m_ShakeSpeed;			//揺れる速度.
 	float	m_ShakeWidth;			//揺れる幅.
@@ -50,7 +61,10 @@ private:
 	D3DXVECTOR3		m_LeftHandPos;	//左手の元の位置.
 
 private:
-	CPlayerKnockdownState() = delete;	//デフォルトコンストラクタ禁止.
+//======================================================================
+// 	   呼び出しを禁止するコンストラクタ.
+//======================================================================
+	CPlayerKnockdownState() = delete;	//デフォルトコンストラクタ削除.
 	CPlayerKnockdownState(const CPlayerKnockdownState&) = delete;
 	CPlayerKnockdownState& operator = (const CPlayerKnockdownState& rhs) = delete;
 

@@ -9,14 +9,20 @@ public:
 	CPlayerHandHitState(CPlayerBase& pPlayer);
 	~CPlayerHandHitState();
 
-	//--- 状態の開始時に呼び出す関数 ---.
+//======================================================================
+// 	   外部で呼び出す関数.
+//======================================================================
+	//--- 状態の開始時に呼び出す ---.
 	void Enter() override;
-	//--- 状態の終了時に呼び出す関数 ---.
+	//--- 状態の終了時に呼び出す ---.
 	void Exit() override;
-	//--- この状態の間に呼び出す関数 ---.
+	//--- この状態の間に呼び出す ---.
 	void Update() override;
 
 private:
+//======================================================================
+// 	   内部で使用する変数.
+//======================================================================
 	float			m_StartTime;			//開始時間.
 	float			m_EndTime;				//終了時間.
 	
@@ -31,7 +37,10 @@ private:
 	D3DXQUATERNION	m_DefaultQuat;			//元の回転.
 
 private:
-	CPlayerHandHitState() = delete;	//デフォルトコンストラクタ禁止.
+//======================================================================
+// 	   呼び出しを禁止するコンストラクタ.
+//======================================================================
+	CPlayerHandHitState() = delete;	//デフォルトコンストラクタ削除.
 	CPlayerHandHitState(const CPlayerHandHitState&) = delete;
 	CPlayerHandHitState& operator = (const CPlayerHandHitState& rhs) = delete;
 

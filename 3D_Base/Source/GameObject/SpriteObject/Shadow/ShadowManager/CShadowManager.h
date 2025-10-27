@@ -5,7 +5,7 @@
 #include "GameObject/MeshObject/StaticMesh/PlayerBase/PlayerManager/CPlayerManager.h"
 #include "GameObject/MeshObject/StaticMesh/Item/ItemManager/ItemManager.h"
 
-/**************************************************
+/***********************************************************************
 *	影マネージャークラス
 **/
 class CShadowManager

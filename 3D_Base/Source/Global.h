@@ -47,9 +47,10 @@ const int FPS = 60;		//フレームレート.
 //最大数
 static constexpr int Enemy_Max = 3;
 static constexpr int Explosion_Max = 20;
-static constexpr int Shadow_Max = 20;
-static constexpr int Ground_Max = 4;
-static constexpr int Player_Max = 4;
+static constexpr int Shadow_Max = 20;	//影.
+static constexpr int Ground_Max = 4;	//地面.
+static constexpr int Player_Max = 4;	//プレイヤー.
+static constexpr int Gauge_Max = 20;	//ゲージとフレーム.
 
 //弾のインターバル
 static constexpr float Player_Shot_Interval = 15;
@@ -72,6 +73,12 @@ struct LIGHT
 	float		fIntensity;	//強度(明るさ).
 };
 
+//ゲージの構造体.
+struct Gauge
+{
+	float remaining;	//残り.
+	float max;			//最大.
+};
 
 //-----------------------
 //  列挙
@@ -123,11 +130,13 @@ enum class UIList
 enum class Sprite3DList
 {
 	Explosion,
+	Shadow,
 };
 
 enum class Sprite2DList
 {
 	PMon = 0,
+	GaugeFrame,
 	Gauge,
 	Title,
 	Standby,

@@ -4,19 +4,18 @@
 
 CGaugeBase::CGaugeBase()
 	: m_pContext11		()
-	, m_pPlayerManager	( std::make_unique<CPlayerManager>() )
+
+	, m_GaugeInfo		()
 
 	, m_WorldPos		( 0.f, 0.f, 0.f )
 	, m_OffsetPos		( 0.f, 2.f, 0.f )
-
-	, m_IsDisplayGauge	( false )
 {
 	Init();
 }
 
-CGaugeBase::~CGaugeBase()
-{
-}
+//======================================================================
+// 	   外部で呼び出す関数.
+//======================================================================
 
 //--- 初期化処理 ---.
 void CGaugeBase::Init()
@@ -33,8 +32,6 @@ void CGaugeBase::Update()
 void CGaugeBase::Draw(
 	D3DXMATRIX& View, D3DXMATRIX& Proj)
 {
-	if (!m_IsDisplayGauge) return;
-
 	D3D11_VIEWPORT vp;	//ビューポート（描画領域）情報を格納.
 	UINT num = 1;		//取得するビューポート数.
 	m_pContext11 = m_pSprite->GetContext11();
@@ -47,13 +44,17 @@ void CGaugeBase::Draw(
 	D3DXVECTOR3 screenPos = WorldToScreen(pos, View, Proj, vp);
 
 	//画像幅の半分を引いて真ん中にする.
-	screenPos.x -= 102.5f;
+	screenPos.x -= 40.f;
 
 	//変換された位置を設定.
 	m_vPosition = D3DXVECTOR3(screenPos.x, screenPos.y, 0.f);
 
 	CUIObject::Draw();
 }
+
+//======================================================================
+// 	   内部で呼び出す関数.
+//======================================================================
 
 //--- ワールド座標を変換する関数 ---.
 D3DXVECTOR3 CGaugeBase::WorldToScreen(
@@ -79,27 +80,4 @@ D3DXVECTOR3 CGaugeBase::WorldToScreen(
 	screenPos.z = clipPos.z;
 
 	return screenPos;
-}
-
-//--- プレイヤーイベントの通知受け取りに加入 ---.
-void CGaugeBase::SubscribePlayerEvent(CPlayerBase* player)
-{
-	std::cout << "プレイヤーゲット" << std::endl;
-	auto& bus = player->GetBus();
-	bus.Subscribe([this](CPlayerState* state)
-		{
-			if (dynamic_cast<CPlayerKnockdownState*>(state))
-			{
-				std::cout << "ダウン受け取り成功" << std::endl;
-				m_IsDisplayGauge = true;
-			}
-			else
-			{
-				m_IsDisplayGauge = false;
-			}
-		});
-}
-
-void CGaugeBase::Draw()
-{
 }

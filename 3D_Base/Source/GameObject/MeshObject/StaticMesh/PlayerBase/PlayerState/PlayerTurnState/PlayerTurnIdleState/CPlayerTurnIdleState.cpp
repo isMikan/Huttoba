@@ -16,14 +16,3 @@ CPlayerTurnIdleState::~CPlayerTurnIdleState()
 {
 }
 
-void CPlayerTurnIdleState::Enter()
-{
-}
-
-void CPlayerTurnIdleState::Exit()
-{
-}
-
-void CPlayerTurnIdleState::Update()
-{
-}

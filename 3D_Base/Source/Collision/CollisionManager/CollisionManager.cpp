@@ -5,6 +5,11 @@
 #include "Collision/CollisionStrategy/CollisionStrategyFactory/CollisionStrategyFactory.h"
 #include "Collision/CollisionStrategy/CollisionStrategyBase.h"
 
+void CollisionManager::Init()
+{
+	m_Colliders.clear();
+}
+
 void CollisionManager::AddCollider(std::shared_ptr<CollisionBase> pCollider)
 {
     if (pCollider)

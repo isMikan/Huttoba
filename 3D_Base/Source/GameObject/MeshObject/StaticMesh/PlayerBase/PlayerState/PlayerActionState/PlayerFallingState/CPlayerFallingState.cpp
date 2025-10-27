@@ -34,6 +34,11 @@ CPlayerFallingState::~CPlayerFallingState()
 {
 }
 
+//======================================================================
+// 	   外部で呼び出す関数.
+//======================================================================
+
+//--- 状態の開始時に呼び出す ---.
 void CPlayerFallingState::Enter()
 {
 	//攻撃の開始時間を取得.
@@ -60,6 +65,7 @@ void CPlayerFallingState::Enter()
 	m_RotateSpeed += m_ForceMax - force;	//最大量から引いて速さの調整.
 }
 
+//--- 状態の終了時に呼び出す ---.
 void CPlayerFallingState::Exit()
 {
 	//SEを鳴らす.
@@ -71,10 +77,11 @@ void CPlayerFallingState::Exit()
 	m_pPlayer.SetPosition(playerPos.x, m_GroundPos, playerPos.z);
 }
 
+//--- この状態の間に呼び出す ---.
 void CPlayerFallingState::Update()
 {
 	//経過時間を取得.
-	float t = static_cast<float>(CTimeManager::GetTotalTime());
+	float t = CTimeManager::GetTotalTime();
 
 	//プレイヤーの位置を取得.
 	D3DXVECTOR3 playerPos = m_pPlayer.GetPosition();
@@ -135,7 +142,7 @@ void CPlayerFallingState::Update()
 	m_pPlayer.GetPlayerLeftHand().SetPosition(m_pPlayer.GetObjectPos(leftHandOffsetPos));
 
 	//1フレームの速さを取得.
-	float dt = static_cast<float>(CTimeManager::GetDeltaTime());
+	float dt = CTimeManager::GetDeltaTime();
 
 	//地面についた場合.
 	if (playerPos.y <= m_GroundPos)
@@ -153,6 +160,11 @@ void CPlayerFallingState::Update()
 	m_pPlayer.SetPosition(playerPos);
 }
 
+//======================================================================
+// 	   内部で呼び出す関数.
+//======================================================================
+
+//--- ワールドでの角度を求める関数 ---.
 float CPlayerFallingState::WorldAngle()
 {
 	//上方向のローカル軸を取得.
@@ -160,15 +172,16 @@ float CPlayerFallingState::WorldAngle()
 	//上方向.
 	D3DXVECTOR3 up(0.f, 1.f, 0.f);
 
-	//向きを計算.
+	//ローカル軸の上方向と世界軸の上方向の角度差を計算.
 	float dot = D3DXVec3Dot(&localUp, &up);
 	dot = std::clamp(dot, -1.f, 1.f);
-
+	//角度差の角度を計算.
 	float angle = acosf(dot);
 
 	return angle;
 }
 
+//--- この状態を終了する関数 ---.
 bool CPlayerFallingState::IsEnd()
 {
 	//プレイヤーの位置を取得.
