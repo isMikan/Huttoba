@@ -32,7 +32,7 @@ CPlayerGetUpState::~CPlayerGetUpState()
 void CPlayerGetUpState::Enter()
 {
 	//攻撃の開始時間を取得.
-	m_StartTime = static_cast<float>(CTimeManager::GetTotalTime());
+	m_StartTime = CTimeManager::GetTotalTime();
 
 	//クォータニオン型の回転を取得.
 	m_StartQuat = m_pPlayer.GetQuaternion();

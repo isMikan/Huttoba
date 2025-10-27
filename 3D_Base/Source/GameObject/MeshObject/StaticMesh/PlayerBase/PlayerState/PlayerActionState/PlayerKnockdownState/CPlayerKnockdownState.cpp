@@ -48,7 +48,7 @@ void CPlayerKnockdownState::Enter()
 	AssetManager::Sound()->PlayLoop(enSoundList::SE_Knockdown);
 
 	//攻撃の開始時間を取得.
-	m_StartTime = static_cast<float>(CTimeManager::GetTotalTime());
+	m_StartTime = CTimeManager::GetTotalTime();
 
 	//クォータニオン型の回転を取得.
 	m_StartQuat = m_pPlayer.GetQuaternion();
@@ -128,7 +128,7 @@ void CPlayerKnockdownState::ChildPlayer(int index)
 			m_PrevSthikY = y;
 
 			m_EndTime -= m_TimeDecreaseByMashing;
-			m_DecreaseTriggerTime = static_cast<float>(CTimeManager::GetTotalTime());
+			m_DecreaseTriggerTime = CTimeManager::GetTotalTime();
 			m_IsTimeDecreasing = true;
 		}
 	}
