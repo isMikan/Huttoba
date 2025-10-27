@@ -4,10 +4,14 @@
 #include "PlayerState/PlayerTurnState/PlayerTurnIdleState/CPlayerTurnIdleState.h"
 #include "PlayerState/PlayerActionState/PlayerActionIdleState/CPlayerActionIdleState.h"
 
+#include "PlayerBase/PlayerState/PlayerActionState/PlayerPickupState/CPlayerPickupState.h"
 #include "PlayerBase/PlayerState/PlayerActionState/PlayerHandAttackState/CPlayerHandAttackState.h"
 #include "PlayerBase/PlayerState/PlayerActionState/PlayerPushedState/CPlayerPushedState.h"
 #include "PlayerBase/PlayerState/PlayerActionState/PlayerKnockbackState/CPlayerKnockbackState.h"
 #include "PlayerBase/PlayerState/PlayerActionState/PlayerKnockdownState/CPlayerKnockdownState.h"
+
+#include "Item/ItemBase.h"	
+
 
 CPlayerBase::CPlayerBase( int index )
 	: m_PlayerID		( index )
@@ -291,7 +295,17 @@ void CPlayerBase::OnCollision(CollisionBase* pOtherCollider)
 					pOtherCollider->GetWorldPosition(), pOtherCollider->GetWorldPosition(), 10.f, true, CPlayerBase::HitEvent::Knockdown);
 			}
 		}
-
 		break;
+
+	case CollisionBase::ColliderTag::Bomb:
+
+		if (ItemBase* item = dynamic_cast<ItemBase*>(pOtherCollider->GetListener()))
+		{
+			if (IsAnyActionState<CPlayerPickupState>())
+			{
+				item->SetPlayer(this);
+				item->SetState(ItemBase::State::Have);
+			}
+		}
 	}
 }

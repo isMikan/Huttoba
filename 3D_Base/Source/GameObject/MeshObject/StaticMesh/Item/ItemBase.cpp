@@ -19,7 +19,7 @@ void ItemBase::Init()
 {
 }
 
-void ItemBase::Update(std::unique_ptr<CPlayerManager>& playiers)
+void ItemBase::Update()
 {
 	//èâä˙âª
 	if (GetAsyncKeyState('R') & 0x8000)
@@ -33,9 +33,9 @@ void ItemBase::Update(std::unique_ptr<CPlayerManager>& playiers)
 	case ItemBase::State::None:						break;
 	case ItemBase::State::Spawn:	Spawn();		break;
 	case ItemBase::State::OnGround: OnGround();		break;
-	case ItemBase::State::Have:		Have(playiers);	break;
-	case ItemBase::State::Use:		Use(playiers);	break;
-	case ItemBase::State::Throw:	Throw(playiers);break;
+	case ItemBase::State::Have:		Have();			break;
+	case ItemBase::State::Use:		Use();			break;
+	case ItemBase::State::Throw:	Throw();		break;
 	case ItemBase::State::Destroy:	Destroy();		break;
 	default: break;
 	}
@@ -44,7 +44,6 @@ void ItemBase::Update(std::unique_ptr<CPlayerManager>& playiers)
 	static D3DXVECTOR3 offSet;
 	offSet = {0.f,0.f,1.f};
 }
-
 
 void ItemBase::Draw(D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAMERA& Camera)
 {
@@ -59,10 +58,3 @@ bool ItemBase::IsUse()
 	}
 	return false;
 }
-
-//---------------------åpè≥Ç≈édï˚Ç»Ç≠íËã`------------------------
-void ItemBase::Update()
-{
-
-}
-

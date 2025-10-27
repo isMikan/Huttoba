@@ -19,7 +19,7 @@ public:
 	/*****************************************************************************************
 	* @brief    更新処理
 	*****************************************************************************************/
-	void Update(std::unique_ptr<CPlayerManager>& playiers) override;
+	void Update() override;
 
 
 	/*****************************************************************************************
@@ -33,9 +33,9 @@ public:
 	*****************************************************************************************/
 	void Spawn()	override; // 出現
 	void OnGround() override; // 取得待機
-	void Have(std::unique_ptr<CPlayerManager>& playiers)	override; // 取得
-	void Use(std::unique_ptr<CPlayerManager>& playiers)	override; // 使用
-	void Throw(std::unique_ptr<CPlayerManager>& playiers)	override; // 投擲
+	void Have()		override; // 取得
+	void Use()		override; // 使用
+	void Throw()	override; // 投擲
 	void Destroy()	override; // 消滅
 
 	/*****************************************************************************************

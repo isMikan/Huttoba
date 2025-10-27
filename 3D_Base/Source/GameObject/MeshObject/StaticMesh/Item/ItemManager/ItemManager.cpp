@@ -58,12 +58,12 @@ void ItemManager::Init()
 
 //--------------------------------------------------------------------------------------------------------------
 
-void ItemManager::Update(std::unique_ptr<CPlayerManager>& players)
+void ItemManager::Update()
 {
 	for (auto& item : m_pItems)
 	{
 		//一旦Player0しか持てないようにする
-		item->Update(players);
+		item->Update();
 
 		if (CInputManager::IsDown(Action::HaeAttack, 0))
 		{
@@ -73,13 +73,6 @@ void ItemManager::Update(std::unique_ptr<CPlayerManager>& players)
 
 	//不必要なアイテム削除
 	DestroyItem();
-}
-
-//--------------------------------------------------------------------------------------------------------------
-
-void ItemManager::Update()
-{
-
 }
 
 //--------------------------------------------------------------------------------------------------------------

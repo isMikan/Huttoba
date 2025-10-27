@@ -150,7 +150,7 @@ void CSceneGameMain::Update()
 	//ƒvƒŒƒCƒ„[‚Ì“®ì.
 	m_pPlayerManager->Update();
 
-	m_pItemManager->Update(m_pPlayerManager);
+	m_pItemManager->Update();
 
 	CollisionManager::GetInstance()->Update();
 
