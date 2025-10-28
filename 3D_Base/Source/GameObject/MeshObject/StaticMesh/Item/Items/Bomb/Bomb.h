@@ -59,6 +59,8 @@ private:
     float CalculateForceScalar(float distance);
 
 private:
+
+
     //アイテムを取得したときかを判定
     bool        m_IsTake;
     //アイテムを手に持つまでの時間

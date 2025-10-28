@@ -32,5 +32,7 @@ std::shared_ptr<CollisionBase> CollisionDataFactory::CreateSphereForMesh(
         calculatedCenter       // 計算されたオフセット
     );
 
+    CollisionManager::GetInstance()->AddCollider(newCollider);
+
     return newCollider;
 }

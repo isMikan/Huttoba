@@ -122,6 +122,7 @@ protected:
 	State m_State;		// アイテムの状態
 
 	CPlayerBase* m_pPlayer; //当たり判定で接触したPlayerを入れるポインタ	
-
+	
+	std::shared_ptr<CollisionBase> m_Collision; //当たり判定
 
 };
