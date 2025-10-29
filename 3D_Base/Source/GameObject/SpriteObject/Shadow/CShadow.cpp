@@ -15,9 +15,13 @@ void CShadow::Update(D3DXVECTOR3 objectPos)
 
 	float scale = 0.017f;
 		
+	if (objectPos.y > 10.f)
+	{
+		scale = 0.f;
+	}
 	if (objectPos.y <= 10.f)
 	{
-		scale -= objectPos.y * 0.002f;
+		scale -= objectPos.y * 0.0015f;
 	}
 	if (objectPos.y <= 0)
 	{
