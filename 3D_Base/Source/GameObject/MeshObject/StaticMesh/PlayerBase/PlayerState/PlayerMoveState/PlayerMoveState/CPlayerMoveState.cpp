@@ -96,16 +96,13 @@ float CPlayerMoveState::GetMoveSpeed()
 	//回転している場合.
 	if (m_pPlayer.IsTurning())
 	{
-		std::cout << "回転している速度" << std::endl;
 		return m_RotatingMoveSpeed;
 	}
 	//動作不可能（位置の微調整は可能）の場合.
 	if (m_pPlayer.IsAnyActionState<CPlayerPushedState, CPlayerFallingState>())
 	{
-		std::cout << "攻撃を受けているときの速度" << std::endl;
 		return m_HitingMoveSpeed;
 	}
-	std::cout << "通常速度" << std::endl;
 
 	return m_MoveSpeed;	//通常速度.
 }

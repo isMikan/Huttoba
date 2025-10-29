@@ -65,6 +65,12 @@ public:
 	virtual void Draw(
 		D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAMERA& Camera) override;
 
+	//当たり判定生成
+	void CreateCollider();
+
+	//当たり判定削除をマネージャーで行うので取得できるようにする
+	std::shared_ptr<CollisionBase> GetCollider() { return m_pCollision; }
+
 	//--- 移動状態を設定 ---.
 	void SetMoveState(std::unique_ptr<CPlayerState> newState);
 	//--- 回転状態を設定 ---.

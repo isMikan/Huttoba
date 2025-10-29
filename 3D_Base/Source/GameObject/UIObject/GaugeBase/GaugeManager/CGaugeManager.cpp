@@ -46,15 +46,16 @@ void CGaugeManager::Create(CPlayerManager* playerManager)
 					//ゲージフレームの作成.
 					m_pGauge[frameNo] = std::make_unique<CGaugeFrame>();	//インスタンス作成.
 					m_pGauge[frameNo]->AttachSprite(AssetManager::Sprite(Sprite2DList::GaugeFrame));	//スプライト設定.
-					std::cout << typeid(m_pGauge[frameNo].get()).name() << std::endl;
+					//std::cout << typeid(m_pGauge[frameNo].get()).name() << std::endl;
 
 					//タイムゲージの作成.
 					m_pGauge[gaugeNo] = std::make_unique<CTimerGauge>();	//インスタンス作成.
 					m_pGauge[gaugeNo]->AttachSprite(AssetManager::Sprite(Sprite2DList::Gauge));		//スプライト設定.
 					m_pGauge[gaugeNo]->SetGaugeInfo(player->GetKnockdownTime());	//時間を設定.
-					std::cout << typeid(m_pGauge[frameNo].get()).name() << std::endl;
 
-					std::cout << "ゲージを作成" << player->GetPlayerID() <<  std::endl;
+					//std::cout << typeid(m_pGauge[frameNo].get()).name() << std::endl;
+
+					//std::cout << "ゲージを作成" << player->GetPlayerID() <<  std::endl;
 
 					m_SubscribePlayers.insert(player);
 
@@ -112,7 +113,7 @@ void CGaugeManager::Update(CPlayerManager* playerManager)
 		{
 			//時間を取得し、ゲージクラスに渡す.
 			m_pGauge[gaugeNo]->SetGaugeInfo(player->GetKnockdownTime());
-			std::cout << "残り時間" << player->GetKnockdownTime().remaining << std::endl;
+			//std::cout << "残り時間" << player->GetKnockdownTime().remaining << std::endl;
 		}
 		//フレーム.
 		m_pGauge[frameNo]->Update();	//更新.

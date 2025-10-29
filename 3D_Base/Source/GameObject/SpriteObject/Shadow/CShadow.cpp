@@ -27,7 +27,6 @@ void CShadow::Update(D3DXVECTOR3 objectPos)
 	{
 		scale = 0.017f;
 	}
-	std::cout << "ƒXƒP[ƒ‹" << scale << std::endl;
 	m_vScale.x = scale;
 	m_vScale.y = scale;
 

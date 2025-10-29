@@ -54,4 +54,6 @@ protected:
 	std::shared_ptr<CStaticMesh>	m_pMesh;
 
 	ObjectColor				m_ObjColor;		//オブジェクトの色.
+
+	std::shared_ptr<CollisionBase> m_pCollision; //当たり判定
 };

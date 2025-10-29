@@ -80,6 +80,20 @@ void CPlayerBase::Draw(D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAMERA&
 	CStaticMeshObject::Draw(View, Proj, Light, Camera);
 }
 
+void CPlayerBase::CreateCollider()
+{
+	//新しい CollisionDataFactory を使ったコリジョンデータの生成と登録.
+	std::shared_ptr<CStaticMesh> mesh = AssetManager::Mesh(StaticMeshList::BSphere);
+
+	m_pCollision =
+		CollisionDataFactory::CreateSphereForMesh(
+			this,	//当たり判定の主.
+			mesh,	//当たり判定用メッシュ.
+			CollisionBase::ColliderTag::Player	//主のタグ.
+		);
+
+}
+
 //--- 移動状態を設定 ---.
 void CPlayerBase::SetMoveState(std::unique_ptr<CPlayerState> newState)
 {
@@ -98,7 +112,7 @@ void CPlayerBase::SetActionState(std::unique_ptr<CPlayerState> newState)
 	ChangeState(m_pActionState, std::move(newState));
 	m_Bus.Publish(m_pActionState.get());
 	
-	std::cout << typeid(*m_pActionState).name() << std::endl;
+	//std::cout << typeid(*m_pActionState).name() << std::endl;
 }
 
 //--- 位置を設定するために計算 ---.

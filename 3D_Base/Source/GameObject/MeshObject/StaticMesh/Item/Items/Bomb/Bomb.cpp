@@ -37,7 +37,7 @@ Bomb::Bomb()
 Bomb::~Bomb()
 {
 	//“–‚½‚è”»’èíœ
-	CollisionManager::GetInstance()->RemoveCollider(m_Collision.get());
+	CollisionManager::GetInstance()->RemoveCollider(m_pCollision.get());
 }
 
 void Bomb::Init()
@@ -53,7 +53,7 @@ void Bomb::Init()
 
 	std::shared_ptr<CStaticMesh> mesh = AssetManager::Mesh(StaticMeshList::ExplosionCol);
 
-	m_Collision = CollisionDataFactory::CreateSphereForMesh(
+	m_pCollision = CollisionDataFactory::CreateSphereForMesh(
 			this,
 			mesh,
 			CollisionBase::ColliderTag::Bomb
@@ -123,9 +123,6 @@ void Bomb::Destroy()
 
 void Bomb::OnCollision(CollisionBase* other)
 {
-	//int a;
-	std::cout << "i" << std::endl;
-	//Explosion();
 	
 	if (other->GetTag() == CollisionBase::ColliderTag::Player)
 	{

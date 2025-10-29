@@ -124,7 +124,6 @@ void CPlayerKnockdownState::ChildPlayer(int index)
 	{
 		if (!m_IsTimeDecreasing)
 		{
-			std::cout << "レバガチャ入力検知！" << std::endl;
 
 			//レバガチャ成功時の値を保存.
 			m_PrevSthikX = x;
@@ -146,7 +145,6 @@ void CPlayerKnockdownState::TimeDecrease()
 	//終了時間が過ぎたら終わる.
 	if (t - m_DecreaseTriggerTime > m_TimeDecrease)
 	{
-		std::cout << "レバガチャ終了！" << std::endl;
 		m_IsTimeDecreasing = false;
 		return;
 	}

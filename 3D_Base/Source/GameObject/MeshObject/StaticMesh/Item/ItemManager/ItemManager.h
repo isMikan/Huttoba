@@ -46,7 +46,7 @@ public:
 	void DestroyItem(); 
 
 	//現在出現中のアイテムの数を取得
-	int GetItemVectorNum() { return m_pItems.size(); }
+	size_t GetItemVectorNum() { return m_pItems.size(); }
 
 	//出現中のアイテムの位置を取得
 	D3DXVECTOR3 GetItemPos(int i);
