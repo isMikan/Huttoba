@@ -123,6 +123,4 @@ protected:
 
 	CPlayerBase* m_pPlayer; //“–‚½‚è”»’è‚ÅÚG‚µ‚½Player‚ğ“ü‚ê‚éƒ|ƒCƒ“ƒ^	
 	
-	std::shared_ptr<CollisionBase> m_Collision; //“–‚½‚è”»’è
-
 };

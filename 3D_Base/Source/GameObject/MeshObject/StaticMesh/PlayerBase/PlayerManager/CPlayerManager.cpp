@@ -70,17 +70,7 @@ void CPlayerManager::LoadData()
 		player->GetPlayerLeftHand().
 			AttachMesh(AssetManager::Mesh(StaticMeshList::PHand));
 
-		//新しい CollisionDataFactory を使ったコリジョンデータの生成と登録.
-		std::shared_ptr<CStaticMesh> mesh = AssetManager::Mesh(StaticMeshList::BSphere); 
-
-		std::shared_ptr<CollisionBase> collider =
-			CollisionDataFactory::CreateSphereForMesh(
-				player.get(),	//当たり判定の主.
-				mesh,			//当たり判定用メッシュ.
-				CollisionBase::ColliderTag::Player	//主のタグ.
-			);
-
-		CollisionManager::GetInstance()->AddCollider(collider);
+		player->CreateCollider();
 	}
 }
 

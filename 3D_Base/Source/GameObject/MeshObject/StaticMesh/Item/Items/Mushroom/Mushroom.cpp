@@ -227,29 +227,29 @@ void Mushroom::Hit()
 	//ノーマライズして法線ベクトルを取得
 	D3DXVec3Normalize(&normal, &normal);
 
-	//プレイヤーの移動方向を取得
-	D3DXVECTOR3 velPlayer = m_pPlayer->GetVelocity();
+	////プレイヤーの移動方向を取得
+	//D3DXVECTOR3 velPlayer = m_pPlayer->GetVelocity();
 
-	D3DXVec3Normalize(&velPlayer, &velPlayer);
-	
-	//反射方向を記録
-	D3DXVECTOR3 reflectDir = CalculateReflectionDirection(m_pPlayer->GetVelocity(), normal);
+	//D3DXVec3Normalize(&velPlayer, &velPlayer);
 
-
-	D3DXVECTOR3 a = m_pPlayer->GetPosition() - m_vPosition;
-	//ノックバックの強さを計算
-	float len = D3DXVec3Length(&a);
-	//距離に応じてパワー計算
-	float knockbackPower = CalculateForceScalar(len);
+	////反射方向を記録
+	//D3DXVECTOR3 reflectDir = CalculateReflectionDirection(m_pPlayer->GetVelocity(), normal);
 
 
-	//プレイヤーに吹き飛ばし情報を渡す
-	m_pPlayer->SetHitInfo(
-		m_vPosition,
-		reflectDir,		
-		knockbackPower,
-		true,
-		CPlayerBase::HitEvent::Knockback);
+	//D3DXVECTOR3 a = m_pPlayer->GetPosition() - m_vPosition;
+	////ノックバックの強さを計算
+	//float len = D3DXVec3Length(&a);
+	////距離に応じてパワー計算
+	//float knockbackPower = CalculateForceScalar(len);
+
+
+	////プレイヤーに吹き飛ばし情報を渡す
+	//m_pPlayer->SetHitInfo(
+	//	m_vPosition,
+	//	reflectDir,		
+	//	knockbackPower,
+	//	true,
+	//	CPlayerBase::HitEvent::Knockback);
 }
 
 float Mushroom::CalculateForceScalar(float distance)

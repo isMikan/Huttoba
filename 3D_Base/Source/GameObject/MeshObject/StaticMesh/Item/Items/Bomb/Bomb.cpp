@@ -254,10 +254,10 @@ void Bomb::Blow_Away(CPlayer& playiers)
 
 	float len = D3DXVec3Length(&vecLen);
 
-	playiers.SetHitInfo(
-		m_vPosition, GetPosition(),
-		CalculateForceScalar(len),
-		true, CPlayerBase::HitEvent::Knockdown);
+	//playiers.SetHitInfo(
+	//	m_vPosition, GetPosition(),
+	//	CalculateForceScalar(len),
+	//	true, CPlayerBase::HitEvent::Knockdown);
 }
 
 void Bomb::ChangeColor()

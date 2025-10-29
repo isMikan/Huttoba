@@ -174,10 +174,10 @@ void TrackingRobot::Smash()
 
 	float len = D3DXVec3Length(&vecLen);
 
-	m_pPlayer->SetHitInfo(
-		m_vPosition, m_pPlayer->GetPosition(),
-		CalculateForceScalar(len),
-		true, CPlayerBase::HitEvent::Knockdown);
+	//m_pPlayer->SetHitInfo(
+	//	m_vPosition, m_pPlayer->GetPosition(),
+	//	CalculateForceScalar(len),
+	//	true, CPlayerBase::HitEvent::Knockdown);
 }
 
 void TrackingRobot::ChangeColor()
