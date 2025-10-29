@@ -62,7 +62,7 @@ void CPlayerKnockdownState::Enter()
 	m_LeftHandPos += leftHandOffset;
 
 	//‚«”ò‚Î‚³‚ê—Ê‚©‚çI—¹‚·‚éŠÔ‚ğŒvZ.
-	m_EndTime = m_pPlayer.GetHitInfo().force * m_EndTime;
+	m_EndTime = m_pPlayer.GetHitForce() * m_EndTime;
 
 	//Å‘åŠÔ‚ğİ’è.
 	m_MaxTime = m_EndTime;

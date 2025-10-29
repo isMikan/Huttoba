@@ -27,6 +27,7 @@ public:
 		Pushed,			//押し出し.
 		Knockback,		//吹き飛ばし.
 		Knockdown,		//ダウン.
+		NotKnockdown,	//ダウンしない.
 
 		None = -1		//なし(攻撃側の接触).
 	};
@@ -45,10 +46,7 @@ public:
 	//攻撃を受けた情報.
 	struct HitInfo
 	{
-		D3DXVECTOR3		position;					//攻撃された位置.
 		D3DXVECTOR3		velocity;					//初速度.
-		float			force = 0.f;				//攻撃力.
-		bool			isHit = false;				//攻撃を受けたか.
 		HitEvent		hitEvent = HitEvent::None;	//アニメーション.
 	};
 
@@ -95,10 +93,13 @@ public:
 		float			tiltAngle);	//傾きの角度.
 
 	//--- 押された時の移動量を計算する ---.
-	D3DXVECTOR3 Pushed();
+	D3DXVECTOR3 Pushed(D3DXVECTOR3 sourcePos);
 
 	//--- 攻撃を受けた時のの移動量 ---.
-	D3DXVECTOR3 GetVelocity();
+	D3DXVECTOR3 GetVelocity(
+		D3DXVECTOR3 sourcePos, 
+		float speed, 
+		float angle);
 
 	//--- 角度を0～360度にする ---.
 	float WrapAngle(float value);
@@ -122,33 +123,19 @@ public:
 
 	//プレイヤー番号を取得.
 	int GetPlayerID() const { return m_PlayerID; }
+
+	//攻撃を受けた力を取得.
+	int GetHitForce() const { return m_HitForce; }
 	
 	//攻撃を受けた情報を取得と設定.
 	HitInfo GetHitInfo() const { return m_HitInfo; }
-	//状況を設定用.
-	void SetHitInfo(
-		bool isHit, HitEvent anim)
-	{
-		m_HitInfo.isHit = isHit;
+	void SetHitAnim(HitEvent anim) {
 		m_HitInfo.hitEvent = anim;
 	}
-	//押し出し用.
 	void SetHitInfo(
-		D3DXVECTOR3 pos, bool isHit, HitEvent anim)
+		D3DXVECTOR3 velocity, HitEvent anim)
 	{
-		m_HitInfo.position = pos;
-		m_HitInfo.isHit = isHit;
-		m_HitInfo.hitEvent = anim;
-	}
-	//吹き飛ばし用.
-	void SetHitInfo(
-		D3DXVECTOR3 pos, D3DXVECTOR3 velocity,
-		float force, bool isHit, HitEvent anim)
-	{
-		m_HitInfo.position = pos;
 		m_HitInfo.velocity = velocity;
-		m_HitInfo.force = force;	// 7 ～ 15 推奨.
-		m_HitInfo.isHit = isHit;
 		m_HitInfo.hitEvent = anim;
 	}
 
@@ -221,5 +208,6 @@ protected:
 	bool	m_IsTurning;		//回転しているか.
 	bool	m_IsHoldingItem;	//アイテムを所持してるか.
 
+	float	m_HitForce;			//攻撃を受けた数値.
 	static constexpr float		m_PushForce = 0.05f;	//押し出す力.
 };

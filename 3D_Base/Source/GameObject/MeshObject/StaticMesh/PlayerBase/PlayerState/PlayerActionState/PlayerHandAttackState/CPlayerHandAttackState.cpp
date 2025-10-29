@@ -76,14 +76,11 @@ void CPlayerHandAttackState::Update()
 	//ゲーム全体の経過時間.
 	float t = CTimeManager::GetTotalTime();
 
-	bool isHit = m_pPlayer.GetHitInfo().isHit;
-
 	//現在の経過時間と開始時間の差が終了時間を上回ったら.
 	//攻撃が当たってる場合.
-	if (t - m_StartTime > m_EndTime
-		&& isHit)
+	if (t - m_StartTime > m_EndTime)
 	{
-		m_pPlayer.SetHitInfo(false, CPlayerBase::HitEvent::None);
+		m_pPlayer.SetHitAnim(CPlayerBase::HitEvent::None);
 		m_pPlayer.SetActionState(std::make_unique<CPlayerHandHitState>(m_pPlayer));
 		return;
 	}

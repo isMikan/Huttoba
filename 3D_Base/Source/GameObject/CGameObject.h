@@ -79,4 +79,5 @@ protected://protectedは子クラスのみアクセス可能.
 	D3DXVECTOR3	m_vScale;
 
 	D3DXQUATERNION m_vQuaternion;	//クォータニオンの回転.
+
 };

@@ -55,7 +55,7 @@ void CPlayerPushedState::Enter()
 	m_LeftHandEndPos += m_LeftHandStartPos;
 
 	//false を入れて、いつでも攻撃が受けられる状態にする
-	m_pPlayer.SetHitInfo(false, CPlayerBase::HitEvent::None);
+	m_pPlayer.SetHitAnim(CPlayerBase::HitEvent::None);
 }
 
 //--- 状態の終了時に呼び出す ---.
@@ -123,7 +123,7 @@ void CPlayerPushedState::Update()
 	m_pPlayer.GetPlayerLeftHand().SetPosition(m_pPlayer.GetObjectPos(leftHandOffsetPos));
 
 	//プレイヤーの位置と押された移動量を足す.
-	playerPos += m_pPlayer.Pushed();
+	playerPos += m_pPlayer.GetHitInfo().velocity;
 
 	//プレイヤーの位置を設定.
 	m_pPlayer.SetPosition(playerPos);

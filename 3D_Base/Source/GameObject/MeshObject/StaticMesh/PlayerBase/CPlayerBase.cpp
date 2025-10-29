@@ -51,15 +51,13 @@ void CPlayerBase::Update()
 	GetPlayerHead().SetPosition(GetObjectPos(headOffsetPos));
 
 	//押された場合の処理.
-	if (m_HitInfo.isHit
-		&& m_HitInfo.hitEvent == HitEvent::Pushed)
+	if (m_HitInfo.hitEvent == HitEvent::Pushed)
 	{
 		SetActionState(std::make_unique<CPlayerPushedState>(*this));
 	}
 	//吹き飛ばされた場合の処理.
-	if (m_HitInfo.isHit
-		&& (m_HitInfo.hitEvent == HitEvent::Knockback
-			|| m_HitInfo.hitEvent == HitEvent::Knockdown))
+	if (m_HitInfo.hitEvent == HitEvent::Knockback
+		|| m_HitInfo.hitEvent == HitEvent::Knockdown)
 	{
 		SetActionState(std::make_unique<CPlayerKnockbackState>(*this));
 	}
@@ -195,10 +193,10 @@ D3DXQUATERNION CPlayerBase::TiltedQuat(
 }
 
 //--- 押された時の移動量を計算する ---.
-D3DXVECTOR3 CPlayerBase::Pushed()
+D3DXVECTOR3 CPlayerBase::Pushed(D3DXVECTOR3 sourcePos)
 {
 	//押されるベクトル.
-	D3DXVECTOR3 dir = m_vPosition - m_HitInfo.position;
+	D3DXVECTOR3 dir = m_vPosition - sourcePos;
 	//正規化.
 	D3DXVec3Normalize(&dir, &dir);
 	//方向へ吹き飛び量分の位置へ.
@@ -208,16 +206,18 @@ D3DXVECTOR3 CPlayerBase::Pushed()
 }
 
 //--- 攻撃を受けた時のの移動量 ---.
-D3DXVECTOR3 CPlayerBase::GetVelocity()
+D3DXVECTOR3 CPlayerBase::GetVelocity(
+	D3DXVECTOR3 sourcePos, float speed, float angle)
 {
+	m_HitForce = speed;	//強さを設定.
+
 	//飛ぶベクトル.
-	D3DXVECTOR3 dir = m_vPosition - m_HitInfo.position;
+	D3DXVECTOR3 dir = m_vPosition - sourcePos;
 	//正規化.
 	D3DXVec3Normalize(&dir, &dir);
 
 	//角度60度上方向.
-	float angle = D3DXToRadian(60.f);
-	float speed = m_HitInfo.force;	//吹き飛ばし量を速度とする.
+	angle = D3DXToRadian(60.f);
 
 	D3DXVECTOR3 velocity{};
 	velocity.x = cos(angle) * speed * dir.x;	//x軸方向に.
@@ -306,7 +306,7 @@ void CPlayerBase::OnCollision(CollisionBase* pOtherCollider)
 			if (player->IsAnyActionState<CPlayerHandAttackState>())
 			{
 				SetHitInfo(
-					pOtherCollider->GetWorldPosition(), pOtherCollider->GetWorldPosition(), 10.f, true, CPlayerBase::HitEvent::Knockdown);
+					GetVelocity(player->GetPosition(), 10.f,60.f), CPlayerBase::HitEvent::Knockdown);
 			}
 		}
 		break;
