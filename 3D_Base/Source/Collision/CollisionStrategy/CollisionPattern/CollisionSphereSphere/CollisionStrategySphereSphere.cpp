@@ -30,9 +30,6 @@ bool CollisionStrategySphereSphere::CheckCollision(
         //”¼Œa‚Ì“ñæ
         float radiiSumSq = radiiSum * radiiSum;
 
-        std::cout << radiiSum << std::endl;
-        std::cout << distanceSq << std::endl;
-
         // ‹——£‚Ì2æ‚Æ”¼Œa‚Ì‚Qæ‚ğ”ä‚×‚é
         return distanceSq <= radiiSumSq;
     }

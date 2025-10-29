@@ -61,7 +61,7 @@ void CPlayerFallingState::Enter()
 	m_Velocity.y = 0.f;
 
 	//‚«”ò‚Î‚µ—Ê‚ğæ“¾.
-	float force = m_pPlayer.GetHitInfo().force;
+	float force = m_pPlayer.GetHitForce();
 	m_RotateSpeed += m_ForceMax - force;	//Å‘å—Ê‚©‚çˆø‚¢‚Ä‘¬‚³‚Ì’²®.
 }
 

@@ -191,8 +191,8 @@ void Fun::Hit()
 	//	1,	//動作確認で入れた1なので後でメンバ変数に変えておく
 	//	true, CPlayerBase::HitEvent::Pushed);
 
-	m_pPlayer->SetHitInfo(
-		a, m_pPlayer->GetPosition(),
-		1,	//動作確認で入れた1なので後でメンバ変数に変えておく
-		true, CPlayerBase::HitEvent::Pushed);
+	//m_pPlayer->SetHitInfo(
+	//	a, m_pPlayer->GetPosition(),
+	//	1,	//動作確認で入れた1なので後でメンバ変数に変えておく
+	//	true, CPlayerBase::HitEvent::Pushed);
 }

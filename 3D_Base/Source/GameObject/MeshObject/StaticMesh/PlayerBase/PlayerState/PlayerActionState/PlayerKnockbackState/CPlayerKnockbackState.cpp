@@ -55,13 +55,9 @@ void CPlayerKnockbackState::Enter()
 	//開始時の右軸を設定.
 	m_StartRightAxis = -axes.right;
 
-	//初速度を設定.
-	m_Velocity = m_pPlayer.GetVelocity();
-
 	//位置を設定.
 	m_pPlayer.SetHitInfo(
-		hitInfo.position, m_Velocity, hitInfo.force,
-		false, hitInfo.hitEvent);
+		 hitInfo.velocity, hitInfo.hitEvent);
 }
 
 //--- 状態の終了時に呼び出す ---.
