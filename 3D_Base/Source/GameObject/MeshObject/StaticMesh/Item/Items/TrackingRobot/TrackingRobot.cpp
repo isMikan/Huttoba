@@ -204,7 +204,7 @@ void TrackingRobot::ChangeColor()
 	//’l‚ª‘‰Á‚ÆŒ¸­‚ª‚»‚ê‚¼‚ê‚ ‚é‚Ì‚ÅŽg‚¢‚í‚¯‚Ä‚¢‚­
 	D3DXVECTOR4 color = D3DXVECTOR4(up, down, down, up);
 
-	m_pMesh->SetMaterialColor(0, color);
+	//m_pMesh->SetMaterialColor(0, color);
 }
 
 float TrackingRobot::CalculateForceScalar(float distance)

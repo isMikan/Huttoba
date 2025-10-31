@@ -42,9 +42,7 @@ void CStaticMeshObject::Draw(
 	m_pMesh->SetQuaternion( m_vQuaternion );
 
 	//CStaticMesh‚ÉŒ»Ý‚ÌF‚ð“n‚·.
-	m_pMesh->SetDiffuseColor( m_ObjColor.diffuse );
-	m_pMesh->SetAmbientColor( m_ObjColor.ambient );
-	m_pMesh->SetSpecularColor( m_ObjColor.specular );
+	m_pMesh->SetMaterialColor( m_ColorSize, m_ObjColor.diffuse, m_ObjColor.ambient, m_ObjColor.specular);
 
 	//ƒŒƒ“ƒ_ƒŠƒ“ƒO.
 	m_pMesh->Render( View, Proj, Light, Camera.vPosition );

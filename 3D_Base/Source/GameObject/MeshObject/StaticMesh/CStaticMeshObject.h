@@ -39,21 +39,28 @@ public:
 
 	//オブジェクトの色を設定する関数.
 	void SetObjectColor(
-		D3DXVECTOR4& diffuse, D3DXVECTOR4& ambient, D3DXVECTOR4& specular){
+		size_t index, 
+		D3DXVECTOR4& diffuse,
+		D3DXVECTOR4& ambient,
+		D3DXVECTOR4& specular){
+		m_ColorSize = index;
 		m_ObjColor.diffuse = diffuse;
 		m_ObjColor.ambient = ambient;
 		m_ObjColor.specular = specular;
 	}
-	void SetObjectColor(ObjectColor color){
+	void SetObjectColor(size_t index, ObjectColor color){
 		m_ObjColor = color;
 	}
 	//オブジェクトの色を取得する関数.
 	ObjectColor GetObjectColor() const { return m_ObjColor; }
 
+
+
 protected:
 	std::shared_ptr<CStaticMesh>	m_pMesh;
 
-	ObjectColor				m_ObjColor;		//オブジェクトの色.
+	size_t			m_ColorSize;	//色のマテリル番号.
+	ObjectColor		m_ObjColor;		//オブジェクトの色.
 
 	std::shared_ptr<CollisionBase> m_pCollision; //当たり判定
 };

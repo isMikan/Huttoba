@@ -171,12 +171,19 @@ public:
 		return m_Quaternion;
 	}
 
-	//拡散反射を設定する関数..
-	void SetDiffuseColor(const D3DXVECTOR4& color) { m_Diffuse = color; }
-	//環境光を設定する関数..
-	void SetAmbientColor(const D3DXVECTOR4& color) { m_Ambient = color; }
-	//鏡面反射を設定する関数..
-	void SetSpecularColor(const D3DXVECTOR4& color) { m_Specular = color; }
+	//色を各マテリアルに設定する関数.
+	void SetMaterialColor(
+		size_t index,					//配列サイズ.
+		const D3DXVECTOR4& diffuse,		//拡散反射.
+		const D3DXVECTOR4& ambient,		//環境光.
+		const D3DXVECTOR4& specular)	//鏡面反射.
+	{
+		if (index > m_MaterialsColor.size()) return;
+		
+		m_MaterialsColor[index].Diffuse = diffuse;		//拡散反射.
+		m_MaterialsColor[index].Ambient = ambient;		//環境光.
+		m_MaterialsColor[index].Specular = specular;	//鏡面反射.
+	}
 	//デフォルトの色を取得する関数.
 	CBUFFER_PER_MATERIAL GetDefaultColor() const {
 		return m_DefaultColor;
@@ -187,12 +194,12 @@ public:
 	//レイとの当たり判定用のメッシュを取得.
 	LPD3DXMESH GetMeshForRay() const { return m_ModelForRay.pMesh; }
 	
-	//指定したマテリアルの色の変更
-	void SetMaterialColor(size_t index, const D3DXVECTOR4& color)
-	{
-		if (index >= m_pMaterials.size()) return;
-		m_pMaterials[index].Diffuse = color;
-	}
+	////指定したマテリアルの色の変更
+	//void SetMaterialColor(size_t index, const D3DXVECTOR4& color)
+	//{
+	//	if (index >= m_pMaterials.size()) return;
+	//	m_pMaterials[index].Diffuse = color;
+	//}
 
 private:
 	//メッシュ読み込み.
@@ -253,9 +260,7 @@ private:
 
 	D3DXQUATERNION	m_Quaternion;	//クォータニオンの回転.
 
-	D3DXVECTOR4		m_Diffuse;		//拡散反射.
-	D3DXVECTOR4		m_Ambient;		//環境光.
-	D3DXVECTOR4		m_Specular;		//鏡面反射.
+	std::unordered_map<size_t, CBUFFER_PER_MATERIAL>	m_MaterialsColor;
 
 	CBUFFER_PER_MATERIAL m_DefaultColor;	//デフォルトの色.
  };

@@ -47,7 +47,8 @@ void CPlayerManager::Create()
 
 		if (!m_pPlayers[pNo]) return;
 
-		m_pPlayers[pNo]->SetObjectColor(SetCharacterColor(pNo));
+		m_pPlayers[pNo]->SetObjectColor(0, SetCharacterColor(pNo));
+		//m_pPlayers[pNo]->GetPlayerHead().SetObjectColor(0, SetCharacterColor(pNo));
 		m_pPlayers[pNo]->SetPosition(SetDefaultPosition(pNo));
 	}
 }
