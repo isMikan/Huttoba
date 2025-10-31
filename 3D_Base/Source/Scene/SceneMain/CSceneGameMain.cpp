@@ -231,6 +231,9 @@ void CSceneGameMain::Draw()
 	//地面マネージャーの描画.
 	m_pGroundManager->Draw(mView, mProj, light, camera);
 
+	//影マネージャーの描画.
+	m_pShadowManager->Draw(m_pDx11, mView, mProj);
+
 	//プレイヤーの描画.
 	m_pPlayerManager->Draw(mView, mProj, light, camera);
 
@@ -253,10 +256,6 @@ void CSceneGameMain::Draw()
 
 	//やりたいことが終わったので、深度テストを有効にしておく
 	m_pDx11->SetDepth(true);
-
-	m_pDx11->SetAlphaBlend(true);
-	m_pShadowManager->Draw(mView, mProj);
-	m_pDx11->SetAlphaBlend(false);
 
 	for (auto& exp : m_pExplosiones)
 	{

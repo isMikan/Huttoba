@@ -19,4 +19,8 @@ protected:
 	//使用しない override 関数.
 	void Update() override {};
 
+protected:
+	float		m_DisplayHigh;		//表示する高さの限度.
+	float		m_MaxSize;			//最大の大きさ.
+
 };

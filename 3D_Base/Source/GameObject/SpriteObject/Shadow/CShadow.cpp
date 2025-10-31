@@ -1,6 +1,8 @@
 #include "CShadow.h"
 
 CShadow::CShadow()
+	: m_DisplayHigh		( 10.f )
+	, m_MaxSize			( 0.017f )
 {
 }
 
@@ -13,19 +15,24 @@ void CShadow::Update(D3DXVECTOR3 objectPos)
 	//オブジェクトの位置.
 	D3DXVECTOR3 pos = objectPos;
 
-	float scale = 0.017f;
+	//各軸のスケール.
+	float scale = m_MaxSize;
 		
-	if (objectPos.y > 10.f)
+	//限度の高さより高い場合.
+	if (objectPos.y > m_DisplayHigh)
 	{
-		scale = 0.f;
+		scale = 0.f;	//表示しない.
 	}
-	if (objectPos.y <= 10.f)
+	//限度の高さ以下の場合.
+	if (objectPos.y <= m_DisplayHigh)
 	{
-		scale -= objectPos.y * 0.0015f;
+		//大きさ = 物体の高さ * 最低の大きさ（最大の大きさ / 最大の表示高さ）.	
+		scale -= objectPos.y * (m_MaxSize / m_DisplayHigh);
 	}
-	if (objectPos.y <= 0)
+	//地面に物体がついている場合.
+	if (objectPos.y <= 0.f)
 	{
-		scale = 0.017f;
+		scale = m_MaxSize;
 	}
 	m_vScale.x = scale;
 	m_vScale.y = scale;
@@ -38,9 +45,7 @@ void CShadow::Update(D3DXVECTOR3 objectPos)
 
 void CShadow::Draw(D3DXMATRIX& View, D3DXMATRIX& Proj)
 {
-	m_pSprite->SetPatternNo(5, 5);
 	m_vRotation = D3DXVECTOR3(D3DXToRadian(90.f), 0.f, 0.f);
-	m_pSprite->SetBillboard(false);
 
 	CSpriteObject::Draw(View, Proj);
 }
