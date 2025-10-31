@@ -7,9 +7,6 @@
 #include "PlayerBase/PlayerState/PlayerTurnState/PlayerTurnIdleState/CPlayerTurnIdleState.h"
 #include "PlayerBase/PlayerState/PlayerActionState/PlayerActionIdleState/CPlayerActionIdleState.h"
 
-#include "PlayerBase/PlayerState/PlayerActionState/PlayerPickupState/CPlayerPickupState.h"
-#include "PlayerBase/PlayerState/PlayerActionState/PlayerThrowState/CPlayerThrowState.h"
-#include "PlayerBase/PlayerState/PlayerActionState/PlayerHandAttackState/CPlayerHandAttackState.h"
 #include "PlayerBase/PlayerState/PlayerActionState/PlayerHandWhiffState/CPlayerHandWhiffState.h"
 #include "PlayerBase/PlayerState/PlayerActionState/PlayerKnockbackState/CPlayerKnockbackState.h"
 #include "PlayerBase/PlayerState/PlayerActionState/PlayerFallingState/CPlayerFallingState.h"
@@ -40,6 +37,8 @@ CPlayer::~CPlayer()
 //--- 毎フレームの動作する ---.
 void CPlayer::Update()
 {
+	m_Instruct = ActionInstruct::None;
+
 	HandleInput();
 
 	CPlayerBase::Update();
@@ -58,84 +57,93 @@ void CPlayer::HandleInput()
 	float x = 0.f;	//x軸.
 	float z = 0.f;	//z軸.
 
-		//移動・回転をしない場合.
-		if (IsAnyActionState<
-			CPlayerHandWhiffState,
-			CPlayerKnockbackState,
-			CPlayerGetUpState,
-			CPlayerKnockdownState>())
+	//移動・回転をしない場合.
+	if (IsAnyActionState<
+		CPlayerHandWhiffState,
+		CPlayerKnockbackState,
+		CPlayerGetUpState,
+		CPlayerKnockdownState>())
+	{
+		//入力に変化があった場合.
+		if (m_CurrentInput != D3DXVECTOR3(x, 0.f, z))
+		{
+			SetMoveState(std::make_unique<CPlayerMoveIdleState>(*this));
+			SetTurnState(std::make_unique<CPlayerTurnIdleState>(*this));
+
+			m_CurrentInput = D3DXVECTOR3(x, 0.f, z);	//現在の入力を記録しておく.
+		}
+	}
+	else
+	{
+		if (CInputManager::IsRepeat(Action::MoveUp, m_PlayerID))	z += 1.f;
+		if (CInputManager::IsRepeat(Action::MoveDown, m_PlayerID))	z -= 1.f;
+		if (CInputManager::IsRepeat(Action::MoveLeft, m_PlayerID))	x -= 1.f;
+		if (CInputManager::IsRepeat(Action::MoveRight, m_PlayerID))	x += 1.f;
+
+		//接続されていたら数値を受け取る.
+		if (CInputManager::IsConnect(m_PlayerID))
+		{
+			x = CInputManager::GetLeftSthikX(m_PlayerID);
+			z = CInputManager::GetLeftSthikY(m_PlayerID);
+		}
+
+		//回転だけしない場合.
+		if (IsActionState<CPlayerFallingState>())
 		{
 			//入力に変化があった場合.
 			if (m_CurrentInput != D3DXVECTOR3(x, 0.f, z))
 			{
-				SetMoveState(std::make_unique<CPlayerMoveIdleState>(*this));
 				SetTurnState(std::make_unique<CPlayerTurnIdleState>(*this));
+			}
+		}
+		//移動・回転する場合.
+		else
+		{
+			//入力に変化があった場合.
+			if (m_CurrentInput != D3DXVECTOR3(x, 0.f, z))
+			{
+				SetTurnState(std::make_unique<CPlayerTurnState>(*this, x, z));
+			}
+		}
 
-				m_CurrentInput = D3DXVECTOR3(x, 0.f, z);	//現在の入力を記録しておく.
+		//入力に変化があった場合.
+		if (m_CurrentInput != D3DXVECTOR3(x, 0.f, z))
+		{
+			//移動だけする場合.
+			SetMoveState(std::make_unique<CPlayerMoveState>(*this, x, z));
+			m_CurrentInput = D3DXVECTOR3(x, 0.f, z);	//現在の入力を記録しておく.
+		}
+	}
+
+	//何もしていない状態なら.
+	if (IsActionState<CPlayerActionIdleState>())
+	{
+		if (m_IsHoldingItem)
+		{
+			//アイテムを持っていないなら攻撃.
+			if (CInputManager::IsDown(Action::Attack, m_PlayerID))
+			{
+				m_Instruct = ActionInstruct::ItemAttack;
+			}
+			//アイテムを持っているなら捨てる.
+			if (CInputManager::IsDown(Action::ToggleItem, m_PlayerID))
+			{
+				m_Instruct = ActionInstruct::Throw;
 			}
 		}
 		else
 		{
-			if (CInputManager::IsRepeat(Action::MoveUp, m_PlayerID))	z += 1.f;
-			if (CInputManager::IsRepeat(Action::MoveDown, m_PlayerID))	z -= 1.f;
-			if (CInputManager::IsRepeat(Action::MoveLeft, m_PlayerID))	x -= 1.f;
-			if (CInputManager::IsRepeat(Action::MoveRight, m_PlayerID))	x += 1.f;
-
-			//接続されていたら数値を受け取る.
-			if (CInputManager::IsConnect(m_PlayerID))
+			//アイテムを持っているなら手の攻撃をする.
+			if (CInputManager::IsDown(Action::Attack, m_PlayerID))
 			{
-				x = CInputManager::GetLeftSthikX(m_PlayerID);
-				z = CInputManager::GetLeftSthikY(m_PlayerID);
+				m_Instruct = ActionInstruct::HandAttack;
 			}
-
-			//回転だけしない場合.
-			if (IsActionState<CPlayerFallingState>())
+			//アイテムを持っていないなら拾う.
+			if (CInputManager::IsDown(Action::ToggleItem, m_PlayerID))
 			{
-				//入力に変化があった場合.
-				if (m_CurrentInput != D3DXVECTOR3(x, 0.f, z))
-				{
-					SetTurnState(std::make_unique<CPlayerTurnIdleState>(*this));
-				}
-			}
-			//移動・回転する場合.
-			else
-			{
-				//入力に変化があった場合.
-				if (m_CurrentInput != D3DXVECTOR3(x, 0.f, z))
-				{
-					SetTurnState(std::make_unique<CPlayerTurnState>(*this, x, z));
-				}
-			}
-
-			//入力に変化があった場合.
-			if (m_CurrentInput != D3DXVECTOR3(x, 0.f, z))
-			{
-				//移動だけする場合.
-				SetMoveState(std::make_unique<CPlayerMoveState>(*this, x, z));
-				m_CurrentInput = D3DXVECTOR3(x, 0.f, z);	//現在の入力を記録しておく.
+				m_Instruct = ActionInstruct::Pickup;
 			}
 		}
-
-	//アイテムを持っていないなら攻撃.
-	if (CInputManager::IsDown(Action::Attack, m_PlayerID)
-		&& !m_IsHoldingItem
-		&& IsActionState<CPlayerActionIdleState>())
-	{
-		SetActionState(std::make_unique<CPlayerHandAttackState>(*this));
-	}
-	//アイテムを持っていないなら拾う.
-	if (CInputManager::IsDown(Action::ToggleItem, m_PlayerID)
-		&& !m_IsHoldingItem
-		&& IsActionState<CPlayerActionIdleState>())
-	{
-		SetActionState(std::make_unique<CPlayerPickupState>(*this));
-	}
-	//アイテムを持っているなら捨てる.
-	else if (CInputManager::IsDown(Action::ToggleItem, m_PlayerID)
-		&& m_IsHoldingItem
-		&& IsActionState<CPlayerActionIdleState>())
-	{
-		SetActionState(std::make_unique<CPlayerThrowState>(*this));
 	}
 }
 

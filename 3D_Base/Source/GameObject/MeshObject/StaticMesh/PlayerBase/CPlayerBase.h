@@ -21,6 +21,17 @@ public:
 //======================================================================
 // 	   列挙型.
 //======================================================================
+	//動作する指示.
+	enum class ActionInstruct
+	{
+		Pickup,
+		Throw,
+		HandAttack,
+		ItemAttack,
+
+		None = -1
+	};
+
 	//接触イベント.
 	enum class HitEvent
 	{
@@ -201,13 +212,14 @@ protected:
 	std::unique_ptr<CPlayerState>	m_pTurnState;		//回転.
 	std::unique_ptr<CPlayerState>	m_pActionState;		//行動.
 
-	HitInfo	m_HitInfo;			//攻撃を受けた情報.
-	Gauge	m_KnockdownTime;	//ダウン状態の時間を保存.
+	ActionInstruct	m_Instruct;			//指示.
+	HitInfo			m_HitInfo;			//攻撃を受けた情報.
+	Gauge			m_KnockdownTime;	//ダウン状態の時間を保存.
 
-	bool	m_IsMoving;			//移動しているか.
-	bool	m_IsTurning;		//回転しているか.
-	bool	m_IsHoldingItem;	//アイテムを所持してるか.
+	bool			m_IsMoving;			//移動しているか.
+	bool			m_IsTurning;		//回転しているか.
+	bool			m_IsHoldingItem;	//アイテムを所持してるか.
 
-	float	m_HitForce;			//攻撃を受けた数値.
+	float			m_HitForce;			//攻撃を受けた数値.
 	static constexpr float		m_PushForce = 0.05f;	//押し出す力.
 };
