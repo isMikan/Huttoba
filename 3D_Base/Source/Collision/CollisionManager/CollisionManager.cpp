@@ -6,6 +6,7 @@
 
 #include "Collision/CollisionStrategy/CollisionPattern/CollisionSphereSphere/CollisionStrategySphereSphere.h"
 #include "Collision/CollisionStrategy/CollisionPattern/CollisionSphereCapsule/CollisionSphereCapsule.h"
+#include "Collision/CollisionStrategy/CollisionPattern/CollisionCapsuleCapsule/CollisionCapsuleCapsule.h"
 
 void CollisionManager::Init()
 {
@@ -73,7 +74,7 @@ void CollisionManager::RegisterStrategy()
     CollisionStrategyFactory::GetInstance()->RegisterStrategy(
         CollisionBase::ColliderType::Capsule,
         CollisionBase::ColliderType::Capsule,
-        std::make_unique<CollisionSphereCapsule>()
+        std::make_unique<CollisionCapsuleCapsule>()
     );
 
     //-----------------------------------------------------------------------
