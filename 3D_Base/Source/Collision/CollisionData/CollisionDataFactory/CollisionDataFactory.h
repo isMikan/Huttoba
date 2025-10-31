@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Collision/Collider/CollisionSphere/CollisionSphere.h"
+#include "Collision/Collider/CollisionCapsule/CollisionCapsule.h"
 #include "GameObject/MeshObject/StaticMesh/CStaticMeshObject.h"
 #include "GameObject/CGameObject.h"
 #include "Collision/CollisionListener/ICollisionListener.h"
@@ -32,7 +33,20 @@ public:
         CollisionBase::ColliderTag   tag
     );
 
-    //@ToDo ここに判定追加
+    /*****************************************************************************************
+    * @brief   CollisionCapsuleを生成し、親オブジェクトの情報と紐づける
+    *
+    * @param pOwner 衝突形状を持つ親オブジェクト
+    * @param pMesh メッシュデータ（カプセルのサイズ計算に使用）
+    * @param tag   コリジョンタグ
+    *
+    * @return  所有権を持つ生成された CollisionCapsule の shared_ptr
+    *****************************************************************************************/
+    static std::shared_ptr<CollisionBase> CreateCapsuleForMesh(
+        CGameObject* pOwner,
+        std::shared_ptr<CStaticMesh> pMesh,
+        CollisionBase::ColliderTag tag
+    );
 
 
 };

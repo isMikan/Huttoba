@@ -39,12 +39,15 @@ public:
         None = -1,
     };
 
-    // コンストラクタ / デストラクタ
-    CollisionBase(ICollisionListener*   pListener,
+    // コンストラクタ
+    CollisionBase(
+        ICollisionListener* pListener,
         const D3DXVECTOR3&  syncPosition,
         ColliderTag         tag,
         const D3DXVECTOR3&  localOffset = D3DXVECTOR3(0.0f, 0.0f, 0.0f)
     );
+
+    //デストラクタ
     virtual ~CollisionBase() = default;
 
 
@@ -122,7 +125,7 @@ public:
     * 
     * @note     CollisionManager::Update()から呼び出す
     *****************************************************************************************/
-    void UpdateWorldPosition();
+    virtual void UpdateWorldPosition() = 0;
 
 
     /*****************************************************************************************

@@ -20,4 +20,19 @@ namespace MeshCollisionUtility
         D3DXVECTOR3& outCenter,
         float& outRadius
     );
+
+    /*****************************************************************************************
+    * @brief    メッシュのカプセルのの中心座標と半径を計算します
+    * @param    pMesh 頂点情報を持つCStaticMeshの共有ポインタ
+    *           outCenter 計算された中心座標の参照
+    *           outRadius 計算された半径の参照
+    *
+    * @return   計算が成功したかどうか
+    *****************************************************************************************/
+    bool CalculateBoundingCapsule(
+        const std::shared_ptr<CStaticMesh> pMesh,
+        float& outRadius,
+        D3DXVECTOR3& outLocalOffsetA,
+        D3DXVECTOR3& outLocalOffsetB
+    );
 }

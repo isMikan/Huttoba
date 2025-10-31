@@ -1,39 +1,43 @@
 #pragma once
 #include "Collision/Collider/CollisionBase.h"
 
+struct BoundingCapsule
+{
+	D3DXVECTOR3 StartPoint;		// 始点(ワールド)
+	D3DXVECTOR3 EndPoint;		// 終点(ワールド)
+	float Rad;	//半径
+};
+
 class CollisionCapsule : 
 	public CollisionBase
 {
 public:
-	CollisionCapsule();
-	~CollisionCapsule();
+	// コンストラクタ: すべての初期情報を一括で受け取る
+	CollisionCapsule(
+		ICollisionListener* pListener,
+		const D3DXVECTOR3& syncPosition,
+		ColliderTag tag,
+		float radius,
+		const D3DXVECTOR3& localOffsetA, // 軸線分 A のローカルオフセット
+		const D3DXVECTOR3& localOffsetB, // 軸線分 B のローカルオフセット
+		const D3DXVECTOR3& localOffset = D3DXVECTOR3(0.0f, 0.0f, 0.0f) // Base用オフセット
+	);	
+	
+	virtual ~CollisionCapsule() = default;
 
-	// ゲッター
-	const D3DXVECTOR3& GetStart	() const { return m_Start; }
-	const D3DXVECTOR3& GetEnd	() const { return m_End; }
-	float GetRadius() const { return m_Radius; }
-	ColliderType GetType() { return ColliderType::Capsule; }
+	virtual ColliderType GetType() const override { return ColliderType::Capsule; }
 
-	// セッター
-	void SetStart (const D3DXVECTOR3& s) { m_Start = s; }
-	void SetEnd	  (const D3DXVECTOR3& e) { m_End = e; }
-	void SetRadius(float r) { m_Radius = r; }
+	void UpdateWorldPosition() override;
 
-
-	// ワールド座標変換後の線分情報取得
-	D3DXVECTOR3 GetStartWorld() const { return m_StartWorld; }
-	D3DXVECTOR3 GetEndWorld() const { return m_EndWorld; }
-
-	float GetWorldRadius() const;
+	const BoundingCapsule& GetWorldCapsule() const { return m_WorldCapsule; }
 private:
-	D3DXVECTOR3 m_Start;  // ローカル開始点
-	D3DXVECTOR3 m_End;    // ローカル終了点
-	float m_Radius;       // 半径
 
-	D3DXMATRIX m_World;   // ワールド行列
+	// カプセル固有のローカルデータ
+	FLOAT m_Radius;
+	D3DXVECTOR3 m_LocalOffsetA;
+	D3DXVECTOR3 m_LocalOffsetB;
 
-	//ワールド変換座標
-	D3DXVECTOR3 m_StartWorld;
-	D3DXVECTOR3	m_EndWorld;
+	// 最新のワールドカプセル情報
+	BoundingCapsule m_WorldCapsule;
 		
 };

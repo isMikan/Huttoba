@@ -1,13 +1,13 @@
 #pragma once
 #include "Collision/CollisionStrategy/CollisionStrategyBase.h"
-class CollisionCapsuleOBB
+class CollisionSphereCapsule
     : public CollisionStrategyBase
 {
 public:
-    CollisionCapsuleOBB() {}
-    ~CollisionCapsuleOBB() {}
+    CollisionSphereCapsule() {}
+    ~CollisionSphereCapsule() {}
 
     bool CheckCollision(
         const CollisionBase* colA,
-        const CollisionBase* colB) const = 0;
+        const CollisionBase* colB) const override;
 };

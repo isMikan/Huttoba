@@ -46,14 +46,13 @@ public:
         return ColliderType::Sphere;
     }
 
-    // 【追加】描画用メッシュのポインタを受け取る
-    void AttachDebugMesh(std::shared_ptr<CStaticMesh> pMesh);
 
-    // 【追加】描画関数 (CStaticMeshObject::Drawと同じシグネチャを使用)
-    void DrawDebug(
-        D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAMERA& Camera) const;
-
-
+    /*****************************************************************************************
+    * @brief    親GameObjectの位置を参照し、ワールド座標を更新する
+    * 
+    * @note     CollisionManager::Update()から呼び出す
+    *****************************************************************************************/
+    void UpdateWorldPosition() override;
 
 private:
     // 球体固有のデータ

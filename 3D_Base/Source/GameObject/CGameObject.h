@@ -20,9 +20,12 @@ public:
 		m_vPosition.x = x;
 		m_vPosition.y = y;
 		m_vPosition.z = z;
+
+		m_IsWorldMatrixDirty = true;
 	};
 	void SetPosition(const D3DXVECTOR3& pos) {
 		m_vPosition = pos;
+		m_IsWorldMatrixDirty = true;
 	}
 	//座標取得関数.
 	const D3DXVECTOR3& GetPosition() const {
@@ -34,9 +37,12 @@ public:
 		m_vRotation.x = x;
 		m_vRotation.y = y;
 		m_vRotation.z = z;
+
+		m_IsWorldMatrixDirty = true;
 	};
 	void SetRotation(const D3DXVECTOR3& rot) {
 		m_vRotation = rot;
+		m_IsWorldMatrixDirty = true;
 	}
 	//回転取得関数.
 	const D3DXVECTOR3& GetRotation() const {
@@ -48,9 +54,12 @@ public:
 		m_vScale.x = x;
 		m_vScale.y = y;
 		m_vScale.z = z;
+
+		m_IsWorldMatrixDirty = true;
 	}
 	void SetScale(float xyz) {
 		m_vScale = D3DXVECTOR3(xyz, xyz, xyz);
+		m_IsWorldMatrixDirty = true;
 	}
 	//拡縮取得関数.
 	const D3DXVECTOR3& GetScale() const {
@@ -64,14 +73,19 @@ public:
 		m_vQuaternion.y = y;
 		m_vQuaternion.z = z;
 		m_vQuaternion.w = w;
+
+		m_IsWorldMatrixDirty = true;
 	}
 	void SetQuaternion(const D3DXQUATERNION& quat) {
 		m_vQuaternion = quat;
+		m_IsWorldMatrixDirty = true;
 	}
 	//クォータニオン型の回転の取得関数.
 	const D3DXQUATERNION& GetQuaternion() const {
 		return m_vQuaternion;
 	}
+
+	const D3DXMATRIX& GetWorldMatrix() const;
 
 protected://protectedは子クラスのみアクセス可能.
 	D3DXVECTOR3	m_vPosition;
@@ -79,5 +93,11 @@ protected://protectedは子クラスのみアクセス可能.
 	D3DXVECTOR3	m_vScale;
 
 	D3DXQUATERNION m_vQuaternion;	//クォータニオンの回転.
+
+	//1フレームで行列を何回も計算しないように保存する
+	mutable D3DXMATRIX m_mWorldCache;
+
+	// キャッシュが古いかどうか
+	mutable bool m_IsWorldMatrixDirty;
 
 };

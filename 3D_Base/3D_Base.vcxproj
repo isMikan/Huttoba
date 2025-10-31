@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -242,7 +242,7 @@
     <ClCompile Include="Source\Collision\CollisionStrategy\CollisionPattern\CollisionRaySphere\CollisionRaySphere.cpp" />
     <ClCompile Include="Source\Collision\CollisionStrategy\CollisionPattern\CollisionCapsuleSphere\CollisionCapsuleSphere.cpp" />
     <ClCompile Include="Source\Collision\CollisionStrategy\CollisionPattern\CollisionCapsuleRay\CollisionCapsuleRay.cpp" />
-    <ClCompile Include="Source\Collision\CollisionStrategy\CollisionPattern\CollisionCapsuleOBB\CollisionCapsuleOBB.cpp" />
+    <ClCompile Include="Source\Collision\CollisionStrategy\CollisionPattern\CollisionSphereCapsule\CollisionSphereCapsule.cpp" />
     <ClCompile Include="Source\Collision\CollisionStrategy\CollisionPattern\CollisionCapsuleCapsule\CollisionCapsuleCapsule.cpp" />
     <ClCompile Include="Source\Collision\Collider\CollisionRay\CollisionRay.cpp" />
     <ClCompile Include="Source\Collision\Collider\CollisionCapsule\CollisionCapsule.cpp" />
@@ -348,7 +348,7 @@
     <ClInclude Include="Source\Collision\CollisionStrategy\CollisionPattern\CollisionRaySphere\CollisionRaySphere.h" />
     <ClInclude Include="Source\Collision\CollisionStrategy\CollisionPattern\CollisionCapsuleSphere\CollisionCapsuleSphere.h" />
     <ClInclude Include="Source\Collision\CollisionStrategy\CollisionPattern\CollisionCapsuleRay\CollisionCapsuleRay.h" />
-    <ClInclude Include="Source\Collision\CollisionStrategy\CollisionPattern\CollisionCapsuleOBB\CollisionCapsuleOBB.h" />
+    <ClInclude Include="Source\Collision\CollisionStrategy\CollisionPattern\CollisionSphereCapsule\CollisionSphereCapsule.h" />
     <ClInclude Include="Source\Collision\CollisionStrategy\CollisionPattern\CollisionCapsuleCapsule\CollisionCapsuleCapsule.h" />
     <ClInclude Include="Source\Collision\CollisionStrategy\CollisionStrategyBase.h" />
     <ClInclude Include="Source\Collision\Collider\CollisionRay\CollisionRay.h" />

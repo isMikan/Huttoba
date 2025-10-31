@@ -19,12 +19,6 @@ CollisionBase::CollisionBase(
 {
 }
 
-void CollisionBase::UpdateWorldPosition()
-{
-    // const参照を通じて親の位置にアクセスし、ローカルオフセットを加算
-    m_WorldPosition = m_SyncPosition + m_LocalOffset;
-}
-
 void CollisionBase::InvokeCollision(CollisionBase* pOther)
 {
     if (m_pListener)
