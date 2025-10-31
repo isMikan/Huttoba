@@ -14,6 +14,7 @@ CSceneManager::~CSceneManager()
 HRESULT CSceneManager::Create()
 {
 	m_pScene = std::make_unique<CSceneTitle>(m_hWnd);
+	CollisionManager::GetInstance()->RegisterStrategy();
 
 	SetInputBInding();
 
