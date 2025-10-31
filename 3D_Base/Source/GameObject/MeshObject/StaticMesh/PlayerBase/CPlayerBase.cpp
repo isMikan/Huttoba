@@ -216,9 +216,9 @@ D3DXVECTOR3 CPlayerBase::Pushed(D3DXVECTOR3 sourcePos)
 
 //--- UŒ‚‚ğó‚¯‚½‚Ì‚ÌˆÚ“®—Ê ---.
 D3DXVECTOR3 CPlayerBase::GetVelocity(
-	D3DXVECTOR3 sourcePos, float speed, float angle)
+	D3DXVECTOR3 sourcePos, float power, float angle)
 {
-	m_HitForce = speed;	//‹­‚³‚ğİ’è.
+	m_HitForce = power;	//‹­‚³‚ğİ’è.
 
 	//”ò‚ÔƒxƒNƒgƒ‹.
 	D3DXVECTOR3 dir = m_vPosition - sourcePos;
@@ -229,9 +229,9 @@ D3DXVECTOR3 CPlayerBase::GetVelocity(
 	angle = D3DXToRadian(60.f);
 
 	D3DXVECTOR3 velocity{};
-	velocity.x = cos(angle) * speed * dir.x;	//x²•ûŒü‚É.
-	velocity.z = cos(angle) * speed * dir.z;	//z²•ûŒü‚É.
-	velocity.y = sin(angle) * speed;
+	velocity.x = cos(angle) * power * dir.x;	//x²•ûŒü‚É.
+	velocity.z = cos(angle) * power * dir.z;	//z²•ûŒü‚É.
+	velocity.y = sin(angle) * power;
 
 	return velocity;
 }

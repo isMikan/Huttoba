@@ -61,8 +61,8 @@ void CPlayerFallingState::Enter()
 	m_Velocity.y = 0.f;
 
 	//吹き飛ばし量を取得.
-	float force = m_pPlayer.GetHitForce();
-	m_RotateSpeed += m_ForceMax - force;	//最大量から引いて速さの調整.
+	float power = m_pPlayer.GetHitPower();
+	m_RotateSpeed += m_ForceMax - power;	//最大量から引いて速さの調整.
 }
 
 //--- 状態の終了時に呼び出す ---.
@@ -91,12 +91,12 @@ void CPlayerFallingState::Update()
 		|| IsEnd())
 	{
 		//吹き飛ばす攻撃を受けた場合.
-		if (m_pPlayer.GetHitInfo().hitEvent == CPlayerBase::HitEvent::Knockback)
+		if (m_pPlayer.GetHitInfo().hitEvent == CPlayerBase::HitEvent::NoDown)
 		{
 			m_pPlayer.SetActionState(std::make_unique<CPlayerGetUpState>(m_pPlayer));
 		}
 		//ダウン状態付きの攻撃を受けた場合.
-		else if(m_pPlayer.GetHitInfo().hitEvent == CPlayerBase::HitEvent::Knockdown)
+		else if(m_pPlayer.GetHitInfo().hitEvent == CPlayerBase::HitEvent::WithDown)
 		{
 			m_pPlayer.SetActionState(std::make_unique<CPlayerKnockdownState>(m_pPlayer));
 		}

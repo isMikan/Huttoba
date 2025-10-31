@@ -39,8 +39,6 @@ void CPlayerKnockbackState::Enter()
 	//攻撃の開始時間を取得.
 	m_StartTime = CTimeManager::GetTotalTime();
 
-	//プレイヤーの位置を取得.
-	D3DXVECTOR3 playerPos = m_pPlayer.GetPosition();
 	//攻撃された情報の取得.
 	CPlayerBase::HitInfo hitInfo = m_pPlayer.GetHitInfo();
 	
@@ -55,9 +53,19 @@ void CPlayerKnockbackState::Enter()
 	//開始時の右軸を設定.
 	m_StartRightAxis = -axes.right;
 
-	//位置を設定.
-	m_pPlayer.SetHitInfo(
-		 hitInfo.velocity, hitInfo.hitEvent);
+	//初速度を設定.
+	m_Velocity = m_pPlayer.GetHitInfo().velocity;
+
+	//吹き飛ばす攻撃を受けた場合.
+	if (m_pPlayer.GetHitInfo().hitEvent == CPlayerBase::HitEvent::Knockback)
+	{
+		m_pPlayer.SetHitInfo(m_Velocity, CPlayerBase::HitEvent::NoDown);
+	}
+	//ダウン状態付きの攻撃を受けた場合.
+	else if (m_pPlayer.GetHitInfo().hitEvent == CPlayerBase::HitEvent::Knockdown)
+	{
+		m_pPlayer.SetHitInfo(m_Velocity, CPlayerBase::HitEvent::WithDown);
+	}
 }
 
 //--- 状態の終了時に呼び出す ---.
@@ -104,6 +112,8 @@ void CPlayerKnockbackState::Update()
 	float progress = (t - m_StartTime) / m_EndTime;
 	progress = std::clamp(progress, 0.f, 1.f);
 	
+	std::cout << "progress:" << progress << std::endl;
+
 	//時間以内に回数分回転するように.
 	m_CurrentTiltAngle = m_pPlayer.WrapAngle(progress * D3DX_PI * m_RotateSpeed);
 
