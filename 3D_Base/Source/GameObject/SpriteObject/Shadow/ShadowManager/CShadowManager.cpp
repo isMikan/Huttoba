@@ -48,8 +48,13 @@ void CShadowManager::Update(CPlayerManager* player, ItemManager* item)
 {
 	for (int pNo = 0; pNo < Player_Max; pNo++)
 	{
+		//プレイヤーがいなかったら次へ.
 		if (!player->GetPlayer(pNo)) continue;
-		m_pShadow[pNo]->Update(player->GetPlayer(pNo)->GetPosition());
+
+		//プレイヤーの位置を取得.
+		D3DXVECTOR3 playerPos = player->GetPlayer(pNo)->GetPosition();
+
+		m_pShadow[pNo]->Update(playerPos);
 	}
 
 	for (int i = Player_Max ; i < item->GetItemVectorNum()+ Player_Max;i++)
@@ -60,10 +65,13 @@ void CShadowManager::Update(CPlayerManager* player, ItemManager* item)
 
 //--- 描画処理 ---.
 void CShadowManager::Draw(
-	D3DXMATRIX& View, D3DXMATRIX& Proj)
+	CDirectX11* pDx11, D3DXMATRIX& View, D3DXMATRIX& Proj)
 {
 	for (auto& shadow : m_pShadow)
 	{
+		//深度テスト無効にして、影の透過描画をなくす.
+		pDx11->SetDepth(false);
 		shadow->Draw(View, Proj);
+		pDx11->SetDepth(true);
 	}
 }
