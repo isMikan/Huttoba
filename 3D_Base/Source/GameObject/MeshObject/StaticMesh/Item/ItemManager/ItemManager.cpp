@@ -23,8 +23,9 @@ ItemManager::~ItemManager()
 
 HRESULT ItemManager::Create()
 {
-	m_pItems.push_back(ItemFactory::GetInstance()->CreateItem("Haetataki"));
-	m_pItems.push_back(ItemFactory::GetInstance()->CreateItem("SmashBat"));
+	//m_pItems.push_back(ItemFactory::GetInstance()->CreateItem("Haetataki"));
+	//m_pItems.push_back(ItemFactory::GetInstance()->CreateItem("SmashBat"));
+	m_pItems.push_back(ItemFactory::GetInstance()->CreateItem("Bomb"));
 	m_pItems.push_back(ItemFactory::GetInstance()->CreateItem("Bomb"));
 	m_pItems.push_back(ItemFactory::GetInstance()->CreateItem("Fun"));
 	m_pItems.push_back(ItemFactory::GetInstance()->CreateItem("Mushroom"));
@@ -36,6 +37,9 @@ HRESULT ItemManager::Create()
 		CInputManager::BindKey(Action::HaeAttack, InputBinding(InputDevice::GamePad, CXInput::Y),i);
 		CInputManager::BindKey(Action::Have, InputBinding(InputDevice::Keyboard, 'Z'),i);
 	}
+
+	m_pItems[0]->SetPosition(0, 0, 0);
+	m_pItems[1]->SetPosition(10, 0, 10);
 	return S_OK;
 }
 

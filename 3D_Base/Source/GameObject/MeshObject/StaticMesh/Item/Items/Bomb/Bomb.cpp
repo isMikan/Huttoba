@@ -18,7 +18,7 @@ Bomb::Bomb()
 	, m_Velocity		()
 	, m_MoveSpeed		( 3.0f )	//’l‚ğ•Ï‚¦‚é‚Æ”š’e‚ÌˆÚ“®‘Š“x‚ª•Ï‰»
 
-	, m_IsThrow			( false )
+	, m_IsThrow			( true )
 
 	, m_ExplosionTime	( 5.0f )	//’l‚ğ•Ï‚¦‚é‚Æ”š”­‚·‚é‚Ü‚Å‚ÌŠÔ‚ª•Ï‰»
 	, m_ExplosionCnt	( 0.0f )
@@ -44,8 +44,6 @@ void Bomb::Init()
 {
 	AttachMesh(AssetManager::Mesh(StaticMeshList::Bomb));
 	//AttachMesh(AssetManager::Mesh(StaticMeshList::ExplosionCol));
-
-	SetPosition(1, 5, 2);
 
 	m_State = ItemBase::State::Spawn;
 
@@ -148,22 +146,9 @@ void Bomb::TakeMotion()
 
 void Bomb::PossessionMotion()
 {
+
 	m_vPosition = m_pPlayer->GetPlayerRightHand().GetPosition();
 
-	if (GetAsyncKeyState('M') & 0x0001)
-	{
-		m_State = ItemBase::State::Use;
-		
-		//“Š‚°‚é‚Æ‚«‚Ìˆ—‚Ì‚½‚ß‚Étrue‚É‚·‚é
-		m_IsThrow = true;
-	}
-	if (GetAsyncKeyState('B') & 0x8000)
-	{
-		m_State = ItemBase::State::Throw;
-
-		//“Š‚°‚é‚Æ‚«‚Ìˆ—‚Ì‚½‚ß‚Étrue‚É‚·‚é
-		m_IsThrow = true;
-	}
 }
 
 void Bomb::UseMotion()

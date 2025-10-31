@@ -59,7 +59,7 @@ void CPlayerManager::LoadData()
 	for (auto& player : m_pPlayers)
 	{
 		//胴体のスタティックメッシュを設定.
-		player->AttachMesh(AssetManager::Mesh(StaticMeshList::PBody));
+		player->AttachMesh(AssetManager::Mesh(StaticMeshList::BCapsule));
 		//頭のスタティックメッシュを設定.
 		player->GetPlayerHead().
 			AttachMesh(AssetManager::Mesh(StaticMeshList::PHead));

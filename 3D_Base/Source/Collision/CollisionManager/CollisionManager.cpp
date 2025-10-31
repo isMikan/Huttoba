@@ -52,18 +52,32 @@ bool CollisionManager::CheckCollision(CollisionBase* a, CollisionBase* b)
 
 void CollisionManager::RegisterStrategy()
 {
-    //当たり判定の作成
+    //当たり判定戦略の設定
+
+    //球vs球----------------------------------------------------------------
+
     CollisionStrategyFactory::GetInstance()->RegisterStrategy(
         CollisionBase::ColliderType::Sphere,
         CollisionBase::ColliderType::Sphere,
         std::make_unique<CollisionStrategySphereSphere>()
     );
 
+    //球vsカプセル-----------------------------------------------------------
     CollisionStrategyFactory::GetInstance()->RegisterStrategy(
         CollisionBase::ColliderType::Sphere,
         CollisionBase::ColliderType::Capsule,
         std::make_unique<CollisionSphereCapsule>()
     );
+
+    //カプセルvsカプセル-----------------------------------------------------
+    CollisionStrategyFactory::GetInstance()->RegisterStrategy(
+        CollisionBase::ColliderType::Capsule,
+        CollisionBase::ColliderType::Capsule,
+        std::make_unique<CollisionSphereCapsule>()
+    );
+
+    //-----------------------------------------------------------------------
+
 }
 
 void CollisionManager::Update()
