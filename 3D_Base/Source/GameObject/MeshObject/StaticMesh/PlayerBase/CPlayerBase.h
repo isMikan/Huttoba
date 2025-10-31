@@ -21,13 +21,26 @@ public:
 //======================================================================
 // 	   列挙型.
 //======================================================================
+	//動作する指示.
+	enum class ActionInstruct
+	{
+		Pickup,
+		Throw,
+		HandAttack,
+		ItemAttack,
+
+		None = -1
+	};
+
 	//接触イベント.
 	enum class HitEvent
 	{
-		Pushed,			//押し出し.
-		Knockback,		//吹き飛ばし.
-		Knockdown,		//ダウン.
-		NotKnockdown,	//ダウンしない.
+		Pushed,		//押し出し攻撃.
+		Knockback,	//吹き飛ばし攻撃.
+		Knockdown,	//ダウン付き攻撃.
+
+		WithDown,	//ダウンする.
+		NoDown,		//ダウンしない.
 
 		None = -1		//なし(攻撃側の接触).
 	};
@@ -98,7 +111,7 @@ public:
 	//--- 攻撃を受けた時のの移動量 ---.
 	D3DXVECTOR3 GetVelocity(
 		D3DXVECTOR3 sourcePos, 
-		float speed, 
+		float power, 
 		float angle);
 
 	//--- 角度を0～360度にする ---.
@@ -125,7 +138,7 @@ public:
 	int GetPlayerID() const { return m_PlayerID; }
 
 	//攻撃を受けた力を取得.
-	int GetHitForce() const { return m_HitForce; }
+	int GetHitPower() const { return m_HitForce; }
 	
 	//攻撃を受けた情報を取得と設定.
 	HitInfo GetHitInfo() const { return m_HitInfo; }
@@ -201,13 +214,14 @@ protected:
 	std::unique_ptr<CPlayerState>	m_pTurnState;		//回転.
 	std::unique_ptr<CPlayerState>	m_pActionState;		//行動.
 
-	HitInfo	m_HitInfo;			//攻撃を受けた情報.
-	Gauge	m_KnockdownTime;	//ダウン状態の時間を保存.
+	ActionInstruct	m_Instruct;			//指示.
+	HitInfo			m_HitInfo;			//攻撃を受けた情報.
+	Gauge			m_KnockdownTime;	//ダウン状態の時間を保存.
 
-	bool	m_IsMoving;			//移動しているか.
-	bool	m_IsTurning;		//回転しているか.
-	bool	m_IsHoldingItem;	//アイテムを所持してるか.
+	bool			m_IsMoving;			//移動しているか.
+	bool			m_IsTurning;		//回転しているか.
+	bool			m_IsHoldingItem;	//アイテムを所持してるか.
 
-	float	m_HitForce;			//攻撃を受けた数値.
+	float			m_HitForce;			//攻撃を受けた数値.
 	static constexpr float		m_PushForce = 0.05f;	//押し出す力.
 };
