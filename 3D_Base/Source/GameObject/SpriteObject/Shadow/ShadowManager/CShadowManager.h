@@ -24,7 +24,7 @@ public:
 	void Update(CPlayerManager* player, ItemManager* item);
 	//--- •`‰æˆ— ---.
 	virtual void Draw(
-		D3DXMATRIX& View, D3DXMATRIX& Proj);
+		CDirectX11* pDx11, D3DXMATRIX& View, D3DXMATRIX& Proj);
 
 private:
 	//‰eƒNƒ‰ƒX.
