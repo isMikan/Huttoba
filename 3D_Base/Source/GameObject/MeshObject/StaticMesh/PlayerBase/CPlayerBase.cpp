@@ -91,10 +91,10 @@ void CPlayerBase::Draw(D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAMERA&
 void CPlayerBase::CreateCollider()
 {
 	//新しい CollisionDataFactory を使ったコリジョンデータの生成と登録.
-	std::shared_ptr<CStaticMesh> mesh = AssetManager::Mesh(StaticMeshList::BSphere);
+	std::shared_ptr<CStaticMesh> mesh = AssetManager::Mesh(StaticMeshList::BCapsule);
 
 	m_pCollision =
-		CollisionDataFactory::CreateSphereForMesh(
+		CollisionDataFactory::CreateCapsuleForMesh(
 			this,	//当たり判定の主.
 			mesh,	//当たり判定用メッシュ.
 			CollisionBase::ColliderTag::Player	//主のタグ.

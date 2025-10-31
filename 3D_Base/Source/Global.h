@@ -114,6 +114,7 @@ enum class StaticMeshList
 	RoboB,
 	Bullet,
 	BSphere,
+	BCapsule,
 	Haetataki,
 	Bomb,
 	Fun,
