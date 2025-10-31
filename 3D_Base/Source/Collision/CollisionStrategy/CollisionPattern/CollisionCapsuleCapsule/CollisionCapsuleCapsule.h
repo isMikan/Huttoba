@@ -6,7 +6,8 @@ class CollisionCapsuleCapsule
 public:
     CollisionCapsuleCapsule() {}
     ~CollisionCapsuleCapsule() {}
+
     bool CheckCollision(
         const CollisionBase* colA,
-        const CollisionBase* colB) const = 0;
+        const CollisionBase* colB) const override;
 };

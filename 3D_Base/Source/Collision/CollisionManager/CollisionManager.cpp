@@ -1,9 +1,11 @@
 #include "stdafx.h"
 #include "CollisionManager.h"
 #include <algorithm>
-#include <iostream> // デバッグ用
 #include "Collision/CollisionStrategy/CollisionStrategyFactory/CollisionStrategyFactory.h"
 #include "Collision/CollisionStrategy/CollisionStrategyBase.h"
+
+#include "Collision/CollisionStrategy/CollisionPattern/CollisionSphereSphere/CollisionStrategySphereSphere.h"
+#include "Collision/CollisionStrategy/CollisionPattern/CollisionSphereCapsule/CollisionSphereCapsule.h"
 
 void CollisionManager::Init()
 {
@@ -45,6 +47,36 @@ bool CollisionManager::CheckCollision(CollisionBase* a, CollisionBase* b)
 
     // 判定ロジックが存在する場合は、StrategyオブジェクトのCheckCollisionを呼び出す
     return strategy->CheckCollision(a, b);
+
+}
+
+void CollisionManager::RegisterStrategy()
+{
+    //当たり判定戦略の設定
+
+    //球vs球----------------------------------------------------------------
+
+    CollisionStrategyFactory::GetInstance()->RegisterStrategy(
+        CollisionBase::ColliderType::Sphere,
+        CollisionBase::ColliderType::Sphere,
+        std::make_unique<CollisionStrategySphereSphere>()
+    );
+
+    //球vsカプセル-----------------------------------------------------------
+    CollisionStrategyFactory::GetInstance()->RegisterStrategy(
+        CollisionBase::ColliderType::Sphere,
+        CollisionBase::ColliderType::Capsule,
+        std::make_unique<CollisionSphereCapsule>()
+    );
+
+    //カプセルvsカプセル-----------------------------------------------------
+    CollisionStrategyFactory::GetInstance()->RegisterStrategy(
+        CollisionBase::ColliderType::Capsule,
+        CollisionBase::ColliderType::Capsule,
+        std::make_unique<CollisionSphereCapsule>()
+    );
+
+    //-----------------------------------------------------------------------
 
 }
 
