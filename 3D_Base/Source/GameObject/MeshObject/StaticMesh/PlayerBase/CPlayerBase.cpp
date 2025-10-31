@@ -5,6 +5,7 @@
 #include "PlayerState/PlayerActionState/PlayerActionIdleState/CPlayerActionIdleState.h"
 
 #include "PlayerBase/PlayerState/PlayerActionState/PlayerPickupState/CPlayerPickupState.h"
+#include "PlayerBase/PlayerState/PlayerActionState/PlayerThrowState/CPlayerThrowState.h"
 #include "PlayerBase/PlayerState/PlayerActionState/PlayerHandAttackState/CPlayerHandAttackState.h"
 #include "PlayerBase/PlayerState/PlayerActionState/PlayerPushedState/CPlayerPushedState.h"
 #include "PlayerBase/PlayerState/PlayerActionState/PlayerKnockbackState/CPlayerKnockbackState.h"
@@ -24,11 +25,15 @@ CPlayerBase::CPlayerBase( int index )
 	, m_pTurnState		( std::make_unique<CPlayerTurnIdleState>( *this, 0.f, 0.f ) )
 	, m_pActionState	( std::make_unique<CPlayerActionIdleState>( *this ) )
 
+	, m_Instruct		( ActionInstruct::None )
+	, m_HitInfo			()
+	, m_KnockdownTime	()
+
 	, m_IsMoving		( false )
 	, m_IsTurning		( false )
 	, m_IsHoldingItem	( false )
 
-	, m_HitInfo			()
+	, m_HitForce		()
 
 	, m_Bus				( GetBus() )
 {
@@ -62,6 +67,11 @@ void CPlayerBase::Update()
 		SetActionState(std::make_unique<CPlayerKnockbackState>(*this));
 	}
 
+	if (m_Instruct == ActionInstruct::HandAttack)
+	{
+		SetActionState(std::make_unique<CPlayerHandAttackState>(*this));
+	}
+
 	//移動の状態を更新.
 	m_pMoveState->Update();
 	//回転の状態を更新.
@@ -89,7 +99,6 @@ void CPlayerBase::CreateCollider()
 			mesh,	//当たり判定用メッシュ.
 			CollisionBase::ColliderTag::Player	//主のタグ.
 		);
-
 }
 
 //--- 移動状態を設定 ---.
@@ -207,9 +216,9 @@ D3DXVECTOR3 CPlayerBase::Pushed(D3DXVECTOR3 sourcePos)
 
 //--- 攻撃を受けた時のの移動量 ---.
 D3DXVECTOR3 CPlayerBase::GetVelocity(
-	D3DXVECTOR3 sourcePos, float speed, float angle)
+	D3DXVECTOR3 sourcePos, float power, float angle)
 {
-	m_HitForce = speed;	//強さを設定.
+	m_HitForce = power;	//強さを設定.
 
 	//飛ぶベクトル.
 	D3DXVECTOR3 dir = m_vPosition - sourcePos;
@@ -220,9 +229,9 @@ D3DXVECTOR3 CPlayerBase::GetVelocity(
 	angle = D3DXToRadian(60.f);
 
 	D3DXVECTOR3 velocity{};
-	velocity.x = cos(angle) * speed * dir.x;	//x軸方向に.
-	velocity.z = cos(angle) * speed * dir.z;	//z軸方向に.
-	velocity.y = sin(angle) * speed;
+	velocity.x = cos(angle) * power * dir.x;	//x軸方向に.
+	velocity.z = cos(angle) * power * dir.z;	//z軸方向に.
+	velocity.y = sin(angle) * power;
 
 	return velocity;
 }
@@ -315,11 +324,27 @@ void CPlayerBase::OnCollision(CollisionBase* pOtherCollider)
 
 		if (ItemBase* item = dynamic_cast<ItemBase*>(pOtherCollider->GetListener()))
 		{
-			if (IsAnyActionState<CPlayerPickupState>())
+			//拾う.
+			if(m_Instruct == ActionInstruct::Pickup)
 			{
 				item->SetPlayer(this);
 				item->SetState(ItemBase::State::Have);
+				SetActionState(std::make_unique<CPlayerPickupState>(*this));
+			}
+			//投げる.
+			if (m_Instruct == ActionInstruct::Throw)
+			{
+				item->SetPlayer(this);
+				item->SetState(ItemBase::State::Throw);
+				SetActionState(std::make_unique<CPlayerThrowState>(*this));
+			}
+			//アイテム攻撃.
+			if (m_Instruct == ActionInstruct::ItemAttack)
+			{
+				item->SetPlayer(this);
+				item->SetState(ItemBase::State::Use);
 			}
 		}
+		break;
 	}
 }
