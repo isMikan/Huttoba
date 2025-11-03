@@ -62,7 +62,6 @@ void Bomb::Update()
 {
 	ItemBase::Update();
 
-	std::cout << (m_IsOnGround ? "true" : "false") << std::endl;
 
 }
 

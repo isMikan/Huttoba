@@ -28,6 +28,7 @@
 #include "Input/CInputManager.h"
 
 class ItemManager;
+class CollisionDraw;
 
 #include<string>
 #include<vector>

@@ -19,11 +19,12 @@ class CollisionDraw
     : public CGameObject
 {
 public:
+    CollisionDraw();
+    ~CollisionDraw();
 
-    // ★ 登録関数を修正：CGameObject* も引数として受け取る
     void AddDrawMesh(
         const std::shared_ptr<CStaticMesh> pMesh,
-        const CGameObject* pOwner // ★追従対象の主オブジェクト
+        const CGameObject* pOwner //追従対象の主オブジェクト
     );
 
     /*****************************************************************************************
@@ -40,8 +41,6 @@ public:
 
 
 private:
-    CollisionDraw();
-    ~CollisionDraw();
 
     CollisionDraw(const CollisionDraw&) = delete; // コピーコンストラクタを削除
     CollisionDraw& operator=(const CollisionDraw&) = delete; // 代入演算子を削除

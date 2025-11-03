@@ -276,7 +276,7 @@ void CSceneGameMain::Draw()
 	AssetManager::Effect()->Draw(mView, mProj, light, camera);
 
 	CDirectX11::GetInstance()->SetRasterizerWireframe();
-	m_pCollisionDraw->Draw(mView, mProj, light, camera);
+	//m_pCollisionDraw->Draw(mView, mProj, light, camera);
 	CDirectX11::GetInstance()->SetRasterizerSolid();
 }
 

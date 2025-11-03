@@ -28,12 +28,11 @@ void CollisionDraw::RemoveCollider(std::shared_ptr<CStaticMesh>& pColliderToRemo
     // 生ポインタが指す要素をリストからスマートポインタの比較で検索し、削除する
     m_pCollisionEntries.erase(
         std::remove_if(m_pCollisionEntries.begin(), m_pCollisionEntries.end(),
-            [pColliderToRemove](const std::shared_ptr<CStaticMesh>& pCollider) {
-                return pCollider.get() == pColliderToRemove.get();
+            [&pColliderToRemove](const DebugCollisionDrawEntry& entry) {
+                return entry.pMesh.get() == pColliderToRemove.get();
             }),
         m_pCollisionEntries.end());
 }
-
 void CollisionDraw::Update()
 {
 }
