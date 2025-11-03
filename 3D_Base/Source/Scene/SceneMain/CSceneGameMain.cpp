@@ -2,6 +2,7 @@
 #include "Assets/Effect/CEffect.h"
 #include "Assets/Sound/CSoundManager.h"
 #include "Item/ItemManager/ItemManager.h"
+#include "Item/ItemBase.h"
 
 CSceneGameMain::CSceneGameMain( HWND hWnd)
 	: m_hWnd			( hWnd )
@@ -145,6 +146,13 @@ void CSceneGameMain::Update()
 	{
 		player->IsOnGround(m_pGroundManager.get());
 	}
+
+	//’n–Ê‚ÉÚ’n‚µ‚Ä‚¢‚é‚©
+	for (auto& item : m_pItemManager->GetItems())
+	{
+		item->IsOnGround(m_pGroundManager.get());
+	}
+
 
 	m_pItemManager->Update();
 

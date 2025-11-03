@@ -61,6 +61,9 @@ void Bomb::Init()
 void Bomb::Update()
 {
 	ItemBase::Update();
+
+	std::cout << (m_IsOnGround ? "true" : "false") << std::endl;
+
 }
 
 void Bomb::Draw(D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAMERA& Camera)

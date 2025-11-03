@@ -105,6 +105,10 @@ public:
 	bool IsDestroy() { return m_IsDestroy; }
 
 
+
+	//地面との判定
+	void IsOnGround(CGroundManager* pGroundMgr);
+
 protected:
 
 	virtual void Spawn	 ()	= 0; // 出現
@@ -118,6 +122,7 @@ protected:
 
 	float m_tGravity;	// 重力加速度(簡易版)
 	bool m_IsDestroy;	// 破壊するかどうか
+	bool m_IsOnGround;	//地面に接触しているか
 
 	State m_State;		// アイテムの状態
 

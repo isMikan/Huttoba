@@ -4,10 +4,11 @@
 
 
 ItemBase::ItemBase()
-	: m_State	( State::Spawn )
-	, m_pPlayer	( nullptr )
-	, m_tGravity(0.01f)
-	, m_IsDestroy	( false )
+	: m_State		{ State::Spawn }
+	, m_pPlayer		{ nullptr }
+	, m_tGravity	{ 0.01f }
+	, m_IsDestroy	{ false }
+	, m_IsOnGround	{ false }
 {
 }
 
@@ -58,4 +59,23 @@ bool ItemBase::IsUse()
 		return true;
 	}
 	return false;
+}
+
+void ItemBase::IsOnGround(CGroundManager* pGroundMgr)
+{
+	// 外部からのデータがない場合は判定不能
+	if (!pGroundMgr) return;
+
+	// 自身の位置を取得
+	const D3DXVECTOR3 playerPos = GetPosition();
+
+	// サイズ決定(後で定数に突貫)
+	const float playerHalfHeight = 0.5f;
+
+	// CollisionManagerに判定を依頼し、結果をそのまま返す
+	m_IsOnGround = CollisionManager::CheckGroundContact(
+		playerPos,
+		playerHalfHeight,
+		pGroundMgr
+	);
 }

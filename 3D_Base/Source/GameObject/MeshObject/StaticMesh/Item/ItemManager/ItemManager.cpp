@@ -38,8 +38,9 @@ HRESULT ItemManager::Create()
 		CInputManager::BindKey(Action::Have, InputBinding(InputDevice::Keyboard, 'Z'),i);
 	}
 
-	m_pItems[0]->SetPosition(0, 0, 0);
-	m_pItems[1]->SetPosition(10, 0, 10);
+	m_pItems[0]->SetPosition(0, 0, 4);
+	m_pItems[1]->SetPosition(0, 0, 5);
+
 	return S_OK;
 }
 
@@ -74,7 +75,6 @@ void ItemManager::Update()
 			item->SetState(ItemBase::State::Use);
 		}
 	}
-
 	//不必要なアイテム削除
 	DestroyItem();
 }

@@ -32,7 +32,7 @@ CPlayerBase::CPlayerBase( int index )
 	, m_IsMoving		( false )
 	, m_IsTurning		( false )
 	, m_IsHoldingItem	( false )
-
+	, m_IsOnGround		( false )
 	, m_HitForce		()
 
 	, m_Bus				( GetBus() )

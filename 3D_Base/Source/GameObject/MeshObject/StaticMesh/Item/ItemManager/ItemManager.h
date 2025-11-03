@@ -48,6 +48,8 @@ public:
 	//現在出現中のアイテムの数を取得
 	size_t GetItemVectorNum() { return m_pItems.size(); }
 
+	std::vector<std::unique_ptr<ItemBase>>& GetItems() { return m_pItems; }
+
 	//出現中のアイテムの位置を取得
 	D3DXVECTOR3 GetItemPos(int i);
 
