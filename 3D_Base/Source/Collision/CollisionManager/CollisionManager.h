@@ -7,6 +7,8 @@ class CollisionBase;
 class CollisionResult;
 class ICollisionListener;
 class CollisionStrategyBase;
+class CGround;
+
 
 class CollisionManager
 {
@@ -59,15 +61,22 @@ public:
     *****************************************************************************************/
     bool CheckCollision(CollisionBase* a, CollisionBase* b);
 
-
+    /*****************************************************************************************
+        * @brief   オブジェクトの地面との接触を判定する (Raycast Utility)
+        * @note    CollisionManagerのインスタンスに依存せず、必要な情報を引数で受け取る静的関数
+        *****************************************************************************************/
+    static bool CheckGroundContact(
+        const D3DXVECTOR3& objectPosition,
+        float colliderHalfHeight,
+        CGroundManager* pGroundMgr 
+); 
 private:
-    CollisionManager() = default;
-    ~CollisionManager() = default;
+    CollisionManager();
+    ~CollisionManager();
 
     CollisionManager(const CollisionManager&) = delete; // コピーコンストラクタを削除
     CollisionManager& operator=(const CollisionManager&) = delete; // 代入演算子を削除
 
     // 登録されているColliderのリスト
     std::vector<std::shared_ptr<CollisionBase>> m_Colliders;
-
 };

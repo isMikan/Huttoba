@@ -8,6 +8,18 @@
 #include "Collision/CollisionStrategy/CollisionPattern/CollisionSphereCapsule/CollisionSphereCapsule.h"
 #include "Collision/CollisionStrategy/CollisionPattern/CollisionCapsuleCapsule/CollisionCapsuleCapsule.h"
 
+#include "Ground/GroundManager/CGroundManager.h"
+
+CollisionManager::CollisionManager()
+	: m_Colliders   {}
+{
+
+}
+
+CollisionManager::~CollisionManager()
+{
+}
+
 void CollisionManager::Init()
 {
 	m_Colliders.clear();
@@ -51,6 +63,59 @@ bool CollisionManager::CheckCollision(CollisionBase* a, CollisionBase* b)
 
 }
 
+// 許容誤差は判定ロジック（Raycastの最大距離）の中で定数として保持
+// これなら外部から渡す必要がなくなり、シンプルになります。
+static constexpr float GROUND_CHECK_EPSILON = 0.1f;
+
+bool CollisionManager::CheckGroundContact(
+    const D3DXVECTOR3& objectPosition,
+    float colliderHalfHeight,
+    CGroundManager* pGroundMgr)
+{
+    if (!pGroundMgr) return false;
+
+    // レイ設定
+    D3DXVECTOR3 rayOrigin = objectPosition + D3DXVECTOR3(0.0f, colliderHalfHeight, 0.0f);
+    D3DXVECTOR3 rayDirection(0.0f, -1.0f, 0.0f);
+    const float maxDistance = (colliderHalfHeight * 2.0f) + GROUND_CHECK_EPSILON;
+
+    // Raycastのout引数
+    D3DXVECTOR3 hitPosition;
+    float currentHitDistance;
+
+    // GroundManagerから配列を取得
+    const auto& grounds = pGroundMgr->GetGrounds();
+
+    // 地面の数だけ回す
+    for (const auto& pGround : grounds)
+    {
+        if (!pGround) continue;
+
+        // メッシュを取得
+        std::shared_ptr<CStaticMesh> pGroundMesh = pGround->GetMesh();
+        if (!pGroundMesh) continue;
+
+        // MeshCollisionUtilityに判定を委譲
+        if (MeshCollisionUtility::RaycastAgainstMesh(
+            pGroundMesh,                 // ループ内で取得したメッシュ
+            rayOrigin,
+            rayDirection,
+            maxDistance,
+            hitPosition,                 // out
+            currentHitDistance           // out
+        ))
+        {
+            // 一つでも当たれば終了
+            return true;
+        }
+    }
+
+    return false;
+}
+
+// =========================================================================
+// 地面接触判定 (カプセル vs メッシュの簡略化版)
+// =========================================================================
 void CollisionManager::RegisterStrategy()
 {
     //当たり判定戦略の設定

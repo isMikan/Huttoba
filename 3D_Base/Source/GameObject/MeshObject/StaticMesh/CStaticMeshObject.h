@@ -50,6 +50,8 @@ public:
 	//オブジェクトの色を取得する関数.
 	ObjectColor GetObjectColor() const { return m_ObjColor; }
 
+	std::shared_ptr<CStaticMesh> GetMesh() const { return m_pMesh; }
+
 protected:
 	std::shared_ptr<CStaticMesh>	m_pMesh;
 

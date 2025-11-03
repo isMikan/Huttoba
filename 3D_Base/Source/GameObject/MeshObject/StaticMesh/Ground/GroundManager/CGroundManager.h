@@ -40,6 +40,10 @@ public:
 	void Draw(
 		D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAMERA& Camera);
 
+	//制作者　佐藤
+	//レイの判定の時に地面の情報が必要なので作成
+	const std::vector<std::unique_ptr<CGround>>& GetGrounds() const { return m_pGrounds; }
+
 protected:
 //======================================================================
 // 	   内部で使用する変数.
