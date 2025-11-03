@@ -9,19 +9,13 @@ namespace MeshCollisionUtility
         D3DXVECTOR3& outCenter,
         float& outRadius)
     {
-        if (!pMesh || !pMesh->GetMesh())
-        {
-            return false;
-        }
+        if (!pMesh || !pMesh->GetMesh()){ return false; }
 
         LPDIRECT3DVERTEXBUFFER9 pVB = nullptr;	//頂点バッファ
         void* pVertices = nullptr;				//頂点
 
         //頂点バッファを取得
-        if (FAILED(pMesh->GetMesh()->GetVertexBuffer(&pVB)))
-        {
-            return false;
-        }
+        if (FAILED(pMesh->GetMesh()->GetVertexBuffer(&pVB))){ return false; }
 
         //メッシュの頂点バッファをロックする
         if (FAILED(pVB->Lock(0, 0, &pVertices, 0)))
@@ -39,7 +33,8 @@ namespace MeshCollisionUtility
             &outRadius);										//(out)半径
 
         //メッシュの頂点バッファをアンロックする
-        if (pVB != nullptr) {
+        if (pVB != nullptr) 
+        {
             pVB->Unlock();
             SAFE_RELEASE(pVB); // 取得したポインタを解放
         }
@@ -55,20 +50,13 @@ namespace MeshCollisionUtility
         D3DXVECTOR3& outLocalOffsetB)
     {
         LPD3DXMESH pMeshDx9 = pMesh->GetMesh();
-        if (!pMeshDx9)
-        {
-            return false;
-        }
+        if (!pMeshDx9){ return false; }
 
         // 頂点データのロックと取得
         VOID* pVertices = nullptr;
-        if (FAILED(pMeshDx9->LockVertexBuffer(0, &pVertices)))
-        {
-            return false;
-        }
+        if (FAILED(pMeshDx9->LockVertexBuffer(0, &pVertices))){ return false; }
 
-        // 頂点の情報（VERTEX構造体の定義はCStaticMesh.hから持ってくる）
-        // VERTEX構造体は Pos, Normal, UV の順で、Posは先頭にあることを確認済み。
+        // 頂点の情報
         using VERTEX = CStaticMesh::VERTEX;
         VERTEX* vertices = static_cast<VERTEX*>(pVertices);
         DWORD numVertices = pMeshDx9->GetNumVertices();
@@ -117,6 +105,52 @@ namespace MeshCollisionUtility
             outLocalOffsetA = D3DXVECTOR3(0.0f, center_y, 0.0f);
             outLocalOffsetB = D3DXVECTOR3(0.0f, center_y, 0.0f);
         }
+
+        return true;
+    }
+
+    bool RaycastAgainstMesh(
+        const std::shared_ptr<CStaticMesh> pTargetMesh,
+        const D3DXVECTOR3& rayOrigin,
+        const D3DXVECTOR3& rayDirection,
+        float maxDistance,
+        D3DXVECTOR3& outHitPos,
+        float& outDistance)
+    {
+        LPD3DXMESH pMeshDx9 = pTargetMesh->GetMeshForRay();
+        if (!pMeshDx9){ return false; }
+
+        BOOL bHit = FALSE;
+        FLOAT fDist = 0.0f;
+
+		// レイとメッシュの交差判定
+        HRESULT hr = D3DXIntersect(
+            pMeshDx9,                       // ターゲットメッシュ
+            &rayOrigin,                     // レイの始点
+            &rayDirection,                  // レイの方向
+            &bHit,                          // 衝突したか
+            nullptr,                        // 衝突した面のインデックス
+            &fDist,                         // 距離
+            nullptr,                        // Barycentric U
+            nullptr,                        // Barycentric V
+            nullptr,                        // すべてのヒット情報
+            nullptr                         // 衝突グループID
+        );
+
+        if (FAILED(hr) || !bHit)
+        {
+            return false;
+        }
+
+        // 距離の検証
+        if (fDist > maxDistance)
+        {
+            return false;
+        }
+
+        // 結果の格納 
+        outDistance = fDist;
+        outHitPos = rayOrigin + (rayDirection * fDist);
 
         return true;
     }

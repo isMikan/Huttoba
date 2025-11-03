@@ -21,6 +21,7 @@ namespace MeshCollisionUtility
         float& outRadius
     );
 
+
     /*****************************************************************************************
     * @brief    メッシュのカプセルのの中心座標と半径を計算します
     * @param    pMesh 頂点情報を持つCStaticMeshの共有ポインタ
@@ -34,5 +35,26 @@ namespace MeshCollisionUtility
         float& outRadius,
         D3DXVECTOR3& outLocalOffsetA,
         D3DXVECTOR3& outLocalOffsetB
+    );
+
+    /*****************************************************************************************
+    * @brief   レイとターゲットメッシュとの交点を計算
+    *
+    * @param   pTargetMesh : 判定対象のメッシュオブジェクト
+    *          rayOrigin   : レイの始点（ワールド座標）
+    *          rayDirection: レイの方向（単位ベクトル）
+    *          maxDistance : 最大距離
+    *          outHitPos   : (out) 交点座標
+    *          outDistance : (out) 始点から交点までの距離
+    *
+    * @return  交点が見つかったかどうか
+    *****************************************************************************************/
+    bool RaycastAgainstMesh(
+        const std::shared_ptr<CStaticMesh> pTargetMesh,
+        const D3DXVECTOR3& rayOrigin,
+        const D3DXVECTOR3& rayDirection,
+        float maxDistance,
+        D3DXVECTOR3& outHitPos,
+        float& outDistance
     );
 }
