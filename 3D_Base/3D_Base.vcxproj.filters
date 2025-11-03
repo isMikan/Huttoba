@@ -55,7 +55,6 @@
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\Item\Items\SmashBat\SmashBat.cpp" />
     <ClCompile Include="Source\Input\CInputManager.cpp" />
     <ClCompile Include="Source\TimeManager\CTimeManager.cpp" />
-    <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\DrawCollision\DrawCollision.cpp" />
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\Item\Items\Bomb\Bomb.cpp" />
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\Ground\GroundManager\CGroundManager.cpp" />
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\PlayerBase\CPlayerBase.cpp" />
@@ -87,7 +86,6 @@
     <ClCompile Include="Source\Collision\CollisionStrategy\CollisionPattern\CollisionRaySphere\CollisionRaySphere.cpp" />
     <ClCompile Include="Source\Collision\CollisionStrategy\CollisionPattern\CollisionCapsuleSphere\CollisionCapsuleSphere.cpp" />
     <ClCompile Include="Source\Collision\CollisionStrategy\CollisionPattern\CollisionCapsuleRay\CollisionCapsuleRay.cpp" />
-    <ClCompile Include="Source\Collision\CollisionStrategy\CollisionPattern\CollisionCapsuleOBB\CollisionCapsuleOBB.cpp" />
     <ClCompile Include="Source\Collision\CollisionStrategy\CollisionPattern\CollisionCapsuleCapsule\CollisionCapsuleCapsule.cpp" />
     <ClCompile Include="Source\Collision\Collider\CollisionRay\CollisionRay.cpp" />
     <ClCompile Include="Source\Collision\Collider\CollisionCapsule\CollisionCapsule.cpp" />
@@ -105,11 +103,12 @@
     <ClCompile Include="Source\GameObject\UIObject\GaugeBase\CGaugeBase.cpp" />
     <ClCompile Include="Source\GameObject\UIObject\GaugeBase\TimerGauge\CTimerGauge.cpp" />
     <ClCompile Include="Source\GameObject\UIObject\GaugeBase\GaugeManager\CGaugeManager.cpp" />
-    <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\PlayerBase\PlayerEventBus\CPlayerEventBus.cpp" />
     <ClCompile Include="Source\Collision\CollisionMeshUtility\MeshCollisionUtility.cpp" />
     <ClCompile Include="Source\GameObject\SpriteObject\Shadow\CShadow.cpp" />
     <ClCompile Include="Source\GameObject\SpriteObject\Shadow\ShadowManager\CShadowManager.cpp" />
     <ClCompile Include="Source\GameObject\UIObject\GaugeBase\GaugeFrame\CGaugeFrame.cpp" />
+    <ClCompile Include="Source\Collision\CollisionStrategy\CollisionPattern\CollisionSphereCapsule\CollisionSphereCapsule.cpp" />
+    <ClCompile Include="Source\Collision\CollisionDraw\CollisionDraw.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Assets\AssetManager.h" />
@@ -164,7 +163,6 @@
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\Item\Items\SmashBat\SmashBat.h" />
     <ClInclude Include="Source\Input\CInputManager.h" />
     <ClInclude Include="Source\TimeManager\CTimeManager.h" />
-    <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\DrawCollision\DrawCollision.h" />
     <ClInclude Include="Source\Assets\Mesh\StaticMesh\CStaticMesh.h" />
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\Item\Items\Bomb\Bomb.h" />
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\Ground\GroundManager\CGroundManager.h" />
@@ -199,7 +197,6 @@
     <ClInclude Include="Source\Collision\CollisionStrategy\CollisionPattern\CollisionRaySphere\CollisionRaySphere.h" />
     <ClInclude Include="Source\Collision\CollisionStrategy\CollisionPattern\CollisionCapsuleSphere\CollisionCapsuleSphere.h" />
     <ClInclude Include="Source\Collision\CollisionStrategy\CollisionPattern\CollisionCapsuleRay\CollisionCapsuleRay.h" />
-    <ClInclude Include="Source\Collision\CollisionStrategy\CollisionPattern\CollisionCapsuleOBB\CollisionCapsuleOBB.h" />
     <ClInclude Include="Source\Collision\CollisionStrategy\CollisionPattern\CollisionCapsuleCapsule\CollisionCapsuleCapsule.h" />
     <ClInclude Include="Source\Collision\CollisionStrategy\CollisionStrategyBase.h" />
     <ClInclude Include="Source\Collision\Collider\CollisionBase.h" />
@@ -222,5 +219,7 @@
     <ClInclude Include="Source\GameObject\SpriteObject\Shadow\CShadow.h" />
     <ClInclude Include="Source\GameObject\SpriteObject\Shadow\ShadowManager\CShadowManager.h" />
     <ClInclude Include="Source\GameObject\UIObject\GaugeBase\GaugeFrame\CGaugeFrame.h" />
+    <ClInclude Include="Source\Collision\CollisionStrategy\CollisionPattern\CollisionSphereCapsule\CollisionSphereCapsule.h" />
+    <ClInclude Include="Source\Collision\CollisionDraw\CollisionDraw.h" />
   </ItemGroup>
 </Project>

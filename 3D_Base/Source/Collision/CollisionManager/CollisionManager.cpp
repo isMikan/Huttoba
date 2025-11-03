@@ -64,7 +64,6 @@ bool CollisionManager::CheckCollision(CollisionBase* a, CollisionBase* b)
 }
 
 // 許容誤差は判定ロジック（Raycastの最大距離）の中で定数として保持
-// これなら外部から渡す必要がなくなり、シンプルになります。
 static constexpr float GROUND_CHECK_EPSILON = 5.f;
 
 bool CollisionManager::CheckGroundContact(

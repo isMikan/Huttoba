@@ -3,6 +3,8 @@
 #include "Assets/Sound/CSoundManager.h"
 #include "Item/ItemManager/ItemManager.h"
 #include "Item/ItemBase.h"
+#include "Collision/CollisionDraw/CollisionDraw.h"
+
 
 CSceneGameMain::CSceneGameMain( HWND hWnd)
 	: m_hWnd			( hWnd )
@@ -25,7 +27,7 @@ CSceneGameMain::CSceneGameMain( HWND hWnd)
 
 	, m_pItemManager	( nullptr )
 
-	, m_pDrawCollision	()
+	, m_pCollisionDraw	()
 {
 	m_pDx9 = CDirectX9::GetInstance();
 	m_pDx11 = CDirectX11::GetInstance();
@@ -66,8 +68,6 @@ HRESULT CSceneGameMain::Create()
 	//アイテムマネージャーの作成
 	m_pItemManager = std::make_unique<ItemManager>();
 
-	m_pDrawCollision = std::make_unique<DrawCollision>();
-
 	//各オブジェクトのインスタンス作成
 	CreateUI();
 	CteateExplosion();
@@ -76,6 +76,7 @@ HRESULT CSceneGameMain::Create()
 	//ゲージを作成.
 	m_pGaugeManager->Create(m_pPlayerManager.get());
 
+	m_pCollisionDraw = std::make_unique<CollisionDraw>();
 	return S_OK;
 }
 
@@ -113,14 +114,12 @@ HRESULT CSceneGameMain::LoadData()
 	m_pGroundManager->LoadData();
 
 	m_pItemManager->LoadData();
-	m_pDrawCollision->LoadData();
 
 	return S_OK;
 }
 
 void CSceneGameMain::Init()
 {
-	m_pDrawCollision->Init();
 	m_pItemManager->Init();
 }
 
@@ -167,8 +166,6 @@ void CSceneGameMain::Update()
 			exp->Update();
 		}
 	}
-
-	m_pDrawCollision->Update();
 
 	//--------------------
 	//	スキンメッシュ
@@ -242,7 +239,6 @@ void CSceneGameMain::Draw()
 	m_pPlayerManager->Draw(mView, mProj, light, camera);
 
 	m_pItemManager->Draw(mView, mProj, light, camera);
-	m_pDrawCollision->Draw(mView, mProj, light, camera);
 
 	////ボーン座標に合わせて球体を表示
 	//m_pStaticMeshMap[StaticMeshList::BSphere]->SetPosition(m_ZakoBonePos);
@@ -279,6 +275,9 @@ void CSceneGameMain::Draw()
 	//Effectクラス
 	AssetManager::Effect()->Draw(mView, mProj, light, camera);
 
+	CDirectX11::GetInstance()->SetRasterizerWireframe();
+	m_pCollisionDraw->Draw(mView, mProj, light, camera);
+	CDirectX11::GetInstance()->SetRasterizerSolid();
 }
 
 HRESULT CSceneGameMain::CreateUI()

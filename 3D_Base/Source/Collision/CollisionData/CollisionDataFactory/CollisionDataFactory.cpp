@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "CollisionDataFactory.h"
+#include "Collision/CollisionDraw/CollisionDraw.h"
 
 std::shared_ptr<CollisionBase> CollisionDataFactory::CreateSphereForMesh(
     CGameObject* pOwner,
@@ -33,6 +34,7 @@ std::shared_ptr<CollisionBase> CollisionDataFactory::CreateSphereForMesh(
     );
 
     CollisionManager::GetInstance()->AddCollider(newCollider);
+	CollisionDraw::GetInstance()->AddDrowMesh(pMesh);
 
     return newCollider;
 }
@@ -47,7 +49,7 @@ std::shared_ptr<CollisionBase> CollisionDataFactory::CreateCapsuleForMesh(
     D3DXVECTOR3 localOffsetA(0.0f, 0.0f, 0.0f);
     D3DXVECTOR3 localOffsetB(0.0f, 0.0f, 0.0f);
 
-    // 1. メッシュからカプセルのパラメータを計算
+    // メッシュからカプセルのパラメータを計算
     if (!MeshCollisionUtility::CalculateBoundingCapsule(
         pMesh, calculatedRadius, localOffsetA, localOffsetB))
     {
@@ -58,7 +60,7 @@ std::shared_ptr<CollisionBase> CollisionDataFactory::CreateCapsuleForMesh(
     ICollisionListener* listener = dynamic_cast<ICollisionListener*>(pOwner);
     const D3DXVECTOR3& posRef = pOwner->GetPosition();
 
-    // 2. CollisionCapsuleのインスタンスを生成
+    // CollisionCapsuleのインスタンスを生成
     std::shared_ptr<CollisionBase> newCollider = std::make_shared<CollisionCapsule>(
         listener,
         posRef,               // SyncPositionとして親の位置を参照
@@ -66,11 +68,13 @@ std::shared_ptr<CollisionBase> CollisionDataFactory::CreateCapsuleForMesh(
         calculatedRadius,
         localOffsetA,         // 軸線分Aのローカルオフセット
         localOffsetB          // 軸線分Bのローカルオフセット
-        // CollisionBase::localOffsetBase はデフォルト引数で省略
     );
 
-    // 3. 【★重要】生成と同時にマネージャーに登録
+    //当たり判定の描画のために悪戦苦闘。
+    //方針は、オーナーのアドレスを獲得して、そのアドレスから位置を特定。位置を合わせて当たり判定メッシュの描画とする
+
     CollisionManager::GetInstance()->AddCollider(newCollider);
+    CollisionDraw::GetInstance()->AddDrowMesh(pMesh);
 
     return newCollider;
 }

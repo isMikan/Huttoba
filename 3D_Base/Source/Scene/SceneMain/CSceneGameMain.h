@@ -23,7 +23,6 @@
 #include "GameObject/MeshObject/StaticMesh/PlayerBase/PlayerManager/CPlayerManager.h"
 #include "GameObject/MeshObject/StaticMesh/Ground/GroundManager/CGroundManager.h"
 
-#include "GameObject/MeshObject/StaticMesh/DrawCollision/DrawCollision.h"
 
 #include "Scene/CSceneManager.h"
 #include "Input/CInputManager.h"
@@ -85,7 +84,7 @@ private:
 
 	//アイテムクラス
 	std::unique_ptr<ItemManager>	m_pItemManager;
-	
-	//当たり判定描画クラス
-	std::unique_ptr<DrawCollision>	m_pDrawCollision;
-};
+
+	std::unique_ptr<CollisionDraw> m_pCollisionDraw;
+
+	};

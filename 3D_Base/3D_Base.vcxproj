@@ -233,6 +233,7 @@
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Collision\CollisionDraw\CollisionDraw.cpp" />
     <ClCompile Include="Source\Collision\CollisionMeshUtility\MeshCollisionUtility.cpp" />
     <ClCompile Include="Source\Collision\CollisionData\CollisionDataFactory\CollisionDataFactory.cpp" />
     <ClCompile Include="Source\Collision\CollisionStrategy\CollisionPattern\CollisionSphereSphere\CollisionStrategySphereSphere.cpp" />
@@ -249,7 +250,6 @@
     <ClCompile Include="Source\Collision\Collider\CollisionOBB\CollisionOBB.cpp" />
     <ClCompile Include="Source\Collision\Collider\CollisionBase.cpp" />
     <ClCompile Include="Source\Collision\CollisionManager\CollisionManager.cpp" />
-    <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\DrawCollision\DrawCollision.cpp" />
     <ClCompile Include="Source\Assets\AssetManager.cpp" />
     <ClCompile Include="Source\Assets\Effect\CEffect.cpp" />
     <ClCompile Include="Source\Assets\Mesh\MeshManager.cpp" />
@@ -339,6 +339,7 @@
     <ClCompile Include="Source\TimeManager\CTimeManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Collision\CollisionDraw\CollisionDraw.h" />
     <ClInclude Include="Source\Collision\CollisionMeshUtility\MeshCollisionUtility.h" />
     <ClInclude Include="Source\Collision\CollisionData\CollisionDataFactory\CollisionDataFactory.h" />
     <ClInclude Include="Source\Collision\CollisionStrategy\CollisionPattern\CollisionSphereSphere\CollisionStrategySphereSphere.h" />
@@ -358,7 +359,6 @@
     <ClInclude Include="Source\Collision\Collider\CollisionBase.h" />
     <ClInclude Include="Source\Collision\CollisionManager\CollisionManager.h" />
     <ClInclude Include="Source\Collision\CollisionListener\ICollisionListener.h" />
-    <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\DrawCollision\DrawCollision.h" />
     <ClInclude Include="Source\Assets\AssetManager.h" />
     <ClInclude Include="Source\Assets\Effect\CEffect.h" />
     <ClInclude Include="Source\Assets\Effect\Effekseer\include\Effekseer.h" />
