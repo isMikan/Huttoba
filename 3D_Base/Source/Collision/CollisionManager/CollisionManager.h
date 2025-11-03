@@ -7,7 +7,7 @@ class CollisionBase;
 class CollisionResult;
 class ICollisionListener;
 class CollisionStrategyBase;
-class CGround;
+class CGroundManager;
 
 
 class CollisionManager
@@ -62,9 +62,8 @@ public:
     bool CheckCollision(CollisionBase* a, CollisionBase* b);
 
     /*****************************************************************************************
-        * @brief   オブジェクトの地面との接触を判定する (Raycast Utility)
-        * @note    CollisionManagerのインスタンスに依存せず、必要な情報を引数で受け取る静的関数
-        *****************************************************************************************/
+    * @brief   オブジェクトの地面との接触を判定する (Raycast Utility)
+    *****************************************************************************************/
     static bool CheckGroundContact(
         const D3DXVECTOR3& objectPosition,
         float colliderHalfHeight,

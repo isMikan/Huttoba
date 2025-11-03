@@ -117,6 +117,9 @@ public:
 	//--- 角度を0～360度にする ---.
 	float WrapAngle(float value);
 
+	//地面との判定
+	void IsOnGround(CGroundManager* pGroundMgr);
+
 //======================================================================
 
 	//プレイヤーが頭を持っている(書き込み用).
@@ -221,6 +224,7 @@ protected:
 	bool			m_IsMoving;			//移動しているか.
 	bool			m_IsTurning;		//回転しているか.
 	bool			m_IsHoldingItem;	//アイテムを所持してるか.
+	bool			m_IsOnGround;		//地面に接触しているか
 
 	float			m_HitForce;			//攻撃を受けた数値.
 	static constexpr float		m_PushForce = 0.05f;	//押し出す力.

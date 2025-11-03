@@ -42,6 +42,8 @@ void CPlayer::Update()
 	HandleInput();
 
 	CPlayerBase::Update();
+
+	std::cout << "Ground Contact: " << (m_IsOnGround ? "True" : "False") << std::endl;
 }
 
 //--- –ˆƒtƒŒ[ƒ€‚Ì•`‰æ‚·‚é ---.

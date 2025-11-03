@@ -29,6 +29,7 @@ public:
 
 	//一人のプレイヤーを取得.
 	CPlayerBase* GetPlayer(int id) { return m_pPlayers[id].get(); }
+	std::vector<std::unique_ptr<CPlayerBase>>& GetPlayer() { return m_pPlayers; }
 
 private:
 //======================================================================

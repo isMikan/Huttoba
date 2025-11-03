@@ -112,8 +112,6 @@ void CPlayerKnockbackState::Update()
 	float progress = (t - m_StartTime) / m_EndTime;
 	progress = std::clamp(progress, 0.f, 1.f);
 	
-	std::cout << "progress:" << progress << std::endl;
-
 	//ŽžŠÔˆÈ“à‚É‰ñ”•ª‰ñ“]‚·‚é‚æ‚¤‚É.
 	m_CurrentTiltAngle = m_pPlayer.WrapAngle(progress * D3DX_PI * m_RotateSpeed);
 

@@ -29,8 +29,6 @@ void CollisionCapsule::UpdateWorldPosition()
         SetActive(false);
         m_WorldPosition = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 
-        std::cout << "親の取得に失敗 : 当たり判定(カプセル)" << std::endl;
-
         return;
     }
 

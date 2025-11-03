@@ -75,9 +75,6 @@ HRESULT CSceneGameMain::Create()
 	//ゲージを作成.
 	m_pGaugeManager->Create(m_pPlayerManager.get());
 
-	//地面マネージャーを衝突判定マネージャーに登録.(レイの判定に使用)
-	CollisionManager::GetInstance()->SetGrounds(m_pGroundManager->GetGrounds());
-
 	return S_OK;
 }
 
@@ -142,6 +139,12 @@ void CSceneGameMain::Update()
 
 	//プレイヤーの動作.
 	m_pPlayerManager->Update();
+
+	//地面に接地しているか
+	for (auto& player : m_pPlayerManager->GetPlayer())
+	{
+		player->IsOnGround(m_pGroundManager.get());
+	}
 
 	m_pItemManager->Update();
 

@@ -118,9 +118,7 @@ void CPlayerBase::SetActionState(std::unique_ptr<CPlayerState> newState)
 {
 	ChangeState(m_pActionState, std::move(newState));
 	m_Bus.Publish(m_pActionState.get());
-	
-	//std::cout << typeid(*m_pActionState).name() << std::endl;
-}
+	}
 
 //--- 位置を設定するために計算 ---.
 D3DXVECTOR3 CPlayerBase::GetObjectPos(D3DXVECTOR3 offset)
@@ -248,6 +246,25 @@ float CPlayerBase::WrapAngle(float value)
 	if (value < 0.f) value += twoPi;
 
 	return value;
+}
+
+void CPlayerBase::IsOnGround(CGroundManager* pGroundMgr)
+{
+	// 外部からのデータがない場合は判定不能
+	if (!pGroundMgr) return;
+
+	// 自身の位置を取得
+	const D3DXVECTOR3 playerPos = GetPosition();
+
+	// サイズ決定(後で定数に突貫)
+	const float playerHalfHeight = 0.5f;
+
+	// CollisionManagerに判定を依頼し、結果をそのまま返す
+	m_IsOnGround = CollisionManager::CheckGroundContact(
+		playerPos,
+		playerHalfHeight,
+		pGroundMgr
+	);
 }
 
 //======================================================================
