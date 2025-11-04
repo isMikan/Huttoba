@@ -1,4 +1,5 @@
 #include "CGameObject.h"
+#include "Collision/CollisionDraw/CollisionDraw.h"
 
 //コンストラクタ.
 CGameObject::CGameObject()
@@ -16,6 +17,10 @@ CGameObject::CGameObject()
 //デストラクタ.
 CGameObject::~CGameObject()
 {
+#ifdef _DEBUG
+	//当たり判定の描画リストから削除
+	CollisionDraw::GetInstance()->RemoveByOwner(this);
+#endif
 }
 
 const D3DXMATRIX& CGameObject::GetWorldMatrix() const

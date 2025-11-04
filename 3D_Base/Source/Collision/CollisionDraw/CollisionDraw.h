@@ -35,7 +35,7 @@ public:
     );
 
     // •`‰æî•ñ‚Ìíœ
-    void RemoveDrawMesh(std::shared_ptr<CStaticMesh>& pMeshToRemove);
+    void RemoveByOwner(const CGameObject* pOwner);
 
     // •`‰æˆ—
     void Draw(D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAMERA& Camera);
