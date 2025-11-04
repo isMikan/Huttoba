@@ -20,6 +20,7 @@ void CollisionDraw::AddDrawMesh(
 
 void CollisionDraw::RemoveByOwner(const CGameObject* pOwner)
 {
+
     if (!pOwner) return;
 
     m_pCollisionEntries.erase(

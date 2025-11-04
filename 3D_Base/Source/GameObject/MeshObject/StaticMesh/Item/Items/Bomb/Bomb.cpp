@@ -87,15 +87,15 @@ void Bomb::Spawn()
 
 void Bomb::OnGround()
 {
-	if (GetAsyncKeyState('M') & 0x0001)
-	//if(CInputManager::IsDown(Action::Have,0))
-	{
-		//状態を取得中に変化
-		m_State = ItemBase::State::Have;
+	//if (GetAsyncKeyState('M') & 0x0001)
+	////if(CInputManager::IsDown(Action::Have,0))
+	//{
+	//	//状態を取得中に変化
+	//	m_State = ItemBase::State::Have;
 
-		//プレイヤー側にあるモーションと同期できるように
-		//m_IsTake = true;
-	}
+	//	//プレイヤー側にあるモーションと同期できるように
+	//	//m_IsTake = true;
+	//}
 }
 
 void Bomb::Have()
