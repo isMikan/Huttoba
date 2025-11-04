@@ -7,10 +7,6 @@ CollisionDraw::CollisionDraw()
 {
 }
 
-CollisionDraw::~CollisionDraw()
-{
-}
-
 // ìoò^èàóù
 void CollisionDraw::AddDrawMesh(
 	const std::shared_ptr<CStaticMesh> pMesh,
@@ -21,7 +17,7 @@ void CollisionDraw::AddDrawMesh(
 		m_pCollisionEntries.push_back({ pOwner, pMesh });
 	}
 }
-void CollisionDraw::RemoveCollider(std::shared_ptr<CStaticMesh>& pColliderToRemove)
+void CollisionDraw::RemoveDrawMesh(std::shared_ptr<CStaticMesh>& pColliderToRemove)
 {
     if (!pColliderToRemove) return;
 
@@ -32,9 +28,6 @@ void CollisionDraw::RemoveCollider(std::shared_ptr<CStaticMesh>& pColliderToRemo
                 return entry.pMesh.get() == pColliderToRemove.get();
             }),
         m_pCollisionEntries.end());
-}
-void CollisionDraw::Update()
-{
 }
 
 void CollisionDraw::Draw(D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAMERA& Camera)

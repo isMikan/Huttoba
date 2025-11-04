@@ -16,35 +16,38 @@ struct DebugCollisionDrawEntry
 };
 
 class CollisionDraw
-    : public CGameObject
 {
 public:
-    CollisionDraw();
-    ~CollisionDraw();
 
+    static CollisionDraw* GetInstance()
+    {
+        // 最初のアクセス時に一度だけインスタンスを生成
+        static CollisionDraw instance;
+        return &instance;
+    }
+    // デストラクタはpublicのままにして、メモリ管理をシステムに任せる
+    ~CollisionDraw() = default;
+
+    // 描画する当たり判定とオーナーポインタ登録
     void AddDrawMesh(
         const std::shared_ptr<CStaticMesh> pMesh,
-        const CGameObject* pOwner //追従対象の主オブジェクト
+        const CGameObject* pOwner
     );
 
-    /*****************************************************************************************
-    * @brief    衝突判定から除外/破棄された当たり判定の削除処理
-    * @param    破棄したい当たり判定
-    *****************************************************************************************/
-    void RemoveCollider(std::shared_ptr<CStaticMesh>& pColliderToRemove);
+    // 描画情報の削除
+    void RemoveDrawMesh(std::shared_ptr<CStaticMesh>& pMeshToRemove);
 
-    void Update() override;
-
-
-	//描画処理
-    void Draw(D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAMERA& Camera) override;
+    // 描画処理
+    void Draw(D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAMERA& Camera);
 
 
 private:
+    // 外部からのインスタンス化を禁止（シングルトン制御）
+    CollisionDraw();
+    CollisionDraw(const CollisionDraw&) = delete;
+    CollisionDraw& operator=(const CollisionDraw&) = delete;
 
-    CollisionDraw(const CollisionDraw&) = delete; // コピーコンストラクタを削除
-    CollisionDraw& operator=(const CollisionDraw&) = delete; // 代入演算子を削除
-
+private:
     std::vector<DebugCollisionDrawEntry> m_pCollisionEntries;
 };
 

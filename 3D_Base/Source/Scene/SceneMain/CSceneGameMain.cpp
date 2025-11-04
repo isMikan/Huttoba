@@ -26,8 +26,6 @@ CSceneGameMain::CSceneGameMain( HWND hWnd)
 	, m_pGroundManager	()
 
 	, m_pItemManager	( nullptr )
-
-	, m_pCollisionDraw	()
 {
 	m_pDx9 = CDirectX9::GetInstance();
 	m_pDx11 = CDirectX11::GetInstance();
@@ -76,7 +74,6 @@ HRESULT CSceneGameMain::Create()
 	//ゲージを作成.
 	m_pGaugeManager->Create(m_pPlayerManager.get());
 
-	m_pCollisionDraw = std::make_unique<CollisionDraw>();
 	return S_OK;
 }
 
@@ -275,9 +272,27 @@ void CSceneGameMain::Draw()
 	//Effectクラス
 	AssetManager::Effect()->Draw(mView, mProj, light, camera);
 
-	CDirectX11::GetInstance()->SetRasterizerWireframe();
-	//m_pCollisionDraw->Draw(mView, mProj, light, camera);
-	CDirectX11::GetInstance()->SetRasterizerSolid();
+
+//当たり判定の描画切り替え
+#ifdef _DEBUG
+
+	static bool IsDrawCollision = false;
+	if (GetAsyncKeyState(VK_F5) & 0x0001) 
+	{ 
+		IsDrawCollision == true ? IsDrawCollision = false : IsDrawCollision = true;
+	}
+
+	if (IsDrawCollision)
+	{
+		// シングルトンとして呼び出しに戻す
+		CDirectX11::GetInstance()->SetRasterizerWireframe();
+		CollisionDraw::GetInstance()->Draw(mView, mProj, light, camera);
+		CDirectX11::GetInstance()->SetRasterizerSolid();
+	}
+
+#endif // DEBUG
+
+
 }
 
 HRESULT CSceneGameMain::CreateUI()

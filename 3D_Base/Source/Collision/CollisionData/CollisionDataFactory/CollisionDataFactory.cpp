@@ -34,7 +34,7 @@ std::shared_ptr<CollisionBase> CollisionDataFactory::CreateSphereForMesh(
     );
 
     CollisionManager::GetInstance()->AddCollider(newCollider);
-	//CollisionDraw::GetInstance()->AddDrowMesh(pMesh);
+	CollisionDraw::GetInstance()->AddDrawMesh(pMesh,pOwner);
 
     return newCollider;
 }
@@ -74,7 +74,7 @@ std::shared_ptr<CollisionBase> CollisionDataFactory::CreateCapsuleForMesh(
     //方針は、オーナーのアドレスを獲得して、そのアドレスから位置を特定。位置を合わせて当たり判定メッシュの描画とする
 
     CollisionManager::GetInstance()->AddCollider(newCollider);
-    //CollisionDraw::GetInstance()->AddDrowMesh(pMesh);
+    CollisionDraw::GetInstance()->AddDrawMesh(pMesh, pOwner);
 
     return newCollider;
 }
