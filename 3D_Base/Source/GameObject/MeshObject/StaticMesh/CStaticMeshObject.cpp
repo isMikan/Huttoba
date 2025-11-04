@@ -3,10 +3,11 @@
 CStaticMeshObject::CStaticMeshObject()
 	: m_pMesh			( nullptr )
 {
-	m_ObjColor.diffuse =	D3DXVECTOR4( 0.5f, 0.5f, 0.5f, 1.f );
-	m_ObjColor.ambient =	D3DXVECTOR4( 0.3f, 0.3f, 0.3f, 1.f );
-	m_ObjColor.specular =	D3DXVECTOR4( 0.1f, 0.1f, 0.1f, 1.f );
-
+	ObjectColor color = {
+		D3DXVECTOR4(0.5f, 0.5f, 0.5f, 1.f),
+		D3DXVECTOR4(0.3f, 0.3f, 0.3f, 1.f),
+		D3DXVECTOR4(0.1f, 0.1f, 0.1f, 1.f) };
+	m_ObjectColor.insert({ 0, color });
 }
 
 CStaticMeshObject::~CStaticMeshObject()
@@ -41,10 +42,16 @@ void CStaticMeshObject::Draw(
 	m_pMesh->SetScale( m_vScale );
 	m_pMesh->SetQuaternion( m_vQuaternion );
 
-	//CStaticMesh‚ÉŒ»Ý‚ÌF‚ð“n‚·.
-	m_pMesh->SetDiffuseColor( m_ObjColor.diffuse );
-	m_pMesh->SetAmbientColor( m_ObjColor.ambient );
-	m_pMesh->SetSpecularColor( m_ObjColor.specular );
+	for(const auto& colorMap : m_ObjectColor)
+	{
+		int id = colorMap.first;
+		ObjectColor color = colorMap.second;
+
+		//CStaticMesh‚ÉŒ»Ý‚ÌF‚ð“n‚·.
+		m_pMesh->SetDiffuseColor(color.diffuse);
+		m_pMesh->SetAmbientColor(color.ambient);
+		m_pMesh->SetSpecularColor(color.specular);
+	}
 
 	//ƒŒƒ“ƒ_ƒŠƒ“ƒO.
 	m_pMesh->Render( View, Proj, Light, Camera.vPosition );

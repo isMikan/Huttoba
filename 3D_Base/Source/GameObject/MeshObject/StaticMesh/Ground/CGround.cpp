@@ -24,7 +24,7 @@ CGround::CGround()
 		D3DXVECTOR4(0.1f, 0.1f, 0.1f, 1.f)
 	};
 
-	m_ObjColor = m_DefaultColor;
+	m_ObjectColor.insert({ 0, m_DefaultColor });
 }
 
 CGround::~CGround()
@@ -47,7 +47,7 @@ void CGround::Update()
 	}
 	else
 	{
-		m_ObjColor = m_DefaultColor;
+		m_ObjectColor.insert({ 0, m_DefaultColor });
 	}
 
 	//地面が揺れる場合.
@@ -85,17 +85,21 @@ void CGround::ChangeColorOfGround()
 		(t - m_ChangeColorTriggerTime) / m_ChangeColorTime;
 	progress = std::clamp(progress, 0.f, 1.f);
 
-	D3DXVECTOR4	groundColor = m_ObjColor.diffuse;
+	for (const auto& colorMap : m_ObjectColor)
+	{
+		D3DXVECTOR4 diffuse = colorMap.second.diffuse;
+		D3DXVECTOR4	groundColor = diffuse;
 
-	//色の数値.
-	float colorChange = cosf(progress * D3DX_PI * m_ChabgeColorSpeed) * m_ChabgeColorInterval;
-	
-	//点滅.
-	groundColor.x += colorChange;
-	groundColor.y += colorChange;
-	groundColor.z = 0.f;
+		//色の数値.
+		float colorChange = cosf(progress * D3DX_PI * m_ChabgeColorSpeed) * m_ChabgeColorInterval;
 
-	m_ObjColor.diffuse = groundColor;
+		//点滅.
+		groundColor.x += colorChange;
+		groundColor.y += colorChange;
+		groundColor.z = 0.f;
+
+		diffuse = groundColor;
+	}
 }
 
 //--- 地面が揺れる ---.

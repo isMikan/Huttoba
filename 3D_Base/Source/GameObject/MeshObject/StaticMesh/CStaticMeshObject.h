@@ -39,23 +39,26 @@ public:
 
 	//オブジェクトの色を設定する関数.
 	void SetObjectColor(
-		D3DXVECTOR4& diffuse, D3DXVECTOR4& ambient, D3DXVECTOR4& specular){
-		m_ObjColor.diffuse = diffuse;
-		m_ObjColor.ambient = ambient;
-		m_ObjColor.specular = specular;
+		int index,
+		D3DXVECTOR4& diffuse,
+		D3DXVECTOR4& ambient,
+		D3DXVECTOR4& specular){
+		//色をまとめる.
+		ObjectColor color = { diffuse, ambient, specular };
+		m_ObjectColor.insert({ index, color });
 	}
-	void SetObjectColor(ObjectColor color){
-		m_ObjColor = color;
+	void SetObjectColor(int index, ObjectColor color){
+		m_ObjectColor.insert({ index, color });
 	}
 	//オブジェクトの色を取得する関数.
-	ObjectColor GetObjectColor() const { return m_ObjColor; }
+	std::unordered_map<int, ObjectColor> GetObjectColor() const { return m_ObjectColor; }
 
 	std::shared_ptr<CStaticMesh> GetMesh() const { return m_pMesh; }
 
 protected:
 	std::shared_ptr<CStaticMesh>	m_pMesh;
 
-	ObjectColor				m_ObjColor;		//オブジェクトの色.
+	std::unordered_map<int, ObjectColor>	m_ObjectColor;		//オブジェクトの色.
 
 	std::shared_ptr<CollisionBase> m_pCollision; //当たり判定
 };

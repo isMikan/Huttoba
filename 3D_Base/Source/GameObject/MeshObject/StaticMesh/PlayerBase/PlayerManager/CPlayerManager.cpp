@@ -47,7 +47,7 @@ void CPlayerManager::Create()
 
 		if (!m_pPlayers[pNo]) return;
 
-		m_pPlayers[pNo]->SetObjectColor(SetCharacterColor(pNo));
+		m_pPlayers[pNo]->SetObjectColor(0, SetCharacterColor(pNo));
 		m_pPlayers[pNo]->SetPosition(SetDefaultPosition(pNo));
 	}
 }
@@ -59,7 +59,7 @@ void CPlayerManager::LoadData()
 	for (auto& player : m_pPlayers)
 	{
 		//胴体のスタティックメッシュを設定.
-		player->AttachMesh(AssetManager::Mesh(StaticMeshList::BCapsule));
+		player->AttachMesh(AssetManager::Mesh(StaticMeshList::PBody));
 		//頭のスタティックメッシュを設定.
 		player->GetPlayerHead().
 			AttachMesh(AssetManager::Mesh(StaticMeshList::PHead));
