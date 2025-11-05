@@ -266,6 +266,7 @@
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\Item\Items\Mushroom\Mushroom.cpp" />
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\Item\Items\TrackingRobot\TrackingRobot.cpp" />
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\PlayerBase\PlayerAI\CPlayerAI.cpp" />
+    <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\PlayerBase\PlayerAI\PlayerAI_TypeA\CPlayerAI_TypeA.cpp" />
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\PlayerBase\PlayerManager\CPlayerManager.cpp" />
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\PlayerBase\PlayerState\CPlayerState.cpp" />
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\PlayerBase\PlayerState\PlayerActionState\PlayerKnockdownState\CPlayerKnockdownState.cpp" />
@@ -378,6 +379,7 @@
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\Item\Items\Mushroom\Mushroom.h" />
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\Item\Items\TrackingRobot\TrackingRobot.h" />
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\PlayerBase\PlayerAI\CPlayerAI.h" />
+    <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\PlayerBase\PlayerAI\PlayerAI_TypeA\CPlayerAI_TypeA.h" />
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\PlayerBase\PlayerEventBus\CPlayerEventBus.h" />
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\PlayerBase\PlayerManager\CPlayerManager.h" />
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\PlayerBase\PlayerState\PlayerActionState\PlayerKnockdownState\CPlayerKnockdownState.h" />

@@ -109,6 +109,7 @@
     <ClCompile Include="Source\GameObject\UIObject\GaugeBase\GaugeFrame\CGaugeFrame.cpp" />
     <ClCompile Include="Source\Collision\CollisionStrategy\CollisionPattern\CollisionSphereCapsule\CollisionSphereCapsule.cpp" />
     <ClCompile Include="Source\Collision\CollisionDraw\CollisionDraw.cpp" />
+    <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\PlayerBase\PlayerAI\PlayerAI_TypeA\CPlayerAI_TypeA.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Assets\AssetManager.h" />
@@ -221,5 +222,6 @@
     <ClInclude Include="Source\GameObject\UIObject\GaugeBase\GaugeFrame\CGaugeFrame.h" />
     <ClInclude Include="Source\Collision\CollisionStrategy\CollisionPattern\CollisionSphereCapsule\CollisionSphereCapsule.h" />
     <ClInclude Include="Source\Collision\CollisionDraw\CollisionDraw.h" />
+    <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\PlayerBase\PlayerAI\PlayerAI_TypeA\CPlayerAI_TypeA.h" />
   </ItemGroup>
 </Project>

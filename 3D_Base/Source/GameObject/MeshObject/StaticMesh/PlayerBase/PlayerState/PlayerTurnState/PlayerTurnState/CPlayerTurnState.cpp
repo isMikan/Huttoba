@@ -94,7 +94,6 @@ bool CPlayerTurnState::IsSmallTurn(D3DXVECTOR3 forward)
 	//ê≥ãKâª.
 	D3DXVec3Normalize(&inputDir, &inputDir);
 
-
 	//äpìxç∑ÇåvéZ.
 	float dot = D3DXVec3Dot(&inputDir, &forward);
 	dot = std::clamp(dot, -1.0f, 1.0f);

@@ -38,6 +38,7 @@ void CPlayerManager::Create()
 	{
 		//if (CInputManager::IsConnect(pNo))
 		{
+			//m_pPlayers[pNo] = std::make_unique<CPlayerAI>(pNo);
 			m_pPlayers[pNo] = std::make_unique<CPlayer>(pNo);
 		}
 		//else
@@ -92,10 +93,10 @@ void CPlayerManager::Update()
 	for (auto& player : m_pPlayers)
 	{
 		//ìÆçÏ.
-		player->Update();						//ì∑ëÃ.
-		player->GetPlayerHead().Update();		//ì™.
-		player->GetPlayerRightHand().Update();	//âEéË.
-		player->GetPlayerLeftHand().Update();	//ç∂éË.
+		player->Update();											//ì∑ëÃ.
+		player->GetPlayerHead().Update(player->GetQuaternion());	//ì™.
+		player->GetPlayerRightHand().Update();						//âEéË.
+		player->GetPlayerLeftHand().Update();						//ç∂éË.
 	}
 }
 

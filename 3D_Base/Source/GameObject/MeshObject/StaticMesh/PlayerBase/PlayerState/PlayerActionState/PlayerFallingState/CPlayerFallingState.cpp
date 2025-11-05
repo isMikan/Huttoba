@@ -2,6 +2,7 @@
 
 #include "GameObject/MeshObject/StaticMesh/PlayerBase/CPlayerBase.h"
 										   
+#include "GameObject/MeshObject/StaticMesh/PlayerBase/PlayerState/PlayerActionState/PlayerActionIdleState/CPlayerActionIdleState.h"
 #include "GameObject/MeshObject/StaticMesh/PlayerBase/PlayerState/PlayerActionState/PlayerGetUpState/CPlayerGetUpState.h"
 #include "GameObject/MeshObject/StaticMesh/PlayerBase/PlayerState/PlayerActionState/PlayerKnockdownState/CPlayerKnockdownState.h"
 
@@ -100,6 +101,10 @@ void CPlayerFallingState::Update()
 		{
 			m_pPlayer.SetActionState(std::make_unique<CPlayerKnockdownState>(m_pPlayer));
 		}
+		else
+		{
+			m_pPlayer.SetActionState(std::make_unique<CPlayerActionIdleState>(m_pPlayer));
+		}
 		return;
 	}
 
@@ -108,9 +113,7 @@ void CPlayerFallingState::Update()
 
 	m_CurrentTiltAngle = m_pPlayer.WrapAngle(m_CurrentTiltAngle);
 	//地面近くかつ90度付近の場合.
-	if (WorldAngle() > m_RotateRangeMin
-		&& WorldAngle() < m_RotateRangeMax
-		&& playerPos.y <= m_GroundRange)
+	if (IsEnd())
 	{
 		//正規化.
 		D3DXQuaternionNormalize(&quat, &quat);
@@ -190,7 +193,7 @@ bool CPlayerFallingState::IsEnd()
 	//回転を90度付近で止め、位置が地面についた場合.
 	if (WorldAngle() > m_RotateRangeMin
 		&& WorldAngle() < m_RotateRangeMax
-		&& playerPos.y <= m_GroundPos)
+		&& m_pPlayer.GetIsOnGround())
 	{
 		return true;
 	}
