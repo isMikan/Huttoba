@@ -23,8 +23,6 @@
 
 #include "MyMacro.h"
 
-#include "TimeManager/CTimeManager.h"
-
 //ライブラリ読み込み.
 #pragma comment( lib, "winmm.lib" )
 //DirectX9
@@ -78,6 +76,14 @@ struct Gauge
 {
 	float remaining;	//残り.
 	float max;			//最大.
+};
+
+//オブジェクトの色の構造体.
+struct ObjectColor
+{
+	D3DXVECTOR4	diffuse;	//拡散反射.
+	D3DXVECTOR4	ambient;	//環境光.
+	D3DXVECTOR4	specular;	//鏡面反射.
 };
 
 //-----------------------

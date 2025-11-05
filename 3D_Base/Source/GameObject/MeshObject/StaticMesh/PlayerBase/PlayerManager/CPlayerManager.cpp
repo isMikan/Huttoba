@@ -48,6 +48,7 @@ void CPlayerManager::Create()
 		if (!m_pPlayers[pNo]) return;
 
 		m_pPlayers[pNo]->SetObjectColor(0, SetCharacterColor(pNo));
+		m_pPlayers[pNo]->GetPlayerHead().SetObjectColor(1, SetCharacterColor(pNo));
 		m_pPlayers[pNo]->SetPosition(SetDefaultPosition(pNo));
 	}
 }
@@ -139,12 +140,12 @@ void CPlayerManager::Draw(D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAME
 //======================================================================
 
 //--- キャラクターの色を設定 ---.
-CPlayerBase::ObjectColor CPlayerManager::SetCharacterColor(int index)
+ObjectColor CPlayerManager::SetCharacterColor(int index)
 {
 	//プレイヤーの色.
-	std::array<CStaticMeshObject::ObjectColor, Player_Max>	playerColor =
+	std::array<ObjectColor, Player_Max>	playerColor =
 	{
-		CStaticMeshObject::ObjectColor
+		ObjectColor
 		//プレイヤー1.
 		{
 			D3DXVECTOR4(1.f, 0.f, 0.f, 1.f),	

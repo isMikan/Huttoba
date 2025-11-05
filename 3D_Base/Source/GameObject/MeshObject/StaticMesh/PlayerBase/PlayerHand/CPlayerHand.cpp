@@ -7,7 +7,10 @@ CPlayerHand::CPlayerHand()
 		D3DXVECTOR4(0.8f, 0.8f, 0.8f, 1.f),
 		D3DXVECTOR4(0.3f, 0.3f, 0.3f, 1.f),
 		D3DXVECTOR4(0.1f, 0.1f, 0.1f, 1.f) };
-	m_ObjectColor.insert({ 0, color });
+	//サイズを指定する.
+	m_ObjectColor.resize(1);
+	//色を設定.
+	m_ObjectColor[0] = color;
 }
 
 CPlayerHand::~CPlayerHand()

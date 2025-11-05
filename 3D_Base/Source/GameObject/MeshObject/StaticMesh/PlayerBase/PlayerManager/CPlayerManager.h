@@ -36,7 +36,7 @@ private:
 // 	   内部で呼び出す関数.
 //======================================================================
 	//--- キャラクターの色を設定する関数 ---.
-	CPlayerBase::ObjectColor SetCharacterColor(int index);
+	ObjectColor SetCharacterColor(int index);
 
 	//--- 初期位置を設定する関数 ---.
 	D3DXVECTOR3 SetDefaultPosition(int index);

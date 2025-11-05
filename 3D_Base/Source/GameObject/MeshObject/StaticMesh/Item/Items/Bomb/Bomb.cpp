@@ -32,6 +32,12 @@ Bomb::Bomb()
 	, m_tamesi			( false )
 {
 	Init();
+	m_ObjectColor.resize(2);
+	m_ObjectColor[0].diffuse = D3DXVECTOR4(1.f, .5f, .5f, .5f);
+	m_ObjectColor[0].ambient = D3DXVECTOR4(0, 0, .0f, .5f);
+	m_ObjectColor[1].diffuse = D3DXVECTOR4(.5f, .5f, 1.f, .5f);
+	m_ObjectColor[1].ambient = D3DXVECTOR4(.0f, .0f, .0f, .5f);
+
 }
 
 Bomb::~Bomb()
@@ -249,6 +255,7 @@ void Bomb::ChangeColor()
 	//赤色
 	//m_pMesh->SetMaterialColor(0, D3DXVECTOR4(1, 0, 0, 1));
 	//黒色(全て0.5が元の色)
+	//m_ObjectColor[0].diffuse = D3DXVECTOR4(.5f, .5f, .5f, .5f);
 	//m_pMesh->SetMaterialColor(0, D3DXVECTOR4(.5f, .5f, .5f, .5f));
 
 	m_ColorTimer += CTimeManager::GetDeltaTime();
@@ -268,7 +275,8 @@ void Bomb::ChangeColor()
 	//値が増加と減少がそれぞれあるので使いわけていく
 	D3DXVECTOR4 color = D3DXVECTOR4(up, down, down, up);
 
-	m_pMesh->SetMaterialColor(0, color);
+	m_ObjectColor[0].diffuse = color;
+	//m_pMesh->SetMaterialColor(0, color);
 }
 
 float Bomb::CalculateForceScalar(float distance)
