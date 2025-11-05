@@ -140,7 +140,9 @@ void CSceneGameMain::Update()
 	//地面に接地しているか
 	for (auto& player : m_pPlayerManager->GetPlayer())
 	{
-		player->IsOnGround(m_pGroundManager.get());
+		if (!player) continue;	//プレイヤーがいない場合、次へ.
+
+		player->OnGroundCollision(m_pGroundManager.get());
 	}
 
 	//地面に接地しているか

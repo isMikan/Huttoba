@@ -21,7 +21,14 @@ CPlayerManager::CPlayerManager()
 
 CPlayerManager::~CPlayerManager()
 {
-	Destroy();
+	for (auto& player : m_pPlayers)
+	{
+		if (!player) continue;	//プレイヤーがいない場合、次へ.
+
+		//当たり判定削除.
+		CollisionManager::GetInstance()->RemoveCollider(player->GetCollider().get());
+	}
+	m_pPlayers.clear();
 }
 
 //======================================================================
@@ -60,6 +67,8 @@ void CPlayerManager::LoadData()
 	//プレイヤー.
 	for (auto& player : m_pPlayers)
 	{
+		if (!player) continue;	//プレイヤーがいない場合、次へ.
+		
 		//胴体のスタティックメッシュを設定.
 		player->AttachMesh(AssetManager::Mesh(StaticMeshList::PBody));
 		//頭のスタティックメッシュを設定.
@@ -77,14 +86,11 @@ void CPlayerManager::LoadData()
 }
 
 //--- 破棄関数 ---.
-void CPlayerManager::Destroy()
+void CPlayerManager::Destroy(CPlayerBase* player)
 {
-	for (auto& player : m_pPlayers)
-	{
-		//当たり判定削除
-		CollisionManager::GetInstance()->RemoveCollider(player->GetCollider().get());
-		player.reset();
-	}
+	//当たり判定削除.
+	CollisionManager::GetInstance()->RemoveCollider(player->GetCollider().get());
+	m_pPlayers[player->GetPlayerID()].reset();
 }
 
 //--- 更新関数 ---.
@@ -92,11 +98,18 @@ void CPlayerManager::Update()
 {
 	for (auto& player : m_pPlayers)
 	{
+		if (!player) continue;	//プレイヤーがいない場合、次へ.
+
 		//動作.
 		player->Update();											//胴体.
 		player->GetPlayerHead().Update(player->GetQuaternion());	//頭.
 		player->GetPlayerRightHand().Update();						//右手.
 		player->GetPlayerLeftHand().Update();						//左手.
+
+		if (player->GetPosition().y < -10.f)
+		{
+			Destroy(player.get());
+		}
 	}
 }
 
@@ -105,6 +118,8 @@ void CPlayerManager::Draw(D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAME
 {
 	for (auto& player : m_pPlayers)
 	{
+		if (!player) continue;	//プレイヤーがいない場合、次へ.
+
 		//描画.
 		player->Draw( View, Proj, Light, Camera );						//胴体.
 		player->GetPlayerHead().Draw( View, Proj, Light, Camera );		//頭.
@@ -187,7 +202,6 @@ D3DXVECTOR3 CPlayerManager::SetDefaultPosition(int index)
 		{ -5.f, 0.f, 5.f },
 		//プレイヤー2.
 		{ 5.f, 0.f, 5.f },
-
 		//プレイヤー3.
 		{ -5.f, 0.f, 10.f },
 		//プレイヤー4.

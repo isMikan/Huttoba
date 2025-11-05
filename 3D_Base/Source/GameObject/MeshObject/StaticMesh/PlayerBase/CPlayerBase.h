@@ -118,7 +118,7 @@ public:
 	float WrapAngle(float value);
 
 	//--- ’n–Ê‚Æ‚ÌÕ“Ë”»’è ---.
-	void IsOnGround(CGroundManager* pGroundMgr);
+	void OnGroundCollision(CGroundManager* pGroundMgr);
 
 //======================================================================
 

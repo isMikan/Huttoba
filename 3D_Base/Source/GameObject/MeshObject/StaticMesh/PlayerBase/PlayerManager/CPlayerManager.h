@@ -16,7 +16,7 @@ public:
 	//--- “ÇŠÖ” ---.
 	void LoadData();
 	//--- ”jŠüŠÖ” ---.
-	void Destroy();
+	void Destroy(CPlayerBase* player);
 	//--- XVŠÖ” ---.
 	void Update();
 	//--- •`‰æŠÖ” ---.
