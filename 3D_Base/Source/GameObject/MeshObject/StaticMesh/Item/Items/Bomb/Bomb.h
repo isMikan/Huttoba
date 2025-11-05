@@ -48,14 +48,13 @@ private:
     //爆発処理
     void Explosion();
 
-    //吹き飛ばし処理(仮)
-    void Blow_Away(CPlayer& playiers);
+    //吹き飛ばし処理
+    void Smash(CPlayer& playiers);
 
     //爆弾の爆発前の色の変更処理
     void ChangeColor();
 
     //爆弾とプレイヤーの距離に応じて吹き飛ばし力を計算
-    //線形補間を使用、スカラーの計算
     float CalculateForceScalar(float distance);
 
 private:
