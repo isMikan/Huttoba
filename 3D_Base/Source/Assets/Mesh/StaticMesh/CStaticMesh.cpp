@@ -889,19 +889,21 @@ void CStaticMesh::RenderMesh(
 			//コンスタントバッファ(マテリアル用).
 			CBUFFER_PER_MATERIAL cb;
 			//ディフューズ,アンビエント,スペキュラをシェーダに渡す.
-			//デフォルト値と同じで変わってなければ、モデルの色を設定.
-			if (m_Diffuse == D3DXVECTOR4(0.5f, 0.5f, 0.5f, 1.f))
-			{
-				cb.Diffuse = m_pMaterials[m_AttrID[No]].Diffuse;
-				cb.Ambient = m_pMaterials[m_AttrID[No]].Ambient;
-				cb.Specular = m_pMaterials[m_AttrID[No]].Specular;
-			}
+			//cb.Diffuse = m_pMaterials[m_AttrID[No]].Diffuse;
+			//cb.Ambient = m_pMaterials[m_AttrID[No]].Ambient;
+			//cb.Specular = m_pMaterials[m_AttrID[No]].Specular;
 			//色が設定されていたら、その色を入れる.
-			else
+			if (m_AttrID[No] < m_ObjectColor.size())
 			{
-				cb.Diffuse = m_Diffuse;
-				cb.Ambient = m_Ambient;
-				cb.Specular = m_Specular;
+				for (int mNo = 0; mNo < m_ObjectColor.size(); mNo++)
+				{
+					if (m_AttrID[No] == mNo)
+					{
+						cb.Diffuse = m_ObjectColor[mNo].diffuse;
+						cb.Ambient = m_ObjectColor[mNo].ambient;
+						cb.Specular = m_ObjectColor[mNo].specular;
+					}
+				}
 			}
 
 			memcpy_s(pDataMat.pData, pDataMat.RowPitch,

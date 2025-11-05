@@ -3,10 +3,14 @@
 CStaticMeshObject::CStaticMeshObject()
 	: m_pMesh			( nullptr )
 {
-	m_ObjColor.diffuse =	D3DXVECTOR4( 0.5f, 0.5f, 0.5f, 1.f );
-	m_ObjColor.ambient =	D3DXVECTOR4( 0.3f, 0.3f, 0.3f, 1.f );
-	m_ObjColor.specular =	D3DXVECTOR4( 0.1f, 0.1f, 0.1f, 1.f );
-
+	ObjectColor color = {
+		D3DXVECTOR4(0.5f, 0.5f, 0.5f, 1.f),
+		D3DXVECTOR4(0.3f, 0.3f, 0.3f, 1.f),
+		D3DXVECTOR4(0.1f, 0.1f, 0.1f, 1.f) };
+	//サイズを指定する.
+	m_ObjectColor.resize(1);
+	//色を設定.
+	m_ObjectColor[0] = color;
 }
 
 CStaticMeshObject::~CStaticMeshObject()
@@ -41,10 +45,14 @@ void CStaticMeshObject::Draw(
 	m_pMesh->SetScale( m_vScale );
 	m_pMesh->SetQuaternion( m_vQuaternion );
 
-	//CStaticMeshに現在の色を渡す.
-	m_pMesh->SetDiffuseColor( m_ObjColor.diffuse );
-	m_pMesh->SetAmbientColor( m_ObjColor.ambient );
-	m_pMesh->SetSpecularColor( m_ObjColor.specular );
+	for (int mNo = 0; mNo < m_ObjectColor.size(); mNo++)
+	{
+		//CStaticMeshに現在の色を渡す.
+		m_pMesh->SetObjectColor(mNo, m_ObjectColor[mNo].diffuse, m_ObjectColor[mNo].ambient, m_ObjectColor[mNo].specular);
+		//m_pMesh->SetDiffuseColor(mNo, m_ObjectColor[mNo].diffuse);
+		//m_pMesh->SetAmbientColor(mNo, m_ObjectColor[mNo].ambient);
+		//m_pMesh->SetSpecularColor(mNo, m_ObjectColor[mNo].specular);
+	}
 
 	//レンダリング.
 	m_pMesh->Render( View, Proj, Light, Camera.vPosition );

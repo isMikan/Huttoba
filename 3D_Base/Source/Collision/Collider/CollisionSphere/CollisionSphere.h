@@ -62,6 +62,6 @@ private:
     std::shared_ptr<CStaticMesh> m_pDebugMesh;
 
     // デバッグ描画用の色情報
-    CStaticMeshObject::ObjectColor m_DebugColor;
+    ObjectColor m_DebugColor;
 
 };

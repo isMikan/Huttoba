@@ -30,9 +30,9 @@ public:
 //======================================================================
 		
 	//デルタタイムを取得.
-	static double GetDeltaTime() { return static_cast<float>(Instance().m_DeltaTime); }
+	static float GetDeltaTime() { return static_cast<float>(Instance().m_DeltaTime); }
 	//経過時間を取得.
-	static double GetTotalTime() { return static_cast<float>(Instance().m_TotalTime); }
+	static float GetTotalTime() { return static_cast<float>(Instance().m_TotalTime); }
 
 private:
 //======================================================================

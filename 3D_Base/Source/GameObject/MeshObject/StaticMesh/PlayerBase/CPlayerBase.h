@@ -141,7 +141,7 @@ public:
 	int GetPlayerID() const { return m_PlayerID; }
 
 	//UŒ‚‚ğó‚¯‚½—Í‚ğæ“¾.
-	int GetHitPower() const { return m_HitForce; }
+	float GetHitPower() const { return m_HitForce; }
 	
 	//UŒ‚‚ğó‚¯‚½î•ñ‚ğæ“¾‚Æİ’è.
 	HitInfo GetHitInfo() const { return m_HitInfo; }
