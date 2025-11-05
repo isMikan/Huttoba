@@ -9,6 +9,7 @@
 #include "PlayerBase/PlayerState/PlayerActionState/PlayerHandAttackState/CPlayerHandAttackState.h"
 #include "PlayerBase/PlayerState/PlayerActionState/PlayerPushedState/CPlayerPushedState.h"
 #include "PlayerBase/PlayerState/PlayerActionState/PlayerKnockbackState/CPlayerKnockbackState.h"
+#include "PlayerBase/PlayerState/PlayerActionState/PlayerFallingState/CPlayerFallingState.h"
 #include "PlayerBase/PlayerState/PlayerActionState/PlayerKnockdownState/CPlayerKnockdownState.h"
 
 #include "Item/ItemBase.h"	
@@ -54,6 +55,12 @@ void CPlayerBase::Update()
 	D3DXVECTOR3 headOffsetPos = GetPlayerHead().GetOffsetPos();
 	//頭の位置を設定.
 	GetPlayerHead().SetPosition(GetObjectPos(headOffsetPos));
+
+	if (!m_IsOnGround)
+	{
+		std::cout << "落ちる" << std::endl;
+		SetActionState(std::make_unique<CPlayerFallingState>(*this));
+	}
 
 	//押された場合の処理.
 	if (m_HitInfo.hitEvent == HitEvent::Pushed)
@@ -118,7 +125,7 @@ void CPlayerBase::SetActionState(std::unique_ptr<CPlayerState> newState)
 {
 	ChangeState(m_pActionState, std::move(newState));
 	m_Bus.Publish(m_pActionState.get());
-	}
+}
 
 //--- 位置を設定するために計算 ---.
 D3DXVECTOR3 CPlayerBase::GetObjectPos(D3DXVECTOR3 offset)
@@ -248,6 +255,7 @@ float CPlayerBase::WrapAngle(float value)
 	return value;
 }
 
+//--- 地面との衝突判定 ---.
 void CPlayerBase::IsOnGround(CGroundManager* pGroundMgr)
 {
 	// 外部からのデータがない場合は判定不能
@@ -294,35 +302,7 @@ void CPlayerBase::ChangeState(
 
 void CPlayerBase::OnCollision(CollisionBase* pOtherCollider)
 {
-	//	//攻撃を受けるプレイヤー.
-	//	for (int hNo = 0;hNo < Player_Max;hNo++)
-	//	{
-	//		//攻撃するプレイヤー.
-	//		for (int aNo = 0;aNo < Player_Max;aNo++)
-	//		{
-	//			if (hNo == aNo) continue;
-	//			{
-	//				switch (hNo)
-	//				{
-	//				case 2:
-	//					m_pPlayers[hNo]->SetHitInfo(
-	//						m_pPlayers[aNo]->GetPosition(), true, CPlayerBase::HitEvent::Pushed);
-	//					break;
-	//				case 3:
-	//					break;
-	//				default:
-	//					m_pPlayers[hNo]->SetHitInfo(
-	//						m_pPlayers[aNo]->GetPosition(), m_pPlayers[aNo]->GetPosition(), 10.f, true, CPlayerBase::HitEvent::Knockdown);
-	//					break;
-	//				}
-	//
-	//				m_pPlayers[aNo]->SetHitInfo(
-	//					m_pPlayers[aNo]->GetPosition(), true, CPlayerBase::HitEvent::None);
-	//			}
-	//		}
-	//	}
-
-		// 衝突相手のタグをチェックし、応答を切り替える
+	//衝突相手のタグをチェックし、応答を切り替える.
 	switch (pOtherCollider->GetTag())
 	{
 	case CollisionBase::ColliderTag::Player:

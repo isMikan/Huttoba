@@ -117,7 +117,7 @@ public:
 	//--- 角度を0～360度にする ---.
 	float WrapAngle(float value);
 
-	//地面との判定
+	//--- 地面との衝突判定 ---.
 	void IsOnGround(CGroundManager* pGroundMgr);
 
 //======================================================================
@@ -141,7 +141,7 @@ public:
 	int GetPlayerID() const { return m_PlayerID; }
 
 	//攻撃を受けた力を取得.
-	int GetHitPower() const { return m_HitForce; }
+	float GetHitPower() const { return m_HitForce; }
 	
 	//攻撃を受けた情報を取得と設定.
 	HitInfo GetHitInfo() const { return m_HitInfo; }
@@ -172,6 +172,9 @@ public:
 	//アイテムを所持しているかの所得と設定.
 	bool IsHoldingItem() const { return m_IsHoldingItem; }
 	void SetHoldingItem(bool holding) { m_IsHoldingItem = holding; }
+
+	//アイテムを所持しているかの所得と設定.
+	bool GetIsOnGround() const { return m_IsOnGround; }
 
 	//nullptr ではないかチェック.
 	template<typename T>

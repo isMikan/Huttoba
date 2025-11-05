@@ -38,6 +38,7 @@ void CPlayerManager::Create()
 	{
 		//if (CInputManager::IsConnect(pNo))
 		{
+			//m_pPlayers[pNo] = std::make_unique<CPlayerAI>(pNo);
 			m_pPlayers[pNo] = std::make_unique<CPlayer>(pNo);
 		}
 		//else
@@ -47,7 +48,8 @@ void CPlayerManager::Create()
 
 		if (!m_pPlayers[pNo]) return;
 
-		m_pPlayers[pNo]->SetObjectColor(SetCharacterColor(pNo));
+		m_pPlayers[pNo]->SetObjectColor(0, SetCharacterColor(pNo));
+		m_pPlayers[pNo]->GetPlayerHead().SetObjectColor(1, SetCharacterColor(pNo));
 		m_pPlayers[pNo]->SetPosition(SetDefaultPosition(pNo));
 	}
 }
@@ -59,7 +61,7 @@ void CPlayerManager::LoadData()
 	for (auto& player : m_pPlayers)
 	{
 		//胴体のスタティックメッシュを設定.
-		player->AttachMesh(AssetManager::Mesh(StaticMeshList::BCapsule));
+		player->AttachMesh(AssetManager::Mesh(StaticMeshList::PBody));
 		//頭のスタティックメッシュを設定.
 		player->GetPlayerHead().
 			AttachMesh(AssetManager::Mesh(StaticMeshList::PHead));
@@ -91,10 +93,10 @@ void CPlayerManager::Update()
 	for (auto& player : m_pPlayers)
 	{
 		//動作.
-		player->Update();						//胴体.
-		player->GetPlayerHead().Update();		//頭.
-		player->GetPlayerRightHand().Update();	//右手.
-		player->GetPlayerLeftHand().Update();	//左手.
+		player->Update();											//胴体.
+		player->GetPlayerHead().Update(player->GetQuaternion());	//頭.
+		player->GetPlayerRightHand().Update();						//右手.
+		player->GetPlayerLeftHand().Update();						//左手.
 	}
 }
 
@@ -139,12 +141,12 @@ void CPlayerManager::Draw(D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAME
 //======================================================================
 
 //--- キャラクターの色を設定 ---.
-CPlayerBase::ObjectColor CPlayerManager::SetCharacterColor(int index)
+ObjectColor CPlayerManager::SetCharacterColor(int index)
 {
 	//プレイヤーの色.
-	std::array<CStaticMeshObject::ObjectColor, Player_Max>	playerColor =
+	std::array<ObjectColor, Player_Max>	playerColor =
 	{
-		CStaticMeshObject::ObjectColor
+		ObjectColor
 		//プレイヤー1.
 		{
 			D3DXVECTOR4(1.f, 0.f, 0.f, 1.f),	

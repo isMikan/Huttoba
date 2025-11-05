@@ -24,7 +24,10 @@ CGround::CGround()
 		D3DXVECTOR4(0.1f, 0.1f, 0.1f, 1.f)
 	};
 
-	m_ObjColor = m_DefaultColor;
+	//サイズを指定する.
+	m_ObjectColor.resize(1);
+	//色を設定.
+	m_ObjectColor[0] = m_DefaultColor;
 }
 
 CGround::~CGround()
@@ -47,7 +50,7 @@ void CGround::Update()
 	}
 	else
 	{
-		m_ObjColor = m_DefaultColor;
+		m_ObjectColor[0] = m_DefaultColor;
 	}
 
 	//地面が揺れる場合.
@@ -85,17 +88,17 @@ void CGround::ChangeColorOfGround()
 		(t - m_ChangeColorTriggerTime) / m_ChangeColorTime;
 	progress = std::clamp(progress, 0.f, 1.f);
 
-	D3DXVECTOR4	groundColor = m_ObjColor.diffuse;
+	D3DXVECTOR4	groundColor = m_ObjectColor[0].diffuse;;
 
 	//色の数値.
 	float colorChange = cosf(progress * D3DX_PI * m_ChabgeColorSpeed) * m_ChabgeColorInterval;
-	
+
 	//点滅.
 	groundColor.x += colorChange;
 	groundColor.y += colorChange;
 	groundColor.z = 0.f;
 
-	m_ObjColor.diffuse = groundColor;
+	m_ObjectColor[0].diffuse = groundColor;
 }
 
 //--- 地面が揺れる ---.

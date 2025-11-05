@@ -17,15 +17,16 @@ void CollisionDraw::AddDrawMesh(
 		m_pCollisionEntries.push_back({ pOwner, pMesh });
 	}
 }
-void CollisionDraw::RemoveDrawMesh(std::shared_ptr<CStaticMesh>& pColliderToRemove)
-{
-    if (!pColliderToRemove) return;
 
-    // 生ポインタが指す要素をリストからスマートポインタの比較で検索し、削除する
+void CollisionDraw::RemoveByOwner(const CGameObject* pOwner)
+{
+
+    if (!pOwner) return;
+
     m_pCollisionEntries.erase(
         std::remove_if(m_pCollisionEntries.begin(), m_pCollisionEntries.end(),
-            [&pColliderToRemove](const DebugCollisionDrawEntry& entry) {
-                return entry.pMesh.get() == pColliderToRemove.get();
+            [pOwner](const DebugCollisionDrawEntry& entry) {
+                return entry.pOwner == pOwner;
             }),
         m_pCollisionEntries.end());
 }

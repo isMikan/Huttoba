@@ -171,14 +171,41 @@ public:
 		return m_Quaternion;
 	}
 
-	//拡散反射を設定する関数..
-	void SetDiffuseColor(const D3DXVECTOR4& color) { m_Diffuse = color; }
-	//環境光を設定する関数..
-	void SetAmbientColor(const D3DXVECTOR4& color) { m_Ambient = color; }
-	//鏡面反射を設定する関数..
-	void SetSpecularColor(const D3DXVECTOR4& color) { m_Specular = color; }
+	//拡散反射を設定する関数.
+	void SetDiffuseColor(
+		const int index,
+		const D3DXVECTOR4& diffuse) {
+		m_ObjectColor[index].diffuse = diffuse;
+	}
+	//環境光を設定する関数.
+	void SetAmbientColor(
+		const int index,
+		const D3DXVECTOR4& ambient) {
+		m_ObjectColor[index].ambient = ambient;
+	}
+	//鏡面反射を設定する関数.
+	void SetSpecularColor(
+		const int index,
+		const D3DXVECTOR4& specular) {
+		m_ObjectColor[index].specular = specular;
+	}
+
+	void SetObjectColor(
+		const size_t index,
+		const D3DXVECTOR4& diffuse,
+		const D3DXVECTOR4& ambient,
+		const D3DXVECTOR4& specular)
+	{
+		ObjectColor color = { diffuse, ambient, specular };
+		if (index >= m_ObjectColor.size()) {
+			m_ObjectColor.resize(index + 1);
+		}
+
+			m_ObjectColor[index] = color;
+	}
+
 	//デフォルトの色を取得する関数.
-	CBUFFER_PER_MATERIAL GetDefaultColor() const {
+	ObjectColor GetDefaultColor() const {
 		return m_DefaultColor;
 	}
 
@@ -262,5 +289,7 @@ private:
 	D3DXVECTOR4		m_Ambient;		//環境光.
 	D3DXVECTOR4		m_Specular;		//鏡面反射.
 
-	CBUFFER_PER_MATERIAL m_DefaultColor;	//デフォルトの色.
+	std::vector<ObjectColor>	m_ObjectColor;	//オブジェクトの色.
+
+	ObjectColor m_DefaultColor;	//デフォルトの色.
  };

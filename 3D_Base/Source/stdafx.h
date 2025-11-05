@@ -24,6 +24,7 @@ using Microsoft::WRL::ComPtr;
 #include "Global.h"
 #include "MyMacro.h"
 #include "Assets/AssetManager.h"
+#include "TimeManager/CTimeManager.h"
 #include "DebugText/DebugDrawManager/DebugDrawManager.h"
 #include "Collision/CollisionManager/CollisionManager.h"
 #include "Collision/CollisionData/CollisionDataFactory/CollisionDataFactory.h" 

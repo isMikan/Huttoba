@@ -1,6 +1,5 @@
 #include "CPlayer.h"
 
-
 #include "PlayerBase/PlayerState/PlayerMoveState/PlayerMoveState/CPlayerMoveState.h"
 #include "PlayerBase/PlayerState/PlayerTurnState/PlayerTurnState/CPlayerTurnState.h"
 #include "PlayerBase/PlayerState/PlayerMoveState/PlayerMoveIdelState/CPlayerMoveIdleState.h"
@@ -15,9 +14,6 @@
 
 #include "Input/CInputManager.h"
 #include "Sound/CSoundManager.h"
-
-#include <unordered_map>
-#include <array>
 
 CPlayer::CPlayer(int index)
 	: CPlayerBase			( index )
@@ -59,10 +55,10 @@ void CPlayer::HandleInput()
 
 	//移動・回転をしない場合.
 	if (IsAnyActionState<
-		CPlayerHandWhiffState,
-		CPlayerKnockbackState,
-		CPlayerGetUpState,
-		CPlayerKnockdownState>())
+		CPlayerHandWhiffState,		//ふらつき.
+		CPlayerKnockbackState,		//吹き飛ばされ.
+		CPlayerGetUpState,			//起き上がり.
+		CPlayerKnockdownState>())	//ダウン中.
 	{
 		//入力に変化があった場合.
 		if (m_CurrentInput != D3DXVECTOR3(x, 0.f, z))

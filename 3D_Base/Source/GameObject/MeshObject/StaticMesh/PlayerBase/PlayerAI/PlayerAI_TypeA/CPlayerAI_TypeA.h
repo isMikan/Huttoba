@@ -1,16 +1,16 @@
 #pragma once
 
-#include "GameObject/MeshObject/StaticMesh/PlayerBase/CPlayerBase.h"
+#include "GameObject/MeshObject/StaticMesh/PlayerBase/PlayerAI/CPlayerAI.h"
 
 /***********************************************************************
 *	プレイヤーAIクラス.
 **/
-class CPlayerAI
-	: public CPlayerBase	//プレイヤーベースクラスを継承.
+class CPlayerAI_TypeA
+	: public CPlayerAI	//プレイヤーベースクラスを継承.
 {
 public:
-	CPlayerAI(int index);	//引数:プレイヤー番号.
-	~CPlayerAI() override;
+	CPlayerAI_TypeA(int index);	//引数:プレイヤー番号.
+	~CPlayerAI_TypeA() override;
 
 //======================================================================
 //		外部で呼び出す関数.
