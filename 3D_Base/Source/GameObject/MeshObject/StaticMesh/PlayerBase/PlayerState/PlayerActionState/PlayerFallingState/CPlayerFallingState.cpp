@@ -60,9 +60,8 @@ void CPlayerFallingState::Enter()
 	if (m_pPlayer.GetHitInfo().hitEvent == CPlayerBase::HitEvent::None)
 	{
 		//‰‘¬“x‚ğİ’è.
-		m_Velocity = m_pPlayer.GetHitInfo().velocity;
-		m_Velocity.y = 0.f;
-		m_RotateSpeed = 20.f;
+		m_Velocity = D3DXVECTOR3(0.f, 0.f, 0.f);
+		m_RotateSpeed = 30.f;
 	}
 	else
 	{

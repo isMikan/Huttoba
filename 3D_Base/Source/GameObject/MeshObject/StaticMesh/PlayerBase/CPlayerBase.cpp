@@ -26,6 +26,8 @@ CPlayerBase::CPlayerBase( int index )
 	, m_pTurnState		( std::make_unique<CPlayerTurnIdleState>( *this, 0.f, 0.f ) )
 	, m_pActionState	( std::make_unique<CPlayerActionIdleState>( *this ) )
 
+	, m_InstructDir		( 0.f, 0.f, 0.f )
+
 	, m_Instruct		( ActionInstruct::None )
 	, m_HitInfo			()
 	, m_KnockdownTime	()
@@ -191,7 +193,7 @@ D3DXVECTOR3 CPlayerBase::RotateVectorByQuat(
 	return D3DXVECTOR3(result.x, result.y, result.z);
 }
 
-//--- ƒvƒŒƒCƒ„[‚Ì‰ŠúŠp“x‚©‚çŒX‚«‚ðŒvŽZ‚·‚é ---.
+//--- ƒvƒŒƒCƒ„[‚Ì‰ŠúŠp“x‚©‚çŒX‚«‚ðŒvŽZ ---.
 D3DXQUATERNION CPlayerBase::TiltedQuat(
 	D3DXQUATERNION baseQuat, D3DXVECTOR3 localAxes, float tiltAngle)
 {
@@ -207,7 +209,7 @@ D3DXQUATERNION CPlayerBase::TiltedQuat(
 	return quat;
 }
 
-//--- ‰Ÿ‚³‚ê‚½Žž‚ÌˆÚ“®—Ê‚ðŒvŽZ‚·‚é ---.
+//--- ‰Ÿ‚³‚ê‚½Žž‚ÌˆÚ“®—Ê‚ðŒvŽZ ---.
 D3DXVECTOR3 CPlayerBase::Pushed(D3DXVECTOR3 sourcePos)
 {
 	//‰Ÿ‚³‚ê‚éƒxƒNƒgƒ‹.
@@ -220,7 +222,7 @@ D3DXVECTOR3 CPlayerBase::Pushed(D3DXVECTOR3 sourcePos)
 	return pos;
 }
 
-//--- UŒ‚‚ðŽó‚¯‚½Žž‚Ì‚ÌˆÚ“®—Ê ---.
+//--- UŒ‚‚ðŽó‚¯‚½Žž‚Ì‚ÌˆÚ“®—Ê‚ðŒvŽZ ---.
 D3DXVECTOR3 CPlayerBase::GetVelocity(
 	D3DXVECTOR3 sourcePos, float power, float angle)
 {
@@ -317,6 +319,20 @@ void CPlayerBase::OnCollision(CollisionBase* pOtherCollider)
 					GetVelocity(player->GetPosition(), 10.f,60.f), CPlayerBase::HitEvent::Knockdown);
 			}
 		}
+		else
+		{
+			D3DXVECTOR3 dir = player->GetPosition() - m_vPosition;
+			D3DXVec3Normalize(&dir, &dir);
+
+			float dot = D3DXVec3Dot(&m_InstructDir, &dir);
+
+			if (dot > 0.f)
+			{
+				m_InstructDir -= dir * dot;
+				D3DXVec3Normalize(&m_InstructDir, &m_InstructDir);
+			}
+		}
+
 		break;
 
 	case CollisionBase::ColliderTag::Bomb:

@@ -84,8 +84,8 @@ HRESULT CSceneGameMain::LoadData()
 		return E_FAIL;
 	}
 
-	m_pCamera->SetPosition( 0.f, 10.f, -7.f );
-	m_pCamera->SetLook( 0.f, -1.f, 10.f );
+	m_pCamera->SetPosition( 0.f, 12.f, -5.f );
+	m_pCamera->SetLook( 0.f, 2.f, 6.f );
 	m_pCamera->SetLight( 0.f, 30.f, -10.f );
 
 	//爆発スプライトを設定.

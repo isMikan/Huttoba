@@ -199,13 +199,13 @@ D3DXVECTOR3 CPlayerManager::SetDefaultPosition(int index)
 	{
 		D3DXVECTOR3
 		//プレイヤー1.
-		{ -5.f, 0.f, 5.f },
+		{ -4.f, 0.f, 4.f },
 		//プレイヤー2.
-		{ 5.f, 0.f, 5.f },
+		{ 4.f, 0.f, 4.f },
 		//プレイヤー3.
-		{ -5.f, 0.f, 10.f },
+		{ -4.f, 0.f, 14.f },
 		//プレイヤー4.
-		{ 5.f, 0.f, 10.f }
+		{ 4.f, 0.f, 14.f }
 	};
 
 	return playerPos[index];
