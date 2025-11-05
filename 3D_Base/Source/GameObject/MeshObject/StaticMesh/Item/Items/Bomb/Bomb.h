@@ -88,9 +88,6 @@ private:
     //点滅の経過時間を記録
     double      m_ColorTimer;
 
-    //爆発の処理で一度だけ処理するものがあるので追加
-    bool        m_OneExplosion;
-
-    //試し処理
-    bool        m_tamesi;
+    //爆発時の処理
+    bool        m_IsExploded;
 };

@@ -27,9 +27,7 @@ Bomb::Bomb()
 
 	, m_ColorTimer		( 0.0 )
 	
-	, m_OneExplosion	( false )
-
-	, m_tamesi			( false )
+	, m_IsExploded		( false )
 {
 	Init();
 	m_ObjectColor.resize(2);
@@ -61,6 +59,8 @@ void Bomb::Init()
 	m_tGravity = 0.01f;
 
 	std::shared_ptr<CStaticMesh> mesh = AssetManager::Mesh(StaticMeshList::ExplosionCol);
+
+
 
 	m_pCollision = CollisionDataFactory::CreateSphereForMesh(
 			this,
@@ -138,7 +138,7 @@ void Bomb::OnCollision(CollisionBase* other)
 	{
 		if (CPlayer* player = dynamic_cast<CPlayer*>(other->GetListener()))
 		{
-			if (m_tamesi)
+			if (m_IsExploded)
 			{
 				Smash(*player);
 			}
@@ -214,22 +214,15 @@ void Bomb::UseAndThrow()
 	m_vPosition += m_Velocity * static_cast<float>(CTimeManager::GetDeltaTime());
 
 	ChangeColor();
-
-	//m_ExplosionCnt += CTimeManager::GetDeltaTime();
-
-	//if (m_ExplosionCnt >= m_ExplosionTime)
-	//{
-	//	Explosion(playiers);
-	//}
 }
 
 void Bomb::Explosion()
 {
-	if (!m_OneExplosion)
+	//爆発時に一度だけ処理する
+	if (!m_IsExploded)
 	{
-		//Blow_Away(playiers);
-		m_tamesi = true;
-		m_OneExplosion = true;
+		//爆発フラグをオンに
+		m_IsExploded = true;
 
 		static ::EsHandle hEffect = -1;
 
@@ -244,12 +237,16 @@ void Bomb::Explosion()
 
 void Bomb::Smash(CPlayer& playiers)
 {
-	D3DXVECTOR3 vecLen = m_vPosition - GetPosition();
+	//爆弾とプレイヤーの位置でベクトルをとる
+	D3DXVECTOR3 vecLen = m_vPosition - playiers.GetPosition();
 
+	//ベクトルを長さに変換
 	float len = D3DXVec3Length(&vecLen);
 
-	D3DXVECTOR3 SmashVel =
-		playiers.GetVelocity(m_vPosition, CalculateForceScalar(len), 10.0f);
+	float i = CalculateForceScalar(len);
+
+	//
+	D3DXVECTOR3 SmashVel = playiers.GetVelocity(m_vPosition, CalculateForceScalar(len), 60.0f);
 
 	playiers.SetHitInfo(
 		SmashVel,
@@ -284,13 +281,13 @@ float Bomb::CalculateForceScalar(float distance)
 {
 	//爆発の当たる範囲を仮設定
 	//当たり判定用メッシュの大きさにする
-	float maxDist = 6;
+	float maxDist = 2;
 
 	//0.0~1.0の間で距離の割合を出す
 	float ratio = 1.0f - (distance / maxDist);
 
 	//爆発の最小吹き飛ばし力
-	float minPower = 6.0f;
+	float minPower = 5.0f;
 
 	//爆発の最大吹き飛ばし力
 	float maxPower = m_KnockBackPower;
