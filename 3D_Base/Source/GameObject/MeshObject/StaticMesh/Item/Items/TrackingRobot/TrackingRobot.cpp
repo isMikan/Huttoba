@@ -10,46 +10,69 @@
 namespace { const bool regist = ItemBase::AutoRegister<TrackingRobot>("TrackingRobot"); }
 
 TrackingRobot::TrackingRobot()
-	: m_IsTake			(false)
-	, m_PickUpTime		(1.0f)	//時間を変えるとアイテムが手に持つまでの時間が変化
-	, m_PickUpCnt		(0.0f)
+	: m_IsTake(false)
+	, m_PickUpTime(0.3f)	//値を変えるとアイテムが手に持つまでの時間が変化
+	, m_PickUpCnt(0.0f)
 
-    , m_Velocity		()
-	, m_MoveSpeed		( 3.0f )
+	, m_Velocity()
+	, m_MoveSpeed(3.0f)	//値を変えると爆弾の移動相度が変化
 
-	, m_IsThrow			( false )
+	, m_IsThrow(true)
 
-	, m_ExplosionTime	( 5.0f )
-	, m_ExplosionCnt	( 0.0f )
+	, m_ExplosionTime(5.0f)	//値を変えると爆発するまでの時間が変化
+	, m_ExplosionCnt(0.0f)
 
-    , m_KnockBackPower	( 10.0f )
+	, m_KnockBackPower(10.0f)	//値を変えるとプレイヤーの吹き飛ばし力が変化
 
-	, m_ColorTimer		( 0.0f )
+	, m_ColorTimer(0.0)
 
-    , m_OneExplosion	( false )
+	, m_IsExploded(false)
 {
 	Init();
+	m_ObjectColor.resize(2);
+
+	//爆弾の爆弾部分の灰色の値
+	m_ObjectColor[0].diffuse = D3DXVECTOR4(0.2f, 0.2f, 0.2f, 1.0f);
+	//拡散反射だけではいい感じにならなかったので環境光も変化
+	m_ObjectColor[0].ambient = D3DXVECTOR4(0.15f, 0.15f, .15f, 1.f);
+
+	//爆弾の紐の部分の白色の値
+	m_ObjectColor[1].diffuse = D3DXVECTOR4(0.7f, 0.7f, 0.7f, 1.0f);
+	//m_ObjectColor[1].ambient = D3DXVECTOR4(.3f, .3f, .3f, .5f);
+
 }
 
 TrackingRobot::~TrackingRobot()
 {
+	//当たり判定削除
+	CollisionManager::GetInstance()->RemoveCollider(m_pCollision.get());
 }
 
 void TrackingRobot::Init()
 {
-	AttachMesh(AssetManager::Mesh(StaticMeshList::TrackingRobot));
-
-	//SetPosition(4, 5, 2);
-	SetPosition(0, 15, 0);
+	AttachMesh(AssetManager::Mesh(StaticMeshList::Bomb));
+	//AttachMesh(AssetManager::Mesh(StaticMeshList::ExplosionCol));
 
 	m_State = ItemBase::State::Spawn;
 
-	m_tGravity = 0.01;
+	m_tGravity = 0.01f;
+
+	std::shared_ptr<CStaticMesh> mesh = AssetManager::Mesh(StaticMeshList::ExplosionCol);
+
+
+
+	m_pCollision = CollisionDataFactory::CreateSphereForMesh(
+		this,
+		mesh,
+		CollisionBase::ColliderTag::Bomb
+	);
 }
 
 void TrackingRobot::Update()
 {
 	ItemBase::Update();
+
+
 }
 
 void TrackingRobot::Draw(D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAMERA& Camera)
@@ -60,7 +83,7 @@ void TrackingRobot::Draw(D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAMER
 void TrackingRobot::Spawn()
 {
 	//落下処理
-	if (m_vPosition.y > 1.2)
+	if (m_vPosition.y > 0.5f)
 	{
 		m_vPosition.y -= m_tGravity;
 		m_tGravity += 0.001f;
@@ -74,15 +97,15 @@ void TrackingRobot::Spawn()
 
 void TrackingRobot::OnGround()
 {
-	if (GetAsyncKeyState('7') & 0x0001)
-		//if(CInputManager::IsDown(Action::Have,0))
-	{
-		//状態を取得中に変化
-		m_State = ItemBase::State::Have;
+	//if (GetAsyncKeyState('M') & 0x0001)
+	////if(CInputManager::IsDown(Action::Have,0))
+	//{
+	//	//状態を取得中に変化
+	//	m_State = ItemBase::State::Have;
 
-		//プレイヤー側にあるモーションと同期できるように
-		//m_IsTake = true;
-	}
+	//	//プレイヤー側にあるモーションと同期できるように
+	//	//m_IsTake = true;
+	//}
 }
 
 void TrackingRobot::Have()
@@ -95,51 +118,48 @@ void TrackingRobot::Have()
 
 void TrackingRobot::Use()
 {
-	if (GetAsyncKeyState('0') & 0x8000)
-	{
-		//m_pPlayer->GetVelocity();
-	}
+	UseAndThrow();
 }
 
 void TrackingRobot::Throw()
 {
+	UseAndThrow();
 }
 
 void TrackingRobot::Destroy()
 {
+	m_IsDestroy = true;
+}
+
+void TrackingRobot::OnCollision(CollisionBase* other)
+{
+	if (other->GetTag() == CollisionBase::ColliderTag::Player)
+	{
+		if (CPlayer* player = dynamic_cast<CPlayer*>(other->GetListener()))
+		{
+			if (m_IsExploded)
+			{
+				Smash(*player);
+			}
+		}
+	}
 }
 
 void TrackingRobot::TakeMotion()
 {
-	if (m_IsTake)
-	{
-		m_PickUpCnt += CTimeManager::GetDeltaTime();
+	m_PickUpCnt += CTimeManager::GetDeltaTime();
 
-		if (m_PickUpCnt >= m_PickUpTime)
-		{
-			m_IsTake = false;
-		}
+	if (m_PickUpCnt >= m_PickUpTime)
+	{
+		m_IsTake = false;
 	}
 }
 
 void TrackingRobot::PossessionMotion()
 {
+
 	m_vPosition = m_pPlayer->GetPlayerRightHand().GetPosition();
 
-	if (GetAsyncKeyState('8') & 0x0001)
-	{
-		m_State = ItemBase::State::Use;
-
-		//投げるときの処理のためにtrueにする
-		m_IsThrow = true;
-	}
-	if (GetAsyncKeyState('9') & 0x8000)
-	{
-		m_State = ItemBase::State::Throw;
-
-		//投げるときの処理のためにtrueにする
-		m_IsThrow = true;
-	}
 }
 
 void TrackingRobot::UseMotion()
@@ -150,12 +170,58 @@ void TrackingRobot::ThrowMotion()
 {
 }
 
+void TrackingRobot::UseAndThrow()
+{
+	if (m_IsThrow)
+	{
+		//プレイヤーのクォータニオン(向いている方向)記録
+		m_vQuaternion = m_pPlayer->GetQuaternion();
+
+		D3DXMATRIX matRot;
+
+		//クォータニオンをマトリックス(行列)に変換
+		D3DXMatrixRotationQuaternion(&matRot, &m_vQuaternion);
+
+		//行列の中にあるZ軸成分を取り出す
+		D3DXVECTOR3 forward = D3DXVECTOR3(matRot._31, matRot._32, matRot._33);
+
+		//取り出したZ軸成分をノーマライズ
+		D3DXVec3Normalize(&forward, &forward);
+
+		m_Velocity = forward * m_MoveSpeed;
+
+		m_Velocity.y = 10.0f;
+
+		m_IsThrow = false;
+	}
+
+	//てきとうに移動速度を減少させている
+	m_Velocity -= m_Velocity * static_cast<float>(CTimeManager::GetDeltaTime());
+
+	if (m_vPosition.y > 0.5f)
+	{
+		//m_vPosition.y -= m_tGravity;
+		m_Velocity.y -= m_tGravity;
+		m_tGravity += 0.001f;
+	}
+	else
+	{
+		m_Velocity.y = 0;
+		Explosion();
+	}
+
+	m_vPosition += m_Velocity * static_cast<float>(CTimeManager::GetDeltaTime());
+
+	ChangeColor();
+}
+
 void TrackingRobot::Explosion()
 {
-	if (!m_OneExplosion)
+	//爆発時に一度だけ処理する
+	if (!m_IsExploded)
 	{
-		Smash();
-		m_OneExplosion = true;
+		//爆発フラグをオンに
+		m_IsExploded = true;
 
 		static ::EsHandle hEffect = -1;
 
@@ -168,58 +234,59 @@ void TrackingRobot::Explosion()
 	}
 }
 
-void TrackingRobot::Smash()
+void TrackingRobot::Smash(CPlayer& playiers)
 {
-	D3DXVECTOR3 vecLen = m_vPosition - m_pPlayer->GetPosition();
+	//爆弾とプレイヤーの位置でベクトルをとる
+	D3DXVECTOR3 vecLen = m_vPosition - playiers.GetPosition();
 
+	//ベクトルを長さに変換
 	float len = D3DXVec3Length(&vecLen);
 
-	//m_pPlayer->SetHitInfo(
-	//	m_vPosition, m_pPlayer->GetPosition(),
-	//	CalculateForceScalar(len),
-	//	true, CPlayerBase::HitEvent::Knockdown);
+	float i = CalculateForceScalar(len);
+
+	//
+	D3DXVECTOR3 SmashVel = playiers.GetVelocity(m_vPosition, CalculateForceScalar(len), 60.0f);
+
+	playiers.SetHitInfo(
+		SmashVel,
+		CPlayerBase::HitEvent::Knockdown);
 }
 
 void TrackingRobot::ChangeColor()
-{	
-	//赤色
-	//m_pMesh->SetMaterialColor(0, D3DXVECTOR4(1, 0, 0, 1));
-	//黒色(全て0.5が元の色)
-	//m_pMesh->SetMaterialColor(0, D3DXVECTOR4(.5f, .5f, .5f, .5f));
-
+{
 	m_ColorTimer += CTimeManager::GetDeltaTime();
 
 	//点滅のスピードを経過時間/爆発するまでの時間をして割合で出す
-	double speed = 10.0f * (m_ColorTimer / m_ExplosionTime);
+	float speed = 10.0f * (static_cast<float>(m_ColorTimer) / m_ExplosionTime);
 
-	//+1.0fをすることで、sinの値が0~2の間の値になり、*0.25で0~0.5の値がtに入る
-	double blinkRate = (sin(m_ColorTimer * speed) + 1.0) * 0.25;
+	//+1.0fをすることで、sinの値が0~2の間の値になり、*0.5することで0~1の間の値が取れる
+	float blinkRate = (sinf(static_cast<float>(m_ColorTimer) * speed) + 1.0) * 0.5;
 
-	//カラー増加変数
-	float up = std::clamp(0.5f + static_cast<float>(blinkRate), .5f, 1.0f);
+	//灰色のカラーコード
+	D3DXVECTOR4 gray = D3DXVECTOR4(0.2f, 0.2f, 0.2f, 1.0f);
 
-	//カラー減少変数
-	float down = std::clamp(0.5f - static_cast<float>(blinkRate), 0.0f, 0.5f);
+	//赤色のカラーコード
+	D3DXVECTOR4 red = D3DXVECTOR4(1.0f, 0.0f, 0.0f, 1.0f);
 
 	//値が増加と減少がそれぞれあるので使いわけていく
-	D3DXVECTOR4 color = D3DXVECTOR4(up, down, down, up);
+	D3DXVECTOR4 color;
 
-	m_pMesh->SetMaterialColor(0, color);
+	D3DXVec4Lerp(&color, &gray, &red, blinkRate);
+
+	m_ObjectColor[0].diffuse = color;
 }
 
 float TrackingRobot::CalculateForceScalar(float distance)
 {
-	//線形補間で計算
-
 	//爆発の当たる範囲を仮設定
 	//当たり判定用メッシュの大きさにする
-	float maxDist = 6;
+	float maxDist = 2;
 
 	//0.0~1.0の間で距離の割合を出す
 	float ratio = 1.0f - (distance / maxDist);
 
 	//爆発の最小吹き飛ばし力
-	float minPower = 6.0f;
+	float minPower = 5.0f;
 
 	//爆発の最大吹き飛ばし力
 	float maxPower = m_KnockBackPower;
