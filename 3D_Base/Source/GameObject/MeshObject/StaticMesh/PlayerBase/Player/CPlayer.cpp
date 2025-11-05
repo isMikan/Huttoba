@@ -17,6 +17,7 @@
 
 CPlayer::CPlayer(int index)
 	: CPlayerBase			( index )
+
 	, m_CurrentInput		( 0.f, 0.f, 0.f )
 {
 	SetPlayerInputBinding(m_PlayerID);
@@ -47,7 +48,7 @@ void CPlayer::Draw(
 	CPlayerBase::Draw( View, Proj, Light, Camera );
 }
 
-//--- ƒL[‘€ì ---.
+//--- “ü—Í‘€ì ---.
 void CPlayer::HandleInput()
 {
 	float x = 0.f;	//x².

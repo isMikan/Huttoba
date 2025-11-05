@@ -33,7 +33,7 @@ public:
 	void Draw(
 		D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAMERA& Camera ) override;
 
-	//--- キー操作 ---.
+	//--- 入力操作 ---.
 	void HandleInput();
 
 	//--- キーバインドを設定する ---.
@@ -41,4 +41,5 @@ public:
 
 private:
 	D3DXVECTOR3		m_CurrentInput;	//現在の入力方向.
+
 };
