@@ -47,5 +47,11 @@ public:
         CollisionBase::ColliderTag tag
     );
 
+    //‰¡Œü‚«ƒJƒvƒZƒ‹
+    static std::shared_ptr<CollisionBase> CreateHorizontalCapsule(
+        CGameObject* pOwner,
+        std::shared_ptr<CStaticMesh> pMesh,
+        CollisionBase::ColliderTag tag
+    );
 
 };

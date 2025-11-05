@@ -2,13 +2,28 @@
 
 class CStaticMesh;
 
+
+/*--------------------
+
+・円判定作成         : CalculateBoundingSphere
+・カプセル判定作成   : CalculateBoundingCapsule
+・横カプセル判定作成 : CalculateHorizontalCapsule
+
+----------------------
+・レイの衝突判定     : RaycastAgainstMesh
+
+*/
+
+
+
 /***************************************
  * メッシュの頂点情報から衝突パラメータを計算するユーティリティ。
  *******/
 namespace MeshCollisionUtility
 {
     /*****************************************************************************************
-    * @brief    メッシュの外接球の中心座標と半径を計算します
+    * @brief    メッシュの外接球の中心座標と半径を計算
+    * 
     * @param    pMesh 頂点情報を持つCStaticMeshの共有ポインタ
     *           outCenter 計算された中心座標の参照
     *           outRadius 計算された半径の参照
@@ -23,7 +38,8 @@ namespace MeshCollisionUtility
 
 
     /*****************************************************************************************
-    * @brief    メッシュのカプセルのの中心座標と半径を計算します
+    * @brief    メッシュのカプセルのの中心座標と半径を計算
+    * 
     * @param    pMesh 頂点情報を持つCStaticMeshの共有ポインタ
     *           outCenter 計算された中心座標の参照
     *           outRadius 計算された半径の参照
@@ -37,6 +53,22 @@ namespace MeshCollisionUtility
         D3DXVECTOR3& outLocalOffsetB
     );
 
+    /*****************************************************************************************
+    * @brief   メッシュから横軸(X)に沿ったカプセルのパラメータを計算
+    * 
+    * @param   pMesh: 入力メッシュ
+    * @param   outRadius: 計算された半径 (Y, Z軸方向の最大幅の半分)
+    * @param   outOffsetA: 軸線分A (X軸+側)
+    * @param   outOffsetB: 軸線分B (X軸-側)
+    * 
+    * @return  成功したか
+    *****************************************************************************************/
+    bool CalculateHorizontalCapsule(
+        const std::shared_ptr<CStaticMesh>& pMesh,
+        float& outRadius,
+        D3DXVECTOR3& outOffsetA,
+        D3DXVECTOR3& outOffsetB
+    );
     /*****************************************************************************************
     * @brief   レイとターゲットメッシュとの交点を計算
     *

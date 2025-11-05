@@ -21,14 +21,7 @@ void ItemBase::Init()
 }
 
 void ItemBase::Update()
-{
-	//‰Šú‰»
-	if (GetAsyncKeyState('R') & 0x8000)
-	{
-		Init();
-		CollisionManager::GetInstance()->Init();
-	}
-	
+{	
 	//ó‘Ô‚É‚æ‚Á‚Ä‘JˆÚ
 	switch (m_State)
 	{

@@ -135,6 +135,40 @@ HRESULT CStaticMesh::Init(LPCTSTR lpFileName)
 }
 
 
+LPVOID CStaticMesh::GetLockedVertexBuffer(DWORD& outStride, UINT& outVertexCount)
+{
+	if (!m_Model.pMesh) return nullptr;
+
+	LPDIRECT3DVERTEXBUFFER9 pVB = nullptr;
+	m_Model.pMesh->GetVertexBuffer(&pVB);
+	if (!pVB) return nullptr;
+
+	LPVOID pVertices = nullptr;
+	if (SUCCEEDED(pVB->Lock(0, 0, &pVertices, 0)))
+	{
+		// 頂点数とバイト幅をoutパラメータに設定
+		outStride = m_Model.pMesh->GetNumBytesPerVertex();
+		outVertexCount = m_Model.pMesh->GetNumVertices();
+
+		LPVOID pData = nullptr;
+		if (SUCCEEDED(m_Model.pMesh->LockVertexBuffer(0, &pData)))
+		{
+			outStride = m_Model.pMesh->GetNumBytesPerVertex();
+			outVertexCount = m_Model.pMesh->GetNumVertices();
+			return pData;
+		}
+	}
+	return nullptr;
+}
+
+void CStaticMesh::UnlockVertexBuffer()
+{
+	if (m_Model.pMesh)
+	{
+		m_Model.pMesh->UnlockVertexBuffer();
+	}
+}
+
 //メッシュ読み込み.
 HRESULT CStaticMesh::LoadXMesh( LPCTSTR lpFileName )
 {

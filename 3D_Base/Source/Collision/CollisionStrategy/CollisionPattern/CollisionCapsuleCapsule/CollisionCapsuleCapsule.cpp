@@ -112,5 +112,7 @@ bool CollisionCapsuleCapsule::CheckCollision(
 
 	bool test = distanceSq <= totalRadiusSq;
 
+	std::cout << (test == true ? "true": "false") << std::endl;
+
 	return distanceSq <= totalRadiusSq;
 }

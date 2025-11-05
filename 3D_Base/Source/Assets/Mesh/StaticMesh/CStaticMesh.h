@@ -221,6 +221,11 @@ public:
 		m_pMaterials[index].Diffuse = color;
 	}
 
+	//頂点情報を取得
+	LPVOID GetLockedVertexBuffer(DWORD& outStride, UINT& outVertexCount);
+	//外部でアンロックする
+	void UnlockVertexBuffer();
+
 private:
 	//メッシュ読み込み.
 	HRESULT LoadXMesh( LPCTSTR lpFileName );
