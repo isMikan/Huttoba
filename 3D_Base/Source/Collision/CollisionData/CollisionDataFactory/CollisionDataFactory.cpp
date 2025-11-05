@@ -14,7 +14,6 @@ std::shared_ptr<CollisionBase> CollisionDataFactory::CreateSphereForMesh(
     if (!MeshCollisionUtility::CalculateBoundingSphere(
         pMesh, calculatedCenter, calculatedRadius))
     {
-        // 計算失敗時はnullptrを返すか、エラー処理を行う
         return nullptr;
     }
 
@@ -53,7 +52,6 @@ std::shared_ptr<CollisionBase> CollisionDataFactory::CreateCapsuleForMesh(
     if (!MeshCollisionUtility::CalculateBoundingCapsule(
         pMesh, calculatedRadius, localOffsetA, localOffsetB))
     {
-        // 計算失敗時はnullptrを返すか、エラー処理を行う
         return nullptr;
     }
 
@@ -70,8 +68,38 @@ std::shared_ptr<CollisionBase> CollisionDataFactory::CreateCapsuleForMesh(
         localOffsetB          // 軸線分Bのローカルオフセット
     );
 
-    //当たり判定の描画のために悪戦苦闘。
-    //方針は、オーナーのアドレスを獲得して、そのアドレスから位置を特定。位置を合わせて当たり判定メッシュの描画とする
+    CollisionManager::GetInstance()->AddCollider(newCollider);
+    CollisionDraw::GetInstance()->AddDrawMesh(pMesh, pOwner);
+
+    return newCollider;
+}
+
+std::shared_ptr<CollisionBase> CollisionDataFactory::CreateHorizontalCapsule(CGameObject* pOwner, std::shared_ptr<CStaticMesh> pMesh, CollisionBase::ColliderTag tag)
+{
+    // カプセルに必要なローカル情報
+    float calculatedRadius = 0.0f;
+    D3DXVECTOR3 localOffsetA(0.0f, 0.0f, 0.0f);
+    D3DXVECTOR3 localOffsetB(0.0f, 0.0f, 0.0f);
+
+    // メッシュからカプセルのパラメータを計算
+    if (!MeshCollisionUtility::CalculateHorizontalCapsule(
+        pMesh, calculatedRadius, localOffsetA, localOffsetB))
+    {
+        return nullptr;
+    }
+
+    ICollisionListener* listener = dynamic_cast<ICollisionListener*>(pOwner);
+    const D3DXVECTOR3& posRef = pOwner->GetPosition();
+
+    // CollisionCapsuleのインスタンスを生成
+    std::shared_ptr<CollisionBase> newCollider = std::make_shared<CollisionCapsule>(
+        listener,
+        posRef,               // SyncPositionとして親の位置を参照
+        tag,
+        calculatedRadius,
+        localOffsetA,         // 軸線分Aのローカルオフセット
+        localOffsetB          // 軸線分Bのローカルオフセット
+    );
 
     CollisionManager::GetInstance()->AddCollider(newCollider);
     CollisionDraw::GetInstance()->AddDrawMesh(pMesh, pOwner);

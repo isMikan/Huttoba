@@ -115,6 +115,7 @@ enum class StaticMeshList
 	Bullet,
 	BSphere,
 	BCapsule,
+	BWidthCapsule,
 	Haetataki,
 	Bomb,
 	Fun,
