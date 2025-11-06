@@ -23,11 +23,13 @@ Bomb::Bomb()
 	, m_ExplosionTime	( 5.0f )	//値を変えると爆発するまでの時間が変化
 	, m_ExplosionCnt	( 0.0f )
 
-	, m_KnockBackPower	( 10.0f )	//値を変えるとプレイヤーの吹き飛ばし力が変化
-
 	, m_ColorTimer		( 0.0 )
 	
 	, m_IsExploded		( false )
+
+	, m_MinSmashPower	( 5.0f )	//値を変えるとプレイヤーの最大吹き飛ばし力が変化
+
+	, m_MaxSmashPower	( 10.0f )	//値を変えるとプレイヤーの最大吹き飛ばし力が変化
 {
 	Init();
 	m_ObjectColor.resize(2);
@@ -224,13 +226,15 @@ void Bomb::Explosion()
 		//爆発フラグをオンに
 		m_IsExploded = true;
 
-		static ::EsHandle hEffect = -1;
+		static ::EsHandle hEffect = 1;
 
+		//エフェクト追加
 		hEffect = AssetManager::Effect()->Play("Explosion", m_vPosition);
 
-		//拡縮設定
+		//エフェクトの拡縮設定
 		AssetManager::Effect()->SetScale(hEffect, D3DXVECTOR3(0.6f, 0.6f, 0.6f));
 
+		//アイテムの状態を破棄にする
 		m_State = ItemBase::State::Destroy;
 	}
 }
@@ -243,9 +247,7 @@ void Bomb::Smash(CPlayer& playiers)
 	//ベクトルを長さに変換
 	float len = D3DXVec3Length(&vecLen);
 
-	float i = CalculateForceScalar(len);
-
-	//
+	//プレイヤーの吹き飛ばしの計算
 	D3DXVECTOR3 SmashVel = playiers.GetVelocity(m_vPosition, CalculateForceScalar(len), 60.0f);
 
 	playiers.SetHitInfo(
@@ -272,6 +274,7 @@ void Bomb::ChangeColor()
 	//値が増加と減少がそれぞれあるので使いわけていく
 	D3DXVECTOR4 color;
 
+	//D3DXのVec4の線形補間の計算
 	D3DXVec4Lerp(&color, &gray, &red, blinkRate);
 
 	m_ObjectColor[0].diffuse = color;
@@ -286,13 +289,8 @@ float Bomb::CalculateForceScalar(float distance)
 	//0.0~1.0の間で距離の割合を出す
 	float ratio = 1.0f - (distance / maxDist);
 
-	//爆発の最小吹き飛ばし力
-	float minPower = 5.0f;
-
-	//爆発の最大吹き飛ばし力
-	float maxPower = m_KnockBackPower;
-
-	float power = minPower + (maxPower - minPower) * ratio;
+	//線形補間の計算
+	float power = m_MinSmashPower + (m_MaxSmashPower - m_MinSmashPower) * ratio;
 
 	return power;
 }

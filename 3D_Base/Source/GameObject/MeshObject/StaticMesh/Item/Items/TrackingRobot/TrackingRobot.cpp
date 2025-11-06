@@ -10,36 +10,26 @@
 namespace { const bool regist = ItemBase::AutoRegister<TrackingRobot>("TrackingRobot"); }
 
 TrackingRobot::TrackingRobot()
-	: m_IsTake(false)
-	, m_PickUpTime(0.3f)	//値を変えるとアイテムが手に持つまでの時間が変化
-	, m_PickUpCnt(0.0f)
+	: m_pTargetList		()
+	, m_pTarget			()
 
-	, m_Velocity()
-	, m_MoveSpeed(3.0f)	//値を変えると爆弾の移動相度が変化
+	, m_IsHoming		( false )
 
-	, m_IsThrow(true)
+	, m_Velocity		()
+	, m_MoveSpeed		(3.0f)	//値を変えると爆弾の移動相度が変化
 
-	, m_ExplosionTime(5.0f)	//値を変えると爆発するまでの時間が変化
-	, m_ExplosionCnt(0.0f)
+	, m_IsThrow			(true)
 
-	, m_KnockBackPower(10.0f)	//値を変えるとプレイヤーの吹き飛ばし力が変化
+	, m_ExplosionTime	(5.0f)	//値を変えると爆発するまでの時間が変化
+	, m_ExplosionCnt	(0.0f)
 
-	, m_ColorTimer(0.0)
+	, m_KnockBackPower	(10.0f)	//値を変えるとプレイヤーの吹き飛ばし力が変化
 
-	, m_IsExploded(false)
+	, m_ColorTimer		(0.0)
+
+	, m_IsExploded		(false)
 {
 	Init();
-	m_ObjectColor.resize(2);
-
-	//爆弾の爆弾部分の灰色の値
-	m_ObjectColor[0].diffuse = D3DXVECTOR4(0.2f, 0.2f, 0.2f, 1.0f);
-	//拡散反射だけではいい感じにならなかったので環境光も変化
-	m_ObjectColor[0].ambient = D3DXVECTOR4(0.15f, 0.15f, .15f, 1.f);
-
-	//爆弾の紐の部分の白色の値
-	m_ObjectColor[1].diffuse = D3DXVECTOR4(0.7f, 0.7f, 0.7f, 1.0f);
-	//m_ObjectColor[1].ambient = D3DXVECTOR4(.3f, .3f, .3f, .5f);
-
 }
 
 TrackingRobot::~TrackingRobot()
@@ -50,16 +40,13 @@ TrackingRobot::~TrackingRobot()
 
 void TrackingRobot::Init()
 {
-	AttachMesh(AssetManager::Mesh(StaticMeshList::Bomb));
-	//AttachMesh(AssetManager::Mesh(StaticMeshList::ExplosionCol));
+	AttachMesh(AssetManager::Mesh(StaticMeshList::TrackingRobot));
 
 	m_State = ItemBase::State::Spawn;
 
 	m_tGravity = 0.01f;
 
 	std::shared_ptr<CStaticMesh> mesh = AssetManager::Mesh(StaticMeshList::ExplosionCol);
-
-
 
 	m_pCollision = CollisionDataFactory::CreateSphereForMesh(
 		this,
@@ -71,8 +58,6 @@ void TrackingRobot::Init()
 void TrackingRobot::Update()
 {
 	ItemBase::Update();
-
-
 }
 
 void TrackingRobot::Draw(D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAMERA& Camera)
@@ -82,6 +67,9 @@ void TrackingRobot::Draw(D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAMER
 
 void TrackingRobot::Spawn()
 {
+	//y座標が一定以下になると状態を変化させているが、
+	//地面とぶつかったときにOnGroundに変化させるようにする
+
 	//落下処理
 	if (m_vPosition.y > 0.5f)
 	{
@@ -97,33 +85,25 @@ void TrackingRobot::Spawn()
 
 void TrackingRobot::OnGround()
 {
-	//if (GetAsyncKeyState('M') & 0x0001)
-	////if(CInputManager::IsDown(Action::Have,0))
-	//{
-	//	//状態を取得中に変化
-	//	m_State = ItemBase::State::Have;
+	//後で地面がなければ落下する処理を追加する
 
-	//	//プレイヤー側にあるモーションと同期できるように
-	//	//m_IsTake = true;
-	//}
 }
 
 void TrackingRobot::Have()
 {
-	if (m_IsTake)
-		TakeMotion();
-	else
-		PossessionMotion();
+	HaveMove();
 }
 
 void TrackingRobot::Use()
 {
-	UseAndThrow();
+	UseMove();
+	ChangeColor();
 }
 
 void TrackingRobot::Throw()
 {
-	UseAndThrow();
+	ThrowMove();
+	ChangeColor();
 }
 
 void TrackingRobot::Destroy()
@@ -140,37 +120,27 @@ void TrackingRobot::OnCollision(CollisionBase* other)
 			if (m_IsExploded)
 			{
 				Smash(*player);
+				return;
+			}
+
+			
+			if (m_IsHoming)
+			{
+				//当たったプレイヤーを記憶
+				//m_pTargetList.push_back(player);
+
+				m_pTarget = player;
 			}
 		}
 	}
 }
 
-void TrackingRobot::TakeMotion()
+void TrackingRobot::HaveMove()
 {
-	m_PickUpCnt += CTimeManager::GetDeltaTime();
-
-	if (m_PickUpCnt >= m_PickUpTime)
-	{
-		m_IsTake = false;
-	}
-}
-
-void TrackingRobot::PossessionMotion()
-{
-
 	m_vPosition = m_pPlayer->GetPlayerRightHand().GetPosition();
-
 }
 
-void TrackingRobot::UseMotion()
-{
-}
-
-void TrackingRobot::ThrowMotion()
-{
-}
-
-void TrackingRobot::UseAndThrow()
+void TrackingRobot::UseMove()
 {
 	if (m_IsThrow)
 	{
@@ -207,12 +177,20 @@ void TrackingRobot::UseAndThrow()
 	else
 	{
 		m_Velocity.y = 0;
-		Explosion();
+		m_IsHoming = true;
+
+		//Explosion();
 	}
 
-	m_vPosition += m_Velocity * static_cast<float>(CTimeManager::GetDeltaTime());
+	Homing();
 
-	ChangeColor();
+	m_vPosition += m_Velocity * static_cast<float>(CTimeManager::GetDeltaTime());
+}
+
+void TrackingRobot::ThrowMove()
+{
+	//使用の処理と投げるの処理が同じなのでUseMoveを使用
+	UseMove();
 }
 
 void TrackingRobot::Explosion()
@@ -244,7 +222,6 @@ void TrackingRobot::Smash(CPlayer& playiers)
 
 	float i = CalculateForceScalar(len);
 
-	//
 	D3DXVECTOR3 SmashVel = playiers.GetVelocity(m_vPosition, CalculateForceScalar(len), 60.0f);
 
 	playiers.SetHitInfo(
@@ -279,7 +256,7 @@ void TrackingRobot::ChangeColor()
 float TrackingRobot::CalculateForceScalar(float distance)
 {
 	//爆発の当たる範囲を仮設定
-	//当たり判定用メッシュの大きさにする
+	//当たり判定用メッシュの大きさにしたい
 	float maxDist = 2;
 
 	//0.0~1.0の間で距離の割合を出す
@@ -294,4 +271,39 @@ float TrackingRobot::CalculateForceScalar(float distance)
 	float power = minPower + (maxPower - minPower) * ratio;
 
 	return power;
+}
+
+void TrackingRobot::Homing()
+{
+	if (m_IsHoming&&m_pTarget!=nullptr)
+	{
+		//プレイヤー方向へのベクトル
+		D3DXVECTOR3 vec = m_pTarget->GetPosition() - m_vPosition;
+
+		float dist = std::sqrtf(vec.x * vec.x + vec.z * vec.z);
+
+		if (dist > 0.001f)
+		{
+			//目標への単位ベクトルに変換
+			float tx = vec.x / dist;
+			float tz = vec.z / dist;
+
+			//旋回率(小さいほど旋回が緩やかになる)
+			float turnRate = 0.3f;
+
+			float speed = 0.4;
+
+			m_Velocity.x = (1 - turnRate) * m_Velocity.x + turnRate * tx * speed;
+
+			m_Velocity.z = (1 - turnRate) * m_Velocity.z + turnRate * tz * speed;
+			
+			float vlen = sqrtf(m_Velocity.x * m_Velocity.x + m_Velocity.z * m_Velocity.z);
+
+			if (vlen > 0.001)
+			{
+				m_Velocity.x /= vlen * speed;
+				m_Velocity.z /= vlen * speed;
+			}
+		}
+	}
 }

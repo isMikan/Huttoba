@@ -31,19 +31,15 @@ public:
     void Destroy()override;
 
 private:
+    //当たった際の処理
     void OnCollision(CollisionBase* other)override;
 
-    //取得モーション
-    void TakeMotion();
-    //所持中モーション
-    void PossessionMotion();
-    //使用モーション
-    void UseMotion();
-    //投擲モーション
-    void ThrowMotion();
-
-    //使用と投擲が同じ処理なのでひとまとめにする
-    void UseAndThrow();
+    //所持中の移動処理
+    void HaveMove();
+    //使用中の移動処理
+    void UseMove();
+    //投擲の移動処理
+    void ThrowMove();
 
     //爆発処理
     void Explosion();
@@ -57,13 +53,16 @@ private:
     //爆弾とプレイヤーの距離に応じて吹き飛ばし力を計算
     float CalculateForceScalar(float distance);
 
+    //追尾処理
+    void Homing();
+
 private:
-    //アイテムを取得したときかを判定
-    bool        m_IsTake;
-    //アイテムを手に持つまでの時間
-    float       m_PickUpTime;
-    //アイテムを手に持つまでのカウント
-    double      m_PickUpCnt;
+
+    std::vector<CPlayerBase*> m_pTargetList;
+
+    CPlayerBase* m_pTarget;
+
+    bool m_IsHoming;
 
     //移動速度
     D3DXVECTOR3 m_Velocity;
