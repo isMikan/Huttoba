@@ -4,7 +4,7 @@
 class CPlayer;
 
 class Bomb
-    : public ItemBase,public ICollisionListener
+    : public ItemBase, public ICollisionListener
 {
 public:
     Bomb();
@@ -31,6 +31,7 @@ public:
     void Destroy()override;
 
 private:
+    //当たった際の処理
     void OnCollision(CollisionBase* other)override;
 
     //取得モーション
@@ -58,8 +59,6 @@ private:
     float CalculateForceScalar(float distance);
 
 private:
-
-
     //アイテムを取得したときかを判定
     bool        m_IsTake;
     //アイテムを手に持つまでの時間
@@ -82,12 +81,17 @@ private:
     //爆発するまでのカウント
     double       m_ExplosionCnt;
 
-    //爆発の吹き飛ばしの力
-    float       m_KnockBackPower;
-
     //点滅の経過時間を記録
     double      m_ColorTimer;
 
     //爆発時の処理
     bool        m_IsExploded;
+
+    //爆発の中心位置に近いほど多く吹き飛ぶので最小と最大の吹き飛ばし力を追加
+
+    //爆発の最小吹き飛ばし力
+    float       m_MinSmashPower;
+
+    //爆発の最大吹き飛ばし力
+    float       m_MaxSmashPower;
 };
