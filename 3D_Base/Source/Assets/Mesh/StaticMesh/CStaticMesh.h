@@ -201,12 +201,8 @@ public:
 	//レイとの当たり判定用のメッシュを取得.
 	LPD3DXMESH GetMeshForRay() const { return m_ModelForRay.pMesh; }
 	
-	//指定したマテリアルの色の変更
-	void SetMaterialColor(size_t index, const D3DXVECTOR4& color)
-	{
-		if (index >= m_pMaterials.size()) return;
-		m_pMaterials[index].Diffuse = color;
-	}
+	// 現在のスケール、回転、位置からワールド行列を計算して返す
+	D3DXMATRIX GetWorldMatrix() const;
 
 	//頂点情報を取得
 	LPVOID GetLockedVertexBuffer(DWORD& outStride, UINT& outVertexCount);

@@ -86,7 +86,22 @@ namespace MeshCollisionUtility
         const D3DXVECTOR3& rayOrigin,
         const D3DXVECTOR3& rayDirection,
         float maxDistance,
-        D3DXVECTOR3& outHitPos,
-        float& outDistance
+        D3DXVECTOR3& outHitPos
     );
+
+
+    /*****************************************************************************************
+    * @brief レイのデバッグ描画を行います。
+    * @param pDx11 DirectX11インスタンス
+    *        start レイの始点
+    *        direction レイの方向（単位ベクトルである必要はない）
+    *        distance レイの長さ
+    *        color 描画色
+    *****************************************************************************************/
+    void DebugDrawRay(
+        CDirectX11* pDx11,
+        const D3DXVECTOR3& start,
+        const D3DXVECTOR3& direction,
+        float distance,
+        const D3DXVECTOR4& color);
 }

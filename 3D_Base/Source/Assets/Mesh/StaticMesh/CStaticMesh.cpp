@@ -134,6 +134,18 @@ HRESULT CStaticMesh::Init(LPCTSTR lpFileName)
 	}
 }
 
+D3DXMATRIX CStaticMesh::GetWorldMatrix() const
+{
+	D3DXMATRIX mWorld, mScale, mRotQuat, mTran;
+	D3DXMatrixScaling(&mScale, m_Scale.x, m_Scale.y, m_Scale.z);
+	D3DXMatrixTranslation(&mTran, m_Position.x, m_Position.y, m_Position.z);
+	D3DXMatrixRotationQuaternion(&mRotQuat, &m_Quaternion);
+
+	// ÉèÅ[ÉãÉhçsóÒçÏê¨: ägèk Å~ âÒì] Å~ à⁄ìÆ
+	mWorld = mScale * mRotQuat * mTran;
+
+	return mWorld;
+}
 
 LPVOID CStaticMesh::GetLockedVertexBuffer(DWORD& outStride, UINT& outVertexCount)
 {

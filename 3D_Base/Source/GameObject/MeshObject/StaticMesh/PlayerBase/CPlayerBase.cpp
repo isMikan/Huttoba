@@ -63,7 +63,7 @@ void CPlayerBase::Update()
 
 	//ゲーム開始時じゃなく、地面についておらず、落ちる状態じゃない場合.
 	if (!m_IsOnGround
-		&& !IsAnyActionState<CPlayerFallingState>())
+		&& !IsAnyActionState<CPlayerFallingState,CPlayerKnockbackState>())
 	{
 		std::cout << "落ちる" << std::endl;
 		SetActionState(std::make_unique<CPlayerFallingState>(*this));
@@ -134,26 +134,6 @@ void CPlayerBase::CreateCollider()
 			mesh,	//当たり判定用メッシュ.
 			CollisionBase::ColliderTag::Player	//主のタグ.
 		);
-}
-
-//--- 地面との衝突判定 ---.
-void CPlayerBase::OnGroundCollision(CGroundManager* pGroundMgr)
-{
-	// 外部からのデータがない場合は判定不能
-	if (!pGroundMgr) return;
-
-	// 自身の位置を取得
-	const D3DXVECTOR3 playerPos = GetPosition();
-
-	// サイズ決定(後で定数に突貫)
-	const float playerHalfHeight = 0.5f;
-
-	// CollisionManagerに判定を依頼し、結果をそのまま返す
-	m_IsOnGround = CollisionManager::CheckGroundContact(
-		playerPos,
-		playerHalfHeight,
-		pGroundMgr
-	);
 }
 
 //--- 位置を設定するために計算 ---.
@@ -282,6 +262,24 @@ float CPlayerBase::WrapAngle(float value)
 	if (value < 0.f) value += twoPi;
 
 	return value;
+}
+
+//--- 地面との衝突判定 ---.
+void CPlayerBase::OnGroundCollision(CGroundManager* pGroundMgr)
+{
+	// 地面データがないと判定不能
+	if (!pGroundMgr) return;
+
+	//関数のoutで当たったy座標をもらう
+	float groundY = 0.0f;
+
+	// CollisionManagerに判定を依頼し、結果をそのまま返す
+	m_IsOnGround = CollisionManager::CheckGroundContact(
+		GetPosition(),
+		pGroundMgr,
+		groundY
+	);
+
 }
 
 //======================================================================
