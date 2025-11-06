@@ -280,6 +280,7 @@ void CPlayerBase::OnGroundCollision(CGroundManager* pGroundMgr)
 		groundY
 	);
 
+	m_IsAboveGround = m_IsOnGround;
 }
 
 //======================================================================

@@ -60,9 +60,7 @@ bool CollisionManager::CheckCollision(CollisionBase* a, CollisionBase* b)
 
     // 判定ロジックが存在する場合は、StrategyオブジェクトのCheckCollisionを呼び出す
     return strategy->CheckCollision(a, b);
-
 }
-
 
 bool CollisionManager::CheckGroundContact(
     const D3DXVECTOR3& objectPosition,
@@ -74,7 +72,7 @@ bool CollisionManager::CheckGroundContact(
     // レイ設定 
     D3DXVECTOR3 rayOrigin = objectPosition + D3DXVECTOR3(0.0f, 0.3f, 0.0f);
     D3DXVECTOR3 rayDirection(0.0f, -1.0f, 0.0f);
-    const float maxDistance = 2.f;
+    const float maxDistance = 5.f;
 
     // Raycastのout引数
     D3DXVECTOR3 hitPosition;

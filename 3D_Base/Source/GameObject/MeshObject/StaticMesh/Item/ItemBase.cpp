@@ -65,7 +65,7 @@ void ItemBase::IsOnGround(CGroundManager* pGroundMgr)
 	const D3DXVECTOR3 playerPos = GetPosition();
 
 	// サイズ決定(後で定数に突貫)
-	const float playerHalfHeight = 0.5f;
+	const float playerHalfHeight = 0.4f;
 
 	// CollisionManagerに判定を依頼し、結果をそのまま返す
 	m_IsOnGround = CollisionManager::CheckGroundContact(

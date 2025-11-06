@@ -54,7 +54,7 @@ void CShadowManager::Update(CPlayerManager* players, ItemManager* item)
 		//プレイヤーの位置を取得.
 		D3DXVECTOR3 playerPos = player->GetPosition();
 
-		if (player->IsOnGround())
+		if (player->IsAboveGround())
 		{
 			m_pShadow[pNo]->Update(playerPos);
 		}
