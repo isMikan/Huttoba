@@ -1,13 +1,7 @@
 #include "CCamera.h"
 
 CCamera::CCamera()
-	: m_Camera	()
-	, m_Light	()
-
-	, m_mView	()
-	, m_mProj	()
-
-	, m_vUpVec	( 0.f, 1.f, 0.f )
+	: m_vUpVec	( 0.f, 1.f, 0.f )
 
 	, m_Fov_y	( D3DXToRadian( 45.f ) )	//数値を大きくしたら視野が狭くなる.
 	, m_Aspect	()
@@ -24,33 +18,26 @@ CCamera::~CCamera()
 // 	   外部で呼び出す関数.
 //======================================================================
 
-//--- 更新処理 ---.
-void CCamera::Update()
-{
-	UpdateView();
-	UpdateProjection();
-}
-
 //--- ビューの変換処理 ---.
-void CCamera::UpdateView()
+void CCamera::UpdateView(const CAMERA& camera, D3DXMATRIX& view) const
 {
 	//ビュー（カメラ）変換.
 	D3DXMatrixLookAtLH(
-		&m_mView,	//(out)ビュー計算結果.
-		&m_Camera.vPosition, 
-		&m_Camera.vLook, 
+		&view,		//(out)ビュー計算結果.
+		&camera.vPosition,
+		&camera.vLook,
 		&m_vUpVec);
 }
 
 //--- プロジェクションの変換処理 ---.
-void CCamera::UpdateProjection()
+void CCamera::UpdateProjection(D3DXMATRIX& proj)
 {
 	//アスペクト（幅÷高さ）.
 	m_Aspect = static_cast<FLOAT>(WND_W) / static_cast<FLOAT>(WND_H);
 
 	//プロジェクション（射影）変換.
 	D3DXMatrixPerspectiveFovLH(
-		&m_mProj,	//(out)プロジェクション計算結果.
+		&proj,		//(out)プロジェクション計算結果.
 		m_Fov_y,	//視野角（FOV：Field of View）.
 		m_Aspect,	//アスペクト.
 		m_Near_z,	//近いビュー平面のz値.

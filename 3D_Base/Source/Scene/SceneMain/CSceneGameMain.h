@@ -3,7 +3,6 @@
 #include "DirectX/CDirectX9.h"
 #include "DirectX/CDirectX11.h"
 
-#include "Camera/CCamera.h"
 #include "Scene/CScene.h"
 
 #include "DebugText/CDebugText.h"
@@ -28,11 +27,6 @@
 
 class ItemManager;
 class CollisionDraw;
-
-#include<string>
-#include<vector>
-#include<unordered_map>
-#include<memory>
 
 class CSceneGameMain
 	: public CScene
@@ -62,10 +56,8 @@ private:
 
 	std::unique_ptr<CDebugText> m_pDbgText;	//デバッグテキスト
 
-	std::unique_ptr<CCamera>	m_pCamera;	//カメラ.
-
 	//爆発クラス
-	std::vector<std::unique_ptr<CExplosion> > 	m_pExplosiones;
+	std::vector<std::unique_ptr<CExplosion>> 	m_pExplosiones;
 
 	//UIオブジェクトクラス
 	std::unordered_map<UIList, std::unique_ptr<CUIObject> > m_pUIMap;
