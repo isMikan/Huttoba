@@ -174,20 +174,33 @@ namespace MeshCollisionUtility
         const D3DXVECTOR3& rayOrigin,
         const D3DXVECTOR3& rayDirection,
         float maxDistance,
-        D3DXVECTOR3& outHitPos,
-        float& outDistance)
+        D3DXVECTOR3& outHitPos
+        )
     {
-        LPD3DXMESH pMeshDx9 = pTargetMesh->GetMeshForRay();
-        if (!pMeshDx9){ return false; }
+        //ステージがz軸に10ずれているから、ワールド行列を取得して逆行列計算
+        D3DXMATRIX matWorld = pTargetMesh->GetWorldMatrix();
+        D3DXMATRIX matInverseWorld;
+        D3DXMatrixInverse(&matInverseWorld, nullptr, &matWorld);
+
+        //レイをメッシュのローカル座標に
+        D3DXVECTOR3 localRayOrigin;
+        D3DXVECTOR3 localRayDirection;
+
+        // 始点 (座標) を変換
+        D3DXVec3TransformCoord(&localRayOrigin, &rayOrigin, &matInverseWorld);
+        // 方向 (ベクトル) を変換し、正規化
+        D3DXVec3TransformNormal(&localRayDirection, &rayDirection, &matInverseWorld);
+        D3DXVec3Normalize(&localRayDirection, &localRayDirection);
 
         BOOL bHit = FALSE;
         FLOAT fDist = 0.0f;
+        FLOAT U = 0, V = 0;		//重心ヒット座標
 
 		// レイとメッシュの交差判定
         HRESULT hr = D3DXIntersect(
-            pMeshDx9,                       // ターゲットメッシュ
-            &rayOrigin,                     // レイの始点
-            &rayDirection,                  // レイの方向
+            pTargetMesh->GetMeshForRay(),   // ターゲットメッシュ
+            &localRayOrigin,                // レイの始点
+            &localRayDirection,             // レイの方向
             &bHit,                          // 衝突したか
             nullptr,                        // 衝突した面のインデックス
             &fDist,                         // 距離
@@ -208,10 +221,24 @@ namespace MeshCollisionUtility
             return false;
         }
 
-        // 結果の格納 
-        outDistance = fDist;
-        outHitPos = rayOrigin + (rayDirection * fDist);
+        //ローカルの位置を特定し、ワールド行列に変換
+        D3DXVECTOR3 localHitPos = localRayOrigin + (localRayDirection * fDist);
+        D3DXVec3TransformCoord(&outHitPos, &localHitPos, &matWorld);
 
         return true;
+    }
+
+    void DebugDrawRay(CDirectX11* pDx11, const D3DXVECTOR3& start, const D3DXVECTOR3& direction, float distance, const D3DXVECTOR4& color)
+    {
+        // レイの方向ベクトルを正規化し、長さをかける
+        D3DXVECTOR3 V_direction;
+        D3DXVec3Normalize(&V_direction, &direction);
+
+        // 終点の計算: End = Start + (V_direction * distance)
+        D3DXVECTOR3 end = start + (V_direction * distance);
+
+        // CDebugDraw::DrawLine のような関数を呼び出す
+        // （ここでは仮の関数として pDx11->DrawDebugLine を使用）
+        //pDx11->DrawDebugLine(start, end, color);
     }
 }

@@ -73,8 +73,8 @@ public:
     *****************************************************************************************/
     static bool CheckGroundContact(
         const D3DXVECTOR3& objectPosition,
-        float colliderHalfHeight,
-        CGroundManager* pGroundMgr 
+        CGroundManager* pGroundMgr ,
+        float& outGroundY
 ); 
 private:
     CollisionManager();

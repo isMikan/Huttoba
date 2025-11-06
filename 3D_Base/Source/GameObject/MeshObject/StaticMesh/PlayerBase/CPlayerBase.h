@@ -186,6 +186,8 @@ public:
 
 	//地面についているかの所得と設定.
 	bool IsOnGround() const { return m_IsOnGround; }
+	void SetIsOnGround(bool isOnGround) { m_IsOnGround = isOnGround; }
+
 
 	//nullptr ではないかチェック.
 	template<typename T>

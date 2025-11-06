@@ -63,24 +63,22 @@ bool CollisionManager::CheckCollision(CollisionBase* a, CollisionBase* b)
 
 }
 
-// 許容誤差は判定ロジック（Raycastの最大距離）の中で定数として保持
-static constexpr float GROUND_CHECK_EPSILON = 5.f;
 
 bool CollisionManager::CheckGroundContact(
     const D3DXVECTOR3& objectPosition,
-    float colliderHalfHeight,
-    CGroundManager* pGroundMgr)
+    CGroundManager* pGroundMgr,
+    float& outGroundY)
 {
     if (!pGroundMgr) return false;
 
     // レイ設定 
-    // @note ステージがずれているので D3DXVECTOR3{ 0.f, 0.f, -10.f }修正
-    D3DXVECTOR3 rayOrigin = (objectPosition + D3DXVECTOR3{ 0.f, 0.f, -10.f }) - D3DXVECTOR3(0.0f, colliderHalfHeight - 0.01f, 0.0f);
+    D3DXVECTOR3 rayOrigin = objectPosition + D3DXVECTOR3(0.0f, 0.3f, 0.0f);
     D3DXVECTOR3 rayDirection(0.0f, -1.0f, 0.0f);
-    const float maxDistance = GROUND_CHECK_EPSILON + 0.01f;
+    const float maxDistance = 2.f;
+
     // Raycastのout引数
     D3DXVECTOR3 hitPosition;
-    float currentHitDistance;
+    bool hitGround = false;
 
     // GroundManagerから配列を取得
     const auto& grounds = pGroundMgr->GetGrounds();
@@ -96,20 +94,20 @@ bool CollisionManager::CheckGroundContact(
 
         // MeshCollisionUtilityに判定を委譲
         if (MeshCollisionUtility::RaycastAgainstMesh(
-            pGroundMesh,                 // ループ内で取得したメッシュ
-            rayOrigin,
-            rayDirection,
-            maxDistance,
-            hitPosition,                 // out
-            currentHitDistance           // out
+            pGroundMesh,    // 地面のメッシュ
+            rayOrigin,      // レイの始点
+            rayDirection,   // レイの向き
+            maxDistance,    // レイの最大距離
+            hitPosition     // out 当たった場所
         ))
         {
-            // 一つでも当たれば終了
-            return true;
+            hitGround = true;
+            outGroundY = hitPosition.y;
+            break;
         }
     }
 
-    return false;
+    return hitGround;
 }
 
 // =========================================================================

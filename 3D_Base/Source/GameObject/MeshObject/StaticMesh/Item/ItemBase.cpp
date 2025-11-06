@@ -59,6 +59,8 @@ void ItemBase::IsOnGround(CGroundManager* pGroundMgr)
 	// 外部からのデータがない場合は判定不能
 	if (!pGroundMgr) return;
 
+	float groundY = 0.0f;
+
 	// 自身の位置を取得
 	const D3DXVECTOR3 playerPos = GetPosition();
 
@@ -68,7 +70,7 @@ void ItemBase::IsOnGround(CGroundManager* pGroundMgr)
 	// CollisionManagerに判定を依頼し、結果をそのまま返す
 	m_IsOnGround = CollisionManager::CheckGroundContact(
 		playerPos,
-		playerHalfHeight,
-		pGroundMgr
+		pGroundMgr,
+		groundY
 	);
 }
