@@ -244,7 +244,7 @@ void Mushroom::Hit()
 
 
 	////ƒvƒŒƒCƒ„[‚É‚«”ò‚Î‚µî•ñ‚ð“n‚·
-	//m_pPlayer->SetHitInfo(
+	//m_pPlayer->SetHitAttack(
 	//	m_vPosition,
 	//	reflectDir,		
 	//	knockbackPower,

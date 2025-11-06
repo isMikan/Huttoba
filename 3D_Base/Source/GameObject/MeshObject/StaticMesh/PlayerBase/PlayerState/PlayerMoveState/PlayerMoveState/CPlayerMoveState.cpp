@@ -50,7 +50,7 @@ void CPlayerMoveState::Update()
 		m_pPlayer.SetMoveState(std::make_unique<CPlayerMoveIdleState>(m_pPlayer));
 		return;
 	}
-	
+
 	//入力方向を3D空間と同じように設定.
 	D3DXVECTOR3 dir(m_InputDir.x, 0, m_InputDir.z);
 
@@ -71,12 +71,26 @@ void CPlayerMoveState::Update()
 	//歩いている.
 	m_pPlayer.SetMoving(true);
 
+	CPlayerBase::HitPlayer hitPlayer = m_pPlayer.GetHitPlayer();
+
+	std::cout << hitPlayer.isHit << std::endl;
+	if (hitPlayer.isHit)
+	{
+		float dot = D3DXVec3Dot(&m_InputDir, &hitPlayer.otherDir);
+		dot = std::clamp(dot, -1.f, 1.f);
+
+		if (dot > 0.f)
+		{
+			m_InputDir -= dir * dot;
+			D3DXVec3Normalize(&dir, &m_InputDir);
+		}
+	}
+
 	//現在の速度を取得.
 	m_CurrentSpeed = GetMoveSpeed();
 
 	//ベクトル量の計算.
 	D3DXVECTOR3 velocity = dir * m_CurrentSpeed;
-
 	//プレイヤーの位置を取得.
 	D3DXVECTOR3 playerPos = m_pPlayer.GetPosition();
 	//ベクトル量を足す.

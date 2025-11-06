@@ -40,7 +40,7 @@ void CPlayerKnockbackState::Enter()
 	m_StartTime = CTimeManager::GetTotalTime();
 
 	//UŒ‚‚³‚ê‚½î•ñ‚Ìæ“¾.
-	CPlayerBase::HitInfo hitInfo = m_pPlayer.GetHitInfo();
+	CPlayerBase::HitAttack hitInfo = m_pPlayer.GetHitAttack();
 	
 	//ŒX‚«Šp“x‚Ì‰Šú‰».
 	m_CurrentTiltAngle = 0.f;
@@ -54,17 +54,17 @@ void CPlayerKnockbackState::Enter()
 	m_StartRightAxis = -axes.right;
 
 	//‰‘¬“x‚ğİ’è.
-	m_Velocity = m_pPlayer.GetHitInfo().velocity;
+	m_Velocity = m_pPlayer.GetHitAttack().velocity;
 
 	//‚«”ò‚Î‚·UŒ‚‚ğó‚¯‚½ê‡.
-	if (m_pPlayer.GetHitInfo().hitEvent == CPlayerBase::HitEvent::Knockback)
+	if (m_pPlayer.GetHitAttack().hitEvent == CPlayerBase::HitEvent::Knockback)
 	{
-		m_pPlayer.SetHitInfo(m_Velocity, CPlayerBase::HitEvent::NoDown);
+		m_pPlayer.SetHitAttack(m_Velocity, CPlayerBase::HitEvent::NoDown);
 	}
 	//ƒ_ƒEƒ“ó‘Ô•t‚«‚ÌUŒ‚‚ğó‚¯‚½ê‡.
-	else if (m_pPlayer.GetHitInfo().hitEvent == CPlayerBase::HitEvent::Knockdown)
+	else if (m_pPlayer.GetHitAttack().hitEvent == CPlayerBase::HitEvent::Knockdown)
 	{
-		m_pPlayer.SetHitInfo(m_Velocity, CPlayerBase::HitEvent::WithDown);
+		m_pPlayer.SetHitAttack(m_Velocity, CPlayerBase::HitEvent::WithDown);
 	}
 }
 

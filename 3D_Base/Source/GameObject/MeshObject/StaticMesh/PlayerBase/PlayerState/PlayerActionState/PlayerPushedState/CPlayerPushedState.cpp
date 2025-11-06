@@ -123,7 +123,7 @@ void CPlayerPushedState::Update()
 	m_pPlayer.GetPlayerLeftHand().SetPosition(m_pPlayer.GetObjectPos(leftHandOffsetPos));
 
 	//プレイヤーの位置と押された移動量を足す.
-	playerPos += m_pPlayer.GetHitInfo().velocity;
+	playerPos += m_pPlayer.GetHitAttack().velocity;
 
 	//プレイヤーの位置を設定.
 	m_pPlayer.SetPosition(playerPos);

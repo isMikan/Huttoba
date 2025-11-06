@@ -186,12 +186,12 @@ void Fun::Hit()
 {
 	D3DXVECTOR3 a = D3DXVECTOR3(m_vPosition.x, 0, m_vPosition.z);
 
-	//playiers->GetPlayer(1)->SetHitInfo(
+	//playiers->GetPlayer(1)->SetHitAttack(
 	//	m_vPosition, playiers->GetPlayer(1)->GetPosition(),
 	//	1,	//動作確認で入れた1なので後でメンバ変数に変えておく
 	//	true, CPlayerBase::HitEvent::Pushed);
 
-	//m_pPlayer->SetHitInfo(
+	//m_pPlayer->SetHitAttack(
 	//	a, m_pPlayer->GetPosition(),
 	//	1,	//動作確認で入れた1なので後でメンバ変数に変えておく
 	//	true, CPlayerBase::HitEvent::Pushed);

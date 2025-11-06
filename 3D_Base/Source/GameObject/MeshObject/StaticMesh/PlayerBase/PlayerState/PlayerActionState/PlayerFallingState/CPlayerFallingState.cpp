@@ -57,7 +57,7 @@ void CPlayerFallingState::Enter()
 	//開始時の右軸を設定.
 	m_StartRightAxis = axes.right;
 
-	if (m_pPlayer.GetHitInfo().hitEvent == CPlayerBase::HitEvent::None)
+	if (m_pPlayer.GetHitAttack().hitEvent == CPlayerBase::HitEvent::None)
 	{
 		//初速度を設定.
 		m_Velocity = D3DXVECTOR3(0.f, 0.f, 0.f);
@@ -66,7 +66,7 @@ void CPlayerFallingState::Enter()
 	else
 	{
 		//初速度を設定.
-		m_Velocity = m_pPlayer.GetHitInfo().velocity;
+		m_Velocity = m_pPlayer.GetHitAttack().velocity;
 		m_Velocity.y = 0.f;
 
 		//吹き飛ばし量を取得.
@@ -101,12 +101,12 @@ void CPlayerFallingState::Update()
 		|| IsEnd())
 	{
 		//吹き飛ばす攻撃を受けた場合.
-		if (m_pPlayer.GetHitInfo().hitEvent == CPlayerBase::HitEvent::NoDown)
+		if (m_pPlayer.GetHitAttack().hitEvent == CPlayerBase::HitEvent::NoDown)
 		{
 			m_pPlayer.SetActionState(std::make_unique<CPlayerGetUpState>(m_pPlayer));
 		}
 		//ダウン状態付きの攻撃を受けた場合.
-		else if(m_pPlayer.GetHitInfo().hitEvent == CPlayerBase::HitEvent::WithDown)
+		else if(m_pPlayer.GetHitAttack().hitEvent == CPlayerBase::HitEvent::WithDown)
 		{
 			m_pPlayer.SetActionState(std::make_unique<CPlayerKnockdownState>(m_pPlayer));
 		}
@@ -117,7 +117,7 @@ void CPlayerFallingState::Update()
 		return;
 	}
 
-	//現在のクォータニオンを取得.
+	//クォータニオンを取得.
 	D3DXQUATERNION quat = m_pPlayer.GetQuaternion();
 
 	m_CurrentTiltAngle = m_pPlayer.WrapAngle(m_CurrentTiltAngle);
@@ -157,7 +157,7 @@ void CPlayerFallingState::Update()
 	float dt = CTimeManager::GetDeltaTime();
 
 	//地面についていない場合.
-	if (!m_pPlayer.GetIsOnGround())
+	if (!m_pPlayer.IsOnGround())
 	{
 		//飛んでいく移動量の計算.
 		m_Velocity.y += m_Gravity * dt;
@@ -198,7 +198,7 @@ bool CPlayerFallingState::IsEnd()
 	//回転を90度付近で止め、位置が地面についた場合.
 	if (WorldAngle() > m_RotateRangeMin
 		&& WorldAngle() < m_RotateRangeMax
-		&& m_pPlayer.GetIsOnGround())
+		&& m_pPlayer.IsOnGround())
 	{
 		return true;
 	}

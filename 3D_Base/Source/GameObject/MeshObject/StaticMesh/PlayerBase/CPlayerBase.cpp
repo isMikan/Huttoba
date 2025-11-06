@@ -26,16 +26,16 @@ CPlayerBase::CPlayerBase( int index )
 	, m_pTurnState		( std::make_unique<CPlayerTurnIdleState>( *this, 0.f, 0.f ) )
 	, m_pActionState	( std::make_unique<CPlayerActionIdleState>( *this ) )
 
-	, m_InstructDir		( 0.f, 0.f, 0.f )
-
 	, m_Instruct		( ActionInstruct::None )
-	, m_HitInfo			()
+	, m_HitAttack		()
+	, m_HitPlayer		()
 	, m_KnockdownTime	()
 
 	, m_IsMoving		( false )
 	, m_IsTurning		( false )
 	, m_IsHoldingItem	( false )
 	, m_IsOnGround		( false )
+
 	, m_HitForce		()
 
 	, m_Bus				( GetBus() )
@@ -53,11 +53,15 @@ CPlayerBase::~CPlayerBase()
 //--- 更新処理 ---.
 void CPlayerBase::Update()
 {
+	CStaticMeshObject::Update();
+	
 	//頭の調整位置を取得.
 	D3DXVECTOR3 headOffsetPos = GetPlayerHead().GetOffsetPos();
 	//頭の位置を設定.
 	GetPlayerHead().SetPosition(GetObjectPos(headOffsetPos));
 
+
+	//ゲーム開始時じゃなく、地面についておらず、落ちる状態じゃない場合.
 	if (!m_IsOnGround
 		&& !IsAnyActionState<CPlayerFallingState>())
 	{
@@ -66,13 +70,13 @@ void CPlayerBase::Update()
 	}
 
 	//押された場合の処理.
-	if (m_HitInfo.hitEvent == HitEvent::Pushed)
+	if (m_HitAttack.hitEvent == HitEvent::Pushed)
 	{
 		SetActionState(std::make_unique<CPlayerPushedState>(*this));
 	}
 	//吹き飛ばされた場合の処理.
-	if (m_HitInfo.hitEvent == HitEvent::Knockback
-		|| m_HitInfo.hitEvent == HitEvent::Knockdown)
+	if (m_HitAttack.hitEvent == HitEvent::Knockback
+		|| m_HitAttack.hitEvent == HitEvent::Knockdown)
 	{
 		SetActionState(std::make_unique<CPlayerKnockbackState>(*this));
 	}
@@ -89,26 +93,14 @@ void CPlayerBase::Update()
 	//行動の状態を更新.
 	m_pActionState->Update();
 
-	CStaticMeshObject::Update();
+	m_HitPlayer.isHit = false;
+
 }
 
 //--- 描画処理 ---.
 void CPlayerBase::Draw(D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAMERA& Camera)
 {
 	CStaticMeshObject::Draw(View, Proj, Light, Camera);
-}
-
-void CPlayerBase::CreateCollider()
-{
-	//新しい CollisionDataFactory を使ったコリジョンデータの生成と登録.
-	std::shared_ptr<CStaticMesh> mesh = AssetManager::Mesh(StaticMeshList::BCapsule);
-
-	m_pCollision =
-		CollisionDataFactory::CreateCapsuleForMesh(
-			this,	//当たり判定の主.
-			mesh,	//当たり判定用メッシュ.
-			CollisionBase::ColliderTag::Player	//主のタグ.
-		);
 }
 
 //--- 移動状態を設定 ---.
@@ -128,6 +120,40 @@ void CPlayerBase::SetActionState(std::unique_ptr<CPlayerState> newState)
 {
 	ChangeState(m_pActionState, std::move(newState));
 	m_Bus.Publish(m_pActionState.get());
+}
+
+//--- 当たり判定生成 ---.
+void CPlayerBase::CreateCollider()
+{
+	//新しい CollisionDataFactory を使ったコリジョンデータの生成と登録.
+	std::shared_ptr<CStaticMesh> mesh = AssetManager::Mesh(StaticMeshList::BCapsule);
+
+	m_pCollision =
+		CollisionDataFactory::CreateCapsuleForMesh(
+			this,	//当たり判定の主.
+			mesh,	//当たり判定用メッシュ.
+			CollisionBase::ColliderTag::Player	//主のタグ.
+		);
+}
+
+//--- 地面との衝突判定 ---.
+void CPlayerBase::OnGroundCollision(CGroundManager* pGroundMgr)
+{
+	// 外部からのデータがない場合は判定不能
+	if (!pGroundMgr) return;
+
+	// 自身の位置を取得
+	const D3DXVECTOR3 playerPos = GetPosition();
+
+	// サイズ決定(後で定数に突貫)
+	const float playerHalfHeight = 0.5f;
+
+	// CollisionManagerに判定を依頼し、結果をそのまま返す
+	m_IsOnGround = CollisionManager::CheckGroundContact(
+		playerPos,
+		playerHalfHeight,
+		pGroundMgr
+	);
 }
 
 //--- 位置を設定するために計算 ---.
@@ -234,7 +260,7 @@ D3DXVECTOR3 CPlayerBase::GetVelocity(
 	D3DXVec3Normalize(&dir, &dir);
 
 	//角度60度上方向.
-	angle = D3DXToRadian(60.f);
+	angle = D3DXToRadian(angle);
 
 	D3DXVECTOR3 velocity{};
 	velocity.x = cos(angle) * power * dir.x;	//x軸方向に.
@@ -258,26 +284,6 @@ float CPlayerBase::WrapAngle(float value)
 	return value;
 }
 
-//--- 地面との衝突判定 ---.
-void CPlayerBase::OnGroundCollision(CGroundManager* pGroundMgr)
-{
-	// 外部からのデータがない場合は判定不能
-	if (!pGroundMgr) return;
-
-	// 自身の位置を取得
-	const D3DXVECTOR3 playerPos = GetPosition();
-
-	// サイズ決定(後で定数に突貫)
-	const float playerHalfHeight = 0.5f;
-
-	// CollisionManagerに判定を依頼し、結果をそのまま返す
-	m_IsOnGround = CollisionManager::CheckGroundContact(
-		playerPos,
-		playerHalfHeight,
-		pGroundMgr
-	);
-}
-
 //======================================================================
 // 	   内部で呼び出す関数.
 //======================================================================
@@ -287,7 +293,7 @@ void CPlayerBase::ChangeState(
 	std::unique_ptr<CPlayerState>& currentState,
 	std::unique_ptr<CPlayerState> newState)
 {
-	if (currentState != nullptr)
+	if (currentState)
 	{
 		//状態の終了処理.
 		currentState->Exit();
@@ -296,7 +302,7 @@ void CPlayerBase::ChangeState(
 	//新しい状態にする.
 	currentState = std::move(newState);
 
-	if (currentState != nullptr)
+	if (currentState)
 	{
 		//状態の開始処理.
 		currentState->Enter();
@@ -315,21 +321,18 @@ void CPlayerBase::OnCollision(CollisionBase* pOtherCollider)
 		{
 			if (player->IsAnyActionState<CPlayerHandAttackState>())
 			{
-				SetHitInfo(
-					GetVelocity(player->GetPosition(), 10.f,60.f), CPlayerBase::HitEvent::Knockdown);
+				SetHitAttack(
+					GetVelocity(player->GetPosition(), 10.f, 60.f), CPlayerBase::HitEvent::Knockdown);
 			}
-		}
-		else
-		{
-			D3DXVECTOR3 dir = player->GetPosition() - m_vPosition;
-			D3DXVec3Normalize(&dir, &dir);
-
-			float dot = D3DXVec3Dot(&m_InstructDir, &dir);
-
-			if (dot > 0.f)
+			else
 			{
-				m_InstructDir -= dir * dot;
-				D3DXVec3Normalize(&m_InstructDir, &m_InstructDir);
+				//相手の位置を取得.
+				D3DXVECTOR3 hitPlayerPos = player->GetPosition();
+				D3DXVECTOR3 dir = hitPlayerPos - m_vPosition;
+				D3DXVec3Normalize(&dir, &dir);
+
+				m_HitPlayer.otherDir = dir;
+				m_HitPlayer.isHit = true;
 			}
 		}
 
@@ -360,6 +363,8 @@ void CPlayerBase::OnCollision(CollisionBase* pOtherCollider)
 				item->SetState(ItemBase::State::Use);
 			}
 		}
+		break;
+	default:
 		break;
 	}
 }

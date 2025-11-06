@@ -20,13 +20,26 @@ CPlayerActionIdleState::~CPlayerActionIdleState()
 //--- 状態の開始時に呼び出す ---.
 void CPlayerActionIdleState::Enter()
 {
+	//クォータニオンを取得.
+	D3DXQUATERNION quat = m_pPlayer.GetQuaternion();
+	//正規化.
+	D3DXQuaternionNormalize(&quat, &quat);
+
+	//クォータニオンの設定.
 	m_pPlayer.SetQuaternion(
-		0.f, m_pPlayer.GetQuaternion().y, 0.f, m_pPlayer.GetQuaternion().w);
+		0.f, quat.y, 0.f, quat.w);
 }
 
 //--- 状態の終了時に呼び出す ---.
 void CPlayerActionIdleState::Exit()
 {
+	//クォータニオンを取得.
+	D3DXQUATERNION quat = m_pPlayer.GetQuaternion();
+	//正規化.
+	D3DXQuaternionNormalize(&quat, &quat);
+
+	//クォータニオンの設定.
+	m_pPlayer.SetQuaternion(quat);
 }
 
 //--- この状態の間に呼び出す ---.
