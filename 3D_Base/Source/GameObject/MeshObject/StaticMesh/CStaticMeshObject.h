@@ -28,6 +28,7 @@ public:
 		m_pMesh = nullptr;
 	}
 
+//=== オブジェクトの色を変更するのに必要.		制作者 : 甲把 ===.
 	//オブジェクトの色を設定する関数.
 	void SetObjectColor(
 		int index,
@@ -45,13 +46,14 @@ public:
 	std::vector<ObjectColor> GetObjectColor(int index) const { 
 		return std::vector<ObjectColor>{m_ObjectColor[index]};
 	}
+//===============================================================.
 
 	std::shared_ptr<CStaticMesh> GetMesh() const { return m_pMesh; }
 
 protected:
 	std::shared_ptr<CStaticMesh>	m_pMesh;
 
-	std::vector<ObjectColor>		m_ObjectColor;		//オブジェクトの色.
+	std::vector<ObjectColor>		m_ObjectColor;	//オブジェクトの色.		制作者 : 甲把
 
-	std::shared_ptr<CollisionBase>	m_pCollision; //当たり判定
+	std::shared_ptr<CollisionBase>	m_pCollision;	//当たり判定
 };

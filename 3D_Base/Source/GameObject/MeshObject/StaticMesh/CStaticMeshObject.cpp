@@ -3,6 +3,7 @@
 CStaticMeshObject::CStaticMeshObject()
 	: m_pMesh			( nullptr )
 {
+	//初期色.
 	ObjectColor color = {
 		D3DXVECTOR4(0.5f, 0.5f, 0.5f, 1.f),
 		D3DXVECTOR4(0.3f, 0.3f, 0.3f, 1.f),
@@ -48,10 +49,8 @@ void CStaticMeshObject::Draw(
 	for (int mNo = 0; mNo < m_ObjectColor.size(); mNo++)
 	{
 		//CStaticMeshに現在の色を渡す.
-		m_pMesh->SetObjectColor(mNo, m_ObjectColor[mNo].diffuse, m_ObjectColor[mNo].ambient, m_ObjectColor[mNo].specular);
-		//m_pMesh->SetDiffuseColor(mNo, m_ObjectColor[mNo].diffuse);
-		//m_pMesh->SetAmbientColor(mNo, m_ObjectColor[mNo].ambient);
-		//m_pMesh->SetSpecularColor(mNo, m_ObjectColor[mNo].specular);
+		m_pMesh->SetObjectColor(
+			mNo, m_ObjectColor[mNo].diffuse, m_ObjectColor[mNo].ambient, m_ObjectColor[mNo].specular);
 	}
 
 	//レンダリング.
