@@ -94,7 +94,7 @@ void CGroundManager::Update()
 			m_pGrounds[gNo]->SetIsChangeColor(true);
 		}
 
-		//m_pGrounds[gNo]->Update();
+		m_pGrounds[gNo]->Update();
 	}
 }
 
