@@ -57,14 +57,14 @@ public:
 	};
 
 	//攻撃を受けた情報.
-	struct HitInfo
+	struct HitAttack
 	{
 		D3DXVECTOR3		velocity;					//初速度.
 		HitEvent		hitEvent = HitEvent::None;	//アニメーション.
 	};
 
 	//他のプレイヤーに接触したときの情報.
-	struct 
+	struct HitPlayer
 	{
 		D3DXVECTOR3	otherDir;	//接触したプレイヤーの方向.
 		float		dot;		//角度差.
@@ -84,18 +84,21 @@ public:
 	virtual void Draw(
 		D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAMERA& Camera) override;
 
-	//当たり判定生成
-	void CreateCollider();
-
-	//当たり判定削除をマネージャーで行うので取得できるようにする
-	std::shared_ptr<CollisionBase> GetCollider() { return m_pCollision; }
-
 	//--- 移動状態を設定 ---.
 	void SetMoveState(std::unique_ptr<CPlayerState> newState);
 	//--- 回転状態を設定 ---.
 	void SetTurnState(std::unique_ptr<CPlayerState> newState);
 	//--- 行動状態を設定 ---.
 	void SetActionState(std::unique_ptr<CPlayerState> newState);
+
+	//--- 当たり判定生成 ---.
+	void CreateCollider();
+
+	//--- 地面との衝突判定 ---.
+	void OnGroundCollision(CGroundManager* pGroundMgr);
+
+	//当たり判定削除をマネージャーで行うので取得できるようにする
+	std::shared_ptr<CollisionBase> GetCollider() { return m_pCollision; }
 
 	//--- 位置を設定するために計算 ---.
 	D3DXVECTOR3 GetObjectPos(D3DXVECTOR3 offset);
@@ -125,9 +128,6 @@ public:
 	//--- 角度を0～360度にする ---.
 	float WrapAngle(float value);
 
-	//--- 地面との衝突判定 ---.
-	void OnGroundCollision(CGroundManager* pGroundMgr);
-
 //======================================================================
 
 	//プレイヤーが頭を持っている(書き込み用).
@@ -152,16 +152,19 @@ public:
 	float GetHitPower() const { return m_HitForce; }
 	
 	//攻撃を受けた情報を取得と設定.
-	HitInfo GetHitInfo() const { return m_HitInfo; }
+	HitAttack GetHitAttack() const { return m_HitAttack; }
 	void SetHitAnim(HitEvent anim) {
-		m_HitInfo.hitEvent = anim;
+		m_HitAttack.hitEvent = anim;
 	}
-	void SetHitInfo(
+	void SetHitAttack(
 		D3DXVECTOR3 velocity, HitEvent anim)
 	{
-		m_HitInfo.velocity = velocity;
-		m_HitInfo.hitEvent = anim;
+		m_HitAttack.velocity = velocity;
+		m_HitAttack.hitEvent = anim;
 	}
+
+	//プレイヤーの接触情報を取得と設定.
+	HitPlayer GetHitPlayer() const { return m_HitPlayer; }
 
 	//ダウン状態の時間を取得と設定.
 	Gauge GetKnockdownTime() const { return m_KnockdownTime; }
@@ -181,8 +184,8 @@ public:
 	bool IsHoldingItem() const { return m_IsHoldingItem; }
 	void SetHoldingItem(bool holding) { m_IsHoldingItem = holding; }
 
-	//アイテムを所持しているかの所得と設定.
-	bool GetIsOnGround() const { return m_IsOnGround; }
+	//地面についているかの所得と設定.
+	bool IsOnGround() const { return m_IsOnGround; }
 
 	//nullptr ではないかチェック.
 	template<typename T>
@@ -228,9 +231,9 @@ protected:
 	std::unique_ptr<CPlayerState>	m_pTurnState;		//回転.
 	std::unique_ptr<CPlayerState>	m_pActionState;		//行動.
 
-	D3DXVECTOR3		m_InstructDir;		//指示した方向.
 	ActionInstruct	m_Instruct;			//指示.
-	HitInfo			m_HitInfo;			//攻撃を受けた情報.
+	HitAttack		m_HitAttack;		//攻撃を受けた情報.
+	HitPlayer		m_HitPlayer;		//プレイヤーの接触情報.
 	Gauge			m_KnockdownTime;	//ダウン状態の時間を保存.
 
 	bool			m_IsMoving;			//移動しているか.

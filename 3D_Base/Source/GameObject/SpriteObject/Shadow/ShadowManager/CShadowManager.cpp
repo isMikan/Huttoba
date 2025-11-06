@@ -1,7 +1,7 @@
 #include "CShadowManager.h"
 
 CShadowManager::CShadowManager()
-	: m_pShadow()
+	: m_pShadow		()
 {
 	Create();
 }
@@ -54,7 +54,7 @@ void CShadowManager::Update(CPlayerManager* players, ItemManager* item)
 		//プレイヤーの位置を取得.
 		D3DXVECTOR3 playerPos = player->GetPosition();
 
-		if (player->GetIsOnGround())
+		if (player->IsOnGround())
 		{
 			m_pShadow[pNo]->Update(playerPos);
 		}

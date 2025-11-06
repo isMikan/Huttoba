@@ -36,10 +36,10 @@ private:
 // 	   内部で呼び出す関数.
 //======================================================================
 	//--- キャラクターの色を設定する関数 ---.
-	ObjectColor SetCharacterColor(int index);
+	ObjectColor CharacterColorSettings(int index);
 
-	//--- 初期位置を設定する関数 ---.
-	D3DXVECTOR3 SetDefaultPosition(int index);
+	//--- 初期位置と方向を設定する関数 ---.
+	void InitialSettings(int index);
 
 private:
 //======================================================================
@@ -48,4 +48,8 @@ private:
 	std::vector<std::unique_ptr<CPlayerBase>>		m_pPlayers;		//プレイヤー.
 
 	int		m_PlayerID;		//プレイヤー番号.
+
+	float			m_CreateTime;		//作成された時間.
+	float			m_ReadyTime;		//準備OKの時間.
+
 };
