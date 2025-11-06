@@ -63,6 +63,14 @@ public:
 		HitEvent		hitEvent = HitEvent::None;	//アニメーション.
 	};
 
+	//他のプレイヤーに接触したときの情報.
+	struct 
+	{
+		D3DXVECTOR3	otherDir;	//接触したプレイヤーの方向.
+		float		dot;		//角度差.
+		bool		isHit;		//衝突したか.
+	};
+
 public:
 	CPlayerBase( int index );
 	virtual ~CPlayerBase();
@@ -99,16 +107,16 @@ public:
 	D3DXVECTOR3 RotateVectorByQuat(
 		D3DXVECTOR3 vector, D3DXQUATERNION quat);
 
-	//--- プレイヤーの初期角度から傾きを計算する ---.
+	//--- プレイヤーの初期角度から傾きを計算 ---.
 	D3DXQUATERNION TiltedQuat(
 		D3DXQUATERNION	baseQuat,	//基準にする回転姿勢.
 		D3DXVECTOR3		localAxes,	//ローカル軸の方向.
 		float			tiltAngle);	//傾きの角度.
 
-	//--- 押された時の移動量を計算する ---.
+	//--- 押された時の移動量を計算 ---.
 	D3DXVECTOR3 Pushed(D3DXVECTOR3 sourcePos);
 
-	//--- 攻撃を受けた時のの移動量 ---.
+	//--- 攻撃を受けた時のの移動量を計算 ---.
 	D3DXVECTOR3 GetVelocity(
 		D3DXVECTOR3 sourcePos, 
 		float power, 
@@ -118,7 +126,7 @@ public:
 	float WrapAngle(float value);
 
 	//--- 地面との衝突判定 ---.
-	void IsOnGround(CGroundManager* pGroundMgr);
+	void OnGroundCollision(CGroundManager* pGroundMgr);
 
 //======================================================================
 
@@ -220,6 +228,7 @@ protected:
 	std::unique_ptr<CPlayerState>	m_pTurnState;		//回転.
 	std::unique_ptr<CPlayerState>	m_pActionState;		//行動.
 
+	D3DXVECTOR3		m_InstructDir;		//指示した方向.
 	ActionInstruct	m_Instruct;			//指示.
 	HitInfo			m_HitInfo;			//攻撃を受けた情報.
 	Gauge			m_KnockdownTime;	//ダウン状態の時間を保存.

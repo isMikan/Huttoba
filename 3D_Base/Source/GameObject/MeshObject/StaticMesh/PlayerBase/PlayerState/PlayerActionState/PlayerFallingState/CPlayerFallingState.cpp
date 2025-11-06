@@ -57,13 +57,22 @@ void CPlayerFallingState::Enter()
 	//開始時の右軸を設定.
 	m_StartRightAxis = axes.right;
 
-	//初速度を設定.
-	m_Velocity = m_pPlayer.GetHitInfo().velocity;
-	m_Velocity.y = 0.f;
+	if (m_pPlayer.GetHitInfo().hitEvent == CPlayerBase::HitEvent::None)
+	{
+		//初速度を設定.
+		m_Velocity = D3DXVECTOR3(0.f, 0.f, 0.f);
+		m_RotateSpeed = 30.f;
+	}
+	else
+	{
+		//初速度を設定.
+		m_Velocity = m_pPlayer.GetHitInfo().velocity;
+		m_Velocity.y = 0.f;
 
-	//吹き飛ばし量を取得.
-	float power = m_pPlayer.GetHitPower();
-	m_RotateSpeed += m_ForceMax - power;	//最大量から引いて速さの調整.
+		//吹き飛ばし量を取得.
+		float power = m_pPlayer.GetHitPower();
+		m_RotateSpeed += m_ForceMax - power;	//最大量から引いて速さの調整.
+	}
 }
 
 //--- 状態の終了時に呼び出す ---.
@@ -72,10 +81,10 @@ void CPlayerFallingState::Exit()
 	//SEを鳴らす.
 	AssetManager::Sound()->PlaySE(enSoundList::SE_Down);
 
-	//プレイヤーの位置を取得.
-	D3DXVECTOR3 playerPos = m_pPlayer.GetPosition();
-	//地面に着地.
-	m_pPlayer.SetPosition(playerPos.x, m_GroundPos, playerPos.z);
+	////プレイヤーの位置を取得.
+	//D3DXVECTOR3 playerPos = m_pPlayer.GetPosition();
+	////地面に着地.
+	//m_pPlayer.SetPosition(playerPos.x, m_GroundPos, playerPos.z);
 }
 
 //--- この状態の間に呼び出す ---.
@@ -147,12 +156,8 @@ void CPlayerFallingState::Update()
 	//1フレームの速さを取得.
 	float dt = CTimeManager::GetDeltaTime();
 
-	//地面についた場合.
-	if (playerPos.y <= m_GroundPos)
-	{
-		playerPos.y = m_GroundPos;	//位置をそろえておく.
-	}
-	else
+	//地面についていない場合.
+	if (!m_pPlayer.GetIsOnGround())
 	{
 		//飛んでいく移動量の計算.
 		m_Velocity.y += m_Gravity * dt;

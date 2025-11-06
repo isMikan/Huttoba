@@ -27,16 +27,19 @@ Bomb::Bomb()
 
 	, m_ColorTimer		( 0.0 )
 	
-	, m_OneExplosion	( false )
-
-	, m_tamesi			( false )
+	, m_IsExploded		( false )
 {
 	Init();
 	m_ObjectColor.resize(2);
-	m_ObjectColor[0].diffuse = D3DXVECTOR4(1.f, .5f, .5f, .5f);
-	m_ObjectColor[0].ambient = D3DXVECTOR4(0, 0, .0f, .5f);
-	m_ObjectColor[1].diffuse = D3DXVECTOR4(.5f, .5f, 1.f, .5f);
-	m_ObjectColor[1].ambient = D3DXVECTOR4(.0f, .0f, .0f, .5f);
+
+	//爆弾の爆弾部分の灰色の値
+	m_ObjectColor[0].diffuse = D3DXVECTOR4(0.2f, 0.2f, 0.2f, 1.0f);
+	//拡散反射だけではいい感じにならなかったので環境光も変化
+	m_ObjectColor[0].ambient = D3DXVECTOR4(0.15f, 0.15f, .15f, 1.f);
+
+	//爆弾の紐の部分の白色の値
+	m_ObjectColor[1].diffuse = D3DXVECTOR4(0.7f, 0.7f, 0.7f, 1.0f);
+	//m_ObjectColor[1].ambient = D3DXVECTOR4(.3f, .3f, .3f, .5f);
 
 }
 
@@ -56,6 +59,8 @@ void Bomb::Init()
 	m_tGravity = 0.01f;
 
 	std::shared_ptr<CStaticMesh> mesh = AssetManager::Mesh(StaticMeshList::ExplosionCol);
+
+
 
 	m_pCollision = CollisionDataFactory::CreateSphereForMesh(
 			this,
@@ -129,14 +134,13 @@ void Bomb::Destroy()
 
 void Bomb::OnCollision(CollisionBase* other)
 {
-	
 	if (other->GetTag() == CollisionBase::ColliderTag::Player)
 	{
 		if (CPlayer* player = dynamic_cast<CPlayer*>(other->GetListener()))
 		{
-			if (m_tamesi)
+			if (m_IsExploded)
 			{
-				Blow_Away(*player);
+				Smash(*player);
 			}
 		}
 	}
@@ -187,7 +191,7 @@ void Bomb::UseAndThrow()
 
 		m_Velocity = forward * m_MoveSpeed;
 
-		m_Velocity.y = 15.0f;
+		m_Velocity.y = 10.0f;
 
 		m_IsThrow = false;
 	}
@@ -210,22 +214,15 @@ void Bomb::UseAndThrow()
 	m_vPosition += m_Velocity * static_cast<float>(CTimeManager::GetDeltaTime());
 
 	ChangeColor();
-
-	//m_ExplosionCnt += CTimeManager::GetDeltaTime();
-
-	//if (m_ExplosionCnt >= m_ExplosionTime)
-	//{
-	//	Explosion(playiers);
-	//}
 }
 
 void Bomb::Explosion()
 {
-	if (!m_OneExplosion)
+	//爆発時に一度だけ処理する
+	if (!m_IsExploded)
 	{
-		//Blow_Away(playiers);
-		m_tamesi = true;
-		m_OneExplosion = true;
+		//爆発フラグをオンに
+		m_IsExploded = true;
 
 		static ::EsHandle hEffect = -1;
 
@@ -238,60 +235,59 @@ void Bomb::Explosion()
 	}
 }
 
-void Bomb::Blow_Away(CPlayer& playiers)
+void Bomb::Smash(CPlayer& playiers)
 {
-	D3DXVECTOR3 vecLen = m_vPosition - GetPosition();
+	//爆弾とプレイヤーの位置でベクトルをとる
+	D3DXVECTOR3 vecLen = m_vPosition - playiers.GetPosition();
 
+	//ベクトルを長さに変換
 	float len = D3DXVec3Length(&vecLen);
 
-	//playiers.SetHitInfo(
-	//	m_vPosition, GetPosition(),
-	//	CalculateForceScalar(len),
-	//	true, CPlayerBase::HitEvent::Knockdown);
+	float i = CalculateForceScalar(len);
+
+	//
+	D3DXVECTOR3 SmashVel = playiers.GetVelocity(m_vPosition, CalculateForceScalar(len), 60.0f);
+
+	playiers.SetHitInfo(
+		SmashVel,
+		CPlayerBase::HitEvent::Knockdown);
 }
 
 void Bomb::ChangeColor()
 {
-	//赤色
-	//m_pMesh->SetMaterialColor(0, D3DXVECTOR4(1, 0, 0, 1));
-	//黒色(全て0.5が元の色)
-	//m_ObjectColor[0].diffuse = D3DXVECTOR4(.5f, .5f, .5f, .5f);
-	//m_pMesh->SetMaterialColor(0, D3DXVECTOR4(.5f, .5f, .5f, .5f));
-
 	m_ColorTimer += CTimeManager::GetDeltaTime();
 
 	//点滅のスピードを経過時間/爆発するまでの時間をして割合で出す
-	double speed = 10.0f * (m_ColorTimer / m_ExplosionTime);
+	float speed = 10.0f * (static_cast<float>(m_ColorTimer) / m_ExplosionTime);
 
-	//+1.0fをすることで、sinの値が0~2の間の値になり、*0.25で0~0.5の値がtに入る
-	double blinkRate = (sin(m_ColorTimer * speed) + 1.0) * 0.25;
+	//+1.0fをすることで、sinの値が0~2の間の値になり、*0.5することで0~1の間の値が取れる
+	float blinkRate = (sinf(static_cast<float>(m_ColorTimer) * speed) + 1.0) * 0.5;
 
-	//カラー増加変数
-	float up = std::clamp(0.5f + static_cast<float>(blinkRate), .5f, 1.0f);
+	//灰色のカラーコード
+	D3DXVECTOR4 gray = D3DXVECTOR4(0.2f, 0.2f, 0.2f, 1.0f);
 
-	//カラー減少変数
-	float down = std::clamp(0.5f - static_cast<float>(blinkRate), 0.0f, 0.5f);
+	//赤色のカラーコード
+	D3DXVECTOR4 red = D3DXVECTOR4(1.0f, 0.0f, 0.0f, 1.0f);
 
 	//値が増加と減少がそれぞれあるので使いわけていく
-	D3DXVECTOR4 color = D3DXVECTOR4(up, down, down, up);
+	D3DXVECTOR4 color;
+
+	D3DXVec4Lerp(&color, &gray, &red, blinkRate);
 
 	m_ObjectColor[0].diffuse = color;
-	//m_pMesh->SetMaterialColor(0, color);
 }
 
 float Bomb::CalculateForceScalar(float distance)
 {
-	//線形補間で計算
-
 	//爆発の当たる範囲を仮設定
 	//当たり判定用メッシュの大きさにする
-	float maxDist = 6;
+	float maxDist = 2;
 
 	//0.0~1.0の間で距離の割合を出す
 	float ratio = 1.0f - (distance / maxDist);
 
 	//爆発の最小吹き飛ばし力
-	float minPower = 6.0f;
+	float minPower = 5.0f;
 
 	//爆発の最大吹き飛ばし力
 	float maxPower = m_KnockBackPower;

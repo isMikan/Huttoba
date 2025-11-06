@@ -20,6 +20,7 @@ CGroundManager::~CGroundManager()
 //--- \’zŠÖ” ---.
 void CGroundManager::Create()
 {
+	m_pGrounds.clear();
 	m_pGrounds.resize(Ground_Max);
 
 	for (auto& ground : m_pGrounds)
@@ -45,10 +46,7 @@ void CGroundManager::LoadData()
 //--- ”jŠüŠÖ” ---.
 void CGroundManager::Destroy()
 {
-	for (auto& ground : m_pGrounds)
-	{
-		ground.reset();
-	}
+	m_pGrounds.clear();
 }
 
 //--- XVŠÖ” ---.

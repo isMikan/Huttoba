@@ -26,6 +26,8 @@ CPlayerBase::CPlayerBase( int index )
 	, m_pTurnState		( std::make_unique<CPlayerTurnIdleState>( *this, 0.f, 0.f ) )
 	, m_pActionState	( std::make_unique<CPlayerActionIdleState>( *this ) )
 
+	, m_InstructDir		( 0.f, 0.f, 0.f )
+
 	, m_Instruct		( ActionInstruct::None )
 	, m_HitInfo			()
 	, m_KnockdownTime	()
@@ -56,7 +58,8 @@ void CPlayerBase::Update()
 	//頭の位置を設定.
 	GetPlayerHead().SetPosition(GetObjectPos(headOffsetPos));
 
-	if (!m_IsOnGround)
+	if (!m_IsOnGround
+		&& !IsAnyActionState<CPlayerFallingState>())
 	{
 		std::cout << "落ちる" << std::endl;
 		SetActionState(std::make_unique<CPlayerFallingState>(*this));
@@ -190,7 +193,7 @@ D3DXVECTOR3 CPlayerBase::RotateVectorByQuat(
 	return D3DXVECTOR3(result.x, result.y, result.z);
 }
 
-//--- プレイヤーの初期角度から傾きを計算する ---.
+//--- プレイヤーの初期角度から傾きを計算 ---.
 D3DXQUATERNION CPlayerBase::TiltedQuat(
 	D3DXQUATERNION baseQuat, D3DXVECTOR3 localAxes, float tiltAngle)
 {
@@ -206,7 +209,7 @@ D3DXQUATERNION CPlayerBase::TiltedQuat(
 	return quat;
 }
 
-//--- 押された時の移動量を計算する ---.
+//--- 押された時の移動量を計算 ---.
 D3DXVECTOR3 CPlayerBase::Pushed(D3DXVECTOR3 sourcePos)
 {
 	//押されるベクトル.
@@ -219,7 +222,7 @@ D3DXVECTOR3 CPlayerBase::Pushed(D3DXVECTOR3 sourcePos)
 	return pos;
 }
 
-//--- 攻撃を受けた時のの移動量 ---.
+//--- 攻撃を受けた時のの移動量を計算 ---.
 D3DXVECTOR3 CPlayerBase::GetVelocity(
 	D3DXVECTOR3 sourcePos, float power, float angle)
 {
@@ -256,7 +259,7 @@ float CPlayerBase::WrapAngle(float value)
 }
 
 //--- 地面との衝突判定 ---.
-void CPlayerBase::IsOnGround(CGroundManager* pGroundMgr)
+void CPlayerBase::OnGroundCollision(CGroundManager* pGroundMgr)
 {
 	// 外部からのデータがない場合は判定不能
 	if (!pGroundMgr) return;
@@ -300,6 +303,7 @@ void CPlayerBase::ChangeState(
 	}
 }
 
+//--- 衝突判定 ---.
 void CPlayerBase::OnCollision(CollisionBase* pOtherCollider)
 {
 	//衝突相手のタグをチェックし、応答を切り替える.
@@ -315,6 +319,20 @@ void CPlayerBase::OnCollision(CollisionBase* pOtherCollider)
 					GetVelocity(player->GetPosition(), 10.f,60.f), CPlayerBase::HitEvent::Knockdown);
 			}
 		}
+		else
+		{
+			D3DXVECTOR3 dir = player->GetPosition() - m_vPosition;
+			D3DXVec3Normalize(&dir, &dir);
+
+			float dot = D3DXVec3Dot(&m_InstructDir, &dir);
+
+			if (dot > 0.f)
+			{
+				m_InstructDir -= dir * dot;
+				D3DXVec3Normalize(&m_InstructDir, &m_InstructDir);
+			}
+		}
+
 		break;
 
 	case CollisionBase::ColliderTag::Bomb:

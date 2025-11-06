@@ -21,6 +21,7 @@ void CShadowManager::Create()
 	{
 		shadow = std::make_unique<CShadow>();
 		shadow->SetScale(0.015f, 0.015f, 1.f);
+		shadow->SetPosition(0.f, -10.f, 0.f);
 	}
 }
 
@@ -37,24 +38,30 @@ void CShadowManager::LoadData()
 //--- 破棄関数 ---.
 void CShadowManager::Destroy()
 {
-	for (auto& shadow : m_pShadow)
-	{
-		shadow.reset();
-	}
+	m_pShadow.clear();
 }
 
 //--- 更新関数 ---.
-void CShadowManager::Update(CPlayerManager* player, ItemManager* item)
+void CShadowManager::Update(CPlayerManager* players, ItemManager* item)
 {
 	for (int pNo = 0; pNo < Player_Max; pNo++)
 	{
+		auto player = players->GetPlayer(pNo);
+
 		//プレイヤーがいなかったら次へ.
-		if (!player->GetPlayer(pNo)) continue;
+		if (!player) continue;
 
 		//プレイヤーの位置を取得.
-		D3DXVECTOR3 playerPos = player->GetPlayer(pNo)->GetPosition();
+		D3DXVECTOR3 playerPos = player->GetPosition();
 
-		m_pShadow[pNo]->Update(playerPos);
+		if (player->GetIsOnGround())
+		{
+			m_pShadow[pNo]->Update(playerPos);
+		}
+		else
+		{
+			m_pShadow[pNo]->SetPosition(0.f, -10.f, 0.f);
+		}
 	}
 
 	for (int i = Player_Max ; i < item->GetItemVectorNum()+ Player_Max;i++)

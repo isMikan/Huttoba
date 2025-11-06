@@ -84,6 +84,16 @@ public:
         Instance().m_Slot[index].state = PlayerSlotState::COM;
         Instance().m_Slot[index].ready = false;
     }
+
+    /// <summary>
+    /// プレイヤースロットの準備状態を取得
+    /// </summary>
+    /// <param name="index">取得したいプレイヤー番号</param>
+    /// <returns>引数の番号のプレイヤーがtrueなら人,falseならCOM</returns>
+    bool GetSlotRedy(int index)
+    {
+        return Instance().m_Slot[index].ready;
+    }
     //-------
 
 private:

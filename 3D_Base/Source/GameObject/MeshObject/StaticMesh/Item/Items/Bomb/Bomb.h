@@ -48,14 +48,13 @@ private:
     //爆発処理
     void Explosion();
 
-    //吹き飛ばし処理(仮)
-    void Blow_Away(CPlayer& playiers);
+    //吹き飛ばし処理
+    void Smash(CPlayer& playiers);
 
     //爆弾の爆発前の色の変更処理
     void ChangeColor();
 
     //爆弾とプレイヤーの距離に応じて吹き飛ばし力を計算
-    //線形補間を使用、スカラーの計算
     float CalculateForceScalar(float distance);
 
 private:
@@ -89,9 +88,6 @@ private:
     //点滅の経過時間を記録
     double      m_ColorTimer;
 
-    //爆発の処理で一度だけ処理するものがあるので追加
-    bool        m_OneExplosion;
-
-    //試し処理
-    bool        m_tamesi;
+    //爆発時の処理
+    bool        m_IsExploded;
 };

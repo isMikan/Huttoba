@@ -90,10 +90,6 @@ void CGaugeManager::Destroy()
 {
 	m_SubscribePlayers.clear();
 	m_PlayerGauge.clear();
-	for (auto& gauge : m_pGauge)
-	{
-		gauge.reset();
-	}
 	m_pGauge.clear();
 }
 

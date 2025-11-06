@@ -71,6 +71,8 @@ void CSceneManager::CreateScene(int Scene)
 	}
 	//シーン変更確認用フラッグをfalseに
 	m_pScene->ChangeSceneFlagFalse();
+
+	CTimeManager::Reset();
 }
 
 void CSceneManager::SetInputBInding()
