@@ -840,23 +840,6 @@ void CStaticMesh::Render(
 	m_pContext11->VSSetConstantBuffers(	2, 1, pCBufferPerFrame);	//頂点シェーダ.
 	m_pContext11->PSSetConstantBuffers(	2, 1, pCBufferPerFrame);	//ピクセルシェーダ.
 
-	//マテリアルの各要素をシェーダに渡す.
-	D3D11_MAPPED_SUBRESOURCE pDataMat;
-	//Map でGPUのバッファにデータを書き込む.
-	if (SUCCEEDED(
-		m_pContext11->Map(m_pCBufferPerMaterial.Get(),
-			0, D3D11_MAP_WRITE_DISCARD, 0, &pDataMat)))
-	{
-		//GPUに書き込み.
-		CBUFFER_PER_MATERIAL* dataPtr = (CBUFFER_PER_MATERIAL*)pDataMat.pData;
-
-		dataPtr->Diffuse = m_Diffuse;
-		dataPtr->Ambient = m_Ambient;
-		dataPtr->Specular = m_Specular;
-
-		m_pContext11->Unmap(m_pCBufferPerMaterial.Get(), 0);	//通知.
-	}
-
 	//メッシュのレンダリング.
 	RenderMesh(mWorld, mView, mProj);
 }
@@ -938,11 +921,14 @@ void CStaticMesh::RenderMesh(
 			cb.Diffuse = m_pMaterials[m_AttrID[No]].Diffuse;
 			cb.Ambient = m_pMaterials[m_AttrID[No]].Ambient;
 			cb.Specular = m_pMaterials[m_AttrID[No]].Specular;
+
+		//=== 色を自由にプログラム上で変更する.		制作者 : 甲把 ===.
 			//色が設定されていたら、その色を入れる.
 			if (0 < m_ObjectColor.size())
 			{
 				for (int mNo = 0; mNo < m_ObjectColor.size(); mNo++)
 				{
+					//マテリアル番号が指定していたものと一致している場合.
 					if (m_AttrID[No] == mNo)
 					{
 						cb.Diffuse = m_ObjectColor[mNo].diffuse;
@@ -951,6 +937,7 @@ void CStaticMesh::RenderMesh(
 					}
 				}
 			}
+		//===========================================================.
 
 			memcpy_s(pDataMat.pData, pDataMat.RowPitch,
 				(void*)&cb, sizeof(cb));

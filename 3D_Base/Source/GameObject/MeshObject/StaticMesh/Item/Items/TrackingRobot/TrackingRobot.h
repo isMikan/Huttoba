@@ -1,8 +1,10 @@
 #pragma once
 #include "Item/ItemBase.h"
 
-class TrackingRobot 
-    : public ItemBase
+class CPlayer;
+
+class TrackingRobot
+    : public ItemBase, public ICollisionListener
 {
 public:
     TrackingRobot();
@@ -29,34 +31,38 @@ public:
     void Destroy()override;
 
 private:
-    //取得モーション
-    void TakeMotion();
-    //所持中モーション
-    void PossessionMotion();
-    //使用モーション
-    void UseMotion();
-    //投擲モーション
-    void ThrowMotion();
+    //当たった際の処理
+    void OnCollision(CollisionBase* other)override;
+
+    //所持中の移動処理
+    void HaveMove();
+    //使用中の移動処理
+    void UseMove();
+    //投擲の移動処理
+    void ThrowMove();
 
     //爆発処理
     void Explosion();
 
     //吹き飛ばし処理
-    void Smash();
+    void Smash(CPlayer& playiers);
 
     //爆弾の爆発前の色の変更処理
     void ChangeColor();
 
-    //線形補間を使用、スカラーの計算
+    //爆弾とプレイヤーの距離に応じて吹き飛ばし力を計算
     float CalculateForceScalar(float distance);
 
+    //追尾処理
+    void Homing();
+
 private:
-    //アイテムを取得したときかを判定
-    bool        m_IsTake;
-    //アイテムを手に持つまでの時間
-    float       m_PickUpTime;
-    //アイテムを手に持つまでのカウント
-    double      m_PickUpCnt;
+
+    std::vector<CPlayerBase*> m_pTargetList;
+
+    CPlayerBase* m_pTarget;
+
+    bool m_IsHoming;
 
     //移動速度
     D3DXVECTOR3 m_Velocity;
@@ -79,6 +85,6 @@ private:
     //点滅の経過時間を記録
     double      m_ColorTimer;
 
-    //爆発の処理で一度だけ処理するものがあるので追加
-    bool        m_OneExplosion;
+    //爆発時の処理
+    bool        m_IsExploded;
 };

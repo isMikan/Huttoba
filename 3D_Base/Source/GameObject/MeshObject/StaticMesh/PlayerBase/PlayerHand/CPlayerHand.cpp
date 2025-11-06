@@ -3,6 +3,7 @@
 CPlayerHand::CPlayerHand()
 	: m_OffsetPos		( 0.f, 0.f, 0.f )
 {
+	//éËÇÃêF.
 	ObjectColor color = {
 		D3DXVECTOR4(0.8f, 0.8f, 0.8f, 1.f),
 		D3DXVECTOR4(0.3f, 0.3f, 0.3f, 1.f),

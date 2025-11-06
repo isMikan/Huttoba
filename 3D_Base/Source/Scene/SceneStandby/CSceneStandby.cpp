@@ -101,12 +101,12 @@ void CSceneStandby::Draw()
 	//カメラの処理.
 	CCameraManager::Update();
 
-	//=== 情報を取得 ===.
+//=== 情報を取得 ===.
 	CAMERA camera = CCameraManager::GetCamera();		//カメラ.
 	LIGHT light = CCameraManager::GetLight();			//ライト.
 	D3DXMATRIX view = CCameraManager::GetView();		//ビュー.
 	D3DXMATRIX proj = CCameraManager::GetProjection();	//プロジェクション.
-	//==================.
+//==================.
 
 	for (int i = 0;i < 4;i++)
 	{
