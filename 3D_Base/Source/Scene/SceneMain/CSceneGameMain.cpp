@@ -1,4 +1,6 @@
 #include "CSceneGameMain.h"
+
+#include "Camera/CameraManager/CCameraManager.h"
 #include "Assets/Effect/CEffect.h"
 #include "Assets/Sound/CSoundManager.h"
 #include "Item/ItemManager/ItemManager.h"
@@ -10,8 +12,6 @@ CSceneGameMain::CSceneGameMain( HWND hWnd)
 	: m_hWnd			( hWnd )
 
 	, m_pDbgText		( nullptr )
-
-	, m_pCamera			()
 
 	, m_pUIMap			()
 
@@ -51,9 +51,6 @@ HRESULT CSceneGameMain::Create()
 	//デバッグテキストのインスタンス作成
 	m_pDbgText = std::make_unique<CDebugText>();
 
-	//カメラのインスタンス作成.
-	m_pCamera = std::make_unique<CCamera>();
-
 	//影マネージャーのインスタンス作成
 	m_pShadowManager = std::make_unique<CShadowManager>();
 
@@ -84,9 +81,9 @@ HRESULT CSceneGameMain::LoadData()
 		return E_FAIL;
 	}
 
-	m_pCamera->SetPosition( 0.f, 12.f, -5.f );
-	m_pCamera->SetLook( 0.f, 2.f, 6.f );
-	m_pCamera->SetLight( 0.f, 30.f, -10.f );
+	CCameraManager::SetPosition( 0.f, 12.f, -5.f );
+	CCameraManager::SetLook( 0.f, 2.f, 6.f );
+	CCameraManager::SetLight( 0.f, 30.f, -10.f );
 
 	//爆発スプライトを設定.
 	for (const auto& exp : m_pExplosiones)
@@ -193,19 +190,20 @@ void CSceneGameMain::Draw()
 	DebugDrawManager* ddm = DebugDrawManager::GetInstance();
 
 	//カメラの処理.
-	m_pCamera->Update();
-	//情報を取得.
-	CAMERA camera = m_pCamera->GetCamera();
-	LIGHT light = m_pCamera->GetLight();
-	D3DXMATRIX mView = m_pCamera->GetView();
-	D3DXMATRIX mProj = m_pCamera->GetProj();
+	CCameraManager::Update();
 
+	//=== 情報を取得 ===.
+	CAMERA camera = CCameraManager::GetCamera();		//カメラ.
+	LIGHT light = CCameraManager::GetLight();			//ライト.
+	D3DXMATRIX view = CCameraManager::GetView();		//ビュー.
+	D3DXMATRIX proj = CCameraManager::GetProjection();	//プロジェクション.
+	//==================.
 
 #ifdef _DEBUG
 
 	// ViewProj 行列を作成
 	D3DXMATRIX mViewProj;
-	D3DXMatrixMultiply(&mViewProj, &mView, &mProj);
+	D3DXMatrixMultiply(&mViewProj, &view, &proj);
 
 	DebugDrawManager::GetInstance()->Begin(CDirectX11::GetInstance()->GetContext(), mViewProj);
 
@@ -229,15 +227,15 @@ void CSceneGameMain::Draw()
 #endif
 
 	//地面マネージャーの描画.
-	m_pGroundManager->Draw(mView, mProj, light, camera);
+	m_pGroundManager->Draw(view, proj, light, camera);
 
 	//影マネージャーの描画.
-	m_pShadowManager->Draw(m_pDx11, mView, mProj);
+	m_pShadowManager->Draw(m_pDx11, view, proj);
 
 	//プレイヤーの描画.
-	m_pPlayerManager->Draw(mView, mProj, light, camera);
+	m_pPlayerManager->Draw(view, proj, light, camera);
 
-	m_pItemManager->Draw(mView, mProj, light, camera);
+	m_pItemManager->Draw(view, proj, light, camera);
 
 	////ボーン座標に合わせて球体を表示
 	//m_pStaticMeshMap[StaticMeshList::BSphere]->SetPosition(m_ZakoBonePos);
@@ -251,14 +249,14 @@ void CSceneGameMain::Draw()
 		//UI.second->Draw();
 	}
 
-	m_pGaugeManager->Draw(mView, mProj);
+	m_pGaugeManager->Draw(view, proj);
 
 	//やりたいことが終わったので、深度テストを有効にしておく
 	m_pDx11->SetDepth(true);
 
 	for (auto& exp : m_pExplosiones)
 	{
-		exp->Draw(mView, mProj);
+		exp->Draw(view, proj);
 	}
 
 	////デバッグテキストの描画
@@ -272,7 +270,7 @@ void CSceneGameMain::Draw()
 	//m_pDbgText->Render(dbgText, 10, 110);
 
 	//Effectクラス
-	AssetManager::Effect()->Draw(mView, mProj, light, camera);
+	AssetManager::Effect()->Draw(view, proj, light, camera);
 
 
 //当たり判定の描画切り替え
@@ -288,7 +286,7 @@ void CSceneGameMain::Draw()
 	{
 		// シングルトンとして呼び出しに戻す
 		CDirectX11::GetInstance()->SetRasterizerWireframe();
-		CollisionDraw::GetInstance()->Draw(mView, mProj, light, camera);
+		CollisionDraw::GetInstance()->Draw(view, proj, light, camera);
 		CDirectX11::GetInstance()->SetRasterizerSolid();
 	}
 

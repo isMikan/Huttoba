@@ -1,5 +1,7 @@
 #include "CSceneStandby.h"
 
+#include "Camera/CameraManager/CCameraManager.h"
+
 CSceneStandby::CSceneStandby()
 	: m_pSpriteStandbyImg	( nullptr )
 
@@ -22,9 +24,9 @@ CSceneStandby::CSceneStandby()
 	InitializeRedyFont();
 	SetSelectorPos();
 
-	m_pCamera->SetPosition(0.f, 10.f, 10.f);
-	m_pCamera->SetLook(0.f, 0.f, -10.f);
-	m_pCamera->SetLight(1.5f, 1.f, -1.f);
+	CCameraManager::SetPosition(0.f, 10.f, 10.f);
+	CCameraManager::SetLook(0.f, 0.f, -10.f);
+	CCameraManager::SetLight(1.5f, 1.f, -1.f);
 }
 
 CSceneStandby::~CSceneStandby()
@@ -96,12 +98,15 @@ void CSceneStandby::Update()
 
 void CSceneStandby::Draw()
 {
-	m_pCamera->Update();	//値をとる前に処理したいのでここに入れた(Updateに入れるべきかも.
+	//カメラの処理.
+	CCameraManager::Update();
 
-	D3DXMATRIX	mView = m_pCamera->GetView();
-	D3DXMATRIX	mProj = m_pCamera->GetProj();
-	LIGHT		light = m_pCamera->GetLight();
-	CAMERA		camera = m_pCamera->GetCamera();
+	//=== 情報を取得 ===.
+	CAMERA camera = CCameraManager::GetCamera();		//カメラ.
+	LIGHT light = CCameraManager::GetLight();			//ライト.
+	D3DXMATRIX view = CCameraManager::GetView();		//ビュー.
+	D3DXMATRIX proj = CCameraManager::GetProjection();	//プロジェクション.
+	//==================.
 
 	for (int i = 0;i < 4;i++)
 	{
