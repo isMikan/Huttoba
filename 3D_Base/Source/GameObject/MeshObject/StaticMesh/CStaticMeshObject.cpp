@@ -3,6 +3,7 @@
 CStaticMeshObject::CStaticMeshObject()
 	: m_pMesh			( nullptr )
 {
+	//‰ŠúF.
 	ObjectColor color = {
 		D3DXVECTOR4(0.5f, 0.5f, 0.5f, 1.f),
 		D3DXVECTOR4(0.3f, 0.3f, 0.3f, 1.f),
