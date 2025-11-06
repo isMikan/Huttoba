@@ -11,7 +11,7 @@
 #include "PlayerState/CPlayerState.h"
 
 /***********************************************************************
-*   プレイヤーベースクラス.
+*   プレイヤーベースクラス.						制作者 : 甲把
 **/
 class CPlayerBase
 	: public CStaticMeshObject

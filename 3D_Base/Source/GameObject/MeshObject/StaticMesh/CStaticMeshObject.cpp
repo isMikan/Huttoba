@@ -48,10 +48,8 @@ void CStaticMeshObject::Draw(
 	for (int mNo = 0; mNo < m_ObjectColor.size(); mNo++)
 	{
 		//CStaticMesh‚ÉŒ»Ý‚ÌF‚ð“n‚·.
-		m_pMesh->SetObjectColor(mNo, m_ObjectColor[mNo].diffuse, m_ObjectColor[mNo].ambient, m_ObjectColor[mNo].specular);
-		//m_pMesh->SetDiffuseColor(mNo, m_ObjectColor[mNo].diffuse);
-		//m_pMesh->SetAmbientColor(mNo, m_ObjectColor[mNo].ambient);
-		//m_pMesh->SetSpecularColor(mNo, m_ObjectColor[mNo].specular);
+		m_pMesh->SetObjectColor(
+			mNo, m_ObjectColor[mNo].diffuse, m_ObjectColor[mNo].ambient, m_ObjectColor[mNo].specular);
 	}
 
 	//ƒŒƒ“ƒ_ƒŠƒ“ƒO.

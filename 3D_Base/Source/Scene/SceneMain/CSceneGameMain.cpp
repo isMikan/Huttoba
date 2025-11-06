@@ -194,12 +194,12 @@ void CSceneGameMain::Draw()
 	//カメラを動かす処理.
 	//CCameraManager::PositionUpdate(m_pGroundManager.get());
 
-	//=== 情報を取得 ===.
+//=== 情報を取得 ===.
 	CAMERA camera = CCameraManager::GetCamera();		//カメラ.
 	LIGHT light = CCameraManager::GetLight();			//ライト.
 	D3DXMATRIX view = CCameraManager::GetView();		//ビュー.
 	D3DXMATRIX proj = CCameraManager::GetProjection();	//プロジェクション.
-	//==================.
+//==================.
 
 #ifdef _DEBUG
 
