@@ -2,6 +2,11 @@
 
 #include "Camera/CCamera.h"
 
+#include "GameObject/MeshObject/StaticMesh/Ground/GroundManager/CGroundManager.h"
+
+/***********************************************************************
+*	カメラマネージャークラス.						制作者 : 甲把
+**/
 class CCameraManager
 {
 public:
@@ -20,6 +25,10 @@ public:
 //======================================================================
 	//更新関数を外部へ.
 	static void Update() { GetInstance().Update_Internal(); }
+	//更新関数を外部へ.
+	static void PositionUpdate(CGroundManager* groundManager) {
+		GetInstance().PositionUpdate_Internal(groundManager);
+	}
 		
 //======================================================================
 
@@ -60,6 +69,7 @@ private:
 //======================================================================
 	//--- 更新処理 ---.
 	void Update_Internal();
+	void PositionUpdate_Internal(CGroundManager* groundManager);
 
 private:
 //======================================================================
@@ -72,4 +82,6 @@ private:
 
 	D3DXMATRIX		m_mView;	//ビュー.
 	D3DXMATRIX		m_mProj;	//射影（プロジェクション）.
+
+	std::vector<CAMERA>		m_LastCamera;	//目的のカメラ情報.
 };

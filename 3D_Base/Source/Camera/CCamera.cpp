@@ -19,7 +19,7 @@ CCamera::~CCamera()
 //======================================================================
 
 //--- ビューの変換処理 ---.
-void CCamera::UpdateView(const CAMERA& camera, D3DXMATRIX& view)
+void CCamera::UpdateView(const CAMERA& camera, D3DXMATRIX& view) const
 {
 	//ビュー（カメラ）変換.
 	D3DXMatrixLookAtLH(

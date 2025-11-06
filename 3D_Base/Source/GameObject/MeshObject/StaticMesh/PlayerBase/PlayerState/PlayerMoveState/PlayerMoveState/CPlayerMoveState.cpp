@@ -73,7 +73,6 @@ void CPlayerMoveState::Update()
 
 	CPlayerBase::HitPlayer hitPlayer = m_pPlayer.GetHitPlayer();
 
-	std::cout << hitPlayer.isHit << std::endl;
 	if (hitPlayer.isHit)
 	{
 		float dot = D3DXVec3Dot(&m_InputDir, &hitPlayer.otherDir);

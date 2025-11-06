@@ -1,5 +1,8 @@
 #pragma once
 
+/***********************************************************************
+*	カメラクラス.								制作者 : 甲把
+**/
 class CCamera
 {
 public:
@@ -10,7 +13,7 @@ public:
 // 	   外部で呼び出す関数.
 //======================================================================
 	//--- ビューの変換処理 ---.
-	void UpdateView(const CAMERA& camera, D3DXMATRIX& view);
+	void UpdateView(const CAMERA& camera, D3DXMATRIX& view) const;
 	//--- プロジェクションの変換処理 ---.
 	void UpdateProjection(D3DXMATRIX& proj);
 

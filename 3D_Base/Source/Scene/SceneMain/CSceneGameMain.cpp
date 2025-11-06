@@ -191,6 +191,8 @@ void CSceneGameMain::Draw()
 
 	//ƒJƒƒ‰‚Ìˆ—.
 	CCameraManager::Update();
+	//ƒJƒƒ‰‚ğ“®‚©‚·ˆ—.
+	//CCameraManager::PositionUpdate(m_pGroundManager.get());
 
 	//=== î•ñ‚ğæ“¾ ===.
 	CAMERA camera = CCameraManager::GetCamera();		//ƒJƒƒ‰.
@@ -291,8 +293,6 @@ void CSceneGameMain::Draw()
 	}
 
 #endif // DEBUG
-
-
 }
 
 HRESULT CSceneGameMain::CreateUI()
