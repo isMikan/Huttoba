@@ -81,6 +81,10 @@ void CPlayerFallingState::Exit()
 	//SEを鳴らす.
 	AssetManager::Sound()->PlaySE(enSoundList::SE_Down);
 
+	//クォータニオンを取得.
+	D3DXQUATERNION quat = m_pPlayer.GetQuaternion();
+
+	m_pPlayer.SetQuaternion(quat.x, m_StartQuat.y, quat.z, m_StartQuat.w);
 	////プレイヤーの位置を取得.
 	//D3DXVECTOR3 playerPos = m_pPlayer.GetPosition();
 	////地面に着地.

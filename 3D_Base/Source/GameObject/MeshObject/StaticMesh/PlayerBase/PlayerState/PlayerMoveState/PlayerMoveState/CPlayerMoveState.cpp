@@ -43,8 +43,12 @@ void CPlayerMoveState::Exit()
 //--- この状態の間に呼び出す ---.
 void CPlayerMoveState::Update()
 {
+	//プレイヤーの位置を取得.
+	D3DXVECTOR3 playerPos = m_pPlayer.GetPosition();
+	
 	//入力されていなかった場合.
-	if (m_InputDir.x == 0 && m_InputDir.z == 0)
+	if (!m_pPlayer.IsAboveGround() && playerPos.y < 1.f
+		|| m_InputDir.x == 0 && m_InputDir.z == 0)
 	{
 		//移動していない状態へ.
 		m_pPlayer.SetMoveState(std::make_unique<CPlayerMoveIdleState>(m_pPlayer));
@@ -90,8 +94,6 @@ void CPlayerMoveState::Update()
 
 	//ベクトル量の計算.
 	D3DXVECTOR3 velocity = dir * m_CurrentSpeed;
-	//プレイヤーの位置を取得.
-	D3DXVECTOR3 playerPos = m_pPlayer.GetPosition();
 	//ベクトル量を足す.
 	playerPos += velocity;
 
