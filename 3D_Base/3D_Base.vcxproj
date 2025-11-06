@@ -237,6 +237,7 @@
     <ClCompile Include="Source\Collision\CollisionMeshUtility\MeshCollisionUtility.cpp" />
     <ClCompile Include="Source\Collision\CollisionData\CollisionDataFactory\CollisionDataFactory.cpp" />
     <ClCompile Include="Source\Collision\CollisionStrategy\CollisionPattern\CollisionSphereSphere\CollisionStrategySphereSphere.cpp" />
+    <ClCompile Include="Source\Collision\Ray\CRay.cpp" />
     <ClCompile Include="Source\DebugText\DebugDrawManager\DebugDrawManager.cpp" />
     <ClCompile Include="Source\Collision\Collider\CollisionSphere\CollisionSphere.cpp" />
     <ClCompile Include="Source\Collision\CollisionStrategy\CollisionStrategyFactory\CollisionStrategyFactory.cpp" />
@@ -344,6 +345,7 @@
     <ClInclude Include="Source\Collision\CollisionMeshUtility\MeshCollisionUtility.h" />
     <ClInclude Include="Source\Collision\CollisionData\CollisionDataFactory\CollisionDataFactory.h" />
     <ClInclude Include="Source\Collision\CollisionStrategy\CollisionPattern\CollisionSphereSphere\CollisionStrategySphereSphere.h" />
+    <ClInclude Include="Source\Collision\Ray\CRay.h" />
     <ClInclude Include="Source\DebugText\DebugDrawManager\DebugDrawManager.h" />
     <ClInclude Include="Source\Collision\Collider\CollisionSphere\CollisionSphere.h" />
     <ClInclude Include="Source\Collision\CollisionStrategy\CollisionStrategyFactory\CollisionStrategyFactory.h" />
