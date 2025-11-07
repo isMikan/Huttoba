@@ -66,7 +66,7 @@ public:
 		return m_vScale;
 	}
 
-//=== クォータニオンの設定に必要.		制作者 : 甲把 ===.
+//=== クォータニオンの設定に必要.		制作者 [甲把] ===.
 	//クォータニオン型の回転の設定関数.
 	void SetQuaternion(float x, float y, float z, float w) {
 		m_vQuaternion.x = x;
@@ -93,7 +93,7 @@ protected://protectedは子クラスのみアクセス可能.
 	D3DXVECTOR3	m_vRotation;
 	D3DXVECTOR3	m_vScale;
 
-	D3DXQUATERNION m_vQuaternion;	//クォータニオンの回転.		制作者 : 甲把
+	D3DXQUATERNION m_vQuaternion;	//クォータニオンの回転.		制作者 [甲把]
 
 	//1フレームで行列を何回も計算しないように保存する
 	mutable D3DXMATRIX m_mWorldCache;

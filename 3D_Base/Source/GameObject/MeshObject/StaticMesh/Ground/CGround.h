@@ -3,7 +3,7 @@
 #include "GameObject/MeshObject/StaticMesh/CStaticMeshObject.h"
 
 /***********************************************************************
-*	地面クラス.									制作者 : 甲把
+*	地面クラス.									制作者 [甲把]
 **/
 class CGround
 	: public CStaticMeshObject

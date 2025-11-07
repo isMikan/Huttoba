@@ -5,7 +5,7 @@
 #include "GameObject/MeshObject/StaticMesh/Ground/GroundManager/CGroundManager.h"
 
 /***********************************************************************
-*	カメラマネージャークラス.						制作者 : 甲把
+*	カメラマネージャークラス.						制作者 [甲把]
 **/
 class CCameraManager
 {

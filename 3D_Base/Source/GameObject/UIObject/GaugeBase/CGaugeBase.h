@@ -5,7 +5,7 @@
 #include "GameObject/MeshObject/StaticMesh/PlayerBase/CPlayerBase.h"
 
 /***********************************************************************
-*	ゲージベースクラス.							制作者 : 甲把
+*	ゲージベースクラス.							制作者 [甲把]
 **/
 class CGaugeBase
 	: public CUIObject
