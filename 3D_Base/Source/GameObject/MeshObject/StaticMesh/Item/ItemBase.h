@@ -79,6 +79,7 @@ public:
 	*****************************************************************************************/
 	void SetPlayer(CPlayerBase* player) { m_pPlayer = player; }
 
+
 	/*****************************************************************************************
 	* @brief    アイテムの状態を変更するクラス
 	* @param    state : アイテムの状態を管理する変数
@@ -124,8 +125,11 @@ protected:
 protected:
 
 	float m_tGravity;	// 重力加速度(簡易版)
+	float m_UseTime;	// 使用時間
+	int  m_UseCount;	// 使用回数
 	bool m_IsDestroy;	// 破壊するかどうか
-	bool m_IsOnGround;	//地面に接触しているか
+	bool m_IsOnGround;	// 地面に接触しているか
+
 
 	State m_State;		// アイテムの状態
 

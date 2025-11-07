@@ -53,16 +53,15 @@ Bomb::~Bomb()
 
 void Bomb::Init()
 {
+	static const int USE_COUNT = 1;
+
 	AttachMesh(AssetManager::Mesh(StaticMeshList::Bomb));
-	//AttachMesh(AssetManager::Mesh(StaticMeshList::ExplosionCol));
 
 	m_State = ItemBase::State::Spawn;
-
 	m_tGravity = 0.01f;
+	m_UseCount = USE_COUNT;
 
 	std::shared_ptr<CStaticMesh> mesh = AssetManager::Mesh(StaticMeshList::ExplosionCol);
-
-
 
 	m_pCollision = CollisionDataFactory::CreateSphereForMesh(
 			this,
@@ -74,8 +73,6 @@ void Bomb::Init()
 void Bomb::Update()
 {
 	ItemBase::Update();
-
-
 }
 
 void Bomb::Draw(D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAMERA& Camera)
@@ -162,9 +159,7 @@ void Bomb::TakeMotion()
 
 void Bomb::PossessionMotion()
 {
-
 	m_vPosition = m_pPlayer->GetPlayerRightHand().GetPosition();
-
 }
 
 void Bomb::UseMotion()

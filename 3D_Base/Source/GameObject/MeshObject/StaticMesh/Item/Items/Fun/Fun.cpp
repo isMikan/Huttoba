@@ -87,6 +87,7 @@ void Fun::Have()
 
 void Fun::Use()
 {
+
 	m_vPosition = m_pPlayer->GetPlayerRightHand().GetPosition() + m_HaveOffset;
 	m_vQuaternion = m_pPlayer->GetQuaternion();
 

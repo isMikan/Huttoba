@@ -63,12 +63,15 @@ Haetataki::~Haetataki()
 
 void Haetataki::Init()
 {
+	static const int USE_COUNT = 7;	//使用カウント
+
 	AttachMesh(AssetManager::Mesh(StaticMeshList::Haetataki));
 
 	SetPosition(INITAL_POS_X, INITAL_POS_Y, INITAL_POS_Z);
 	SetRotation(INITAL_ROT_X, INITAL_ROT_Y, INITAL_ROT_Z);
 
 	m_State = ItemBase::State::Spawn;
+	m_UseCount = USE_COUNT;
 	m_tGravity = INITAL_GRAVITY;
 }
 

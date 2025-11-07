@@ -48,6 +48,7 @@ CPlayerBase::CPlayerBase( int index )
 CPlayerBase::~CPlayerBase()
 {
 	m_pItemBase = nullptr;
+
 }
 
 //======================================================================
