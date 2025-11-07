@@ -147,7 +147,7 @@ void CPlayerBase::OnGroundCollision(CGroundManager* pGroundMgr)
 	float groundY = 0.0f;
 
 	// CollisionManagerに判定を依頼し、結果をそのまま返す
-	m_IsOnGround = CollisionManager::CheckGroundContact(
+	m_IsOnGround = CollisionUtility::CheckGroundContact(
 		GetPosition(),
 		pGroundMgr,
 		groundY
@@ -282,25 +282,6 @@ float CPlayerBase::WrapAngle(float value)
 	if (value < 0.f) value += twoPi;
 
 	return value;
-}
-
-//--- 地面との衝突判定 ---.
-void CPlayerBase::OnGroundCollision(CGroundManager* pGroundMgr)
-{
-	// 地面データがないと判定不能
-	if (!pGroundMgr) return;
-
-	//関数のoutで当たったy座標をもらう
-	float groundY = 0.0f;
-
-	// CollisionManagerに判定を依頼し、結果をそのまま返す
-	m_IsOnGround = CollisionUtility::CheckGroundContact(
-		GetPosition(),
-		pGroundMgr,
-		groundY
-	);
-
-	m_IsAboveGround = m_IsOnGround;
 }
 
 //======================================================================
