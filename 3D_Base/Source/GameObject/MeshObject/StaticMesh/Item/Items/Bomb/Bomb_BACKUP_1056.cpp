@@ -149,6 +149,19 @@ void Bomb::OnCollision(CollisionBase* other)
 
 void Bomb::HaveMove()
 {
+<<<<<<< HEAD
+	m_PickUpCnt += CTimeManager::GetDeltaTime();
+
+	if (m_PickUpCnt >= m_PickUpTime)
+	{
+		m_IsTake = false;
+	}
+}
+
+void Bomb::PossessionMotion()
+{
+=======
+>>>>>>> bomb
 	m_vPosition = m_pPlayer->GetPlayerRightHand().GetPosition();
 }
 

@@ -53,13 +53,11 @@ Bomb::~Bomb()
 
 void Bomb::Init()
 {
-	static const int USE_COUNT = 1;
-
 	AttachMesh(AssetManager::Mesh(StaticMeshList::Bomb));
 
 	m_State = ItemBase::State::Spawn;
+
 	m_tGravity = 0.01f;
-	m_UseCount = USE_COUNT;
 
 	std::shared_ptr<CStaticMesh> mesh = AssetManager::Mesh(StaticMeshList::Bomb);
 
