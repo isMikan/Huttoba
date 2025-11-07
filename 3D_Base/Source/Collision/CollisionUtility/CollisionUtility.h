@@ -1,8 +1,5 @@
 #pragma once
 
-class CStaticMesh;
-
-
 /*--------------------
 
 ・円判定作成         : CalculateBoundingSphere
@@ -10,16 +7,15 @@ class CStaticMesh;
 ・横カプセル判定作成 : CalculateHorizontalCapsule
 
 ----------------------
-・レイの衝突判定     : RaycastAgainstMesh
+
+・レイの衝突判定        : RaycastAgainstMesh
+・地面に乗っているか判定: CheckGroundContact
 
 */
 
+class CStaticMesh;
 
-
-/***************************************
- * メッシュの頂点情報から衝突パラメータを計算するユーティリティ。
- *******/
-namespace MeshCollisionUtility
+namespace CollisionUtility
 {
     /*****************************************************************************************
     * @brief    メッシュの外接球の中心座標と半径を計算
@@ -86,7 +82,20 @@ namespace MeshCollisionUtility
         const D3DXVECTOR3& rayOrigin,
         const D3DXVECTOR3& rayDirection,
         float maxDistance,
-        D3DXVECTOR3& outHitPos,
-        float& outDistance
+        D3DXVECTOR3& outHitPos
     );
+
+    /*****************************************************************************************
+    * @brief   オブジェクトの地面との接触を判定する
+    * 
+    * @param    objectPosition     : 計算したいオブジェクトの座標
+    *           colliderHalfHeight : 当たり判定の半分のサイズ
+    *           pGroundMgr         :
+    *****************************************************************************************/
+    bool CheckGroundContact(
+        const D3DXVECTOR3& objectPosition,
+        CGroundManager* pGroundMgr,
+        float& outGroundY
+    );
+
 }

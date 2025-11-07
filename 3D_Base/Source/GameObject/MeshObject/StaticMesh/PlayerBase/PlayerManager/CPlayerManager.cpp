@@ -231,22 +231,22 @@ void CPlayerManager::InitialSettings(int index)
 		InitialSetting
 		//プレイヤー1.
 		{
-			{ D3DXVECTOR3(-4.f, 0.f, 4.f),
+			{ D3DXVECTOR3(-4.f, 0.1f, 4.f),
 				D3DXQUATERNION(0.f, D3DXToRadian(45.f), 0.f, 1.f) }
 		},
 		//プレイヤー2.
 		{
-			{ D3DXVECTOR3(4.f, 0.f, 4.f),
+			{ D3DXVECTOR3(4.f, 0.1f, 4.f),
 				D3DXQUATERNION(0.f, D3DXToRadian(-45.f), 0.f, 1.f) }
 		},
 		//プレイヤー3.
 		{
-			{ D3DXVECTOR3(-4.f, 0.f, 14.f),
+			{ D3DXVECTOR3(-4.f, 0.1f, 14.f),
 				D3DXQUATERNION(0.f, D3DXToRadian(45.f), 0.f, 1.f) }
 		},
 		//プレイヤー4.
 		{
-			{ D3DXVECTOR3(4.f, 0.f, 14.f),
+			{ D3DXVECTOR3(4.f, 0.1f, 14.f),
 				D3DXQUATERNION(0.f, D3DXToRadian(-45.f), 0.f, 1.f) }
 		}
 	};

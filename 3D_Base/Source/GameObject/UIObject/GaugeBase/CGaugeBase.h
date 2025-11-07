@@ -5,7 +5,7 @@
 #include "GameObject/MeshObject/StaticMesh/PlayerBase/CPlayerBase.h"
 
 /***********************************************************************
-*	ゲージベースクラス.
+*	ゲージベースクラス.							制作者 : 甲把
 **/
 class CGaugeBase
 	: public CUIObject
@@ -54,7 +54,7 @@ protected:
 //======================================================================
 // 	   内部で使用する変数.
 //======================================================================
-	ComPtr<ID3D11DeviceContext>		m_pContext11;		//コンテキスト.
+	ComPtr<ID3D11DeviceContext>		m_pContext11;	//コンテキスト.
 
 	Gauge			m_GaugeInfo;	//ゲージの情報.
 

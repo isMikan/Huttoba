@@ -1,6 +1,8 @@
 #include "CollisionStrategySphereSphere.h"
 #include "GameObject/CGameObject.h"
 #include "Collision/Collider/CollisionSphere/CollisionSphere.h"
+#include"Collision/CollisionStrategy/CollisionStrategyBase.h"
+
 
 bool CollisionStrategySphereSphere::CheckCollision(
     const CollisionBase* colA,

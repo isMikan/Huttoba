@@ -1,21 +1,22 @@
 #include "stdafx.h"
-#include "MeshCollisionUtility.h"
+#include "CollisionUtility.h"
 #include "Assets/Mesh/StaticMesh/CStaticMesh.h"
+#include "Ground/GroundManager/CGroundManager.h"
 
-namespace MeshCollisionUtility
+namespace CollisionUtility
 {
     bool CalculateBoundingSphere(
         const std::shared_ptr<CStaticMesh> pMesh,
         D3DXVECTOR3& outCenter,
         float& outRadius)
     {
-        if (!pMesh || !pMesh->GetMesh()){ return false; }
+        if (!pMesh || !pMesh->GetMesh()) { return false; }
 
         LPDIRECT3DVERTEXBUFFER9 pVB = nullptr;	//頂点バッファ
         void* pVertices = nullptr;				//頂点
 
         //頂点バッファを取得
-        if (FAILED(pMesh->GetMesh()->GetVertexBuffer(&pVB))){ return false; }
+        if (FAILED(pMesh->GetMesh()->GetVertexBuffer(&pVB))) { return false; }
 
         //メッシュの頂点バッファをロックする
         if (FAILED(pVB->Lock(0, 0, &pVertices, 0)))
@@ -33,7 +34,7 @@ namespace MeshCollisionUtility
             &outRadius);										//(out)半径
 
         //メッシュの頂点バッファをアンロックする
-        if (pVB != nullptr) 
+        if (pVB != nullptr)
         {
             pVB->Unlock();
             SAFE_RELEASE(pVB); // 取得したポインタを解放
@@ -50,11 +51,11 @@ namespace MeshCollisionUtility
         D3DXVECTOR3& outLocalOffsetB)
     {
         LPD3DXMESH pMeshDx9 = pMesh->GetMesh();
-        if (!pMeshDx9){ return false; }
+        if (!pMeshDx9) { return false; }
 
         // 頂点データのロックと取得
         VOID* pVertices = nullptr;
-        if (FAILED(pMeshDx9->LockVertexBuffer(0, &pVertices))){ return false; }
+        if (FAILED(pMeshDx9->LockVertexBuffer(0, &pVertices))) { return false; }
 
         // 頂点の情報
         using VERTEX = CStaticMesh::VERTEX;
@@ -134,11 +135,11 @@ namespace MeshCollisionUtility
 
             min.x = std::min(min.x, pos.x);
             min.y = std::min(min.y, pos.y);
-            min.z = std::min(min.z, pos.z); 
+            min.z = std::min(min.z, pos.z);
 
             max.x = std::max(max.x, pos.x);
-            max.y = std::max(max.y, pos.y); 
-            max.z = std::max(max.z, pos.z);         
+            max.y = std::max(max.y, pos.y);
+            max.z = std::max(max.z, pos.z);
         }
 
         pMesh->UnlockVertexBuffer();
@@ -174,20 +175,33 @@ namespace MeshCollisionUtility
         const D3DXVECTOR3& rayOrigin,
         const D3DXVECTOR3& rayDirection,
         float maxDistance,
-        D3DXVECTOR3& outHitPos,
-        float& outDistance)
+        D3DXVECTOR3& outHitPos
+    )
     {
-        LPD3DXMESH pMeshDx9 = pTargetMesh->GetMeshForRay();
-        if (!pMeshDx9){ return false; }
+        //ステージがz軸に10ずれているから、ワールド行列を取得して逆行列計算
+        D3DXMATRIX matWorld = pTargetMesh->GetWorldMatrix();
+        D3DXMATRIX matInverseWorld;
+        D3DXMatrixInverse(&matInverseWorld, nullptr, &matWorld);
+
+        //レイをメッシュのローカル座標に
+        D3DXVECTOR3 localRayOrigin;
+        D3DXVECTOR3 localRayDirection;
+
+        // 始点 (座標) を変換
+        D3DXVec3TransformCoord(&localRayOrigin, &rayOrigin, &matInverseWorld);
+        // 方向 (ベクトル) を変換し、正規化
+        D3DXVec3TransformNormal(&localRayDirection, &rayDirection, &matInverseWorld);
+        D3DXVec3Normalize(&localRayDirection, &localRayDirection);
 
         BOOL bHit = FALSE;
         FLOAT fDist = 0.0f;
+        FLOAT U = 0, V = 0;		//重心ヒット座標
 
-		// レイとメッシュの交差判定
+        // レイとメッシュの交差判定
         HRESULT hr = D3DXIntersect(
-            pMeshDx9,                       // ターゲットメッシュ
-            &rayOrigin,                     // レイの始点
-            &rayDirection,                  // レイの方向
+            pTargetMesh->GetMeshForRay(),   // ターゲットメッシュ
+            &localRayOrigin,                // レイの始点
+            &localRayDirection,             // レイの方向
             &bHit,                          // 衝突したか
             nullptr,                        // 衝突した面のインデックス
             &fDist,                         // 距離
@@ -208,10 +222,57 @@ namespace MeshCollisionUtility
             return false;
         }
 
-        // 結果の格納 
-        outDistance = fDist;
-        outHitPos = rayOrigin + (rayDirection * fDist);
+        //ローカルの位置を特定し、ワールド行列に変換
+        D3DXVECTOR3 localHitPos = localRayOrigin + (localRayDirection * fDist);
+        D3DXVec3TransformCoord(&outHitPos, &localHitPos, &matWorld);
 
         return true;
     }
+
+    bool CheckGroundContact(
+        const D3DXVECTOR3& objectPosition,
+        CGroundManager* pGroundMgr,
+        float& outGroundY)
+    {
+        if (!pGroundMgr) return false;
+
+        // レイ設定 
+        D3DXVECTOR3 rayOrigin = objectPosition + D3DXVECTOR3(0.0f, 0.3f, 0.0f);
+        D3DXVECTOR3 rayDirection(0.0f, -1.0f, 0.0f);
+        const float maxDistance = 5.f;
+
+        // Raycastのout引数
+        D3DXVECTOR3 hitPosition;
+        bool hitGround = false;
+
+        // GroundManagerから地面を取得(配列)
+        const auto& grounds = pGroundMgr->GetGrounds();
+
+        // 地面の数だけ回す
+        for (const auto& pGround : grounds)
+        {
+            if (!pGround) continue;
+
+            // メッシュを取得
+            std::shared_ptr<CStaticMesh> pGroundMesh = pGround->GetMesh();
+            if (!pGroundMesh) continue;
+
+            // MeshCollisionUtilityに判定を委譲
+            if (CollisionUtility::RaycastAgainstMesh(
+                pGroundMesh,    // 地面のメッシュ
+                rayOrigin,      // レイの始点
+                rayDirection,   // レイの向き
+                maxDistance,    // レイの最大距離
+                hitPosition     // out 当たった場所
+            ))
+            {
+                hitGround = true;
+                outGroundY = hitPosition.y;
+                break;
+            }
+        }
+
+        return hitGround;
+    }
+
 }

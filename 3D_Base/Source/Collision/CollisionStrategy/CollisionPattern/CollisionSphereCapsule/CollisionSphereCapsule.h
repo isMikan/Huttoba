@@ -1,5 +1,8 @@
 #pragma once
 #include "Collision/CollisionStrategy/CollisionStrategyBase.h"
+
+class CollisionBase;
+
 class CollisionSphereCapsule
     : public CollisionStrategyBase
 {

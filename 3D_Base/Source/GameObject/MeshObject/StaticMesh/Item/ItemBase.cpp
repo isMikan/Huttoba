@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "ItemBase.h"
 #include "PlayerBase/CPlayerBase.h"
-
+#include "Collision/CollisionUtility/CollisionUtility.h"
 
 ItemBase::ItemBase()
 	: m_State		{ State::Spawn }
@@ -59,16 +59,18 @@ void ItemBase::IsOnGround(CGroundManager* pGroundMgr)
 	// 外部からのデータがない場合は判定不能
 	if (!pGroundMgr) return;
 
+	float groundY = 0.0f;
+
 	// 自身の位置を取得
 	const D3DXVECTOR3 playerPos = GetPosition();
 
 	// サイズ決定(後で定数に突貫)
-	const float playerHalfHeight = 0.5f;
+	const float playerHalfHeight = 0.4f;
 
 	// CollisionManagerに判定を依頼し、結果をそのまま返す
-	m_IsOnGround = CollisionManager::CheckGroundContact(
+	m_IsOnGround = CollisionUtility::CheckGroundContact(
 		playerPos,
-		playerHalfHeight,
-		pGroundMgr
+		pGroundMgr,
+		groundY
 	);
 }

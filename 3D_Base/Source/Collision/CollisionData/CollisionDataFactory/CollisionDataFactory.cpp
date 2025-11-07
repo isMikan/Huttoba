@@ -11,7 +11,7 @@ std::shared_ptr<CollisionBase> CollisionDataFactory::CreateSphereForMesh(
     float calculatedRadius = 0.0f;
 
     // ユーティリティ関数を呼び出して中心と半径を計算
-    if (!MeshCollisionUtility::CalculateBoundingSphere(
+    if (!CollisionUtility::CalculateBoundingSphere(
         pMesh, calculatedCenter, calculatedRadius))
     {
         return nullptr;
@@ -49,7 +49,7 @@ std::shared_ptr<CollisionBase> CollisionDataFactory::CreateCapsuleForMesh(
     D3DXVECTOR3 localOffsetB(0.0f, 0.0f, 0.0f);
 
     // メッシュからカプセルのパラメータを計算
-    if (!MeshCollisionUtility::CalculateBoundingCapsule(
+    if (!CollisionUtility::CalculateBoundingCapsule(
         pMesh, calculatedRadius, localOffsetA, localOffsetB))
     {
         return nullptr;
@@ -82,7 +82,7 @@ std::shared_ptr<CollisionBase> CollisionDataFactory::CreateHorizontalCapsule(CGa
     D3DXVECTOR3 localOffsetB(0.0f, 0.0f, 0.0f);
 
     // メッシュからカプセルのパラメータを計算
-    if (!MeshCollisionUtility::CalculateHorizontalCapsule(
+    if (!CollisionUtility::CalculateHorizontalCapsule(
         pMesh, calculatedRadius, localOffsetA, localOffsetB))
     {
         return nullptr;

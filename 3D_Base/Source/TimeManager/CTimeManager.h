@@ -2,6 +2,9 @@
 
 #include <chrono>
 
+/***********************************************************************
+*	タイムマネージャークラス.					制作者 : 甲把
+**/
 class CTimeManager
 {
 public:
@@ -9,7 +12,7 @@ public:
 	~CTimeManager();
 
 	//唯一のインスタンスを作成.
-	static CTimeManager& Instance()
+	static CTimeManager& GetInstance()
 	{
 		static CTimeManager s_Instance;
 		return s_Instance;
@@ -19,20 +22,20 @@ public:
 // 	   外部で呼び出す関数.
 //======================================================================
 	//リセット関数を外部へ.
-	static void Reset() { Instance().Reset_Internal(); }
+	static void Reset() { GetInstance().Reset_Internal(); }
 	//一時停止関数を外部へ.
-	static void Pause() { Instance().Pause_Internal(); }
+	static void Pause() { GetInstance().Pause_Internal(); }
 	//再開関数を外部へ.
-	static void Resume() { Instance().Resume_Internal(); }
+	static void Resume() { GetInstance().Resume_Internal(); }
 	//更新関数を外部へ.
-	static void Update() { Instance().Update_Internal(); }
+	static void Update() { GetInstance().Update_Internal(); }
 
 //======================================================================
 		
 	//デルタタイムを取得.
-	static float GetDeltaTime() { return static_cast<float>(Instance().m_DeltaTime); }
+	static float GetDeltaTime() { return static_cast<float>(GetInstance().m_DeltaTime); }
 	//経過時間を取得.
-	static float GetTotalTime() { return static_cast<float>(Instance().m_TotalTime); }
+	static float GetTotalTime() { return static_cast<float>(GetInstance().m_TotalTime); }
 
 private:
 //======================================================================

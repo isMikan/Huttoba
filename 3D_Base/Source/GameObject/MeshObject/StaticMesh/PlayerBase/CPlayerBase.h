@@ -11,7 +11,7 @@
 #include "PlayerState/CPlayerState.h"
 
 /***********************************************************************
-*   プレイヤーベースクラス.
+*   プレイヤーベースクラス.						制作者 : 甲把
 **/
 class CPlayerBase
 	: public CStaticMeshObject
@@ -184,8 +184,15 @@ public:
 	bool IsHoldingItem() const { return m_IsHoldingItem; }
 	void SetHoldingItem(bool holding) { m_IsHoldingItem = holding; }
 
+
+	//作成者　佐藤
 	//地面についているかの所得と設定.
 	bool IsOnGround() const { return m_IsOnGround; }
+	void SetIsOnGround(bool isOnGround) { m_IsOnGround = isOnGround; }
+
+	//ステージの上かの所得と設定.
+	bool IsAboveGround() const { return m_IsAboveGround; }
+	void SetIsAboveGround(bool isAboveGround) { m_IsAboveGround = isAboveGround; }
 
 	//nullptr ではないかチェック.
 	template<typename T>
@@ -239,7 +246,9 @@ protected:
 	bool			m_IsMoving;			//移動しているか.
 	bool			m_IsTurning;		//回転しているか.
 	bool			m_IsHoldingItem;	//アイテムを所持してるか.
+
 	bool			m_IsOnGround;		//地面に接触しているか
+	bool			m_IsAboveGround;	//ステージの上かどうか
 
 	float			m_HitForce;			//攻撃を受けた数値.
 	static constexpr float		m_PushForce = 0.05f;	//押し出す力.

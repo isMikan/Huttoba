@@ -155,7 +155,7 @@ public:
 		m_Scale.z = scale;
 	}
 
-
+//=== クォータニオンの設定に必要.		制作者 :　甲把 ===.
 	//クォータニオン型の回転の設定関数.
 	void SetQuaternion(float x, float y, float z, float w) {
 		m_Quaternion.x = x;
@@ -170,56 +170,39 @@ public:
 	const D3DXQUATERNION& GetQuaternion() const {
 		return m_Quaternion;
 	}
+//========================================================.
 
-	//拡散反射を設定する関数.
-	void SetDiffuseColor(
-		const int index,
-		const D3DXVECTOR4& diffuse) {
-		m_ObjectColor[index].diffuse = diffuse;
-	}
-	//環境光を設定する関数.
-	void SetAmbientColor(
-		const int index,
-		const D3DXVECTOR4& ambient) {
-		m_ObjectColor[index].ambient = ambient;
-	}
-	//鏡面反射を設定する関数.
-	void SetSpecularColor(
-		const int index,
-		const D3DXVECTOR4& specular) {
-		m_ObjectColor[index].specular = specular;
-	}
-
+//=== 色をプログラム上で変更するのに必要.		制作者 : 甲把 ===. 
+	//色の設定関数.
 	void SetObjectColor(
 		const size_t index,
 		const D3DXVECTOR4& diffuse,
 		const D3DXVECTOR4& ambient,
 		const D3DXVECTOR4& specular)
 	{
+		//色情報をまとめる.
 		ObjectColor color = { diffuse, ambient, specular };
+		//サイズ以下の以上のものが来たら、サイズを増やす.
 		if (index >= m_ObjectColor.size()) {
 			m_ObjectColor.resize(index + 1);
 		}
-
-			m_ObjectColor[index] = color;
+		//色の設定.
+		m_ObjectColor[index] = color;
 	}
 
 	//デフォルトの色を取得する関数.
 	ObjectColor GetDefaultColor() const {
 		return m_DefaultColor;
 	}
+//===============================================================.
 
 	//メッシュを取得.
 	LPD3DXMESH GetMesh() const { return m_Model.pMesh; }
 	//レイとの当たり判定用のメッシュを取得.
 	LPD3DXMESH GetMeshForRay() const { return m_ModelForRay.pMesh; }
 	
-	//指定したマテリアルの色の変更
-	void SetMaterialColor(size_t index, const D3DXVECTOR4& color)
-	{
-		if (index >= m_pMaterials.size()) return;
-		m_pMaterials[index].Diffuse = color;
-	}
+	// 現在のスケール、回転、位置からワールド行列を計算して返す
+	D3DXMATRIX GetWorldMatrix() const;
 
 	//頂点情報を取得
 	LPVOID GetLockedVertexBuffer(DWORD& outStride, UINT& outVertexCount);
@@ -283,11 +266,8 @@ private:
 									//※x=Pitch, y=Yaw, z=Roll.
 	D3DXVECTOR3		m_Scale;		//拡大縮小値(x,y,z等倍).
 
+//===  ===.
 	D3DXQUATERNION	m_Quaternion;	//クォータニオンの回転.
-
-	D3DXVECTOR4		m_Diffuse;		//拡散反射.
-	D3DXVECTOR4		m_Ambient;		//環境光.
-	D3DXVECTOR4		m_Specular;		//鏡面反射.
 
 	std::vector<ObjectColor>	m_ObjectColor;	//オブジェクトの色.
 

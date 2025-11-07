@@ -3,7 +3,7 @@
 #include "GameObject/MeshObject/StaticMesh/Ground/CGround.h"
 
 /***********************************************************************
-*	地面マネージャークラス.
+*	地面マネージャークラス.							制作者 : 甲把
 **/
 class CGroundManager
 {
@@ -13,12 +13,12 @@ public:
 //======================================================================
 	enum GroundType
 	{
-		FirstFallGround = 0,	//一番目に落ちる地面.
-		SecondFallGround,		//二番目に落ちる地面.
-		ThirdFallGround,		//三番目に落ちる地面.
-		SafeGround,				//落ちない中央の地面.
+		SafeGround = 0,		//落ちない中央の地面.
+		ThirdFallGround,	//三番目に落ちる地面.
+		SecondFallGround,	//二番目に落ちる地面.
+		FirstFallGround,	//一番目に落ちる地面.
 
-		None = -1				//なし.
+		None = -1			//なし.
 	};
 
 public:
@@ -40,8 +40,7 @@ public:
 	void Draw(
 		D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAMERA& Camera);
 
-	//制作者　佐藤
-	//レイの判定の時に地面の情報が必要なので作成
+	//地面を取得.
 	const std::vector<std::unique_ptr<CGround>>& GetGrounds() const { return m_pGrounds; }
 
 protected:

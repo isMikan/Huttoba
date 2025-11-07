@@ -13,6 +13,7 @@
 #include "PlayerBase/PlayerState/PlayerActionState/PlayerKnockdownState/CPlayerKnockdownState.h"
 
 #include "Item/ItemBase.h"	
+#include "Collision/CollisionUtility/CollisionUtility.h"
 
 
 CPlayerBase::CPlayerBase( int index )
@@ -63,7 +64,7 @@ void CPlayerBase::Update()
 
 	//ゲーム開始時じゃなく、地面についておらず、落ちる状態じゃない場合.
 	if (!m_IsOnGround
-		&& !IsAnyActionState<CPlayerFallingState>())
+		&& !IsAnyActionState<CPlayerFallingState,CPlayerKnockbackState>())
 	{
 		std::cout << "落ちる" << std::endl;
 		SetActionState(std::make_unique<CPlayerFallingState>(*this));
@@ -139,21 +140,20 @@ void CPlayerBase::CreateCollider()
 //--- 地面との衝突判定 ---.
 void CPlayerBase::OnGroundCollision(CGroundManager* pGroundMgr)
 {
-	// 外部からのデータがない場合は判定不能
+	// 地面データがないと判定不能
 	if (!pGroundMgr) return;
 
-	// 自身の位置を取得
-	const D3DXVECTOR3 playerPos = GetPosition();
-
-	// サイズ決定(後で定数に突貫)
-	const float playerHalfHeight = 0.5f;
+	//関数のoutで当たったy座標をもらう
+	float groundY = 0.0f;
 
 	// CollisionManagerに判定を依頼し、結果をそのまま返す
-	m_IsOnGround = CollisionManager::CheckGroundContact(
-		playerPos,
-		playerHalfHeight,
-		pGroundMgr
+	m_IsOnGround = CollisionUtility::CheckGroundContact(
+		GetPosition(),
+		pGroundMgr,
+		groundY
 	);
+
+	m_IsAboveGround = m_IsOnGround;
 }
 
 //--- 位置を設定するために計算 ---.

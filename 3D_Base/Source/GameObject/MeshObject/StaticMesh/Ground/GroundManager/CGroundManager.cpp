@@ -5,7 +5,7 @@ CGroundManager::CGroundManager()
 {
 	Create();
 
-	m_FallTime = { 10.f, 20.f, 30.f, 99.f };
+	m_FallTime = { 99.f, 15.f, 10.f, 5.f };
 }
 
 CGroundManager::~CGroundManager()
@@ -37,10 +37,10 @@ void CGroundManager::Create()
 void CGroundManager::LoadData()
 {
 	//地面のスタティックメッシュを設定.
-	m_pGrounds[FirstFallGround]->AttachMesh(AssetManager::Mesh(StaticMeshList::FirstFallGround));
-	m_pGrounds[SecondFallGround]->AttachMesh(AssetManager::Mesh(StaticMeshList::SecondFallGround));
-	m_pGrounds[ThirdFallGround]->AttachMesh(AssetManager::Mesh(StaticMeshList::ThirdFallGround));
 	m_pGrounds[SafeGround]->AttachMesh(AssetManager::Mesh(StaticMeshList::SafeGround));
+	m_pGrounds[ThirdFallGround]->AttachMesh(AssetManager::Mesh(StaticMeshList::ThirdFallGround));
+	m_pGrounds[SecondFallGround]->AttachMesh(AssetManager::Mesh(StaticMeshList::SecondFallGround));
+	m_pGrounds[FirstFallGround]->AttachMesh(AssetManager::Mesh(StaticMeshList::FirstFallGround));
 }
 
 //--- 破棄関数 ---.
@@ -63,6 +63,7 @@ void CGroundManager::Update()
 		if (m_pGrounds[gNo]->GetPosition().y < -30.f)
 		{
 			m_pGrounds[gNo].reset();
+			m_pGrounds.resize(m_pGrounds.size() - 1);
 			return;
 		}
 
@@ -93,7 +94,7 @@ void CGroundManager::Update()
 			m_pGrounds[gNo]->SetIsChangeColor(true);
 		}
 
-		//m_pGrounds[gNo]->Update();
+		m_pGrounds[gNo]->Update();
 	}
 }
 
