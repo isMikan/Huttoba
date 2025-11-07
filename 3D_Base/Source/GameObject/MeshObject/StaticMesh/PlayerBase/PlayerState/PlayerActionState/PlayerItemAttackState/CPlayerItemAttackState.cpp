@@ -1,32 +1,29 @@
-#include "CPlayerHandAttackState.h"
+#include "CPlayerItemAttackState.h"
 
 #include "GameObject/MeshObject/StaticMesh/PlayerBase/CPlayerBase.h"
 
 #include "GameObject/MeshObject/StaticMesh/PlayerBase/PlayerState/PlayerActionState/PlayerActionIdleState/CPlayerActionIdleState.h"
-#include "GameObject/MeshObject/StaticMesh/PlayerBase/PlayerState/PlayerActionState/PlayerHandWhiffState/CPlayerHandWhiffState.h"
-#include "GameObject/MeshObject/StaticMesh/PlayerBase/PlayerState/PlayerActionState/PlayerHandHitState/CPlayerHandHitState.h"
+#include "GameObject/MeshObject/StaticMesh/PlayerBase/PlayerState/PlayerActionState/PlayerHoldingIdleState/CPlayerHoldingIdleState.h"
 
-CPlayerHandAttackState::CPlayerHandAttackState(CPlayerBase& pPlayer)
-	: CPlayerState			( pPlayer )
+CPlayerItemAttackState::CPlayerItemAttackState(CPlayerBase& pPlayer)
+	: CPlayerState						( pPlayer )
 	
-	, m_CenterHandOffset	( 0.2f )
+	, m_StartTime						()
+	, m_EndTime							( 0.1f )
 
-	, m_StartTime			()
-	, m_EndTime				( 0.1f )
+	, m_CurrentTiltAngle				()
+	, m_TiltAngleMax					( D3DXToRadian( 10.f ) )
 
-	, m_CurrentTiltAngle	()
-	, m_TiltAngleMax		( D3DXToRadian( 10.f ) )
+	, m_RightHandStartPos				()
+	, m_LeftHandStartPos				()
+	, m_HoldBothHands_RightHandEndPos	( 0.f, 0.3f, 0.2f )
+	, m_HoldBothHands_LeftHandEndPos	( 0.f, 0.3f, 0.2f )
 
-	, m_RightHandStartPos	()
-	, m_LeftHandStartPos	()
-	, m_RightHandEndPos		( 0.f, 0.f, 0.6f )
-	, m_LeftHandEndPos		( 0.f, 0.f, 0.6f )
-
-	, m_StartQuat			( 0.f, 0.f, 0.f, 1.f )
+	, m_StartQuat						( 0.f, 0.f, 0.f, 1.f )
 {
 }
 
-CPlayerHandAttackState::~CPlayerHandAttackState()
+CPlayerItemAttackState::~CPlayerItemAttackState()
 {
 }
 
@@ -35,11 +32,8 @@ CPlayerHandAttackState::~CPlayerHandAttackState()
 //======================================================================
 
 //--- 状態の開始時に呼び出す ---.
-void CPlayerHandAttackState::Enter()
+void CPlayerItemAttackState::Enter()
 {
-	//SEを鳴らす.
-	AssetManager::Sound()->PlaySE(enSoundList::SE_AttackHand);
-
 	//攻撃の開始時間を取得.
 	m_StartTime = CTimeManager::GetTotalTime();
 
@@ -57,38 +51,23 @@ void CPlayerHandAttackState::Enter()
 	//手の開始位置を設定.
 	m_RightHandStartPos = rightHandOffset;
 	m_LeftHandStartPos = leftHandOffset;
-	//手の位置を中心寄りに調整.
-	m_RightHandStartPos.x = rightHandOffset.x - m_CenterHandOffset;
-	m_LeftHandStartPos.x = leftHandOffset.x + m_CenterHandOffset;
-	//手の終了位置を設定.
-	m_RightHandEndPos = m_RightHandStartPos + m_RightHandEndPos;
-	m_LeftHandEndPos = m_LeftHandStartPos + m_LeftHandEndPos;
 }
 
 //--- 状態の終了時に呼び出す ---.
-void CPlayerHandAttackState::Exit()
+void CPlayerItemAttackState::Exit()
 {
 }
 
 //--- この状態の間に呼び出す ---.
-void CPlayerHandAttackState::Update()
+void CPlayerItemAttackState::Update()
 {
 	//ゲーム全体の経過時間.
 	float t = CTimeManager::GetTotalTime();
 
 	//現在の経過時間と開始時間の差が終了時間を上回った場合.
-	//攻撃が当たってる場合.
-	if (t - m_StartTime > m_EndTime
-		&& m_pPlayer.GetHitAttack().hitEvent == CPlayerBase::HitEvent::HandAttack)
+	if (t - m_StartTime > m_EndTime)
 	{
-		m_pPlayer.SetHitAnim(CPlayerBase::HitEvent::None);
-		m_pPlayer.SetActionState(std::make_unique<CPlayerHandHitState>(m_pPlayer));
-		return;
-	}
-	//攻撃が当たっていない場合.
-	else if (t - m_StartTime > m_EndTime)
-	{
-		m_pPlayer.SetActionState(std::make_unique<CPlayerHandWhiffState>(m_pPlayer));
+		m_pPlayer.SetActionState(std::make_unique<CPlayerHoldingIdleState>(m_pPlayer));
 		return;
 	}
 
@@ -109,9 +88,9 @@ void CPlayerHandAttackState::Update()
 
 	//右手と左手の調整位置だけの計算.
 	D3DXVECTOR3 rightHandOffsetPos;
-	D3DXVec3Lerp(&rightHandOffsetPos, &m_RightHandStartPos, &m_RightHandEndPos, eased);
+	D3DXVec3Lerp(&rightHandOffsetPos, &m_RightHandStartPos, &m_HoldBothHands_RightHandEndPos, eased);
 	D3DXVECTOR3 leftHandOffsetPos;
-	D3DXVec3Lerp(&leftHandOffsetPos, &m_LeftHandStartPos, &m_LeftHandEndPos, eased);
+	D3DXVec3Lerp(&leftHandOffsetPos, &m_LeftHandStartPos, &m_HoldBothHands_LeftHandEndPos, eased);
 
 	//手の位置を調整して設定.
 	m_pPlayer.GetPlayerRightHand().SetPosition(m_pPlayer.GetObjectPos(rightHandOffsetPos));

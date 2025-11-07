@@ -3,18 +3,18 @@
 #include "GameObject/MeshObject/StaticMesh/PlayerBase/PlayerState/CPlayerState.h"
 
 /***********************************************************************
-*	プレイヤーが何も行動していない状態クラス（アイテム所持版）.
+*	プレイヤーがアイテム未所持の攻撃状態クラス.
 **/
-class CPlayerHoldingIdleState
+class CPlayerItemAttackState
 	: public CPlayerState	//プレイヤー状態を継承.
 {
 public:
-	CPlayerHoldingIdleState(CPlayerBase& pPlayer);
-	~CPlayerHoldingIdleState() override;
-
 //======================================================================
 // 	   外部で呼び出す関数.
 //======================================================================
+	CPlayerItemAttackState(CPlayerBase& pPlayer);
+	~CPlayerItemAttackState();
+
 	//--- 状態の開始時に呼び出す ---.
 	void Enter() override;
 	//--- 状態の終了時に呼び出す ---.
@@ -26,21 +26,30 @@ private:
 //======================================================================
 // 	   内部で使用する変数.
 //======================================================================
-	float			m_StartTime;					//開始時間.
-	float			m_EndTime;						//終了時間.
+	float			m_StartTime;			//開始時間.
+	float			m_EndTime;				//終了時間.
 
-//=== 手の調整位置 ===.
-	D3DXVECTOR3		m_HoldBothHands_RightOffsetPos;	//両手で持つアイテムの右.
-	D3DXVECTOR3		m_HoldBothHands_LeftOffsetPos;	//両手で持つアイテムの左.
+	float			m_CurrentTiltAngle;		//現在の傾き角度.
+	float			m_TiltAngleMax;			//最大の傾き角度.
 
-//====================.
+	D3DXVECTOR3		m_RightHandStartPos;	//右手の元の位置.
+	D3DXVECTOR3		m_LeftHandStartPos;		//左手の元の位置.
+
+	//=== 手の調整位置 ===.
+	//両手で持つアイテム.
+	D3DXVECTOR3		m_HoldBothHands_RightHandEndPos;	//右手の目的の位置.
+	D3DXVECTOR3		m_HoldBothHands_LeftHandEndPos;		//左手の目的の位置.
+
+	//====================.
+
+	D3DXQUATERNION	m_StartQuat;			//開始時の回転.
 
 private:
 //======================================================================
 // 	   呼び出しを禁止するコンストラクタ.
 //======================================================================
-	CPlayerHoldingIdleState() = delete;	//デフォルトコンストラクタ削除.
-	CPlayerHoldingIdleState(const CPlayerHoldingIdleState&) = delete;
-	CPlayerHoldingIdleState& operator = (const CPlayerHoldingIdleState& rhs) = delete;
+	CPlayerItemAttackState() = delete;	//デフォルトコンストラクタ削除.
+	CPlayerItemAttackState(const CPlayerItemAttackState&) = delete;
+	CPlayerItemAttackState& operator = (const CPlayerItemAttackState& rhs) = delete;
 
 };

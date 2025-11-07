@@ -266,6 +266,7 @@
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\PlayerBase\PlayerManager\CPlayerManager.cpp" />
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\PlayerBase\PlayerState\CPlayerState.cpp" />
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\PlayerBase\PlayerState\PlayerActionState\PlayerHoldingIdleState\CPlayerHoldingIdleState.cpp" />
+    <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\PlayerBase\PlayerState\PlayerActionState\PlayerItemAttackState\CPlayerItemAttackState.cpp" />
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\PlayerBase\PlayerState\PlayerActionState\PlayerKnockdownState\CPlayerKnockdownState.cpp" />
     <ClCompile Include="Source\GameObject\SpriteObject\Shadow\CShadow.cpp" />
     <ClCompile Include="Source\GameObject\SpriteObject\Shadow\ShadowManager\CShadowManager.cpp" />
@@ -376,6 +377,7 @@
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\PlayerBase\PlayerEventBus\CPlayerEventBus.h" />
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\PlayerBase\PlayerManager\CPlayerManager.h" />
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\PlayerBase\PlayerState\PlayerActionState\PlayerHoldingIdleState\CPlayerHoldingIdleState.h" />
+    <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\PlayerBase\PlayerState\PlayerActionState\PlayerItemAttackState\CPlayerItemAttackState.h" />
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\PlayerBase\PlayerState\PlayerActionState\PlayerKnockdownState\CPlayerKnockdownState.h" />
     <ClInclude Include="Source\GameObject\SpriteObject\Shadow\CShadow.h" />
     <ClInclude Include="Source\GameObject\SpriteObject\Shadow\ShadowManager\CShadowManager.h" />

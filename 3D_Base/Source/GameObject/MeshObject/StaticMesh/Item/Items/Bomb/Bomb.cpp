@@ -122,6 +122,8 @@ void Bomb::Have()
 void Bomb::Use()
 {
 	UseAndThrow();
+
+	m_pPlayer->SetItemBase(nullptr);
 }
 
 void Bomb::Throw()

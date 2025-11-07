@@ -7,6 +7,7 @@
 #include "PlayerBase/PlayerState/PlayerActionState/PlayerPickupState/CPlayerPickupState.h"
 #include "PlayerBase/PlayerState/PlayerActionState/PlayerThrowState/CPlayerThrowState.h"
 #include "PlayerBase/PlayerState/PlayerActionState/PlayerHandAttackState/CPlayerHandAttackState.h"
+#include "PlayerBase/PlayerState/PlayerActionState/PlayerItemAttackState/CPlayerItemAttackState.h"
 #include "PlayerBase/PlayerState/PlayerActionState/PlayerPushedState/CPlayerPushedState.h"
 #include "PlayerBase/PlayerState/PlayerActionState/PlayerKnockbackState/CPlayerKnockbackState.h"
 #include "PlayerBase/PlayerState/PlayerActionState/PlayerFallingState/CPlayerFallingState.h"
@@ -99,6 +100,7 @@ void CPlayerBase::Update()
 		{
 			m_pItemBase->SetPlayer(this);
 			m_pItemBase->SetState(ItemBase::State::Use);
+			SetActionState(std::make_unique<CPlayerItemAttackState>(*this));
 		}
 	}
 	else
@@ -343,6 +345,10 @@ void CPlayerBase::OnCollision(CollisionBase* pOtherCollider)
 		{
 			if (player->IsAnyActionState<CPlayerHandAttackState>())
 			{
+				//‘ŠŽè‘¤‚Éƒqƒbƒg‚µ‚Ä‚¢‚é‚±‚Æ‚ð“`‚¦‚é‚½‚ß.
+				player->SetHitAttack(
+					player->GetPosition(), CPlayerBase::HitEvent::HandAttack);
+
 				SetHitAttack(
 					GetKnockbackVelocity(player->GetPosition(), 10.f, 60.f), CPlayerBase::HitEvent::Knockdown);
 				//SetHitAttack(
