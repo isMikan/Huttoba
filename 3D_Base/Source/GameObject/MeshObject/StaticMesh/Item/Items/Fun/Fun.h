@@ -2,7 +2,7 @@
 #include "Item/ItemBase.h"
 
 class Fun
-    : public ItemBase
+    : public ItemBase, public ICollisionListener
 {
 public:
     Fun();
@@ -29,6 +29,9 @@ public:
     void Destroy()override;
 
 private:
+    //当たった際の処理
+    void OnCollision(CollisionBase* other)override;
+
     //取得モーション
     void TakeMotion();
     //所持中モーション
@@ -39,7 +42,7 @@ private:
     void ThrowMotion();
 
     //当たった際の処理
-    void Hit();
+    void Hit(CPlayer& playiers);
 
 private:
     //アイテムを取得したときかを判定

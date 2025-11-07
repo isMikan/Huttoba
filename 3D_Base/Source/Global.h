@@ -129,6 +129,7 @@ enum class StaticMeshList
 	TrackingRobot,
 
 	ExplosionCol,
+	FunCol,
 };
 
 enum class UIList
