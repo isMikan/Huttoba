@@ -27,7 +27,7 @@ Bomb::Bomb()
 	
 	, m_IsExploded		( false )
 
-	, m_MinSmashPower	( 5.0f )	//値を変えるとプレイヤーの最大吹き飛ばし力が変化
+	, m_MinSmashPower	( 5.0f )	//値を変えるとプレイヤーの最小吹き飛ばし力が変化
 
 	, m_MaxSmashPower	( 10.0f )	//値を変えるとプレイヤーの最大吹き飛ばし力が変化
 {
@@ -110,22 +110,22 @@ void Bomb::OnGround()
 
 void Bomb::Have()
 {
-	if (m_IsTake)
-		TakeMotion();
-	else
-		PossessionMotion();
+	//if (m_IsTake)
+		//TakeMotion();
+	//else
+	HaveMove();
 }
 
 void Bomb::Use()
 {
-	UseAndThrow();
+	UseMove();
 
 	m_pPlayer->SetItemBase(nullptr);
 }
 
 void Bomb::Throw()
 {
-	UseAndThrow();
+	UseMove();
 }
 
 void Bomb::Destroy()
@@ -166,11 +166,7 @@ void Bomb::UseMotion()
 {
 }
 
-void Bomb::ThrowMotion()
-{
-}
-
-void Bomb::UseAndThrow()
+void Bomb::UseMove()
 {
 	if (m_IsThrow)
 	{
@@ -214,7 +210,7 @@ void Bomb::UseAndThrow()
 		m_Velocity.y -= m_tGravity;
 		m_tGravity += 0.001f;
 	}
-	else 
+	else
 	{
 		m_Velocity.y = 0;
 		Explosion();
@@ -223,6 +219,12 @@ void Bomb::UseAndThrow()
 	m_vPosition += m_Velocity * static_cast<float>(CTimeManager::GetDeltaTime());
 
 	ChangeColor();
+}
+
+void Bomb::ThrowMove()
+{
+	//投げる動作が使う動作と同じなのでこの処理
+	UseMove();
 }
 
 void Bomb::Explosion()

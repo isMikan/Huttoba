@@ -9,9 +9,7 @@
 namespace { const bool regist = ItemBase::AutoRegister<Fun>("Fun"); }
 
 Fun::Fun()
-	: m_IsTake		(false)
-	, m_PickUpTime	(0.5f)	//時間を変えるとアイテムが手に持つまでの時間が変化
-	, m_PickUpCnt	(0.0f)
+	: m_IsUse		( false )
 
 	, m_HaveOffset	()
 
@@ -21,7 +19,6 @@ Fun::Fun()
 	, m_IsThrow		( false )
 {
 	Init();
-
 }
 
 Fun::~Fun()
@@ -40,9 +37,9 @@ void Fun::Init()
 
 	m_HaveOffset = D3DXVECTOR3(0.0, 0.2f, 0.0f);
 
-	std::shared_ptr<CStaticMesh> mesh = AssetManager::Mesh(StaticMeshList::FunCol);
+	std::shared_ptr<CStaticMesh> mesh = AssetManager::Mesh(StaticMeshList::Fun);
 
-	m_pCollision = CollisionDataFactory::CreateHorizontalCapsule(
+	m_pCollision = CollisionDataFactory::CreateSphereForMesh(
 		this,
 		mesh,
 		CollisionBase::ColliderTag::Bomb
@@ -76,22 +73,81 @@ void Fun::Spawn()
 
 void Fun::OnGround()
 {
-	if (GetAsyncKeyState('1') & 0x8000)
-	{
-		//状態を取得中に変化
-		m_State = ItemBase::State::Have;
-
-		m_IsTake = true;
-	}
 }
 
 void Fun::Have()
 {
-	if (m_IsTake)
-		TakeMotion();
-	else
-		PossessionMotion();
+	HaveMove();
 }
+
+void Fun::Use()
+{
+	UseMove();
+}
+
+void Fun::Throw()
+{
+	ThrowMove();
+}
+
+void Fun::Destroy()
+{
+	m_IsDestroy = true;
+}
+
+void Fun::OnCollision(CollisionBase* other)
+{
+	if (other->GetTag() == CollisionBase::ColliderTag::Player)
+	{
+		if (CPlayer* player = dynamic_cast<CPlayer*>(other->GetListener()))
+		{
+			if (m_IsUse)
+			{
+				Hit(*player);
+			}
+		}
+	}
+}
+
+void Fun::HaveMove()
+{
+	if (m_IsUse)
+	{
+		//当たり判定削除
+		CollisionManager::GetInstance()->RemoveCollider(m_pCollision.get());
+
+		std::shared_ptr<CStaticMesh> mesh = AssetManager::Mesh(StaticMeshList::Fun);
+
+		m_pCollision = CollisionDataFactory::CreateSphereForMesh(
+			this,
+			mesh,
+			CollisionBase::ColliderTag::Bomb
+		);
+
+		m_IsUse = false;
+	}
+
+	m_vPosition = m_pPlayer->GetPlayerRightHand().GetPosition() + m_HaveOffset;
+	m_vQuaternion = m_pPlayer->GetQuaternion();
+}
+
+void Fun::UseMove()
+{
+	if (!m_IsUse)
+	{
+		//当たり判定削除
+		CollisionManager::GetInstance()->RemoveCollider(m_pCollision.get());
+
+		std::shared_ptr<CStaticMesh> mesh = AssetManager::Mesh(StaticMeshList::FunCol);
+
+		m_pCollision = CollisionDataFactory::CreateHorizontalCapsule(
+			this,
+			mesh,
+			CollisionBase::ColliderTag::Bomb
+		);
+
+		m_IsUse = true;
+	}
 
 void Fun::Use()
 {
@@ -99,16 +155,16 @@ void Fun::Use()
 	m_vPosition = m_pPlayer->GetPlayerRightHand().GetPosition() + m_HaveOffset;
 	m_vQuaternion = m_pPlayer->GetQuaternion();
 
-	static ::EsHandle hEffect = 1;
+	//static ::EsHandle hEffect = 1;
 
-	//エフェクト追加
-	hEffect = AssetManager::Effect()->Play("FunWind", m_vPosition);
+	////エフェクト追加
+	//hEffect = AssetManager::Effect()->Play("FunWind", m_vPosition);
 
-	//エフェクトの拡縮設定
-	AssetManager::Effect()->SetScale(hEffect, D3DXVECTOR3(0.6f, 0.6f, 0.6f));
+	////エフェクトの拡縮設定
+	//AssetManager::Effect()->SetScale(hEffect, D3DXVECTOR3(0.6f, 0.6f, 0.6f));
 }
 
-void Fun::Throw()
+void Fun::ThrowMove()
 {
 	if (m_IsThrow)
 	{
@@ -129,6 +185,17 @@ void Fun::Throw()
 		m_Velocity = forward * m_MoveSpeed;
 
 		m_IsThrow = false;
+
+		//当たり判定削除
+		CollisionManager::GetInstance()->RemoveCollider(m_pCollision.get());
+
+		std::shared_ptr<CStaticMesh> mesh = AssetManager::Mesh(StaticMeshList::Fun);
+
+		m_pCollision = CollisionDataFactory::CreateSphereForMesh(
+			this,
+			mesh,
+			CollisionBase::ColliderTag::Bomb
+		);
 	}
 
 
@@ -147,49 +214,6 @@ void Fun::Throw()
 	}
 
 	m_vPosition += m_Velocity * static_cast<float>(CTimeManager::GetDeltaTime()) + m_HaveOffset;
-}
-
-void Fun::Destroy()
-{
-	
-}
-
-void Fun::OnCollision(CollisionBase* other)
-{
-	if (other->GetTag() == CollisionBase::ColliderTag::Player)
-	{
-		if (CPlayer* player = dynamic_cast<CPlayer*>(other->GetListener()))
-		{
-			//if (m_IsExploded)
-			{
-				//Hit(*player);
-			}
-		}
-	}
-}
-
-void Fun::TakeMotion()
-{
-	m_PickUpCnt += CTimeManager::GetDeltaTime();
-
-	if (m_PickUpCnt >= m_PickUpTime)
-	{
-		m_IsTake = false;
-	}
-}
-
-void Fun::PossessionMotion()
-{
-	m_vPosition = m_pPlayer->GetPlayerRightHand().GetPosition() + m_HaveOffset;
-	m_vQuaternion = m_pPlayer->GetQuaternion();
-}
-
-void Fun::UseMotion()
-{
-}
-
-void Fun::ThrowMotion()
-{
 }
 
 void Fun::Hit(CPlayer& playiers)

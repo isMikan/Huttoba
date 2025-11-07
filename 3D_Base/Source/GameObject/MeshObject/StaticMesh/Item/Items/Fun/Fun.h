@@ -32,25 +32,19 @@ private:
     //当たった際の処理
     void OnCollision(CollisionBase* other)override;
 
-    //取得モーション
-    void TakeMotion();
-    //所持中モーション
-    void PossessionMotion();
-    //使用モーション
-    void UseMotion();
-    //投擲モーション
-    void ThrowMotion();
+    //所持中の移動処理
+    void HaveMove();
+    //使用中の移動処理
+    void UseMove();
+    //投擲の移動処理
+    void ThrowMove();
 
     //当たった際の処理
     void Hit(CPlayer& playiers);
 
 private:
-    //アイテムを取得したときかを判定
-    bool        m_IsTake;
-    //アイテムを手に持つまでの時間
-    float       m_PickUpTime;
-    //アイテムを手に持つまでのカウント
-    float       m_PickUpCnt;
+    //アイテムを使用中かどうかを判定
+    bool        m_IsUse;
 
     //アイテムを持った際の補正値
     D3DXVECTOR3 m_HaveOffset;
