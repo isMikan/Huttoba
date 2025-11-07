@@ -5,6 +5,8 @@
 
 #include "GameObject/MeshObject/StaticMesh/PlayerBase/PlayerState/PlayerActionState/PlayerGetUpState/CPlayerGetUpState.h"
 
+#include "Item/ItemBase.h"	
+
 #include "Input/CInputManager.h"
 
 CPlayerKnockdownState::CPlayerKnockdownState(CPlayerBase& pPlayer)
@@ -46,6 +48,14 @@ void CPlayerKnockdownState::Enter()
 {
 	//SE‚ğ–Â‚ç‚·.
 	AssetManager::Sound()->PlayLoop(enSoundList::SE_Knockdown);
+
+	ItemBase* item = m_pPlayer.GetItemBase();
+
+	if (item)
+	{
+		item->SetState(ItemBase::State::Destroy);
+		m_pPlayer.SetItemBase(nullptr);
+	}
 
 	//UŒ‚‚ÌŠJnŠÔ‚ğæ“¾.
 	m_StartTime = CTimeManager::GetTotalTime();

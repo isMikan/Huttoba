@@ -343,10 +343,10 @@ void CPlayerBase::OnCollision(CollisionBase* pOtherCollider)
 		{
 			if (player->IsAnyActionState<CPlayerHandAttackState>())
 			{
-				//SetHitAttack(
-				//	GetKnockbackVelocity(player->GetPosition(), 10.f, 60.f), CPlayerBase::HitEvent::Knockdown);
 				SetHitAttack(
-					GetPushbackVelocity(player->GetPosition()), CPlayerBase::HitEvent::Pushback);
+					GetKnockbackVelocity(player->GetPosition(), 10.f, 60.f), CPlayerBase::HitEvent::Knockdown);
+				//SetHitAttack(
+				//	GetPushbackVelocity(player->GetPosition()), CPlayerBase::HitEvent::Pushback);
 			}
 			else
 			{
