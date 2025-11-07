@@ -13,9 +13,9 @@ public:
 // 	   ŠO•”‚ÅŒÄ‚Ño‚·•Ï”.
 //======================================================================
 	//F‚ª•Ï‚í‚éŠÔ.
-	static constexpr float	m_ChangeColorTime = 5.f;	
+	static constexpr float	m_ChangeColorTime = 3.f;	
 	//—h‚ê‚éŠÔ.
-	static constexpr float	m_ShakeTime = 2.f;
+	static constexpr float	m_ShakeTime = 1.f;
 
 public:
 	CGround();

@@ -40,6 +40,6 @@ public:
 	void SetPlayerInputBinding(int index) const;
 
 private:
-	D3DXVECTOR3		m_CurrentInput;	//Œ»İ‚Ì“ü—Í•ûŒü.
+	D3DXVECTOR2		m_CurrentInput;	//Œ»İ‚Ì“ü—Í•ûŒü.
 
 };

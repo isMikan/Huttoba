@@ -19,7 +19,7 @@
 CPlayer::CPlayer(int index)
 	: CPlayerBase			( index )
 
-	, m_CurrentInput		( 0.f, 0.f, 0.f )
+	, m_CurrentInput		( 0.f, 0.f )
 {
 	SetPlayerInputBinding(m_PlayerID);
 }
@@ -63,12 +63,12 @@ void CPlayer::HandleInput()
 		CPlayerKnockdownState>())	//ダウン中.
 	{
 		//入力に変化があった場合.
-		if (m_CurrentInput != D3DXVECTOR3(x, 0.f, z))
+		if (m_CurrentInput != D3DXVECTOR2(x, z))
 		{
 			SetMoveState(std::make_unique<CPlayerMoveIdleState>(*this));
 			SetTurnState(std::make_unique<CPlayerTurnIdleState>(*this));
 
-			m_CurrentInput = D3DXVECTOR3(x, 0.f, z);	//現在の入力を記録しておく.
+			m_CurrentInput = D3DXVECTOR2(x, z);	//現在の入力を記録しておく.
 		}
 	}
 	else
@@ -89,7 +89,7 @@ void CPlayer::HandleInput()
 		if (IsAnyActionState<CPlayerFallingState>())
 		{
 			//入力に変化があった場合.
-			if (m_CurrentInput != D3DXVECTOR3(x, 0.f, z))
+			if (m_CurrentInput != D3DXVECTOR2(x, z))
 			{
 				SetTurnState(std::make_unique<CPlayerTurnIdleState>(*this));
 			}
@@ -98,18 +98,18 @@ void CPlayer::HandleInput()
 		else
 		{
 			//入力に変化があった場合.
-			if (m_CurrentInput != D3DXVECTOR3(x, 0.f, z))
+			if (m_CurrentInput != D3DXVECTOR2(x, z))
 			{
 				SetTurnState(std::make_unique<CPlayerTurnState>(*this, x, z));
 			}
 		}
 
 		//入力に変化があった場合.
-		if (m_CurrentInput != D3DXVECTOR3(x, 0.f, z))
+		if (m_CurrentInput != D3DXVECTOR2(x, z))
 		{
 			//移動だけする場合.
 			SetMoveState(std::make_unique<CPlayerMoveState>(*this, x, z));
-			m_CurrentInput = D3DXVECTOR3(x, 0.f, z);	//現在の入力を記録しておく.
+			m_CurrentInput = D3DXVECTOR2(x, z);	//現在の入力を記録しておく.
 		}
 	}
 
