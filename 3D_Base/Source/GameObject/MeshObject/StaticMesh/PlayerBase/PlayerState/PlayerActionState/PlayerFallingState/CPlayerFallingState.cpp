@@ -3,6 +3,7 @@
 #include "GameObject/MeshObject/StaticMesh/PlayerBase/CPlayerBase.h"
 										   
 #include "GameObject/MeshObject/StaticMesh/PlayerBase/PlayerState/PlayerActionState/PlayerActionIdleState/CPlayerActionIdleState.h"
+#include "GameObject/MeshObject/StaticMesh/PlayerBase/PlayerState/PlayerActionState/PlayerHoldingIdleState/CPlayerHoldingIdleState.h"
 #include "GameObject/MeshObject/StaticMesh/PlayerBase/PlayerState/PlayerActionState/PlayerGetUpState/CPlayerGetUpState.h"
 #include "GameObject/MeshObject/StaticMesh/PlayerBase/PlayerState/PlayerActionState/PlayerKnockdownState/CPlayerKnockdownState.h"
 
@@ -80,15 +81,6 @@ void CPlayerFallingState::Exit()
 {
 	//SEを鳴らす.
 	AssetManager::Sound()->PlaySE(enSoundList::SE_Down);
-
-	//クォータニオンを取得.
-	D3DXQUATERNION quat = m_pPlayer.GetQuaternion();
-
-	m_pPlayer.SetQuaternion(quat.x, m_StartQuat.y, quat.z, m_StartQuat.w);
-	////プレイヤーの位置を取得.
-	//D3DXVECTOR3 playerPos = m_pPlayer.GetPosition();
-	////地面に着地.
-	//m_pPlayer.SetPosition(playerPos.x, m_GroundPos, playerPos.z);
 }
 
 //--- この状態の間に呼び出す ---.
@@ -116,7 +108,17 @@ void CPlayerFallingState::Update()
 		}
 		else
 		{
-			m_pPlayer.SetActionState(std::make_unique<CPlayerActionIdleState>(m_pPlayer));
+			//アイテムを持っている場合.
+			if (m_pPlayer.GetItemBase())
+			{
+				//アイテム持ち、何もなし状態.
+				m_pPlayer.SetActionState(std::make_unique<CPlayerHoldingIdleState>(m_pPlayer));
+			}
+			else
+			{
+				//何もなし状態.
+				m_pPlayer.SetActionState(std::make_unique<CPlayerActionIdleState>(m_pPlayer));
+			}
 		}
 		return;
 	}

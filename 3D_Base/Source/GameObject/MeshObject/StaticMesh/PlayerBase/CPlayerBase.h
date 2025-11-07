@@ -35,7 +35,7 @@ public:
 	//接触イベント.
 	enum class HitEvent
 	{
-		GetPushbackVelocity,		//押し出し攻撃.
+		Pushback,	//押し出し攻撃.
 		Knockback,	//吹き飛ばし攻撃.
 		Knockdown,	//ダウン付き攻撃.
 

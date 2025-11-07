@@ -5,6 +5,7 @@
 #include "PlayerBase/PlayerState/PlayerMoveState/PlayerMoveIdelState/CPlayerMoveIdleState.h"
 #include "PlayerBase/PlayerState/PlayerTurnState/PlayerTurnIdleState/CPlayerTurnIdleState.h"
 #include "PlayerBase/PlayerState/PlayerActionState/PlayerActionIdleState/CPlayerActionIdleState.h"
+#include "PlayerBase/PlayerState/PlayerActionState/PlayerHoldingIdleState/CPlayerHoldingIdleState.h"
 
 #include "PlayerBase/PlayerState/PlayerActionState/PlayerHandWhiffState/CPlayerHandWhiffState.h"
 #include "PlayerBase/PlayerState/PlayerActionState/PlayerKnockbackState/CPlayerKnockbackState.h"
@@ -85,7 +86,7 @@ void CPlayer::HandleInput()
 		}
 
 		//‰ñ“]‚¾‚¯‚µ‚È‚¢ê‡.
-		if (IsActionState<CPlayerFallingState>())
+		if (IsAnyActionState<CPlayerFallingState>())
 		{
 			//“ü—Í‚É•Ï‰»‚ª‚ ‚Á‚½ê‡.
 			if (m_CurrentInput != D3DXVECTOR3(x, 0.f, z))
@@ -113,7 +114,7 @@ void CPlayer::HandleInput()
 	}
 
 	//‰½‚à‚µ‚Ä‚¢‚È‚¢A‹N‚±‚Á‚Ä‚¢‚È‚¢ó‘Ô‚È‚ç.
-	if (IsActionState<CPlayerActionIdleState>())
+	if (IsAnyActionState<CPlayerActionIdleState, CPlayerHoldingIdleState>())
 	{
 		//UŒ‚‚Ìw¦‚ğ‚·‚é.
 		if (CInputManager::IsDown(Action::Attack, m_PlayerID))

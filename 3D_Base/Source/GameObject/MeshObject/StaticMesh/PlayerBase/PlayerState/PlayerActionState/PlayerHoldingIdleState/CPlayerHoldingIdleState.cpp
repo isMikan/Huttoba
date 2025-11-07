@@ -8,13 +8,13 @@
 #include "Item/Items/Bomb/Bomb.h"
 
 CPlayerHoldingIdleState::CPlayerHoldingIdleState(CPlayerBase& pPlayer)
-	: CPlayerState				( pPlayer )
+	: CPlayerState						( pPlayer )
 
-	, m_StartTime				()
-	, m_EndTime					( 2.f )
+	, m_StartTime						()
+	, m_EndTime							( 2.f )
 
-	, m_HoldBothHands_RightOffsetPos	( -0.5f, 0.f, 1.f )
-	, m_HoldBothHands_LeftOffsetPos		( 0.5f, 0.f, 1.f )
+	, m_HoldBothHands_RightOffsetPos	( -0.2f, 0.f, 0.3f )
+	, m_HoldBothHands_LeftOffsetPos		( 0.2f, 0.f, 0.3f )
 {
 }
 
@@ -79,7 +79,7 @@ void CPlayerHoldingIdleState::Update()
 	if (dynamic_cast<Bomb*>(item))
 	{
 		rightHandOffsetPos += m_HoldBothHands_RightOffsetPos;
-		leftHandOffsetPos -= m_HoldBothHands_LeftOffsetPos;
+		leftHandOffsetPos += m_HoldBothHands_LeftOffsetPos;
 	}
 
 	//Œo‰ßŽžŠÔ‚ðŽæ“¾.

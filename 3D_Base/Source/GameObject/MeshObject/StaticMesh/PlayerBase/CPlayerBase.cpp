@@ -72,7 +72,7 @@ void CPlayerBase::Update()
 	}
 
 	//‰Ÿ‚³‚ê‚½ê‡‚Ìˆ—.
-	if (m_HitAttack.hitEvent == HitEvent::GetPushbackVelocity)
+	if (m_HitAttack.hitEvent == HitEvent::Pushback)
 	{
 		SetActionState(std::make_unique<CPlayerPushedState>(*this));
 	}
@@ -117,7 +117,6 @@ void CPlayerBase::Update()
 	m_pActionState->Update();
 
 	m_HitPlayer.isHit = false;
-
 }
 
 //--- •`‰æˆ— ---.
@@ -343,8 +342,10 @@ void CPlayerBase::OnCollision(CollisionBase* pOtherCollider)
 		{
 			if (player->IsAnyActionState<CPlayerHandAttackState>())
 			{
+				//SetHitAttack(
+				//	GetKnockbackVelocity(player->GetPosition(), 10.f, 60.f), CPlayerBase::HitEvent::Knockdown);
 				SetHitAttack(
-					GetKnockbackVelocity(player->GetPosition(), 10.f, 60.f), CPlayerBase::HitEvent::Knockdown);
+					GetPushbackVelocity(player->GetPosition()), CPlayerBase::HitEvent::Pushback);
 			}
 			else
 			{
