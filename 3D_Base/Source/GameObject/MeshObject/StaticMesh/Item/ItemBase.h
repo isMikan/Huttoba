@@ -109,6 +109,9 @@ public:
 	//地面との判定
 	void IsOnGround(CGroundManager* pGroundMgr);
 
+	//アイテム消去(他クラスで読み込む用)
+	void DestroyItem();
+
 protected:
 
 	virtual void Spawn	 ()	= 0; // 出現

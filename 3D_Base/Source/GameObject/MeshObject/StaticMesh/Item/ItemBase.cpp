@@ -74,3 +74,8 @@ void ItemBase::IsOnGround(CGroundManager* pGroundMgr)
 		groundY
 	);
 }
+
+void ItemBase::DestroyItem()
+{
+	m_State = State::Destroy;
+}
