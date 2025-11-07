@@ -3,6 +3,7 @@
 #include "GameObject/MeshObject/StaticMesh/PlayerBase/CPlayerBase.h"
 
 #include "GameObject/MeshObject/StaticMesh/PlayerBase/PlayerState/PlayerMoveState/PlayerMoveIdelState/CPlayerMoveIdleState.h"
+#include "GameObject/MeshObject/StaticMesh/PlayerBase/PlayerState/PlayerActionState/PlayerHoldingIdleState/CPlayerHoldingIdleState.h"
 
 #include "GameObject/MeshObject/StaticMesh/PlayerBase/PlayerState/PlayerActionState/PlayerPushedState/CPlayerPushedState.h"
 #include "GameObject/MeshObject/StaticMesh/PlayerBase/PlayerState/PlayerActionState/PlayerFallingState/CPlayerFallingState.h"
@@ -13,8 +14,8 @@ CPlayerMoveState::CPlayerMoveState(CPlayerBase& pPlayer, float x, float z)
 	, m_InputDir			( x, 0.f, z )
 	
 	, m_CurrentSpeed		()
-	, m_MoveSpeed			( 0.14f )
-	, m_RotatingMoveSpeed	( 0.1f )
+	, m_MoveSpeed			( 0.13f )
+	, m_RotatingMoveSpeed	( 0.09f )
 	, m_HitingMoveSpeed		( 0.03f )
 
 {
@@ -114,7 +115,10 @@ float CPlayerMoveState::GetMoveSpeed()
 		return m_RotatingMoveSpeed;
 	}
 	//動作不可能（位置の微調整は可能）の場合.
-	if (m_pPlayer.IsAnyActionState<CPlayerPushedState, CPlayerFallingState>())
+	if (m_pPlayer.IsAnyActionState<
+		CPlayerPushedState, 
+		CPlayerFallingState,
+		CPlayerHoldingIdleState>())
 	{
 		return m_HitingMoveSpeed;
 	}

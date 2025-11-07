@@ -56,7 +56,7 @@ void CGround::Update()
 	//’n–Ê‚ª—h‚ê‚éê‡.
 	if (m_IsShake)
 	{
-		ShakeGround();
+		//ShakeGround();
 	}
 
 	//’n–Ê‚ª—‚¿‚éê‡.

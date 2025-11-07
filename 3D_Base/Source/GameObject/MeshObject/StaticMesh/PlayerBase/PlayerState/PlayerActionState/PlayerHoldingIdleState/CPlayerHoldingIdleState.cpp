@@ -29,7 +29,14 @@ CPlayerHoldingIdleState::~CPlayerHoldingIdleState()
 //--- 状態の開始時に呼び出す ---.
 void CPlayerHoldingIdleState::Enter()
 {
-	//モーション開始時間.
+	ItemBase* item = m_pPlayer.GetItemBase();
+
+	if (!item)
+	{
+		item->SetState(ItemBase::State::Have);
+	}
+
+	//アニメーション開始時間.
 	m_StartTime = CTimeManager::GetTotalTime();
 		
 	//クォータニオンを取得.

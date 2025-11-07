@@ -370,7 +370,14 @@ void CPlayerBase::OnCollision(CollisionBase* pOtherCollider)
 
 		break;
 
+	case CollisionBase::ColliderTag::Haetataki:
+	case CollisionBase::ColliderTag::SmashBat:
 	case CollisionBase::ColliderTag::Bomb:
+	case CollisionBase::ColliderTag::Mushroom:
+	case CollisionBase::ColliderTag::Fan:
+	case CollisionBase::ColliderTag::Magnet:
+	case CollisionBase::ColliderTag::Boomerang:
+	case CollisionBase::ColliderTag::TrackingRobot:
 
 		if (ItemBase* item = dynamic_cast<ItemBase*>(pOtherCollider->GetListener()))
 		{
@@ -385,6 +392,7 @@ void CPlayerBase::OnCollision(CollisionBase* pOtherCollider)
 			}
 		}
 		break;
+
 	default:
 		break;
 	}

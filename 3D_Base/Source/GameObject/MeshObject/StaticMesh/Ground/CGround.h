@@ -3,7 +3,7 @@
 #include "GameObject/MeshObject/StaticMesh/CStaticMeshObject.h"
 
 /***********************************************************************
-*	地面クラス.									制作者 : 甲把
+*	地面クラス.									制作者 [甲把]
 **/
 class CGround
 	: public CStaticMeshObject
@@ -13,9 +13,9 @@ public:
 // 	   外部で呼び出す変数.
 //======================================================================
 	//色が変わる時間.
-	static constexpr float	m_ChangeColorTime = 5.f;	
+	static constexpr float	m_ChangeColorTime = 3.f;	
 	//揺れる時間.
-	static constexpr float	m_ShakeTime = 2.f;
+	static constexpr float	m_ShakeTime = 1.f;
 
 public:
 	CGround();

@@ -10,17 +10,19 @@ class CPlayerAI
 {
 public:
 	CPlayerAI(int index);	//引数:プレイヤー番号.
-	~CPlayerAI() override;
+	virtual ~CPlayerAI() override;
 
 //======================================================================
 //		外部で呼び出す関数.
 //======================================================================
 	//--- 毎フレームの動作 ---.
-	void Update() override;
+	virtual void Update() override;
 	//--- 毎フレームの描画 ---.
-	void Draw(
+	virtual void Draw(
 		D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAMERA& Camera ) override;
 
-private:
+	void AutomaticMovement();
+
+protected:
 
 };
