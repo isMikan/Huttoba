@@ -31,10 +31,10 @@ void CPlayerHoldingIdleState::Enter()
 {
 	ItemBase* item = m_pPlayer.GetItemBase();
 
-	if (!item)
-	{
-		item->SetState(ItemBase::State::Have);
-	}
+	//if (item)
+	//{
+	//	item->SetState(ItemBase::State::Have);
+	//}
 
 	//アニメーション開始時間.
 	m_StartTime = CTimeManager::GetTotalTime();
