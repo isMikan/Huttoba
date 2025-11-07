@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "ItemBase.h"
 #include "PlayerBase/CPlayerBase.h"
-
+#include "Collision/CollisionUtility/CollisionUtility.h"
 
 ItemBase::ItemBase()
 	: m_State		{ State::Spawn }
@@ -68,7 +68,7 @@ void ItemBase::IsOnGround(CGroundManager* pGroundMgr)
 	const float playerHalfHeight = 0.4f;
 
 	// CollisionManager‚É”»’è‚ğˆË—Š‚µAŒ‹‰Ê‚ğ‚»‚Ì‚Ü‚Ü•Ô‚·
-	m_IsOnGround = CollisionManager::CheckGroundContact(
+	m_IsOnGround = CollisionUtility::CheckGroundContact(
 		playerPos,
 		pGroundMgr,
 		groundY

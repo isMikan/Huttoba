@@ -5,7 +5,7 @@
 #include "GameObject/MeshObject/StaticMesh/CStaticMeshObject.h"
 #include "GameObject/CGameObject.h"
 #include "Collision/CollisionListener/ICollisionListener.h"
-#include "Collision/CollisionMeshUtility/MeshCollisionUtility.h"
+#include "Collision/CollisionUtility/CollisionUtility.h"
 
 
 /*************************************

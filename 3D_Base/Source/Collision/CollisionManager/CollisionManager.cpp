@@ -8,8 +8,6 @@
 #include "Collision/CollisionStrategy/CollisionPattern/CollisionSphereCapsule/CollisionSphereCapsule.h"
 #include "Collision/CollisionStrategy/CollisionPattern/CollisionCapsuleCapsule/CollisionCapsuleCapsule.h"
 
-#include "Ground/GroundManager/CGroundManager.h"
-
 CollisionManager::CollisionManager()
 	: m_Colliders   {}
 {
@@ -62,82 +60,31 @@ bool CollisionManager::CheckCollision(CollisionBase* a, CollisionBase* b)
     return strategy->CheckCollision(a, b);
 }
 
-bool CollisionManager::CheckGroundContact(
-    const D3DXVECTOR3& objectPosition,
-    CGroundManager* pGroundMgr,
-    float& outGroundY)
-{
-    if (!pGroundMgr) return false;
-
-    // レイ設定 
-    D3DXVECTOR3 rayOrigin = objectPosition + D3DXVECTOR3(0.0f, 0.3f, 0.0f);
-    D3DXVECTOR3 rayDirection(0.0f, -1.0f, 0.0f);
-    const float maxDistance = 5.f;
-
-    // Raycastのout引数
-    D3DXVECTOR3 hitPosition;
-    bool hitGround = false;
-
-    // GroundManagerから配列を取得
-    const auto& grounds = pGroundMgr->GetGrounds();
-
-    // 地面の数だけ回す
-    for (const auto& pGround : grounds)
-    {
-        if (!pGround) continue;
-
-        // メッシュを取得
-        std::shared_ptr<CStaticMesh> pGroundMesh = pGround->GetMesh();
-        if (!pGroundMesh) continue;
-
-        // MeshCollisionUtilityに判定を委譲
-        if (MeshCollisionUtility::RaycastAgainstMesh(
-            pGroundMesh,    // 地面のメッシュ
-            rayOrigin,      // レイの始点
-            rayDirection,   // レイの向き
-            maxDistance,    // レイの最大距離
-            hitPosition     // out 当たった場所
-        ))
-        {
-            hitGround = true;
-            outGroundY = hitPosition.y;
-            break;
-        }
-    }
-
-    return hitGround;
-}
-
 // =========================================================================
-// 地面接触判定 (カプセル vs メッシュの簡略化版)
+// 当たり判定戦略の設定
 // =========================================================================
 void CollisionManager::RegisterStrategy()
 {
-    //当たり判定戦略の設定
-
-    //球vs球----------------------------------------------------------------
-
+    //球vs球
     CollisionStrategyFactory::GetInstance()->RegisterStrategy(
         CollisionBase::ColliderType::Sphere,
         CollisionBase::ColliderType::Sphere,
         std::make_unique<CollisionStrategySphereSphere>()
     );
 
-    //球vsカプセル-----------------------------------------------------------
+    //球vsカプセル
     CollisionStrategyFactory::GetInstance()->RegisterStrategy(
         CollisionBase::ColliderType::Sphere,
         CollisionBase::ColliderType::Capsule,
         std::make_unique<CollisionSphereCapsule>()
     );
 
-    //カプセルvsカプセル-----------------------------------------------------
+    //カプセルvsカプセル
     CollisionStrategyFactory::GetInstance()->RegisterStrategy(
         CollisionBase::ColliderType::Capsule,
         CollisionBase::ColliderType::Capsule,
         std::make_unique<CollisionCapsuleCapsule>()
     );
-
-    //-----------------------------------------------------------------------
 
 }
 
@@ -178,7 +125,6 @@ void CollisionManager::Update()
                 // ヒットフラグを設定
                 colliderA->SetHit(true);
                 colliderB->SetHit(true);
-
             }
         }
     }

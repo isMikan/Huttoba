@@ -13,6 +13,7 @@
 #include "PlayerBase/PlayerState/PlayerActionState/PlayerKnockdownState/CPlayerKnockdownState.h"
 
 #include "Item/ItemBase.h"	
+#include "Collision/CollisionUtility/CollisionUtility.h"
 
 
 CPlayerBase::CPlayerBase( int index )
@@ -274,7 +275,7 @@ void CPlayerBase::OnGroundCollision(CGroundManager* pGroundMgr)
 	float groundY = 0.0f;
 
 	// CollisionManager‚É”»’è‚ğˆË—Š‚µAŒ‹‰Ê‚ğ‚»‚Ì‚Ü‚Ü•Ô‚·
-	m_IsOnGround = CollisionManager::CheckGroundContact(
+	m_IsOnGround = CollisionUtility::CheckGroundContact(
 		GetPosition(),
 		pGroundMgr,
 		groundY

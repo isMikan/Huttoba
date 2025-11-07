@@ -19,7 +19,7 @@ class CStaticMesh;
 /***************************************
  * メッシュの頂点情報から衝突パラメータを計算するユーティリティ。
  *******/
-namespace MeshCollisionUtility
+namespace CollisionUtility
 {
     /*****************************************************************************************
     * @brief    メッシュの外接球の中心座標と半径を計算
@@ -89,19 +89,17 @@ namespace MeshCollisionUtility
         D3DXVECTOR3& outHitPos
     );
 
-
     /*****************************************************************************************
-    * @brief レイのデバッグ描画を行います。
-    * @param pDx11 DirectX11インスタンス
-    *        start レイの始点
-    *        direction レイの方向（単位ベクトルである必要はない）
-    *        distance レイの長さ
-    *        color 描画色
+    * @brief   オブジェクトの地面との接触を判定する
+    * 
+    * @param    objectPosition     : 計算したいオブジェクトの座標
+    *           colliderHalfHeight : 当たり判定の半分のサイズ
+    *           pGroundMgr         :
     *****************************************************************************************/
-    void DebugDrawRay(
-        CDirectX11* pDx11,
-        const D3DXVECTOR3& start,
-        const D3DXVECTOR3& direction,
-        float distance,
-        const D3DXVECTOR4& color);
+    bool CheckGroundContact(
+        const D3DXVECTOR3& objectPosition,
+        CGroundManager* pGroundMgr,
+        float& outGroundY
+    );
+
 }

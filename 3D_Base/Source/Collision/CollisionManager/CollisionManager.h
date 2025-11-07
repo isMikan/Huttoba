@@ -64,18 +64,6 @@ public:
     *****************************************************************************************/
     bool CheckCollision(CollisionBase* a, CollisionBase* b);
 
-    /*****************************************************************************************
-    * @brief   オブジェクトの地面との接触を判定する
-    * 
-    * @param    objectPosition     : 計算したいオブジェクトの座標
-    *           colliderHalfHeight : 当たり判定の半分のサイズ
-    *           pGroundMgr         :
-    *****************************************************************************************/
-    static bool CheckGroundContact(
-        const D3DXVECTOR3& objectPosition,
-        CGroundManager* pGroundMgr ,
-        float& outGroundY
-); 
 private:
     CollisionManager();
     ~CollisionManager();
