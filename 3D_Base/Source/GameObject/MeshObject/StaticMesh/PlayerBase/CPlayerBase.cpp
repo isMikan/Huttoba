@@ -26,6 +26,8 @@ CPlayerBase::CPlayerBase( int index )
 	, m_pTurnState		( std::make_unique<CPlayerTurnIdleState>( *this, 0.f, 0.f ) )
 	, m_pActionState	( std::make_unique<CPlayerActionIdleState>( *this ) )
 
+	, m_pItemBase		( nullptr )
+
 	, m_Instruct		( ActionInstruct::None )
 	, m_HitAttack		()
 	, m_HitPlayer		()
@@ -43,6 +45,7 @@ CPlayerBase::CPlayerBase( int index )
 
 CPlayerBase::~CPlayerBase()
 {
+	m_pItemBase = nullptr;
 }
 
 //======================================================================
@@ -80,9 +83,30 @@ void CPlayerBase::Update()
 		SetActionState(std::make_unique<CPlayerKnockbackState>(*this));
 	}
 
-	if (m_Instruct == ActionInstruct::HandAttack)
+	//アイテムが存在する場合.
+	if(m_pItemBase)
 	{
-		SetActionState(std::make_unique<CPlayerHandAttackState>(*this));
+		//アイテムを投げる.
+		if (m_Instruct == ActionInstruct::ToggleItem)
+		{
+			m_pItemBase->SetPlayer(this);
+			m_pItemBase->SetState(ItemBase::State::Throw);
+			SetActionState(std::make_unique<CPlayerThrowState>(*this));
+		}
+		//アイテムの攻撃.
+		if (m_Instruct == ActionInstruct::Attack)
+		{
+			m_pItemBase->SetPlayer(this);
+			m_pItemBase->SetState(ItemBase::State::Use);
+		}
+	}
+	else
+	{
+		//手の攻撃.
+		if (m_Instruct == ActionInstruct::Attack)
+		{
+			SetActionState(std::make_unique<CPlayerHandAttackState>(*this));
+		}
 	}
 
 	//移動の状態を更新.
@@ -341,26 +365,13 @@ void CPlayerBase::OnCollision(CollisionBase* pOtherCollider)
 		if (ItemBase* item = dynamic_cast<ItemBase*>(pOtherCollider->GetListener()))
 		{
 			//拾う.
-			if(m_Instruct == ActionInstruct::Pickup
+			if(m_Instruct == ActionInstruct::ToggleItem
 				&& !m_pItemBase)
 			{
 				item->SetPlayer(this);
 				item->SetState(ItemBase::State::Have);
 				SetActionState(std::make_unique<CPlayerPickupState>(*this));
 				m_pItemBase = item;
-			}
-			//投げる.
-			if (m_Instruct == ActionInstruct::Throw)
-			{
-				item->SetPlayer(this);
-				item->SetState(ItemBase::State::Throw);
-				SetActionState(std::make_unique<CPlayerThrowState>(*this));
-			}
-			//アイテム攻撃.
-			if (m_Instruct == ActionInstruct::ItemAttack)
-			{
-				item->SetPlayer(this);
-				item->SetState(ItemBase::State::Use);
 			}
 		}
 		break;

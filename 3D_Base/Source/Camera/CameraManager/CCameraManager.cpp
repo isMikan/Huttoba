@@ -34,13 +34,19 @@ void CCameraManager::Update_Internal()
 
 void CCameraManager::PositionUpdate_Internal(CGroundManager* groundManager)
 {
+	//もしサイズが0の場合、処理しない.
+	if (groundManager->GetGrounds().size() <= 0.f) return;
+
+	//地面サイズと同じ配列番号を設定.
 	size_t index = groundManager->GetGrounds().size() - 1;
 
 	//地面によるカメラ位置.
 	float dt = CTimeManager::GetDeltaTime();
 
+	//位置を近づかせる.
 	D3DXVec3Lerp(&m_Camera.vPosition, &m_Camera.vPosition,
 		&m_LastCamera[index].vPosition, dt);
+	//注視点を近づかせる.
 	D3DXVec3Lerp(&m_Camera.vLook, &m_Camera.vLook,
 		&m_LastCamera[index].vLook, dt);
 }

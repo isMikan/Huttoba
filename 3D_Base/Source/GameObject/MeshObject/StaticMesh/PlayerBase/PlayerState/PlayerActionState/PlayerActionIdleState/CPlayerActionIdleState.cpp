@@ -2,11 +2,6 @@
 
 #include "GameObject/MeshObject/StaticMesh/PlayerBase/CPlayerBase.h"
 
-#include "GameObject/MeshObject/StaticMesh/PlayerBase/PlayerState/PlayerActionState/PlayerHandAttackState/CPlayerHandAttackState.h"
-
-#include "Item/ItemBase.h"
-#include "Item/Items/Bomb/Bomb.h"
-
 CPlayerActionIdleState::CPlayerActionIdleState(CPlayerBase& pPlayer)
 	: CPlayerState			( pPlayer )
 
@@ -64,16 +59,6 @@ void CPlayerActionIdleState::Update()
 	D3DXVECTOR3 rightHandOffsetPos = m_pPlayer.GetPlayerRightHand().GetOffsetPos();
 	D3DXVECTOR3 leftHandOffsetPos = m_pPlayer.GetPlayerLeftHand().GetOffsetPos();
 
-	if (m_pPlayer.GetItemBase())
-	{
-		ItemBase* item = m_pPlayer.GetItemBase();
-
-		if (dynamic_cast<Bomb*>(item))
-		{
-			rightHandOffsetPos.x -= 1.f;
-			leftHandOffsetPos.x += 1.f;
-		}
-	}
 	//Œo‰ßŽžŠÔ‚ðŽæ“¾.
 	float t = CTimeManager::GetTotalTime();
 

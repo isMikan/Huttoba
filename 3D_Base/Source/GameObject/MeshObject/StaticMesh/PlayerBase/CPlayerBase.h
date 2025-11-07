@@ -26,12 +26,10 @@ public:
 	//動作する指示.
 	enum class ActionInstruct
 	{
-		Pickup,
-		Throw,
-		HandAttack,
-		ItemAttack,
+		ToggleItem,		//アイテムを拾う・捨てる.
+		Attack,			//攻撃.
 
-		None = -1
+		None = -1		//なし.
 	};
 
 	//接触イベント.
@@ -147,8 +145,9 @@ public:
 	//プレイヤーが左手を持っている(読み込み用).
 	const CPlayerLeftHand& GetPlayerLeftHand() const { return *m_pLeftHand; }
 
-	//持っているアイテムを取得.
+	//持っているアイテムを取得と設定.
 	ItemBase* GetItemBase() const { return m_pItemBase; }
+	void SetItemBase(ItemBase* item) { m_pItemBase = item; }
 
 	//プレイヤー番号を取得.
 	int GetPlayerID() const { return m_PlayerID; }

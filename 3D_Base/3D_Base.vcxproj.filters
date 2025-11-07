@@ -111,6 +111,7 @@
     <ClCompile Include="Source\Collision\CollisionDraw\CollisionDraw.cpp" />
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\PlayerBase\PlayerAI\PlayerAI_TypeA\CPlayerAI_TypeA.cpp" />
     <ClCompile Include="Source\Camera\CameraManager\CCameraManager.cpp" />
+    <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\PlayerBase\PlayerState\PlayerActionState\PlayerHoldingIdleState\CPlayerHoldingIdleState.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Assets\AssetManager.h" />
@@ -225,5 +226,6 @@
     <ClInclude Include="Source\Collision\CollisionDraw\CollisionDraw.h" />
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\PlayerBase\PlayerAI\PlayerAI_TypeA\CPlayerAI_TypeA.h" />
     <ClInclude Include="Source\Camera\CameraManager\CCameraManager.h" />
+    <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\PlayerBase\PlayerState\PlayerActionState\PlayerHoldingIdleState\CPlayerHoldingIdleState.h" />
   </ItemGroup>
 </Project>
