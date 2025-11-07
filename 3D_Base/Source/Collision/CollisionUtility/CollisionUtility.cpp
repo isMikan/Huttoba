@@ -245,13 +245,10 @@ namespace CollisionUtility
         D3DXVECTOR3 hitPosition;
         bool hitGround = false;
 
-        // GroundManagerから地面を取得(配列)
-        const auto& grounds = pGroundMgr->GetGrounds();
-
         // 地面の数だけ回す
-        for (const auto& pGround : grounds)
+        for (const auto& pGround : pGroundMgr->GetGrounds())
         {
-            if (!pGround) continue;
+            if (!pGround || pGround->GetIsFallDown()) continue;
 
             // メッシュを取得
             std::shared_ptr<CStaticMesh> pGroundMesh = pGround->GetMesh();

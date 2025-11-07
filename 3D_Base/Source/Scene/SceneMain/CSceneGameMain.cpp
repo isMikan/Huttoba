@@ -128,16 +128,16 @@ void CSceneGameMain::Update()
 
 	CTimeManager::Update();
 
-	//地面メネージャーの更新処理.
+	//地面メネージャーの更新処理
 	m_pGroundManager->Update();
 
-	//プレイヤーの動作.
+	//プレイヤーの動作
 	m_pPlayerManager->Update();
 
 	//地面に接地しているか
 	for (auto& player : m_pPlayerManager->GetPlayer())
 	{
-		if (!player) continue;	//プレイヤーがいない場合、次へ.
+		if (!player) continue;	//プレイヤーがいない場合、次へ
 
 		player->OnGroundCollision(m_pGroundManager.get());
 
