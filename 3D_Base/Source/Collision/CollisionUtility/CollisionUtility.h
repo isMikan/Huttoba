@@ -1,8 +1,5 @@
 #pragma once
 
-class CStaticMesh;
-
-
 /*--------------------
 
 ・円判定作成         : CalculateBoundingSphere
@@ -10,15 +7,14 @@ class CStaticMesh;
 ・横カプセル判定作成 : CalculateHorizontalCapsule
 
 ----------------------
-・レイの衝突判定     : RaycastAgainstMesh
+
+・レイの衝突判定        : RaycastAgainstMesh
+・地面に乗っているか判定: CheckGroundContact
 
 */
 
+class CStaticMesh;
 
-
-/***************************************
- * メッシュの頂点情報から衝突パラメータを計算するユーティリティ。
- *******/
 namespace CollisionUtility
 {
     /*****************************************************************************************

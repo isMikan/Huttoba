@@ -1,5 +1,6 @@
 #pragma once
-#include "Collision/Collider/CollisionBase.h"
+
+class CollisionBase;
 
 //=====================================
 // CollisionStrategyBase

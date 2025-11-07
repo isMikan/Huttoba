@@ -2,8 +2,7 @@
 
 #include"Collision/CollisionStrategy/CollisionStrategyBase.h"
 
-class CGameObject;
-class CollisionSphere;
+class CollisionBase;
 
 /***************************************************************************************
  * 衝突判定ロジッククラス：球体 vs. 球体 (Strategy)
