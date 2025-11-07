@@ -27,7 +27,7 @@ Bomb::Bomb()
 	
 	, m_IsExploded		( false )
 
-	, m_MinSmashPower	( 5.0f )	//値を変えるとプレイヤーの最大吹き飛ばし力が変化
+	, m_MinSmashPower	( 5.0f )	//値を変えるとプレイヤーの最小吹き飛ばし力が変化
 
 	, m_MaxSmashPower	( 10.0f )	//値を変えるとプレイヤーの最大吹き飛ばし力が変化
 {
@@ -54,7 +54,6 @@ Bomb::~Bomb()
 void Bomb::Init()
 {
 	AttachMesh(AssetManager::Mesh(StaticMeshList::Bomb));
-	//AttachMesh(AssetManager::Mesh(StaticMeshList::ExplosionCol));
 
 	m_State = ItemBase::State::Spawn;
 
