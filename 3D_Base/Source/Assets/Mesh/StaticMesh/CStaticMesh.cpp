@@ -926,7 +926,7 @@ void CStaticMesh::RenderMesh(
 			cb.Ambient = m_pMaterials[m_AttrID[No]].Ambient;
 			cb.Specular = m_pMaterials[m_AttrID[No]].Specular;
 
-		//=== 色を自由にプログラム上で変更する.		制作者 : 甲把 ===.
+		//=== 色を自由にプログラム上で変更する.		制作者 [甲把] ===.
 			//色が設定されていたら、その色を入れる.
 			if (0 < m_ObjectColor.size())
 			{

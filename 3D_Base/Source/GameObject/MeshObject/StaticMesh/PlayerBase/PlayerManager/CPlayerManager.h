@@ -3,7 +3,7 @@
 #include "GameObject/MeshObject/StaticMesh/PlayerBase/CPlayerBase.h"
 
 /***********************************************************************
-*   プレイヤーマネージャークラス.				制作者 : 甲把
+*   プレイヤーマネージャークラス.				制作者 [甲把]
 **/
 class CPlayerManager
 {

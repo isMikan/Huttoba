@@ -14,7 +14,7 @@
 
 
 /***********************************************************************
-*	プレイヤークラス.							制作者 : 甲把
+*	プレイヤークラス.							制作者 [甲把]
 **/
 class CPlayer
 	: public CPlayerBase
@@ -40,6 +40,6 @@ public:
 	void SetPlayerInputBinding(int index) const;
 
 private:
-	D3DXVECTOR3		m_CurrentInput;	//現在の入力方向.
+	D3DXVECTOR2		m_CurrentInput;	//現在の入力方向.
 
 };

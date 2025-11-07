@@ -26,3 +26,7 @@ void CPlayerAI::Draw(
 {
 	CPlayerBase::Draw( View, Proj, Light, Camera );
 }
+
+void CPlayerAI::AutomaticMovement()
+{
+}

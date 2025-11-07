@@ -107,7 +107,7 @@ public:
 	//最大パターン数(マス目)を取得
 	POINTS GetPatternMax() const { return m_PatternMax; }
 
-	//コンテキストの取得（ビューポートの取得のために必要）		制作者 : 甲把.
+	//コンテキストの取得（ビューポートの取得のために必要）		制作者 [甲把].
 	ID3D11DeviceContext* GetContext11() const { return m_pContext11.Get(); }
 
 private:

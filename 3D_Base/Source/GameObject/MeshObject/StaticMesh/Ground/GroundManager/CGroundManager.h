@@ -3,7 +3,7 @@
 #include "GameObject/MeshObject/StaticMesh/Ground/CGround.h"
 
 /***********************************************************************
-*	地面マネージャークラス.							制作者 : 甲把
+*	地面マネージャークラス.							制作者 [甲把]
 **/
 class CGroundManager
 {
