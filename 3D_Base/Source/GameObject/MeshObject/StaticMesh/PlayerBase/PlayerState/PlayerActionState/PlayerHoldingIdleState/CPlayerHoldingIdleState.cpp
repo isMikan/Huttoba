@@ -70,8 +70,8 @@ void CPlayerActionIdleState::Update()
 
 		if (dynamic_cast<Bomb*>(item))
 		{
-			rightHandOffsetPos.x -= 1.f;
-			leftHandOffsetPos.x += 1.f;
+			rightHandOffsetPos.x += 1.f;
+			leftHandOffsetPos.x -= 1.f;
 		}
 	}
 	//Œo‰ßŽžŠÔ‚ðŽæ“¾.

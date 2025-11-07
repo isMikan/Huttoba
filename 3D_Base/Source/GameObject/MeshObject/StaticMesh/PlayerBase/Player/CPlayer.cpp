@@ -115,14 +115,14 @@ void CPlayer::HandleInput()
 	//何もしていない状態なら.
 	if (IsActionState<CPlayerActionIdleState>())
 	{
-		if (m_IsHoldingItem)
+		if (m_pItemBase)
 		{
-			//アイテムを持っていないなら攻撃.
+			//アイテムを持っている場合、アイテムで攻撃.
 			if (CInputManager::IsDown(Action::Attack, m_PlayerID))
 			{
 				m_Instruct = ActionInstruct::ItemAttack;
 			}
-			//アイテムを持っているなら捨てる.
+			//アイテムを持っている場合、アイテムを捨てる.
 			if (CInputManager::IsDown(Action::ToggleItem, m_PlayerID))
 			{
 				m_Instruct = ActionInstruct::Throw;
@@ -130,12 +130,12 @@ void CPlayer::HandleInput()
 		}
 		else
 		{
-			//アイテムを持っているなら手の攻撃をする.
+			//アイテムを持っていない場合、手の攻撃をする.
 			if (CInputManager::IsDown(Action::Attack, m_PlayerID))
 			{
 				m_Instruct = ActionInstruct::HandAttack;
 			}
-			//アイテムを持っていないなら拾う.
+			//アイテムを持っていない場合、アイテムを拾う.
 			if (CInputManager::IsDown(Action::ToggleItem, m_PlayerID))
 			{
 				m_Instruct = ActionInstruct::Pickup;

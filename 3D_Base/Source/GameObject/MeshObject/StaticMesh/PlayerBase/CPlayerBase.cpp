@@ -33,7 +33,6 @@ CPlayerBase::CPlayerBase( int index )
 
 	, m_IsMoving		( false )
 	, m_IsTurning		( false )
-	, m_IsHoldingItem	( false )
 	, m_IsOnGround		( false )
 
 	, m_HitForce		()
@@ -70,7 +69,7 @@ void CPlayerBase::Update()
 	}
 
 	//âüÇ≥ÇÍÇΩèÍçáÇÃèàóù.
-	if (m_HitAttack.hitEvent == HitEvent::Pushed)
+	if (m_HitAttack.hitEvent == HitEvent::GetPushbackVelocity)
 	{
 		SetActionState(std::make_unique<CPlayerPushedState>(*this));
 	}
@@ -235,7 +234,7 @@ D3DXQUATERNION CPlayerBase::TiltedQuat(
 }
 
 //--- âüÇ≥ÇÍÇΩéûÇÃà⁄ìÆó ÇåvéZ ---.
-D3DXVECTOR3 CPlayerBase::Pushed(D3DXVECTOR3 sourcePos)
+D3DXVECTOR3 CPlayerBase::GetPushbackVelocity(D3DXVECTOR3 sourcePos)
 {
 	//âüÇ≥ÇÍÇÈÉxÉNÉgÉã.
 	D3DXVECTOR3 dir = m_vPosition - sourcePos;
@@ -248,7 +247,7 @@ D3DXVECTOR3 CPlayerBase::Pushed(D3DXVECTOR3 sourcePos)
 }
 
 //--- çUåÇÇéÛÇØÇΩéûÇÃÇÃà⁄ìÆó ÇåvéZ ---.
-D3DXVECTOR3 CPlayerBase::GetVelocity(
+D3DXVECTOR3 CPlayerBase::GetKnockbackVelocity(
 	D3DXVECTOR3 sourcePos, float power, float angle)
 {
 	m_HitForce = power;	//ã≠Ç≥Çê›íË.
@@ -321,7 +320,7 @@ void CPlayerBase::OnCollision(CollisionBase* pOtherCollider)
 			if (player->IsAnyActionState<CPlayerHandAttackState>())
 			{
 				SetHitAttack(
-					GetVelocity(player->GetPosition(), 10.f, 60.f), CPlayerBase::HitEvent::Knockdown);
+					GetKnockbackVelocity(player->GetPosition(), 10.f, 60.f), CPlayerBase::HitEvent::Knockdown);
 			}
 			else
 			{
@@ -342,11 +341,13 @@ void CPlayerBase::OnCollision(CollisionBase* pOtherCollider)
 		if (ItemBase* item = dynamic_cast<ItemBase*>(pOtherCollider->GetListener()))
 		{
 			//èEÇ§.
-			if(m_Instruct == ActionInstruct::Pickup)
+			if(m_Instruct == ActionInstruct::Pickup
+				&& !m_pItemBase)
 			{
 				item->SetPlayer(this);
 				item->SetState(ItemBase::State::Have);
 				SetActionState(std::make_unique<CPlayerPickupState>(*this));
+				m_pItemBase = item;
 			}
 			//ìäÇ∞ÇÈ.
 			if (m_Instruct == ActionInstruct::Throw)

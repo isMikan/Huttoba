@@ -10,6 +10,8 @@
 
 #include "PlayerState/CPlayerState.h"
 
+class ItemBase;
+
 /***********************************************************************
 *   プレイヤーベースクラス.						制作者 : 甲把
 **/
@@ -35,7 +37,7 @@ public:
 	//接触イベント.
 	enum class HitEvent
 	{
-		Pushed,		//押し出し攻撃.
+		GetPushbackVelocity,		//押し出し攻撃.
 		Knockback,	//吹き飛ばし攻撃.
 		Knockdown,	//ダウン付き攻撃.
 
@@ -117,13 +119,13 @@ public:
 		float			tiltAngle);	//傾きの角度.
 
 	//--- 押された時の移動量を計算 ---.
-	D3DXVECTOR3 Pushed(D3DXVECTOR3 sourcePos);
+	D3DXVECTOR3 GetPushbackVelocity(D3DXVECTOR3 sourcePos);	
 
 	//--- 攻撃を受けた時のの移動量を計算 ---.
-	D3DXVECTOR3 GetVelocity(
-		D3DXVECTOR3 sourcePos, 
-		float power, 
-		float angle);
+	D3DXVECTOR3 GetKnockbackVelocity(
+		D3DXVECTOR3 sourcePos,	//攻撃を受けた起源.
+		float power,			//吹き飛び量.
+		float angle);			//角度.
 
 	//--- 角度を0～360度にする ---.
 	float WrapAngle(float value);
@@ -145,6 +147,9 @@ public:
 	//プレイヤーが左手を持っている(読み込み用).
 	const CPlayerLeftHand& GetPlayerLeftHand() const { return *m_pLeftHand; }
 
+	//持っているアイテムを取得.
+	ItemBase* GetItemBase() const { return m_pItemBase; }
+
 	//プレイヤー番号を取得.
 	int GetPlayerID() const { return m_PlayerID; }
 
@@ -153,14 +158,15 @@ public:
 	
 	//攻撃を受けた情報を取得と設定.
 	HitAttack GetHitAttack() const { return m_HitAttack; }
+	//アニメーション状態変更用.
 	void SetHitAnim(HitEvent anim) {
-		m_HitAttack.hitEvent = anim;
+		m_HitAttack.hitEvent = anim;		//ヒットアニメーション.
 	}
+	//攻撃情報設定用.
 	void SetHitAttack(
-		D3DXVECTOR3 velocity, HitEvent anim)
-	{
-		m_HitAttack.velocity = velocity;
-		m_HitAttack.hitEvent = anim;
+		D3DXVECTOR3 velocity, HitEvent anim){
+		m_HitAttack.velocity = velocity;	//移動量（Get [Pushback・Knockback] Velocityを入れてください）.
+		m_HitAttack.hitEvent = anim;		//ヒットアニメーション.
 	}
 
 	//プレイヤーの接触情報を取得と設定.
@@ -170,7 +176,8 @@ public:
 	Gauge GetKnockdownTime() const { return m_KnockdownTime; }
 	void SetKnockdownTime(float remaining, float max) {
 		m_KnockdownTime.remaining = remaining; 
-		m_KnockdownTime.max = max; }
+		m_KnockdownTime.max = max; 
+	}
 
 	//移動しているかの所得と設定.
 	bool IsMoving() const { return m_IsMoving; }
@@ -179,11 +186,6 @@ public:
 	//回転しているかの所得と設定.
 	bool IsTurning() const { return m_IsTurning; }
 	void SetTurning(bool turning) { m_IsTurning = turning; }
-
-	//アイテムを所持しているかの所得と設定.
-	bool IsHoldingItem() const { return m_IsHoldingItem; }
-	void SetHoldingItem(bool holding) { m_IsHoldingItem = holding; }
-
 
 	//作成者　佐藤
 	//地面についているかの所得と設定.
@@ -234,9 +236,11 @@ protected:
 	std::unique_ptr<CPlayerRightHand>	m_pRightHand;	//右手.
 	std::unique_ptr<CPlayerLeftHand>	m_pLeftHand;	//左手.
 
-	std::unique_ptr<CPlayerState>	m_pMoveState;		//移動.
-	std::unique_ptr<CPlayerState>	m_pTurnState;		//回転.
-	std::unique_ptr<CPlayerState>	m_pActionState;		//行動.
+	std::unique_ptr<CPlayerState>		m_pMoveState;	//移動.
+	std::unique_ptr<CPlayerState>		m_pTurnState;	//回転.
+	std::unique_ptr<CPlayerState>		m_pActionState;	//行動.
+
+	ItemBase*		m_pItemBase;		//アイテムベース（ここに所持アイテムを入れる）.
 
 	ActionInstruct	m_Instruct;			//指示.
 	HitAttack		m_HitAttack;		//攻撃を受けた情報.
@@ -245,7 +249,6 @@ protected:
 
 	bool			m_IsMoving;			//移動しているか.
 	bool			m_IsTurning;		//回転しているか.
-	bool			m_IsHoldingItem;	//アイテムを所持してるか.
 
 	bool			m_IsOnGround;		//地面に接触しているか
 	bool			m_IsAboveGround;	//ステージの上かどうか
