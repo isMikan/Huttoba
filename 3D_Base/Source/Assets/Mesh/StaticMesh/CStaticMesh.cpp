@@ -793,8 +793,12 @@ void CStaticMesh::Render(
 		&mTran,	//(out)計算結果.
 		m_Position.x, m_Position.y, m_Position.z);	//x,y,z座標.
 
+	//クォータニオンの正規化.
+	D3DXQuaternionNormalize(&m_Quaternion, &m_Quaternion);
+
 	//クォータニオンから回転行列を作成.
 	D3DXMatrixRotationQuaternion(&mRotQuat, &m_Quaternion);
+
 	//ワールド行列作成.
 	//拡縮×回転×移動 ※順番がとても大切！！.
 	mWorld = mScale * mRotQuat * mTran;

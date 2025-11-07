@@ -37,8 +37,6 @@ void CPlayerThrowState::Enter()
 	//SE‚ğ–Â‚ç‚·.
 	AssetManager::Sound()->PlaySE(enSoundList::SE_AttackHand);
 
-	m_pPlayer.SetHoldingItem(false);
-
 	//ŒX‚«Šp“x‚Ì‰Šú‰».
 	m_CurrentTiltAngle = 0.f;
 
@@ -64,6 +62,8 @@ void CPlayerThrowState::Enter()
 void CPlayerThrowState::Exit()
 {
 	m_pPlayer.SetQuaternion(m_StartQuat);
+
+	m_pPlayer.SetItemBase(nullptr);
 }
 
 //--- ‚±‚Ìó‘Ô‚ÌŠÔ‚ÉŒÄ‚Ño‚· ---.

@@ -2,7 +2,7 @@
 
 #include "GameObject/MeshObject/StaticMesh/PlayerBase/CPlayerBase.h"
 
-#include "GameObject/MeshObject/StaticMesh/PlayerBase/PlayerState/PlayerActionState/PlayerActionIdleState/CPlayerActionIdleState.h"
+#include "GameObject/MeshObject/StaticMesh/PlayerBase/PlayerState/PlayerActionState/PlayerHoldingIdleState/CPlayerHoldingIdleState.h"
 
 CPlayerPickupState::CPlayerPickupState(CPlayerBase& pPlayer)
 	: CPlayerState			( pPlayer )
@@ -38,8 +38,6 @@ void CPlayerPickupState::Enter()
 {
 	//SEを鳴らす.
 	AssetManager::Sound()->PlaySE(enSoundList::SE_Pickup);
-
-	m_pPlayer.SetHoldingItem(true);
 
 	//傾き角度の初期化.
 	m_CurrentTiltAngle = 0.f;
@@ -80,7 +78,7 @@ void CPlayerPickupState::Update()
 	//現在の経過時間と開始時間の差が終了時間を上回ったら.
 	if (t - m_StartTime > m_EndTime)
 	{
-		m_pPlayer.SetActionState(std::make_unique<CPlayerActionIdleState>(m_pPlayer));
+		m_pPlayer.SetActionState(std::make_unique<CPlayerHoldingIdleState>(m_pPlayer));
 		return;
 	}
 

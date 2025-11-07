@@ -228,12 +228,12 @@ void Mushroom::Hit()
 	D3DXVec3Normalize(&normal, &normal);
 
 	////プレイヤーの移動方向を取得
-	//D3DXVECTOR3 velPlayer = m_pPlayer->GetVelocity();
+	//D3DXVECTOR3 velPlayer = m_pPlayer->GetKnockbackVelocity();
 
 	//D3DXVec3Normalize(&velPlayer, &velPlayer);
 
 	////反射方向を記録
-	//D3DXVECTOR3 reflectDir = CalculateReflectionDirection(m_pPlayer->GetVelocity(), normal);
+	//D3DXVECTOR3 reflectDir = CalculateReflectionDirection(m_pPlayer->GetKnockbackVelocity(), normal);
 
 
 	//D3DXVECTOR3 a = m_pPlayer->GetPosition() - m_vPosition;

@@ -189,10 +189,10 @@ void Fun::Hit()
 	//playiers->GetPlayer(1)->SetHitAttack(
 	//	m_vPosition, playiers->GetPlayer(1)->GetPosition(),
 	//	1,	//動作確認で入れた1なので後でメンバ変数に変えておく
-	//	true, CPlayerBase::HitEvent::Pushed);
+	//	true, CPlayerBase::HitEvent::GetPushbackVelocity);
 
 	//m_pPlayer->SetHitAttack(
 	//	a, m_pPlayer->GetPosition(),
 	//	1,	//動作確認で入れた1なので後でメンバ変数に変えておく
-	//	true, CPlayerBase::HitEvent::Pushed);
+	//	true, CPlayerBase::HitEvent::GetPushbackVelocity);
 }

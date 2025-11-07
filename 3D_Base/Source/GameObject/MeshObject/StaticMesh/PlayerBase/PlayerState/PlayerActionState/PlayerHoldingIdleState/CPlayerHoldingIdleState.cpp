@@ -1,16 +1,24 @@
-#include "CPlayerActionIdleState.h"
+#include "CPlayerHoldingIdleState.h"
 
 #include "GameObject/MeshObject/StaticMesh/PlayerBase/CPlayerBase.h"
 
-CPlayerActionIdleState::CPlayerActionIdleState(CPlayerBase& pPlayer)
-	: CPlayerState			( pPlayer )
+#include "GameObject/MeshObject/StaticMesh/PlayerBase/PlayerState/PlayerActionState/PlayerActionIdleState/CPlayerActionIdleState.h"
 
-	, m_StartTime			()
-	, m_EndTime				( 2.f )
+#include "Item/ItemBase.h"
+#include "Item/Items/Bomb/Bomb.h"
+
+CPlayerHoldingIdleState::CPlayerHoldingIdleState(CPlayerBase& pPlayer)
+	: CPlayerState						( pPlayer )
+
+	, m_StartTime						()
+	, m_EndTime							( 2.f )
+
+	, m_HoldBothHands_RightOffsetPos	( -0.2f, 0.f, 0.3f )
+	, m_HoldBothHands_LeftOffsetPos		( 0.2f, 0.f, 0.3f )
 {
 }
 
-CPlayerActionIdleState::~CPlayerActionIdleState()
+CPlayerHoldingIdleState::~CPlayerHoldingIdleState()
 {
 }
 
@@ -19,7 +27,7 @@ CPlayerActionIdleState::~CPlayerActionIdleState()
 //======================================================================
 
 //--- 状態の開始時に呼び出す ---.
-void CPlayerActionIdleState::Enter()
+void CPlayerHoldingIdleState::Enter()
 {
 	//モーション開始時間.
 	m_StartTime = CTimeManager::GetTotalTime();
@@ -35,7 +43,7 @@ void CPlayerActionIdleState::Enter()
 }
 
 //--- 状態の終了時に呼び出す ---.
-void CPlayerActionIdleState::Exit()
+void CPlayerHoldingIdleState::Exit()
 {
 	//クォータニオンを取得.
 	D3DXQUATERNION quat = m_pPlayer.GetQuaternion();
@@ -47,8 +55,16 @@ void CPlayerActionIdleState::Exit()
 }
 
 //--- この状態の間に呼び出す ---.
-void CPlayerActionIdleState::Update()
+void CPlayerHoldingIdleState::Update()
 {
+	ItemBase* item = m_pPlayer.GetItemBase();
+
+	if (!item)
+	{
+		m_pPlayer.SetActionState(std::make_unique<CPlayerActionIdleState>(m_pPlayer));
+		return;
+	}
+
 	//プレイヤーの位置を取得.
 	D3DXVECTOR3 playerPos = m_pPlayer.GetPosition();
 
@@ -58,6 +74,13 @@ void CPlayerActionIdleState::Update()
 	//手の位置を調整するための数値を取得.
 	D3DXVECTOR3 rightHandOffsetPos = m_pPlayer.GetPlayerRightHand().GetOffsetPos();
 	D3DXVECTOR3 leftHandOffsetPos = m_pPlayer.GetPlayerLeftHand().GetOffsetPos();
+
+
+	if (dynamic_cast<Bomb*>(item))
+	{
+		rightHandOffsetPos += m_HoldBothHands_RightOffsetPos;
+		leftHandOffsetPos += m_HoldBothHands_LeftOffsetPos;
+	}
 
 	//経過時間を取得.
 	float t = CTimeManager::GetTotalTime();

@@ -27,6 +27,8 @@ CPlayerBase::CPlayerBase( int index )
 	, m_pTurnState		( std::make_unique<CPlayerTurnIdleState>( *this, 0.f, 0.f ) )
 	, m_pActionState	( std::make_unique<CPlayerActionIdleState>( *this ) )
 
+	, m_pItemBase		( nullptr )
+
 	, m_Instruct		( ActionInstruct::None )
 	, m_HitAttack		()
 	, m_HitPlayer		()
@@ -34,7 +36,6 @@ CPlayerBase::CPlayerBase( int index )
 
 	, m_IsMoving		( false )
 	, m_IsTurning		( false )
-	, m_IsHoldingItem	( false )
 	, m_IsOnGround		( false )
 
 	, m_HitForce		()
@@ -45,6 +46,7 @@ CPlayerBase::CPlayerBase( int index )
 
 CPlayerBase::~CPlayerBase()
 {
+	m_pItemBase = nullptr;
 }
 
 //======================================================================
@@ -71,7 +73,7 @@ void CPlayerBase::Update()
 	}
 
 	//押された場合の処理.
-	if (m_HitAttack.hitEvent == HitEvent::Pushed)
+	if (m_HitAttack.hitEvent == HitEvent::Pushback)
 	{
 		SetActionState(std::make_unique<CPlayerPushedState>(*this));
 	}
@@ -82,9 +84,30 @@ void CPlayerBase::Update()
 		SetActionState(std::make_unique<CPlayerKnockbackState>(*this));
 	}
 
-	if (m_Instruct == ActionInstruct::HandAttack)
+	//アイテムが存在する場合.
+	if(m_pItemBase)
 	{
-		SetActionState(std::make_unique<CPlayerHandAttackState>(*this));
+		//アイテムを投げる.
+		if (m_Instruct == ActionInstruct::ToggleItem)
+		{
+			m_pItemBase->SetPlayer(this);
+			m_pItemBase->SetState(ItemBase::State::Throw);
+			SetActionState(std::make_unique<CPlayerThrowState>(*this));
+		}
+		//アイテムの攻撃.
+		if (m_Instruct == ActionInstruct::Attack)
+		{
+			m_pItemBase->SetPlayer(this);
+			m_pItemBase->SetState(ItemBase::State::Use);
+		}
+	}
+	else
+	{
+		//手の攻撃.
+		if (m_Instruct == ActionInstruct::Attack)
+		{
+			SetActionState(std::make_unique<CPlayerHandAttackState>(*this));
+		}
 	}
 
 	//移動の状態を更新.
@@ -95,7 +118,6 @@ void CPlayerBase::Update()
 	m_pActionState->Update();
 
 	m_HitPlayer.isHit = false;
-
 }
 
 //--- 描画処理 ---.
@@ -236,7 +258,7 @@ D3DXQUATERNION CPlayerBase::TiltedQuat(
 }
 
 //--- 押された時の移動量を計算 ---.
-D3DXVECTOR3 CPlayerBase::Pushed(D3DXVECTOR3 sourcePos)
+D3DXVECTOR3 CPlayerBase::GetPushbackVelocity(D3DXVECTOR3 sourcePos)
 {
 	//押されるベクトル.
 	D3DXVECTOR3 dir = m_vPosition - sourcePos;
@@ -249,7 +271,7 @@ D3DXVECTOR3 CPlayerBase::Pushed(D3DXVECTOR3 sourcePos)
 }
 
 //--- 攻撃を受けた時のの移動量を計算 ---.
-D3DXVECTOR3 CPlayerBase::GetVelocity(
+D3DXVECTOR3 CPlayerBase::GetKnockbackVelocity(
 	D3DXVECTOR3 sourcePos, float power, float angle)
 {
 	m_HitForce = power;	//強さを設定.
@@ -321,8 +343,10 @@ void CPlayerBase::OnCollision(CollisionBase* pOtherCollider)
 		{
 			if (player->IsAnyActionState<CPlayerHandAttackState>())
 			{
+				//SetHitAttack(
+				//	GetKnockbackVelocity(player->GetPosition(), 10.f, 60.f), CPlayerBase::HitEvent::Knockdown);
 				SetHitAttack(
-					GetVelocity(player->GetPosition(), 10.f, 60.f), CPlayerBase::HitEvent::Knockdown);
+					GetPushbackVelocity(player->GetPosition()), CPlayerBase::HitEvent::Pushback);
 			}
 			else
 			{
@@ -343,24 +367,13 @@ void CPlayerBase::OnCollision(CollisionBase* pOtherCollider)
 		if (ItemBase* item = dynamic_cast<ItemBase*>(pOtherCollider->GetListener()))
 		{
 			//拾う.
-			if(m_Instruct == ActionInstruct::Pickup)
+			if(m_Instruct == ActionInstruct::ToggleItem
+				&& !m_pItemBase)
 			{
 				item->SetPlayer(this);
 				item->SetState(ItemBase::State::Have);
 				SetActionState(std::make_unique<CPlayerPickupState>(*this));
-			}
-			//投げる.
-			if (m_Instruct == ActionInstruct::Throw)
-			{
-				item->SetPlayer(this);
-				item->SetState(ItemBase::State::Throw);
-				SetActionState(std::make_unique<CPlayerThrowState>(*this));
-			}
-			//アイテム攻撃.
-			if (m_Instruct == ActionInstruct::ItemAttack)
-			{
-				item->SetPlayer(this);
-				item->SetState(ItemBase::State::Use);
+				m_pItemBase = item;
 			}
 		}
 		break;

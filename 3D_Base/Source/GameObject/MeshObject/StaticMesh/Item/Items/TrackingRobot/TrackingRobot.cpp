@@ -222,7 +222,7 @@ void TrackingRobot::Smash(CPlayer& playiers)
 
 	float i = CalculateForceScalar(len);
 
-	D3DXVECTOR3 SmashVel = playiers.GetVelocity(m_vPosition, CalculateForceScalar(len), 60.0f);
+	D3DXVECTOR3 SmashVel = playiers.GetKnockbackVelocity(m_vPosition, CalculateForceScalar(len), 60.0f);
 
 	playiers.SetHitAttack(
 		SmashVel,

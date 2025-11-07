@@ -248,7 +248,7 @@ void Bomb::Smash(CPlayer& playiers)
 	float len = D3DXVec3Length(&vecLen);
 
 	//プレイヤーの吹き飛ばしの計算
-	D3DXVECTOR3 SmashVel = playiers.GetVelocity(m_vPosition, CalculateForceScalar(len), 60.0f);
+	D3DXVECTOR3 SmashVel = playiers.GetKnockbackVelocity(m_vPosition, CalculateForceScalar(len), 60.0f);
 
 	playiers.SetHitAttack(
 		SmashVel,

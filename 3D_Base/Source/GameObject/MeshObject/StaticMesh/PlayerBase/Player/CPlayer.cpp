@@ -5,6 +5,7 @@
 #include "PlayerBase/PlayerState/PlayerMoveState/PlayerMoveIdelState/CPlayerMoveIdleState.h"
 #include "PlayerBase/PlayerState/PlayerTurnState/PlayerTurnIdleState/CPlayerTurnIdleState.h"
 #include "PlayerBase/PlayerState/PlayerActionState/PlayerActionIdleState/CPlayerActionIdleState.h"
+#include "PlayerBase/PlayerState/PlayerActionState/PlayerHoldingIdleState/CPlayerHoldingIdleState.h"
 
 #include "PlayerBase/PlayerState/PlayerActionState/PlayerHandWhiffState/CPlayerHandWhiffState.h"
 #include "PlayerBase/PlayerState/PlayerActionState/PlayerKnockbackState/CPlayerKnockbackState.h"
@@ -85,7 +86,7 @@ void CPlayer::HandleInput()
 		}
 
 		//回転だけしない場合.
-		if (IsActionState<CPlayerFallingState>())
+		if (IsAnyActionState<CPlayerFallingState>())
 		{
 			//入力に変化があった場合.
 			if (m_CurrentInput != D3DXVECTOR3(x, 0.f, z))
@@ -112,34 +113,18 @@ void CPlayer::HandleInput()
 		}
 	}
 
-	//何もしていない状態なら.
-	if (IsActionState<CPlayerActionIdleState>())
+	//何もしていない、起こっていない状態なら.
+	if (IsAnyActionState<CPlayerActionIdleState, CPlayerHoldingIdleState>())
 	{
-		if (m_IsHoldingItem)
+		//攻撃の指示をする.
+		if (CInputManager::IsDown(Action::Attack, m_PlayerID))
 		{
-			//アイテムを持っていないなら攻撃.
-			if (CInputManager::IsDown(Action::Attack, m_PlayerID))
-			{
-				m_Instruct = ActionInstruct::ItemAttack;
-			}
-			//アイテムを持っているなら捨てる.
-			if (CInputManager::IsDown(Action::ToggleItem, m_PlayerID))
-			{
-				m_Instruct = ActionInstruct::Throw;
-			}
+			m_Instruct = ActionInstruct::Attack;
 		}
-		else
+		//アイテムを拾う・捨てるを指示をする.
+		if (CInputManager::IsDown(Action::ToggleItem, m_PlayerID))
 		{
-			//アイテムを持っているなら手の攻撃をする.
-			if (CInputManager::IsDown(Action::Attack, m_PlayerID))
-			{
-				m_Instruct = ActionInstruct::HandAttack;
-			}
-			//アイテムを持っていないなら拾う.
-			if (CInputManager::IsDown(Action::ToggleItem, m_PlayerID))
-			{
-				m_Instruct = ActionInstruct::Pickup;
-			}
+			m_Instruct = ActionInstruct::ToggleItem;
 		}
 	}
 }

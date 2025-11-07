@@ -3,14 +3,14 @@
 #include "GameObject/MeshObject/StaticMesh/PlayerBase/PlayerState/CPlayerState.h"
 
 /***********************************************************************
-*	プレイヤーが何も行動していない状態クラス.
+*	プレイヤーが何も行動していない状態クラス（アイテム所持版）.
 **/
-class CPlayerActionIdleState
+class CPlayerHoldingIdleState
 	: public CPlayerState	//プレイヤー状態を継承.
 {
 public:
-	CPlayerActionIdleState(CPlayerBase& pPlayer);
-	~CPlayerActionIdleState() override;
+	CPlayerHoldingIdleState(CPlayerBase& pPlayer);
+	~CPlayerHoldingIdleState() override;
 
 //======================================================================
 // 	   外部で呼び出す関数.
@@ -29,12 +29,18 @@ private:
 	float			m_StartTime;			//開始時間.
 	float			m_EndTime;				//終了時間.
 
+//=== 手の調整位置 ===.
+	D3DXVECTOR3		m_HoldBothHands_RightOffsetPos;	//両手で持つアイテムの右.
+	D3DXVECTOR3		m_HoldBothHands_LeftOffsetPos;	//両手で持つアイテムの左.
+
+//====================.
+
 private:
 //======================================================================
 // 	   呼び出しを禁止するコンストラクタ.
 //======================================================================
-	CPlayerActionIdleState() = delete;	//デフォルトコンストラクタ削除.
-	CPlayerActionIdleState(const CPlayerActionIdleState&) = delete;
-	CPlayerActionIdleState& operator = (const CPlayerActionIdleState& rhs) = delete;
+	CPlayerHoldingIdleState() = delete;	//デフォルトコンストラクタ削除.
+	CPlayerHoldingIdleState(const CPlayerHoldingIdleState&) = delete;
+	CPlayerHoldingIdleState& operator = (const CPlayerHoldingIdleState& rhs) = delete;
 
 };

@@ -3,6 +3,7 @@
 #include "GameObject/MeshObject/StaticMesh/PlayerBase/CPlayerBase.h"
 
 #include "GameObject/MeshObject/StaticMesh/PlayerBase/PlayerState/PlayerActionState/PlayerActionIdleState/CPlayerActionIdleState.h"
+#include "GameObject/MeshObject/StaticMesh/PlayerBase/PlayerState/PlayerActionState/PlayerHoldingIdleState/CPlayerHoldingIdleState.h"
 
 CPlayerGetUpState::CPlayerGetUpState(CPlayerBase& pPlayer)
 	: CPlayerState			( pPlayer )
@@ -69,7 +70,17 @@ void CPlayerGetUpState::Update()
 	//現在の経過時間と開始時間の差が終了時間を上回ったら.
 	if (t - m_StartTime > m_EndTime)
 	{
-		m_pPlayer.SetActionState(std::make_unique<CPlayerActionIdleState>(m_pPlayer));
+		//アイテムを持っている場合.
+		if (m_pPlayer.GetItemBase())
+		{
+			//アイテム持ち、何もなし状態.
+			m_pPlayer.SetActionState(std::make_unique<CPlayerHoldingIdleState>(m_pPlayer));
+		}
+		else
+		{
+			//何もなし状態.
+			m_pPlayer.SetActionState(std::make_unique<CPlayerActionIdleState>(m_pPlayer));
+		}
 		return;
 	}
 

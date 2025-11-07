@@ -23,6 +23,9 @@ public:
 	void Update() override;
 
 private:
+//======================================================================
+// 	   内部で使用する変数.
+//======================================================================
 	float			m_StartTime;			//開始時間.
 	float			m_EndTime;				//終了時間.
 
@@ -38,6 +41,9 @@ private:
 	D3DXQUATERNION	m_StartQuat;			//開始時の回転.
 
 private:
+//======================================================================
+// 	   呼び出しを禁止するコンストラクタ.
+//======================================================================
 	CPlayerHandWhiffState() = delete;	//デフォルトコンストラクタ削除.
 	CPlayerHandWhiffState(const CPlayerHandWhiffState&) = delete;
 	CPlayerHandWhiffState& operator = (const CPlayerHandWhiffState& rhs) = delete;
