@@ -23,7 +23,7 @@ ItemManager::~ItemManager()
 
 HRESULT ItemManager::Create()
 {
-	//m_pItems.push_back(ItemFactory::GetInstance()->CreateItem("Haetataki"));
+	m_pItems.push_back(ItemFactory::GetInstance()->CreateItem("Haetataki"));
 	//m_pItems.push_back(ItemFactory::GetInstance()->CreateItem("SmashBat"));
 	m_pItems.push_back(ItemFactory::GetInstance()->CreateItem("Bomb"));
 	m_pItems.push_back(ItemFactory::GetInstance()->CreateItem("Bomb"));
@@ -40,6 +40,8 @@ HRESULT ItemManager::Create()
 
 	m_pItems[0]->SetPosition(0, 0, 4);
 	m_pItems[1]->SetPosition(0, 0, 5);
+
+	m_pItems[2]->SetPosition(4, 0, 7);
 
 	return S_OK;
 }

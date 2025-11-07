@@ -244,6 +244,7 @@ D3DXVECTOR3 CPlayerBase::Pushed(D3DXVECTOR3 sourcePos)
 	D3DXVec3Normalize(&dir, &dir);
 	//•ûŒü‚Ö‚«”ò‚Ñ—Ê•ª‚ÌˆÊ’u‚Ö.
 	D3DXVECTOR3 pos = dir * m_PushForce;
+	pos.y = 0.f;
 
 	return pos;
 }

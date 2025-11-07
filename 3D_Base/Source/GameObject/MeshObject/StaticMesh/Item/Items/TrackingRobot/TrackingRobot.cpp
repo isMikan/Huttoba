@@ -51,7 +51,7 @@ void TrackingRobot::Init()
 	m_pCollision = CollisionDataFactory::CreateSphereForMesh(
 		this,
 		mesh,
-		CollisionBase::ColliderTag::Bomb
+		CollisionBase::ColliderTag::TrackingRobot
 	);
 }
 

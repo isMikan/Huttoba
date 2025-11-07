@@ -39,6 +39,14 @@ void Fun::Init()
 	m_tGravity = 0.01;
 
 	m_HaveOffset = D3DXVECTOR3(0.0, 0.2f, 0.0f);
+
+	std::shared_ptr<CStaticMesh> mesh = AssetManager::Mesh(StaticMeshList::FunCol);
+
+	m_pCollision = CollisionDataFactory::CreateHorizontalCapsule(
+		this,
+		mesh,
+		CollisionBase::ColliderTag::Bomb
+	);
 }
 
 void Fun::Update()
@@ -90,16 +98,13 @@ void Fun::Use()
 	m_vPosition = m_pPlayer->GetPlayerRightHand().GetPosition() + m_HaveOffset;
 	m_vQuaternion = m_pPlayer->GetQuaternion();
 
-	//長押ししてたら当たり続ける
-	if (GetAsyncKeyState('2') & 0x8000)
-	{
-		Hit();
-	}
-	else
-	{
-		//離すと所持中に変化
-		m_State = ItemBase::State::Have;
-	}
+	static ::EsHandle hEffect = 1;
+
+	//エフェクト追加
+	hEffect = AssetManager::Effect()->Play("FunWind", m_vPosition);
+
+	//エフェクトの拡縮設定
+	AssetManager::Effect()->SetScale(hEffect, D3DXVECTOR3(0.6f, 0.6f, 0.6f));
 }
 
 void Fun::Throw()
@@ -148,6 +153,20 @@ void Fun::Destroy()
 	
 }
 
+void Fun::OnCollision(CollisionBase* other)
+{
+	if (other->GetTag() == CollisionBase::ColliderTag::Player)
+	{
+		if (CPlayer* player = dynamic_cast<CPlayer*>(other->GetListener()))
+		{
+			//if (m_IsExploded)
+			{
+				//Hit(*player);
+			}
+		}
+	}
+}
+
 void Fun::TakeMotion()
 {
 	m_PickUpCnt += CTimeManager::GetDeltaTime();
@@ -162,16 +181,6 @@ void Fun::PossessionMotion()
 {
 	m_vPosition = m_pPlayer->GetPlayerRightHand().GetPosition() + m_HaveOffset;
 	m_vQuaternion = m_pPlayer->GetQuaternion();
-
-	if (GetAsyncKeyState('2') & 0x8000)
-	{
-		m_State = ItemBase::State::Use;
-	}
-	if (GetAsyncKeyState('3') & 0x8000)
-	{
-		m_State = ItemBase::State::Throw;
-		m_IsThrow = true;
-	}
 }
 
 void Fun::UseMotion()
@@ -182,17 +191,15 @@ void Fun::ThrowMotion()
 {
 }
 
-void Fun::Hit()
+void Fun::Hit(CPlayer& playiers)
 {
-	D3DXVECTOR3 a = D3DXVECTOR3(m_vPosition.x, 0, m_vPosition.z);
+	//プレイヤーの押し出しの計算
+	//D3DXVECTOR3 SmashVel = playiers.GetVelocity(m_vPosition, 2, 10.0f);
+	
+	//プレイヤーの押し出しの計算
+	D3DXVECTOR3 SmashVel = playiers.Pushed(m_vPosition);
 
-	//playiers->GetPlayer(1)->SetHitAttack(
-	//	m_vPosition, playiers->GetPlayer(1)->GetPosition(),
-	//	1,	//動作確認で入れた1なので後でメンバ変数に変えておく
-	//	true, CPlayerBase::HitEvent::Pushed);
-
-	//m_pPlayer->SetHitAttack(
-	//	a, m_pPlayer->GetPosition(),
-	//	1,	//動作確認で入れた1なので後でメンバ変数に変えておく
-	//	true, CPlayerBase::HitEvent::Pushed);
+	playiers.SetHitAttack(
+		SmashVel,
+		CPlayerBase::HitEvent::Pushed);
 }
