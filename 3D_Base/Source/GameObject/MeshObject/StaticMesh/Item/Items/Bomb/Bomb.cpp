@@ -61,13 +61,13 @@ void Bomb::Init()
 	m_tGravity = 0.01f;
 	m_UseCount = USE_COUNT;
 
-	std::shared_ptr<CStaticMesh> mesh = AssetManager::Mesh(StaticMeshList::ExplosionCol);
+	std::shared_ptr<CStaticMesh> mesh = AssetManager::Mesh(StaticMeshList::Bomb);
 
 	m_pCollision = CollisionDataFactory::CreateSphereForMesh(
-			this,
-			mesh,
-			CollisionBase::ColliderTag::Bomb
-		);
+		this,
+		mesh,
+		CollisionBase::ColliderTag::Bomb
+	);
 }
 
 void Bomb::Update()
@@ -193,6 +193,17 @@ void Bomb::UseAndThrow()
 		m_Velocity.y = 10.0f;
 
 		m_IsThrow = false;
+
+		//“–‚½‚è”»’èíœ
+		CollisionManager::GetInstance()->RemoveCollider(m_pCollision.get());
+
+		std::shared_ptr<CStaticMesh> mesh = AssetManager::Mesh(StaticMeshList::ExplosionCol);
+
+		m_pCollision = CollisionDataFactory::CreateSphereForMesh(
+			this,
+			mesh,
+			CollisionBase::ColliderTag::Bomb
+		);
 	}
 
 	//‚Ä‚«‚Æ‚¤‚ÉˆÚ“®‘¬“x‚ðŒ¸­‚³‚¹‚Ä‚¢‚é
@@ -200,7 +211,6 @@ void Bomb::UseAndThrow()
 
 	if (m_vPosition.y > 0.5f)
 	{
-		//m_vPosition.y -= m_tGravity;
 		m_Velocity.y -= m_tGravity;
 		m_tGravity += 0.001f;
 	}

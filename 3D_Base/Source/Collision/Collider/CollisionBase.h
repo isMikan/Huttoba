@@ -21,7 +21,7 @@ public:
         Mushroom, 
         Magnet,
         Boomerang,
-        RatRobot, 
+        TrackingRobot, 
         Bomb,
 
         Max,
