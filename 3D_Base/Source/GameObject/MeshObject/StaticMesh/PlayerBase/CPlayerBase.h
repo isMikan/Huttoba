@@ -194,7 +194,6 @@ public:
 	bool IsAboveGround() const { return m_IsAboveGround; }
 	void SetIsAboveGround(bool isAboveGround) { m_IsAboveGround = isAboveGround; }
 
-
 	//nullptr ではないかチェック.
 	template<typename T>
 	bool IsActionState() const {
@@ -247,6 +246,7 @@ protected:
 	bool			m_IsMoving;			//移動しているか.
 	bool			m_IsTurning;		//回転しているか.
 	bool			m_IsHoldingItem;	//アイテムを所持してるか.
+
 	bool			m_IsOnGround;		//地面に接触しているか
 	bool			m_IsAboveGround;	//ステージの上かどうか
 
