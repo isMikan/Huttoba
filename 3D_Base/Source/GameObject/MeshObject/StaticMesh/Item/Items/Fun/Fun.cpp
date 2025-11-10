@@ -16,7 +16,7 @@ Fun::Fun()
 	, m_Velocity	()
 	, m_MoveSpeed	( 6.0 )		//値を変えると投げた時の移動速度が変化
 
-	, m_IsThrow		( false )
+	, m_IsThrow		( true )
 {
 	Init();
 }
@@ -33,7 +33,7 @@ void Fun::Init()
 
 	m_State = ItemBase::State::Spawn;
 
-	m_tGravity = 0.01;
+	m_tGravity = 0.01f;
 
 	m_HaveOffset = D3DXVECTOR3(0.0, 0.2f, 0.0f);
 
@@ -99,11 +99,15 @@ void Fun::OnCollision(CollisionBase* other)
 {
 	if (other->GetTag() == CollisionBase::ColliderTag::Player)
 	{
-		if (CPlayer* player = dynamic_cast<CPlayer*>(other->GetListener()))
+		if (CPlayerBase* player = dynamic_cast<CPlayerBase*>(other->GetListener()))
 		{
 			if (m_IsUse)
 			{
-				Hit(*player);
+				if(m_pPlayer!=player)
+				{
+					Hit(*player);
+					std::cout << player->GetPlayerID() << "と当たった" << std::endl;
+				}
 			}
 		}
 	}
@@ -114,7 +118,7 @@ void Fun::HaveMove()
 	if (m_IsUse)
 	{
 		//当たり判定削除
-		CollisionManager::GetInstance()->RemoveCollider(m_pCollision.get());
+		//CollisionManager::GetInstance()->RemoveCollider(m_pCollision.get());
 
 		std::shared_ptr<CStaticMesh> mesh = AssetManager::Mesh(StaticMeshList::Fun);
 
@@ -124,10 +128,11 @@ void Fun::HaveMove()
 			CollisionBase::ColliderTag::Bomb
 		);
 
-		m_IsUse = false;
+		//m_IsUse = false;
+	std::cout << "持っているに状態変化" << std::endl;
 	}
 
-	m_vPosition = m_pPlayer->GetPlayerRightHand().GetPosition() + m_HaveOffset;
+	m_vPosition = m_pPlayer->GetPlayerRightHand().GetPosition();
 	m_vQuaternion = m_pPlayer->GetQuaternion();
 }
 
@@ -147,7 +152,11 @@ void Fun::UseMove()
 		);
 
 		m_IsUse = true;
+		std::cout << "使ってる状態に変化" << std::endl;
 	}
+
+	m_vPosition = m_pPlayer->GetPlayerRightHand().GetPosition();
+	m_vQuaternion = m_pPlayer->GetQuaternion();
 }
 
 void Fun::ThrowMove()
@@ -170,10 +179,12 @@ void Fun::ThrowMove()
 
 		m_Velocity = forward * m_MoveSpeed;
 
+		m_Velocity.y = 10.0f;
+
 		m_IsThrow = false;
 
 		//当たり判定削除
-		CollisionManager::GetInstance()->RemoveCollider(m_pCollision.get());
+		//CollisionManager::GetInstance()->RemoveCollider(m_pCollision.get());
 
 		std::shared_ptr<CStaticMesh> mesh = AssetManager::Mesh(StaticMeshList::Fun);
 
@@ -184,25 +195,23 @@ void Fun::ThrowMove()
 		);
 	}
 
-
 	//てきとうに移動速度を減少させている
-	//m_Velocity -= m_Velocity * static_cast<float>(CTimeManager::GetDeltaTime());
+	m_Velocity -= m_Velocity * static_cast<float>(CTimeManager::GetDeltaTime());
 
 	if (m_vPosition.y > 0.5f)
 	{
+		m_Velocity.y -= m_tGravity;
 		m_tGravity += 0.001f;
-		m_vPosition.y -= m_tGravity;
-		//m_State = State::OnGround;
 	}
 	else
 	{
-		m_vPosition.y = 0;
+		m_Velocity.y = 0;
 	}
 
-	m_vPosition += m_Velocity * static_cast<float>(CTimeManager::GetDeltaTime()) + m_HaveOffset;
+	m_vPosition += m_Velocity * static_cast<float>(CTimeManager::GetDeltaTime());
 }
 
-void Fun::Hit(CPlayer& playiers)
+void Fun::Hit(CPlayerBase& playiers)
 {
 	//プレイヤーの押し出しの計算
 	//D3DXVECTOR3 SmashVel = playiers.GetVelocity(m_vPosition, 2, 10.0f);

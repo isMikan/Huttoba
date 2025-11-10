@@ -40,7 +40,7 @@ private:
     void ThrowMove();
 
     //当たった際の処理
-    void Hit(CPlayer& playiers);
+    void Hit(CPlayerBase& playiers);
 
 private:
     //アイテムを使用中かどうかを判定
