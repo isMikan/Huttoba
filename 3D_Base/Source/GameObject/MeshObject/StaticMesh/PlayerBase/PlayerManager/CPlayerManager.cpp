@@ -2,6 +2,7 @@
 
 #include "PlayerBase/Player/CPlayer.h"
 #include "PlayerBase/PlayerAI/CPlayerAI.h"
+#include "PlayerBase/PlayerAI/PlayerAI_TypeA/CPlayerAI_TypeA.h"
 
 #include "PlayerBase/PlayerState/PlayerMoveState/PlayerMoveIdelState/CPlayerMoveIdleState.h"
 #include "PlayerBase/PlayerState/PlayerTurnState/PlayerTurnIdleState/CPlayerTurnIdleState.h"
@@ -10,8 +11,6 @@
 #include "PlayerBase/PlayerState/PlayerActionState/PlayerHandAttackState/CPlayerHandAttackState.h"
 
 #include "Input//CInputManager.h"
-
-
 
 CPlayerManager::CPlayerManager()
 	: m_pPlayers		()
@@ -48,8 +47,16 @@ void CPlayerManager::Create()
 	{
 		//if (CInputManager::IsConnect(pNo))
 		{
-#if 0
-			m_pPlayers[pNo] = std::make_unique<CPlayerAI>(pNo);
+#if 1
+			if (pNo == 0)
+			{
+				m_pPlayers[pNo] = std::make_unique<CPlayer>(pNo);
+			}
+			else
+			{
+				m_pPlayers[pNo] = std::make_unique<CPlayerAI_TypeA>(pNo);
+				dynamic_cast<CPlayerAI*>(m_pPlayers[pNo].get())->SetPlayerManager(this);
+			}
 #else
 			m_pPlayers[pNo] = std::make_unique<CPlayer>(pNo);
 #endif
@@ -130,9 +137,10 @@ void CPlayerManager::Update()
 		if (!player) continue;	//プレイヤーがいない場合、次へ.
 
 		float t = CTimeManager::GetTotalTime();
+		//開始時すぐには動けないようにする.
 		if (t - m_CreateTime > m_ReadyTime)
 		{
-			player->Update();											//胴体の動作.
+			player->Update();	//胴体の動作.
 		}
 		//動作.
 		player->GetPlayerHead().Update(player->GetQuaternion());	//頭.
@@ -234,23 +242,23 @@ void CPlayerManager::InitialSettings(int index)
 		InitialSetting
 		//プレイヤー1.
 		{
-			{ D3DXVECTOR3(-4.f, 0.1f, 4.f),
-				D3DXQUATERNION(0.f, D3DXToRadian(45.f), 0.f, 1.f) }
+			{ D3DXVECTOR3(-6.f, 0.1f, 4.f),
+				D3DXQUATERNION(0.f, D3DXToRadian(30.f), 0.f, 1.f) }
 		},
 		//プレイヤー2.
 		{
-			{ D3DXVECTOR3(4.f, 0.1f, 4.f),
-				D3DXQUATERNION(0.f, D3DXToRadian(-45.f), 0.f, 1.f) }
+			{ D3DXVECTOR3(6.f, 0.1f, 4.f),
+				D3DXQUATERNION(0.f, D3DXToRadian(-30.f), 0.f, 1.f) }
 		},
 		//プレイヤー3.
 		{
-			{ D3DXVECTOR3(-4.f, 0.1f, 14.f),
-				D3DXQUATERNION(0.f, D3DXToRadian(45.f), 0.f, 1.f) }
+			{ D3DXVECTOR3(-6.f, 0.1f, 15.f),
+				D3DXQUATERNION(0.f, D3DXToRadian(120.f), 0.f, 1.f) }
 		},
 		//プレイヤー4.
 		{
-			{ D3DXVECTOR3(4.f, 0.1f, 14.f),
-				D3DXQUATERNION(0.f, D3DXToRadian(-45.f), 0.f, 1.f) }
+			{ D3DXVECTOR3(6.f, 0.1f, 15.f),
+				D3DXQUATERNION(0.f, D3DXToRadian(-120.f), 0.f, 1.f) }
 		}
 	};
 

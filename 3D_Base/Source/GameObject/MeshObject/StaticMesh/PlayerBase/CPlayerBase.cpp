@@ -30,7 +30,7 @@ CPlayerBase::CPlayerBase( int index )
 
 	, m_pItemBase		( nullptr )
 
-	, m_Control		( ActionInstruct::None )
+	, m_Control			( ActionInstruct::None )
 	, m_HitAttack		()
 	, m_HitPlayer		()
 	, m_KnockdownTime	()
@@ -48,7 +48,6 @@ CPlayerBase::CPlayerBase( int index )
 CPlayerBase::~CPlayerBase()
 {
 	m_pItemBase = nullptr;
-
 }
 
 //======================================================================
@@ -65,12 +64,10 @@ void CPlayerBase::Update()
 	//頭の位置を設定.
 	GetPlayerHead().SetPosition(GetObjectPos(headOffsetPos));
 
-
-	//ゲーム開始時じゃなく、地面についておらず、落ちる状態じゃない場合.
+	//地面についておらず、落ちる状態じゃない場合.
 	if (!m_IsOnGround
-		&& !IsAnyActionState<CPlayerFallingState,CPlayerKnockbackState>())
+		&& !IsAnyActionState<CPlayerFallingState, CPlayerKnockbackState>())
 	{
-		std::cout << "落ちる" << std::endl;
 		SetActionState(std::make_unique<CPlayerFallingState>(*this));
 	}
 
@@ -349,10 +346,13 @@ void CPlayerBase::OnCollision(CollisionBase* pOtherCollider)
 				player->SetHitAttack(
 					player->GetPosition(), CPlayerBase::HitEvent::HandAttack);
 
+#if 0
 				SetHitAttack(
 					GetKnockbackVelocity(player->GetPosition(), 10.f, 60.f), CPlayerBase::HitEvent::Knockdown);
-				//SetHitAttack(
-				//	GetPushbackVelocity(player->GetPosition()), CPlayerBase::HitEvent::Pushback);
+#else
+				SetHitAttack(
+					GetPushbackVelocity(player->GetPosition()), CPlayerBase::HitEvent::Pushback);
+#endif
 			}
 			else
 			{

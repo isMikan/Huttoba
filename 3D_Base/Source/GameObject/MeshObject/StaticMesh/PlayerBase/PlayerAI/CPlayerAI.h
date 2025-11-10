@@ -2,6 +2,8 @@
 
 #include "GameObject/MeshObject/StaticMesh/PlayerBase/CPlayerBase.h"
 
+#include "GameObject/MeshObject/StaticMesh/PlayerBase/PlayerManager/CPlayerManager.h"
+
 /***********************************************************************
 *	プレイヤーAIクラス.
 **/
@@ -23,6 +25,20 @@ public:
 
 	void AutomaticMovement();
 
-protected:
+	//プレイヤーを設定する.
+	void SetPlayerManager(CPlayerManager* manager) { m_pPlayerManager = manager; }
 
+protected:
+	//--- 近くのプレイヤーを追いかける ---.
+	void FollowPlayerNearby();
+
+protected:
+	CPlayerManager*	m_pPlayerManager;		//プレイヤー.
+
+	D3DXVECTOR3		m_CurrentDir;	//現在の進行方向.
+	D3DXVECTOR3		m_TargetDir;	//目標の進行方向.
+
+	D3DXVECTOR3		m_PreviousDiff;	//以前との差.
+
+	float m_Sqrt;
 };
