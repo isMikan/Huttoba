@@ -30,8 +30,13 @@ private:
 	float			m_EndTime;						//終了時間.
 
 //=== 手の調整位置 ===.
-	D3DXVECTOR3		m_HoldBothHands_RightOffsetPos;	//両手で持つアイテムの右.
-	D3DXVECTOR3		m_HoldBothHands_LeftOffsetPos;	//両手で持つアイテムの左.
+
+	//両手で持つアイテム用.
+	D3DXVECTOR3		m_HoldBothHands_RightHandEndPos;	//右手の目的の位置.
+	D3DXVECTOR3		m_HoldBothHands_LeftHandEndPos;		//左手の目的の位置.
+	//片手で持つアイテム用.
+	D3DXVECTOR3		m_OneHand_RightHandEndPos;			//右手の目的の位置.
+	D3DXVECTOR3		m_OneHand_LeftHandEndPos;			//左手の目的の位置.
 
 //====================.
 

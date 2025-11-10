@@ -1,6 +1,7 @@
 #include "CPlayerMoveState.h"
 
 #include "GameObject/MeshObject/StaticMesh/PlayerBase/CPlayerBase.h"
+#include "GameObject/MeshObject/StaticMesh/PlayerBase/PlayerAI/CPlayerAI.h"
 
 #include "GameObject/MeshObject/StaticMesh/PlayerBase/PlayerState/PlayerMoveState/PlayerMoveIdelState/CPlayerMoveIdleState.h"
 
@@ -15,9 +16,9 @@ CPlayerMoveState::CPlayerMoveState(CPlayerBase& pPlayer, float x, float z)
 	
 	, m_CurrentSpeed		()
 	, m_MoveSpeed			( 0.13f )
-	, m_RotatingMoveSpeed	( 0.09f )
+	, m_RotatingMoveSpeed	( 0.10f )
 	, m_HitingMoveSpeed		( 0.03f )
-
+	, m_AIMoveSpeed			( 0.09f )
 {
 }
 
@@ -121,6 +122,11 @@ float CPlayerMoveState::GetMoveSpeed()
 	if (m_pPlayer.IsTurning())
 	{
 		return m_RotatingMoveSpeed;
+	}
+
+	if (dynamic_cast<CPlayerAI*>(&m_pPlayer))
+	{
+		return m_AIMoveSpeed;
 	}
 
 	return m_MoveSpeed;	//í èÌë¨ìx.

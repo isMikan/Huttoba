@@ -4,8 +4,12 @@
 
 #include "GameObject/MeshObject/StaticMesh/PlayerBase/PlayerState/PlayerActionState/PlayerActionIdleState/CPlayerActionIdleState.h"
 
-#include "Item/ItemBase.h"
+#include "Item/Items/Haetataki/Haetataki.h"
+#include "Item/Items/SmashBat/SmashBat.h"
 #include "Item/Items/Bomb/Bomb.h"
+#include "Item/Items/Mushroom/Mushroom.h"
+#include "Item/Items/Fun/Fun.h"
+#include "Item/Items/TrackingRobot/TrackingRobot.h"
 
 CPlayerHoldingIdleState::CPlayerHoldingIdleState(CPlayerBase& pPlayer)
 	: CPlayerState						( pPlayer )
@@ -13,8 +17,10 @@ CPlayerHoldingIdleState::CPlayerHoldingIdleState(CPlayerBase& pPlayer)
 	, m_StartTime						()
 	, m_EndTime							( 2.f )
 
-	, m_HoldBothHands_RightOffsetPos	( -0.2f, 0.f, 0.3f )
-	, m_HoldBothHands_LeftOffsetPos		( 0.2f, 0.f, 0.3f )
+	, m_HoldBothHands_RightHandEndPos	( -0.2f, 0.f, 0.3f )
+	, m_HoldBothHands_LeftHandEndPos	( 0.2f, 0.f, 0.3f )
+	, m_OneHand_RightHandEndPos			( 0.f, 0.3f, 0.2f )
+	, m_OneHand_LeftHandEndPos			( 0.1f, 0.f, -0.2f )
 {
 }
 
@@ -82,11 +88,19 @@ void CPlayerHoldingIdleState::Update()
 	D3DXVECTOR3 rightHandOffsetPos = m_pPlayer.GetPlayerRightHand().GetOffsetPos();
 	D3DXVECTOR3 leftHandOffsetPos = m_pPlayer.GetPlayerLeftHand().GetOffsetPos();
 
-
-	if (dynamic_cast<Bomb*>(item))
+	if (dynamic_cast<Haetataki*>(item)
+		|| dynamic_cast<SmashBat*>(item))
 	{
-		rightHandOffsetPos += m_HoldBothHands_RightOffsetPos;
-		leftHandOffsetPos += m_HoldBothHands_LeftOffsetPos;
+		rightHandOffsetPos += m_OneHand_RightHandEndPos;
+		leftHandOffsetPos += m_OneHand_LeftHandEndPos;
+	}
+	else if (dynamic_cast<Bomb*>(item)
+		|| dynamic_cast<Mushroom*>(item)
+		|| dynamic_cast<Fun*>(item)
+		|| dynamic_cast<TrackingRobot*>(item))
+	{
+		rightHandOffsetPos += m_HoldBothHands_RightHandEndPos;
+		leftHandOffsetPos += m_HoldBothHands_LeftHandEndPos;
 	}
 
 	//経過時間を取得.
@@ -95,7 +109,7 @@ void CPlayerHoldingIdleState::Update()
 	//終了時間を過ぎた場合.
 	if (t - m_StartTime > m_EndTime)
 	{
-		//モーション開始時間.
+		//アニメーション開始時間.
 		m_StartTime = CTimeManager::GetTotalTime();
 	}
 

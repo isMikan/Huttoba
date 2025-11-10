@@ -39,7 +39,7 @@ private:
 	float		m_MoveSpeed;		//移動速度.
 	float		m_RotatingMoveSpeed;//回転している時の速度.
 	float		m_HitingMoveSpeed;	//攻撃を受けている時の速度.
-
+	float		m_AIMoveSpeed;		//AIが動く速度.
 
 private:
 //======================================================================

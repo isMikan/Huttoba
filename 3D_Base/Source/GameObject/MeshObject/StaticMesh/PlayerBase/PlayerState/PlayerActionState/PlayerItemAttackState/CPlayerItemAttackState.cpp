@@ -5,7 +5,12 @@
 #include "GameObject/MeshObject/StaticMesh/PlayerBase/PlayerState/PlayerActionState/PlayerActionIdleState/CPlayerActionIdleState.h"
 #include "GameObject/MeshObject/StaticMesh/PlayerBase/PlayerState/PlayerActionState/PlayerHoldingIdleState/CPlayerHoldingIdleState.h"
 
+#include "Item/Items/Haetataki/Haetataki.h"
+#include "Item/Items/SmashBat/SmashBat.h"
+#include "Item/Items/Bomb/Bomb.h"
+#include "Item/Items/Mushroom/Mushroom.h"
 #include "Item/Items/Fun/Fun.h"
+#include "Item/Items/TrackingRobot/TrackingRobot.h"
 
 #include "Input/CInputManager.h"
 
@@ -13,15 +18,20 @@ CPlayerItemAttackState::CPlayerItemAttackState(CPlayerBase& pPlayer)
 	: CPlayerState						( pPlayer )
 	
 	, m_StartTime						()
-	, m_EndTime							( 0.1f )
+	, m_EndTime							( 0.2f )
 
 	, m_CurrentTiltAngle				()
 	, m_TiltAngleMax					( D3DXToRadian( 7.f ) )
 
 	, m_RightHandStartPos				()
 	, m_LeftHandStartPos				()
+	, m_RightHandEndPos					()
+	, m_LeftHandEndPos					()
+
 	, m_HoldBothHands_RightHandEndPos	( 0.f, 0.3f, 0.3f )
 	, m_HoldBothHands_LeftHandEndPos	( 0.f, 0.3f, 0.3f )
+	, m_OneHand_RightHandEndPos			( -0.2f, 0.3f, 0.3f )
+	, m_OneHand_LeftHandEndPos			( -0.1f, 0.2f, -0.3f )
 
 	, m_StartQuat						( 0.f, 0.f, 0.f, 1.f )
 {
@@ -55,6 +65,23 @@ void CPlayerItemAttackState::Enter()
 	//手の開始位置を設定.
 	m_RightHandStartPos = rightHandOffset;
 	m_LeftHandStartPos = leftHandOffset;
+
+	ItemBase* item = m_pPlayer.GetItemBase();
+
+	if (dynamic_cast<Haetataki*>(item) 
+		|| dynamic_cast<SmashBat*>(item))
+	{
+		m_RightHandEndPos = m_OneHand_RightHandEndPos;
+		m_LeftHandEndPos = m_OneHand_LeftHandEndPos;
+	}
+	else if (dynamic_cast<Bomb*>(item)
+		|| dynamic_cast<Mushroom*>(item)
+		|| dynamic_cast<Fun*>(item)
+		|| dynamic_cast<TrackingRobot*>(item))
+	{
+		m_RightHandEndPos = m_HoldBothHands_RightHandEndPos;
+		m_LeftHandEndPos = m_HoldBothHands_LeftHandEndPos;
+	}
 }
 
 //--- 状態の終了時に呼び出す ---.
@@ -72,6 +99,7 @@ void CPlayerItemAttackState::Update()
 		
 	if (dynamic_cast<Fun*>(item))
 	{
+		//プレイヤーの入力を受けた場合.
 		if (IsInput(m_pPlayer.GetPlayerID()))
 		{
 			m_pPlayer.SetActionState(std::make_unique<CPlayerHoldingIdleState>(m_pPlayer));
@@ -103,22 +131,27 @@ void CPlayerItemAttackState::Update()
 
 	float eased = sinf(progress * D3DX_PI * 0.5f);	//0.5で半往復させ前に手を出す計算をする.	
 
-	//右手と左手の調整位置だけの計算.
+	//右手と左手の調整位置
 	D3DXVECTOR3 rightHandOffsetPos;
-	D3DXVec3Lerp(&rightHandOffsetPos, &m_RightHandStartPos, &m_HoldBothHands_RightHandEndPos, eased);
 	D3DXVECTOR3 leftHandOffsetPos;
-	D3DXVec3Lerp(&leftHandOffsetPos, &m_LeftHandStartPos, &m_HoldBothHands_LeftHandEndPos, eased);
+
+	//手の軌道の計算.
+	D3DXVec3Lerp(&rightHandOffsetPos, &m_RightHandStartPos, &m_RightHandEndPos, eased);
+	D3DXVec3Lerp(&leftHandOffsetPos, &m_LeftHandStartPos, &m_LeftHandEndPos, eased);
 
 	//手の位置を調整して設定.
 	m_pPlayer.GetPlayerRightHand().SetPosition(m_pPlayer.GetObjectPos(rightHandOffsetPos));
 	m_pPlayer.GetPlayerLeftHand().SetPosition(m_pPlayer.GetObjectPos(leftHandOffsetPos));
 }
 
-//--- 入力を受け付けるか判断する ---.
+//--- 入力を受け付けたか判断する ---.
 bool CPlayerItemAttackState::IsInput(int index) const
 {
 	if (dynamic_cast<CPlayer*>(&m_pPlayer))
 	{
+		//ボタンを離した場合.
 		return CInputManager::IsUp(Action::Attack, index);
 	}
+
+	return false;
 }
