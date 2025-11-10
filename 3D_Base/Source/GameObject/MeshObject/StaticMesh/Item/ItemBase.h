@@ -109,6 +109,9 @@ public:
 	//ínñ Ç∆ÇÃîªíË
 	void IsOnGround(CGroundManager& pGroundMgr);
 
+	bool GetIsOnGround() { return m_IsOnGround; }
+	void Fall();
+
 protected:
 
 	virtual void Spawn	 ()	= 0; // èoåª

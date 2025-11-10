@@ -74,6 +74,11 @@ void ItemManager::Update()
 		{
 			item->SetState(ItemBase::State::Use);
 		}
+
+		if (!item->GetIsOnGround())
+		{
+			item->Fall();
+		}
 	}
 	//不必要なアイテム削除
 	DestroyItem();
@@ -109,7 +114,7 @@ void ItemManager::DestroyItem()
 
 D3DXVECTOR3 ItemManager::GetItemPos(int i)
 {
-	return m_pItems[i].get()->GetPosition();
+	return m_pItems[i]->GetPosition();
 }
 
 //--------------------------------------------------------------------------------------------------------------
