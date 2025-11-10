@@ -10,7 +10,6 @@ class CPlayerMoveIdleState
 {
 public:
 	CPlayerMoveIdleState(CPlayerBase& pPlayer);
-	CPlayerMoveIdleState(CPlayerBase& pPlayer, float x, float z);	//ˆø”:ˆÚ“®•ûŒü‚Ìx²Az².
 	~CPlayerMoveIdleState() override;
 
 //======================================================================

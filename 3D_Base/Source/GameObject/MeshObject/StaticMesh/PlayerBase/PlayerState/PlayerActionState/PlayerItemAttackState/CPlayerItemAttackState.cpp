@@ -5,6 +5,10 @@
 #include "GameObject/MeshObject/StaticMesh/PlayerBase/PlayerState/PlayerActionState/PlayerActionIdleState/CPlayerActionIdleState.h"
 #include "GameObject/MeshObject/StaticMesh/PlayerBase/PlayerState/PlayerActionState/PlayerHoldingIdleState/CPlayerHoldingIdleState.h"
 
+#include "Item/Items/Fun/Fun.h"
+
+#include "Input/CInputManager.h"
+
 CPlayerItemAttackState::CPlayerItemAttackState(CPlayerBase& pPlayer)
 	: CPlayerState						( pPlayer )
 	
@@ -12,12 +16,12 @@ CPlayerItemAttackState::CPlayerItemAttackState(CPlayerBase& pPlayer)
 	, m_EndTime							( 0.1f )
 
 	, m_CurrentTiltAngle				()
-	, m_TiltAngleMax					( D3DXToRadian( 10.f ) )
+	, m_TiltAngleMax					( D3DXToRadian( 7.f ) )
 
 	, m_RightHandStartPos				()
 	, m_LeftHandStartPos				()
-	, m_HoldBothHands_RightHandEndPos	( 0.f, 0.3f, 0.2f )
-	, m_HoldBothHands_LeftHandEndPos	( 0.f, 0.3f, 0.2f )
+	, m_HoldBothHands_RightHandEndPos	( 0.f, 0.3f, 0.3f )
+	, m_HoldBothHands_LeftHandEndPos	( 0.f, 0.3f, 0.3f )
 
 	, m_StartQuat						( 0.f, 0.f, 0.f, 1.f )
 {
@@ -64,11 +68,24 @@ void CPlayerItemAttackState::Update()
 	//ゲーム全体の経過時間.
 	float t = CTimeManager::GetTotalTime();
 
-	//現在の経過時間と開始時間の差が終了時間を上回った場合.
-	if (t - m_StartTime > m_EndTime)
+	ItemBase* item = m_pPlayer.GetItemBase();
+		
+	if (dynamic_cast<Fun*>(item))
 	{
-		m_pPlayer.SetActionState(std::make_unique<CPlayerHoldingIdleState>(m_pPlayer));
-		return;
+		if (IsInput(m_pPlayer.GetPlayerID()))
+		{
+			m_pPlayer.SetActionState(std::make_unique<CPlayerHoldingIdleState>(m_pPlayer));
+			return;
+		}
+	}
+	else
+	{
+		//現在の経過時間と開始時間の差が終了時間を上回った場合.
+		if (t - m_StartTime > m_EndTime)
+		{
+			m_pPlayer.SetActionState(std::make_unique<CPlayerHoldingIdleState>(m_pPlayer));
+			return;
+		}
 	}
 
 	//ローカル軸を取得.
@@ -95,4 +112,13 @@ void CPlayerItemAttackState::Update()
 	//手の位置を調整して設定.
 	m_pPlayer.GetPlayerRightHand().SetPosition(m_pPlayer.GetObjectPos(rightHandOffsetPos));
 	m_pPlayer.GetPlayerLeftHand().SetPosition(m_pPlayer.GetObjectPos(leftHandOffsetPos));
+}
+
+//--- 入力を受け付けるか判断する ---.
+bool CPlayerItemAttackState::IsInput(int index) const
+{
+	if (dynamic_cast<CPlayer*>(&m_pPlayer))
+	{
+		return CInputManager::IsUp(Action::Attack, index);
+	}
 }

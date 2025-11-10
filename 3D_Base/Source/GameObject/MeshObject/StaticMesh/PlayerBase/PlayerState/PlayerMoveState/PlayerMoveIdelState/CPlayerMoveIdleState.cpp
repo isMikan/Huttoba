@@ -7,11 +7,6 @@ CPlayerMoveIdleState::CPlayerMoveIdleState(CPlayerBase& pPlayer)
 {
 }
 
-CPlayerMoveIdleState::CPlayerMoveIdleState(CPlayerBase& pPlayer, float x, float z)
-	: CPlayerState			( pPlayer )
-{
-}
-
 CPlayerMoveIdleState::~CPlayerMoveIdleState()
 {
 }
