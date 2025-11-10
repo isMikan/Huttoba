@@ -15,12 +15,12 @@ public:
 	// コンストラクタ: すべての初期情報を一括で受け取る
 	CollisionCapsule(
 		ICollisionListener* pListener,
-		const D3DXVECTOR3& syncPosition,
+		const D3DXVECTOR3 syncPosition,
 		ColliderTag tag,
 		float radius,
-		const D3DXVECTOR3& localOffsetA, // 軸線分 A のローカルオフセット
-		const D3DXVECTOR3& localOffsetB, // 軸線分 B のローカルオフセット
-		const D3DXVECTOR3& localOffset = D3DXVECTOR3(0.0f, 0.0f, 0.0f) // Base用オフセット
+		const D3DXVECTOR3 localOffsetA, // 軸線分 A のローカルオフセット
+		const D3DXVECTOR3 localOffsetB, // 軸線分 B のローカルオフセット
+		const D3DXVECTOR3 localOffset = D3DXVECTOR3(0.0f, 0.0f, 0.0f) // Base用オフセット
 	);	
 	
 	virtual ~CollisionCapsule() = default;

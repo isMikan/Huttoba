@@ -2,12 +2,12 @@
 
 CollisionCapsule::CollisionCapsule(
 	ICollisionListener* pListener, 
-	const D3DXVECTOR3& syncPosition,
+	const D3DXVECTOR3 syncPosition,
 	ColliderTag tag,
 	float radius, 
-	const D3DXVECTOR3& localOffsetA, 
-	const D3DXVECTOR3& localOffsetB, 
-	const D3DXVECTOR3& localOffset
+	const D3DXVECTOR3 localOffsetA, 
+	const D3DXVECTOR3 localOffsetB, 
+	const D3DXVECTOR3 localOffset
 )
 	: CollisionBase(pListener, syncPosition, tag, localOffset)
 	, m_Radius(radius)
@@ -33,7 +33,7 @@ void CollisionCapsule::UpdateWorldPosition()
     }
 
     // CGameObject::GetWorldMatrix() から安全で最新の行列を取得
-    const D3DXMATRIX& mWorld = obj->GetWorldMatrix();
+    const D3DXMATRIX mWorld = obj->GetWorldMatrix();
 
     // 軸線分の始点Aと終点Bをワールド行列で変換
     // D3DXVec3TransformCoord は D3DXMATRIXの回転、スケール、平行移動を全て適用
