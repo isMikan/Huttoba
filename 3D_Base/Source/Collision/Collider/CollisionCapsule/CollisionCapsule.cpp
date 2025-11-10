@@ -48,8 +48,8 @@ void CollisionCapsule::UpdateWorldPosition()
 }
 
 void CollisionCapsule::SetLocalOffSet(
-    D3DXVECTOR3& localOffsetA, 
-    D3DXVECTOR3& localOffsetB)
+    const D3DXVECTOR3& localOffsetA,
+    const D3DXVECTOR3& localOffsetB)
 {
     m_LocalOffsetA = localOffsetA;
     m_LocalOffsetB = localOffsetB;

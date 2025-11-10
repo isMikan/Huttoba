@@ -30,7 +30,7 @@ public:
 	void UpdateWorldPosition() override;
 
 	const BoundingCapsule& GetWorldCapsule() const { return m_WorldCapsule; }
-	void SetLocalOffSet(D3DXVECTOR3& localOffsetA, D3DXVECTOR3& localOffsetB);
+	void SetLocalOffSet(const D3DXVECTOR3& localOffsetA, const D3DXVECTOR3& localOffsetB);
 
 private:
 

@@ -13,6 +13,9 @@ struct DebugCollisionDrawEntry
 
     // 描画するデバッグメッシュ
     std::shared_ptr<CStaticMesh> pMesh;
+
+    //描画するコライダーデータ
+    const CollisionBase* pCollider;
 };
 
 class CollisionDraw
@@ -31,7 +34,8 @@ public:
     // 描画する当たり判定とオーナーポインタ登録
     void AddDrawMesh(
         const std::shared_ptr<CStaticMesh> pMesh,
-        const CGameObject* pOwner
+        const CGameObject* pOwner,
+        const CollisionBase* pCollider
     );
 
     // 描画情報の削除

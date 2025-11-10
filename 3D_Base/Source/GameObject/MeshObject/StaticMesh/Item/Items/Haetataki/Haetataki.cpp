@@ -76,7 +76,7 @@ void Haetataki::Init()
 	m_tGravity = INITAL_GRAVITY;
 
 
-	std::shared_ptr<CStaticMesh> mesh = AssetManager::Mesh(StaticMeshList::Bomb);
+	std::shared_ptr<CStaticMesh> mesh = AssetManager::Mesh(StaticMeshList::BSphere);
 
 	m_pPickUpCollider = CollisionDataFactory::CreateSphereForMesh(
 		CollisionBase::ColliderTag::Haetataki,
@@ -101,7 +101,7 @@ void Haetataki::Update()
 	//ƒAƒCƒeƒ€‹¤’Ê‚ÌUpdate
 	ItemBase::Update();
 
-	D3DXVECTOR3 offset = { 0.f,1.f,0.f };
+	D3DXVECTOR3 offset = { 2.f,0.f,0.f };
 
 	m_pPickUpCollider->SetLocalOffset(offset);
 }
