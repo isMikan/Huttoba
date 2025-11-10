@@ -2,6 +2,7 @@
 
 #include "PlayerBase/PlayerState/PlayerMoveState/PlayerMoveState/CPlayerMoveState.h"
 #include "PlayerBase/PlayerState/PlayerTurnState/PlayerTurnState/CPlayerTurnState.h"
+
 #include "PlayerBase/PlayerState/PlayerMoveState/PlayerMoveIdelState/CPlayerMoveIdleState.h"
 #include "PlayerBase/PlayerState/PlayerTurnState/PlayerTurnIdleState/CPlayerTurnIdleState.h"
 #include "PlayerBase/PlayerState/PlayerActionState/PlayerActionIdleState/CPlayerActionIdleState.h"
@@ -12,6 +13,9 @@
 #include "PlayerBase/PlayerState/PlayerActionState/PlayerFallingState/CPlayerFallingState.h"
 #include "PlayerBase/PlayerState/PlayerActionState/PlayerGetUpState/CPlayerGetUpState.h"
 #include "PlayerBase/PlayerState/PlayerActionState/PlayerKnockdownState/CPlayerKnockdownState.h"
+#include "PlayerBase/PlayerState/PlayerActionState/PlayerItemAttackState/CPlayerItemAttackState.h"
+
+#include "Item/Items/Fun/Fun.h"
 
 #include "Input/CInputManager.h"
 #include "Sound/CSoundManager.h"
@@ -35,7 +39,7 @@ CPlayer::~CPlayer()
 //--- 毎フレームの動作する ---.
 void CPlayer::Update()
 {
-	m_Instruct = ActionInstruct::None;
+	m_Control = ActionInstruct::None;
 
 	HandleInput();
 
@@ -107,7 +111,6 @@ void CPlayer::HandleInput()
 		//入力に変化があった場合.
 		if (m_CurrentInput != D3DXVECTOR2(x, z))
 		{
-			//移動だけする場合.
 			SetMoveState(std::make_unique<CPlayerMoveState>(*this, x, z));
 			m_CurrentInput = D3DXVECTOR2(x, z);	//現在の入力を記録しておく.
 		}
@@ -119,12 +122,12 @@ void CPlayer::HandleInput()
 		//攻撃の指示をする.
 		if (CInputManager::IsDown(Action::Attack, m_PlayerID))
 		{
-			m_Instruct = ActionInstruct::Attack;
+			m_Control = ActionInstruct::Attack;
 		}
 		//アイテムを拾う・捨てるを指示をする.
 		if (CInputManager::IsDown(Action::ToggleItem, m_PlayerID))
 		{
-			m_Instruct = ActionInstruct::ToggleItem;
+			m_Control = ActionInstruct::ToggleItem;
 		}
 	}
 }

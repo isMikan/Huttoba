@@ -24,13 +24,13 @@ CPlayerBase::CPlayerBase( int index )
 	, m_pRightHand		( std::make_unique<CPlayerRightHand>() )
 	, m_pLeftHand		( std::make_unique<CPlayerLeftHand>() )
 
-	, m_pMoveState		( std::make_unique<CPlayerMoveIdleState>( *this, 0.f, 0.f ) )
-	, m_pTurnState		( std::make_unique<CPlayerTurnIdleState>( *this, 0.f, 0.f ) )
+	, m_pMoveState		( std::make_unique<CPlayerMoveIdleState>( *this ) )
+	, m_pTurnState		( std::make_unique<CPlayerTurnIdleState>( *this ) )
 	, m_pActionState	( std::make_unique<CPlayerActionIdleState>( *this ) )
 
 	, m_pItemBase		( nullptr )
 
-	, m_Instruct		( ActionInstruct::None )
+	, m_Control		( ActionInstruct::None )
 	, m_HitAttack		()
 	, m_HitPlayer		()
 	, m_KnockdownTime	()
@@ -90,14 +90,14 @@ void CPlayerBase::Update()
 	if(m_pItemBase)
 	{
 		//アイテムを投げる.
-		if (m_Instruct == ActionInstruct::ToggleItem)
+		if (m_Control == ActionInstruct::ToggleItem)
 		{
 			m_pItemBase->SetPlayer(this);
 			m_pItemBase->SetState(ItemBase::State::Throw);
 			SetActionState(std::make_unique<CPlayerThrowState>(*this));
 		}
 		//アイテムの攻撃.
-		if (m_Instruct == ActionInstruct::Attack)
+		if (m_Control == ActionInstruct::Attack)
 		{
 			m_pItemBase->SetPlayer(this);
 			m_pItemBase->SetState(ItemBase::State::Use);
@@ -107,7 +107,7 @@ void CPlayerBase::Update()
 	else
 	{
 		//手の攻撃.
-		if (m_Instruct == ActionInstruct::Attack)
+		if (m_Control == ActionInstruct::Attack)
 		{
 			SetActionState(std::make_unique<CPlayerHandAttackState>(*this));
 		}
@@ -380,7 +380,7 @@ void CPlayerBase::OnCollision(CollisionBase* pOtherCollider)
 		if (ItemBase* item = dynamic_cast<ItemBase*>(pOtherCollider->GetListener()))
 		{
 			//拾う.
-			if(m_Instruct == ActionInstruct::ToggleItem
+			if(m_Control == ActionInstruct::ToggleItem
 				&& !m_pItemBase)
 			{
 				item->SetPlayer(this);

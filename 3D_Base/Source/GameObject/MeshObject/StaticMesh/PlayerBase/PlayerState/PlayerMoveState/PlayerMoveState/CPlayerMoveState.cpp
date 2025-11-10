@@ -3,10 +3,10 @@
 #include "GameObject/MeshObject/StaticMesh/PlayerBase/CPlayerBase.h"
 
 #include "GameObject/MeshObject/StaticMesh/PlayerBase/PlayerState/PlayerMoveState/PlayerMoveIdelState/CPlayerMoveIdleState.h"
-#include "GameObject/MeshObject/StaticMesh/PlayerBase/PlayerState/PlayerActionState/PlayerHoldingIdleState/CPlayerHoldingIdleState.h"
 
 #include "GameObject/MeshObject/StaticMesh/PlayerBase/PlayerState/PlayerActionState/PlayerPushedState/CPlayerPushedState.h"
 #include "GameObject/MeshObject/StaticMesh/PlayerBase/PlayerState/PlayerActionState/PlayerFallingState/CPlayerFallingState.h"
+#include "GameObject/MeshObject/StaticMesh/PlayerBase/PlayerState/PlayerActionState/PlayerItemAttackState/CPlayerItemAttackState.h"
 
 CPlayerMoveState::CPlayerMoveState(CPlayerBase& pPlayer, float x, float z)
 	: CPlayerState			( pPlayer )
@@ -109,18 +109,18 @@ void CPlayerMoveState::Update()
 //--- 現在の速度にふさわしい数値を渡す ---.
 float CPlayerMoveState::GetMoveSpeed()
 {
+	//速度補正したい行動の場合.
+	if (m_pPlayer.IsAnyActionState<
+		CPlayerPushedState,
+		CPlayerFallingState,
+		CPlayerItemAttackState>())
+	{
+		return m_HitingMoveSpeed;
+	}
 	//回転している場合.
 	if (m_pPlayer.IsTurning())
 	{
 		return m_RotatingMoveSpeed;
-	}
-	//動作不可能（位置の微調整は可能）の場合.
-	if (m_pPlayer.IsAnyActionState<
-		CPlayerPushedState, 
-		CPlayerFallingState,
-		CPlayerHoldingIdleState>())
-	{
-		return m_HitingMoveSpeed;
 	}
 
 	return m_MoveSpeed;	//通常速度.

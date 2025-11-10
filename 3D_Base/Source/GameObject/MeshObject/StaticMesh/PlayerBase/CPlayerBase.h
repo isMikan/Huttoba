@@ -103,9 +103,6 @@ public:
 	//--- 地面との衝突判定 ---.
 	void OnGroundCollision(CGroundManager &pGroundMgr);
 
-	//当たり判定削除をマネージャーで行うので取得できるようにする
-	std::shared_ptr<CollisionBase> GetCollider() { return m_pCollision; }
-
 	//--- 位置を設定するために計算 ---.
 	D3DXVECTOR3 GetObjectPos(D3DXVECTOR3 offset);
 
@@ -135,6 +132,9 @@ public:
 	float WrapAngle(float value);
 
 //======================================================================
+
+	//当たり判定削除をマネージャーで行うので取得できるようにする
+	std::shared_ptr<CollisionBase> GetCollider() { return m_pCollision; }
 
 	//プレイヤーが頭を持っている(書き込み用).
 	CPlayerHead& GetPlayerHead() { return *m_pHead; }
@@ -247,7 +247,7 @@ protected:
 
 	ItemBase*		m_pItemBase;		//アイテムベース（ここに所持アイテムを入れる）.
 
-	ActionInstruct	m_Instruct;			//指示.
+	ActionInstruct	m_Control;			//指示.
 	HitAttack		m_HitAttack;		//攻撃を受けた情報.
 	HitPlayer		m_HitPlayer;		//プレイヤーの接触情報.
 	Gauge			m_KnockdownTime;	//ダウン状態の時間を保存.
