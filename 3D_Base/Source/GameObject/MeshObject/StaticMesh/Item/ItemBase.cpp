@@ -6,7 +6,7 @@
 ItemBase::ItemBase()
 	: m_State		{ State::Spawn }
 	, m_pPlayer		{ nullptr }
-	, m_tGravity	{ 0.01f }
+	, m_tGravity	{ 9.8f }
 	, m_IsDestroy	{ false }
 	, m_IsOnGround	{ false }
 {
@@ -49,6 +49,13 @@ void ItemBase::Update()
 	}
 }
 
+	static constexpr float UNDER_MAX = -5.f;
+	if (m_vPosition.y < UNDER_MAX)
+	{
+		m_IsDestroy = true;
+	}
+}
+
 void ItemBase::Draw(D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAMERA& Camera)
 {
 	CStaticMeshObject::Draw(View, Proj, Light, Camera);
@@ -63,11 +70,8 @@ bool ItemBase::IsUse()
 	return false;
 }
 
-void ItemBase::IsOnGround(CGroundManager* pGroundMgr)
+void ItemBase::IsOnGround(CGroundManager& pGroundMgr)
 {
-	// 外部からのデータがない場合は判定不能
-	if (!pGroundMgr) return;
-
 	float groundY = 0.0f;
 
 	// 自身の位置を取得
@@ -87,4 +91,11 @@ void ItemBase::IsOnGround(CGroundManager* pGroundMgr)
 void ItemBase::DestroyItem()
 {
 	m_State = State::Destroy;
+}
+
+void ItemBase::Fall()
+{
+	static constexpr float GRAVITY = 0.1f;
+
+	m_vPosition.y -= GRAVITY;
 }

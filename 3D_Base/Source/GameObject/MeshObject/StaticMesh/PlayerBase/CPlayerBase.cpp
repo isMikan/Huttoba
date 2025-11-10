@@ -163,10 +163,8 @@ void CPlayerBase::CreateCollider()
 }
 
 //--- 地面との衝突判定 ---.
-void CPlayerBase::OnGroundCollision(CGroundManager* pGroundMgr)
+void CPlayerBase::OnGroundCollision(CGroundManager& pGroundMgr)
 {
-	// 地面データがないと判定不能
-	if (!pGroundMgr) return;
 
 	//関数のoutで当たったy座標をもらう
 	float groundY = 0.0f;

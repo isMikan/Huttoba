@@ -139,7 +139,7 @@ void CSceneGameMain::Update()
 	{
 		if (!player) continue;	//プレイヤーがいない場合、次へ
 
-		player->OnGroundCollision(m_pGroundManager.get());
+		player->OnGroundCollision(*m_pGroundManager);
 
 		if (player->GetPosition().y > 0.3f)
 		{
@@ -150,7 +150,7 @@ void CSceneGameMain::Update()
 	//地面に接地しているか
 	for (auto& item : m_pItemManager->GetItems())
 	{
-		item->IsOnGround(m_pGroundManager.get());
+		item->IsOnGround(*m_pGroundManager);
 	}
 
 

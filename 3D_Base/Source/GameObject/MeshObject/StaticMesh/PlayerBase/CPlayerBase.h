@@ -101,7 +101,7 @@ public:
 	void CreateCollider();
 
 	//--- 地面との衝突判定 ---.
-	void OnGroundCollision(CGroundManager* pGroundMgr);
+	void OnGroundCollision(CGroundManager &pGroundMgr);
 
 	//当たり判定削除をマネージャーで行うので取得できるようにする
 	std::shared_ptr<CollisionBase> GetCollider() { return m_pCollision; }

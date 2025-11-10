@@ -108,7 +108,10 @@ public:
 
 
 	//地面との判定
-	void IsOnGround(CGroundManager* pGroundMgr);
+	void IsOnGround(CGroundManager& pGroundMgr);
+
+	bool GetIsOnGround() { return m_IsOnGround; }
+	void Fall();
 
 	//アイテム消去(他クラスで読み込む用)
 	void DestroyItem();
