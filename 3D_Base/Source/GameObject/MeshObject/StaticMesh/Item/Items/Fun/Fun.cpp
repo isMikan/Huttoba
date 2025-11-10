@@ -106,7 +106,7 @@ void Fun::OnCollision(CollisionBase* other)
 				if(m_pPlayer!=player)
 				{
 					Hit(*player);
-					std::cout << player->GetPlayerID() << "‚Æ“–‚½‚Á‚½" << std::endl;
+					//std::cout << player->GetPlayerID() << "‚Æ“–‚½‚Á‚½" << std::endl;
 				}
 			}
 		}
@@ -122,14 +122,14 @@ void Fun::HaveMove()
 
 		std::shared_ptr<CStaticMesh> mesh = AssetManager::Mesh(StaticMeshList::Fun);
 
-		m_pCollision = CollisionDataFactory::CreateSphereForMesh(
-			this,
-			mesh,
-			CollisionBase::ColliderTag::Bomb
-		);
+		//m_pCollision = CollisionDataFactory::CreateSphereForMesh(
+		//	this,
+		//	mesh,
+		//	CollisionBase::ColliderTag::Bomb
+		//);
 
 		//m_IsUse = false;
-	std::cout << "Ž‚Á‚Ä‚¢‚é‚Éó‘Ô•Ï‰»" << std::endl;
+	//std::cout << "Ž‚Á‚Ä‚¢‚é‚Éó‘Ô•Ï‰»" << std::endl;
 	}
 
 	m_vPosition = m_pPlayer->GetPlayerRightHand().GetPosition();
@@ -152,7 +152,7 @@ void Fun::UseMove()
 		);
 
 		m_IsUse = true;
-		std::cout << "Žg‚Á‚Ä‚éó‘Ô‚É•Ï‰»" << std::endl;
+		//std::cout << "Žg‚Á‚Ä‚éó‘Ô‚É•Ï‰»" << std::endl;
 	}
 
 	m_vPosition = m_pPlayer->GetPlayerRightHand().GetPosition();
