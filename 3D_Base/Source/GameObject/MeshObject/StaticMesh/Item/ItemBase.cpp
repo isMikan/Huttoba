@@ -90,3 +90,8 @@ void ItemBase::Fall()
 
 	m_vPosition.y -= GRAVITY;
 }
+
+void ItemBase::OnCollision(CollisionBase* other)
+{
+
+}

@@ -49,6 +49,8 @@ public:
 	*****************************************************************************************/
 	bool AttackMostion();
 
+	void OnCollision(CollisionBase* other)override;
+
 private:
 
 	D3DXVECTOR3 m_Offset = { 0.5f, 1.f, 0.f };	//プレイヤーの位置に合わせる(突貫)

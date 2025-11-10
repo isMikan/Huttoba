@@ -34,5 +34,7 @@ public:
 	void Destroy()	override; // è¡ñ≈
 
 private:
+	void OnCollision(CollisionBase* other)override;
 
+private:
 };

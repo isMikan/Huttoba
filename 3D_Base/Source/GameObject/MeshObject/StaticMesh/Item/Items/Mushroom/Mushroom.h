@@ -52,6 +52,9 @@ private:
     //戻り値が正規化した方向ベクトルを返す
     D3DXVECTOR3 CalculateReflectionDirection(const D3DXVECTOR3& vIncomingDir, const D3DXVECTOR3& vNormal);
 
+    //衝突時の処理
+    void OnCollision(CollisionBase* other)override;
+
 private:
     //アイテムを取得したときかを判定
     bool        m_IsTake;

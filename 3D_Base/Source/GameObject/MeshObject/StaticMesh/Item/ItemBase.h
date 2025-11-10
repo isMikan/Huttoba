@@ -5,7 +5,7 @@
 #include "GameObject/MeshObject/StaticMesh/PlayerBase/Player/CPlayer.h"
 
 class ItemBase :
-	public CStaticMeshObject
+	public CStaticMeshObject,public ICollisionListener
 	
 {
 public:
@@ -105,8 +105,6 @@ public:
 	*****************************************************************************************/
 	bool IsDestroy() { return m_IsDestroy; }
 
-
-
 	//地面との判定
 	void IsOnGround(CGroundManager& pGroundMgr);
 
@@ -115,6 +113,9 @@ public:
 
 	//アイテム消去(他クラスで読み込む用)
 	void DestroyItem();
+
+	//当たり判定処理
+	virtual void OnCollision(CollisionBase* other)override;
 
 protected:
 

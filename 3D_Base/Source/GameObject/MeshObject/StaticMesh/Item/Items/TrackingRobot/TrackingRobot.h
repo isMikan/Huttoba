@@ -4,7 +4,7 @@
 class CPlayer;
 
 class TrackingRobot
-    : public ItemBase, public ICollisionListener
+    : public ItemBase
 {
 public:
     TrackingRobot();

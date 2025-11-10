@@ -4,7 +4,7 @@
 class CPlayer;
 
 class Bomb
-    : public ItemBase, public ICollisionListener
+    : public ItemBase
 {
 public:
     Bomb();

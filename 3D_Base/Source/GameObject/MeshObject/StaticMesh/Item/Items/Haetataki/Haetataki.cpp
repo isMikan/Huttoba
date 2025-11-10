@@ -57,6 +57,7 @@ Haetataki::Haetataki()
 
 Haetataki::~Haetataki()
 {
+	CollisionManager::GetInstance()->RemoveCollider(m_pCollision.get());
 }
 
 //--------------------------------------------------------------------------------------------------------------
@@ -73,6 +74,15 @@ void Haetataki::Init()
 	m_State = ItemBase::State::Spawn;
 	m_UseCount = USE_COUNT;
 	m_tGravity = INITAL_GRAVITY;
+
+
+	std::shared_ptr<CStaticMesh> mesh = AssetManager::Mesh(StaticMeshList::Bomb);
+
+	m_pCollision = CollisionDataFactory::CreateSphereForMesh(
+		this,
+		mesh,
+		CollisionBase::ColliderTag::Haetataki
+	);
 }
 
 //--------------------------------------------------------------------------------------------------------------
@@ -111,10 +121,6 @@ void Haetataki::Spawn()
 
 void Haetataki::OnGround()
 {
-	if (GetAsyncKeyState('N') & 0x8000)
-	{
-		m_State = ItemBase::State::Have;
-	}
 }
 
 //--------------------------------------------------------------------------------------------------------------
@@ -142,28 +148,6 @@ void Haetataki::Use()
 	m_vPosition = m_pPlayer->GetPosition() + m_Offset;
 
 
-	////プレイヤーとの当たり判定
-	//	if (GetBSphere()->IsHit(*playiers->GetPlayer(0)->GetBSphere()) && playiers[0] != player)
-	//	{
-	//		//当たったときの吹っ飛び座標格納(仮)
-	//		D3DXVECTOR3 newPos = player->GetPosition();
-	//		newPos.x -= 5.f;	
-
-	//		//敵に当たったときの処理
-	//		player->SetPosition(newPos);
-	//		AssetManager::Sound()->PlaySE(enSoundList::SE_HitHaetataki);
-	//		continue;
-	//	}
-	//	else
-	//	{
-	//		//外れたときのSE(1回だけ鳴るように)
-	//		if (!m_IsMissAttack)
-	//		{
-	//			AssetManager::Sound()->PlaySE(enSoundList::SE_MissHaetataki);
-	//			m_IsMissAttack = true;
-	//		}
-	//		continue;
-	//	}
 
 	//モーション終了で所持状態へ戻る
 	if (!AttackMostion())
@@ -262,3 +246,7 @@ bool Haetataki::AttackMostion()
 
 //--------------------------------------------------------------------------------------------------------------
 
+void Haetataki::OnCollision(CollisionBase* other)
+{
+
+}

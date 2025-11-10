@@ -289,3 +289,8 @@ D3DXVECTOR3 Mushroom::CalculateReflectionDirection(const D3DXVECTOR3& vIncomingD
 
 	return reflectDir;
 }
+
+void Mushroom::OnCollision(CollisionBase* other)
+{
+
+}
