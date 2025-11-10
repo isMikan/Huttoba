@@ -39,21 +39,12 @@ void ItemBase::Update()
 	static D3DXVECTOR3 offSet;
 	offSet = {0.f,0.f,1.f};
 
-	//ダングリング回避の苦肉の策
-	// @note アイテム追従のためプレイヤーのポインタを受け取っているが
-	//		 プレイヤーが持っている状態で落下した場合、ポインタが消え、ダングリングポインタになる
-	//		 のでプレイヤーが消える前に強制的に消す。
-	if (m_vPosition.y < -5.f)
-	{
-		m_State = State::Destroy;
-	}
-}
-
-	static constexpr float UNDER_MAX = -5.f;
+	static constexpr float UNDER_MAX = -20.f;
 	if (m_vPosition.y < UNDER_MAX)
 	{
 		m_IsDestroy = true;
 	}
+
 }
 
 void ItemBase::Draw(D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAMERA& Camera)
