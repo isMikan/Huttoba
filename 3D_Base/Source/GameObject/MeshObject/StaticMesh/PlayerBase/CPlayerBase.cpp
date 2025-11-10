@@ -256,14 +256,14 @@ D3DXQUATERNION CPlayerBase::TiltedQuat(
 }
 
 //--- 押された時の移動量を計算 ---.
-D3DXVECTOR3 CPlayerBase::GetPushbackVelocity(D3DXVECTOR3 sourcePos)
+D3DXVECTOR3 CPlayerBase::GetPushbackVelocity(D3DXVECTOR3 sourcePos, float power)
 {
 	//押されるベクトル.
 	D3DXVECTOR3 dir = m_vPosition - sourcePos;
 	//正規化.
 	D3DXVec3Normalize(&dir, &dir);
 	//方向へ吹き飛び量分の位置へ.
-	D3DXVECTOR3 pos = dir * m_PushForce;
+	D3DXVECTOR3 pos = dir * power;
 	pos.y = 0.f;
 
 	return pos;
@@ -351,7 +351,7 @@ void CPlayerBase::OnCollision(CollisionBase* pOtherCollider)
 					GetKnockbackVelocity(player->GetPosition(), 10.f, 60.f), CPlayerBase::HitEvent::Knockdown);
 #else
 				SetHitAttack(
-					GetPushbackVelocity(player->GetPosition()), CPlayerBase::HitEvent::Pushback);
+					GetPushbackVelocity(player->GetPosition(), 0.05f), CPlayerBase::HitEvent::Pushback);
 #endif
 			}
 			else

@@ -72,9 +72,9 @@ public:
 	//他のプレイヤーに接触したときの情報.
 	struct HitPlayer
 	{
-		D3DXVECTOR3	otherDir;	//接触したプレイヤーの方向.
-		float		dot;		//角度差.
-		bool		isHit;		//衝突したか.
+		D3DXVECTOR3	otherDir;		//接触したプレイヤーの方向.
+		float		dot = 0.f;		//角度差.
+		bool		isHit = false;	//衝突したか.
 	};
 
 public:
@@ -120,7 +120,9 @@ public:
 		float			tiltAngle);	//傾きの角度.
 
 	//--- 押された時の移動量を計算 ---.
-	D3DXVECTOR3 GetPushbackVelocity(D3DXVECTOR3 sourcePos);	
+	D3DXVECTOR3 GetPushbackVelocity(
+		D3DXVECTOR3 sourcePos,	//攻撃を受けた起源.
+		float power);			//押し出し量.
 
 	//--- 攻撃を受けた時のの移動量を計算 ---.
 	D3DXVECTOR3 GetKnockbackVelocity(
@@ -259,5 +261,4 @@ protected:
 	bool			m_IsAboveGround;	//ステージの上かどうか
 
 	float			m_HitForce;			//攻撃を受けた数値.
-	static constexpr float		m_PushForce = 0.05f;	//押し出す力.
 };

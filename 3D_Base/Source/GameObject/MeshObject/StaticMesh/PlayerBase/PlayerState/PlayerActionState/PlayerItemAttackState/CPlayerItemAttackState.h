@@ -26,7 +26,7 @@ private:
 //======================================================================
 // 	   内部で呼び出す関数.
 //======================================================================
-	//--- 入力を受け付けるか判断する ---.
+	//--- 入力を受け付けたか判断する ---.
 	bool IsInput(int index) const;
 
 private:
@@ -39,15 +39,23 @@ private:
 	float			m_CurrentTiltAngle;		//現在の傾き角度.
 	float			m_TiltAngleMax;			//最大の傾き角度.
 
+
+//=== 手の調整位置 ===.
+
+	//開始の位置.
 	D3DXVECTOR3		m_RightHandStartPos;	//右手の元の位置.
 	D3DXVECTOR3		m_LeftHandStartPos;		//左手の元の位置.
+	D3DXVECTOR3		m_RightHandEndPos;		//右手の目的の位置.
+	D3DXVECTOR3		m_LeftHandEndPos;		//左手の目的の位置.
 
-	//=== 手の調整位置 ===.
-	//両手で持つアイテム.
+	//両手で持つアイテム用.
 	D3DXVECTOR3		m_HoldBothHands_RightHandEndPos;	//右手の目的の位置.
 	D3DXVECTOR3		m_HoldBothHands_LeftHandEndPos;		//左手の目的の位置.
+	//片手で持つアイテム用.
+	D3DXVECTOR3		m_OneHand_RightHandEndPos;			//右手の目的の位置.
+	D3DXVECTOR3		m_OneHand_LeftHandEndPos;			//左手の目的の位置.
 
-	//====================.
+//====================.
 
 	D3DXQUATERNION	m_StartQuat;			//開始時の回転.
 

@@ -47,7 +47,7 @@ void CPlayerManager::Create()
 	{
 		//if (CInputManager::IsConnect(pNo))
 		{
-#if 1
+#if 0
 			if (pNo == 0)
 			{
 				m_pPlayers[pNo] = std::make_unique<CPlayer>(pNo);
