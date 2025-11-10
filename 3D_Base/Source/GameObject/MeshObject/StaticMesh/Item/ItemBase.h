@@ -109,6 +109,8 @@ public:
 	void IsOnGround(CGroundManager& pGroundMgr);
 
 	bool GetIsOnGround() { return m_IsOnGround; }
+	bool GetIsUse()   { return m_IsUse;	}
+
 	void Fall();
 
 	//アイテム消去(他クラスで読み込む用)
@@ -116,6 +118,7 @@ public:
 
 	//当たり判定処理
 	virtual void OnCollision(CollisionBase* other)override;
+
 
 protected:
 
@@ -133,9 +136,13 @@ protected:
 	int  m_UseCount;	// 使用回数
 	bool m_IsDestroy;	// 破壊するかどうか
 	bool m_IsOnGround;	// 地面に接触しているか
-
+	bool m_IsUse;		// 使用中か
 
 	State m_State;		// アイテムの状態
 
 	CPlayerBase* m_pPlayer; //当たり判定で接触したPlayerを入れるポインタ	
+
+	std::shared_ptr<CollisionBase>	m_pPickUpCollider;	//拾うよう当たり判定
+	std::shared_ptr<CollisionBase>	m_pUseCollider;		//使用中用当たり判定
+
 };

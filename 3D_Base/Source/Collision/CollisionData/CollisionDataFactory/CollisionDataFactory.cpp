@@ -3,9 +3,10 @@
 #include "Collision/CollisionDraw/CollisionDraw.h"
 
 std::shared_ptr<CollisionBase> CollisionDataFactory::CreateSphereForMesh(
-    CGameObject* pOwner,
+    CollisionBase::ColliderTag tag,
     std::shared_ptr<CStaticMesh> pMesh,
-    CollisionBase::ColliderTag tag)
+    CGameObject* pOwner,
+    bool IsAddCollider)
 {
     D3DXVECTOR3 calculatedCenter(0.0f, 0.0f, 0.0f);
     float calculatedRadius = 0.0f;
@@ -32,8 +33,11 @@ std::shared_ptr<CollisionBase> CollisionDataFactory::CreateSphereForMesh(
         calculatedCenter       // 計算されたオフセット
     );
 
-    CollisionManager::GetInstance()->AddCollider(newCollider);
-	CollisionDraw::GetInstance()->AddDrawMesh(pMesh,pOwner);
+    if (IsAddCollider)
+    {
+        CollisionManager::GetInstance()->AddCollider(newCollider);
+        CollisionDraw::GetInstance()->AddDrawMesh(pMesh, pOwner);
+    }
 
     return newCollider;
 }
@@ -74,7 +78,12 @@ std::shared_ptr<CollisionBase> CollisionDataFactory::CreateCapsuleForMesh(
     return newCollider;
 }
 
-std::shared_ptr<CollisionBase> CollisionDataFactory::CreateHorizontalCapsule(CGameObject* pOwner, std::shared_ptr<CStaticMesh> pMesh, CollisionBase::ColliderTag tag)
+std::shared_ptr<CollisionBase> CollisionDataFactory::CreateHorizontalCapsule(
+    CollisionBase::ColliderTag tag,
+    std::shared_ptr<CStaticMesh> pMesh,
+    CGameObject* pOwner,
+    bool IsAddCollider
+)
 {
     // カプセルに必要なローカル情報
     float calculatedRadius = 0.0f;
@@ -101,8 +110,11 @@ std::shared_ptr<CollisionBase> CollisionDataFactory::CreateHorizontalCapsule(CGa
         localOffsetB          // 軸線分Bのローカルオフセット
     );
 
-    CollisionManager::GetInstance()->AddCollider(newCollider);
-    CollisionDraw::GetInstance()->AddDrawMesh(pMesh, pOwner);
+    if (IsAddCollider)
+    {
+        CollisionManager::GetInstance()->AddCollider(newCollider);
+        CollisionDraw::GetInstance()->AddDrawMesh(pMesh, pOwner);
+    }
 
     return newCollider;
 }

@@ -64,9 +64,9 @@ void Bomb::Init()
 	std::shared_ptr<CStaticMesh> mesh = AssetManager::Mesh(StaticMeshList::Bomb);
 
 	m_pCollision = CollisionDataFactory::CreateSphereForMesh(
-		this,
+		CollisionBase::ColliderTag::Bomb,
 		mesh,
-		CollisionBase::ColliderTag::Bomb
+		this
 	);
 }
 
@@ -182,9 +182,9 @@ void Bomb::UseMove()
 		std::shared_ptr<CStaticMesh> mesh = AssetManager::Mesh(StaticMeshList::ExplosionCol);
 
 		m_pCollision = CollisionDataFactory::CreateSphereForMesh(
-			this,
+			CollisionBase::ColliderTag::Bomb,
 			mesh,
-			CollisionBase::ColliderTag::Bomb
+			this
 		);
 	}
 

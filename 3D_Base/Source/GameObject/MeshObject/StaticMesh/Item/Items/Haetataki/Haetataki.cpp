@@ -57,7 +57,7 @@ Haetataki::Haetataki()
 
 Haetataki::~Haetataki()
 {
-	CollisionManager::GetInstance()->RemoveCollider(m_pCollision.get());
+	CollisionManager::GetInstance()->RemoveCollider(m_pPickUpCollider.get());
 }
 
 //--------------------------------------------------------------------------------------------------------------
@@ -78,10 +78,19 @@ void Haetataki::Init()
 
 	std::shared_ptr<CStaticMesh> mesh = AssetManager::Mesh(StaticMeshList::Bomb);
 
-	m_pCollision = CollisionDataFactory::CreateSphereForMesh(
-		this,
+	m_pPickUpCollider = CollisionDataFactory::CreateSphereForMesh(
+		CollisionBase::ColliderTag::Haetataki,
 		mesh,
-		CollisionBase::ColliderTag::Haetataki
+		this
+	);
+
+	mesh = AssetManager::Mesh(StaticMeshList::BWidthCapsule);
+
+	m_pUseCollider = CollisionDataFactory::CreateHorizontalCapsule(
+		CollisionBase::ColliderTag::Haetataki,
+		mesh,
+		this,
+		false
 	);
 }
 
@@ -248,5 +257,32 @@ bool Haetataki::AttackMostion()
 
 void Haetataki::OnCollision(CollisionBase* other)
 {
+	if (other->GetTag() == CollisionBase::ColliderTag::Player)
+	{
+		if (CPlayer* player = dynamic_cast<CPlayer*>(other->GetListener()))
+		{
+			if(m_State == State::Use)
+			Smash(*player);
+		}
+	}
+}
 
+void Haetataki::Smash(CPlayer& playiers)
+{
+	//爆弾とプレイヤーの位置でベクトルをとる
+	D3DXVECTOR3 vecLen = m_vPosition - playiers.GetPosition();
+
+	//ベクトルを長さに変換
+	float len = D3DXVec3Length(&vecLen);
+
+	//プレイヤーの吹き飛ばしの計算
+	D3DXVECTOR3 SmashVel = playiers.GetKnockbackVelocity(m_vPosition, 8, 60.0f);
+
+	playiers.SetHitAttack(
+		SmashVel,
+		CPlayerBase::HitEvent::Knockdown);
+}
+
+void Haetataki::ChangeCollider()
+{
 }

@@ -39,11 +39,21 @@ void Fun::Init()
 
 	std::shared_ptr<CStaticMesh> mesh = AssetManager::Mesh(StaticMeshList::Fun);
 
-	m_pCollision = CollisionDataFactory::CreateSphereForMesh(
-		this,
+	m_pPickUpCollider = CollisionDataFactory::CreateSphereForMesh(
+		CollisionBase::ColliderTag::Bomb,
 		mesh,
-		CollisionBase::ColliderTag::Bomb
+		this
 	);
+
+	mesh = AssetManager::Mesh(StaticMeshList::Fun);
+
+	m_pUseCollider = CollisionDataFactory::CreateSphereForMesh(
+		CollisionBase::ColliderTag::Bomb,
+		mesh,
+		this,
+		false
+	);
+
 }
 
 void Fun::Update()
@@ -146,9 +156,10 @@ void Fun::UseMove()
 		std::shared_ptr<CStaticMesh> mesh = AssetManager::Mesh(StaticMeshList::FunCol);
 
 		m_pCollision = CollisionDataFactory::CreateHorizontalCapsule(
-			this,
+			CollisionBase::ColliderTag::Bomb,
 			mesh,
-			CollisionBase::ColliderTag::Bomb
+			this,
+			false
 		);
 
 		m_IsUse = true;
@@ -186,13 +197,6 @@ void Fun::ThrowMove()
 		//“–‚½‚è”»’èíœ
 		//CollisionManager::GetInstance()->RemoveCollider(m_pCollision.get());
 
-		std::shared_ptr<CStaticMesh> mesh = AssetManager::Mesh(StaticMeshList::Fun);
-
-		m_pCollision = CollisionDataFactory::CreateSphereForMesh(
-			this,
-			mesh,
-			CollisionBase::ColliderTag::Bomb
-		);
 	}
 
 	//‚Ä‚«‚Æ‚¤‚ÉˆÚ“®‘¬“x‚ğŒ¸­‚³‚¹‚Ä‚¢‚é

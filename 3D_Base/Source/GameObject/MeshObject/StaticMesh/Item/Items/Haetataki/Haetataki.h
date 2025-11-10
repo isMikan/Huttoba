@@ -51,6 +51,11 @@ public:
 
 	void OnCollision(CollisionBase* other)override;
 
+	//吹き飛ばし処理
+	void Smash(CPlayer& playiers);
+
+	void ChangeCollider();
+
 private:
 
 	D3DXVECTOR3 m_Offset = { 0.5f, 1.f, 0.f };	//プレイヤーの位置に合わせる(突貫)

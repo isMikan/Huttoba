@@ -19,18 +19,18 @@ public:
     /*****************************************************************************************
     * @brief        CollisionSphereを生成し、親オブジェクトの情報と紐づける[
     * 
-    * @param pOwner 衝突形状を持つ親オブジェクト
-    *        radius 球の半径
-    *        tag    コリジョンタグ
-    *        localOffset ローカルオフセット
+    * @param tag        識別タグ
+    *        pMesh      当たり判定のメッシュ
+    *        pOwner     このオブジェクトに追従する
+    *        IsAddCollider 自動で判定登録するか(攻撃用判定などはここでは登録しない。Useになったときに登録しよう)
     * 
     * @return  所有権を持つ生成された CollisionSphere の shared_ptr
     *****************************************************************************************/
     static std::shared_ptr<CollisionBase> CreateSphereForMesh(
-        CGameObject* pOwner,
+        CollisionBase::ColliderTag tag,
         std::shared_ptr<CStaticMesh> pMesh,
-        CollisionBase::ColliderTag   tag
-    );
+        CGameObject* pOwner,
+        bool IsAddCollider = true);
 
     /*****************************************************************************************
     * @brief   CollisionCapsuleを生成し、親オブジェクトの情報と紐づける
@@ -49,9 +49,10 @@ public:
 
     //横向きカプセル
     static std::shared_ptr<CollisionBase> CreateHorizontalCapsule(
-        CGameObject* pOwner,
+        CollisionBase::ColliderTag tag,
         std::shared_ptr<CStaticMesh> pMesh,
-        CollisionBase::ColliderTag tag
+        CGameObject* pOwner,
+        bool IsAddCollider = true
     );
 
 };
