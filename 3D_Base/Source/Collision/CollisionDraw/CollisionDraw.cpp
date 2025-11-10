@@ -20,9 +20,9 @@ void CollisionDraw::AddDrawMesh(
 
 void CollisionDraw::RemoveByOwner(const CGameObject* pOwner)
 {
-
     if (!pOwner) return;
 
+    //受け取ったポインタと同じポインタを削除
     m_pCollisionEntries.erase(
         std::remove_if(m_pCollisionEntries.begin(), m_pCollisionEntries.end(),
             [pOwner](const DebugCollisionDrawEntry& entry) {
@@ -40,14 +40,13 @@ void CollisionDraw::Draw(D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAMER
         // 位置の追従
         entry.pMesh->SetPosition(entry.pOwner->GetPosition());
 
-        // 回転の追従 (クォータニオンとオイラー角のどちらか、または両方をコピー)
-        // クォータニオンが最終的な回転に使われているなら、こちらを優先
+        // クォータニオン
         entry.pMesh->SetQuaternion(entry.pOwner->GetQuaternion());
 
         // 拡縮の追従
         entry.pMesh->SetScale(entry.pOwner->GetScale());
 
-        //レンダリング。
+        //レンダリング
         entry.pMesh->Render(View, Proj, Light, Camera.vPosition);
     }
 }
