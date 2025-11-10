@@ -224,9 +224,9 @@ void CSceneGameMain::Draw()
 	float green[] = { 0.0f, 1.0f, 0.0f, 1.0f };
 	float blue[] = { 0.0f, 0.0f, 1.0f, 1.0f };
 
-	ddm->DrawLine(origin, x_end, red);   // X軸 (赤)
-	ddm->DrawLine(origin, y_end, green); // Y軸 (緑)
-	ddm->DrawLine(origin, z_end, blue);  // Z軸 (青)
+	//ddm->DrawLine(origin, x_end, red);   // X軸 (赤)
+	//ddm->DrawLine(origin, y_end, green); // Y軸 (緑)
+	//ddm->DrawLine(origin, z_end, blue);  // Z軸 (青)
 
 	// 描画実行とステート復元
 	DebugDrawManager::GetInstance()->End();

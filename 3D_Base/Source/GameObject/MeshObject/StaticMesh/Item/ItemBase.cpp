@@ -39,10 +39,10 @@ void ItemBase::Update()
 	static D3DXVECTOR3 offSet;
 	offSet = {0.f,0.f,1.f};
 
-	static constexpr float UNDER_MAX = -20.f;
+	static constexpr float UNDER_MAX = -5.f;
 	if (m_vPosition.y < UNDER_MAX)
 	{
-		m_IsDestroy = true;
+		m_State = State::Destroy;
 	}
 
 }
