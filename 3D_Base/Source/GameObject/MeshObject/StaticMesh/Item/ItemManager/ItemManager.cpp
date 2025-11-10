@@ -29,7 +29,7 @@ HRESULT ItemManager::Create()
 	m_pItems.push_back(ItemFactory::GetInstance()->CreateItem("Bomb"));
 	m_pItems.push_back(ItemFactory::GetInstance()->CreateItem("Fun"));
 	m_pItems.push_back(ItemFactory::GetInstance()->CreateItem("Mushroom"));
-	m_pItems.push_back(ItemFactory::GetInstance()->CreateItem("TrackingRobot"));
+	//m_pItems.push_back(ItemFactory::GetInstance()->CreateItem("TrackingRobot"));
 
 	for (int i = 0;i < 4;i++)
 	{

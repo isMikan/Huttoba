@@ -2,7 +2,7 @@
 #include "Item/ItemBase.h"
 
 class Fun
-    : public ItemBase, public ICollisionListener
+    : public ItemBase
 {
 public:
     Fun();

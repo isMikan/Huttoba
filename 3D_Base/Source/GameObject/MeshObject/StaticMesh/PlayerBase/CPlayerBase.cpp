@@ -156,9 +156,9 @@ void CPlayerBase::CreateCollider()
 
 	m_pCollision =
 		CollisionDataFactory::CreateCapsuleForMesh(
-			this,	//当たり判定の主.
-			mesh,	//当たり判定用メッシュ.
-			CollisionBase::ColliderTag::Player	//主のタグ.
+			CollisionBase::ColliderTag::Player,
+			mesh,	
+			this
 		);
 }
 

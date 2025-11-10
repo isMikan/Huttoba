@@ -42,9 +42,10 @@ public:
     * @return  所有権を持つ生成された CollisionCapsule の shared_ptr
     *****************************************************************************************/
     static std::shared_ptr<CollisionBase> CreateCapsuleForMesh(
-        CGameObject* pOwner,
+        CollisionBase::ColliderTag tag,
         std::shared_ptr<CStaticMesh> pMesh,
-        CollisionBase::ColliderTag tag
+        CGameObject* pOwner,
+        bool IsAddCollider = true
     );
 
     //横向きカプセル

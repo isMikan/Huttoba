@@ -43,9 +43,11 @@ std::shared_ptr<CollisionBase> CollisionDataFactory::CreateSphereForMesh(
 }
 
 std::shared_ptr<CollisionBase> CollisionDataFactory::CreateCapsuleForMesh(
-    CGameObject* pOwner, 
+    CollisionBase::ColliderTag tag,
     std::shared_ptr<CStaticMesh> pMesh,
-    CollisionBase::ColliderTag tag)
+    CGameObject* pOwner, 
+    bool IsAddCollider
+    )
 {
     // カプセルに必要なローカル情報
     float calculatedRadius = 0.0f;
@@ -72,8 +74,11 @@ std::shared_ptr<CollisionBase> CollisionDataFactory::CreateCapsuleForMesh(
         localOffsetB          // 軸線分Bのローカルオフセット
     );
 
-    CollisionManager::GetInstance()->AddCollider(newCollider);
-    CollisionDraw::GetInstance()->AddDrawMesh(pMesh, pOwner);
+    if (IsAddCollider)
+    {
+        CollisionManager::GetInstance()->AddCollider(newCollider);
+        CollisionDraw::GetInstance()->AddDrawMesh(pMesh, pOwner);
+    }
 
     return newCollider;
 }

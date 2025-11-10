@@ -142,7 +142,8 @@ protected:
 
 	CPlayerBase* m_pPlayer; //当たり判定で接触したPlayerを入れるポインタ	
 
-	std::shared_ptr<CollisionBase>	m_pPickUpCollider;	//拾うよう当たり判定
+	//当たり判定(判定の削除にポインタが必要なので保持)
+	std::shared_ptr<CollisionBase>	m_pPickUpCollider;	//拾う用当たり判定
 	std::shared_ptr<CollisionBase>	m_pUseCollider;		//使用中用当たり判定
 
 };
