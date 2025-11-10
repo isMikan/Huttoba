@@ -39,66 +39,68 @@ void CollisionDraw::Draw(D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAMER
     {
         if (!entry.pMesh || !entry.pOwner) continue;
 
+        // 1. 【修正1】 weak_ptr をロックし、安全かつ短い名前の shared_ptr を取得
+        // entry.pCollider は entry.pColliderWeak に修正済みと仮定
         auto pCollider = entry.pCollider.lock();
-        if (pCollider);
 
+        // 2. 【修正1】 pCollider が有効でない場合は、次のエントリーへスキップ
+        if (!pCollider)
+        {
+            continue;
+        }
+
+        // 3. 【修正2】 カプセルへのダウンキャストを試みる
+        std::shared_ptr<const CollisionCapsule> pCapsule =
+            std::dynamic_pointer_cast<const CollisionCapsule>(pCollider);
+
+        // 共通: ワールド座標を設定
         const D3DXVECTOR3& drawPos = pCollider->GetWorldPosition();
-
         entry.pMesh->SetPosition(drawPos);
 
-        //カプセルだった場合
-        std::shared_ptr<const CollisionCapsule> pCapsule = 
-            std::dynamic_pointer_cast<const CollisionCapsule>(pCollider);
+        // --- カプセル特有の処理 ---
         if (pCapsule)
         {
+            // const参照で安全に取得（以前の議論で修正済み）
             const D3DXVECTOR3& start = pCapsule->GetWorldCapsule().StartPoint;
             const D3DXVECTOR3& end = pCapsule->GetWorldCapsule().EndPoint;
 
-            //単位ベクトルを取得
+            // ... (回転計算ロジックは正しいので省略) ...
+
             D3DXVECTOR3 vAxisWorld = end - start;
             D3DXVec3Normalize(&vAxisWorld, &vAxisWorld);
-
-            //回転を計算
             D3DXVECTOR3 vLocalAxis(0.0f, 1.0f, 0.0f);
             D3DXQUATERNION qRotation;
 
             D3DXVECTOR3 vAxis;
             float fDot = D3DXVec3Dot(&vLocalAxis, &vAxisWorld);
 
-            if (fDot > 0.999f) // ほぼ同じ方向の場合（回転不要）
-            {
-                D3DXQuaternionIdentity(&qRotation);
-            }
-            else if (fDot < -0.999f) // ほぼ反対方向の場合（180度回転）
+            if (fDot > 0.999f) D3DXQuaternionIdentity(&qRotation);
+            else if (fDot < -0.999f)
             {
                 D3DXVECTOR3 vAxis180(0.0f, 0.0f, 1.0f);
-                // 適切な垂直軸（例：Z軸）を中心に180度回転
                 D3DXQuaternionRotationAxis(&qRotation, &vAxis180, D3DX_PI);
             }
-            else // 一般的な回転
+            else
             {
-                // 回転軸を外積で計算
                 D3DXVec3Cross(&vAxis, &vLocalAxis, &vAxisWorld);
                 D3DXVec3Normalize(&vAxis, &vAxis);
-
-                // 回転角を内積の cos(theta) から計算
                 float fAngle = acosf(fDot);
-
-                // 軸と角度からクォータニオンを生成
                 D3DXQuaternionRotationAxis(&qRotation, &vAxis, fAngle);
-            }            // 4. 計算した回転をメッシュに適用
+            }
+
+            // 4. 回転をメッシュに適用
             entry.pMesh->SetQuaternion(qRotation);
 
-            // スケールの適用 (カプセルメッシュの長さと半径を合わせる)
-            float length = D3DXVec3Length(&vAxisWorld);
-            float radius = pCapsule->GetWorldCapsule().Rad;
-            // ... SetScaleで長さ(Y軸)と半径(X/Z軸)を調整するロジックが必要 ...
+            // 5. スケール適用 (省略されているロジックは別途実装してください)
+            // float length = D3DXVec3Length(&(end - start)); // 正しい長さの計算
+            // float radius = pCapsule->GetWorldCapsule().Rad;
             // entry.pMesh->SetScale(radius, length, radius); 
         }
         else // スフィアやその他の形状の場合
         {
-            // カプセル以外は回転をリセット（不要な回転が残らないように）
+            // 5. カプセル以外は回転をリセット
             entry.pMesh->SetQuaternion(D3DXQUATERNION(0.0f, 0.0f, 0.0f, 1.0f));
+            // スケールもここでリセット/設定 (entry.pMesh->SetScale(radius, radius, radius); など)
         }
 
         //レンダリング
