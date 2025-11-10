@@ -15,7 +15,7 @@ struct DebugCollisionDrawEntry
     std::shared_ptr<CStaticMesh> pMesh;
 
     //描画するコライダーデータ
-    const CollisionBase* pCollider;
+    std::weak_ptr<const CollisionBase> pCollider;
 };
 
 class CollisionDraw
@@ -24,7 +24,6 @@ public:
 
     static CollisionDraw* GetInstance()
     {
-        // 最初のアクセス時に一度だけインスタンスを生成
         static CollisionDraw instance;
         return &instance;
     }
@@ -35,7 +34,7 @@ public:
     void AddDrawMesh(
         const std::shared_ptr<CStaticMesh> pMesh,
         const CGameObject* pOwner,
-        const CollisionBase* pCollider
+        std::weak_ptr<const CollisionBase> pCollider
     );
 
     // 描画情報の削除

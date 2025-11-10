@@ -76,12 +76,13 @@ void Haetataki::Init()
 	m_tGravity = INITAL_GRAVITY;
 
 
-	std::shared_ptr<CStaticMesh> mesh = AssetManager::Mesh(StaticMeshList::BSphere);
+	std::shared_ptr<CStaticMesh> mesh = AssetManager::Mesh(StaticMeshList::Bomb);
 
 	m_pPickUpCollider = CollisionDataFactory::CreateSphereForMesh(
 		CollisionBase::ColliderTag::Haetataki,
 		mesh,
-		this
+		this,
+		false
 	);
 
 	mesh = AssetManager::Mesh(StaticMeshList::BWidthCapsule);
@@ -92,6 +93,10 @@ void Haetataki::Init()
 		this,
 		false
 	);
+
+	m_pNowCollider = m_pPickUpCollider;
+
+	CollisionManager::GetInstance()->AddCollider(m_pNowCollider);
 }
 
 //--------------------------------------------------------------------------------------------------------------
@@ -100,10 +105,6 @@ void Haetataki::Update()
 {
 	//アイテム共通のUpdate
 	ItemBase::Update();
-
-	D3DXVECTOR3 offset = { 2.f,0.f,0.f };
-
-	m_pPickUpCollider->SetLocalOffset(offset);
 }
 
 //--------------------------------------------------------------------------------------------------------------
@@ -157,6 +158,12 @@ void Haetataki::Have()
 
 void Haetataki::Use()
 {
+	if (m_pNowCollider != m_pUseCollider)
+	{
+		CollisionManager::GetInstance()->RemoveCollider(m_pNowCollider.get());
+		m_pNowCollider = m_pUseCollider;
+		CollisionManager::GetInstance()->AddCollider(m_pNowCollider);
+	}
 	//アイテムをプレイヤーの位置に合わせる
 	m_vPosition = m_pPlayer->GetPosition() + m_Offset;
 
@@ -167,6 +174,10 @@ void Haetataki::Use()
 	{
 		m_State = ItemBase::State::Have;
 		m_IsMissAttack = false; //初期化
+
+		CollisionManager::GetInstance()->RemoveCollider(m_pNowCollider.get());
+		m_pNowCollider = m_pPickUpCollider;
+		CollisionManager::GetInstance()->AddCollider(m_pNowCollider);
 	}
 }
 

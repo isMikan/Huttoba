@@ -68,5 +68,6 @@ private:
 
 	bool m_IsMissAttack; //攻撃は外れているか(SEのタイミング用)
 
+	std::shared_ptr<CollisionBase>	m_pNowCollider;	//拾う用当たり判定
 
 };

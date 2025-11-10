@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "CollisionDraw.h"
-
+#include "Collision/Collider/CollisionCapsule/CollisionCapsule.h"
 
 CollisionDraw::CollisionDraw()
 	: m_pCollisionEntries{}
@@ -11,7 +11,7 @@ CollisionDraw::CollisionDraw()
 void CollisionDraw::AddDrawMesh(
 	const std::shared_ptr<CStaticMesh> pMesh,
 	const CGameObject* pOwner,
-    const CollisionBase* pCollider
+    std::weak_ptr<const CollisionBase> pCollider
 )
 {
 	if (pMesh && pOwner)
@@ -37,14 +37,18 @@ void CollisionDraw::Draw(D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAMER
 {
     for (auto& entry : m_pCollisionEntries)
     {
-        if (!entry.pMesh || !entry.pOwner || !entry.pCollider) continue;
+        if (!entry.pMesh || !entry.pOwner) continue;
 
-        const D3DXVECTOR3& drawPos = entry.pCollider->GetWorldPosition();
+        auto pCollider = entry.pCollider.lock();
+        if (pCollider);
+
+        const D3DXVECTOR3& drawPos = pCollider->GetWorldPosition();
 
         entry.pMesh->SetPosition(drawPos);
 
         //ÉJÉvÉZÉãÇæÇ¡ÇΩèÍçá
-        const CollisionCapsule* pCapsule = dynamic_cast<const CollisionCapsule*>(entry.pCollider);
+        std::shared_ptr<const CollisionCapsule> pCapsule = 
+            std::dynamic_pointer_cast<const CollisionCapsule>(pCollider);
         if (pCapsule)
         {
             const D3DXVECTOR3& start = pCapsule->GetWorldCapsule().StartPoint;

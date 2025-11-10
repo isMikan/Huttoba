@@ -70,8 +70,5 @@ bool CollisionSphereCapsule::CheckCollision(
 	float totalRadius = radiusC + radiusS;
 	float totalRadiusSq = totalRadius * totalRadius;
 
-	std::cout << totalRadiusSq << std::endl;
-	std::cout << distanceSq << std::endl;
-
 	return distanceSq <= totalRadiusSq;
 }

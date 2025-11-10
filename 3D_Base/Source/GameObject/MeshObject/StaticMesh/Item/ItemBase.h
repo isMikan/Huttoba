@@ -3,6 +3,7 @@
 #include "ItemFactory/ItemFactory.h"
 #include "GameObject/MeshObject/StaticMesh/CStaticMeshObject.h"
 #include "GameObject/MeshObject/StaticMesh/PlayerBase/Player/CPlayer.h"
+#include "Collision/CollisionDraw/CollisionDraw.h"
 
 class ItemBase :
 	public CStaticMeshObject,public ICollisionListener

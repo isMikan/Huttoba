@@ -36,7 +36,7 @@ std::shared_ptr<CollisionBase> CollisionDataFactory::CreateSphereForMesh(
     if (IsAddCollider)
     {
         CollisionManager::GetInstance()->AddCollider(newCollider);
-        CollisionDraw::GetInstance()->AddDrawMesh(pMesh, pOwner,newCollider.get());
+        CollisionDraw::GetInstance()->AddDrawMesh(pMesh, pOwner,newCollider);
     }
 
     return newCollider;
@@ -77,7 +77,7 @@ std::shared_ptr<CollisionBase> CollisionDataFactory::CreateCapsuleForMesh(
     if (IsAddCollider)
     {
         CollisionManager::GetInstance()->AddCollider(newCollider);
-        CollisionDraw::GetInstance()->AddDrawMesh(pMesh, pOwner, newCollider.get());
+        CollisionDraw::GetInstance()->AddDrawMesh(pMesh, pOwner, newCollider);
     }
 
     return newCollider;
@@ -118,7 +118,7 @@ std::shared_ptr<CollisionBase> CollisionDataFactory::CreateHorizontalCapsule(
     if (IsAddCollider)
     {
         CollisionManager::GetInstance()->AddCollider(newCollider);
-        CollisionDraw::GetInstance()->AddDrawMesh(pMesh, pOwner, newCollider.get());
+        CollisionDraw::GetInstance()->AddDrawMesh(pMesh, pOwner, newCollider);
     }
 
     return newCollider;
