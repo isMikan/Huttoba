@@ -107,7 +107,7 @@ public:
 
 
 	//’n–Ê‚Æ‚Ì”»’è
-	void IsOnGround(CGroundManager* pGroundMgr);
+	void IsOnGround(CGroundManager& pGroundMgr);
 
 protected:
 

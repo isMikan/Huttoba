@@ -94,7 +94,7 @@ namespace CollisionUtility
     *****************************************************************************************/
     bool CheckGroundContact(
         const D3DXVECTOR3& objectPosition,
-        CGroundManager* pGroundMgr,
+        CGroundManager& pGroundMgr,
         float& outGroundY
     );
 

@@ -54,11 +54,8 @@ bool ItemBase::IsUse()
 	return false;
 }
 
-void ItemBase::IsOnGround(CGroundManager* pGroundMgr)
+void ItemBase::IsOnGround(CGroundManager& pGroundMgr)
 {
-	// 外部からのデータがない場合は判定不能
-	if (!pGroundMgr) return;
-
 	float groundY = 0.0f;
 
 	// 自身の位置を取得

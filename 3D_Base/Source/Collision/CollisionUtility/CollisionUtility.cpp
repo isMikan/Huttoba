@@ -231,11 +231,9 @@ namespace CollisionUtility
 
     bool CheckGroundContact(
         const D3DXVECTOR3& objectPosition,
-        CGroundManager* pGroundMgr,
+        CGroundManager& pGroundMgr,
         float& outGroundY)
     {
-        if (!pGroundMgr) return false;
-
         // ƒŒƒCÝ’è 
         D3DXVECTOR3 rayOrigin = objectPosition + D3DXVECTOR3(0.0f, 0.3f, 0.0f);
         D3DXVECTOR3 rayDirection(0.0f, -1.0f, 0.0f);
@@ -246,7 +244,7 @@ namespace CollisionUtility
         bool hitGround = false;
 
         // ’n–Ê‚Ì”‚¾‚¯‰ñ‚·
-        for (const auto& pGround : pGroundMgr->GetGrounds())
+        for (const auto& pGround : pGroundMgr.GetGrounds())
         {
             if (!pGround || pGround->GetIsFallDown()) continue;
 
