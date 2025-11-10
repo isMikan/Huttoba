@@ -42,7 +42,7 @@ public:
     // コンストラクタ
     CollisionBase(
         ICollisionListener* pListener,
-        const D3DXVECTOR3&  syncPosition,
+        const D3DXVECTOR3  syncPosition,
         ColliderTag         tag,
         const D3DXVECTOR3&  localOffset = D3DXVECTOR3(0.0f, 0.0f, 0.0f)
     );
@@ -118,6 +118,7 @@ public:
     *           現状使用していない。一応の設計
     *****************************************************************************************/
     const D3DXVECTOR3& GetLocalOffset() const { return m_LocalOffset; }
+    void SetLocalOffset(D3DXVECTOR3& offset)  { m_LocalOffset = offset; }
 
 
     /*****************************************************************************************

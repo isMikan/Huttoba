@@ -19,7 +19,7 @@ std::shared_ptr<CollisionBase> CollisionDataFactory::CreateSphereForMesh(
     }
 
     ICollisionListener* listener = dynamic_cast<ICollisionListener*>(pOwner);
-    const D3DXVECTOR3& posRef = pOwner->GetPosition();
+    const D3DXVECTOR3 posRef = pOwner->GetPosition();
 
     // CStaticMeshObjectの中心座標は通常(0,0,0)だが、モデル原点がオフセットされている場合は
     // calculatedCenterをlocalOffsetとして渡す

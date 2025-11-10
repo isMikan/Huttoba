@@ -100,6 +100,10 @@ void Haetataki::Update()
 {
 	//ƒAƒCƒeƒ€‹¤’Ê‚ÌUpdate
 	ItemBase::Update();
+
+	D3DXVECTOR3 offset = { 0.f,1.f,0.f };
+
+	m_pPickUpCollider->SetLocalOffset(offset);
 }
 
 //--------------------------------------------------------------------------------------------------------------

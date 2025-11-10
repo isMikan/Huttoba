@@ -25,7 +25,7 @@ CGameObject::~CGameObject()
 
 const D3DXMATRIX& CGameObject::GetWorldMatrix() const
 {
-	if (m_IsWorldMatrixDirty)
+	//if (m_IsWorldMatrixDirty)	//一旦なし突貫
 	{
 		//ワールド行列、スケール行列、回転行列、平行移動行列.
 		D3DXMATRIX mWorld, mScale, mRotQuat, mTran;

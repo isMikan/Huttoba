@@ -23,6 +23,7 @@ Fun::Fun()
 
 Fun::~Fun()
 {
+	CollisionManager::GetInstance()->RemoveCollider(m_pPickUpCollider.get());
 }
 
 void Fun::Init()
@@ -42,8 +43,8 @@ void Fun::Init()
 
 	//持つ用と攻撃用の当たり判定をそれぞれ用意
 	//引数の末尾にfalseを入れると自動登録されなくなり、AddColliderで任意追加できるようにした
-
 	//具体的な使い方はハエたたき見る or 聞く
+
 	std::shared_ptr<CStaticMesh> mesh = AssetManager::Mesh(StaticMeshList::Fun);
 
 	m_pPickUpCollider = CollisionDataFactory::CreateSphereForMesh(

@@ -46,3 +46,11 @@ void CollisionCapsule::UpdateWorldPosition()
     // CollisionBase の m_WorldPosition をカプセルの中心で更新
     m_WorldPosition = (m_WorldCapsule.StartPoint + m_WorldCapsule.EndPoint) / 2.0f;
 }
+
+void CollisionCapsule::SetLocalOffSet(
+    D3DXVECTOR3& localOffsetA, 
+    D3DXVECTOR3& localOffsetB)
+{
+    m_LocalOffsetA = localOffsetA;
+    m_LocalOffsetB = localOffsetB;
+}
