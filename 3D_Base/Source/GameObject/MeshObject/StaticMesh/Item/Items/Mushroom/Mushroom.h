@@ -29,20 +29,21 @@ public:
     void Destroy()override;
 
 private:
-    //取得モーション
-    void TakeMotion();
-    //所持中モーション
-    void PossessionMotion();
-    //使用モーション
-    void UseMotion();
-    //投擲モーション
-    void ThrowMotion();
+    //当たった際の処理
+    void OnCollision(CollisionBase* other)override;
 
-    //使用と投擲が同じ処理なのでひとまとめにする
-    void UseAndThrow();
+    //所持中の移動処理
+    void HaveMove();
+    //使用中の移動処理
+    void UseMove();
+    //投擲の移動処理
+    void ThrowMove();
 
     //当たった際の処理
     void Hit();
+
+    //吹き飛ばし処理
+    void Smash(CPlayerBase& playiers);
     
     //スカラーの計算
     float CalculateForceScalar(float distance);
@@ -52,16 +53,9 @@ private:
     //戻り値が正規化した方向ベクトルを返す
     D3DXVECTOR3 CalculateReflectionDirection(const D3DXVECTOR3& vIncomingDir, const D3DXVECTOR3& vNormal);
 
-    //衝突時の処理
-    void OnCollision(CollisionBase* other)override;
-
 private:
-    //アイテムを取得したときかを判定
-    bool        m_IsTake;
-    //アイテムを手に持つまでの時間
-    float       m_PickUpTime;
-    //アイテムを手に持つまでのカウント
-    float       m_PickUpCnt;
+    //アイテムを設置したかをとる
+    bool        m_IsPlaced;
 
     //アイテムを持った際の補正値
     D3DXVECTOR3 m_HaveOffset;
@@ -74,4 +68,10 @@ private:
 
     //投げる時に一度だけ処理するものがあるので追加
     bool        m_IsThrow;
+
+    //最小吹き飛ばし力
+    float       m_MinSmashPower;
+
+    //最大吹き飛ばし力
+    float       m_MaxSmashPower;
 };
