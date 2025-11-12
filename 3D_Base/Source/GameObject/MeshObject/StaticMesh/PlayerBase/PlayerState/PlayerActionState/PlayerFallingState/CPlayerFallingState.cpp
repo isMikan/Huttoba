@@ -96,28 +96,40 @@ void CPlayerFallingState::Update()
 	if (t - m_StartTime > m_EndTime
 		|| IsEnd())
 	{
-		//吹き飛ばす攻撃を受けた場合.
-		if (m_pPlayer.GetHitAttack().hitEvent == CPlayerBase::HitEvent::NoDown)
-		{
-			m_pPlayer.SetActionState(std::make_unique<CPlayerGetUpState>(m_pPlayer));
-		}
 		//ダウン状態付きの攻撃を受けた場合.
-		else if(m_pPlayer.GetHitAttack().hitEvent == CPlayerBase::HitEvent::WithDown)
+		if(m_pPlayer.GetHitAttack().hitEvent == CPlayerBase::HitEvent::WithDown)
 		{
 			m_pPlayer.SetActionState(std::make_unique<CPlayerKnockdownState>(m_pPlayer));
 		}
 		else
 		{
-			//アイテムを持っている場合.
-			if (m_pPlayer.GetItemBase())
+			float downTimeRemaining = m_pPlayer.GetKnockdownTime().remaining;
+			//ダウン時間が余っていた場合.
+			if (downTimeRemaining > 0.f)
 			{
-				//アイテム持ち、何もなし状態.
-				m_pPlayer.SetActionState(std::make_unique<CPlayerHoldingIdleState>(m_pPlayer));
+				//残り時間分を設定.
+				m_pPlayer.SetHitPower(downTimeRemaining);
+				m_pPlayer.SetActionState(std::make_unique<CPlayerKnockdownState>(m_pPlayer));
 			}
 			else
 			{
-				//何もなし状態.
-				m_pPlayer.SetActionState(std::make_unique<CPlayerActionIdleState>(m_pPlayer));
+				//吹き飛ばす攻撃を受けた場合.
+				if (m_pPlayer.GetHitAttack().hitEvent == CPlayerBase::HitEvent::NoDown)
+				{
+					m_pPlayer.SetActionState(std::make_unique<CPlayerGetUpState>(m_pPlayer));
+				}
+
+				//アイテムを持っている場合.
+				if (m_pPlayer.GetItemBase())
+				{
+					//アイテム持ち、何もなし状態.
+					m_pPlayer.SetActionState(std::make_unique<CPlayerHoldingIdleState>(m_pPlayer));
+				}
+				else
+				{
+					//何もなし状態.
+					m_pPlayer.SetActionState(std::make_unique<CPlayerActionIdleState>(m_pPlayer));
+				}
 			}
 		}
 		return;

@@ -66,7 +66,9 @@ void CPlayerBase::Update()
 
 	//’n–Ê‚É‚Â‚¢‚Ä‚¨‚ç‚¸A—‚¿‚éó‘Ô‚¶‚á‚È‚¢ê‡.
 	if (!m_IsOnGround
-		&& !IsAnyActionState<CPlayerFallingState, CPlayerKnockbackState>())
+		&& !IsAnyActionState<
+		CPlayerFallingState, 
+		CPlayerKnockbackState>())
 	{
 		SetActionState(std::make_unique<CPlayerFallingState>(*this));
 	}
@@ -348,7 +350,7 @@ void CPlayerBase::OnCollision(CollisionBase* pOtherCollider)
 
 #if 0
 				SetHitAttack(
-					GetKnockbackVelocity(player->GetPosition(), 10.f, 60.f), CPlayerBase::HitEvent::Knockdown);
+					GetKnockbackVelocity(player->GetPosition(), 10.f, 60.f), CPlayerBase::HitEvent::Knockback);
 #else
 				SetHitAttack(
 					GetPushbackVelocity(player->GetPosition(), 0.05f), CPlayerBase::HitEvent::Pushback);

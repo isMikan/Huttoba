@@ -5,6 +5,8 @@
 #include "GameObject/MeshObject/StaticMesh/PlayerBase/PlayerState/PlayerActionState/PlayerActionIdleState/CPlayerActionIdleState.h"
 #include "GameObject/MeshObject/StaticMesh/PlayerBase/PlayerState/PlayerActionState/PlayerHoldingIdleState/CPlayerHoldingIdleState.h"
 
+#include "GameObject/MeshObject/StaticMesh/PlayerBase/PlayerState/PlayerActionState/PlayerKnockdownState/CPlayerKnockdownState.h"
+
 CPlayerPushedState::CPlayerPushedState(CPlayerBase& pPlayer)
 	: CPlayerState			( pPlayer )
 
@@ -73,22 +75,31 @@ void CPlayerPushedState::Update()
 	//現在の経過時間と開始時間の差が終了時間を上回ったら.
 	if (t - m_StartTime > m_EndTime)
 	{
-		//アイテムを持っている場合.
-		if (m_pPlayer.GetItemBase())
+		float downTimeRemaining = m_pPlayer.GetKnockdownTime().remaining;
+		//ダウン時間が余っていた場合.
+		if (downTimeRemaining > 0.f)
 		{
-			//アイテム持ち、何もなし状態.
-			m_pPlayer.SetActionState(std::make_unique<CPlayerHoldingIdleState>(m_pPlayer));
+			//残り時間分を設定.
+			m_pPlayer.SetHitPower(downTimeRemaining);
+			m_pPlayer.SetActionState(std::make_unique<CPlayerKnockdownState>(m_pPlayer));
 		}
 		else
 		{
-			//何もなし状態.
-			m_pPlayer.SetActionState(std::make_unique<CPlayerActionIdleState>(m_pPlayer));
+			//アイテムを持っている場合.
+			if (m_pPlayer.GetItemBase())
+			{
+				//アイテム持ち、何もなし状態.
+				m_pPlayer.SetActionState(std::make_unique<CPlayerHoldingIdleState>(m_pPlayer));
+			}
+			else
+			{
+				//何もなし状態.
+				m_pPlayer.SetActionState(std::make_unique<CPlayerActionIdleState>(m_pPlayer));
+			}
 		}
 		return;
 	}
 
-	//プレイヤーの位置を取得.
-	D3DXVECTOR3 playerPos = m_pPlayer.GetPosition();
 	//プレイヤーのローカル軸を取得.
 	CPlayerBase::LocalAxes axes = m_pPlayer.GetLocalAxes();
 	
@@ -132,6 +143,9 @@ void CPlayerPushedState::Update()
 	//手の位置を調整して設定.
 	m_pPlayer.GetPlayerRightHand().SetPosition(m_pPlayer.GetObjectPos(rightHandOffsetPos));
 	m_pPlayer.GetPlayerLeftHand().SetPosition(m_pPlayer.GetObjectPos(leftHandOffsetPos));
+
+	//プレイヤーの位置を取得.
+	D3DXVECTOR3 playerPos = m_pPlayer.GetPosition();
 
 	//プレイヤーの位置と押された移動量を足す.
 	playerPos += m_pPlayer.GetHitAttack().velocity;
