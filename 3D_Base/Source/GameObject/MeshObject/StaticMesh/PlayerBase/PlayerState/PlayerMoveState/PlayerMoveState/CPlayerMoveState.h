@@ -35,6 +35,8 @@ private:
 //======================================================================
 	D3DXVECTOR3 m_InputDir;			//入力を受けた方向.
 
+	float		m_HitPushbackPower;	//プレイヤー接触時に押し出す力.
+
 	float		m_CurrentSpeed;		//現在の速さ.
 	float		m_MoveSpeed;		//移動速度.
 	float		m_RotatingMoveSpeed;//回転している時の速度.
