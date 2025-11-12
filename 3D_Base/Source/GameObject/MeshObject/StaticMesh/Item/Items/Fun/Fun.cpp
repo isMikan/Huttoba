@@ -17,6 +17,8 @@ Fun::Fun()
 	, m_MoveSpeed	( 6.0 )		//値を変えると投げた時の移動速度が変化
 
 	, m_IsThrow		( true )
+
+	, m_pNowCollider()
 {
 	Init();
 }
@@ -24,6 +26,7 @@ Fun::Fun()
 Fun::~Fun()
 {
 	CollisionManager::GetInstance()->RemoveCollider(m_pPickUpCollider.get());
+	CollisionManager::GetInstance()->RemoveCollider(m_pNowCollider.get());
 }
 
 void Fun::Init()
@@ -45,22 +48,30 @@ void Fun::Init()
 	//引数の末尾にfalseを入れると自動登録されなくなり、AddColliderで任意追加できるようにした
 	//具体的な使い方はハエたたき見る or 聞く
 
-	std::shared_ptr<CStaticMesh> mesh = AssetManager::Mesh(StaticMeshList::Fun);
+	////拾う時の当たり判定
+	//std::shared_ptr<CStaticMesh> mesh = AssetManager::Mesh(StaticMeshList::Fun);
 
-	m_pPickUpCollider = CollisionDataFactory::CreateSphereForMesh(
-		CollisionBase::ColliderTag::Bomb,
+	//m_pPickUpCollider = CollisionDataFactory::CreateSphereForMesh(
+	//	CollisionBase::ColliderTag::Fan,
+	//	mesh,
+	//	this,
+	//	false
+	//);
+
+	//使用時の前方に出す当たり判定
+	std::shared_ptr<CStaticMesh> mesh = AssetManager::Mesh(StaticMeshList::FunCol);
+
+	m_pUseCollider = CollisionDataFactory::CreateHorizontalCapsule(
+		CollisionBase::ColliderTag::Fan,
 		mesh,
 		this
+		//false
 	);
 
-	mesh = AssetManager::Mesh(StaticMeshList::Fun);
+	//m_pNowCollider = m_pUseCollider;
 
-	m_pUseCollider = CollisionDataFactory::CreateSphereForMesh(
-		CollisionBase::ColliderTag::Bomb,
-		mesh,
-		this,
-		false
-	);
+	//ここで現在の当たり判定を設定
+	//CollisionManager::GetInstance()->AddCollider(m_pNowCollider);
 
 	//--------------------------------------------------------------------------------------------------------------
 
@@ -135,22 +146,15 @@ void Fun::OnCollision(CollisionBase* other)
 
 void Fun::HaveMove()
 {
+	//if (m_pNowCollider != m_pPickUpCollider)
+	//{
+	//	CollisionManager::GetInstance()->RemoveCollider(m_pNowCollider.get());
+	//	m_pNowCollider = m_pPickUpCollider;
+	//	CollisionManager::GetInstance()->AddCollider(m_pNowCollider);
+	//}
+
 	if (m_IsUse)
-	{
-		//当たり判定削除
-		//CollisionManager::GetInstance()->RemoveCollider(m_pCollision.get());
-
-		std::shared_ptr<CStaticMesh> mesh = AssetManager::Mesh(StaticMeshList::Fun);
-
-		//m_pCollision = CollisionDataFactory::CreateSphereForMesh(
-		//	this,
-		//	mesh,
-		//	CollisionBase::ColliderTag::Bomb
-		//);
-
-		//m_IsUse = false;
-	//std::cout << "持っているに状態変化" << std::endl;
-	}
+		m_IsUse = false;
 
 	m_vPosition = m_pPlayer->GetPlayerRightHand().GetPosition();
 	m_vQuaternion = m_pPlayer->GetQuaternion();
@@ -158,26 +162,32 @@ void Fun::HaveMove()
 
 void Fun::UseMove()
 {
+	//if (m_pNowCollider != m_pUseCollider)
+	//{
+	//	CollisionManager::GetInstance()->RemoveCollider(m_pNowCollider.get());
+	//	m_pNowCollider = m_pUseCollider;
+	//	CollisionManager::GetInstance()->AddCollider(m_pNowCollider);
+	//}
+
 	if (!m_IsUse)
-	{
-		//当たり判定削除
-		CollisionManager::GetInstance()->RemoveCollider(m_pCollision.get());
-
-		std::shared_ptr<CStaticMesh> mesh = AssetManager::Mesh(StaticMeshList::FunCol);
-
-		m_pCollision = CollisionDataFactory::CreateHorizontalCapsule(
-			CollisionBase::ColliderTag::Bomb,
-			mesh,
-			this,
-			false
-		);
-
 		m_IsUse = true;
-		//std::cout << "使ってる状態に変化" << std::endl;
-	}
 
 	m_vPosition = m_pPlayer->GetPlayerRightHand().GetPosition();
 	m_vQuaternion = m_pPlayer->GetQuaternion();
+
+
+	//CollisionManager::GetInstance()->RemoveCollider(m_pUseCollider.get());
+
+	//std::shared_ptr<CStaticMesh> mesh = AssetManager::Mesh(StaticMeshList::FunCol);
+
+	//mesh->SetQuaternion(m_vQuaternion);
+
+	//m_pUseCollider = CollisionDataFactory::CreateHorizontalCapsule(
+	//	CollisionBase::ColliderTag::Fan,
+	//	mesh,
+	//	this
+	//	//false
+	//);
 }
 
 void Fun::ThrowMove()

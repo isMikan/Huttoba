@@ -57,4 +57,8 @@ private:
 
     //“Š‚°‚é‚Éˆê“x‚¾‚¯ˆ—‚·‚é‚à‚Ì‚ª‚ ‚é‚Ì‚Å’Ç‰Á
     bool        m_IsThrow;
+
+    //“–‚½‚è”»’è‚ğØ‚è‘Ö‚¦‚é‚½‚ß‚É’Ç‰Á
+    std::shared_ptr<CollisionBase>	m_pNowCollider;	
+
 };

@@ -5,8 +5,6 @@
 #include "TimeManager/CTimeManager.h"
 #include "Input/CInputManager.h"
 
-#include <PlayerBase/Player/CPlayer.h>
-
 //Factoryに登録
 namespace { const bool regist = ItemBase::AutoRegister<Bomb>("Bomb"); }
 
@@ -16,7 +14,7 @@ Bomb::Bomb()
 	, m_PickUpCnt		( 0.0f )
 
 	, m_Velocity		()
-	, m_MoveSpeed		( 3.0f )	//値を変えると爆弾の移動相度が変化
+	, m_MoveSpeed		( 3.0f )	//値を変えると爆弾の移動速度が変化
 
 	, m_IsThrow			( true )
 
@@ -137,7 +135,7 @@ void Bomb::OnCollision(CollisionBase* other)
 {
 	if (other->GetTag() == CollisionBase::ColliderTag::Player)
 	{
-		if (CPlayer* player = dynamic_cast<CPlayer*>(other->GetListener()))
+		if (CPlayerBase* player = dynamic_cast<CPlayerBase*>(other->GetListener()))
 		{
 			if (m_IsExploded)
 			{
@@ -234,7 +232,7 @@ void Bomb::Explosion()
 	}
 }
 
-void Bomb::Smash(CPlayer& playiers)
+void Bomb::Smash(CPlayerBase& playiers)
 {
 	//爆弾とプレイヤーの位置でベクトルをとる
 	D3DXVECTOR3 vecLen = m_vPosition - playiers.GetPosition();

@@ -30,6 +30,7 @@ TrackingRobot::TrackingRobot()
 	, m_IsExploded		(false)
 {
 	Init();
+	m_vPosition = D3DXVECTOR3(4, 0, 0);
 }
 
 TrackingRobot::~TrackingRobot()
@@ -97,13 +98,13 @@ void TrackingRobot::Have()
 void TrackingRobot::Use()
 {
 	UseMove();
-	ChangeColor();
+	//ChangeColor();
 }
 
 void TrackingRobot::Throw()
 {
 	ThrowMove();
-	ChangeColor();
+	//ChangeColor();
 }
 
 void TrackingRobot::Destroy()
