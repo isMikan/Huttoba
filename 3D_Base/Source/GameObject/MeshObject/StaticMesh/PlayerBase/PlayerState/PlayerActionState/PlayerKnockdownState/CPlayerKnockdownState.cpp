@@ -130,17 +130,20 @@ void CPlayerKnockdownState::ChildPlayer(int index)
 	float x = CInputManager::GetLeftSthikX(index);
 	float y = CInputManager::GetLeftSthikY(index);
 
+	//入力を感知した場合.
 	if (IsInput(x, y, index))
 	{
+		//レバガチャが反応していない場合.
 		if (!m_IsTimeDecreasing)
 		{
+			//減少した時間を取得.
+			m_DecreaseTriggerTime = CTimeManager::GetTotalTime();
 
 			//レバガチャ成功時の値を保存.
 			m_PrevSthikX = x;
 			m_PrevSthikY = y;
 
-			m_EndTime -= m_TimeDecreaseByMashing;
-			m_DecreaseTriggerTime = CTimeManager::GetTotalTime();
+			m_EndTime -= m_TimeDecreaseByMashing;	//減少する.
 			m_IsTimeDecreasing = true;
 		}
 	}
@@ -188,17 +191,15 @@ bool CPlayerKnockdownState::IsInput(float x, float y, int index) const
 	{
 		//積がマイナスになったら、以前と現在のスティック数値の符号が異なる.
 		if (m_PrevSthikX * x < 0.f 
-			|| m_PrevSthikY * y < 0.f)
-		{
-			return true;
-		}
+			|| m_PrevSthikY * y < 0.f) return true;
 	}
-	else if (CInputManager::IsDown(Action::MoveUp, index)
-		|| CInputManager::IsDown(Action::MoveDown, index)
-		|| CInputManager::IsDown(Action::MoveLeft, index)
-		|| CInputManager::IsDown(Action::MoveRight, index))
+	//キーボードの場合.
+	else
 	{
-		return true;
+		if (CInputManager::IsDown(Action::MoveUp, index)
+			|| CInputManager::IsDown(Action::MoveDown, index)
+			|| CInputManager::IsDown(Action::MoveLeft, index)
+			|| CInputManager::IsDown(Action::MoveRight, index)) return true;
 	}
 
 	return false;
