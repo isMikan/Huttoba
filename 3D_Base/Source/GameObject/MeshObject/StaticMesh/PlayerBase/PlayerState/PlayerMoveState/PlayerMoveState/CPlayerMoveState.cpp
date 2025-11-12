@@ -113,8 +113,7 @@ float CPlayerMoveState::GetMoveSpeed()
 	//ë¨ìxï‚ê≥ÇµÇΩÇ¢çsìÆÇÃèÍçá.
 	if (m_pPlayer.IsAnyActionState<
 		CPlayerPushedState,
-		CPlayerFallingState,
-		CPlayerItemAttackState>())
+		CPlayerFallingState>())
 	{
 		return m_HitingMoveSpeed;
 	}
