@@ -32,7 +32,6 @@ void CollisionCapsule::UpdateWorldPosition()
         return;
     }
 
-    // CGameObject::GetWorldMatrix() から安全で最新の行列を取得
     const D3DXMATRIX mWorld = obj->GetWorldMatrix();
 
     // 軸線分の始点Aと終点Bをワールド行列で変換

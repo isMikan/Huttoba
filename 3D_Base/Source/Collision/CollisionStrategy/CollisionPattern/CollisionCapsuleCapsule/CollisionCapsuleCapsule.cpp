@@ -45,51 +45,50 @@ bool CollisionCapsuleCapsule::CheckCollision(
 	// 行列式の計算
 	float denom = a * c - b * b;
 
-	float s_nom = 0.0f; // s の分子
-	float t_nom = 0.0f; // t の分子
-	float s = 0.0f;     // 線分 A の媒介変数
-	float t = 0.0f;     // 線分 B の媒介変数
+	float s = 0.0f; // 線分 A の媒介変数
+	float t = 0.0f; // 線分 B の媒介変数
 
-	// 媒介変数の解決とクランプ (最短距離を決定するコアロジック)
-	if (denom < EPSILON) // 線分がほぼ平行な場合
+	// 最短距離を計算するためのコアロジック
+	if (denom < EPSILON) // 軸がほぼ平行な場合 (分母がゼロに近い)
 	{
-		// 最短距離は線分の端点にあり、tは0にクランプされると仮定
-		s = 0.0f;
-		// t は線分 B 上で最も近い点を探す
-		t_nom = e;
-		t = t_nom / c;
-		t = std::max(0.0f, std::min(1.0f, t));
-	}
-	else
-	{
-		// s = (b*e - c*d) / denom
-		s_nom = (b * e - c * d);
-		// t = (a*e - b*d) / denom
-		t_nom = (a * e - b * d);
-
-		// s, t を [0, 1] にクランプする複雑な処理
-
-		// tの初期クランプ (0 <= s <= 1の条件付き)
-		if (s_nom < 0.0f) // s < 0 の場合
+		// 最短距離は線分 B の端点にあり、t は [0, 1] にクランプされると仮定
+		s = 0.0f; // s=0 に固定し、線分B上の最も近い点 t を探す
+		if (a < EPSILON) // 線分 A が点である場合 (a = u・u がゼロに近い)
 		{
 			s = 0.0f;
-			t = std::max(0.0f, std::min(1.0f, e / c));
+			t = 0.0f; // A1 と B1 の距離を計算することになる
 		}
-		else if (s_nom > denom) // s > 1 の場合
+		else // 線分 A は線分
 		{
-			s = 1.0f;
-			t = std::max(0.0f, std::min(1.0f, (e + b) / c));
-		}
-		else // 0 <= s <= 1 の場合
-		{
-			s = s_nom / denom;
-			t = std::max(0.0f, std::min(1.0f, t_nom / denom));
+			t = D3DXVec3Dot(&v, &w) / c; // t = (v・w) / (v・v)
+			t = std::max(0.0f, std::min(1.0f, t));
 		}
 	}
-	// Note: この実装は s を先に確定させて t をクランプしている。
-	// より厳密には t も同時にクランプ範囲を確認する必要があるらしい
-	// でも結構この実装でいいらしい
+	else // 線分が交差または斜めの場合
+	{
+		//  s, t を線分の延長線上で計算
+		float invDenom = 1.0f / denom;
+		s = (b * D3DXVec3Dot(&v, &w) - c * D3DXVec3Dot(&u, &w)) * invDenom;
+		t = (a * D3DXVec3Dot(&v, &w) - b * D3DXVec3Dot(&u, &w)) * invDenom;
 
+		//  s を [0, 1] にクランプ
+		if (s < 0.0f) s = 0.0f;
+		else if (s > 1.0f) s = 1.0f;
+
+		// s をクランプした状態で、t を線分 B 上の正しい点に再計算し、t もクランプ
+		// s=0 の場合、t は線分 B 上で A1 に最も近い点になる
+		if (s < EPSILON)
+		{
+			t = std::max(0.0f, std::min(1.0f, D3DXVec3Dot(&v, &w) / c));
+		}
+		// s=1 の場合、t は線分 B 上で A2 に最も近い点になる
+		else if (s > 1.0f - EPSILON)
+		{
+			t = std::max(0.0f, std::min(1.0f, (D3DXVec3Dot(&v, &w) + b) / c));
+		}
+	}
+	// Note: t も先にクランプしてから s を再計算するパターンもありますが、
+	// この s を優先し t を再計算するパターンは、多くの衝突ライブラリで採用される標準的な方法の一つです。
 
 	// 最短距離を計算
 

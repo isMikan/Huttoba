@@ -124,7 +124,7 @@ namespace CollisionUtility
         LPVOID pData = pMesh->GetLockedVertexBuffer(stride, count);
         if (!pData || count == 0) return false;
 
-        // 頂点データはVERTEX構造体の配列として扱えます
+        // 頂点データはVERTEX構造体の配列として扱う
         const BYTE* pVertices = static_cast<const BYTE*>(pData);
 
         // 頂点データを走査
@@ -150,22 +150,33 @@ namespace CollisionUtility
         // YとZの幅の大きい方をカプセルの厚みとして採用（真円にするため）
         outRadius = std::max(halfHeight, halfDepth);
 
-        // 全長の中央 (X軸中心)
+        // 全長の中央
         float centerX = (min.x + max.x) * 0.5f;
+        float centerY = (min.y + max.y) * 0.5f;
+        float centerZ = (min.z + max.z) * 0.5f;
 
         // X軸の端点位置
         float endX_A = max.x - outRadius;
         float endX_B = min.x + outRadius;
 
-        // 軸線分が内側に入りすぎないかチェック 
-        if (endX_A < endX_B) {
-            // メッシュが短すぎる場合は、軸線分を潰して中心点にする（球になる）
+        float totalWidthX = max.x - min.x;
+        float axisLength = totalWidthX - (2.0f * outRadius);
+
+        // メッシュが短すぎる場合、球にする
+        if (axisLength < 0.0f) {
             endX_A = endX_B = centerX;
         }
+        else {
+            // 軸の半分の長さを計算
+            float halfAxisLength = axisLength * 0.5f;
 
-        // YとZは中心 (0) に固定
-        outOffsetA = D3DXVECTOR3(endX_A, 0.0f, 0.0f);
-        outOffsetB = D3DXVECTOR3(endX_B, 0.0f, 0.0f);
+            // 中心から軸の長さに従ってオフセット
+            endX_A = centerX + halfAxisLength;
+            endX_B = centerX - halfAxisLength;
+        }
+        // Y/Z座標は修正案1を適用
+        outOffsetA = D3DXVECTOR3(endX_A, centerY, centerZ);
+        outOffsetB = D3DXVECTOR3(endX_B, centerY, centerZ);
 
         return true;
     }
