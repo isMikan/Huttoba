@@ -34,7 +34,7 @@ HRESULT ItemManager::Create()
 	for (int i = 0;i < 4;i++)
 	{
 		CInputManager::BindKey(Action::Have, InputBinding(InputDevice::GamePad, CXInput::A),i);
-		CInputManager::BindKey(Action::HaeAttack, InputBinding(InputDevice::GamePad, CXInput::Y),i);
+		CInputManager::BindKey(Action::HaeAttack, InputBinding(InputDevice::GamePad, CXInput::B),i);
 		CInputManager::BindKey(Action::Have, InputBinding(InputDevice::Keyboard, 'Z'),i);
 	}
 
@@ -69,10 +69,10 @@ void ItemManager::Update()
 		//ˆê’UPlayer0‚µ‚©Ž‚Ä‚È‚¢‚æ‚¤‚É‚·‚é
 		item->Update();
 
-		if (CInputManager::IsDown(Action::HaeAttack, 0))
-		{
-			item->SetState(ItemBase::State::Use);
-		}
+		//if (CInputManager::IsDown(Action::HaeAttack, 0))
+		//{
+		//	item->SetState(ItemBase::State::Use);
+		//}
 
 		if (!item->GetIsOnGround())
 		{

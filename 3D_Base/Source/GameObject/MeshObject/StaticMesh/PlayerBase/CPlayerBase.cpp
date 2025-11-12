@@ -164,11 +164,10 @@ void CPlayerBase::CreateCollider()
 //--- 地面との衝突判定 ---.
 void CPlayerBase::OnGroundCollision(CGroundManager& pGroundMgr)
 {
-
-	//関数のoutで当たったy座標をもらう
+	//関数のoutで当たったy座標をもらう.
 	float groundY = 0.0f;
 
-	// CollisionManagerに判定を依頼し、結果をそのまま返す
+	//CollisionManagerに判定を依頼し、結果をそのまま返す.
 	m_IsOnGround = CollisionUtility::CheckGroundContact(
 		GetPosition(),
 		pGroundMgr,

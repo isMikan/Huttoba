@@ -126,8 +126,12 @@ void CPlayerItemAttackState::Update()
 	//現在の傾き = 最大傾き角度 * 割合.
 	m_CurrentTiltAngle = m_pPlayer.WrapAngle(m_TiltAngleMax * progress);
 
-	//クォータニオンの回転を計算して設定する.
-	m_pPlayer.SetQuaternion(m_pPlayer.TiltedQuat(m_StartQuat, axes.right, m_CurrentTiltAngle));
+	//クォータニオンの傾く回転を計算する.
+	D3DXQUATERNION tiltedQuat = m_pPlayer.TiltedQuat(m_StartQuat, axes.right, m_CurrentTiltAngle);
+	//現在のクォータニオンを受け取り他の状態の回転も取り入れる.
+	D3DXQUATERNION currentQuat = m_pPlayer.GetQuaternion();
+	//クォータニオンを設定する.
+	m_pPlayer.SetQuaternion(tiltedQuat.x, currentQuat.y, tiltedQuat.z, currentQuat.w);
 
 	float eased = sinf(progress * D3DX_PI * 0.5f);	//0.5で半往復させ前に手を出す計算をする.	
 
