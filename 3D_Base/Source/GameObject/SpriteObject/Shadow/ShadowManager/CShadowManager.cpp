@@ -68,6 +68,11 @@ void CShadowManager::Update(CPlayerManager* players, ItemManager* item)
 	{ 
 		m_pShadow[i]->Update(item->GetItemPos(i - Player_Max));
 	}
+
+	for (int i = Player_Max + item->GetItemVectorNum();i < Shadow_Max;i++)
+	{
+		m_pShadow[i]->SetPosition(0, -10.0f, 0);
+	}
 }
 
 //--- •`‰æˆ— ---.

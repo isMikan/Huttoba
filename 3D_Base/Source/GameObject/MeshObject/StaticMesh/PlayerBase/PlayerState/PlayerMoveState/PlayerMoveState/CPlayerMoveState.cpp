@@ -13,6 +13,8 @@ CPlayerMoveState::CPlayerMoveState(CPlayerBase& pPlayer, float x, float z)
 	: CPlayerState			( pPlayer )
 
 	, m_InputDir			( x, 0.f, z )
+
+	, m_HitPushbackPower	( 0.1f )
 	
 	, m_CurrentSpeed		()
 	, m_MoveSpeed			( 0.13f )
@@ -77,10 +79,13 @@ void CPlayerMoveState::Update()
 	//歩いている.
 	m_pPlayer.SetMoving(true);
 
+	//プレイヤーとの接触情報を取得.
 	CPlayerBase::HitPlayer hitPlayer = m_pPlayer.GetHitPlayer();
 
+	//接触した場合.
 	if (hitPlayer.isHit)
 	{
+		//接触したプレイヤーと進みたい方向の角度差を求める.
 		float dot = D3DXVec3Dot(&m_InputDir, &hitPlayer.otherDir);
 		dot = std::clamp(dot, -1.f, 1.f);
 
@@ -89,6 +94,12 @@ void CPlayerMoveState::Update()
 			m_InputDir -= dir * dot;
 			D3DXVec3Normalize(&dir, &m_InputDir);
 		}
+
+		//反対方向に押し出す.
+		playerPos += -hitPlayer.otherDir * m_HitPushbackPower;
+		//プレイヤーの位置の設定.
+		m_pPlayer.SetPosition(playerPos);
+		return;
 	}
 
 	//現在の速度を取得.
@@ -113,8 +124,7 @@ float CPlayerMoveState::GetMoveSpeed()
 	//速度補正したい行動の場合.
 	if (m_pPlayer.IsAnyActionState<
 		CPlayerPushedState,
-		CPlayerFallingState,
-		CPlayerItemAttackState>())
+		CPlayerFallingState>())
 	{
 		return m_HitingMoveSpeed;
 	}

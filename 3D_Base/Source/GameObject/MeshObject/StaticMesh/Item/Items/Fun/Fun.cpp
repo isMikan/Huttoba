@@ -26,6 +26,7 @@ Fun::Fun()
 Fun::~Fun()
 {
 	CollisionManager::GetInstance()->RemoveCollider(m_pPickUpCollider.get());
+	CollisionManager::GetInstance()->RemoveCollider(m_pUseCollider.get());
 	CollisionManager::GetInstance()->RemoveCollider(m_pNowCollider.get());
 }
 
