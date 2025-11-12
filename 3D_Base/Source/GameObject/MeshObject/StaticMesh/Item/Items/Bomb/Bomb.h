@@ -1,8 +1,6 @@
 #pragma once
 #include "Item/ItemBase.h"
 
-class CPlayer;
-
 class Bomb
     : public ItemBase
 {

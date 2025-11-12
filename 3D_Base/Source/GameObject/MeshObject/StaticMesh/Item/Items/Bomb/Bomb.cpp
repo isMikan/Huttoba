@@ -108,9 +108,6 @@ void Bomb::OnGround()
 
 void Bomb::Have()
 {
-	//if (m_IsTake)
-		//TakeMotion();
-	//else
 	HaveMove();
 }
 
