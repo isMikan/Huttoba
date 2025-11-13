@@ -1,13 +1,13 @@
 #include "CPlayerMoveState.h"
 
-#include "GameObject/MeshObject/StaticMesh/PlayerBase/CPlayerBase.h"
-#include "GameObject/MeshObject/StaticMesh/PlayerBase/PlayerAI/CPlayerAI.h"
+#include "PlayerBase/CPlayerBase.h"
+#include "PlayerBase/PlayerAI/CPlayerAI.h"
 
-#include "GameObject/MeshObject/StaticMesh/PlayerBase/PlayerState/PlayerMoveState/PlayerMoveIdelState/CPlayerMoveIdleState.h"
+#include "PlayerBase/PlayerState/PlayerMoveState/PlayerMoveIdelState/CPlayerMoveIdleState.h"
 
-#include "GameObject/MeshObject/StaticMesh/PlayerBase/PlayerState/PlayerActionState/PlayerPushedState/CPlayerPushedState.h"
-#include "GameObject/MeshObject/StaticMesh/PlayerBase/PlayerState/PlayerActionState/PlayerFallingState/CPlayerFallingState.h"
-#include "GameObject/MeshObject/StaticMesh/PlayerBase/PlayerState/PlayerActionState/PlayerItemAttackState/CPlayerItemAttackState.h"
+#include "PlayerBase/PlayerState/PlayerActionState/PlayerPushedState/CPlayerPushedState.h"
+#include "PlayerBase/PlayerState/PlayerActionState/PlayerFallingState/CPlayerFallingState.h"
+#include "PlayerBase/PlayerState/PlayerActionState/PlayerItemAttackState/CPlayerItemAttackState.h"
 
 CPlayerMoveState::CPlayerMoveState(CPlayerBase& pPlayer, float x, float z)
 	: CPlayerState			( pPlayer )

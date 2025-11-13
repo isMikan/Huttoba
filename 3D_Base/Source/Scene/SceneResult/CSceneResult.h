@@ -2,7 +2,7 @@
 #include "Scene/CScene.h"
 
 #include "GameObject/UIObject/CUIObject.h"
-#include "GameObject/MeshObject/StaticMesh/PlayerBase/PlayerManager/CPlayerManager.h"
+#include "PlayerBase/PlayerManager/CPlayerManager.h"
 
 #include "Input/CInputManager.h"
 #include "Assets/AssetManager.h"

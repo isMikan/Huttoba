@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Collision/Collider/CollisionBase.h" 
-#include "GameObject/MeshObject/StaticMesh/CStaticMeshObject.h" // ObjectColor型を使用するため
+#include "CStaticMeshObject.h" // ObjectColor型を使用するため
 
 /***************************************
  * 球体の衝突情報クラス。

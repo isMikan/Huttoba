@@ -2,7 +2,7 @@
 
 #include "GameObject/SpriteObject/Shadow/CShadow.h"
 
-#include "GameObject/MeshObject/StaticMesh/PlayerBase/PlayerManager/CPlayerManager.h"
+#include "PlayerBase/PlayerManager/CPlayerManager.h"
 #include "GameObject/MeshObject/StaticMesh/Item/ItemManager/ItemManager.h"
 
 /***********************************************************************

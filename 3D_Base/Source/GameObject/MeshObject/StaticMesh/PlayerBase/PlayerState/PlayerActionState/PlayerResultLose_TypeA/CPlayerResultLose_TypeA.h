@@ -3,14 +3,14 @@
 #include "PlayerBase/PlayerState/CPlayerState.h"
 
 /***********************************************************************
-*	プレイヤーの落ちる状態クラス.
+*	プレイヤーが負けた時の状態クラス.
 **/
-class CPlayerFallingState
+class CPlayerResultLose_TypeA
 	: public CPlayerState	//プレイヤー状態を継承.
 {
 public:
-	CPlayerFallingState(CPlayerBase& pPlayer);
-	~CPlayerFallingState() override;
+	CPlayerResultLose_TypeA(CPlayerBase& pPlayer);
+	~CPlayerResultLose_TypeA();
 
 //======================================================================
 // 	   外部で呼び出す関数.
@@ -24,35 +24,20 @@ public:
 
 private:
 //======================================================================
-// 	   内部で呼び出す関数.
-//======================================================================
-	//--- ワールドでの角度を求める ---.
-	float WorldAngle();
-
-	//--- この状態の終了を判断する ---.
-	bool IsEnd();
-
-private:
-//======================================================================
 // 	   内部で使用する変数.
 //======================================================================
-	D3DXVECTOR3		m_UpHandOffset;			//上に調整.
-	D3DXVECTOR3		m_StartRightAxis;		//開始時の右軸.
-	D3DXVECTOR3		m_Velocity;				//初速度.	
+	float			m_CenterHandOffset;		//手を中心寄りに調整.
 
 	float			m_StartTime;			//開始時間.
 	float			m_EndTime;				//終了時間.
 
-	float			m_GroundRange;			//地面の許容範囲.
-	float			m_RotateRangeMax;		//回転の最大許容範囲.
-	float			m_RotateRangeMin;		//回転の最小許容範囲.
-	float			m_ForceMax;				//吹き飛ばし量の最大.
-
-	float			m_Gravity;				//重力.
-	float			m_RotateSpeed;			//回転する速度.
 	float			m_CurrentTiltAngle;		//現在の傾き角度.
+	float			m_TiltAngleMax;			//最大の傾き角度.
 
-	float			m_GroundPos;			//地面の位置(仮).
+	D3DXVECTOR3		m_RightHandStartPos;	//右手の元の位置.
+	D3DXVECTOR3		m_LeftHandStartPos;		//左手の元の位置.
+	D3DXVECTOR3		m_RightHandEndPos;		//右手の目的の位置.
+	D3DXVECTOR3		m_LeftHandEndPos;		//左手の目的の位置.
 
 	D3DXQUATERNION	m_StartQuat;			//開始時の回転.
 
@@ -60,8 +45,8 @@ private:
 //======================================================================
 // 	   呼び出しを禁止するコンストラクタ.
 //======================================================================
-	CPlayerFallingState() = delete;	//デフォルトコンストラクタ削除.
-	CPlayerFallingState(const CPlayerFallingState&) = delete;
-	CPlayerFallingState& operator = (const CPlayerFallingState& rhs) = delete;
+	CPlayerResultLose_TypeA() = delete;	//デフォルトコンストラクタ削除.
+	CPlayerResultLose_TypeA(const CPlayerResultLose_TypeA&) = delete;
+	CPlayerResultLose_TypeA& operator = (const CPlayerResultLose_TypeA& rhs) = delete;
 
 };

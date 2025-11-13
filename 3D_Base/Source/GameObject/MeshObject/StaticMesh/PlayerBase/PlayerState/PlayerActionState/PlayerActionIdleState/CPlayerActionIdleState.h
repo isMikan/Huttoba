@@ -1,6 +1,6 @@
 #pragma once
 
-#include "GameObject/MeshObject/StaticMesh/PlayerBase/PlayerState/CPlayerState.h"
+#include "PlayerBase/PlayerState/CPlayerState.h"
 
 /***********************************************************************
 *	プレイヤーが何も行動していない状態クラス.

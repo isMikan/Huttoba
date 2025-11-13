@@ -1,5 +1,5 @@
 #pragma once
-#include "GameObject/MeshObject/StaticMesh/CStaticMeshObject.h"
+#include "CStaticMeshObject.h"
 
 class ItemBase;
 class CPlayerManager;

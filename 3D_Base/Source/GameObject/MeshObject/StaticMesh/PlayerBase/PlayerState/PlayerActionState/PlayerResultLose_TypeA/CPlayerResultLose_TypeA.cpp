@@ -1,4 +1,4 @@
-#include "CPlayerHandAttackState.h"
+#include "CPlayerResultLose_TypeA.h"
 
 #include "PlayerBase/CPlayerBase.h"
 
@@ -6,7 +6,7 @@
 #include "PlayerBase/PlayerState/PlayerActionState/PlayerHandWhiffState/CPlayerHandWhiffState.h"
 #include "PlayerBase/PlayerState/PlayerActionState/PlayerHandHitState/CPlayerHandHitState.h"
 
-CPlayerHandAttackState::CPlayerHandAttackState(CPlayerBase& pPlayer)
+CPlayerResultLose_TypeA::CPlayerResultLose_TypeA(CPlayerBase& pPlayer)
 	: CPlayerState			( pPlayer )
 	
 	, m_CenterHandOffset	( 0.2f )
@@ -26,7 +26,7 @@ CPlayerHandAttackState::CPlayerHandAttackState(CPlayerBase& pPlayer)
 {
 }
 
-CPlayerHandAttackState::~CPlayerHandAttackState()
+CPlayerResultLose_TypeA::~CPlayerResultLose_TypeA()
 {
 }
 
@@ -35,7 +35,7 @@ CPlayerHandAttackState::~CPlayerHandAttackState()
 //======================================================================
 
 //--- 状態の開始時に呼び出す ---.
-void CPlayerHandAttackState::Enter()
+void CPlayerResultLose_TypeA::Enter()
 {
 	//SEを鳴らす.
 	AssetManager::Sound()->PlaySE(enSoundList::SE_AttackHand);
@@ -66,12 +66,12 @@ void CPlayerHandAttackState::Enter()
 }
 
 //--- 状態の終了時に呼び出す ---.
-void CPlayerHandAttackState::Exit()
+void CPlayerResultLose_TypeA::Exit()
 {
 }
 
 //--- この状態の間に呼び出す ---.
-void CPlayerHandAttackState::Update()
+void CPlayerResultLose_TypeA::Update()
 {
 	//ゲーム全体の経過時間.
 	float t = CTimeManager::GetTotalTime();

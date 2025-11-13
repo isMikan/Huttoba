@@ -1,6 +1,6 @@
 #pragma once
 
-#include "GameObject/MeshObject/StaticMesh/PlayerBase/PlayerState/CPlayerState.h"
+#include "PlayerBase/PlayerState/CPlayerState.h"
 
 /***********************************************************************
 *	プレイヤーがアイテム未所持の攻撃状態クラス.

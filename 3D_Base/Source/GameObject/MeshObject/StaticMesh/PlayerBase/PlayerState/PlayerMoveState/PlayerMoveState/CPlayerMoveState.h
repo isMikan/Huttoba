@@ -1,6 +1,6 @@
 #pragma once
 
-#include "GameObject/MeshObject/StaticMesh/PlayerBase/PlayerState/CPlayerState.h"
+#include "PlayerBase/PlayerState/CPlayerState.h"
 
 /***********************************************************************
 *	プレイヤーが移動する状態クラス.

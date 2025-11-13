@@ -1,8 +1,8 @@
 #include "CPlayerKnockbackState.h"
 
-#include "GameObject/MeshObject/StaticMesh/PlayerBase/CPlayerBase.h"
-									   
-#include "GameObject/MeshObject/StaticMesh/PlayerBase/PlayerState/PlayerActionState/PlayerFallingState/CPlayerFallingState.h"
+#include "PlayerBase/CPlayerBase.h"
+			
+#include "PlayerBase/PlayerState/PlayerActionState/PlayerFallingState/CPlayerFallingState.h"
 
 CPlayerKnockbackState::CPlayerKnockbackState(CPlayerBase& pPlayer)
 	: CPlayerState			( pPlayer )

@@ -2,7 +2,7 @@
 
 #include "Camera/CCamera.h"
 
-#include "GameObject/MeshObject/StaticMesh/Ground/GroundManager/CGroundManager.h"
+#include "Ground/GroundManager/CGroundManager.h"
 
 /***********************************************************************
 *	カメラマネージャークラス.						制作者 [甲把]

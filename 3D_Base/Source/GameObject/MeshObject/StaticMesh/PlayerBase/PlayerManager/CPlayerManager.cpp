@@ -173,6 +173,74 @@ void CPlayerManager::Draw(D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAME
 	}
 }
 
+//--- リザルトシーンの設定 ---.
+void CPlayerManager::ResultPlayerCreate()
+{
+	//プレイヤーのインスタンス生成.
+	m_pPlayers.clear();
+	m_pPlayers.resize(Player_Max);
+
+	int countLive = 0;
+	int countFalled = 0;
+	for (int pNo = 0; pNo < Player_Max; pNo++)
+	{
+		m_pPlayers[pNo] = std::make_unique<CPlayerAI_TypeA>(pNo);
+
+		if (!m_pPlayers[pNo]) return;
+
+		//胴体の色を設定.
+		m_pPlayers[pNo]->SetObjectColor(0, CharacterColorSettings(pNo));
+		//頭の色を設定.
+		m_pPlayers[pNo]->GetPlayerHead().SetObjectColor(1, CharacterColorSettings(pNo));
+
+		D3DXVECTOR3 pos(2.f, 1.f, -3.f);
+		if (CSceneData::GetPlayerLiving(pNo))
+		{
+			countLive++;
+			switch (countLive)
+			{
+			case 1:
+				pos.x *= 4.f;
+				m_pPlayers[pNo]->SetPosition(pos);
+				break;
+			case 2:
+				pos.x *= 3.f;
+				m_pPlayers[pNo]->SetPosition(pos);
+				break;
+			case 3:
+				pos.x *= 2.f;
+				m_pPlayers[pNo]->SetPosition(pos);
+				break;
+			default:
+				break;
+			}
+		}
+		else
+		{
+			countFalled++;
+			switch (countFalled)
+			{
+			case 1:
+				pos.x *= 1.f;
+				m_pPlayers[pNo]->SetPosition(pos);
+				break;
+			case 2:
+				pos.x *= 2.f;
+				m_pPlayers[pNo]->SetPosition(pos);
+				break;
+			case 3:
+				pos.x *= 3.f;
+				m_pPlayers[pNo]->SetPosition(pos);
+				break;
+			default:
+				break;
+			}
+		}
+		m_pPlayers[pNo]->
+			SetQuaternion(0.f, D3DXToRadian(180.f), 0.f, 0.f);
+	}
+}
+
 //エフェクトを表示するための関数.
 //void CPlayerManager::ManageEffectLaser(static::EsHandle hEffect)
 //{

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "GameObject/MeshObject/StaticMesh/CStaticMeshObject.h"
+#include "CStaticMeshObject.h"
 
 /***********************************************************************
 *	ínñ ÉNÉâÉX.									êßçÏé“ [çbîc]

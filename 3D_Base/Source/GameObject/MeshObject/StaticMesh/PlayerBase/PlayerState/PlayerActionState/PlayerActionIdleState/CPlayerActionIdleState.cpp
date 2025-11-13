@@ -1,6 +1,6 @@
 #include "CPlayerActionIdleState.h"
 
-#include "GameObject/MeshObject/StaticMesh/PlayerBase/CPlayerBase.h"
+#include "PlayerBase/CPlayerBase.h"
 
 CPlayerActionIdleState::CPlayerActionIdleState(CPlayerBase& pPlayer)
 	: CPlayerState			( pPlayer )

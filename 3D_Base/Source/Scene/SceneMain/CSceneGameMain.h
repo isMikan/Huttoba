@@ -19,8 +19,8 @@
 #include "GameObject/SpriteObject/Shadow/ShadowManager/CShadowManager.h"
 #include "GameObject/UIObject/GaugeBase/GaugeManager/CGaugeManager.h"
 
-#include "GameObject/MeshObject/StaticMesh/PlayerBase/PlayerManager/CPlayerManager.h"
-#include "GameObject/MeshObject/StaticMesh/Ground/GroundManager/CGroundManager.h"
+#include "PlayerBase/PlayerManager/CPlayerManager.h"
+#include "Ground/GroundManager/CGroundManager.h"
 
 #include "Scene/CSceneManager.h"
 #include "Input/CInputManager.h"

@@ -1,6 +1,6 @@
 #include "CGaugeBase.h"
 
-#include "GameObject/MeshObject/StaticMesh/PlayerBase/PlayerState/PlayerActionState/PlayerKnockdownState/CPlayerKnockdownState.h"
+#include "PlayerBase/PlayerState/PlayerActionState/PlayerKnockdownState/CPlayerKnockdownState.h"
 
 CGaugeBase::CGaugeBase()
 	: m_pContext11		()

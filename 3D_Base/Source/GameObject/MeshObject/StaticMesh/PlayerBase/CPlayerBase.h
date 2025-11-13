@@ -1,6 +1,6 @@
 #pragma once
 
-#include "GameObject/MeshObject/StaticMesh/CStaticMeshObject.h"
+#include "CStaticMeshObject.h"
 
 #include "PlayerEventBus/CPlayerEventBus.h"
 

@@ -2,7 +2,7 @@
 
 #include "GameObject/UIObject/CUIObject.h"
 
-#include "GameObject/MeshObject/StaticMesh/PlayerBase/CPlayerBase.h"
+#include "PlayerBase/CPlayerBase.h"
 
 /***********************************************************************
 *	ゲージベースクラス.							制作者 [甲把]

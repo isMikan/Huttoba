@@ -1,9 +1,9 @@
 #include "CPlayerKnockdownState.h"
 
-#include "GameObject/MeshObject/StaticMesh/PlayerBase/CPlayerBase.h"
-#include "GameObject/MeshObject/StaticMesh/PlayerBase/Player/CPlayer.h"
+#include "PlayerBase/CPlayerBase.h"
+#include "PlayerBase/Player/CPlayer.h"
 
-#include "GameObject/MeshObject/StaticMesh/PlayerBase/PlayerState/PlayerActionState/PlayerGetUpState/CPlayerGetUpState.h"
+#include "PlayerBase/PlayerState/PlayerActionState/PlayerGetUpState/CPlayerGetUpState.h"
 
 #include "Item/ItemBase.h"	
 

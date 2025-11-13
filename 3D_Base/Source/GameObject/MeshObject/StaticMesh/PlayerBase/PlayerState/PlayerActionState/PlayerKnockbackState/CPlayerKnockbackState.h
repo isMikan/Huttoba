@@ -1,6 +1,6 @@
 #pragma once
 
-#include "GameObject/MeshObject/StaticMesh/PlayerBase/PlayerState/CPlayerState.h"
+#include "PlayerBase/PlayerState/CPlayerState.h"
 
 /***********************************************************************
 *	プレイヤーの吹き飛ばされた状態クラス.

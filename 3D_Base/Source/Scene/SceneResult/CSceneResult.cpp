@@ -32,15 +32,16 @@ CSceneResult::~CSceneResult()
 
 HRESULT CSceneResult::Create()
 {
-	CCameraManager::SetPosition(0.f, 20.f, -10.f);
-	CCameraManager::SetLook(0.f, 2.f, 6.f);
-	CCameraManager::SetLight(0.f, 30.f, -10.f);
+	CCameraManager::SetPosition(5.f, 3.f, -10.f);
+	CCameraManager::SetLook(5.f, 0.f, 0.f);
+	CCameraManager::SetLight(0.f, 10.f, -10.f);
 
 	m_pSpriteResultImg = std::make_unique<CUIObject>();
 	m_pSpriteSelector = std::make_unique<CUIObject>();
 
 	//プレイヤーマネージャーのインスタンス作成.
 	m_pPlayerManager = std::make_unique<CPlayerManager>();
+	m_pPlayerManager->ResultPlayerCreate();
 
 	return S_OK;
 }
@@ -96,14 +97,13 @@ void CSceneResult::Draw()
 	D3DXMATRIX proj = CCameraManager::GetProjection();	//プロジェクション.
 	//==================.
 
-	m_pSpriteSelector->Draw();
-	m_pSpriteResultImg->Draw();
-
-	m_pDx11->SetDepth(false);
 	//プレイヤーの描画.
 	m_pPlayerManager->Draw(view, proj, light, camera);
-	m_pDx11->SetDepth(true);
 
+	m_pDx11->SetDepth(false);
+	m_pSpriteSelector->Draw();
+	m_pSpriteResultImg->Draw();
+	m_pDx11->SetDepth(true);
 }
 
 void CSceneResult::Destroy()
@@ -184,7 +184,8 @@ void CSceneResult::SelectorControl()
 			}
 		}
 	}
-	else {
+	else
+	{
 		isHeldDown = false;
 	}
 }

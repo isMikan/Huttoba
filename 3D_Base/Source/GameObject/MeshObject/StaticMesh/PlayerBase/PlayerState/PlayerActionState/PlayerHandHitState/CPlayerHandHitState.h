@@ -1,6 +1,6 @@
 #pragma once
 
-#include "GameObject/MeshObject/StaticMesh/PlayerBase/PlayerState/CPlayerState.h"
+#include "PlayerBase/PlayerState/CPlayerState.h"
 
 class CPlayerHandHitState
 	: public CPlayerState	//ƒvƒŒƒCƒ„[ó‘Ô‚ğŒp³.

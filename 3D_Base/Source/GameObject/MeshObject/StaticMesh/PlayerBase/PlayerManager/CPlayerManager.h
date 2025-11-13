@@ -1,6 +1,6 @@
 #pragma once
 
-#include "GameObject/MeshObject/StaticMesh/PlayerBase/CPlayerBase.h"
+#include "PlayerBase/CPlayerBase.h"
 
 /***********************************************************************
 *   プレイヤーマネージャークラス.				制作者 [甲把]
@@ -25,6 +25,9 @@ public:
 	//--- 描画関数 ---.
 	void Draw(
 		D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAMERA& Camera);
+
+	//--- リザルトシーンの設定 ---.
+	void ResultPlayerCreate();
 
 	//今は実際使うかわからないのでコメント化.
 	//エフェクトを表示するための関数.

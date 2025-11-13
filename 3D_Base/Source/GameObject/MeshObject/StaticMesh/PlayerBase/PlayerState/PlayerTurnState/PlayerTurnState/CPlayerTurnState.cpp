@@ -1,8 +1,8 @@
 #include "CPlayerTurnState.h"
 
-#include "GameObject/MeshObject/StaticMesh/PlayerBase/CPlayerBase.h"
+#include "PlayerBase/CPlayerBase.h"
 
-#include "GameObject/MeshObject/StaticMesh/PlayerBase/PlayerState/PlayerTurnState/PlayerTurnIdleState/CPlayerTurnIdleState.h"
+#include "PlayerBase/PlayerState/PlayerTurnState/PlayerTurnIdleState/CPlayerTurnIdleState.h"
 
 CPlayerTurnState::CPlayerTurnState(CPlayerBase& pPlayer, float x, float z)
 	: CPlayerState		( pPlayer )

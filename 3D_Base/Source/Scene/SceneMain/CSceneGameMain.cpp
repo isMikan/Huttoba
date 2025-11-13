@@ -185,7 +185,7 @@ void CSceneGameMain::Update()
 	ManageEffectLaser();
 
 	//Ÿ‚ÌƒV[ƒ“‚Ö‘JˆÚ
-	if (GetAsyncKeyState(VK_F4) & 0x0001)
+	if (GetAsyncKeyState(VK_F4) & 0x8000)
 	{
 		SetNextScene(Result);
 	}

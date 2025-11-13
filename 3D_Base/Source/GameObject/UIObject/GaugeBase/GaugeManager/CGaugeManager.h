@@ -2,8 +2,8 @@
 
 #include "GameObject/UIObject/GaugeBase/CGaugeBase.h"
 
-#include "GameObject/MeshObject/StaticMesh/PlayerBase/PlayerManager/CPlayerManager.h"
-#include "GameObject/MeshObject/StaticMesh/PlayerBase/CPlayerBase.h"
+#include "PlayerBase/PlayerManager/CPlayerManager.h"
+#include "PlayerBase/CPlayerBase.h"
 
 #include <unordered_set>
 
