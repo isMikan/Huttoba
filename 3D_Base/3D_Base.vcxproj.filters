@@ -107,6 +107,8 @@
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\PlayerBase\PlayerAI\PlayerAI_TypeA\CPlayerAI_TypeA.cpp" />
     <ClCompile Include="Source\Camera\CameraManager\CCameraManager.cpp" />
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\PlayerBase\PlayerState\PlayerActionState\PlayerHoldingIdleState\CPlayerHoldingIdleState.cpp" />
+    <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\PlayerBase\PlayerState\PlayerActionState\PlayerItemAttackState\CPlayerItemAttackState.cpp" />
+    <ClCompile Include="Source\Scene\SceneData\CSceneData.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Assets\AssetManager.h" />
@@ -217,5 +219,7 @@
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\PlayerBase\PlayerAI\PlayerAI_TypeA\CPlayerAI_TypeA.h" />
     <ClInclude Include="Source\Camera\CameraManager\CCameraManager.h" />
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\PlayerBase\PlayerState\PlayerActionState\PlayerHoldingIdleState\CPlayerHoldingIdleState.h" />
+    <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\PlayerBase\PlayerState\PlayerActionState\PlayerItemAttackState\CPlayerItemAttackState.h" />
+    <ClInclude Include="Source\Scene\SceneData\CSceneData.h" />
   </ItemGroup>
 </Project>

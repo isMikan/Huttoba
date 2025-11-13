@@ -1,12 +1,14 @@
 #include "Scene/SceneResult/CSceneResult.h"
 
+#include "Camera/CameraManager/CCameraManager.h"
+
 CSceneResult::CSceneResult()
 	: m_Action				()
 
 	, m_pSpriteResultImg	( nullptr )
 	, m_pSpriteSelector		( nullptr )
 
-	//, m_pPlayer				()
+	, m_pPlayerManager		()
 
 	, m_SelectorPos			()
 
@@ -17,6 +19,8 @@ CSceneResult::CSceneResult()
 
 	, cnt					( 0 )
 {
+	m_pDx11 = CDirectX11::GetInstance();
+
 	Create();
 	LoadData();
 	SetSelectorPos();
@@ -28,8 +32,15 @@ CSceneResult::~CSceneResult()
 
 HRESULT CSceneResult::Create()
 {
+	CCameraManager::SetPosition(0.f, 20.f, -10.f);
+	CCameraManager::SetLook(0.f, 2.f, 6.f);
+	CCameraManager::SetLight(0.f, 30.f, -10.f);
+
 	m_pSpriteResultImg = std::make_unique<CUIObject>();
 	m_pSpriteSelector = std::make_unique<CUIObject>();
+
+	//プレイヤーマネージャーのインスタンス作成.
+	m_pPlayerManager = std::make_unique<CPlayerManager>();
 
 	return S_OK;
 }
@@ -38,6 +49,9 @@ HRESULT CSceneResult::LoadData()
 {
 	m_pSpriteResultImg->AttachSprite(AssetManager::Sprite(Sprite2DList::Result));
 	m_pSpriteSelector->AttachSprite(AssetManager::Sprite(Sprite2DList::Selector));
+	
+	//プレイヤーマネージャーの読み込み.
+	m_pPlayerManager->LoadData();
 
 	return S_OK;
 }
@@ -48,6 +62,9 @@ void CSceneResult::Update()
 	MoveSelector();
 
 	SelectorControl();
+
+	//プレイヤーの動作
+	m_pPlayerManager->Update();
 
 	//関数を入れる
 	m_Action =
@@ -69,8 +86,24 @@ void CSceneResult::Update()
 
 void CSceneResult::Draw()
 {
+	//カメラの処理.
+	CCameraManager::Update();
+
+	//=== 情報を取得 ===.
+	CAMERA camera = CCameraManager::GetCamera();		//カメラ.
+	LIGHT light = CCameraManager::GetLight();			//ライト.
+	D3DXMATRIX view = CCameraManager::GetView();		//ビュー.
+	D3DXMATRIX proj = CCameraManager::GetProjection();	//プロジェクション.
+	//==================.
+
 	m_pSpriteSelector->Draw();
 	m_pSpriteResultImg->Draw();
+
+	m_pDx11->SetDepth(false);
+	//プレイヤーの描画.
+	m_pPlayerManager->Draw(view, proj, light, camera);
+	m_pDx11->SetDepth(true);
+
 }
 
 void CSceneResult::Destroy()

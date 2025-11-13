@@ -10,7 +10,7 @@
 
 #include "PlayerBase/PlayerState/PlayerActionState/PlayerHandAttackState/CPlayerHandAttackState.h"
 
-#include "Input//CInputManager.h"
+#include "Scene/SceneData/CSceneData.h"
 
 CPlayerManager::CPlayerManager()
 	: m_pPlayers		()
@@ -45,7 +45,7 @@ void CPlayerManager::Create()
 	m_pPlayers.resize(Player_Max);
 	for (int pNo = 0; pNo < Player_Max; pNo++)
 	{
-		//if (CInputManager::IsConnect(pNo))
+		if (CSceneData::GetSlot(pNo))
 		{
 #if 0
 			if (pNo == 0)
@@ -61,9 +61,10 @@ void CPlayerManager::Create()
 			m_pPlayers[pNo] = std::make_unique<CPlayer>(pNo);
 #endif
 		}
-		//else
+		else
 		{
-			//m_pPlayers[pNo] = std::make_unique<CPlayerAI>(pNo);
+			m_pPlayers[pNo] = std::make_unique<CPlayerAI_TypeA>(pNo);
+			dynamic_cast<CPlayerAI*>(m_pPlayers[pNo].get())->SetPlayerManager(this);
 		}
 
 		if (!m_pPlayers[pNo]) return;
@@ -123,10 +124,13 @@ void CPlayerManager::LoadData()
 //--- îjä¸ä÷êî ---.
 void CPlayerManager::Destroy(CPlayerBase* player)
 {
+	int id = player->GetPlayerID();
+	CSceneData::SetPlayerLive(id, false);
+
 	//ìñÇΩÇËîªíËçÌèú.
 	CollisionManager::GetInstance()->RemoveCollider(player->GetCollider().get());
 	//îzóÒçÌèú.
-	m_pPlayers[player->GetPlayerID()].reset();
+	m_pPlayers[id].reset();
 }
 
 //--- çXêVä÷êî ---.

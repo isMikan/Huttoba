@@ -2,6 +2,8 @@
 
 #include "Camera/CameraManager/CCameraManager.h"
 
+#include "Scene/SceneData/CSceneData.h"
+
 CSceneStandby::CSceneStandby()
 	: m_pSpriteStandbyImg	( nullptr )
 
@@ -91,7 +93,7 @@ void CSceneStandby::Update()
 	{
 		if (CInputManager::IsDown(Action::Switch,i))
 		{
-			CInputManager::ChangeSlot(i);
+			CSceneData::ChangeSlot(i);
 		}
 	}
 }
@@ -110,7 +112,7 @@ void CSceneStandby::Draw()
 
 	for (int i = 0;i < 4;i++)
 	{
-		if (CInputManager::GetSlot(i).ready)
+		if (CSceneData::GetSlot(i))
 		{
 			m_pRedyFontImg[i]->Draw();
 		}

@@ -6,7 +6,7 @@
 #include "Item/ItemManager/ItemManager.h"
 #include "Item/ItemBase.h"
 #include "Collision/CollisionDraw/CollisionDraw.h"
-
+#include "Scene/SceneData/CSceneData.h"
 
 CSceneGameMain::CSceneGameMain( HWND hWnd)
 	: m_hWnd			( hWnd )
@@ -29,6 +29,8 @@ CSceneGameMain::CSceneGameMain( HWND hWnd)
 {
 	m_pDx9 = CDirectX9::GetInstance();
 	m_pDx11 = CDirectX11::GetInstance();
+
+	CSceneData::PlayerAllLive();
 
 	Create();
 	LoadData();
@@ -188,6 +190,10 @@ void CSceneGameMain::Update()
 		SetNextScene(Result);
 	}
 
+	if (CSceneData::GameMainEnd())
+	{
+		SetNextScene(Result);
+	}
 }
 
 void CSceneGameMain::Draw()
