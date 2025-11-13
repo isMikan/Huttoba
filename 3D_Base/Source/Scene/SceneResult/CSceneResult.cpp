@@ -36,12 +36,12 @@ HRESULT CSceneResult::Create()
 	CCameraManager::SetLook(5.f, 0.f, 0.f);
 	CCameraManager::SetLight(0.f, 10.f, -10.f);
 
-	m_pSpriteResultImg = std::make_unique<CUIObject>();
-	m_pSpriteSelector = std::make_unique<CUIObject>();
-
 	//プレイヤーマネージャーのインスタンス作成.
 	m_pPlayerManager = std::make_unique<CPlayerManager>();
 	m_pPlayerManager->ResultPlayerCreate();
+
+	m_pSpriteResultImg = std::make_unique<CUIObject>();
+	m_pSpriteSelector = std::make_unique<CUIObject>();
 
 	return S_OK;
 }

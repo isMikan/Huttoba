@@ -1,7 +1,6 @@
 #include "CSceneStandby.h"
 
 #include "Camera/CameraManager/CCameraManager.h"
-
 #include "Scene/SceneData/CSceneData.h"
 
 CSceneStandby::CSceneStandby()
@@ -12,7 +11,7 @@ CSceneStandby::CSceneStandby()
 
 	, m_pSpriteSelector		( nullptr )
 
-	, m_pCamera				( nullptr )
+	, m_pPlayerManager		()
 
 	, m_Action				()
 
@@ -20,6 +19,8 @@ CSceneStandby::CSceneStandby()
 
 	, m_SelectorNumber		(0)
 {
+	m_pDx11 = CDirectX11::GetInstance();
+
 	Create();
 	LoadData();
 	//InitializePlayers();
@@ -37,6 +38,14 @@ CSceneStandby::~CSceneStandby()
 
 HRESULT CSceneStandby::Create()
 {
+	CCameraManager::SetPosition(5.f, 3.f, -10.f);
+	CCameraManager::SetLook(5.f, 0.f, 0.f);
+	CCameraManager::SetLight(0.f, 10.f, -10.f);
+
+	//プレイヤーマネージャーのインスタンス作成.
+	m_pPlayerManager = std::make_unique<CPlayerManager>();
+	m_pPlayerManager->ResultPlayerCreate();
+
 	m_pSpriteStandbyImg = std::make_unique<CUIObject>();
 
 	for (int i = 0;i < 4;i++)
@@ -46,8 +55,6 @@ HRESULT CSceneStandby::Create()
 	}
 
 	m_pSpriteSelector = std::make_unique<CUIObject>();
-
-	m_pCamera = std::make_unique<CCamera>();
 
 	return S_OK;
 }
@@ -64,6 +71,8 @@ HRESULT CSceneStandby::LoadData()
 
 	m_pSpriteSelector->AttachSprite(AssetManager::Sprite(Sprite2DList::Selector));
 
+	//プレイヤーマネージャーの読み込み.
+	m_pPlayerManager->LoadData();
 
 	//関数を入れる
 	m_Action =
@@ -96,6 +105,9 @@ void CSceneStandby::Update()
 			CSceneData::ChangeSlot(i);
 		}
 	}
+
+	//プレイヤーの動作
+	m_pPlayerManager->Update();
 }
 
 void CSceneStandby::Draw()
@@ -110,6 +122,11 @@ void CSceneStandby::Draw()
 	D3DXMATRIX proj = CCameraManager::GetProjection();	//プロジェクション.
 //==================.
 
+	//プレイヤーの描画.
+	//m_pPlayerManager->Draw(view, proj, light, camera);
+
+	m_pDx11->SetDepth(false);
+
 	for (int i = 0;i < 4;i++)
 	{
 		if (CSceneData::GetSlot(i))
@@ -123,9 +140,9 @@ void CSceneStandby::Draw()
 	}
 
 	m_pSpriteSelector->Draw();
-
 	m_pSpriteStandbyImg->Draw();	//一番前に表示されるので文字などを表示させたい際は要検証.
 
+	m_pDx11->SetDepth(true);
 }
 
 void CSceneStandby::Destroy()

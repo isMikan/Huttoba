@@ -31,7 +31,7 @@ private:
 	//選択肢がスティックで連続して動いてしまうのを制御する(中間審査用でここに追加したが後でCInputに追加しておく).
 	void SelectorControl();
 private:
-	CDirectX11* m_pDx11;
+	CDirectX11*			m_pDx11;
 
 	std::vector<std::function<void()>>	m_Action;	//画面遷移時の動作を入れる.
 
