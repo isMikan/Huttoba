@@ -44,7 +44,6 @@ public:
 
 	HRESULT CreateUI();
 	HRESULT CteateExplosion();
-	HRESULT CreateCharactor();
 
 	void ManageEffectLaser();
 

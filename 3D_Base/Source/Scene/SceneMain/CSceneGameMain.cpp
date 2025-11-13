@@ -59,6 +59,10 @@ HRESULT CSceneGameMain::Create()
 	//ゲージマネージャーのインスタンス作成.
 	m_pGaugeManager = std::make_unique<CGaugeManager>();
 
+	//プレイヤーマネージャーのインスタンス作成.
+	m_pPlayerManager = std::make_unique<CPlayerManager>();
+	m_pPlayerManager->MainPlayerCreate();
+
 	//地面マネージャークラスのインスタンス作成.
 	m_pGroundManager = std::make_unique<CGroundManager>();
 
@@ -68,7 +72,6 @@ HRESULT CSceneGameMain::Create()
 	//各オブジェクトのインスタンス作成
 	CreateUI();
 	CteateExplosion();
-	CreateCharactor();
 
 	//ゲージを作成.
 	m_pGaugeManager->Create(m_pPlayerManager.get());
@@ -155,7 +158,6 @@ void CSceneGameMain::Update()
 		item->IsOnGround(*m_pGroundManager);
 	}
 
-
 	m_pItemManager->Update();
 
 	CollisionManager::GetInstance()->Update();
@@ -170,9 +172,6 @@ void CSceneGameMain::Update()
 		}
 	}
 
-	//--------------------
-	//	スキンメッシュ
-	//--------------------
 	for (auto& UI : m_pUIMap)
 	{
 		UI.second->Update();
@@ -331,14 +330,6 @@ HRESULT CSceneGameMain::CteateExplosion()
 		if (!exp) return E_POINTER;
 	}
 	return E_NOTIMPL;
-}
-
-HRESULT CSceneGameMain::CreateCharactor()
-{
-	//プレイヤーマネージャーのインスタンス作成.
-	m_pPlayerManager = std::make_unique<CPlayerManager>();
-
-	return S_OK;
 }
 
 void CSceneGameMain::ManageEffectLaser()

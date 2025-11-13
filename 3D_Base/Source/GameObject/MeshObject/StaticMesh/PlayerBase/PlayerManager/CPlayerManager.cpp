@@ -18,7 +18,6 @@ CPlayerManager::CPlayerManager()
 	, m_CreateTime		()
 	, m_ReadyTime		( 0.5f )
 {
-	Create();
 }
 
 CPlayerManager::~CPlayerManager()
@@ -40,11 +39,14 @@ CPlayerManager::~CPlayerManager()
 //--- 構築関数 ---.
 void CPlayerManager::Create()
 {
-	//プレイヤーのインスタンス生成.
+	//念のため削除.
 	m_pPlayers.clear();
+	//最大数を設定.
 	m_pPlayers.resize(Player_Max);
+
 	for (int pNo = 0; pNo < Player_Max; pNo++)
 	{
+		//準備OKのコントローラーの場合.
 		if (CSceneData::GetSlot(pNo))
 		{
 #if 0
@@ -58,11 +60,13 @@ void CPlayerManager::Create()
 				dynamic_cast<CPlayerAI*>(m_pPlayers[pNo].get())->SetPlayerManager(this);
 			}
 #else
+			//プレイヤーのインスタンス生成.
 			m_pPlayers[pNo] = std::make_unique<CPlayer>(pNo);
 #endif
 		}
 		else
 		{
+			//プレイヤーAIのインスタンス生成.
 			m_pPlayers[pNo] = std::make_unique<CPlayerAI_TypeA>(pNo);
 			dynamic_cast<CPlayerAI*>(m_pPlayers[pNo].get())->SetPlayerManager(this);
 		}
@@ -73,12 +77,7 @@ void CPlayerManager::Create()
 		m_pPlayers[pNo]->SetObjectColor(0, CharacterColorSettings(pNo));
 		//頭の色を設定.
 		m_pPlayers[pNo]->GetPlayerHead().SetObjectColor(1, CharacterColorSettings(pNo));
-		//位置と方向の初期化.
-		InitialSettings(pNo);
 	}
-
-	//生成された時間を取得.
-	m_CreateTime = CTimeManager::GetTotalTime();
 }
 
 //--- 読込関数 ---.
@@ -173,26 +172,35 @@ void CPlayerManager::Draw(D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAME
 	}
 }
 
-//--- リザルトシーンの設定 ---.
+//--- メインシーンの構築処理 ---.
+void CPlayerManager::MainPlayerCreate()
+{
+	Create();
+
+	for (auto& player : m_pPlayers)
+	{
+		if (!player) return;
+
+		//プレイヤー番号を取得.
+		int id = player->GetPlayerID();
+
+		//位置と方向の初期化.
+		InitialSettings(id);
+	}
+
+	//生成された時間を取得.
+	m_CreateTime = CTimeManager::GetTotalTime();
+}
+
+//--- リザルトシーンの構築処理 ---.
 void CPlayerManager::ResultPlayerCreate()
 {
-	//プレイヤーのインスタンス生成.
-	m_pPlayers.clear();
-	m_pPlayers.resize(Player_Max);
+	Create();
 
 	int countLive = 0;
 	int countFalled = 0;
 	for (int pNo = 0; pNo < Player_Max; pNo++)
 	{
-		m_pPlayers[pNo] = std::make_unique<CPlayerAI_TypeA>(pNo);
-
-		if (!m_pPlayers[pNo]) return;
-
-		//胴体の色を設定.
-		m_pPlayers[pNo]->SetObjectColor(0, CharacterColorSettings(pNo));
-		//頭の色を設定.
-		m_pPlayers[pNo]->GetPlayerHead().SetObjectColor(1, CharacterColorSettings(pNo));
-
 		D3DXVECTOR3 pos(2.f, 1.f, -3.f);
 		if (CSceneData::GetPlayerLiving(pNo))
 		{
