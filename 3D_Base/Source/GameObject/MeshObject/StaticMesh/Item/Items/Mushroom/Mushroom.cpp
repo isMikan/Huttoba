@@ -9,17 +9,15 @@
 namespace { const bool regist = ItemBase::AutoRegister<Mushroom>("Mushroom"); }
 
 Mushroom::Mushroom()
-	: m_IsPlaced		(false)
-
-	, m_HaveOffset		()
+	: m_IsPlaced		( false )
 
 	, m_Velocity		()
 	, m_MoveSpeed		( 6.0f )	//値を変えると爆弾の移動相度が変化
 
-	, m_IsThrow			( true )
+	, m_IsThrow			( false )
 
 	, m_MinSmashPower	( 6.0f )
-	, m_MaxSmashPower	( 15.0f )
+	, m_MaxSmashPower	( 7.0f )
 {
 	Init();
 }
@@ -36,13 +34,11 @@ void Mushroom::Init()
 
 	m_State = ItemBase::State::Spawn;
 
-	m_tGravity = 0.01f;
-
-	m_HaveOffset = D3DXVECTOR3(0.0f, 0.2f, 0.0f);
+	m_tGravity = 0.001f;
 
 	m_UseCount = 1;
 
-	std::shared_ptr<CStaticMesh> mesh = AssetManager::Mesh(StaticMeshList::Bomb);
+	std::shared_ptr<CStaticMesh> mesh = AssetManager::Mesh(StaticMeshList::Mushroom);
 
 	m_pCollision = CollisionDataFactory::CreateSphereForMesh(
 		CollisionBase::ColliderTag::Mushroom,
@@ -64,10 +60,10 @@ void Mushroom::Draw(D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAMERA& Ca
 void Mushroom::Spawn()
 {
 	//落下処理
-	if (m_vPosition.y > 1.2f)
+	if (m_vPosition.y > 0.5f)
 	{
-		m_vPosition.y -= m_tGravity;
-		m_tGravity += 0.001f;
+		m_vPosition.y -= m_Velocity.y;
+		m_Velocity.y += m_tGravity;
 	}
 	else
 	{
@@ -83,10 +79,10 @@ void Mushroom::OnGround()
 
 void Mushroom::Have()
 {
-	if (!m_IsThrow)
+	//デバック用で何度でも投げれるように
+	if (m_IsThrow)
 	{
-		m_IsThrow = true;
-		m_tGravity = 9.8f;
+		m_IsThrow = false;
 	}
 
 	HaveMove();
@@ -101,46 +97,14 @@ void Mushroom::Use()
 
 void Mushroom::Throw()
 {
-	if (m_IsThrow)
-	{
-		//プレイヤーのクォータニオン(向いている方向)記録
-		m_vQuaternion = m_pPlayer->GetQuaternion();
-
-		D3DXMATRIX matRot;
-
-		//クォータニオンをマトリックス(行列)に変換
-		D3DXMatrixRotationQuaternion(&matRot, &m_vQuaternion);
-
-		//行列の中にあるZ軸成分を取り出す
-		D3DXVECTOR3 forward = D3DXVECTOR3(matRot._31, matRot._32, matRot._33);
-
-		//取り出したZ軸成分をノーマライズ
-		D3DXVec3Normalize(&forward, &forward);
-
-		m_Velocity = forward * m_MoveSpeed;
-
-		m_IsThrow = false;
-	}
-
-
-	//てきとうに移動速度を減少させている
-	m_Velocity -= m_Velocity * static_cast<float>(CTimeManager::GetDeltaTime());
-
-	if (m_vPosition.y > 0.5f)
-	{
-		m_tGravity += 0.001f;
-		m_vPosition.y -= m_tGravity;
-	}
-	else
-	{
-		m_vPosition.y = 0;
-	}
-
-	m_vPosition += m_Velocity * static_cast<float>(CTimeManager::GetDeltaTime());
+	ThrowMove();
 }
 
 void Mushroom::Destroy()
 {
+	m_IsDestroy = true;
+
+	m_pPlayer->SetItemBase(nullptr);
 }
 
 void Mushroom::OnCollision(CollisionBase* other)
@@ -159,13 +123,13 @@ void Mushroom::OnCollision(CollisionBase* other)
 
 void Mushroom::HaveMove()
 {
-	m_vPosition = m_pPlayer->GetPlayerRightHand().GetPosition() + m_HaveOffset;
+	m_vPosition = m_pPlayer->GetPlayerRightHand().GetPosition();
 	m_vQuaternion = m_pPlayer->GetQuaternion();
 }
 
 void Mushroom::UseMove()
 {
-	if (m_IsThrow)
+	if (!m_IsThrow)
 	{
 		//プレイヤーのクォータニオン(向いている方向)記録
 		m_vQuaternion = m_pPlayer->GetQuaternion();
@@ -185,12 +149,10 @@ void Mushroom::UseMove()
 
 		m_Velocity.y = 5.0f;
 
-		m_tGravity=
-
-		m_IsThrow = false;
+		m_IsThrow = true;
 	}
 
-	if (m_vPosition.y > 0.5f)
+	if (m_vPosition.y > 0.05f)
 	{
 		m_tGravity += 0.001f;
 		m_vPosition.y -= m_tGravity;
@@ -215,7 +177,42 @@ void Mushroom::UseMove()
 
 void Mushroom::ThrowMove()
 {
-	UseMove();
+	if (!m_IsThrow)
+	{
+		//プレイヤーのクォータニオン(向いている方向)記録
+		m_vQuaternion = m_pPlayer->GetQuaternion();
+
+		D3DXMATRIX matRot;
+
+		//クォータニオンをマトリックス(行列)に変換
+		D3DXMatrixRotationQuaternion(&matRot, &m_vQuaternion);
+
+		//行列の中にあるZ軸成分を取り出す
+		D3DXVECTOR3 forward = D3DXVECTOR3(matRot._31, matRot._32, matRot._33);
+
+		//取り出したZ軸成分をノーマライズ
+		D3DXVec3Normalize(&forward, &forward);
+
+		m_Velocity = forward * m_MoveSpeed;
+
+		m_IsThrow = true;
+	}
+
+
+	//てきとうに移動速度を減少させている
+	m_Velocity -= m_Velocity * static_cast<float>(CTimeManager::GetDeltaTime());
+
+	if (m_vPosition.y > 0.5f)
+	{
+		m_tGravity += 0.001f;
+		m_vPosition.y -= m_tGravity;
+	}
+	else
+	{
+		m_vPosition.y = 0;
+	}
+
+	m_vPosition += m_Velocity * static_cast<float>(CTimeManager::GetDeltaTime());
 }
 
 void Mushroom::Hit()
@@ -245,24 +242,22 @@ void Mushroom::Hit()
 
 void Mushroom::Smash(CPlayerBase& playiers)
 {	
-	//爆弾とプレイヤーの位置でベクトルをとる
+	//キノコとプレイヤーの位置でベクトルをとる
 	D3DXVECTOR3 vecLen = m_vPosition - playiers.GetPosition();
 
 	//ベクトルを長さに変換
 	float len = D3DXVec3Length(&vecLen);
 
 	//プレイヤーの吹き飛ばしの計算
-	D3DXVECTOR3 SmashVel = playiers.GetKnockbackVelocity(m_vPosition, CalculateForceScalar(len), 60.0f);
+	D3DXVECTOR3 SmashVel = playiers.GetKnockbackVelocity(m_vPosition, CalculateForceScalar(len), 50.0f);
 
 	playiers.SetHitAttack(
 		SmashVel,
-		CPlayerBase::HitEvent::Knockdown);
+		CPlayerBase::HitEvent::Knockback);
 }
 
 float Mushroom::CalculateForceScalar(float distance)
 {
-	//線形補間で計算
-
 	//キノコの当たる範囲を仮設定
 	//当たり判定用メッシュの大きさにする
 	float maxDist = 2;
@@ -272,13 +267,7 @@ float Mushroom::CalculateForceScalar(float distance)
 
 	ratio = std::clamp(ratio, 0.0f, 1.0f);
 
-	//最小吹き飛ばし力
-	float minPower = 6.0f;
-
-	//最大吹き飛ばし力
-	float maxPower = 15.0f;
-
-	float power = minPower + (maxPower - minPower) * ratio;
+	float power = m_MinSmashPower + (m_MaxSmashPower - m_MinSmashPower) * ratio;
 
 	return power;
 }

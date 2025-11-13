@@ -47,6 +47,15 @@ HRESULT CSceneStandby::Create()
 
 	m_pCamera = std::make_unique<CCamera>();
 
+	//関数を入れる
+	m_Action =
+	{
+		//ラムダ式で関数にしてm_Actionの中に入れている(SetNextScene(Standby);ではだめ).
+		//画面に表示される選択肢の文字と同じ順番に処理を入れていく
+		[this]() {SetNextScene(GameMain);},
+		[this]() {SetNextScene(Title);}
+	};
+
 	return S_OK;
 }
 
@@ -61,16 +70,6 @@ HRESULT CSceneStandby::LoadData()
 	}
 
 	m_pSpriteSelector->AttachSprite(AssetManager::Sprite(Sprite2DList::Selector));
-
-
-	//関数を入れる
-	m_Action =
-	{
-		//ラムダ式で関数にしてm_Actionの中に入れている(SetNextScene(Standby);ではだめ).
-		//画面に表示される選択肢の文字と同じ順番に処理を入れていく
-		[this]() {SetNextScene(GameMain);},
-		[this]() {SetNextScene(Title);}
-	};
 
 	return S_OK;
 }

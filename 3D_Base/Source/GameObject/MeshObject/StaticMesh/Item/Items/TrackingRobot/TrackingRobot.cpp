@@ -47,7 +47,7 @@ void TrackingRobot::Init()
 
 	m_tGravity = 0.01f;
 
-	std::shared_ptr<CStaticMesh> mesh = AssetManager::Mesh(StaticMeshList::ExplosionCol);
+	std::shared_ptr<CStaticMesh> mesh = AssetManager::Mesh(StaticMeshList::TrackingRobot);
 
 	m_pCollision = CollisionDataFactory::CreateSphereForMesh(
 		CollisionBase::ColliderTag::TrackingRobot,

@@ -57,9 +57,6 @@ private:
     //アイテムを設置したかをとる
     bool        m_IsPlaced;
 
-    //アイテムを持った際の補正値
-    D3DXVECTOR3 m_HaveOffset;
-
     //移動速度
     D3DXVECTOR3 m_Velocity;
 

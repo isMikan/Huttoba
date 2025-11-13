@@ -31,6 +31,16 @@ HRESULT CSceneResult::Create()
 	m_pSpriteResultImg = std::make_unique<CUIObject>();
 	m_pSpriteSelector = std::make_unique<CUIObject>();
 
+	//関数を入れる
+	m_Action =
+	{
+		//ラムダ式で関数にしてm_Actionの中に入れている(SetNextScene(Standby);ではだめ).
+		//画面に表示される選択肢の文字と同じ順番に処理を入れていく
+		[this]() {SetNextScene(GameMain);},
+		[this]() {SetNextScene(Standby);},
+		[this]() {SetNextScene(Title);}
+	};
+
 	return S_OK;
 }
 
@@ -48,16 +58,6 @@ void CSceneResult::Update()
 	MoveSelector();
 
 	SelectorControl();
-
-	//関数を入れる
-	m_Action =
-	{
-		//ラムダ式で関数にしてm_Actionの中に入れている(SetNextScene(Standby);ではだめ).
-		//画面に表示される選択肢の文字と同じ順番に処理を入れていく
-		[this]() {SetNextScene(GameMain);},
-		[this]() {SetNextScene(Standby);},
-		[this]() {SetNextScene(Title);}
-	};
 
 	if (CInputManager::IsDown(Action::Decide,0))
 	{
