@@ -92,7 +92,7 @@ void Fun::Draw(D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAMERA& Camera)
 void Fun::Spawn()
 {
 	//落下処理
-	if (m_vPosition.y > 1.2)
+	if (m_vPosition.y > 0.2)
 	{
 		m_vPosition.y -= m_tGravity;
 		m_tGravity += 0.001f;
@@ -121,6 +121,9 @@ void Fun::Use()
 void Fun::Throw()
 {
 	ThrowMove();
+
+	//投げた瞬間に別のアイテムを持ったり使ったりできるように追加
+	//m_pPlayer->SetItemBase(nullptr);
 }
 
 void Fun::Destroy()
@@ -217,7 +220,7 @@ void Fun::ThrowMove()
 		m_IsThrow = false;
 
 		//当たり判定削除
-		//CollisionManager::GetInstance()->RemoveCollider(m_pCollision.get());
+		CollisionManager::GetInstance()->RemoveCollider(m_pCollision.get());
 
 	}
 

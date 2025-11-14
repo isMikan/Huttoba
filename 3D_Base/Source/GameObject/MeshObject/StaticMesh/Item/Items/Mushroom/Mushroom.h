@@ -39,9 +39,6 @@ private:
     //投擲の移動処理
     void ThrowMove();
 
-    //当たった際の処理
-    void Hit();
-
     //吹き飛ばし処理
     void Smash(CPlayerBase& playiers);
     
@@ -57,17 +54,17 @@ private:
     //アイテムを設置したかをとる
     bool        m_IsPlaced;
 
-    //アイテムを持った際の補正値
-    D3DXVECTOR3 m_HaveOffset;
-
     //移動速度
     D3DXVECTOR3 m_Velocity;
 
     //投げた時の移動速度
     float       m_MoveSpeed;
 
-    //投げる時に一度だけ処理するものがあるので追加
+    //投げている状態
     bool        m_IsThrow;
+
+    //投げる時に一度だけ処理するものがあるので追加
+    bool        m_IsHasThrow;
 
     //最小吹き飛ばし力
     float       m_MinSmashPower;

@@ -4,20 +4,20 @@
 #include "Scene/SceneData/CSceneData.h"
 
 CSceneStandby::CSceneStandby()
-	: m_pSpriteStandbyImg	( nullptr )
+	: m_pSpriteStandbyImg(nullptr)
 
-	, m_pRedyFontImg		()
-	, m_pNotRedyFontImg		()
+	, m_pRedyFontImg()
+	, m_pNotRedyFontImg()
 
-	, m_pSpriteSelector		( nullptr )
+	, m_pSpriteSelector(nullptr)
 
-	, m_pPlayerManager		()
+	, m_pPlayerManager()
 
-	, m_Action				()
+	, m_Action()
 
-	, m_SelectorPos			()
+	, m_SelectorPos()
 
-	, m_SelectorNumber		(0)
+	, m_SelectorNumber(0)
 {
 	m_pDx11 = CDirectX11::GetInstance();
 
@@ -90,7 +90,7 @@ void CSceneStandby::Update()
 {
 	MoveSelector();
 
-	if (CInputManager::IsDown(Action::Decide,0)/* && slot0.ready*/)
+	if (CInputManager::IsDown(Action::Decide, 0)/* && slot0.ready*/)
 	{
 		//SetNextScene(GameMain);
 		//選択中の番号で処理される関数が変わる.
@@ -100,7 +100,7 @@ void CSceneStandby::Update()
 	//コントローラーで準備状態切り替え.
 	for (int i = 0; i < 4; ++i)
 	{
-		if (CInputManager::IsDown(Action::Switch,i))
+		if (CInputManager::IsDown(Action::Switch, i))
 		{
 			CSceneData::ChangeSlot(i);
 		}
@@ -115,15 +115,15 @@ void CSceneStandby::Draw()
 	//カメラの処理.
 	CCameraManager::Update();
 
-//=== 情報を取得 ===.
+	//=== 情報を取得 ===.
 	CAMERA camera = CCameraManager::GetCamera();		//カメラ.
 	LIGHT light = CCameraManager::GetLight();			//ライト.
 	D3DXMATRIX view = CCameraManager::GetView();		//ビュー.
 	D3DXMATRIX proj = CCameraManager::GetProjection();	//プロジェクション.
-//==================.
+	//==================.
 
-	//プレイヤーの描画.
-	//m_pPlayerManager->Draw(view, proj, light, camera);
+		//プレイヤーの描画.
+		//m_pPlayerManager->Draw(view, proj, light, camera);
 
 	m_pDx11->SetDepth(false);
 
@@ -166,12 +166,12 @@ void CSceneStandby::SetSelectorPos()
 
 void CSceneStandby::MoveSelector()
 {
-	if (CInputManager::IsDown(Action::NavigateUp,0) || 0 < CInputManager::GetLeftSthikY(0))
+	if (CInputManager::IsDown(Action::NavigateUp, 0) || 0 < CInputManager::GetLeftSthikY(0))
 	{
 		if (m_SelectorNumber > 0)
 			m_SelectorNumber--;
 	}
-	if (CInputManager::IsDown(Action::NavigateDown,0) || 0 > CInputManager::GetLeftSthikY(0))
+	if (CInputManager::IsDown(Action::NavigateDown, 0) || 0 > CInputManager::GetLeftSthikY(0))
 	{
 		if (m_SelectorNumber < m_SelectorPos.size() - 1)
 			m_SelectorNumber++;
