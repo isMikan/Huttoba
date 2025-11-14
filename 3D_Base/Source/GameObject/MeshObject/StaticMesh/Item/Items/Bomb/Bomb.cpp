@@ -199,7 +199,7 @@ void Bomb::UseMove()
 	//‚Ä‚«‚Æ‚¤‚ÉˆÚ“®‘¬“x‚ğŒ¸­‚³‚¹‚Ä‚¢‚é
 	m_Velocity -= m_Velocity * static_cast<float>(CTimeManager::GetDeltaTime());
 
-	if (m_vPosition.y > 0.5f)
+	if (m_vPosition.y > 0.1f)
 	{
 		m_Velocity.y -= m_tGravity;
 		m_tGravity += 0.001f;
