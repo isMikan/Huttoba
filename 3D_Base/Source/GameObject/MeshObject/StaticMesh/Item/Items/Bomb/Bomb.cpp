@@ -115,12 +115,19 @@ void Bomb::Use()
 {
 	UseMove();
 
-	m_pPlayer->SetItemBase(nullptr);
+	if (!m_IsThrow)
+		//投げた瞬間に別のアイテムを持ったり使ったりできるように追加
+		m_pPlayer->SetItemBase(nullptr);
+
 }
 
 void Bomb::Throw()
 {
-	UseMove();
+	ThrowMove();
+
+	//if (!m_IsThrow)
+		//投げた瞬間に別のアイテムを持ったり使ったりできるように追加
+	//	m_pPlayer->SetItemBase(nullptr);
 }
 
 void Bomb::Destroy()

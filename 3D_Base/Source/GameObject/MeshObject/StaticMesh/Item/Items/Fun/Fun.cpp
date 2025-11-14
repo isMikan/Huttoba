@@ -120,6 +120,9 @@ void Fun::Use()
 void Fun::Throw()
 {
 	ThrowMove();
+
+	//投げた瞬間に別のアイテムを持ったり使ったりできるように追加
+	m_pPlayer->SetItemBase(nullptr);
 }
 
 void Fun::Destroy()
@@ -216,7 +219,7 @@ void Fun::ThrowMove()
 		m_IsThrow = false;
 
 		//当たり判定削除
-		//CollisionManager::GetInstance()->RemoveCollider(m_pCollision.get());
+		CollisionManager::GetInstance()->RemoveCollider(m_pCollision.get());
 
 	}
 

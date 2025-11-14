@@ -39,9 +39,6 @@ private:
     //“Š±‚ÌˆÚ“®ˆ—
     void ThrowMove();
 
-    //“–‚½‚Á‚½Û‚Ìˆ—
-    void Hit();
-
     //‚«”ò‚Î‚µˆ—
     void Smash(CPlayerBase& playiers);
     
@@ -63,8 +60,11 @@ private:
     //“Š‚°‚½‚ÌˆÚ“®‘¬“x
     float       m_MoveSpeed;
 
-    //“Š‚°‚é‚Éˆê“x‚¾‚¯ˆ—‚·‚é‚à‚Ì‚ª‚ ‚é‚Ì‚Å’Ç‰Á
+    //“Š‚°‚Ä‚¢‚éó‘Ô
     bool        m_IsThrow;
+
+    //“Š‚°‚é‚Éˆê“x‚¾‚¯ˆ—‚·‚é‚à‚Ì‚ª‚ ‚é‚Ì‚Å’Ç‰Á
+    bool        m_IsHasThrow;
 
     //Å¬‚«”ò‚Î‚µ—Í
     float       m_MinSmashPower;
