@@ -89,5 +89,5 @@ private:
     float       m_MaxSmashPower;
 
     //è‚É‚Á‚Ä‚¢‚éó‘Ô
-    bool        IsHold;
+    bool        m_IsHold;
 };

@@ -20,6 +20,8 @@ Mushroom::Mushroom()
 
 	, m_MinSmashPower	( 6.0f )
 	, m_MaxSmashPower	( 7.0f )
+
+	, m_IsHold			( false )
 {
 	Init();
 }
@@ -96,6 +98,7 @@ void Mushroom::Use()
 {
 	UseMove();
 
+	if(m_IsHold)
 	m_pPlayer->SetItemBase(nullptr);
 }
 

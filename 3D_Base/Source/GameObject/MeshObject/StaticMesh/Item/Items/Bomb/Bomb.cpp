@@ -29,7 +29,7 @@ Bomb::Bomb()
 
 	, m_MaxSmashPower	( 10.0f )	//値を変えるとプレイヤーの最大吹き飛ばし力が変化
 
-	, IsHold			(false)
+	, m_IsHold			(false)
 {
 	Init();
 	m_ObjectColor.resize(2);
@@ -117,12 +117,12 @@ void Bomb::Use()
 {
 	UseMove();
 
-	if (!IsHold)
+	if (!m_IsHold)
 	{
 		//投げた瞬間に別のアイテムを持ったり使ったりできるように追加
 		m_pPlayer->SetItemBase(nullptr);
 		
-		IsHold = true;
+		m_IsHold = true;
 	}
 }
 

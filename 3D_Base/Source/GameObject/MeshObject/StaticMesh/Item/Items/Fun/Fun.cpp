@@ -19,6 +19,8 @@ Fun::Fun()
 	, m_IsThrow		( true )
 
 	, m_pNowCollider()
+
+	, m_IsHold		( false )
 {
 	Init();
 	

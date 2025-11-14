@@ -71,4 +71,7 @@ private:
 
     //Å‘å‚«”ò‚Î‚µ—Í
     float       m_MaxSmashPower;
+
+    //è‚É‚Á‚Ä‚¢‚éó‘Ô
+    bool        m_IsHold;
 };
