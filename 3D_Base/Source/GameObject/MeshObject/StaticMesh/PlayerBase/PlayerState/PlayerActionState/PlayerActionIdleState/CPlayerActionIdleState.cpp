@@ -21,17 +21,20 @@ CPlayerActionIdleState::~CPlayerActionIdleState()
 //--- 状態の開始時に呼び出す ---.
 void CPlayerActionIdleState::Enter()
 {
-	//モーション開始時間.
+	//アニメーション開始時間.
 	m_StartTime = CTimeManager::GetTotalTime();
 		
+	//プレイヤーの位置を取得.
+	D3DXVECTOR3 playerPos = m_pPlayer.GetPosition();
+	//プレイヤーの位置を地面に合わせる.
+	m_pPlayer.SetPosition(playerPos.x, 0.f, playerPos.z);
+
 	//クォータニオンを取得.
 	D3DXQUATERNION quat = m_pPlayer.GetQuaternion();
 	//正規化.
 	D3DXQuaternionNormalize(&quat, &quat);
-
 	//クォータニオンの設定.
-	m_pPlayer.SetQuaternion(
-		0.f, quat.y, 0.f, quat.w);
+	m_pPlayer.SetQuaternion(0.f, quat.y, 0.f, quat.w);
 }
 
 //--- 状態の終了時に呼び出す ---.
