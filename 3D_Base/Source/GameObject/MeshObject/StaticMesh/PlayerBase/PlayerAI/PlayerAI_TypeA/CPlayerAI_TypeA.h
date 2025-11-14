@@ -1,6 +1,6 @@
 #pragma once
 
-#include "GameObject/MeshObject/StaticMesh/PlayerBase/PlayerAI/CPlayerAI.h"
+#include "PlayerBase/PlayerAI/CPlayerAI.h"
 
 /***********************************************************************
 *	プレイヤーAIクラス.

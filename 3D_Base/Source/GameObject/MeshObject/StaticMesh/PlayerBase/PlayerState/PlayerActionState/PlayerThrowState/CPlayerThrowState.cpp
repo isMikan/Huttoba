@@ -1,8 +1,8 @@
 #include "CPlayerThrowState.h"
 
-#include "GameObject/MeshObject/StaticMesh/PlayerBase/CPlayerBase.h"
+#include "PlayerBase/CPlayerBase.h"
 
-#include "GameObject/MeshObject/StaticMesh/PlayerBase/PlayerState/PlayerActionState/PlayerActionIdleState/CPlayerActionIdleState.h"
+#include "PlayerBase/PlayerState/PlayerActionState/PlayerActionIdleState/CPlayerActionIdleState.h"
 
 CPlayerThrowState::CPlayerThrowState(CPlayerBase& pPlayer)
 	: CPlayerState			( pPlayer )

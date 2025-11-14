@@ -2,7 +2,7 @@
 
 #include "Collision/Collider/CollisionSphere/CollisionSphere.h"
 #include "Collision/Collider/CollisionCapsule/CollisionCapsule.h"
-#include "GameObject/MeshObject/StaticMesh/CStaticMeshObject.h"
+#include "CStaticMeshObject.h"
 #include "GameObject/CGameObject.h"
 #include "Collision/CollisionListener/ICollisionListener.h"
 #include "Collision/CollisionUtility/CollisionUtility.h"

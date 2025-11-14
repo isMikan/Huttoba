@@ -8,7 +8,7 @@
 #include "GameObject/SpriteObject/Explosion/CExplosion.h"
 #include "GameObject/UIObject/CUIObject.h"
 #include "Assets/Mesh/StaticMesh/CStaticMesh.h"
-#include "GameObject/MeshObject/StaticMesh/CStaticMeshObject.h"
+#include "CStaticMeshObject.h"
 #include "Scene/CSceneManager.h"
 
 

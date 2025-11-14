@@ -1,6 +1,7 @@
 #include "CSceneStandby.h"
 
 #include "Camera/CameraManager/CCameraManager.h"
+#include "Scene/SceneData/CSceneData.h"
 
 CSceneStandby::CSceneStandby()
 	: m_pSpriteStandbyImg	( nullptr )
@@ -10,7 +11,7 @@ CSceneStandby::CSceneStandby()
 
 	, m_pSpriteSelector		( nullptr )
 
-	, m_pCamera				( nullptr )
+	, m_pPlayerManager		()
 
 	, m_Action				()
 
@@ -18,6 +19,8 @@ CSceneStandby::CSceneStandby()
 
 	, m_SelectorNumber		(0)
 {
+	m_pDx11 = CDirectX11::GetInstance();
+
 	Create();
 	LoadData();
 	//InitializePlayers();
@@ -35,6 +38,14 @@ CSceneStandby::~CSceneStandby()
 
 HRESULT CSceneStandby::Create()
 {
+	CCameraManager::SetPosition(5.f, 3.f, -10.f);
+	CCameraManager::SetLook(5.f, 0.f, 0.f);
+	CCameraManager::SetLight(0.f, 10.f, -10.f);
+
+	//プレイヤーマネージャーのインスタンス作成.
+	m_pPlayerManager = std::make_unique<CPlayerManager>();
+	m_pPlayerManager->ResultPlayerCreate();
+
 	m_pSpriteStandbyImg = std::make_unique<CUIObject>();
 
 	for (int i = 0;i < 4;i++)
@@ -71,6 +82,16 @@ HRESULT CSceneStandby::LoadData()
 
 	m_pSpriteSelector->AttachSprite(AssetManager::Sprite(Sprite2DList::Selector));
 
+
+	//関数を入れる
+	m_Action =
+	{
+		//ラムダ式で関数にしてm_Actionの中に入れている(SetNextScene(Standby);ではだめ).
+		//画面に表示される選択肢の文字と同じ順番に処理を入れていく
+		[this]() {SetNextScene(GameMain);},
+		[this]() {SetNextScene(Title);}
+	};
+
 	return S_OK;
 }
 
@@ -90,9 +111,12 @@ void CSceneStandby::Update()
 	{
 		if (CInputManager::IsDown(Action::Switch,i))
 		{
-			CInputManager::ChangeSlot(i);
+			CSceneData::ChangeSlot(i);
 		}
 	}
+
+	//プレイヤーの動作
+	m_pPlayerManager->Update();
 }
 
 void CSceneStandby::Draw()
@@ -107,9 +131,14 @@ void CSceneStandby::Draw()
 	D3DXMATRIX proj = CCameraManager::GetProjection();	//プロジェクション.
 //==================.
 
+	//プレイヤーの描画.
+	//m_pPlayerManager->Draw(view, proj, light, camera);
+
+	m_pDx11->SetDepth(false);
+
 	for (int i = 0;i < 4;i++)
 	{
-		if (CInputManager::GetSlot(i).ready)
+		if (CSceneData::GetSlot(i))
 		{
 			m_pRedyFontImg[i]->Draw();
 		}
@@ -120,9 +149,9 @@ void CSceneStandby::Draw()
 	}
 
 	m_pSpriteSelector->Draw();
-
 	m_pSpriteStandbyImg->Draw();	//一番前に表示されるので文字などを表示させたい際は要検証.
 
+	m_pDx11->SetDepth(true);
 }
 
 void CSceneStandby::Destroy()

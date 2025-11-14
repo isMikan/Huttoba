@@ -2,7 +2,7 @@
 
 #include "Input/CInput.h"
 
-#include "GameObject/MeshObject/StaticMesh/PlayerBase/CPlayerBase.h"
+#include "PlayerBase/CPlayerBase.h"
 
 /***********************************************************************
 *	サイズ後々消す(メタセコイアでアイテム作るとき参考にしてください)

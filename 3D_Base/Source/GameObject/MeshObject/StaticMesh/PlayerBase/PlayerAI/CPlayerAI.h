@@ -1,8 +1,8 @@
 #pragma once
 
-#include "GameObject/MeshObject/StaticMesh/PlayerBase/CPlayerBase.h"
+#include "PlayerBase/CPlayerBase.h"
 
-#include "GameObject/MeshObject/StaticMesh/PlayerBase/PlayerManager/CPlayerManager.h"
+#include "PlayerBase/PlayerManager/CPlayerManager.h"
 
 /***********************************************************************
 *	プレイヤーAIクラス.

@@ -58,32 +58,33 @@ public:
     static bool IsConnect(int index) { return Instance().m_pInputs[index]->IsConnect(); }
 
     //別の場所に追加するべき----------
-    static PlayerSlot& GetSlot(int index) { return Instance().m_Slot[index]; }
+    //static PlayerSlot& GetSlot(int index) { return Instance().m_IsSlot[index]; }
 
     //com作る時にもっと練って作り直しておく
-    static void ChangeSlot(int index)
+    static bool ChangeSlot(int index)
     {
-        if (Instance().m_Slot[index].ready)
+        return !Instance().m_IsSlot[index].ready;
+        if (Instance().m_IsSlot[index].ready)
         {
-            Instance().m_Slot[index].ready = false;
+            Instance().m_IsSlot[index].ready = false;
         }
         else
         {
-            Instance().m_Slot[index].ready = true;
+            Instance().m_IsSlot[index].ready = true;
         }
     }
-    //CInputのものではない
-    static void SetHuman(int index)
-    {
-        Instance().m_Slot[index].state = PlayerSlotState::Player;
-        Instance().m_Slot[index].ready = true;
-    }
-    //CInputのものではない
-    static void SetCPU(int index)
-    {
-        Instance().m_Slot[index].state = PlayerSlotState::COM;
-        Instance().m_Slot[index].ready = false;
-    }
+    ////CInputのものではない
+    //static void SetHuman(int index)
+    //{
+    //    Instance().m_IsSlot[index].state = PlayerSlotState::Player;
+    //    Instance().m_IsSlot[index].ready = true;
+    //}
+    ////CInputのものではない
+    //static void SetCPU(int index)
+    //{
+    //    Instance().m_IsSlot[index].state = PlayerSlotState::COM;
+    //    Instance().m_IsSlot[index].ready = false;
+    //}
 
     /// <summary>
     /// プレイヤースロットの準備状態を取得
@@ -92,7 +93,7 @@ public:
     /// <returns>引数の番号のプレイヤーがtrueなら人,falseならCOM</returns>
     bool GetSlotRedy(int index)
     {
-        return Instance().m_Slot[index].ready;
+        return Instance().m_IsSlot[index].ready;
     }
     //-------
 
@@ -104,5 +105,5 @@ private:
 private:
     std::array<std::unique_ptr<CInput>, 4>  m_pInputs;
 
-    std::array<PlayerSlot, 4>                m_Slot;    //仮置き
+    std::array<PlayerSlot, 4>                m_IsSlot;    //仮置き
 };

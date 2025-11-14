@@ -2,14 +2,12 @@
 #include "Scene/CScene.h"
 
 #include "GameObject/UIObject/CUIObject.h"
+#include "GameObject/SpriteObject/CSpriteObject.h"
 
-#include "Input/CInputManager.h"
-#include "GameObject/MeshObject/StaticMesh/PlayerBase/CPlayerBase.h"
-#include "Camera/CCamera.h"
+#include "PlayerBase/PlayerManager/CPlayerManager.h"
 
 #include "Assets/AssetManager.h"
-
-#include "GameObject/SpriteObject/CSpriteObject.h"
+#include "Input/CInputManager.h"
 
 class CSceneStandby
 	: public CScene
@@ -34,6 +32,8 @@ private:
 
 	void MoveSelector();
 private:
+	CDirectX11*			m_pDx11;
+
 	//待機画面画像.
 	std::unique_ptr<CUIObject>	m_pSpriteStandbyImg;	
 
@@ -46,8 +46,8 @@ private:
 	//選択矢印.
 	std::unique_ptr<CUIObject>	m_pSpriteSelector;	
 
-	//カメラ.
-	std::unique_ptr<CCamera>	m_pCamera;	
+	//プレイヤーマネージャークラス.
+	std::unique_ptr<CPlayerManager>		m_pPlayerManager;
 
 	//画面遷移時の動作を入れる.
 	std::vector<std::function<void()>>	m_Action;	

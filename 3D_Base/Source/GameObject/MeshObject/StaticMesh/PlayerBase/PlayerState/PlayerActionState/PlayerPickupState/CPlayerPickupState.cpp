@@ -1,8 +1,8 @@
 #include "CPlayerPickupState.h"
 
-#include "GameObject/MeshObject/StaticMesh/PlayerBase/CPlayerBase.h"
+#include "PlayerBase/CPlayerBase.h"
 
-#include "GameObject/MeshObject/StaticMesh/PlayerBase/PlayerState/PlayerActionState/PlayerHoldingIdleState/CPlayerHoldingIdleState.h"
+#include "PlayerBase/PlayerState/PlayerActionState/PlayerHoldingIdleState/CPlayerHoldingIdleState.h"
 
 CPlayerPickupState::CPlayerPickupState(CPlayerBase& pPlayer)
 	: CPlayerState			( pPlayer )

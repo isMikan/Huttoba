@@ -268,6 +268,7 @@
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\PlayerBase\PlayerState\PlayerActionState\PlayerHoldingIdleState\CPlayerHoldingIdleState.cpp" />
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\PlayerBase\PlayerState\PlayerActionState\PlayerItemAttackState\CPlayerItemAttackState.cpp" />
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\PlayerBase\PlayerState\PlayerActionState\PlayerKnockdownState\CPlayerKnockdownState.cpp" />
+    <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\PlayerBase\PlayerState\PlayerActionState\PlayerResultLose_TypeA\CPlayerResultLose_TypeA.cpp" />
     <ClCompile Include="Source\GameObject\SpriteObject\Shadow\CShadow.cpp" />
     <ClCompile Include="Source\GameObject\SpriteObject\Shadow\ShadowManager\CShadowManager.cpp" />
     <ClCompile Include="Source\GameObject\UIObject\GaugeBase\CGaugeBase.cpp" />
@@ -325,6 +326,7 @@
     <ClCompile Include="Source\Main\WinMain.cpp" />
     <ClCompile Include="Source\Scene\CScene.cpp" />
     <ClCompile Include="Source\Scene\CSceneManager.cpp" />
+    <ClCompile Include="Source\Scene\SceneData\CSceneData.cpp" />
     <ClCompile Include="Source\Scene\SceneMain\CSceneGameMain.cpp" />
     <ClCompile Include="Source\Scene\SceneStandby\CSceneStandby.cpp" />
     <ClCompile Include="Source\Scene\SceneResult\CSceneResult.cpp" />
@@ -379,6 +381,7 @@
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\PlayerBase\PlayerState\PlayerActionState\PlayerHoldingIdleState\CPlayerHoldingIdleState.h" />
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\PlayerBase\PlayerState\PlayerActionState\PlayerItemAttackState\CPlayerItemAttackState.h" />
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\PlayerBase\PlayerState\PlayerActionState\PlayerKnockdownState\CPlayerKnockdownState.h" />
+    <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\PlayerBase\PlayerState\PlayerActionState\PlayerResultLose_TypeA\CPlayerResultLose_TypeA.h" />
     <ClInclude Include="Source\GameObject\SpriteObject\Shadow\CShadow.h" />
     <ClInclude Include="Source\GameObject\SpriteObject\Shadow\ShadowManager\CShadowManager.h" />
     <ClInclude Include="Source\GameObject\UIObject\GaugeBase\CGaugeBase.h" />
@@ -439,6 +442,7 @@
     <ClInclude Include="Source\MyMacro.h" />
     <ClInclude Include="Source\Scene\CScene.h" />
     <ClInclude Include="Source\Scene\CSceneManager.h" />
+    <ClInclude Include="Source\Scene\SceneData\CSceneData.h" />
     <ClInclude Include="Source\Scene\SceneMain\CSceneGameMain.h" />
     <ClInclude Include="Source\Scene\SceneStandby\CSceneStandby.h" />
     <ClInclude Include="Source\Scene\SceneResult\CSceneResult.h" />

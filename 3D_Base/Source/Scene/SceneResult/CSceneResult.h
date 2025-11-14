@@ -2,8 +2,9 @@
 #include "Scene/CScene.h"
 
 #include "GameObject/UIObject/CUIObject.h"
+#include "PlayerBase/PlayerManager/CPlayerManager.h"
+
 #include "Input/CInputManager.h"
-#include "GameObject/MeshObject/StaticMesh/PlayerBase/CPlayerBase.h"
 #include "Assets/AssetManager.h"
 
 #include <functional>
@@ -30,14 +31,15 @@ private:
 	//選択肢がスティックで連続して動いてしまうのを制御する(中間審査用でここに追加したが後でCInputに追加しておく).
 	void SelectorControl();
 private:
+	CDirectX11*			m_pDx11;
+
 	std::vector<std::function<void()>>	m_Action;	//画面遷移時の動作を入れる.
 
 	std::unique_ptr<CUIObject>	m_pSpriteResultImg;	//リザルト画面.
 	std::unique_ptr<CUIObject>	m_pSpriteSelector;	//選択矢印.
 
-
-	//キャラクタークラス
-	//std::vector< std::unique_ptr<CPlayerBase> >	m_pPlayer;
+	//プレイヤーマネージャークラス.
+	std::unique_ptr<CPlayerManager>		m_pPlayerManager;
 
 	std::vector<D3DXVECTOR3>	m_SelectorPos;		//選択矢印の座標.
 

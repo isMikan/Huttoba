@@ -10,7 +10,7 @@
 
 #include "PlayerBase/PlayerState/PlayerActionState/PlayerHandAttackState/CPlayerHandAttackState.h"
 
-#include "Input//CInputManager.h"
+#include "Scene/SceneData/CSceneData.h"
 
 CPlayerManager::CPlayerManager()
 	: m_pPlayers		()
@@ -18,7 +18,6 @@ CPlayerManager::CPlayerManager()
 	, m_CreateTime		()
 	, m_ReadyTime		( 0.5f )
 {
-	Create();
 }
 
 CPlayerManager::~CPlayerManager()
@@ -40,12 +39,15 @@ CPlayerManager::~CPlayerManager()
 //--- 構築関数 ---.
 void CPlayerManager::Create()
 {
-	//プレイヤーのインスタンス生成.
+	//念のため削除.
 	m_pPlayers.clear();
+	//最大数を設定.
 	m_pPlayers.resize(Player_Max);
+
 	for (int pNo = 0; pNo < Player_Max; pNo++)
 	{
-		//if (CInputManager::IsConnect(pNo))
+		//準備OKのコントローラーの場合.
+		if (CSceneData::GetSlot(pNo))
 		{
 #if 0
 			if (pNo == 0)
@@ -58,12 +60,15 @@ void CPlayerManager::Create()
 				dynamic_cast<CPlayerAI*>(m_pPlayers[pNo].get())->SetPlayerManager(this);
 			}
 #else
+			//プレイヤーのインスタンス生成.
 			m_pPlayers[pNo] = std::make_unique<CPlayer>(pNo);
 #endif
 		}
-		//else
+		else
 		{
-			//m_pPlayers[pNo] = std::make_unique<CPlayerAI>(pNo);
+			//プレイヤーAIのインスタンス生成.
+			m_pPlayers[pNo] = std::make_unique<CPlayerAI_TypeA>(pNo);
+			dynamic_cast<CPlayerAI*>(m_pPlayers[pNo].get())->SetPlayerManager(this);
 		}
 
 		if (!m_pPlayers[pNo]) return;
@@ -72,12 +77,7 @@ void CPlayerManager::Create()
 		m_pPlayers[pNo]->SetObjectColor(0, CharacterColorSettings(pNo));
 		//頭の色を設定.
 		m_pPlayers[pNo]->GetPlayerHead().SetObjectColor(1, CharacterColorSettings(pNo));
-		//位置と方向の初期化.
-		InitialSettings(pNo);
 	}
-
-	//生成された時間を取得.
-	m_CreateTime = CTimeManager::GetTotalTime();
 }
 
 //--- 読込関数 ---.
@@ -123,10 +123,13 @@ void CPlayerManager::LoadData()
 //--- 破棄関数 ---.
 void CPlayerManager::Destroy(CPlayerBase* player)
 {
+	int id = player->GetPlayerID();
+	CSceneData::SetPlayerLive(id, false);
+
 	//当たり判定削除.
 	CollisionManager::GetInstance()->RemoveCollider(player->GetCollider().get());
 	//配列削除.
-	m_pPlayers[player->GetPlayerID()].reset();
+	m_pPlayers[id].reset();
 }
 
 //--- 更新関数 ---.
@@ -166,6 +169,83 @@ void CPlayerManager::Draw(D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAME
 		player->GetPlayerHead().Draw( View, Proj, Light, Camera );		//頭.
 		player->GetPlayerRightHand().Draw( View, Proj, Light, Camera );	//右手.
 		player->GetPlayerLeftHand().Draw( View, Proj, Light, Camera );	//左手.
+	}
+}
+
+//--- メインシーンの構築処理 ---.
+void CPlayerManager::MainPlayerCreate()
+{
+	Create();
+
+	for (auto& player : m_pPlayers)
+	{
+		if (!player) return;
+
+		//プレイヤー番号を取得.
+		int id = player->GetPlayerID();
+
+		//位置と方向の初期化.
+		InitialSettings(id);
+	}
+
+	//生成された時間を取得.
+	m_CreateTime = CTimeManager::GetTotalTime();
+}
+
+//--- リザルトシーンの構築処理 ---.
+void CPlayerManager::ResultPlayerCreate()
+{
+	Create();
+
+	int countLive = 0;
+	int countFalled = 0;
+	for (int pNo = 0; pNo < Player_Max; pNo++)
+	{
+		D3DXVECTOR3 pos(2.f, 1.f, -3.f);
+		if (CSceneData::GetPlayerLiving(pNo))
+		{
+			countLive++;
+			switch (countLive)
+			{
+			case 1:
+				pos.x *= 4.f;
+				m_pPlayers[pNo]->SetPosition(pos);
+				break;
+			case 2:
+				pos.x *= 3.f;
+				m_pPlayers[pNo]->SetPosition(pos);
+				break;
+			case 3:
+				pos.x *= 2.f;
+				m_pPlayers[pNo]->SetPosition(pos);
+				break;
+			default:
+				break;
+			}
+		}
+		else
+		{
+			countFalled++;
+			switch (countFalled)
+			{
+			case 1:
+				pos.x *= 1.f;
+				m_pPlayers[pNo]->SetPosition(pos);
+				break;
+			case 2:
+				pos.x *= 2.f;
+				m_pPlayers[pNo]->SetPosition(pos);
+				break;
+			case 3:
+				pos.x *= 3.f;
+				m_pPlayers[pNo]->SetPosition(pos);
+				break;
+			default:
+				break;
+			}
+		}
+		m_pPlayers[pNo]->
+			SetQuaternion(0.f, D3DXToRadian(180.f), 0.f, 0.f);
 	}
 }
 

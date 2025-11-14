@@ -3,7 +3,7 @@
 #include "GameObject/UIObject/GaugeBase/GaugeFrame/CGaugeFrame.h"
 #include "GameObject/UIObject/GaugeBase/TimerGauge/CTimerGauge.h"
 
-#include "GameObject/MeshObject/StaticMesh/PlayerBase/PlayerState/PlayerActionState/PlayerKnockdownState/CPlayerKnockdownState.h"
+#include "PlayerBase/PlayerState/PlayerActionState/PlayerKnockdownState/CPlayerKnockdownState.h"
 
 CGaugeManager::CGaugeManager()
 	: m_pGauge				()

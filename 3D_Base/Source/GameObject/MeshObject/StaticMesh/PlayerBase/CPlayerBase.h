@@ -1,6 +1,6 @@
 #pragma once
 
-#include "GameObject/MeshObject/StaticMesh/CStaticMeshObject.h"
+#include "CStaticMeshObject.h"
 
 #include "PlayerEventBus/CPlayerEventBus.h"
 
@@ -65,8 +65,8 @@ public:
 	//攻撃を受けた情報.
 	struct HitAttack
 	{
-		D3DXVECTOR3		velocity;					//初速度.
-		HitEvent		hitEvent = HitEvent::None;	//アニメーション.
+		D3DXVECTOR3	velocity;					//初速度.
+		HitEvent	hitEvent = HitEvent::None;	//アニメーション.
 	};
 
 	//他のプレイヤーに接触したときの情報.
@@ -162,6 +162,7 @@ public:
 
 	//攻撃を受けた力を取得.
 	float GetHitPower() const { return m_HitForce; }
+	void SetHitPower(float power) { m_HitForce = power; }
 	
 	//攻撃を受けた情報を取得と設定.
 	HitAttack GetHitAttack() const { return m_HitAttack; }

@@ -66,7 +66,9 @@ void CPlayerBase::Update()
 
 	//地面についておらず、落ちる状態じゃない場合.
 	if (!m_IsOnGround
-		&& !IsAnyActionState<CPlayerFallingState, CPlayerKnockbackState>())
+		&& !IsAnyActionState<
+		CPlayerFallingState, 
+		CPlayerKnockbackState>())
 	{
 		SetActionState(std::make_unique<CPlayerFallingState>(*this));
 	}
@@ -162,11 +164,10 @@ void CPlayerBase::CreateCollider()
 //--- 地面との衝突判定 ---.
 void CPlayerBase::OnGroundCollision(CGroundManager& pGroundMgr)
 {
-
-	//関数のoutで当たったy座標をもらう
+	//関数のoutで当たったy座標をもらう.
 	float groundY = 0.0f;
 
-	// CollisionManagerに判定を依頼し、結果をそのまま返す
+	//CollisionManagerに判定を依頼し、結果をそのまま返す.
 	m_IsOnGround = CollisionUtility::CheckGroundContact(
 		GetPosition(),
 		pGroundMgr,
@@ -348,7 +349,7 @@ void CPlayerBase::OnCollision(CollisionBase* pOtherCollider)
 
 #if 0
 				SetHitAttack(
-					GetKnockbackVelocity(player->GetPosition(), 10.f, 60.f), CPlayerBase::HitEvent::Knockdown);
+					GetKnockbackVelocity(player->GetPosition(), 10.f, 60.f), CPlayerBase::HitEvent::Knockback);
 #else
 				SetHitAttack(
 					GetPushbackVelocity(player->GetPosition(), 0.05f), CPlayerBase::HitEvent::Pushback);

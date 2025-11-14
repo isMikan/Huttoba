@@ -1,6 +1,6 @@
 #pragma once
 
-#include "GameObject/MeshObject/StaticMesh/PlayerBase/PlayerState/CPlayerState.h"
+#include "PlayerBase/PlayerState/CPlayerState.h"
 
 /***********************************************************************
 *	プレイヤーがアイテム未所持の攻撃状態クラス.
@@ -9,12 +9,12 @@ class CPlayerHandAttackState
 	: public CPlayerState	//プレイヤー状態を継承.
 {
 public:
-//======================================================================
-// 	   外部で呼び出す関数.
-//======================================================================
 	CPlayerHandAttackState(CPlayerBase& pPlayer);
 	~CPlayerHandAttackState();
 
+//======================================================================
+// 	   外部で呼び出す関数.
+//======================================================================
 	//--- 状態の開始時に呼び出す ---.
 	void Enter() override;
 	//--- 状態の終了時に呼び出す ---.

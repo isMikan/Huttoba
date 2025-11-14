@@ -1,12 +1,14 @@
 #include "Scene/SceneResult/CSceneResult.h"
 
+#include "Camera/CameraManager/CCameraManager.h"
+
 CSceneResult::CSceneResult()
 	: m_Action				()
 
 	, m_pSpriteResultImg	( nullptr )
 	, m_pSpriteSelector		( nullptr )
 
-	//, m_pPlayer				()
+	, m_pPlayerManager		()
 
 	, m_SelectorPos			()
 
@@ -17,6 +19,8 @@ CSceneResult::CSceneResult()
 
 	, cnt					( 0 )
 {
+	m_pDx11 = CDirectX11::GetInstance();
+
 	Create();
 	LoadData();
 	SetSelectorPos();
@@ -28,6 +32,14 @@ CSceneResult::~CSceneResult()
 
 HRESULT CSceneResult::Create()
 {
+	CCameraManager::SetPosition(5.f, 3.f, -10.f);
+	CCameraManager::SetLook(5.f, 0.f, 0.f);
+	CCameraManager::SetLight(0.f, 10.f, -10.f);
+
+	//プレイヤーマネージャーのインスタンス作成.
+	m_pPlayerManager = std::make_unique<CPlayerManager>();
+	m_pPlayerManager->ResultPlayerCreate();
+
 	m_pSpriteResultImg = std::make_unique<CUIObject>();
 	m_pSpriteSelector = std::make_unique<CUIObject>();
 
@@ -48,6 +60,9 @@ HRESULT CSceneResult::LoadData()
 {
 	m_pSpriteResultImg->AttachSprite(AssetManager::Sprite(Sprite2DList::Result));
 	m_pSpriteSelector->AttachSprite(AssetManager::Sprite(Sprite2DList::Selector));
+	
+	//プレイヤーマネージャーの読み込み.
+	m_pPlayerManager->LoadData();
 
 	return S_OK;
 }
@@ -59,6 +74,19 @@ void CSceneResult::Update()
 
 	SelectorControl();
 
+	//プレイヤーの動作
+	m_pPlayerManager->Update();
+
+	//関数を入れる
+	m_Action =
+	{
+		//ラムダ式で関数にしてm_Actionの中に入れている(SetNextScene(Standby);ではだめ).
+		//画面に表示される選択肢の文字と同じ順番に処理を入れていく
+		[this]() {SetNextScene(GameMain);},
+		[this]() {SetNextScene(Standby);},
+		[this]() {SetNextScene(Title);}
+	};
+
 	if (CInputManager::IsDown(Action::Decide,0))
 	{
 		//選択中の番号で処理される関数が変わる.
@@ -69,8 +97,23 @@ void CSceneResult::Update()
 
 void CSceneResult::Draw()
 {
+	//カメラの処理.
+	CCameraManager::Update();
+
+	//=== 情報を取得 ===.
+	CAMERA camera = CCameraManager::GetCamera();		//カメラ.
+	LIGHT light = CCameraManager::GetLight();			//ライト.
+	D3DXMATRIX view = CCameraManager::GetView();		//ビュー.
+	D3DXMATRIX proj = CCameraManager::GetProjection();	//プロジェクション.
+	//==================.
+
+	//プレイヤーの描画.
+	m_pPlayerManager->Draw(view, proj, light, camera);
+
+	m_pDx11->SetDepth(false);
 	m_pSpriteSelector->Draw();
 	m_pSpriteResultImg->Draw();
+	m_pDx11->SetDepth(true);
 }
 
 void CSceneResult::Destroy()
@@ -151,7 +194,8 @@ void CSceneResult::SelectorControl()
 			}
 		}
 	}
-	else {
+	else
+	{
 		isHeldDown = false;
 	}
 }

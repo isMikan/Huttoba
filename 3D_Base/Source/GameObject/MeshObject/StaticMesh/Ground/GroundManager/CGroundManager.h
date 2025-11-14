@@ -1,6 +1,6 @@
 #pragma once
 
-#include "GameObject/MeshObject/StaticMesh/Ground/CGround.h"
+#include "Ground/CGround.h"
 
 /***********************************************************************
 *	地面マネージャークラス.							制作者 [甲把]

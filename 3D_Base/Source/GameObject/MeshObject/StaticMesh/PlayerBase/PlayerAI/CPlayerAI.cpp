@@ -17,7 +17,7 @@
 #include "PlayerBase/PlayerState/PlayerActionState/PlayerGetUpState/CPlayerGetUpState.h"
 #include "PlayerBase/PlayerState/PlayerActionState/PlayerKnockdownState/CPlayerKnockdownState.h"
 
-#include "GameObject/MeshObject/StaticMesh/PlayerBase/PlayerManager/CPlayerManager.h"
+#include "PlayerBase/PlayerManager/CPlayerManager.h"
 
 #include "Sound/CSoundManager.h"
 
