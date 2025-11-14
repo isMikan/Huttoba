@@ -118,9 +118,8 @@ void CPlayerFallingState::Update()
 				{
 					m_pPlayer.SetActionState(std::make_unique<CPlayerGetUpState>(m_pPlayer));
 				}
-
 				//アイテムを持っている場合.
-				if (m_pPlayer.GetItemBase())
+				else if (m_pPlayer.GetItemBase())
 				{
 					//アイテム持ち、何もなし状態.
 					m_pPlayer.SetActionState(std::make_unique<CPlayerHoldingIdleState>(m_pPlayer));
