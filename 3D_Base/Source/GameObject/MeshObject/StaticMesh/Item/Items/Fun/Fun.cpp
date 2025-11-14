@@ -123,7 +123,7 @@ void Fun::Throw()
 	ThrowMove();
 
 	//投げた瞬間に別のアイテムを持ったり使ったりできるように追加
-	m_pPlayer->SetItemBase(nullptr);
+	//m_pPlayer->SetItemBase(nullptr);
 }
 
 void Fun::Destroy()

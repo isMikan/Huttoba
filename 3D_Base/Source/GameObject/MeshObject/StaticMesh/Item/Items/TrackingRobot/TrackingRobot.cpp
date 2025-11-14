@@ -143,6 +143,11 @@ void TrackingRobot::OnCollision(CollisionBase* other)
 			}
 		}
 	}
+
+	if (other->GetTag() == CollisionBase::ColliderTag::Ground)
+	{
+		std::cout << "’n–Ê‚ÆÚG’†" << std::endl;
+	}
 }
 
 void TrackingRobot::HaveMove()
