@@ -47,14 +47,20 @@ private:
     //吹き飛ばし処理
     void Smash(CPlayer& playiers);
 
-    //爆弾の爆発前の色の変更処理
+    //爆発前の色の変更処理
     void ChangeColor();
 
-    //爆弾とプレイヤーの距離に応じて吹き飛ばし力を計算
+    //プレイヤーの距離に応じて吹き飛ばし力を計算
     float CalculateForceScalar(float distance);
 
     //追尾処理
-    void Homing();
+    void Homing(D3DXVECTOR3 targetPos);
+
+    //前方索敵用
+    void SearchForward();
+
+    //一番近いプレイヤーを判定
+    void FindNearestTarget();
 
 private:
 
@@ -87,4 +93,7 @@ private:
 
     //爆発時の処理
     bool        m_IsExploded;
+
+    //索敵の当たり判定の位置の補正値
+    D3DXVECTOR3 m_CollisionOffSet;
 };

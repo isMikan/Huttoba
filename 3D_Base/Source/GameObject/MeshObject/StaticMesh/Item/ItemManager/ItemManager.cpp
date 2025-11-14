@@ -39,6 +39,7 @@ HRESULT ItemManager::Create()
 	}
 
 	m_pItems[0]->SetPosition(0, 0, 4);
+	m_pItems[1]->SetPosition(-1, 0, 4);
 
 	return S_OK;
 }

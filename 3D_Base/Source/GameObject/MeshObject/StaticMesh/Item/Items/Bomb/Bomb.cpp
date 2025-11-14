@@ -28,6 +28,8 @@ Bomb::Bomb()
 	, m_MinSmashPower	( 5.0f )	//値を変えるとプレイヤーの最小吹き飛ばし力が変化
 
 	, m_MaxSmashPower	( 10.0f )	//値を変えるとプレイヤーの最大吹き飛ばし力が変化
+
+	, IsHold			(false)
 {
 	Init();
 	m_ObjectColor.resize(2);
@@ -115,12 +117,23 @@ void Bomb::Use()
 {
 	UseMove();
 
-	m_pPlayer->SetItemBase(nullptr);
+	if (!IsHold)
+	{
+		//投げた瞬間に別のアイテムを持ったり使ったりできるように追加
+		m_pPlayer->SetItemBase(nullptr);
+		
+		IsHold = true;
+	}
 }
 
 void Bomb::Throw()
 {
-	UseMove();
+	ThrowMove();
+
+	//プレイヤー側で投げるモーションの後にnullしているのでこちら側ではしない
+	//if (!m_IsThrow)
+		//投げた瞬間に別のアイテムを持ったり使ったりできるように追加
+	//	m_pPlayer->SetItemBase(nullptr);
 }
 
 void Bomb::Destroy()
@@ -250,10 +263,10 @@ void Bomb::ChangeColor()
 	m_ColorTimer += CTimeManager::GetDeltaTime();
 
 	//点滅のスピードを経過時間/爆発するまでの時間をして割合で出す
-	float speed = 10.0f * (static_cast<float>(m_ColorTimer) / m_ExplosionTime);
+	float speed = 10.0f * (static_cast<float>((m_ColorTimer) / m_ExplosionTime));
 
 	//+1.0fをすることで、sinの値が0~2の間の値になり、*0.5することで0~1の間の値が取れる
-	float blinkRate = (sinf(static_cast<float>(m_ColorTimer) * speed) + 1.0) * 0.5;
+	float blinkRate = (sinf(static_cast<float>(m_ColorTimer) * speed) + 1.0f) * 0.5f;
 
 	//灰色のカラーコード
 	D3DXVECTOR4 gray = D3DXVECTOR4(0.2f, 0.2f, 0.2f, 1.0f);

@@ -43,6 +43,16 @@ HRESULT CSceneResult::Create()
 	m_pSpriteResultImg = std::make_unique<CUIObject>();
 	m_pSpriteSelector = std::make_unique<CUIObject>();
 
+	//ŠÖ”‚ğ“ü‚ê‚é
+	m_Action =
+	{
+		//ƒ‰ƒ€ƒ_®‚ÅŠÖ”‚É‚µ‚Äm_Action‚Ì’†‚É“ü‚ê‚Ä‚¢‚é(SetNextScene(Standby);‚Å‚Í‚¾‚ß).
+		//‰æ–Ê‚É•\¦‚³‚ê‚é‘I‘ğˆ‚Ì•¶š‚Æ“¯‚¶‡”Ô‚Éˆ—‚ğ“ü‚ê‚Ä‚¢‚­
+		[this]() {SetNextScene(GameMain);},
+		[this]() {SetNextScene(Standby);},
+		[this]() {SetNextScene(Title);}
+	};
+
 	return S_OK;
 }
 
