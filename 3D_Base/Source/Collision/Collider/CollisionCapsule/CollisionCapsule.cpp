@@ -20,7 +20,7 @@ CollisionCapsule::CollisionCapsule(
 
 void CollisionCapsule::UpdateWorldPosition()
 {
-    // 1. 親オブジェクトのワールド行列を取得
+    // 親オブジェクトのワールド行列を取得
     CGameObject* obj = dynamic_cast<CGameObject*>(GetListener());
 
     if (!obj)
@@ -44,6 +44,47 @@ void CollisionCapsule::UpdateWorldPosition()
 
     // CollisionBase の m_WorldPosition をカプセルの中心で更新
     m_WorldPosition = (m_WorldCapsule.StartPoint + m_WorldCapsule.EndPoint) / 2.0f;
+
+    // 軸線分ベクトルと長さの計算
+    D3DXVECTOR3 vAxisWorld = m_WorldCapsule.EndPoint - m_WorldCapsule.StartPoint;
+    m_DrawLength = D3DXVec3Length(&vAxisWorld);
+
+    // 描画中心位置の設定
+    m_DrawCenterPosition = m_WorldPosition;
+
+    // 回転の計算
+    D3DXVECTOR3 vLocalAxis(0.0f, 1.0f, 0.0f);
+    D3DXQUATERNION qRotation;
+
+    // 軸が潰れている場合は、回転計算で不正な値が出ないように早期リターン
+    if (m_DrawLength < 1e-6f) {
+        D3DXQuaternionIdentity(&m_DrawRotation);
+        return;
+    }
+
+    // 軸ベクトルを正規化
+    D3DXVECTOR3 vNormalizedAxis;
+    D3DXVec3Normalize(&vNormalizedAxis, &vAxisWorld);
+
+    // 標準の最短クォータニオン回転ロジック
+    D3DXVECTOR3 vAxis;
+    float fDot = D3DXVec3Dot(&vLocalAxis, &vNormalizedAxis);
+
+    if (fDot > 0.999f) D3DXQuaternionIdentity(&qRotation);
+    else if (fDot < -0.999f)
+    {
+        D3DXVECTOR3 vAxis180(0.0f, 0.0f, 1.0f);
+        D3DXQuaternionRotationAxis(&qRotation, &vAxis180, D3DX_PI);
+    }
+    else
+    {
+        D3DXVec3Cross(&vAxis, &vLocalAxis, &vNormalizedAxis);
+        D3DXVec3Normalize(&vAxis, &vAxis);
+        float fAngle = acosf(fDot);
+        D3DXQuaternionRotationAxis(&qRotation, &vAxis, fAngle);
+    }
+
+    m_DrawRotation = qRotation;
 }
 
 void CollisionCapsule::SetLocalOffSet(

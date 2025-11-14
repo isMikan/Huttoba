@@ -32,6 +32,16 @@ public:
 	const BoundingCapsule& GetWorldCapsule() const { return m_WorldCapsule; }
 	void SetLocalOffSet(const D3DXVECTOR3& localOffsetA, const D3DXVECTOR3& localOffsetB);
 
+	//カプセルを回転させる関数
+	void SetLocalCapsuleRotation(const D3DXMATRIX& rotation) {
+		m_LocalCapsuleRotation = rotation;
+	}
+
+	// 描画用関数
+	const D3DXQUATERNION& GetDrawRotation() const { return m_DrawRotation; }
+	float GetDrawLength() const { return m_DrawLength; }
+	const D3DXVECTOR3& GetDrawCenterPosition() const { return m_DrawCenterPosition; }
+
 private:
 
 	// カプセル固有のローカルデータ
@@ -39,7 +49,12 @@ private:
 	D3DXVECTOR3 m_LocalOffsetA;
 	D3DXVECTOR3 m_LocalOffsetB;
 
+	D3DXMATRIX m_LocalCapsuleRotation; // カプセル判定にのみ適用される回転
 	// 最新のワールドカプセル情報
 	BoundingCapsule m_WorldCapsule;
-		
+
+	// 描画専用データ
+	D3DXQUATERNION m_DrawRotation;
+	float m_DrawLength;
+	D3DXVECTOR3 m_DrawCenterPosition;
 };

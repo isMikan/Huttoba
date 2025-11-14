@@ -57,7 +57,7 @@ namespace CollisionUtility
         VOID* pVertices = nullptr;
         if (FAILED(pMeshDx9->LockVertexBuffer(0, &pVertices))) { return false; }
 
-        // 頂点の情報
+        // 頂点の情報（VERTEX構造体の定義はCStaticMesh::VERTEXを使用）
         using VERTEX = CStaticMesh::VERTEX;
         VERTEX* vertices = static_cast<VERTEX*>(pVertices);
         DWORD numVertices = pMeshDx9->GetNumVertices();
@@ -68,49 +68,68 @@ namespace CollisionUtility
             return false;
         }
 
-        // Min/Maxと最大半径の初期値設定
-        float minY = vertices[0].Pos.y;
-        float maxY = vertices[0].Pos.y;
-        float maxRadiusSq = 0.0f;
+        // Min/Maxの初期値設定（最初の頂点で初期化）
+        float minX = vertices[0].Pos.x, maxX = vertices[0].Pos.x;
+        float minY = vertices[0].Pos.y, maxY = vertices[0].Pos.y;
+        float minZ = vertices[0].Pos.z, maxZ = vertices[0].Pos.z;
 
-        // 全頂点を走査し、Y軸のMin/MaxとXZ平面の最大半径を求める
+        // 全頂点を走査し、各軸のMin/Maxを求める
         for (DWORD i = 0; i < numVertices; ++i)
         {
             const D3DXVECTOR3& pos = vertices[i].Pos;
 
-            minY = std::min(minY, pos.y);
-            maxY = std::max(maxY, pos.y);
-
-            // XZ平面での原点からの距離の2乗を計算 (XZ平面の最大距離が半径になる)
-            float currentRadiusSq = pos.x * pos.x + pos.z * pos.z;
-            maxRadiusSq = std::max(maxRadiusSq, currentRadiusSq);
+            minX = std::min(minX, pos.x); maxX = std::max(maxX, pos.x);
+            minY = std::min(minY, pos.y); maxY = std::max(maxY, pos.y);
+            minZ = std::min(minZ, pos.z); maxZ = std::max(maxZ, pos.z);
         }
-
-        // 頂点バッファのアンロック
         pMeshDx9->UnlockVertexBuffer();
 
-        // カプセルのパラメータを設定
-        outRadius = sqrtf(maxRadiusSq);
+        // --- 1. カプセル半径（太さ）の計算 ---
+        // Y軸を軸とするため、半径はX軸とZ軸の幅の大きい方で決まる
+        float halfWidthX = (maxX - minX) * 0.5f;
+        float halfWidthZ = (maxZ - minZ) * 0.5f;
 
-        // カプセルの軸線分を決定する (メッシュの端から半径分だけ内側に入れる)
-        // A: 下端 (MinY) + 半径R
-        outLocalOffsetA = D3DXVECTOR3(0.0f, minY + outRadius, 0.0f);
-        // B: 上端 (MaxY) - 半径R
-        outLocalOffsetB = D3DXVECTOR3(0.0f, maxY - outRadius, 0.0f);
+        // カプセル半径
+        outRadius = std::max(halfWidthX, halfWidthZ);
 
-        // 軸線分AがBより上に来る場合（平たい、または球体）
-        if (outLocalOffsetA.y >= outLocalOffsetB.y)
+        // --- 2. 軸線分 A, B の計算（Y軸） ---
+        float totalWidthY = maxY - minY;
+
+        // 軸線分の長さ (Y軸の全長から両端の直径 (2R) を引く)
+        float coreLength = totalWidthY - (2.0f * outRadius);
+
+        // Y軸の中点（カプセル全体の中心）
+        float centerY = (minY + maxY) * 0.5f;
+
+        // XZ平面の中心点（カプセル軸の位置）
+        float centerX = (minX + maxX) * 0.5f;
+        float centerZ = (minZ + maxZ) * 0.5f;
+
+        // 軸線分が潰れる場合の処理 (球体判定)
+        if (coreLength <= 0.0f)
         {
-            // 軸線分を中点に集約し、実質的な球体として扱う
-            float center_y = (minY + maxY) / 2.0f;
-            outLocalOffsetA = D3DXVECTOR3(0.0f, center_y, 0.0f);
-            outLocalOffsetB = D3DXVECTOR3(0.0f, center_y, 0.0f);
+            // 軸線分を中点に集約
+            outLocalOffsetA = D3DXVECTOR3(centerX, centerY, centerZ);
+            outLocalOffsetB = D3DXVECTOR3(centerX, centerY, centerZ);
+        }
+        else
+        {
+            float halfLength = coreLength * 0.5f;
+
+            // Y軸に沿ってオフセットを設定
+            // A: 上端側, B: 下端側
+            outLocalOffsetA = D3DXVECTOR3(centerX, centerY + halfLength, centerZ);
+            outLocalOffsetB = D3DXVECTOR3(centerX, centerY - halfLength, centerZ);
         }
 
         return true;
     }
 
-    bool CalculateHorizontalCapsule(const std::shared_ptr<CStaticMesh>& pMesh, float& outRadius, D3DXVECTOR3& outOffsetA, D3DXVECTOR3& outOffsetB)
+    bool CalculateHorizontalCapsule(
+        const std::shared_ptr<CStaticMesh>& pMesh, 
+        float& outRadius,
+        D3DXVECTOR3& outOffsetA, 
+D3DXVECTOR3& outOffsetB)
     {
         if (!pMesh) return false;
 
