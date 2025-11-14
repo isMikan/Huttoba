@@ -30,7 +30,7 @@ void CGroundManager::Create()
 		ground = std::make_unique<CGround>();
 
 		//’n–Ê‚ÌˆÊ’u‚ðÝ’è.
-		ground->SetPosition(0.f, -0.5f, 10.f);
+		ground->SetPosition(0.f, -1.f, 10.f);
 	}
 }
 

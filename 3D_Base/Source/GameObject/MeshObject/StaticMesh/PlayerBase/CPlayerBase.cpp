@@ -91,14 +91,12 @@ void CPlayerBase::Update()
 		//アイテムを投げる.
 		if (m_Control == ActionInstruct::ToggleItem)
 		{
-			m_pItemBase->SetPlayer(this);
 			m_pItemBase->SetState(ItemBase::State::Throw);
 			SetActionState(std::make_unique<CPlayerThrowState>(*this));
 		}
 		//アイテムの攻撃.
 		if (m_Control == ActionInstruct::Attack)
 		{
-			m_pItemBase->SetPlayer(this);
 			m_pItemBase->SetState(ItemBase::State::Use);
 			SetActionState(std::make_unique<CPlayerItemAttackState>(*this));
 		}
