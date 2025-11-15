@@ -149,7 +149,7 @@ void CPlayerBase::SetActionState(std::unique_ptr<CPlayerState> newState)
 void CPlayerBase::CreateCollider()
 {
 	//新しい CollisionDataFactory を使ったコリジョンデータの生成と登録.
-	std::shared_ptr<CStaticMesh> mesh = AssetManager::Mesh(StaticMeshList::TestPlayer);
+	std::shared_ptr<CStaticMesh> mesh = AssetManager::Mesh(StaticMeshList::BCapsule);
 
 	m_pCollision =
 		CollisionDataFactory::CreateCapsuleForMesh(
