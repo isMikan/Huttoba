@@ -68,7 +68,7 @@ void Fun::Init()
 		this
 	);
 
-	SetRotation(D3DXVECTOR3(0.f, 0.f, D3DXToRadian(90.f)));
+	SetRotation(D3DXVECTOR3(0.f, D3DXToRadian(-90.f),0.f));
 	//m_pNowCollider = m_pUseCollider;
 
 	//‚±‚±‚ÅŒ»İ‚Ì“–‚½‚è”»’è‚ğİ’è
