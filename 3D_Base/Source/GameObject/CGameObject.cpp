@@ -9,7 +9,6 @@ CGameObject::CGameObject()
 
 	, m_vQuaternion	( D3DXQUATERNION(0.f, 0.f, 0.f, 1.f) )
 
-	, m_IsWorldMatrixDirty	{ true }
 	, m_mWorldCache			{}
 {
 }
@@ -44,8 +43,6 @@ const D3DXMATRIX& CGameObject::GetWorldMatrix() const
 		//ƒ[ƒ‹ƒhs—ñì¬.
 		//Šgk~‰ñ“]~ˆÚ“® ¦‡”Ô‚ª‚Æ‚Ä‚à‘åØII.
 		m_mWorldCache = mScale * mRotQuat * mTran;
-
-		m_IsWorldMatrixDirty = false;
 	}
 	return m_mWorldCache;
 }

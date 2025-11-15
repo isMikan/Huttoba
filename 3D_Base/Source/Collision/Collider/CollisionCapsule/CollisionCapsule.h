@@ -49,7 +49,8 @@ private:
 	D3DXVECTOR3 m_LocalOffsetA;
 	D3DXVECTOR3 m_LocalOffsetB;
 
-	D3DXMATRIX m_LocalCapsuleRotation; // カプセル判定にのみ適用される回転
+	// カプセルの回転情報保存
+	D3DXMATRIX m_LocalCapsuleRotation; 
 	// 最新のワールドカプセル情報
 	BoundingCapsule m_WorldCapsule;
 

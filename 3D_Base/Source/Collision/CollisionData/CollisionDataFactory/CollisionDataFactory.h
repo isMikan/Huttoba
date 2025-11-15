@@ -47,4 +47,22 @@ public:
         CGameObject* pOwner,
         bool IsAddCollider = true
     );
+
+    
+    /*****************************************************************************************
+    * @brief   CollisionCapsuleを生成し、親オブジェクトの情報と紐づける
+    *
+    * @param pOwner 衝突形状を持つ親オブジェクト
+    * @param pMesh メッシュデータ（カプセルのサイズ計算に使用）
+    * @param tag   コリジョンタグ
+    *
+    * @return  所有権を持つ生成された CollisionCapsule の shared_ptr
+    *****************************************************************************************/
+    static std::shared_ptr<CollisionBase> CreateHorizontalCapsuleForMesh(
+        CollisionBase::ColliderTag tag,
+        std::shared_ptr<CStaticMesh> pMesh,
+        CGameObject* pOwner,
+        bool IsAddCollider = true
+    );
+
 };

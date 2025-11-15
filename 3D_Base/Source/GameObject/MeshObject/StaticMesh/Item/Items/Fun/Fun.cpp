@@ -45,9 +45,6 @@ void Fun::Init()
 
 	m_HaveOffset = D3DXVECTOR3(0.0, 0.2f, 0.0f);
 
-	//											必読！
-	//--------------------------------------------------------------------------------------------------------------
-
 	//持つ用と攻撃用の当たり判定をそれぞれ用意
 	//引数の末尾にfalseを入れると自動登録されなくなり、AddColliderで任意追加できるようにした
 	//具体的な使い方はハエたたき見る or 聞く
@@ -63,15 +60,15 @@ void Fun::Init()
 	//);
 
 	//使用時の前方に出す当たり判定
-	std::shared_ptr<CStaticMesh> mesh = AssetManager::Mesh(StaticMeshList::BCapsule);
+	std::shared_ptr<CStaticMesh> mesh = AssetManager::Mesh(StaticMeshList::FunCol);
 
-	m_pUseCollider = CollisionDataFactory::CreateCapsuleForMesh(
+	m_pUseCollider = CollisionDataFactory::CreateHorizontalCapsuleForMesh(
 		CollisionBase::ColliderTag::Fan,
 		mesh,
 		this
-		//false
 	);
 
+	SetRotation(D3DXVECTOR3(0.f, 0.f, D3DXToRadian(90.f)));
 	//m_pNowCollider = m_pUseCollider;
 
 	//ここで現在の当たり判定を設定

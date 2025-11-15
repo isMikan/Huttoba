@@ -85,41 +85,38 @@ namespace CollisionUtility
         pMeshDx9->UnlockVertexBuffer();
 
         // --- 1. カプセル半径（太さ）の計算 ---
-        // Y軸を軸とするため、半径はX軸とZ軸の幅の大きい方で決まる
         float halfWidthX = (maxX - minX) * 0.5f;
         float halfWidthZ = (maxZ - minZ) * 0.5f;
-
-        // カプセル半径
         outRadius = std::max(halfWidthX, halfWidthZ);
 
         // --- 2. 軸線分 A, B の計算（Y軸） ---
+
+        // Y軸の全長
         float totalWidthY = maxY - minY;
 
         // 軸線分の長さ (Y軸の全長から両端の直径 (2R) を引く)
         float coreLength = totalWidthY - (2.0f * outRadius);
 
-        // Y軸の中点（カプセル全体の中心）
-        float centerY = (minY + maxY) * 0.5f;
-
-        // XZ平面の中心点（カプセル軸の位置）
-        float centerX = (minX + maxX) * 0.5f;
-        float centerZ = (minZ + maxZ) * 0.5f;
+        // 【重要】メッシュの実際の中心座標は、オフセット計算に含めない
+        // float centerY = (minY + maxY) * 0.5f; // 不要
 
         // 軸線分が潰れる場合の処理 (球体判定)
         if (coreLength <= 0.0f)
         {
-            // 軸線分を中点に集約
-            outLocalOffsetA = D3DXVECTOR3(centerX, centerY, centerZ);
-            outLocalOffsetB = D3DXVECTOR3(centerX, centerY, centerZ);
+            // 軸線分をローカル原点に集約
+            outLocalOffsetA = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+            outLocalOffsetB = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
         }
         else
         {
             float halfLength = coreLength * 0.5f;
 
-            // Y軸に沿ってオフセットを設定
-            // A: 上端側, B: 下端側
-            outLocalOffsetA = D3DXVECTOR3(centerX, centerY + halfLength, centerZ);
-            outLocalOffsetB = D3DXVECTOR3(centerX, centerY - halfLength, centerZ);
+            // ★ 修正点: オフセットをローカル原点 {0, 0, 0} を中心に配置する ★
+            // XZ座標は常に 0.0f に固定する
+            // A: 上端側 (+Y軸方向)
+            outLocalOffsetA = D3DXVECTOR3(0.0f, halfLength, 0.0f);
+            // B: 下端側 (-Y軸方向)
+            outLocalOffsetB = D3DXVECTOR3(0.0f, -halfLength, 0.0f);
         }
 
         return true;

@@ -130,6 +130,7 @@ enum class StaticMeshList
 
 	ExplosionCol,
 	FunCol,
+	TestPlayer,
 };
 
 enum class UIList
