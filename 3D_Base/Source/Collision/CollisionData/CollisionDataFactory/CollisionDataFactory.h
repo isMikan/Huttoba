@@ -47,13 +47,4 @@ public:
         CGameObject* pOwner,
         bool IsAddCollider = true
     );
-
-    //‰¡Œü‚«ƒJƒvƒZƒ‹
-    static std::shared_ptr<CollisionBase> CreateHorizontalCapsule(
-        CollisionBase::ColliderTag tag,
-        std::shared_ptr<CStaticMesh> pMesh,
-        CGameObject* pOwner,
-        bool IsAddCollider = true
-    );
-
 };

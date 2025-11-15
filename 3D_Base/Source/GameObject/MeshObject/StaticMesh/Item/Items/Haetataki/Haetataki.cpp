@@ -85,9 +85,9 @@ void Haetataki::Init()
 		false
 	);
 
-	mesh = AssetManager::Mesh(StaticMeshList::BWidthCapsule);
+	mesh = AssetManager::Mesh(StaticMeshList::BCapsule);
 
-	m_pUseCollider = CollisionDataFactory::CreateHorizontalCapsule(
+	m_pUseCollider = CollisionDataFactory::CreateCapsuleForMesh(
 		CollisionBase::ColliderTag::Haetataki,
 		mesh,
 		this,

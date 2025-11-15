@@ -50,22 +50,6 @@ namespace CollisionUtility
     );
 
     /*****************************************************************************************
-    * @brief   メッシュから横軸(X)に沿ったカプセルのパラメータを計算
-    * 
-    * @param   pMesh: 入力メッシュ
-    * @param   outRadius: 計算された半径 (Y, Z軸方向の最大幅の半分)
-    * @param   outOffsetA: 軸線分A (X軸+側)
-    * @param   outOffsetB: 軸線分B (X軸-側)
-    * 
-    * @return  成功したか
-    *****************************************************************************************/
-    bool CalculateHorizontalCapsule(
-        const std::shared_ptr<CStaticMesh>& pMesh,
-        float& outRadius,
-        D3DXVECTOR3& outOffsetA,
-        D3DXVECTOR3& outOffsetB
-    );
-    /*****************************************************************************************
     * @brief   レイとターゲットメッシュとの交点を計算
     *
     * @param   pTargetMesh : 判定対象のメッシュオブジェクト
