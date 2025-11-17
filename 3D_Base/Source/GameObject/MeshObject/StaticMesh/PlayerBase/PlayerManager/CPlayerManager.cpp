@@ -46,10 +46,14 @@ void CPlayerManager::Create()
 
 	for (int pNo = 0; pNo < Player_Max; pNo++)
 	{
+#if 1
+			//プレイヤーのインスタンス生成.
+			m_pPlayers[pNo] = std::make_unique<CPlayer>(pNo);
+#else
 		//準備OKのコントローラーの場合.
 		if (CSceneData::GetSlot(pNo))
 		{
-#if 0
+
 			if (pNo == 0)
 			{
 				m_pPlayers[pNo] = std::make_unique<CPlayer>(pNo);
@@ -59,10 +63,8 @@ void CPlayerManager::Create()
 				m_pPlayers[pNo] = std::make_unique<CPlayerAI_TypeA>(pNo);
 				dynamic_cast<CPlayerAI*>(m_pPlayers[pNo].get())->SetPlayerManager(this);
 			}
-#else
 			//プレイヤーのインスタンス生成.
 			m_pPlayers[pNo] = std::make_unique<CPlayer>(pNo);
-#endif
 		}
 		else
 		{
@@ -70,6 +72,7 @@ void CPlayerManager::Create()
 			m_pPlayers[pNo] = std::make_unique<CPlayerAI_TypeA>(pNo);
 			dynamic_cast<CPlayerAI*>(m_pPlayers[pNo].get())->SetPlayerManager(this);
 		}
+#endif
 
 		if (!m_pPlayers[pNo]) return;
 
