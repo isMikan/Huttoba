@@ -130,6 +130,10 @@ void Fun::Destroy()
 	m_IsDestroy = true;
 }
 
+void Fun::ChangeState(State state)
+{
+}
+
 void Fun::OnCollision(CollisionBase* other)
 {
 	if (other->GetTag() == CollisionBase::ColliderTag::Player)

@@ -9,14 +9,8 @@
 namespace { const bool regist = ItemBase::AutoRegister<Bomb>(ItemID::Bomb); }
 
 Bomb::Bomb()
-	: m_IsTake			( false )
-	, m_PickUpTime		( 0.3f )	//値を変えるとアイテムが手に持つまでの時間が変化
-	, m_PickUpCnt		( 0.0f )
-
-	, m_Velocity		()
+	: m_Velocity		()
 	, m_MoveSpeed		( 3.0f )	//値を変えると爆弾の移動速度が変化
-
-	, m_IsThrow			( true )
 
 	, m_ExplosionTime	( 5.0f )	//値を変えると爆発するまでの時間が変化
 	, m_ExplosionCnt	( 0.0f )
@@ -25,11 +19,9 @@ Bomb::Bomb()
 	
 	, m_IsExploded		( false )
 
-	, m_MinSmashPower	( 5.0f )	//値を変えるとプレイヤーの最小吹き飛ばし力が変化
+	, m_MinSmashPower	( 6.0f )	//値を変えるとプレイヤーの最小吹き飛ばし力が変化
 
 	, m_MaxSmashPower	( 10.0f )	//値を変えるとプレイヤーの最大吹き飛ばし力が変化
-
-	, m_IsHold			(false)
 {
 	Init();
 	m_ObjectColor.resize(2);
@@ -97,15 +89,6 @@ void Bomb::Spawn()
 
 void Bomb::OnGround()
 {
-	//if (GetAsyncKeyState('M') & 0x0001)
-	////if(CInputManager::IsDown(Action::Have,0))
-	//{
-	//	//状態を取得中に変化
-	//	m_State = ItemBase::State::Have;
-
-	//	//プレイヤー側にあるモーションと同期できるように
-	//	//m_IsTake = true;
-	//}
 }
 
 void Bomb::Have()
@@ -116,29 +99,39 @@ void Bomb::Have()
 void Bomb::Use()
 {
 	UseMove();
-
-	if (!m_IsHold)
-	{
-		//投げた瞬間に別のアイテムを持ったり使ったりできるように追加
-		m_pPlayer->SetItemBase(nullptr);
-		
-		m_IsHold = true;
-	}
 }
 
 void Bomb::Throw()
 {
 	ThrowMove();
-
-	//プレイヤー側で投げるモーションの後にnullしているのでこちら側ではしない
-	//if (!m_IsThrow)
-		//投げた瞬間に別のアイテムを持ったり使ったりできるように追加
-	//	m_pPlayer->SetItemBase(nullptr);
 }
 
 void Bomb::Destroy()
 {
 	m_IsDestroy = true;
+}
+
+void Bomb::ChangeState(State state)
+{
+	switch (state)
+	{
+	case ItemBase::State::Spawn:
+		break;
+	case ItemBase::State::OnGround:
+		break;
+	case ItemBase::State::Have:
+		break;
+	case ItemBase::State::Use:
+		OneEnterUse();
+		break;
+	case ItemBase::State::Throw:
+		OneEnterThrow();
+		break;
+	case ItemBase::State::Destroy:
+		break;
+	default:
+		break;
+	}
 }
 
 void Bomb::OnCollision(CollisionBase* other)
@@ -162,54 +155,27 @@ void Bomb::HaveMove()
 
 void Bomb::UseMove()
 {
-	if (m_IsThrow)
-	{
-		//プレイヤーのクォータニオン(向いている方向)記録
-		m_vQuaternion = m_pPlayer->GetQuaternion();
-
-		D3DXMATRIX matRot;
-
-		//クォータニオンをマトリックス(行列)に変換
-		D3DXMatrixRotationQuaternion(&matRot, &m_vQuaternion);
-
-		//行列の中にあるZ軸成分を取り出す
-		D3DXVECTOR3 forward = D3DXVECTOR3(matRot._31, matRot._32, matRot._33);
-
-		//取り出したZ軸成分をノーマライズ
-		D3DXVec3Normalize(&forward, &forward);
-
-		m_Velocity = forward * m_MoveSpeed;
-
-		m_Velocity.y = 10.0f;
-
-		m_IsThrow = false;
-
-		//当たり判定削除
-		CollisionManager::GetInstance()->RemoveCollider(m_pCollision.get());
-
-		std::shared_ptr<CStaticMesh> mesh = AssetManager::Mesh(StaticMeshList::ExplosionCol);
-
-		m_pCollision = CollisionDataFactory::CreateSphereForMesh(
-			CollisionBase::ColliderTag::Bomb,
-			mesh,
-			this
-		);
-	}
-
-	//てきとうに移動速度を減少させている
+	//デルタタイムで移動速度を減少させている
 	m_Velocity -= m_Velocity * static_cast<float>(CTimeManager::GetDeltaTime());
 
+	//現在の高さによって落下するかを決める
 	if (m_vPosition.y > 0.1f)
 	{
+		//最後にm_vPositionに+するので重力加速度を-で計算する
 		m_Velocity.y -= m_tGravity;
+
+		//上が-=の計算なので+=で加速度を増やす
 		m_tGravity += 0.001f;
 	}
 	else
 	{
+		//地面の高さなのでy軸移動量を0にする
 		m_Velocity.y = 0;
+
 		Explosion();
 	}
 
+	//位置を移動速度*デルタタイムで計算
 	m_vPosition += m_Velocity * static_cast<float>(CTimeManager::GetDeltaTime());
 
 	ChangeColor();
@@ -221,9 +187,55 @@ void Bomb::ThrowMove()
 	UseMove();
 }
 
+void Bomb::OneEnterUse()
+{
+	EnterUseThrowCommon();
+
+	//投げた瞬間に別のアイテムを持ったり使ったりできるように追加
+	m_pPlayer->SetItemBase(nullptr);
+}
+
+void Bomb::OneEnterThrow()
+{
+	EnterUseThrowCommon();
+}
+
+void Bomb::EnterUseThrowCommon()
+{
+	//プレイヤーのクォータニオン(向いている方向)記録
+	m_vQuaternion = m_pPlayer->GetQuaternion();
+
+	D3DXMATRIX matRot;
+
+	//クォータニオンをマトリックス(行列)に変換
+	D3DXMatrixRotationQuaternion(&matRot, &m_vQuaternion);
+
+	//行列の中にあるZ軸成分を取り出す
+	D3DXVECTOR3 forward = D3DXVECTOR3(matRot._31, matRot._32, matRot._33);
+
+	//取り出したZ軸成分をノーマライズ
+	D3DXVec3Normalize(&forward, &forward);
+
+	//移動
+	m_Velocity = forward * m_MoveSpeed;
+
+	m_Velocity.y = 10.0f;
+
+	//当たり判定削除
+	CollisionManager::GetInstance()->RemoveCollider(m_pCollision.get());
+
+	std::shared_ptr<CStaticMesh> mesh = AssetManager::Mesh(StaticMeshList::ExplosionCol);
+
+	m_pCollision = CollisionDataFactory::CreateSphereForMesh(
+		CollisionBase::ColliderTag::Bomb,
+		mesh,
+		this
+	);
+}
+
 void Bomb::Explosion()
 {
-	//爆発時に一度だけ処理する
+	//非爆発時に一度だけ処理する
 	if (!m_IsExploded)
 	{
 		//爆発フラグをオンに
@@ -287,7 +299,7 @@ float Bomb::CalculateForceScalar(float distance)
 {
 	//爆発の当たる範囲を仮設定
 	//当たり判定用メッシュの大きさにする
-	float maxDist = 2;
+	float maxDist = 1.8f;
 
 	//0.0~1.0の間で距離の割合を出す
 	float ratio = 1.0f - (distance / maxDist);

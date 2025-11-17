@@ -28,16 +28,28 @@ public:
     //消滅
     void Destroy()override;
 
+    //状態変化時に一度だけ処理
+    void ChangeState(State state)override;
+
 private:
     //当たった際の処理
     void OnCollision(CollisionBase* other)override;
 
-    //所持中の移動処理
+    //所持の移動処理
     void HaveMove();
-    //使用中の移動処理
+    //使用の移動処理
     void UseMove();
     //投擲の移動処理
     void ThrowMove();
+
+    //状態が使用時に変化したときの一度だけの処理
+    //使用に状態が変化したときの処理
+    void OneEnterUse();
+    //投擲に状態が変化したときの処理
+    void OneEnterThrow();
+
+    //使用と投擲に状態が変化したときの共通処理
+    void EnterUseThrowCommon();
 
     //爆発処理
     void Explosion();
@@ -52,21 +64,11 @@ private:
     float CalculateForceScalar(float distance);
 
 private:
-    //アイテムを取得したときかを判定
-    bool        m_IsTake;
-    //アイテムを手に持つまでの時間
-    float       m_PickUpTime;
-    //アイテムを手に持つまでのカウント
-    double      m_PickUpCnt;
-
     //移動速度
     D3DXVECTOR3 m_Velocity;
 
     //投げた時の移動速度
     float       m_MoveSpeed;
-
-    //投げる時に一度だけ処理するものがあるので追加
-    bool        m_IsThrow;
 
     //投げてから爆発するまでの時間
     double       m_ExplosionTime;
@@ -87,7 +89,4 @@ private:
 
     //爆発の最大吹き飛ばし力
     float       m_MaxSmashPower;
-
-    //手に持っている状態
-    bool        m_IsHold;
 };

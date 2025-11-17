@@ -42,7 +42,8 @@ void Mushroom::Init()
 
 	m_tGravity = 0.001f;
 
-	m_UseCount = 1;
+	//アイテムの耐久値を設定するものだが現在ないので一旦コメントにしておく
+	//m_UseCount = 1;
 
 	std::shared_ptr<CStaticMesh> mesh = AssetManager::Mesh(StaticMeshList::Mushroom);
 
@@ -98,8 +99,8 @@ void Mushroom::Use()
 {
 	UseMove();
 
-	if(m_IsHold)
-	m_pPlayer->SetItemBase(nullptr);
+	if (m_IsHold)
+		m_pPlayer->SetItemBase(nullptr);
 }
 
 void Mushroom::Throw()
@@ -113,7 +114,11 @@ void Mushroom::Destroy()
 {
 	m_IsDestroy = true;
 
-	m_pPlayer->SetItemBase(nullptr);
+	//m_pPlayer->SetItemBase(nullptr);
+}
+
+void Mushroom::ChangeState(State state)
+{
 }
 
 void Mushroom::OnCollision(CollisionBase* other)
@@ -164,6 +169,8 @@ void Mushroom::UseMove()
 		m_Velocity.y = 5.0f;
 
 		m_IsHasThrow = true;
+
+		m_IsHold = true;
 	}
 
 	if (m_vPosition.y > 0.05f)
@@ -255,13 +262,14 @@ void Mushroom::Smash(CPlayerBase& playiers)
 
 float Mushroom::CalculateForceScalar(float distance)
 {
-	//キノコの当たる範囲を仮設定
-	//当たり判定用メッシュの大きさにする
+	//半径を仮設定
+	//当たり判定用メッシュの大きさにしたい
 	float maxDist = 2;
 
 	//0.0~1.0の間で距離の割合を出す
 	float ratio = 1.0f - (distance / maxDist);
 
+	//現状当たり範囲を指定してるので0.0~1.0の間に収まるかわからないのでクランプする
 	ratio = std::clamp(ratio, 0.0f, 1.0f);
 
 	float power = m_MinSmashPower + (m_MaxSmashPower - m_MinSmashPower) * ratio;
