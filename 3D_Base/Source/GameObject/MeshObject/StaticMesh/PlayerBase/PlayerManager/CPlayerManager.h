@@ -21,6 +21,8 @@ public:
 		D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAMERA& Camera);
 
 //=== 各シーンの構築関数 ===.
+	//--- 準備画面 ---.
+	void StandbyPlayerCreate();
 	//--- メイン ---.
 	void MainPlayerCreate();
 	//--- リザルト ---.

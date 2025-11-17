@@ -13,6 +13,8 @@ CSceneStandby::CSceneStandby()
 
 	, m_pPlayerManager()
 
+	, m_pGroundManager		()
+
 	, m_Action()
 
 	, m_SelectorPos()
@@ -26,10 +28,6 @@ CSceneStandby::CSceneStandby()
 	//InitializePlayers();
 	InitializeRedyFont();
 	SetSelectorPos();
-
-	CCameraManager::SetPosition(0.f, 10.f, 10.f);
-	CCameraManager::SetLook(0.f, 0.f, -10.f);
-	CCameraManager::SetLight(1.5f, 1.f, -1.f);
 }
 
 CSceneStandby::~CSceneStandby()
@@ -38,14 +36,18 @@ CSceneStandby::~CSceneStandby()
 
 HRESULT CSceneStandby::Create()
 {
-	CCameraManager::SetPosition(5.f, 3.f, -10.f);
-	CCameraManager::SetLook(5.f, 0.f, 0.f);
+	CCameraManager::SetPosition(4.f, 2.f, -10.f);
+	CCameraManager::SetLook(4.f, 0.f, 0.f);
 	CCameraManager::SetLight(0.f, 10.f, -10.f);
 
 	//プレイヤーマネージャーのインスタンス作成.
 	m_pPlayerManager = std::make_unique<CPlayerManager>();
-	m_pPlayerManager->ResultPlayerCreate();
+	m_pPlayerManager->StandbyPlayerCreate();
 
+	//地面マネージャークラスのインスタンス作成.
+	m_pGroundManager = std::make_unique<CGroundManager>();
+	m_pGroundManager->ResultGroundCreate();
+	
 	m_pSpriteStandbyImg = std::make_unique<CUIObject>();
 
 	for (int i = 0;i < 4;i++)
@@ -73,6 +75,9 @@ HRESULT CSceneStandby::LoadData()
 
 	//プレイヤーマネージャーの読み込み.
 	m_pPlayerManager->LoadData();
+
+	//地面マネージャーの読み込み.
+	m_pGroundManager->LoadData();
 
 	//関数を入れる
 	m_Action =
@@ -124,8 +129,11 @@ void CSceneStandby::Draw()
 	D3DXMATRIX proj = CCameraManager::GetProjection();	//プロジェクション.
 	//==================.
 
-		//プレイヤーの描画.
-		//m_pPlayerManager->Draw(view, proj, light, camera);
+	//地面マネージャーの描画.
+	//m_pGroundManager->Draw(view, proj, light, camera);
+
+	//プレイヤーの描画.
+	//m_pPlayerManager->Draw(view, proj, light, camera);
 
 	m_pDx11->SetDepth(false);
 

@@ -91,6 +91,25 @@ void CPlayerManager::Draw(D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAME
 
 //=== 各シーンの構築処理 ===.
 
+//--- 準備画面 ---.
+void CPlayerManager::StandbyPlayerCreate()
+{
+	Create();
+
+	for (int pNo = 0; pNo < Player_Max; pNo++)
+	{
+		if (!m_pPlayers[pNo]) return;
+
+		D3DXVECTOR3 pos(2.5f, 0.f, -1.f);
+		//左から順に表示.
+		pos.x *= pNo;
+
+		m_pPlayers[pNo]->SetPosition(pos);
+		m_pPlayers[pNo]->
+			SetQuaternion(0.f, D3DXToRadian(90.f), 0.f, 0.f);
+	}
+}
+
 //--- メイン ---.
 void CPlayerManager::MainPlayerCreate()
 {

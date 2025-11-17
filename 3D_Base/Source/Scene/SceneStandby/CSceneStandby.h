@@ -49,6 +49,9 @@ private:
 	//プレイヤーマネージャークラス.
 	std::unique_ptr<CPlayerManager>		m_pPlayerManager;
 
+	//地面マネージャークラス.
+	std::unique_ptr<CGroundManager> 	m_pGroundManager;
+
 	//画面遷移時の動作を入れる.
 	std::vector<std::function<void()>>	m_Action;	
 
