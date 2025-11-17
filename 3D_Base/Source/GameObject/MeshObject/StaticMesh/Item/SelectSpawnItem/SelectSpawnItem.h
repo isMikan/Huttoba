@@ -10,7 +10,7 @@ public:
 	SelectSpawnItem();
 	~SelectSpawnItem();
 
-	void SerectSpawnItem(std::vector<std::unique_ptr<ItemBase>> items);
+	void SerectSpawnItem(std::vector<std::unique_ptr<ItemBase>>& items);
 	
 
 private:

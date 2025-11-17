@@ -95,6 +95,7 @@ void ItemManager::Draw(D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAMERA&
 
 void ItemManager::CreateItem()
 {
+	m_pSpawnItem->SerectSpawnItem(m_pItems);
 }
 
 //--------------------------------------------------------------------------------------------------------------
