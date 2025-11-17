@@ -38,7 +38,7 @@ private:
 
 	float			m_CurrentTiltAngle;		//Œ»İ‚ÌŒX‚«Šp“x.
 	float			m_TiltAngleMax;			//Å‘å‚ÌŒX‚«Šp“x.
-
+	float			m_HandLaps;				//è‚Ìü‰ñ.
 
 //=== è‚Ì’²®ˆÊ’u ===.
 

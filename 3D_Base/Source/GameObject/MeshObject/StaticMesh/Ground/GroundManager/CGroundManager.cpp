@@ -11,28 +11,12 @@ CGroundManager::CGroundManager()
 
 CGroundManager::~CGroundManager()
 {
-	Destroy();
+	m_pGrounds.clear();
 }
 
 //======================================================================
 // 	   外部で呼び出す関数.
 //======================================================================
-
-//--- 構築関数 ---.
-void CGroundManager::Create()
-{
-	m_pGrounds.clear();
-	m_pGrounds.resize(Ground_Max);
-
-	for (auto& ground : m_pGrounds)
-	{
-		//地面クラスのインスタンス作成.
-		ground = std::make_unique<CGround>();
-
-		//地面の位置を設定.
-		ground->SetPosition(0.f, -1.f, 10.f);
-	}
-}
 
 //--- 読込関数 ---.
 void CGroundManager::LoadData()
@@ -44,15 +28,10 @@ void CGroundManager::LoadData()
 	m_pGrounds[FirstFallGround]->AttachMesh(AssetManager::Mesh(StaticMeshList::FirstFallGround));
 }
 
-//--- 破棄関数 ---.
-void CGroundManager::Destroy()
-{
-	m_pGrounds.clear();
-}
-
 //--- 更新関数 ---.
 void CGroundManager::Update()
 {
+	//経過時間を取得.
 	float t = CTimeManager::GetTotalTime();
 
 	for (int gNo = 0; gNo < m_pGrounds.size(); gNo++)
@@ -63,8 +42,7 @@ void CGroundManager::Update()
 		//制限のところまできたら消す.
 		if (m_pGrounds[gNo]->GetPosition().y < -30.f)
 		{
-			m_pGrounds[gNo].reset();
-			m_pGrounds.resize(m_pGrounds.size() - 1);
+			Destroy(gNo);
 			return;
 		}
 
@@ -112,3 +90,52 @@ void CGroundManager::Draw(
 		ground->Draw(View, Proj, Light, Camera);
 	}
 }
+
+//--- メイン ---.
+void CGroundManager::MainGroundCreate()
+{
+	Create();
+
+	for (auto& ground : m_pGrounds)
+	{
+		//地面の位置を設定.
+		ground->SetPosition(0.f, -1.f, 10.f);
+	}
+}
+
+//--- リザルト ---.
+void CGroundManager::ResultGroundCreate()
+{
+	Create();
+
+	for (auto& ground : m_pGrounds)
+	{
+		//地面の位置を設定.
+		ground->SetPosition(3.f, -1.f, -3.f);
+	}
+}
+
+//======================================================================
+// 	   内部で呼び出す関数.
+//======================================================================
+
+//--- 構築関数 ---.
+void CGroundManager::Create()
+{
+	m_pGrounds.clear();
+	m_pGrounds.resize(Ground_Max);
+
+	for (auto& ground : m_pGrounds)
+	{
+		//地面クラスのインスタンス作成.
+		ground = std::make_unique<CGround>();
+	}
+}
+
+//--- 破棄関数 ---.
+void CGroundManager::Destroy(int index)
+{
+	m_pGrounds[index].reset();
+	m_pGrounds.resize(m_pGrounds.size() - 1);
+}
+

@@ -14,22 +14,23 @@ public:
 //======================================================================
 // 	   外部で呼び出す関数.
 //======================================================================
-	//--- 構築処理 ---.
-	void Create();
 	//--- 読込処理 ---.
 	void LoadData();
-	//--- 破棄処理 ---.
-	void Destroy(CPlayerBase* player);
-	//--- 更新処理 ---.
-	void Update();
 	//--- 描画処理 ---.
 	void Draw(
 		D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAMERA& Camera);
 
-	//--- メインシーンの構築処理 ---.
+//=== 各シーンの構築関数 ===.
+	//--- メイン ---.
 	void MainPlayerCreate();
-	//--- リザルトシーンの構築処理 ---.
+	//--- リザルト ---.
 	void ResultPlayerCreate();
+
+//=== 各シーンの更新関数 ===.
+	//--- メイン ---.
+	void MainPlayerUpdate();
+	//--- リザルト ---.
+	void ResultPlayerUpdate();
 
 	//今は実際使うかわからないのでコメント化.
 	//エフェクトを表示するための関数.
@@ -43,6 +44,13 @@ private:
 //======================================================================
 // 	   内部で呼び出す関数.
 //======================================================================
+	//--- 構築処理 ---.
+	void Create();
+	//--- 破棄処理 ---.
+	void Destroy(CPlayerBase* player);
+	//--- 更新処理 ---.
+	void Update(CPlayerBase* player);
+
 	//--- キャラクターの色を設定する ---.
 	ObjectColor CharacterColorSettings(int index);
 

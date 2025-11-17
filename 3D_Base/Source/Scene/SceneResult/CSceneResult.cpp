@@ -10,6 +10,8 @@ CSceneResult::CSceneResult()
 
 	, m_pPlayerManager		()
 
+	, m_pGroundManager		()
+
 	, m_SelectorPos			()
 
 	, m_SelectorNumber		( 0 )
@@ -32,13 +34,17 @@ CSceneResult::~CSceneResult()
 
 HRESULT CSceneResult::Create()
 {
-	CCameraManager::SetPosition(5.f, 3.f, -10.f);
-	CCameraManager::SetLook(5.f, 0.f, 0.f);
+	CCameraManager::SetPosition(3.f, 3.f, -10.f);
+	CCameraManager::SetLook(3.f, -1.f, -2.f);
 	CCameraManager::SetLight(0.f, 10.f, -10.f);
 
 	//プレイヤーマネージャーのインスタンス作成.
 	m_pPlayerManager = std::make_unique<CPlayerManager>();
 	m_pPlayerManager->ResultPlayerCreate();
+
+	//地面マネージャークラスのインスタンス作成.
+	m_pGroundManager = std::make_unique<CGroundManager>();
+	m_pGroundManager->ResultGroundCreate();
 
 	m_pSpriteResultImg = std::make_unique<CUIObject>();
 	m_pSpriteSelector = std::make_unique<CUIObject>();
@@ -64,18 +70,31 @@ HRESULT CSceneResult::LoadData()
 	//プレイヤーマネージャーの読み込み.
 	m_pPlayerManager->LoadData();
 
+	//地面マネージャーの読み込み.
+	m_pGroundManager->LoadData();
+	
 	return S_OK;
 }
 
 
 void CSceneResult::Update()
 {
+	CTimeManager::Update();
+
 	MoveSelector();
 
 	SelectorControl();
 
-	//プレイヤーの動作
-	m_pPlayerManager->Update();
+	//地面に接地しているか.
+	for (auto& player : m_pPlayerManager->GetPlayer())
+	{
+		if (!player) continue;	//プレイヤーがいない場合、次へ.
+
+		player->OnGroundCollision(*m_pGroundManager);
+	}
+
+	//プレイヤーの動作.
+	m_pPlayerManager->ResultPlayerUpdate();
 
 	//関数を入れる
 	m_Action =
@@ -106,6 +125,9 @@ void CSceneResult::Draw()
 	D3DXMATRIX view = CCameraManager::GetView();		//ビュー.
 	D3DXMATRIX proj = CCameraManager::GetProjection();	//プロジェクション.
 	//==================.
+
+	//地面マネージャーの描画.
+	m_pGroundManager->Draw(view, proj, light, camera);
 
 	//プレイヤーの描画.
 	m_pPlayerManager->Draw(view, proj, light, camera);

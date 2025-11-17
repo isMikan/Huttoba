@@ -3,6 +3,7 @@
 
 #include "GameObject/UIObject/CUIObject.h"
 #include "PlayerBase/PlayerManager/CPlayerManager.h"
+#include "Ground/GroundManager/CGroundManager.h"
 
 #include "Input/CInputManager.h"
 #include "Assets/AssetManager.h"
@@ -40,6 +41,9 @@ private:
 
 	//プレイヤーマネージャークラス.
 	std::unique_ptr<CPlayerManager>		m_pPlayerManager;
+	
+	//地面マネージャークラス.
+	std::unique_ptr<CGroundManager> 	m_pGroundManager;
 
 	std::vector<D3DXVECTOR3>	m_SelectorPos;		//選択矢印の座標.
 

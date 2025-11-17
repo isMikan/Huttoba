@@ -16,6 +16,7 @@ CPlayerHandAttackState::CPlayerHandAttackState(CPlayerBase& pPlayer)
 
 	, m_CurrentTiltAngle	()
 	, m_TiltAngleMax		( D3DXToRadian( 10.f ) )
+	, m_HandLaps			( 0.5f )	//半周.
 
 	, m_RightHandStartPos	()
 	, m_LeftHandStartPos	()
@@ -47,9 +48,6 @@ void CPlayerHandAttackState::Enter()
 	D3DXVECTOR3 playerPos = m_pPlayer.GetPosition();
 	m_StartQuat = m_pPlayer.GetQuaternion();
 
-	//ローカル軸を取得.
-	CPlayerBase::LocalAxes axes = m_pPlayer.GetLocalAxes();
-
 	//手の位置を調整するための数値を取得.
 	D3DXVECTOR3 rightHandOffset = m_pPlayer.GetPlayerRightHand().GetOffsetPos();
 	D3DXVECTOR3 leftHandOffset = m_pPlayer.GetPlayerLeftHand().GetOffsetPos();
@@ -73,7 +71,7 @@ void CPlayerHandAttackState::Exit()
 //--- この状態の間に呼び出す ---.
 void CPlayerHandAttackState::Update()
 {
-	//ゲーム全体の経過時間.
+	//経過時間を取得.
 	float t = CTimeManager::GetTotalTime();
 
 	//現在の経過時間と開始時間の差が終了時間を上回った場合.
@@ -92,9 +90,6 @@ void CPlayerHandAttackState::Update()
 		return;
 	}
 
-	//ローカル軸を取得.
-	CPlayerBase::LocalAxes axes = m_pPlayer.GetLocalAxes();
-
 	//全体の時間の現在の割合.
 	float progress = (t - m_StartTime) / m_EndTime;
 	progress = std::clamp(progress, 0.f, 1.f);
@@ -102,10 +97,12 @@ void CPlayerHandAttackState::Update()
 	//現在の傾き = 最大傾き角度 * 割合.
 	m_CurrentTiltAngle = m_pPlayer.WrapAngle(m_TiltAngleMax * progress);
 
+	//ローカル軸を取得.
+	CPlayerBase::LocalAxes axes = m_pPlayer.GetLocalAxes();
 	//クォータニオンの回転を計算して設定する.
 	m_pPlayer.SetQuaternion(m_pPlayer.TiltedQuat(m_StartQuat, axes.right, m_CurrentTiltAngle));
 
-	float eased = sinf(progress * D3DX_PI * 0.5f);	//0.5で半往復させ前に手を出す計算をする.	
+	float eased = sinf(progress * D3DX_PI * m_HandLaps);	//前に手を出す計算をする.	
 
 	//右手と左手の調整位置だけの計算.
 	D3DXVECTOR3 rightHandOffsetPos;

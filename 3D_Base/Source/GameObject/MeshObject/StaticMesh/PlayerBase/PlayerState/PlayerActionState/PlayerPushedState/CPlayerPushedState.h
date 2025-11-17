@@ -32,6 +32,7 @@ private:
 	float			m_CurrentTiltAngle;		//Œ»İ‚ÌŒX‚«Šp“x.
 	float			m_TiltAngleMax;			//Å‘å‚ÌŒX‚«Šp“x.
 	float			m_PhaseSplit;			//ŒX‚«‚Ì•Ï‚í‚è–Ú.
+	float			m_HandLaps;				//è‚Ìü‰ñ.
 
 	D3DXVECTOR3		m_RightHandStartPos;	//‰Eè‚ÌŒ³‚ÌˆÊ’u.
 	D3DXVECTOR3		m_LeftHandStartPos;		//¶è‚ÌŒ³‚ÌˆÊ’u.

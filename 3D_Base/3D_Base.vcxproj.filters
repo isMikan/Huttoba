@@ -110,6 +110,7 @@
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\PlayerBase\PlayerState\PlayerActionState\PlayerItemAttackState\CPlayerItemAttackState.cpp" />
     <ClCompile Include="Source\Scene\SceneData\CSceneData.cpp" />
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\PlayerBase\PlayerState\PlayerActionState\PlayerResultLose_TypeA\CPlayerResultLose_TypeA.cpp" />
+    <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\PlayerBase\PlayerState\PlayerActionState\PlayerResultWin_TypeA\CPlayerResultWin_TypeA.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Assets\AssetManager.h" />
@@ -223,5 +224,6 @@
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\PlayerBase\PlayerState\PlayerActionState\PlayerItemAttackState\CPlayerItemAttackState.h" />
     <ClInclude Include="Source\Scene\SceneData\CSceneData.h" />
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\PlayerBase\PlayerState\PlayerActionState\PlayerResultLose_TypeA\CPlayerResultLose_TypeA.h" />
+    <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\PlayerBase\PlayerState\PlayerActionState\PlayerResultWin_TypeA\CPlayerResultWin_TypeA.h" />
   </ItemGroup>
 </Project>

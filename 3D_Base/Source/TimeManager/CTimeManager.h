@@ -23,10 +23,6 @@ public:
 //======================================================================
 	//リセット関数を外部へ.
 	static void Reset() { GetInstance().Reset_Internal(); }
-	//一時停止関数を外部へ.
-	static void Pause() { GetInstance().Pause_Internal(); }
-	//再開関数を外部へ.
-	static void Resume() { GetInstance().Resume_Internal(); }
 	//更新関数を外部へ.
 	static void Update() { GetInstance().Update_Internal(); }
 
@@ -43,10 +39,6 @@ private:
 //======================================================================
 	//--- リセット ---.
 	void Reset_Internal();
-	//--- 一時停止（ポーズ開始） ---.
-	void Pause_Internal();
-	//--- 再開（ポーズ終了） ---.
-	void Resume_Internal();
 	//--- 更新処理 ---.
 	void Update_Internal();
 
@@ -63,6 +55,4 @@ private:
 
 	double		m_DeltaTime;	//1フレームの間どれだけ経ったか.
 	double		m_TotalTime;	//経過時間.
-
-	bool		m_IsPaused;		//一時停止しているか.
 };

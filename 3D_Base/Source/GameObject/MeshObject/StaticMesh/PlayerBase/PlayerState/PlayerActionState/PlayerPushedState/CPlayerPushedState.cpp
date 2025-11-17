@@ -16,6 +16,7 @@ CPlayerPushedState::CPlayerPushedState(CPlayerBase& pPlayer)
 	, m_CurrentTiltAngle	()
 	, m_TiltAngleMax		( D3DXToRadian( -30.f ) )
 	, m_PhaseSplit			( 0.5f )
+	, m_HandLaps			( 3.f )	//3周.
 
 	, m_RightHandStartPos	( 0.f, 0.f, 0.f )
 	, m_LeftHandStartPos	( 0.f, 0.f, 0.f )
@@ -132,7 +133,8 @@ void CPlayerPushedState::Update()
 	//クォータニオンの回転を計算して設定する.
 	m_pPlayer.SetQuaternion(m_pPlayer.TiltedQuat(m_StartQuat, axes.right, m_CurrentTiltAngle));
 
-	float eased = cosf(progress * D3DX_PI * 3.f);	//0.5かけて半円分の移動を計算.	
+	//手の軌道を計算.
+	float eased = cosf(progress * D3DX_PI * m_HandLaps);	
 
 	//手の位置を計算.
 	D3DXVECTOR3 rightHandOffsetPos;

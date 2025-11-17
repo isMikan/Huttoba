@@ -13,7 +13,8 @@ CPlayerHandWhiffState::CPlayerHandWhiffState(CPlayerBase& pPlayer)
 	, m_CurrentTiltAngle	()
 	, m_TiltAngleMax		( D3DXToRadian( 20.f ) )
 	, m_PhaseSplit			( 0.4f )
-							  
+	, m_HandLaps			( 0.5f )	//半周.
+
 	, m_RightHandStartPos	( 0.f, 0.f, 0.f )
 	, m_LeftHandStartPos	( 0.f, 0.f, 0.f )
 	, m_RightHandEndPos		( 0.f, 0.f, 0.f )
@@ -142,7 +143,7 @@ void CPlayerHandWhiffState::Update()
 	//クォータニオンの回転を計算して設定する.
 	m_pPlayer.SetQuaternion(m_pPlayer.TiltedQuat(m_StartQuat, axes.right, m_CurrentTiltAngle));
 
-	float eased = sinf(progress * D3DX_PI * 0.5f);	//0.5かけて半円分の移動を計算.	
+	float eased = sinf(progress * D3DX_PI * m_HandLaps);	//半円分の移動を計算.	
 
 	//プレイヤーの手の位置を計算.
 	D3DXVECTOR3 rightHandPos;

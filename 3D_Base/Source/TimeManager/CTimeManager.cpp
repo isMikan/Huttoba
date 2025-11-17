@@ -21,41 +21,11 @@ void CTimeManager::Reset_Internal()
 
 	m_DeltaTime = 0.0;
 	m_TotalTime = 0.0;
-
-	m_IsPaused = false;
-}
-
-//--- 一時停止（ポーズ開始） ---.
-void CTimeManager::Pause_Internal()
-{
-	//一時停止中でない.
-	if (!m_IsPaused)
-	{
-		m_IsPaused = true;	//一時停止開始.
-	}
-}
-
-//--- 再開（ポーズ終了） ---.
-void CTimeManager::Resume_Internal()
-{
-	//一時停止中.
-	if (m_IsPaused)
-	{
-		m_PreviousTime = Clock::now();
-		m_IsPaused = false;	//一時停止解除.
-	}
 }
 
 //--- 更新処理 ---.
 void CTimeManager::Update_Internal()
 {
-	//一時停止中.
-	if (m_IsPaused)
-	{
-		m_DeltaTime = 0.0;	//デルタタイムを 0 に固定.
-		return;
-	}
-
 	//現在の時間の時点.
 	TimePoint currentTime = Clock::now();
 

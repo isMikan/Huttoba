@@ -22,6 +22,7 @@ CPlayerItemAttackState::CPlayerItemAttackState(CPlayerBase& pPlayer)
 
 	, m_CurrentTiltAngle				()
 	, m_TiltAngleMax					( D3DXToRadian( 7.f ) )
+	, m_HandLaps						( 0.5f )	//半周.
 
 	, m_RightHandStartPos				()
 	, m_LeftHandStartPos				()
@@ -133,7 +134,7 @@ void CPlayerItemAttackState::Update()
 	//クォータニオンを設定する.
 	m_pPlayer.SetQuaternion(tiltedQuat.x, currentQuat.y, tiltedQuat.z, currentQuat.w);
 
-	float eased = sinf(progress * D3DX_PI * 0.5f);	//0.5で半往復させ前に手を出す計算をする.	
+	float eased = sinf(progress * D3DX_PI * m_HandLaps);	//補正を計算する.	
 
 	//右手と左手の調整位置
 	D3DXVECTOR3 rightHandOffsetPos;

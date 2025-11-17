@@ -100,6 +100,7 @@ void CPlayerFallingState::Update()
 		if(m_pPlayer.GetHitAttack().hitEvent == CPlayerBase::HitEvent::WithDown)
 		{
 			m_pPlayer.SetActionState(std::make_unique<CPlayerKnockdownState>(m_pPlayer));
+			return;
 		}
 		else
 		{
@@ -110,28 +111,28 @@ void CPlayerFallingState::Update()
 				//残り時間分を設定.
 				m_pPlayer.SetHitPower(downTimeRemaining);
 				m_pPlayer.SetActionState(std::make_unique<CPlayerKnockdownState>(m_pPlayer));
+				return;
+			}
+			//吹き飛ばす攻撃を受けた場合.
+			if (m_pPlayer.GetHitAttack().hitEvent == CPlayerBase::HitEvent::NoDown)
+			{
+				m_pPlayer.SetActionState(std::make_unique<CPlayerGetUpState>(m_pPlayer));
+				return;
+			}
+			//アイテムを持っている場合.
+			if (m_pPlayer.GetItemBase())
+			{
+				//アイテム持ち、何もなし状態.
+				m_pPlayer.SetActionState(std::make_unique<CPlayerHoldingIdleState>(m_pPlayer));
+				return;
 			}
 			else
 			{
-				//吹き飛ばす攻撃を受けた場合.
-				if (m_pPlayer.GetHitAttack().hitEvent == CPlayerBase::HitEvent::NoDown)
-				{
-					m_pPlayer.SetActionState(std::make_unique<CPlayerGetUpState>(m_pPlayer));
-				}
-				//アイテムを持っている場合.
-				else if (m_pPlayer.GetItemBase())
-				{
-					//アイテム持ち、何もなし状態.
-					m_pPlayer.SetActionState(std::make_unique<CPlayerHoldingIdleState>(m_pPlayer));
-				}
-				else
-				{
-					//何もなし状態.
-					m_pPlayer.SetActionState(std::make_unique<CPlayerActionIdleState>(m_pPlayer));
-				}
+				//何もなし状態.
+				m_pPlayer.SetActionState(std::make_unique<CPlayerActionIdleState>(m_pPlayer));
+				return;
 			}
 		}
-		return;
 	}
 
 	//クォータニオンを取得.
