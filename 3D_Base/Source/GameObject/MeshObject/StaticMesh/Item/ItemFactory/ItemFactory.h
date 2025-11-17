@@ -46,6 +46,11 @@ public:
 	*****************************************************************************************/
 	std::unique_ptr<ItemBase> CreateItem(const ItemID ItemId);
 
+	/*****************************************************************************************
+	* @brief    “o˜^‚³‚ê‚Ä‚¢‚éƒAƒCƒeƒ€•Ô‚·
+	*****************************************************************************************/
+	std::unordered_map<ItemID, Createfunc> GetRegistryKinds() { return m_Registry; };
+
 private:
 	ItemFactory();
 	~ItemFactory();

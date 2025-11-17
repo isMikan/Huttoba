@@ -25,13 +25,13 @@ ItemManager::~ItemManager()
 
 HRESULT ItemManager::Create()
 {
-	m_pItems.push_back(ItemFactory::GetInstance()->CreateItem(ItemID::Haetataki));
-	m_pItems.push_back(ItemFactory::GetInstance()->CreateItem(ItemID::SmashBat));
-	m_pItems.push_back(ItemFactory::GetInstance()->CreateItem(ItemID::Bomb));
-	m_pItems.push_back(ItemFactory::GetInstance()->CreateItem(ItemID::Bomb));
-	m_pItems.push_back(ItemFactory::GetInstance()->CreateItem(ItemID::Mushroom));
-	m_pItems.push_back(ItemFactory::GetInstance()->CreateItem(ItemID::TrackingRobot));
-	m_pItems.push_back(ItemFactory::GetInstance()->CreateItem(ItemID::Fun));
+	//m_pItems.push_back(ItemFactory::GetInstance()->CreateItem(ItemID::Haetataki));
+	//m_pItems.push_back(ItemFactory::GetInstance()->CreateItem(ItemID::SmashBat));
+	//m_pItems.push_back(ItemFactory::GetInstance()->CreateItem(ItemID::Bomb));
+	//m_pItems.push_back(ItemFactory::GetInstance()->CreateItem(ItemID::Bomb));
+	//m_pItems.push_back(ItemFactory::GetInstance()->CreateItem(ItemID::Mushroom));
+	//m_pItems.push_back(ItemFactory::GetInstance()->CreateItem(ItemID::TrackingRobot));
+	//m_pItems.push_back(ItemFactory::GetInstance()->CreateItem(ItemID::Fun));
 
 	for (int i = 0;i < 4;i++)
 	{
@@ -39,9 +39,6 @@ HRESULT ItemManager::Create()
 		CInputManager::BindKey(Action::HaeAttack, InputBinding(InputDevice::GamePad, CXInput::B),i);
 		CInputManager::BindKey(Action::Have, InputBinding(InputDevice::Keyboard, 'Z'),i);
 	}
-
-	m_pItems[0]->SetPosition(0, 0, 4);
-	m_pItems[1]->SetPosition(-1, 0, 4);
 
 	return S_OK;
 }
@@ -67,6 +64,9 @@ void ItemManager::Init()
 
 void ItemManager::Update()
 {
+	//アイテムの作成
+	CreateItem();
+
 	for (auto& item : m_pItems)
 	{
 		//一旦Player0しか持てないようにする
@@ -95,7 +95,17 @@ void ItemManager::Draw(D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAMERA&
 
 void ItemManager::CreateItem()
 {
-	m_pSpawnItem->SerectSpawnItem(m_pItems);
+	//アイテム数上限の時は作成しない
+	if (SPAWN_LIMIT < m_pItems.size()) return;
+
+	//Selectクラスで生成アイテムを選択
+	ItemID itemId = m_pSpawnItem->SerectSpawnItem(m_pItems);
+
+	//問題なければアイテムを作成
+	if (itemId != ItemID::None)
+	{
+		m_pItems.push_back(ItemFactory::GetInstance()->CreateItem(itemId));
+	}
 }
 
 //--------------------------------------------------------------------------------------------------------------
