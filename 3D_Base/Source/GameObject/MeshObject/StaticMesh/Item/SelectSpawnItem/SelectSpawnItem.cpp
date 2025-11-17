@@ -3,7 +3,6 @@
 #include "Item/ItemBase.h"
 #include "Item/ItemFactory/ItemFactory.h"
 
-
 SelectSpawnItem::SelectSpawnItem()
 	: m_ItemsSpawnCount	{}
 	, m_IsSpawnMagnet		{}
@@ -26,17 +25,38 @@ ItemID SelectSpawnItem::SerectSpawnItem(std::vector<std::unique_ptr<ItemBase>>& 
 	//最初に現在の最小カウントを求める
 	MinItemCount();
 
+	//出現の抽選を行うアイテムを格納する変数
+	std::vector<std::pair<ItemID, int>> possibilityItem;
+
 	//アイテムの出現数を確認して、少ないものを出すスポーンアイテムの選択
 	for (auto& item : m_ItemsSpawnCount)
 	{
 		if (item.second == m_MinItemCount)
 		{
-			//アイテム生成カウント増加
-			item.second += 1;
-			return item.first;
+			//最小カウントと一致したアイテムを格納(抽選のため)
+			possibilityItem.push_back(item);
 		}
 	}
-	return ItemID::None;
+
+	//ランダム設定
+	std::random_device rd;
+	std::mt19937 gen(rd());
+	std::uniform_int_distribution<> dist(0, possibilityItem.size() - 1);
+
+	//ランダム抽選
+	auto& elem = possibilityItem[dist(gen)];
+
+	//抽選で選ばれたアイテムのIDを参照し、一致したものをカウントプラス
+	for (auto& item : m_ItemsSpawnCount)
+	{
+		if (elem.first == item.first)
+		{
+			//アイテム生成カウント増加
+			item.second += 1;
+
+			return 	item.first;
+		}
+	}
 }
 
 void SelectSpawnItem::MinItemCount()

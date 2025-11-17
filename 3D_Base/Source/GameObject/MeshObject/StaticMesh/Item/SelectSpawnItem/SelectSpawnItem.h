@@ -15,6 +15,7 @@ private:
 	void MinItemCount();
 
 private:
+
 	std::unordered_map<ItemID, int> m_ItemsSpawnCount;
 	bool	m_IsSpawnMagnet;
 	int		m_MinItemCount;
