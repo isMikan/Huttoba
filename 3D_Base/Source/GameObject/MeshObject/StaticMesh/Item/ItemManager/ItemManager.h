@@ -3,6 +3,7 @@
 
 class ItemBase;
 class CPlayerManager;
+class SelectSpawnItem;
 
 class ItemManager:
 	public CStaticMeshObject
@@ -39,6 +40,10 @@ public:
 	*****************************************************************************************/
 	void Draw(D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAMERA& Camera) override;
 
+	/*****************************************************************************************
+	* @brief    アイテムの作成
+	*****************************************************************************************/
+	void CreateItem();
 
 	/*****************************************************************************************
 	* @brief    破壊フラグを参照して破壊を行う関数
@@ -57,5 +62,5 @@ private:
 
 	// アイテムのコンテナ
 	std::vector<std::unique_ptr<ItemBase>> m_pItems;
-
+	std::unique_ptr<SelectSpawnItem> m_pSpawnItem;
 };

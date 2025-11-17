@@ -3,12 +3,14 @@
 #include "Item/ItemBase.h"	
 #include "PlayerBase/PlayerManager/CPlayerManager.h"
 #include "Input/CInputManager.h"
+#include "Item/SelectSpawnItem/SelectSpawnItem.h"
 
 
 //--------------------------------------------------------------------------------------------------------------
 
 ItemManager::ItemManager()
-	:m_pItems	()
+	: m_pItems		{}
+	, m_pSpawnItem{ std::make_unique<SelectSpawnItem>() }
 {
 	Create();
 }
@@ -70,19 +72,14 @@ void ItemManager::Update()
 		//一旦Player0しか持てないようにする
 		item->Update();
 
-		//if (CInputManager::IsDown(Action::HaeAttack, 0))
-		//{
-		//	item->SetState(ItemBase::State::Use);
-		//}
-
 		if (!item->GetIsOnGround())
 		{
 			item->Fall();
 		}
 	}
+
 	//不必要なアイテム削除
 	DestroyItem();
-
 }
 
 //--------------------------------------------------------------------------------------------------------------
@@ -96,10 +93,15 @@ void ItemManager::Draw(D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAMERA&
 	}
 }
 
+void ItemManager::CreateItem()
+{
+}
+
 //--------------------------------------------------------------------------------------------------------------
 
 void ItemManager::DestroyItem()
 {
+	//各アイテムが持っているbool型のIsDestoroyを見てtrueだったら削除
 	m_pItems.erase(
 		std::remove_if(
 			m_pItems.begin(), m_pItems.end(),
