@@ -25,14 +25,6 @@ ItemManager::~ItemManager()
 
 HRESULT ItemManager::Create()
 {
-	//m_pItems.push_back(ItemFactory::GetInstance()->CreateItem(ItemID::Haetataki));
-	//m_pItems.push_back(ItemFactory::GetInstance()->CreateItem(ItemID::SmashBat));
-	//m_pItems.push_back(ItemFactory::GetInstance()->CreateItem(ItemID::Bomb));
-	//m_pItems.push_back(ItemFactory::GetInstance()->CreateItem(ItemID::Bomb));
-	//m_pItems.push_back(ItemFactory::GetInstance()->CreateItem(ItemID::Mushroom));
-	//m_pItems.push_back(ItemFactory::GetInstance()->CreateItem(ItemID::TrackingRobot));
-	//m_pItems.push_back(ItemFactory::GetInstance()->CreateItem(ItemID::Fun));
-
 	for (int i = 0;i < 4;i++)
 	{
 		CInputManager::BindKey(Action::Have, InputBinding(InputDevice::GamePad, CXInput::A),i);
@@ -97,15 +89,15 @@ void ItemManager::CreateItem()
 {
 	//アイテム数上限の時は作成しない
 	if (SPAWN_LIMIT < m_pItems.size()) return;
-
+		
 	//Selectクラスで生成アイテムを選択
 	ItemID itemId = m_pSpawnItem->SerectSpawnItem(m_pItems);
 
-	//問題なければアイテムを作成
-	if (itemId != ItemID::None)
-	{
-		m_pItems.push_back(ItemFactory::GetInstance()->CreateItem(itemId));
-	}
+	//選択されたアイテム作成
+	m_pItems.push_back(ItemFactory::GetInstance()->CreateItem(itemId));
+
+	//生成されたアイテムの位置設定
+
 }
 
 //--------------------------------------------------------------------------------------------------------------

@@ -339,6 +339,7 @@
     </ClCompile>
     <ClCompile Include="Source\TimeManager\CTimeManager.cpp" />
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\Item\SelectSpawnItem\SelectSpawnItem.cpp" />
+    <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\Item\SpawnItemPosition\SpawnItemPosition.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Camera\CameraManager\CCameraManager.h" />
@@ -451,6 +452,7 @@
     <ClInclude Include="Source\stdafx.h" />
     <ClInclude Include="Source\TimeManager\CTimeManager.h" />
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\Item\SelectSpawnItem\SelectSpawnItem.h" />
+    <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\Item\SpawnItemPosition\SpawnItemPosition.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -30,10 +30,10 @@ ItemID SelectSpawnItem::SerectSpawnItem(std::vector<std::unique_ptr<ItemBase>>& 
 	MinItemCount();
 
 	//全種類のアイテムカウントと、最小カウントを比較し、抽選に参加するアイテムを選定
-	auto& possibilityItem = LotterySelect();
+	auto possibilityItem = LotterySelect();
 
 	//選定したアイテムでランダム抽選し、結果を格納
-	auto& elem = Lottery(possibilityItem);
+	auto elem = Lottery(possibilityItem);
 
 	//抽選で選ばれたアイテムのIDを比較し、一致したものをカウントプラス + 返り値で返す
 	for (auto& item : m_ItemsSpawnCount)
@@ -70,7 +70,7 @@ void SelectSpawnItem::MinItemCount()
 
 //--------------------------------------------------------------------------------------------------------------
 
-std::vector<std::pair<ItemID, int>>& SelectSpawnItem::LotterySelect()
+std::vector<std::pair<ItemID, int>> SelectSpawnItem::LotterySelect()
 {
 	//抽選に参加するアイテムを格納する配列
 	std::vector<std::pair<ItemID, int>> possibilityItem;
@@ -89,7 +89,7 @@ std::vector<std::pair<ItemID, int>>& SelectSpawnItem::LotterySelect()
 
 //--------------------------------------------------------------------------------------------------------------
 
-std::pair<ItemID, int>& SelectSpawnItem::Lottery(std::vector<std::pair<ItemID, int>> LotterySelectItems)
+std::pair<ItemID, int> SelectSpawnItem::Lottery(std::vector<std::pair<ItemID, int>> LotterySelectItems)
 {
 	//ランダム設定
 	std::random_device rd;
