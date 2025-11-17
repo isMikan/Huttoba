@@ -25,13 +25,13 @@ ItemManager::~ItemManager()
 
 HRESULT ItemManager::Create()
 {
-	m_pItems.push_back(ItemFactory::GetInstance()->CreateItem("Haetataki"));
-	m_pItems.push_back(ItemFactory::GetInstance()->CreateItem("SmashBat"));
-	m_pItems.push_back(ItemFactory::GetInstance()->CreateItem("Bomb"));
-	m_pItems.push_back(ItemFactory::GetInstance()->CreateItem("Bomb"));
-	m_pItems.push_back(ItemFactory::GetInstance()->CreateItem("Fun"));
-	m_pItems.push_back(ItemFactory::GetInstance()->CreateItem("Mushroom"));
-	m_pItems.push_back(ItemFactory::GetInstance()->CreateItem("TrackingRobot"));
+	m_pItems.push_back(ItemFactory::GetInstance()->CreateItem(ItemID::Haetataki));
+	m_pItems.push_back(ItemFactory::GetInstance()->CreateItem(ItemID::SmashBat));
+	m_pItems.push_back(ItemFactory::GetInstance()->CreateItem(ItemID::Bomb));
+	m_pItems.push_back(ItemFactory::GetInstance()->CreateItem(ItemID::Bomb));
+	m_pItems.push_back(ItemFactory::GetInstance()->CreateItem(ItemID::Mushroom));
+	m_pItems.push_back(ItemFactory::GetInstance()->CreateItem(ItemID::TrackingRobot));
+	m_pItems.push_back(ItemFactory::GetInstance()->CreateItem(ItemID::Fun));
 
 	for (int i = 0;i < 4;i++)
 	{

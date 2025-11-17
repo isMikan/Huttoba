@@ -6,7 +6,7 @@
 #include "TimeManager/CTimeManager.h"
 
 //Factory‚É“o˜^
-namespace { const bool regist = ItemBase::AutoRegister<Fun>("Fun"); }
+namespace { const bool regist = ItemBase::AutoRegister<Fun>(ItemID::Fun); }
 
 Fun::Fun()
 	: m_IsUse		( false )

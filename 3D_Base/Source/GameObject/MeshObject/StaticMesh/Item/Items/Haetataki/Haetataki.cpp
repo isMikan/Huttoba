@@ -5,7 +5,7 @@
 //--------------------------------------------------------------------------------------------------------------
 
 //Factory‚É“o˜^
-namespace { const bool regist = ItemBase::AutoRegister<Haetataki>("Haetataki"); }
+namespace { const bool regist = ItemBase::AutoRegister<Haetataki>(ItemID::Haetataki); }
 
 //--------------------------------------------------------------------------------------------------------------
 

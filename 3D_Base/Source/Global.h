@@ -180,3 +180,16 @@ enum class enSoundList
 	max,
 };
 
+enum class ItemID
+{
+	Haetataki = 0,
+	Bomb,
+	Fun,
+	Mushroom,
+	SmashBat,
+	TrackingRobot,
+
+	Max,
+	None = -1,
+};
+

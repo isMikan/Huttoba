@@ -6,7 +6,7 @@
 #include "TimeManager/CTimeManager.h"
 
 //Factory‚É“o˜^
-namespace { const bool regist = ItemBase::AutoRegister<Mushroom>("Mushroom"); }
+namespace { const bool regist = ItemBase::AutoRegister<Mushroom>(ItemID::Mushroom); }
 
 Mushroom::Mushroom()
 	: m_IsPlaced		( false )

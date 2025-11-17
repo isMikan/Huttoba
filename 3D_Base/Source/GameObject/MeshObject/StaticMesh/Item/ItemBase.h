@@ -28,7 +28,7 @@ public:
 	*****************************************************************************************/
 
 	template<typename T>
-	static bool AutoRegister(const std::string& itemId)
+	static bool AutoRegister(const ItemID itemId)
 	{
 		ItemFactory::GetInstance()->RegisterItem(itemId, []()
 			{

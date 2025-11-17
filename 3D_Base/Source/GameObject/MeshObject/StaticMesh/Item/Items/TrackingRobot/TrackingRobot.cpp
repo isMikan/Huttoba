@@ -7,7 +7,7 @@
 #include "Input/CInputManager.h"
 
 //Factory‚É“o˜^
-namespace { const bool regist = ItemBase::AutoRegister<TrackingRobot>("TrackingRobot"); }
+namespace { const bool regist = ItemBase::AutoRegister<TrackingRobot>(ItemID::TrackingRobot); }
 
 TrackingRobot::TrackingRobot()
 	: m_pTargetList		()

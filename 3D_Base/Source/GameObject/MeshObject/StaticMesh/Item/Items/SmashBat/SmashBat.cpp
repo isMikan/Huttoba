@@ -2,7 +2,7 @@
 #include "SmashBat.h"
 
 //Factory‚É“o˜^
-namespace { const bool regist = ItemBase::AutoRegister<SmashBat>("SmashBat"); }
+namespace { const bool regist = ItemBase::AutoRegister<SmashBat>(ItemID::SmashBat); }
 
 //--------------------------------------------------------------------------------------------------------------
 

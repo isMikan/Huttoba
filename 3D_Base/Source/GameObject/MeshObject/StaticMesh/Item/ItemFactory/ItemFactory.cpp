@@ -13,7 +13,7 @@ ItemFactory::~ItemFactory()
 
 //--------------------------------------------------------------------------------------------------------------
 
-void ItemFactory::RegisterItem(const std::string& itemId, const Createfunc& creator)
+void ItemFactory::RegisterItem(const ItemID itemId, const Createfunc& creator)
 {
 	//Ç‹Çæìoò^Ç≥ÇÍÇƒÇ¢Ç»Ç¢èÍçáÇÃÇ›ìoò^Ç∑ÇÈ
 	if(!m_Registry.count(itemId))
@@ -25,7 +25,7 @@ void ItemFactory::RegisterItem(const std::string& itemId, const Createfunc& crea
 
 //--------------------------------------------------------------------------------------------------------------
 
-std::unique_ptr<ItemBase> ItemFactory::CreateItem(const std::string& itemId)
+std::unique_ptr<ItemBase> ItemFactory::CreateItem(const ItemID itemId)
 {
 	//ìoò^Ç≥ÇÍÇƒÇ¢ÇÈÉAÉCÉeÉÄÇê∂ê¨Ç∑ÇÈ
 	if (m_Registry.count(itemId))

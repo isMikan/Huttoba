@@ -6,7 +6,7 @@
 #include "Input/CInputManager.h"
 
 //Factory‚É“o˜^
-namespace { const bool regist = ItemBase::AutoRegister<Bomb>("Bomb"); }
+namespace { const bool regist = ItemBase::AutoRegister<Bomb>(ItemID::Bomb); }
 
 Bomb::Bomb()
 	: m_IsTake			( false )

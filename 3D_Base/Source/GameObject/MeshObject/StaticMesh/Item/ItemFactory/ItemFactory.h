@@ -36,7 +36,7 @@ public:
 	* @param    itemId		: 登録したいアイテムの名前
 	*			Createfunc	: アイテムを生成する関数
 	*****************************************************************************************/
-	void RegisterItem(const std::string& itemId, const Createfunc& creator);
+	void RegisterItem(const ItemID itemId, const Createfunc& creator);
 
 
 	/*****************************************************************************************
@@ -44,7 +44,7 @@ public:
 	* @param    ItemId : 生成したいアイテム名
 	* @return   作成したアイテムへのポインタ
 	*****************************************************************************************/
-	std::unique_ptr<ItemBase> CreateItem(const std::string& ItemId);
+	std::unique_ptr<ItemBase> CreateItem(const ItemID ItemId);
 
 private:
 	ItemFactory();
@@ -56,6 +56,6 @@ private:
 private:
 
 	//各アイテムの生成関数を一括保持するためのマップ
-	std::unordered_map<std::string, Createfunc> m_Registry;
+	std::unordered_map<ItemID, Createfunc> m_Registry;
 
 };
