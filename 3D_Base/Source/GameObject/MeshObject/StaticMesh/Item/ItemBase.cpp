@@ -5,6 +5,7 @@
 
 ItemBase::ItemBase()
 	: m_State		{ State::Spawn }
+	, m_OldState	{ State::None }
 	, m_pPlayer		{ nullptr }
 	, m_tGravity	{ 9.8f }
 	, m_IsDestroy	{ false }
@@ -22,6 +23,14 @@ void ItemBase::Init()
 
 void ItemBase::Update()
 {	
+	//ƒAƒCƒeƒ€‚Ìó‘Ô‚ªØ‚è‘Ö‚í‚ê‚Î
+	if (m_State != m_OldState)
+	{
+		ChangeState(m_State);
+
+		m_OldState = m_State;
+	}
+
 	//ó‘Ô‚É‚æ‚Á‚Ä‘JˆÚ
 	switch (m_State)
 	{

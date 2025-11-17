@@ -121,6 +121,28 @@ void TrackingRobot::Destroy()
 	m_IsDestroy = true;
 }
 
+void TrackingRobot::ChangeState(State state)
+{
+	switch (state)
+	{
+	case ItemBase::State::Spawn:
+		break;
+	case ItemBase::State::OnGround:
+		break;
+	case ItemBase::State::Have:
+		break;
+	case ItemBase::State::Use:
+
+		break;
+	case ItemBase::State::Throw:
+		break;
+	case ItemBase::State::Destroy:
+		break;
+	default:
+		break;
+	}
+}
+
 void TrackingRobot::OnCollision(CollisionBase* other)
 {
 	if (other->GetTag() == CollisionBase::ColliderTag::Player)

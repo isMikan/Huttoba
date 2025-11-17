@@ -28,6 +28,9 @@ public:
     //消滅
     void Destroy()override;
 
+    //状態変化時に一度だけ処理
+    void ChangeState(State state)override;
+
 private:
     //当たった際の処理
     void OnCollision(CollisionBase* other)override;
@@ -47,7 +50,7 @@ private:
 
     //反射方向の計算
     //第一引数に入射ベクトル、第二引数に法線ベクトルをいれる
-    //戻り値が正規化した方向ベクトルを返す
+    //戻り値は正規化した方向ベクトルを返す
     D3DXVECTOR3 CalculateReflectionDirection(const D3DXVECTOR3& vIncomingDir, const D3DXVECTOR3& vNormal);
 
 private:

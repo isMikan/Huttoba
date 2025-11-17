@@ -130,6 +130,8 @@ protected:
 	virtual void Throw	 ()	= 0; // 投擲
 	virtual void Destroy ()	= 0; // 消滅
 
+	virtual void ChangeState(State state) = 0;	//状態変化時に一度だけ処理
+
 protected:
 
 	float m_tGravity;	// 重力加速度(簡易版)
@@ -140,6 +142,7 @@ protected:
 	bool m_IsUse;		// 使用中か
 
 	State m_State;		// アイテムの状態
+	State m_OldState;	// アイテムの前の状態
 
 	CPlayerBase* m_pPlayer; //当たり判定で接触したPlayerを入れるポインタ	
 

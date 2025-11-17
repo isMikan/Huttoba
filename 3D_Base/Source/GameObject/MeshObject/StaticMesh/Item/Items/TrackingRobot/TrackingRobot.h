@@ -30,6 +30,9 @@ public:
     //Á–Å
     void Destroy()override;
 
+    //ó‘Ô•Ï‰»‚Éˆê“x‚¾‚¯ˆ—
+    void ChangeState(State state)override;
+
 private:
     //“–‚½‚Á‚½Û‚Ìˆ—
     void OnCollision(CollisionBase* other)override;
