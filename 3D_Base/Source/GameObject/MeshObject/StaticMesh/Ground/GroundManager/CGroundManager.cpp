@@ -39,9 +39,17 @@ void CGroundManager::LoadData()
 {
 	//地面のスタティックメッシュを設定.
 	m_pGrounds[SafeGround]->AttachMesh(AssetManager::Mesh(StaticMeshList::SafeGround));
+	m_pGrounds[SafeGround]->SetTag(GroundTag::SafeGround);
+
 	m_pGrounds[ThirdFallGround]->AttachMesh(AssetManager::Mesh(StaticMeshList::ThirdFallGround));
+	m_pGrounds[SafeGround]->SetTag(GroundTag::ThirdFallGround);
+
 	m_pGrounds[SecondFallGround]->AttachMesh(AssetManager::Mesh(StaticMeshList::SecondFallGround));
+	m_pGrounds[SafeGround]->SetTag(GroundTag::SecondFallGround);
+
 	m_pGrounds[FirstFallGround]->AttachMesh(AssetManager::Mesh(StaticMeshList::FirstFallGround));
+	m_pGrounds[SafeGround]->SetTag(GroundTag::FirstFallGround);
+
 }
 
 //--- 破棄関数 ---.
