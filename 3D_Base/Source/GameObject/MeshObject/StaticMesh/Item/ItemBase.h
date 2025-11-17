@@ -132,6 +132,9 @@ protected:
 
 	virtual void ChangeState(State state) = 0;	//状態変化時に一度だけ処理
 
+	//投擲の吹き飛ばし
+	void ThrowSmash(CPlayerBase& playiers);
+
 protected:
 
 	float m_tGravity;	// 重力加速度(簡易版)
@@ -140,6 +143,8 @@ protected:
 	bool m_IsDestroy;	// 破壊するかどうか
 	bool m_IsOnGround;	// 地面に接触しているか
 	bool m_IsUse;		// 使用中か
+
+	float m_ThrowSmashPower;	//投擲での吹き飛ばし力
 
 	State m_State;		// アイテムの状態
 	State m_OldState;	// アイテムの前の状態

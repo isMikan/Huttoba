@@ -42,6 +42,12 @@ private:
     //投擲の移動処理
     void ThrowMove();
 
+    //状態が使用時に変化したときの一度だけの処理
+    //使用に状態が変化したときの処理
+    void OneEnterUse();
+    //投擲に状態が変化したときの処理
+    void OneEnterThrow();
+
     //吹き飛ばし処理
     void Smash(CPlayerBase& playiers);
     
@@ -63,18 +69,15 @@ private:
     //投げた時の移動速度
     float       m_MoveSpeed;
 
+    //投げた時のy軸の上昇量
+    float       m_UpSpeed;
+
     //投げている状態
     bool        m_IsThrow;
-
-    //投げる時に一度だけ処理するものがあるので追加
-    bool        m_IsHasThrow;
 
     //最小吹き飛ばし力
     float       m_MinSmashPower;
 
     //最大吹き飛ばし力
     float       m_MaxSmashPower;
-
-    //手に持っている状態
-    bool        m_IsHold;
 };

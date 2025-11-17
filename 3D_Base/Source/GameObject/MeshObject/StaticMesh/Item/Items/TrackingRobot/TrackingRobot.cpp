@@ -16,7 +16,7 @@ TrackingRobot::TrackingRobot()
 	, m_IsHoming		( false )
 
 	, m_Velocity		()
-	, m_MoveSpeed		( 3.0f )	//値を変えると爆弾の移動相度が変化
+	, m_MoveSpeed		( 6.0f )	//値を変えると爆弾の移動速度が変化
 
 	, m_IsThrow			(true)
 
@@ -103,17 +103,11 @@ void TrackingRobot::Have()
 void TrackingRobot::Use()
 {
 	UseMove();
-	//ChangeColor();
-
-	m_pPlayer->SetItemBase(nullptr);
 }
 
 void TrackingRobot::Throw()
 {
 	ThrowMove();
-	//ChangeColor();
-
-	m_pPlayer->SetItemBase(nullptr);
 }
 
 void TrackingRobot::Destroy()
@@ -132,9 +126,10 @@ void TrackingRobot::ChangeState(State state)
 	case ItemBase::State::Have:
 		break;
 	case ItemBase::State::Use:
-
+		OneEnterUse();
 		break;
 	case ItemBase::State::Throw:
+		OneEnterThrow();
 		break;
 	case ItemBase::State::Destroy:
 		break;
@@ -155,13 +150,15 @@ void TrackingRobot::OnCollision(CollisionBase* other)
 				return;
 			}
 
-			
 			if (m_IsHoming)
 			{
 				//当たったプレイヤーを記憶
 				m_pTargetList.push_back(player);
+			}
 
-				//m_pTarget = player;
+			if (m_State == State::Throw && m_pPlayer != player)
+			{
+				Smash(*player);
 			}
 		}
 	}
@@ -180,28 +177,6 @@ void TrackingRobot::HaveMove()
 
 void TrackingRobot::UseMove()
 {
-	if (m_IsThrow)
-	{
-		//プレイヤーのクォータニオン(向いている方向)記録
-		//m_vQuaternion = m_pPlayer->GetQuaternion();
-
-		D3DXMATRIX matRot;
-
-		//クォータニオンをマトリックス(行列)に変換
-		D3DXMatrixRotationQuaternion(&matRot, &m_vQuaternion);
-
-		//行列の中にあるZ軸成分を取り出す
-		D3DXVECTOR3 forward = D3DXVECTOR3(matRot._31, matRot._32, matRot._33);
-
-		//取り出したZ軸成分をノーマライズ
-		D3DXVec3Normalize(&forward, &forward);
-
-		m_Velocity = forward * m_MoveSpeed;
-		m_Velocity.y = 10.0f;
-
-		m_IsThrow = false;
-	}
-
 	//てきとうに移動速度を減少させている
 	m_Velocity -= m_Velocity * static_cast<float>(CTimeManager::GetDeltaTime());
 
@@ -230,8 +205,69 @@ void TrackingRobot::UseMove()
 
 void TrackingRobot::ThrowMove()
 {
-	//使用の処理と投げるの処理が同じなのでUseMoveを使用
-	UseMove();
+	//移動量が一定以下なら
+	if (D3DXVec3Length(&m_Velocity) <= 0.3)
+	{
+		static ::EsHandle hEffect = 1;
+
+		//エフェクト追加
+		hEffect = AssetManager::Effect()->Play("Break", m_vPosition);
+
+		//エフェクトの拡縮設定
+		AssetManager::Effect()->SetScale(hEffect, D3DXVECTOR3(0.3f, 0.3f, 0.3f));
+
+		m_IsDestroy = true;
+
+		m_pPlayer->SetItemBase(nullptr);
+	}
+
+	m_Velocity *= 0.98f;
+
+	m_vPosition += m_Velocity * static_cast<float>(CTimeManager::GetDeltaTime());
+}
+
+void TrackingRobot::OneEnterUse()
+{
+	//プレイヤーのクォータニオン(向いている方向)記録
+	m_vQuaternion = m_pPlayer->GetQuaternion();
+
+	D3DXMATRIX matRot;
+
+	//クォータニオンをマトリックス(行列)に変換
+	D3DXMatrixRotationQuaternion(&matRot, &m_vQuaternion);
+
+	//行列の中にあるZ軸成分を取り出す
+	D3DXVECTOR3 forward = D3DXVECTOR3(matRot._31, matRot._32, matRot._33);
+
+	//取り出したZ軸成分をノーマライズ
+	D3DXVec3Normalize(&forward, &forward);
+
+	m_Velocity = forward * m_MoveSpeed;
+	m_Velocity.y = 3.0f;
+
+	//投げた瞬間に別のアイテムを持ったり使ったりできるように追加
+	m_pPlayer->SetItemBase(nullptr);
+}
+
+void TrackingRobot::OneEnterThrow()
+{
+	//プレイヤーのクォータニオン(向いている方向)記録
+	m_vQuaternion = m_pPlayer->GetQuaternion();
+
+	D3DXMATRIX matRot;
+
+	//クォータニオンをマトリックス(行列)に変換
+	D3DXMatrixRotationQuaternion(&matRot, &m_vQuaternion);
+
+	//行列の中にあるZ軸成分を取り出す
+	D3DXVECTOR3 forward = D3DXVECTOR3(matRot._31, matRot._32, matRot._33);
+
+	//取り出したZ軸成分をノーマライズ
+	D3DXVec3Normalize(&forward, &forward);
+
+	m_Velocity = forward * m_MoveSpeed;
+
+	m_IsThrow = true;
 }
 
 void TrackingRobot::Explosion()
@@ -260,8 +296,6 @@ void TrackingRobot::Smash(CPlayer& playiers)
 
 	//ベクトルを長さに変換
 	float len = D3DXVec3Length(&vecLen);
-
-	float i = CalculateForceScalar(len);
 
 	D3DXVECTOR3 SmashVel = playiers.GetKnockbackVelocity(m_vPosition, CalculateForceScalar(len), 60.0f);
 

@@ -9,18 +9,12 @@
 namespace { const bool regist = ItemBase::AutoRegister<Fun>(ItemID::Fun); }
 
 Fun::Fun()
-	: m_IsUse		( false )
-
-	, m_HaveOffset	()
+	: m_HaveOffset	()
 
 	, m_Velocity	()
-	, m_MoveSpeed	( 6.0 )		//値を変えると投げた時の移動速度が変化
-
-	, m_IsThrow		( true )
+	, m_MoveSpeed	( 6.0f )		//値を変えると投げた時の移動速度が変化
 
 	, m_pNowCollider()
-
-	, m_IsHold		( false )
 {
 	Init();
 	
@@ -132,6 +126,20 @@ void Fun::Destroy()
 
 void Fun::ChangeState(State state)
 {
+	switch (state)
+	{
+	case ItemBase::State::Spawn:
+		break;
+	case ItemBase::State::OnGround:
+		break;
+	case ItemBase::State::Throw:
+		OneEnterThrow();
+		break;
+	case ItemBase::State::Destroy:
+		break;
+	default:
+		break;
+	}
 }
 
 void Fun::OnCollision(CollisionBase* other)
@@ -140,13 +148,17 @@ void Fun::OnCollision(CollisionBase* other)
 	{
 		if (CPlayerBase* player = dynamic_cast<CPlayerBase*>(other->GetListener()))
 		{
-			if (m_IsUse)
+			if (m_State == State::Use)
 			{
 				if(m_pPlayer!=player)
 				{
 					Hit(*player);
 					//std::cout << player->GetPlayerID() << "と当たった" << std::endl;
 				}
+			}
+			if (m_State == State::Throw && m_pPlayer != player)
+			{
+				ThrowSmash(*player);
 			}
 		}
 	}
@@ -161,9 +173,6 @@ void Fun::HaveMove()
 	//	CollisionManager::GetInstance()->AddCollider(m_pNowCollider);
 	//}
 
-	if (m_IsUse)
-		m_IsUse = false;
-
 	m_vPosition = m_pPlayer->GetPlayerRightHand().GetPosition();
 	m_vQuaternion = m_pPlayer->GetQuaternion();
 }
@@ -176,9 +185,6 @@ void Fun::UseMove()
 	//	m_pNowCollider = m_pUseCollider;
 	//	CollisionManager::GetInstance()->AddCollider(m_pNowCollider);
 	//}
-
-	if (!m_IsUse)
-		m_IsUse = true;
 
 	m_vPosition = m_pPlayer->GetPlayerRightHand().GetPosition();
 	m_vQuaternion = m_pPlayer->GetQuaternion();
@@ -200,47 +206,47 @@ void Fun::UseMove()
 
 void Fun::ThrowMove()
 {
-	if (m_IsThrow)
+	//移動量が一定以下なら
+	if (D3DXVec3Length(&m_Velocity) <= 0.3f)
 	{
-		//プレイヤーのクォータニオン(向いている方向)記録
-		m_vQuaternion = m_pPlayer->GetQuaternion();
+		static ::EsHandle hEffect = 1;
 
-		D3DXMATRIX matRot;
+		//エフェクト追加
+		hEffect = AssetManager::Effect()->Play("Break", m_vPosition);
 
-		//クォータニオンをマトリックス(行列)に変換
-		D3DXMatrixRotationQuaternion(&matRot, &m_vQuaternion);
+		//エフェクトの拡縮設定
+		AssetManager::Effect()->SetScale(hEffect, D3DXVECTOR3(0.3f, 0.3f, 0.3f));
 
-		//行列の中にあるZ軸成分を取り出す
-		D3DXVECTOR3 forward = D3DXVECTOR3(matRot._31, matRot._32, matRot._33);
+		m_IsDestroy = true;
 
-		//取り出したZ軸成分をノーマライズ
-		D3DXVec3Normalize(&forward, &forward);
-
-		m_Velocity = forward * m_MoveSpeed;
-
-		m_Velocity.y = 10.0f;
-
-		m_IsThrow = false;
-
-		//当たり判定削除
-		CollisionManager::GetInstance()->RemoveCollider(m_pCollision.get());
-
+		m_pPlayer->SetItemBase(nullptr);
 	}
 
-	//てきとうに移動速度を減少させている
-	m_Velocity -= m_Velocity * static_cast<float>(CTimeManager::GetDeltaTime());
-
-	if (m_vPosition.y > 0.5f)
-	{
-		m_Velocity.y -= m_tGravity;
-		m_tGravity += 0.001f;
-	}
-	else
-	{
-		m_Velocity.y = 0;
-	}
+	m_Velocity *= 0.98f;
 
 	m_vPosition += m_Velocity * static_cast<float>(CTimeManager::GetDeltaTime());
+}
+
+void Fun::OneEnterThrow()
+{
+	//プレイヤーのクォータニオン(向いている方向)記録
+	m_vQuaternion = m_pPlayer->GetQuaternion();
+
+	D3DXMATRIX matRot;
+
+	//クォータニオンをマトリックス(行列)に変換
+	D3DXMatrixRotationQuaternion(&matRot, &m_vQuaternion);
+
+	//行列の中にあるZ軸成分を取り出す
+	D3DXVECTOR3 forward = D3DXVECTOR3(matRot._31, matRot._32, matRot._33);
+
+	//取り出したZ軸成分をノーマライズ
+	D3DXVec3Normalize(&forward, &forward);
+
+	m_Velocity = forward * m_MoveSpeed;
+
+	//当たり判定削除
+	CollisionManager::GetInstance()->RemoveCollider(m_pCollision.get());
 }
 
 void Fun::Hit(CPlayerBase& playiers)

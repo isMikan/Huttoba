@@ -70,6 +70,9 @@ private:
     //“Š‚°‚½‚ÌˆÚ“®‘¬“x
     float       m_MoveSpeed;
 
+    //“Š‚°‚½‚Ìy²‚Ìã¸—Ê
+    float       m_UpSpeed;
+
     //“Š‚°‚Ä‚©‚ç”š”­‚·‚é‚Ü‚Å‚ÌŠÔ
     double       m_ExplosionTime;
 

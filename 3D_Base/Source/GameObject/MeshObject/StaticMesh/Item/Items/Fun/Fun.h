@@ -42,13 +42,13 @@ private:
     //投擲の移動処理
     void ThrowMove();
 
+    //投擲に状態が変化したときの処理
+    void OneEnterThrow();
+
     //当たった際の処理
     void Hit(CPlayerBase& playiers);
 
 private:
-    //アイテムを使用中かどうかを判定
-    bool        m_IsUse;
-
     //アイテムを持った際の補正値
     D3DXVECTOR3 m_HaveOffset;
 
@@ -58,12 +58,6 @@ private:
     //投げた時の移動速度
     float       m_MoveSpeed;
 
-    //投げる時に一度だけ処理するものがあるので追加
-    bool        m_IsThrow;
-
     //当たり判定を切り替えるために追加
     std::shared_ptr<CollisionBase>	m_pNowCollider;	
-
-    //手に持っている状態
-    bool        m_IsHold;
 };

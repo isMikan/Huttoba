@@ -44,6 +44,12 @@ private:
     //投擲の移動処理
     void ThrowMove();
 
+    //状態が使用時に変化したときの一度だけの処理
+    //使用に状態が変化したときの処理
+    void OneEnterUse();
+    //投擲に状態が変化したときの処理
+    void OneEnterThrow();
+
     //爆発処理
     void Explosion();
 

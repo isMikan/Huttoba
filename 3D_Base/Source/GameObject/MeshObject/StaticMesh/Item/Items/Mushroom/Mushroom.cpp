@@ -12,16 +12,13 @@ Mushroom::Mushroom()
 	: m_IsPlaced		( false )
 
 	, m_Velocity		()
-	, m_MoveSpeed		( 6.0f )	//値を変えると爆弾の移動相度が変化
+	, m_MoveSpeed		( 6.0f )	//値を変えると移動速度が変化
+	, m_UpSpeed			( 5.0f )	//値を変えると爆弾のy軸の上昇量が変化
 
 	, m_IsThrow			( false )
 
-	, m_IsHasThrow		( false )
-
 	, m_MinSmashPower	( 6.0f )
 	, m_MaxSmashPower	( 7.0f )
-
-	, m_IsHold			( false )
 {
 	Init();
 }
@@ -86,39 +83,45 @@ void Mushroom::OnGround()
 
 void Mushroom::Have()
 {
-	//デバック用で何度でも投げれるように
-	if (m_IsHasThrow)
-	{
-		m_IsHasThrow = false;
-	}
-
 	HaveMove();
 }
 
 void Mushroom::Use()
 {
 	UseMove();
-
-	if (m_IsHold)
-		m_pPlayer->SetItemBase(nullptr);
 }
 
 void Mushroom::Throw()
 {
 	ThrowMove();
-
-	//m_pPlayer->SetItemBase(nullptr);
 }
 
 void Mushroom::Destroy()
 {
 	m_IsDestroy = true;
-
-	//m_pPlayer->SetItemBase(nullptr);
 }
 
 void Mushroom::ChangeState(State state)
 {
+	switch (state)
+	{
+	case ItemBase::State::Spawn:
+		break;
+	case ItemBase::State::OnGround:
+		break;
+	case ItemBase::State::Have:
+		break;
+	case ItemBase::State::Use:
+		OneEnterUse();
+		break;
+	case ItemBase::State::Throw:
+		OneEnterThrow();
+		break;
+	case ItemBase::State::Destroy:
+		break;
+	default:
+		break;
+	}
 }
 
 void Mushroom::OnCollision(CollisionBase* other)
@@ -132,9 +135,9 @@ void Mushroom::OnCollision(CollisionBase* other)
 				Smash(*player);
 			}
 
-			if (m_IsThrow)
+			if (m_State==State::Throw&& m_pPlayer != player)
 			{
-				Smash(*player);
+				ThrowSmash(*player);
 			}
 		}
 	}
@@ -148,31 +151,6 @@ void Mushroom::HaveMove()
 
 void Mushroom::UseMove()
 {
-	if (!m_IsHasThrow)
-	{
-		//プレイヤーのクォータニオン(向いている方向)記録
-		m_vQuaternion = m_pPlayer->GetQuaternion();
-
-		D3DXMATRIX matRot;
-
-		//クォータニオンをマトリックス(行列)に変換
-		D3DXMatrixRotationQuaternion(&matRot, &m_vQuaternion);
-
-		//行列の中にあるZ軸成分を取り出す
-		D3DXVECTOR3 forward = D3DXVECTOR3(matRot._31, matRot._32, matRot._33);
-
-		//取り出したZ軸成分をノーマライズ
-		D3DXVec3Normalize(&forward, &forward);
-
-		m_Velocity = forward * m_MoveSpeed;
-
-		m_Velocity.y = 5.0f;
-
-		m_IsHasThrow = true;
-
-		m_IsHold = true;
-	}
-
 	if (m_vPosition.y > 0.05f)
 	{
 		m_tGravity += 0.001f;
@@ -189,8 +167,7 @@ void Mushroom::UseMove()
 		
 	}
 
-	//てきとうに移動速度を減少させている
-	m_Velocity -= m_Velocity * static_cast<float>(CTimeManager::GetDeltaTime());
+	m_Velocity *= 0.98f;
 
 	m_vPosition += m_Velocity * static_cast<float>(CTimeManager::GetDeltaTime());
 
@@ -198,35 +175,8 @@ void Mushroom::UseMove()
 
 void Mushroom::ThrowMove()
 {
-	if (!m_IsHasThrow)
-	{
-		//プレイヤーのクォータニオン(向いている方向)記録
-		m_vQuaternion = m_pPlayer->GetQuaternion();
-
-		D3DXMATRIX matRot;
-
-		//クォータニオンをマトリックス(行列)に変換
-		D3DXMatrixRotationQuaternion(&matRot, &m_vQuaternion);
-
-		//行列の中にあるZ軸成分を取り出す
-		D3DXVECTOR3 forward = D3DXVECTOR3(matRot._31, matRot._32, matRot._33);
-
-		//取り出したZ軸成分をノーマライズ
-		D3DXVec3Normalize(&forward, &forward);
-
-		m_Velocity = forward * m_MoveSpeed;
-
-		m_IsHasThrow = true;
-		
-		m_IsThrow = true;
-	}
-
-
-	//てきとうに移動速度を減少させている
-	m_Velocity -= m_Velocity * static_cast<float>(CTimeManager::GetDeltaTime());
-
 	//移動量が一定以下なら
-	if (D3DXVec3Length(&m_Velocity)<=0.3)
+	if (D3DXVec3Length(&m_Velocity) <= 0.3f)
 	{
 		static ::EsHandle hEffect = 1;
 
@@ -241,7 +191,55 @@ void Mushroom::ThrowMove()
 		m_pPlayer->SetItemBase(nullptr);
 	}
 
+	m_Velocity *= 0.98f;
+
 	m_vPosition += m_Velocity * static_cast<float>(CTimeManager::GetDeltaTime());
+}
+
+void Mushroom::OneEnterUse()
+{
+	//プレイヤーのクォータニオン(向いている方向)記録
+	m_vQuaternion = m_pPlayer->GetQuaternion();
+
+	D3DXMATRIX matRot;
+
+	//クォータニオンをマトリックス(行列)に変換
+	D3DXMatrixRotationQuaternion(&matRot, &m_vQuaternion);
+
+	//行列の中にあるZ軸成分を取り出す
+	D3DXVECTOR3 forward = D3DXVECTOR3(matRot._31, matRot._32, matRot._33);
+
+	//取り出したZ軸成分をノーマライズ
+	D3DXVec3Normalize(&forward, &forward);
+
+	m_Velocity = forward * m_MoveSpeed;
+
+	m_Velocity.y = m_UpSpeed;
+
+
+	//投げた瞬間に別のアイテムを持ったり使ったりできるように追加
+	m_pPlayer->SetItemBase(nullptr);
+}
+
+void Mushroom::OneEnterThrow()
+{
+	//プレイヤーのクォータニオン(向いている方向)記録
+	m_vQuaternion = m_pPlayer->GetQuaternion();
+
+	D3DXMATRIX matRot;
+
+	//クォータニオンをマトリックス(行列)に変換
+	D3DXMatrixRotationQuaternion(&matRot, &m_vQuaternion);
+
+	//行列の中にあるZ軸成分を取り出す
+	D3DXVECTOR3 forward = D3DXVECTOR3(matRot._31, matRot._32, matRot._33);
+
+	//取り出したZ軸成分をノーマライズ
+	D3DXVec3Normalize(&forward, &forward);
+
+	m_Velocity = forward * m_MoveSpeed;
+
+	m_IsThrow = true;
 }
 
 void Mushroom::Smash(CPlayerBase& playiers)

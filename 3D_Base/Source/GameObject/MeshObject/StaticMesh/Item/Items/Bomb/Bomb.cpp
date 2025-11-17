@@ -11,6 +11,7 @@ namespace { const bool regist = ItemBase::AutoRegister<Bomb>(ItemID::Bomb); }
 Bomb::Bomb()
 	: m_Velocity		()
 	, m_MoveSpeed		( 3.0f )	//値を変えると爆弾の移動速度が変化
+	, m_UpSpeed			( 5.0f )	//値を変えると爆弾のy軸の上昇量が変化
 
 	, m_ExplosionTime	( 5.0f )	//値を変えると爆発するまでの時間が変化
 	, m_ExplosionCnt	( 0.0f )
@@ -155,9 +156,6 @@ void Bomb::HaveMove()
 
 void Bomb::UseMove()
 {
-	//デルタタイムで移動速度を減少させている
-	m_Velocity -= m_Velocity * static_cast<float>(CTimeManager::GetDeltaTime());
-
 	//現在の高さによって落下するかを決める
 	if (m_vPosition.y > 0.1f)
 	{
@@ -219,7 +217,7 @@ void Bomb::EnterUseThrowCommon()
 	//移動
 	m_Velocity = forward * m_MoveSpeed;
 
-	m_Velocity.y = 10.0f;
+	m_Velocity.y = 3.0f;
 
 	//当たり判定削除
 	CollisionManager::GetInstance()->RemoveCollider(m_pCollision.get());

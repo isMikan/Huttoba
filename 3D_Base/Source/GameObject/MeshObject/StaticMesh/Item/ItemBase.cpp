@@ -10,6 +10,8 @@ ItemBase::ItemBase()
 	, m_tGravity	{ 9.8f }
 	, m_IsDestroy	{ false }
 	, m_IsOnGround	{ false }
+
+	, m_ThrowSmashPower	{ 5.0f }
 {
 }
 
@@ -103,4 +105,14 @@ void ItemBase::Fall()
 void ItemBase::OnCollision(CollisionBase* other)
 {
 
+}
+
+void ItemBase::ThrowSmash(CPlayerBase& playiers)
+{
+	//プレイヤーの吹き飛ばしの計算
+	D3DXVECTOR3 SmashVel = playiers.GetKnockbackVelocity(m_vPosition, m_ThrowSmashPower, 50.0f);
+
+	playiers.SetHitAttack(
+		SmashVel,
+		CPlayerBase::HitEvent::Knockdown);
 }
