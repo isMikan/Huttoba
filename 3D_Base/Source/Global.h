@@ -193,3 +193,14 @@ enum class ItemID
 	None = -1,
 };
 
+enum class GroundTag
+{
+	SafeGround = 0,		//落ちない中央の地面
+	ThirdFallGround,	//三番目に落ちる地面
+	SecondFallGround,	//二番目に落ちる地面
+	FirstFallGround,	//一番目に落ちる地面
+
+	None = -1
+};
+
+

@@ -47,6 +47,10 @@ public:
 	//地面が揺れ始めた時間を設定.
 	void SetShakeTriggerTime(float time) { m_ShakeTriggerTime = time; }
 
+	//タグ識別用	製作者 : 佐藤
+	GroundTag GetTag() { return m_pGroundType; }
+	void SetTag(GroundTag type) { m_pGroundType = type; }
+
 private:
 //======================================================================
 // 	   内部で呼び出す関数.
@@ -84,4 +88,6 @@ private:
 	bool	m_IsChangeColor;		//色が変わるか.
 	bool	m_IsShake;				//揺れるか.
 	bool	m_IsFallDown;			//落ちるか.
+
+	GroundTag m_pGroundType;
 };
