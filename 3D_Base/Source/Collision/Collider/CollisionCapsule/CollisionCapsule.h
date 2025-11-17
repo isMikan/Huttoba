@@ -23,9 +23,9 @@ public:
 		const D3DXVECTOR3 localOffset = D3DXVECTOR3(0.0f, 0.0f, 0.0f) // Base用オフセット
 	);	
 	
-	virtual ~CollisionCapsule() = default;
+	~CollisionCapsule() = default;
 
-	virtual ColliderType GetType() const override { return ColliderType::Capsule; }
+	ColliderType GetType() const override { return ColliderType::Capsule; }
 
 	void UpdateWorldPosition() override;
 
@@ -33,9 +33,7 @@ public:
 	void SetLocalOffSet(const D3DXVECTOR3& localOffsetA, const D3DXVECTOR3& localOffsetB);
 
 	//カプセルを回転させる関数
-	void SetLocalCapsuleRotation(const D3DXMATRIX& rotation) {
-		m_LocalCapsuleRotation = rotation;
-	}
+	void SetLocalCapsuleRotation(const D3DXMATRIX& rotation) {m_LocalCapsuleRotation = rotation;}
 
 	// 描画用関数
 	const D3DXQUATERNION& GetDrawRotation() const { return m_DrawRotation; }
