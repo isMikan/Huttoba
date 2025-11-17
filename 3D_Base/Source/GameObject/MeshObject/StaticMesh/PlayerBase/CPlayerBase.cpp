@@ -13,9 +13,12 @@
 #include "PlayerBase/PlayerState/PlayerActionState/PlayerFallingState/CPlayerFallingState.h"
 #include "PlayerBase/PlayerState/PlayerActionState/PlayerKnockdownState/CPlayerKnockdownState.h"
 
+#include "PlayerBase/PlayerState/PlayerActionState/PlayerResultWin_TypeA/CPlayerResultWin_TypeA.h"
+#include "PlayerBase/PlayerState/PlayerActionState/PlayerResultLose_TypeA/CPlayerResultLose_TypeA.h"
+
 #include "Item/ItemBase.h"	
 #include "Collision/CollisionUtility/CollisionUtility.h"
-
+#include "Scene/SceneData/CSceneData.h"
 
 CPlayerBase::CPlayerBase( int index )
 	: m_PlayerID		( index )
@@ -126,6 +129,40 @@ void CPlayerBase::Draw(D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAMERA&
 	CStaticMeshObject::Draw(View, Proj, Light, Camera);
 }
 
+//--- リザルト用更新処理 ---.
+void CPlayerBase::ResultUpdate()
+{
+	//頭の調整位置を取得.
+	D3DXVECTOR3 headOffsetPos = GetPlayerHead().GetOffsetPos();
+	//頭の位置を設定.
+	GetPlayerHead().SetPosition(GetObjectPos(headOffsetPos));
+
+	//地面についておらず、落ちる状態じゃない場合.
+	if (!m_IsOnGround
+		&& !IsAnyActionState<
+		CPlayerFallingState,
+		CPlayerKnockbackState>())
+	{
+		SetActionState(std::make_unique<CPlayerFallingState>(*this));
+	}
+
+	//アイドル状態の場合.
+	if(IsAnyActionState<CPlayerActionIdleState>())
+	{
+		if (CSceneData::GetPlayerLiving(m_PlayerID))
+		{
+			SetActionState(std::make_unique<CPlayerResultWin_TypeA>(*this));
+		}
+		else
+		{
+			SetActionState(std::make_unique<CPlayerResultLose_TypeA>(*this));
+		}
+	}
+
+	//行動の状態を更新.
+	m_pActionState->Update();
+}
+
 //--- 移動状態を設定 ---.
 void CPlayerBase::SetMoveState(std::unique_ptr<CPlayerState> newState)
 {
@@ -172,6 +209,10 @@ void CPlayerBase::OnGroundCollision(CGroundManager& pGroundMgr)
 		groundY
 	);
 
+	if (m_vPosition.y > 0.3f)
+	{
+		m_IsOnGround = false;
+	}
 	m_IsAboveGround = m_IsOnGround;
 }
 

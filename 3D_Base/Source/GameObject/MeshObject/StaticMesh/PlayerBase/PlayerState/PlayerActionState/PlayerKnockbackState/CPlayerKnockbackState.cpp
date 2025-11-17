@@ -76,6 +76,7 @@ void CPlayerKnockbackState::Exit()
 //--- この状態の間に呼び出す ---.
 void CPlayerKnockbackState::Update()
 {
+	//経過時間を取得.
 	float t = CTimeManager::GetTotalTime();
 
 	//プレイヤーの位置を取得.

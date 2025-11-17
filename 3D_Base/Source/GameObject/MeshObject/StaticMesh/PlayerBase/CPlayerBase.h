@@ -90,6 +90,9 @@ public:
 	virtual void Draw(
 		D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAMERA& Camera) override;
 
+	//--- リザルト用更新処理 ---.
+	virtual void ResultUpdate();
+
 	//--- 移動状態を設定 ---.
 	void SetMoveState(std::unique_ptr<CPlayerState> newState);
 	//--- 回転状態を設定 ---.

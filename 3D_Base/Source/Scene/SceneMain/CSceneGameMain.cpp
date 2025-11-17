@@ -65,6 +65,7 @@ HRESULT CSceneGameMain::Create()
 
 	//地面マネージャークラスのインスタンス作成.
 	m_pGroundManager = std::make_unique<CGroundManager>();
+	m_pGroundManager->MainGroundCreate();
 
 	//アイテムマネージャーの作成
 	m_pItemManager = std::make_unique<ItemManager>();
@@ -137,7 +138,7 @@ void CSceneGameMain::Update()
 	m_pGroundManager->Update();
 
 	//プレイヤーの動作
-	m_pPlayerManager->Update();
+	m_pPlayerManager->MainPlayerUpdate();
 
 	//地面に接地しているか
 	for (auto& player : m_pPlayerManager->GetPlayer())
@@ -145,11 +146,6 @@ void CSceneGameMain::Update()
 		if (!player) continue;	//プレイヤーがいない場合、次へ
 
 		player->OnGroundCollision(*m_pGroundManager);
-
-		if (player->GetPosition().y > 0.3f)
-		{
-			player->SetIsOnGround(false);
-		}
 	}
 
 	//地面に接地しているか

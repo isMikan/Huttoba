@@ -3,14 +3,14 @@
 #include "PlayerBase/PlayerState/CPlayerState.h"
 
 /***********************************************************************
-*	プレイヤーが何も行動していない状態クラス（アイテム所持版）.
+*	プレイヤーが負けた時の状態クラス.
 **/
-class CPlayerHoldingIdleState
+class CPlayerResultWin_TypeA
 	: public CPlayerState	//プレイヤー状態を継承.
 {
 public:
-	CPlayerHoldingIdleState(CPlayerBase& pPlayer);
-	~CPlayerHoldingIdleState() override;
+	CPlayerResultWin_TypeA(CPlayerBase& pPlayer);
+	~CPlayerResultWin_TypeA();
 
 //======================================================================
 // 	   外部で呼び出す関数.
@@ -26,27 +26,28 @@ private:
 //======================================================================
 // 	   内部で使用する変数.
 //======================================================================
-	float			m_StartTime;		//開始時間.
-	float			m_EndTime;			//終了時間.
+	float			m_StartTime;			//開始時間.
+	float			m_EndTime;				//終了時間.
 
-	float			m_HandLaps;			//手の周回.
-	float			m_HandWidth;		//手の速度.
+	float			m_CurrentTiltAngle;		//現在の傾き角度.
+	float			m_TiltAngleMax;			//最大の傾き角度.
+	float			m_PhaseSplit;			//傾きの変わり目.
+	float			m_HandLaps;				//手の周回.
+	float			m_HandWidth;			//手の速度.
 
-//=== 手の調整位置 ===.
-	//両手で持つアイテム用.
-	D3DXVECTOR3		m_HoldBothHands_RightHandEndPos;	//右手の目的の位置.
-	D3DXVECTOR3		m_HoldBothHands_LeftHandEndPos;		//左手の目的の位置.
-	//片手で持つアイテム用.
-	D3DXVECTOR3		m_OneHand_RightHandEndPos;			//右手の目的の位置.
-	D3DXVECTOR3		m_OneHand_LeftHandEndPos;			//左手の目的の位置.
+	D3DXVECTOR3		m_RightHandPos;			//右手の位置.
+	D3DXVECTOR3		m_LeftHandPos;			//左手の位置.
+	D3DXVECTOR3		m_RightHandStartPos;	//右手の元の位置.
+	D3DXVECTOR3		m_LeftHandStartPos;		//左手の元の位置.
 
+	D3DXQUATERNION	m_StartQuat;			//開始時の回転.
 
 private:
 //======================================================================
 // 	   呼び出しを禁止するコンストラクタ.
 //======================================================================
-	CPlayerHoldingIdleState() = delete;	//デフォルトコンストラクタ削除.
-	CPlayerHoldingIdleState(const CPlayerHoldingIdleState&) = delete;
-	CPlayerHoldingIdleState& operator = (const CPlayerHoldingIdleState& rhs) = delete;
+	CPlayerResultWin_TypeA() = delete;	//デフォルトコンストラクタ削除.
+	CPlayerResultWin_TypeA(const CPlayerResultWin_TypeA&) = delete;
+	CPlayerResultWin_TypeA& operator = (const CPlayerResultWin_TypeA& rhs) = delete;
 
 };

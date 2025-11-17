@@ -75,13 +75,14 @@ void CPlayerGetUpState::Update()
 		{
 			//アイテム持ち、何もなし状態.
 			m_pPlayer.SetActionState(std::make_unique<CPlayerHoldingIdleState>(m_pPlayer));
+			return;
 		}
 		else
 		{
 			//何もなし状態.
 			m_pPlayer.SetActionState(std::make_unique<CPlayerActionIdleState>(m_pPlayer));
+			return;
 		}
-		return;
 	}
 
 	//プレイヤーのローカル軸を取得.

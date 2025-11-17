@@ -16,7 +16,10 @@ CPlayerHoldingIdleState::CPlayerHoldingIdleState(CPlayerBase& pPlayer)
 
 	, m_StartTime						()
 	, m_EndTime							( 2.f )
-
+	
+	, m_HandLaps						( 2.f )	//ˆêü.
+	, m_HandWidth						( 0.08f )
+	
 	, m_HoldBothHands_RightHandEndPos	( -0.2f, 0.f, 0.3f )
 	, m_HoldBothHands_LeftHandEndPos	( 0.2f, 0.f, 0.3f )
 	, m_OneHand_RightHandEndPos			( 0.f, 0.3f, 0.2f )
@@ -121,7 +124,7 @@ void CPlayerHoldingIdleState::Update()
 	float progress = (t - m_StartTime) / m_EndTime;
 	progress = progress = std::clamp(progress, 0.f, 1.f);
 
-	float eased = cosf(progress * D3DX_PI * 2.f) * 0.08f;	//1ü•ª‚Ì•â³‚ğŒvZ.	
+	float eased = cosf(progress * D3DX_PI * m_HandLaps) * m_HandWidth;	//•â³‚ğŒvZ.	
 
 	//’²®ˆÊ’u‚É‘«‚·.
 	rightHandOffsetPos.y += eased;
