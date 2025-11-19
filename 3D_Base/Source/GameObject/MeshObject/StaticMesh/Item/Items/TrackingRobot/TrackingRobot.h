@@ -54,7 +54,7 @@ private:
     void Explosion();
 
     //‚«”ò‚Î‚µˆ—
-    void Smash(CPlayer& playiers);
+    void Smash(CPlayerBase& playiers);
 
     //”š”­‘O‚ÌF‚Ì•ÏXˆ—
     void ChangeColor();

@@ -63,5 +63,4 @@ private:
 	std::vector<std::unique_ptr<CGround>>	m_pGrounds;	//’n–Ê.
 
 	std::array<float, Ground_Max>	m_FallTime;		//—Ž‚¿‚éŽžŠÔ.
-
 };

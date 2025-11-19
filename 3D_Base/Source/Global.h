@@ -131,6 +131,11 @@ enum class StaticMeshList
 	ExplosionCol,
 	FunCol,
 	TestPlayer,
+
+	floor1,
+	floor2,
+	floor3,
+	floor4,
 };
 
 enum class UIList
