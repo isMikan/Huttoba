@@ -42,6 +42,14 @@ void CGroundManager::LoadData()
 	m_pGrounds[ThirdFallGround]->AttachMesh(AssetManager::Mesh(StaticMeshList::ThirdFallGround));
 	m_pGrounds[SecondFallGround]->AttachMesh(AssetManager::Mesh(StaticMeshList::SecondFallGround));
 	m_pGrounds[FirstFallGround]->AttachMesh(AssetManager::Mesh(StaticMeshList::FirstFallGround));
+
+	std::shared_ptr<CStaticMesh> mesh = AssetManager::Mesh(StaticMeshList::floor4);
+
+	m_pCollision = CollisionDataFactory::CreateSphereForMesh(
+		CollisionBase::ColliderTag::Ground,
+		mesh,
+		nullptr
+	);
 }
 
 //--- ”jŠüŠÖ” ---.

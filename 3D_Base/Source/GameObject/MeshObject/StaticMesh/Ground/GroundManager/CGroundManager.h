@@ -51,4 +51,5 @@ protected:
 
 	std::array<float, Ground_Max>	m_FallTime;		//—‚¿‚éŠÔ.
 
+	std::shared_ptr<CollisionBase>	m_pCollision;
 };

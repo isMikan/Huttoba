@@ -142,7 +142,7 @@ void TrackingRobot::OnCollision(CollisionBase* other)
 {
 	if (other->GetTag() == CollisionBase::ColliderTag::Player)
 	{
-		if (CPlayer* player = dynamic_cast<CPlayer*>(other->GetListener()))
+		if (CPlayerBase* player = dynamic_cast<CPlayerBase*>(other->GetListener()))
 		{
 			if (m_IsExploded)
 			{
@@ -289,7 +289,7 @@ void TrackingRobot::Explosion()
 	}
 }
 
-void TrackingRobot::Smash(CPlayer& playiers)
+void TrackingRobot::Smash(CPlayerBase& playiers)
 {
 	//爆弾とプレイヤーの位置でベクトルをとる
 	D3DXVECTOR3 vecLen = m_vPosition - playiers.GetPosition();
