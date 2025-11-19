@@ -5,11 +5,7 @@
 
 #include "PlayerBase/PlayerState/PlayerMoveState/PlayerMoveIdelState/CPlayerMoveIdleState.h"
 #include "PlayerBase/PlayerState/PlayerTurnState/PlayerTurnIdleState/CPlayerTurnIdleState.h"
-#include "PlayerBase/PlayerState/PlayerActionState/PlayerActionIdleState/CPlayerActionIdleState.h"
-#include "PlayerBase/PlayerState/PlayerActionState/PlayerHoldingIdleState/CPlayerHoldingIdleState.h"
 
-#include "PlayerBase/PlayerState/PlayerActionState/PlayerHandAttackState/CPlayerHandAttackState.h"
-#include "PlayerBase/PlayerState/PlayerActionState/PlayerItemAttackState/CPlayerItemAttackState.h"
 #include "PlayerBase/PlayerState/PlayerActionState/PlayerHandWhiffState/CPlayerHandWhiffState.h"
 #include "PlayerBase/PlayerState/PlayerActionState/PlayerPushedState/CPlayerPushedState.h"
 #include "PlayerBase/PlayerState/PlayerActionState/PlayerKnockbackState/CPlayerKnockbackState.h"
@@ -25,12 +21,12 @@ CPlayerAI::CPlayerAI(int index)
 	: CPlayerBase		( index )
 
 	, m_pPlayerManager	( nullptr )
+
 	, m_CurrentDir		( 0.f, 0.f, 0.f )
-	, m_TargetDir		( 0.f, 0.f, 0.f )
+	, m_PreviousDiff	( 99.f, 99.f, 99.f )	//初回は、比較のため大きい数値にしておく.
 
-	, m_PreviousDiff	( 99.f, 99.f, 99.f )	//最初の比較のため、大きい数値にする.
-
-	, m_Sqrt			( 999.f )
+	, m_NearbyPlayers	()
+	, m_Sqrt			( 999.f )	//初回は、比較のため大きい数値にしておく.
 {
 }
 
@@ -67,21 +63,21 @@ void CPlayerAI::AutomaticMovement()
 		CPlayerKnockdownState>())	//ダウン中.
 	{
 		//入力に変化があった場合.
-		if (m_CurrentDir != m_TargetDir)
+		if (m_CurrentDir != m_NearbyPlayers.dir)
 		{
 			SetMoveState(std::make_unique<CPlayerMoveIdleState>(*this));
 			SetTurnState(std::make_unique<CPlayerTurnIdleState>(*this));
 
-			m_CurrentDir = m_TargetDir;	//現在の入力を記録しておく.
+			m_CurrentDir = m_NearbyPlayers.dir;	//現在の入力を記録しておく.
 		}
 	}
 	else
 	{
 		//回転だけしない場合.
-		if (IsAnyActionState<CPlayerFallingState>())
+		if (IsAnyActionState<CPlayerFallingState>())	//落ちている.
 		{
 			//入力に変化があった場合.
-			if (m_CurrentDir != m_TargetDir)
+			if (m_CurrentDir != m_NearbyPlayers.dir)
 			{
 				SetTurnState(std::make_unique<CPlayerTurnIdleState>(*this));
 			}
@@ -90,25 +86,25 @@ void CPlayerAI::AutomaticMovement()
 		else
 		{
 			//入力に変化があった場合.
-			if (m_CurrentDir != m_TargetDir)
+			if (m_CurrentDir != m_NearbyPlayers.dir)
 			{
-				SetTurnState(std::make_unique<CPlayerTurnState>(*this, m_TargetDir.x, m_TargetDir.z));
+				SetTurnState(std::make_unique<CPlayerTurnState>(*this, m_NearbyPlayers.dir.x, m_NearbyPlayers.dir.z));
 			}
 		}
 
 		//入力に変化があった場合.
-		if (m_CurrentDir != m_TargetDir)
+		if (m_CurrentDir != m_NearbyPlayers.dir)
 		{
-			SetMoveState(std::make_unique<CPlayerMoveState>(*this, m_TargetDir.x, m_TargetDir.z));
-			m_CurrentDir = m_TargetDir;	//現在の入力を記録しておく.
+			SetMoveState(std::make_unique<CPlayerMoveState>(*this, m_NearbyPlayers.dir.x, m_NearbyPlayers.dir.z));
+			m_CurrentDir = m_NearbyPlayers.dir;	//現在の入力を記録しておく.
 		}
 	}
 }
 
-//--- 近くのプレイヤーを追いかける ---.
-void CPlayerAI::FollowPlayerNearby()
+//--- 近くのプレイヤーを探索 ---.
+void CPlayerAI::FindNearbyPlayers()
 {
-	float nearestSqrt = m_Sqrt;
+	m_NearbyPlayers.sqrt = m_Sqrt;
 	D3DXVECTOR3 nearestDir(0.f, 0.f, 0.f);
 
 	for (int pNo = 0; pNo < Player_Max; pNo++)
@@ -122,28 +118,22 @@ void CPlayerAI::FollowPlayerNearby()
 		if (player->IsAnyActionState<
 			CPlayerKnockbackState,
 			CPlayerFallingState,
-			CPlayerPushedState>())continue;
+			CPlayerPushedState>()) continue;
 
 		D3DXVECTOR3 playerPos = m_pPlayerManager->GetPlayer(pNo)->GetPosition();
 
 		D3DXVECTOR3 diff = playerPos - m_vPosition;
 		float diffSqrt = D3DXVec3LengthSq(&diff);
 		
-		if (diffSqrt < nearestSqrt)
+		if (diffSqrt < m_NearbyPlayers.sqrt)
 		{
-			nearestSqrt = diffSqrt;
+			m_NearbyPlayers.sqrt = diffSqrt;
 			D3DXVec3Normalize(&nearestDir, &diff);
 		}
 
-		if (nearestSqrt < m_Sqrt)
+		if (m_NearbyPlayers.sqrt < m_Sqrt)
 		{
-			m_TargetDir = nearestDir;
-		}
-
-		if (nearestSqrt < 1.5f
-			&& IsAnyActionState<CPlayerActionIdleState>())
-		{
-			SetActionState(std::make_unique<CPlayerHandAttackState>(*this));
+			m_NearbyPlayers.dir = nearestDir;
 		}
 	}
 }

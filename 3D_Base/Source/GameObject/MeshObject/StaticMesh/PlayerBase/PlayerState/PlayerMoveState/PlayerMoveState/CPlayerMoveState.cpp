@@ -17,10 +17,10 @@ CPlayerMoveState::CPlayerMoveState(CPlayerBase& pPlayer, float x, float z)
 	, m_HitPushbackPower	( 0.1f )
 	
 	, m_CurrentSpeed		()
-	, m_MoveSpeed			( 0.13f )
-	, m_RotatingMoveSpeed	( 0.10f )
-	, m_HitingMoveSpeed		( 0.03f )
-	, m_AIMoveSpeed			( 0.09f )
+	, m_MoveSpeed			( 8.f )
+	, m_RotatingMoveSpeed	( 9.f )
+	, m_HitingMoveSpeed		( 0.6f )
+	, m_AIMoveSpeed			( 7.f )
 {
 }
 
@@ -82,6 +82,9 @@ void CPlayerMoveState::Update()
 	//プレイヤーとの接触情報を取得.
 	CPlayerBase::HitPlayer hitPlayer = m_pPlayer.GetHitPlayer();
 
+	//デルタタイムを取得.
+	float dt = CTimeManager::GetDeltaTime();
+
 	//接触した場合.
 	if (hitPlayer.isHit)
 	{
@@ -110,7 +113,7 @@ void CPlayerMoveState::Update()
 	//ベクトル量の計算.
 	D3DXVECTOR3 velocity = dir * m_CurrentSpeed;
 	//ベクトル量を足す.
-	playerPos += velocity;
+	playerPos += velocity * dt;
 
 	//プレイヤーの位置の設定.
 	m_pPlayer.SetPosition(playerPos);

@@ -209,11 +209,11 @@ void CPlayerBase::OnGroundCollision(CGroundManager& pGroundMgr)
 		groundY
 	);
 
+	m_IsAboveGround = m_IsOnGround;
 	if (m_vPosition.y > 0.3f)
 	{
 		m_IsOnGround = false;
 	}
-	m_IsAboveGround = m_IsOnGround;
 }
 
 //--- ˆÊ’u‚ðÝ’è‚·‚é‚½‚ß‚ÉŒvŽZ ---.
@@ -327,7 +327,7 @@ D3DXVECTOR3 CPlayerBase::GetKnockbackVelocity(
 	velocity.x = cos(angle) * power * dir.x;	//xŽ²•ûŒü‚É.
 	velocity.z = cos(angle) * power * dir.z;	//zŽ²•ûŒü‚É.
 	velocity.y = sin(angle) * power;
-
+	
 	return velocity;
 }
 
@@ -391,7 +391,7 @@ void CPlayerBase::OnCollision(CollisionBase* pOtherCollider)
 					GetKnockbackVelocity(player->GetPosition(), 10.f, 60.f), CPlayerBase::HitEvent::Knockback);
 #else
 				SetHitAttack(
-					GetPushbackVelocity(player->GetPosition(), 0.05f), CPlayerBase::HitEvent::Pushback);
+					GetPushbackVelocity(player->GetPosition(), 3.f), CPlayerBase::HitEvent::Pushback);
 #endif
 			}
 			else

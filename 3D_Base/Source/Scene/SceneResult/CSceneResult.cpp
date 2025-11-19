@@ -79,8 +79,6 @@ HRESULT CSceneResult::LoadData()
 
 void CSceneResult::Update()
 {
-	CTimeManager::Update();
-
 	MoveSelector();
 
 	SelectorControl();

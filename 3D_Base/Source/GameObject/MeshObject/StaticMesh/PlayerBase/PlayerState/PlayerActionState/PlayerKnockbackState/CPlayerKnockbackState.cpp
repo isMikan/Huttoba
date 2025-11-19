@@ -100,6 +100,7 @@ void CPlayerKnockbackState::Update()
 	m_pPlayer.GetPlayerRightHand().SetPosition(m_pPlayer.GetObjectPos(rightHandOffsetPos));
 	m_pPlayer.GetPlayerLeftHand().SetPosition(m_pPlayer.GetObjectPos(leftHandOffsetPos));
 
+	//デルタタイムを取得.
 	float dt = CTimeManager::GetDeltaTime();
 
 	//飛んでいく移動量の計算.

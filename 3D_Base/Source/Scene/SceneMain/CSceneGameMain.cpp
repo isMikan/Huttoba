@@ -25,12 +25,16 @@ CSceneGameMain::CSceneGameMain( HWND hWnd)
 
 	, m_pGroundManager	()
 
-	, m_pItemManager	( nullptr )
+	, m_pItemManager	()
+
+	, m_IsPause			( false )
 {
 	m_pDx9 = CDirectX9::GetInstance();
 	m_pDx11 = CDirectX11::GetInstance();
 
 	CSceneData::PlayerAllLive();
+
+	CInputManager::BindKey(Action::Pause, InputBinding(InputDevice::Keyboard, VK_F3), 0);
 
 	Create();
 	LoadData();
@@ -131,8 +135,19 @@ void CSceneGameMain::Update()
 {
 	//BGMのループ再生
 	AssetManager::Sound()->PlayLoop(enSoundList::BGM_SceneMain);
-
-	CTimeManager::Update();
+	if(CInputManager::IsDown(Action::Pause, 0))
+	{
+		if(!m_IsPause)
+		{
+			CTimeManager::Pause();
+			m_IsPause = true;
+		}
+		else
+		{
+			CTimeManager::Resume();
+			m_IsPause = false;
+		}
+	}
 
 	//地面メネージャーの更新処理
 	m_pGroundManager->Update();

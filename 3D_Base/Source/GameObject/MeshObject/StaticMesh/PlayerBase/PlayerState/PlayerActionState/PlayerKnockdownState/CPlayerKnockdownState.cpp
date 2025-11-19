@@ -174,6 +174,7 @@ void CPlayerKnockdownState::TimeDecrease()
 	//プレイヤーの位置を取得.
 	D3DXVECTOR3 playerPos = m_pPlayer.GetPosition();
 
+	//デルタタイムを取得.
 	float dt = CTimeManager::GetDeltaTime();
 
 	//横軸に揺らす.

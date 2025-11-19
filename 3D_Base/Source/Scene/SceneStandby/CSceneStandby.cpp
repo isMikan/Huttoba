@@ -93,8 +93,6 @@ HRESULT CSceneStandby::LoadData()
 
 void CSceneStandby::Update()
 {
-	CTimeManager::Update();
-
 	MoveSelector();
 
 	if (CInputManager::IsDown(Action::Decide, 0)/* && slot0.ready*/)

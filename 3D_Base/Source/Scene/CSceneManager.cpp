@@ -32,6 +32,7 @@ HRESULT CSceneManager::LoadData()
 void CSceneManager::Update()
 {
 	CInputManager::Update();
+	CTimeManager::Update();
 
 	//シーンが変更されてるか？
 	if (m_pScene->GetChangetScene() == true)
@@ -57,6 +58,9 @@ void CSceneManager::CreateScene(int Scene)
 	//前のシーンを削除
 	m_pScene->Destroy();
 
+	CTimeManager::Resume();
+	CTimeManager::Reset();
+
 	//シーン作成
 	switch (Scene)
 	{
@@ -71,8 +75,6 @@ void CSceneManager::CreateScene(int Scene)
 	}
 	//シーン変更確認用フラッグをfalseに
 	m_pScene->ChangeSceneFlagFalse();
-
-	CTimeManager::Reset();
 }
 
 void CSceneManager::SetInputBInding()

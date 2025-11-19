@@ -149,8 +149,11 @@ void CPlayerPushedState::Update()
 	//プレイヤーの位置を取得.
 	D3DXVECTOR3 playerPos = m_pPlayer.GetPosition();
 
+	//デルタタイムを取得.
+	float dt = CTimeManager::GetDeltaTime();
+
 	//プレイヤーの位置と押された移動量を足す.
-	playerPos += m_pPlayer.GetHitAttack().velocity;
+	playerPos += m_pPlayer.GetHitAttack().velocity * dt;
 
 	//プレイヤーの位置を設定.
 	m_pPlayer.SetPosition(playerPos);

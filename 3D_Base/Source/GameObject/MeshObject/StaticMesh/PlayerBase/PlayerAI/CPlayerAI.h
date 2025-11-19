@@ -11,6 +11,17 @@ class CPlayerAI
 	: public CPlayerBase	//プレイヤーベースクラスを継承.
 {
 public:
+//======================================================================
+//		構造体.
+//======================================================================
+	//近くのプレイヤー情報.
+	struct NearbyPlayers
+	{
+		D3DXVECTOR3		dir;	//方向.
+		float			sqrt;	//距離.
+	};
+
+public:
 	CPlayerAI(int index);	//引数:プレイヤー番号.
 	virtual ~CPlayerAI() override;
 
@@ -29,16 +40,16 @@ public:
 	void SetPlayerManager(CPlayerManager* manager) { m_pPlayerManager = manager; }
 
 protected:
-	//--- 近くのプレイヤーを追いかける ---.
-	void FollowPlayerNearby();
+	//--- 近くのプレイヤーを探索 ---.
+	void FindNearbyPlayers();
 
 protected:
-	CPlayerManager*	m_pPlayerManager;		//プレイヤー.
+	CPlayerManager*	m_pPlayerManager;	//プレイヤー.
 
-	D3DXVECTOR3		m_CurrentDir;	//現在の進行方向.
-	D3DXVECTOR3		m_TargetDir;	//目標の進行方向.
+	D3DXVECTOR3		m_CurrentDir;		//現在の進行方向.
+	D3DXVECTOR3		m_PreviousDiff;		//以前との差.
 
-	D3DXVECTOR3		m_PreviousDiff;	//以前との差.
+	NearbyPlayers	m_NearbyPlayers;	//近くのプレイヤー
 
 	float m_Sqrt;
 };

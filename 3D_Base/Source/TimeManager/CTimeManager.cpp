@@ -1,6 +1,8 @@
 #include "CTimeManager.h"
 
 CTimeManager::CTimeManager()
+	: m_PauseStateTime		()
+	, m_PauseTime			( 0.0 )
 {
 	Reset_Internal();	//初期化.
 }
@@ -21,11 +23,45 @@ void CTimeManager::Reset_Internal()
 
 	m_DeltaTime = 0.0;
 	m_TotalTime = 0.0;
+
+	m_PauseTime = 0.0;
+}
+
+//--- 一時停止関数 ---.
+void CTimeManager::Pause_Internal()
+{
+	//一時停止中でない.
+	if (!m_IsPaused)
+	{
+		m_PauseStateTime = Clock::now();
+		m_IsPaused = true;	//一時停止開始.
+	}
+}
+
+//--- 再開関数 ---.
+void CTimeManager::Resume_Internal()
+{
+	//一時停止中.
+	if (m_IsPaused)
+	{
+		m_PreviousTime = Clock::now();
+		std::chrono::duration<double> pause = m_PreviousTime - m_PauseStateTime;
+		m_PauseTime += pause.count();
+
+		m_IsPaused = false;	//一時停止解除.
+	}
 }
 
 //--- 更新処理 ---.
 void CTimeManager::Update_Internal()
 {
+	//一時停止中.
+	if (m_IsPaused)
+	{
+		m_DeltaTime = 0.0;	//デルタタイムを 0 に固定.
+		return;
+	}
+	
 	//現在の時間の時点.
 	TimePoint currentTime = Clock::now();
 
@@ -40,5 +76,8 @@ void CTimeManager::Update_Internal()
 
 	//経過時間 = 現在の時刻 - 開始時間.
 	std::chrono::duration<double> total = currentTime - m_StartTime;
-	m_TotalTime = total.count();	//秒単位のものを数値として取り出す.
+	m_TotalTime = total.count() - m_PauseTime;	//秒単位のものを数値として取り出す.
+
+	std::cout << "トータル" << m_TotalTime << std::endl;
+	std::cout << "でるた" << m_DeltaTime << std::endl;
 }

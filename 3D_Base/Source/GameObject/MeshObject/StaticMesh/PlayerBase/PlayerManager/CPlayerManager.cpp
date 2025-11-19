@@ -247,7 +247,7 @@ void CPlayerManager::Create()
 		m_pPlayers[pNo] = std::make_unique<CPlayer>(pNo);
 #else
 #if 1
-		if (pNo == 0)
+		if (pNo < 3)
 		{
 			m_pPlayers[pNo] = std::make_unique<CPlayer>(pNo);
 		}

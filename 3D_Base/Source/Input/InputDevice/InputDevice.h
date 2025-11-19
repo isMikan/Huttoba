@@ -18,6 +18,8 @@ enum class Action
 	NavigateUp,		//選択肢を上に移動.
 	NavigateDown,	//選択肢を下に移動.
 
+	Pause,			//ポーズ.
+
 	Max
 };
 

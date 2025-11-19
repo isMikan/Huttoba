@@ -23,6 +23,10 @@ public:
 //======================================================================
 	//リセット関数を外部へ.
 	static void Reset() { GetInstance().Reset_Internal(); }
+	//一時停止関数を外部へ.
+	static void Pause() { GetInstance().Pause_Internal(); }
+	//再開関数を外部へ.
+	static void Resume() { GetInstance().Resume_Internal(); }
 	//更新関数を外部へ.
 	static void Update() { GetInstance().Update_Internal(); }
 
@@ -39,6 +43,10 @@ private:
 //======================================================================
 	//--- リセット ---.
 	void Reset_Internal();
+	//--- 一時停止関数 ---.
+	void Pause_Internal();
+	//--- 再開関数 ---.
+	void Resume_Internal();
 	//--- 更新処理 ---.
 	void Update_Internal();
 
@@ -50,9 +58,14 @@ private:
 	using Clock = std::chrono::high_resolution_clock;	//高精度タイマー.
 	using TimePoint = std::chrono::time_point<Clock>;	//ある時点.
 
-	TimePoint	m_StartTime;	//開始時間.
-	TimePoint	m_PreviousTime;	//以前の時間.
+	TimePoint	m_StartTime;		//開始時間.
+	TimePoint	m_PreviousTime;		//以前の時間.
+	TimePoint	m_PauseStateTime;	//ポーズ開始時間.
 
-	double		m_DeltaTime;	//1フレームの間どれだけ経ったか.
-	double		m_TotalTime;	//経過時間.
+	double		m_DeltaTime;		//1フレームの間どれだけ経ったか.
+	double		m_TotalTime;		//経過時間.
+
+	double		m_PauseTime;		//ポーズ時間.
+
+	bool		m_IsPaused;			//一時停止しているか.
 };

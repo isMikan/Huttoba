@@ -76,4 +76,5 @@ private:
 	//アイテムクラス
 	std::unique_ptr<ItemManager>	m_pItemManager;
 
+	bool	m_IsPause;	//ポーズ中か.
 	};
