@@ -18,8 +18,8 @@ CPlayerMoveState::CPlayerMoveState(CPlayerBase& pPlayer, float x, float z)
 	
 	, m_CurrentSpeed		()
 	, m_MoveSpeed			( 8.f )
-	, m_RotatingMoveSpeed	( 9.f )
-	, m_HitingMoveSpeed		( 0.6f )
+	, m_RotatingMoveSpeed	( 7.f )
+	, m_HitingMoveSpeed		( 3.f )
 	, m_AIMoveSpeed			( 7.f )
 {
 }

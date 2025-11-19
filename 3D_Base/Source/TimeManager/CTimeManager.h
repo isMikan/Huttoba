@@ -62,10 +62,10 @@ private:
 	TimePoint	m_PreviousTime;		//以前の時間.
 	TimePoint	m_PauseStateTime;	//ポーズ開始時間.
 
-	double		m_DeltaTime;		//1フレームの間どれだけ経ったか.
-	double		m_TotalTime;		//経過時間.
+	double		m_DeltaTime;	//1フレームの間どれだけ経ったか.
+	double		m_TotalTime;	//経過時間.
 
-	double		m_PauseTime;		//ポーズ時間.
+	double		m_PauseTime;	//ポーズ時間.
 
-	bool		m_IsPaused;			//一時停止しているか.
+	bool		m_IsPaused;		//一時停止しているか.
 };

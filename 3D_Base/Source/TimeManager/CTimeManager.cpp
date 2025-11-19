@@ -2,7 +2,6 @@
 
 CTimeManager::CTimeManager()
 	: m_PauseStateTime		()
-	, m_PauseTime			( 0.0 )
 {
 	Reset_Internal();	//初期化.
 }
@@ -23,8 +22,9 @@ void CTimeManager::Reset_Internal()
 
 	m_DeltaTime = 0.0;
 	m_TotalTime = 0.0;
-
 	m_PauseTime = 0.0;
+
+	m_IsPaused = false;
 }
 
 //--- 一時停止関数 ---.
@@ -45,8 +45,10 @@ void CTimeManager::Resume_Internal()
 	if (m_IsPaused)
 	{
 		m_PreviousTime = Clock::now();
+
+		//現在の時刻からポーズ開始時間を引いて、ポーズの時間の統計を求める.
 		std::chrono::duration<double> pause = m_PreviousTime - m_PauseStateTime;
-		m_PauseTime += pause.count();
+		m_PauseTime += pause.count();	//秒単位のものを数値として取り出す.
 
 		m_IsPaused = false;	//一時停止解除.
 	}
