@@ -16,6 +16,7 @@ private:
 
 	//アイテムの出現地点
 	std::vector<std::pair<GroundTag, D3DXVECTOR3>> m_pSpawnPosition;
-	std::vector<std::pair<GroundTag, bool>>		m_IsFallGrounds;
+	std::unordered_map<GroundTag, bool>			m_IsFallGrounds;
+
 	CGroundManager& m_pGroundManager;
 };

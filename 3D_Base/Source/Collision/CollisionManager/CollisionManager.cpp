@@ -85,7 +85,6 @@ void CollisionManager::RegisterStrategy()
         CollisionBase::ColliderType::Capsule,
         std::make_unique<CollisionCapsuleCapsule>()
     );
-
 }
 
 void CollisionManager::Update()

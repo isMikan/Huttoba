@@ -4,13 +4,14 @@
 #include "PlayerBase/PlayerManager/CPlayerManager.h"
 #include "Input/CInputManager.h"
 #include "Item/SelectSpawnItem/SelectSpawnItem.h"
+#include "Item/SpawnItemPosition/SpawnItemPosition.h"
 
 
 //--------------------------------------------------------------------------------------------------------------
 
 ItemManager::ItemManager()
-	: m_pItems		{}
-	, m_pSpawnItem{ std::make_unique<SelectSpawnItem>() }
+	: m_pItems			{}
+	, m_pSpawnItem		{ std::make_unique<SelectSpawnItem>() }
 {
 	Create();
 }

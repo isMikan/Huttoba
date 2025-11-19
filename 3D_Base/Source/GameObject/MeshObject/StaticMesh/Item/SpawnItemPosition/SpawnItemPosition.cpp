@@ -9,7 +9,7 @@ SpawnItemPosition::SpawnItemPosition(CGroundManager& GroundMamager)
 	m_pSpawnPosition.push_back({ GroundTag::FirstFallGround, D3DXVECTOR3{0,0,0} });
 	m_pSpawnPosition.push_back({ GroundTag::SecondFallGround,D3DXVECTOR3{1,0,1} });
 	m_pSpawnPosition.push_back({ GroundTag::ThirdFallGround, D3DXVECTOR3{2,0,2} });
-	m_pSpawnPosition.push_back({ GroundTag::SafeGround,	  D3DXVECTOR3{3,0,3} });
+	m_pSpawnPosition.push_back({ GroundTag::SafeGround,		 D3DXVECTOR3{3,0,3} });
 	m_pSpawnPosition.push_back({ GroundTag::ThirdFallGround, D3DXVECTOR3{4,0,4} });
 
 	for (auto& ground : m_IsFallGrounds)
@@ -24,11 +24,13 @@ SpawnItemPosition::~SpawnItemPosition()
 
 D3DXVECTOR3 SpawnItemPosition::SpawnItem()
 {
+	//ステージがすでに落ちているか判定
 	for (auto& ground : m_pGroundManager.GetGrounds())
 	{
-		if (ground->GetIsFallDown())
+		//ステージが落ちているか、落下情報はすでにtrueではないか
+		if (ground->GetIsFallDown() || m_IsFallGrounds[ground->GetTag()] != true)
 		{
-
+			m_IsFallGrounds[ground->GetTag()] = true;
 		}
 	}
 
