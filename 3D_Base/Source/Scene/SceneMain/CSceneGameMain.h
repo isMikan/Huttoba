@@ -25,6 +25,8 @@
 #include "Scene/CSceneManager.h"
 #include "Input/CInputManager.h"
 
+#include "GroundCollisionProxy/CGroundCollisionProxy.h"
+
 class ItemManager;
 class CollisionDraw;
 
@@ -48,7 +50,7 @@ public:
 	void ManageEffectLaser();
 
 private:
-	CDirectX9*	m_pDx9;
+	CDirectX9* m_pDx9;
 	CDirectX11* m_pDx11;
 
 	HWND		m_hWnd;			//ウィンドウハンドル
@@ -76,4 +78,10 @@ private:
 	//アイテムクラス
 	std::unique_ptr<ItemManager>	m_pItemManager;
 
-	};
+
+
+
+
+	//地面の当たり判定生成クラス
+	std::unique_ptr<CGroundCollisionProxy>	m_pGroundCollisionProxy;
+};

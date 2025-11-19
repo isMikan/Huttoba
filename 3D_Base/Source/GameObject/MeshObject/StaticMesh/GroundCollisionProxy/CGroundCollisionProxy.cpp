@@ -1,0 +1,81 @@
+#include "CGroundCollisionProxy.h"
+
+CGroundCollisionProxy::CGroundCollisionProxy(CGroundManager& groundManager)
+	: m_pGroundManager	( groundManager )
+	, m_GroundCount		()
+	, m_OldGroundCount	()
+{
+	m_vPosition = D3DXVECTOR3(0.f, -1.f, 10.f);
+}
+
+CGroundCollisionProxy::~CGroundCollisionProxy()
+{
+	//ìñÇΩÇËîªíËçÌèú
+	CollisionManager::GetInstance()->RemoveCollider(m_pCollision.get());
+}
+
+void CGroundCollisionProxy::Update()
+{
+	m_GroundCount = m_pGroundManager.GetGrounds().size();
+
+	if (m_GroundCount != m_OldGroundCount)
+	{
+		switch (m_GroundCount)
+		{
+		case 0:
+
+		case 1:
+			//ìñÇΩÇËîªíËçÌèú
+			CollisionManager::GetInstance()->RemoveCollider(m_pCollision.get());
+
+			//ìñÇΩÇËîªíËÇÃçÏê¨
+			m_pCollision = CollisionDataFactory::CreateSphereForMesh(
+				CollisionBase::ColliderTag::Ground,
+				AssetManager::Mesh(StaticMeshList::floor1),
+				this
+			);
+			break;
+		case 2:
+			//ìñÇΩÇËîªíËçÌèú
+			CollisionManager::GetInstance()->RemoveCollider(m_pCollision.get());
+
+			//ìñÇΩÇËîªíËÇÃçÏê¨
+			m_pCollision = CollisionDataFactory::CreateSphereForMesh(
+				CollisionBase::ColliderTag::Ground,
+				AssetManager::Mesh(StaticMeshList::floor2),
+				this
+			);
+			break;
+		case 3:
+			//ìñÇΩÇËîªíËçÌèú
+			CollisionManager::GetInstance()->RemoveCollider(m_pCollision.get());
+
+			//ìñÇΩÇËîªíËÇÃçÏê¨
+			m_pCollision = CollisionDataFactory::CreateSphereForMesh(
+				CollisionBase::ColliderTag::Ground,
+				AssetManager::Mesh(StaticMeshList::floor3),
+				this
+			);
+			break;
+		case 4:
+			//ìñÇΩÇËîªíËçÌèú
+			CollisionManager::GetInstance()->RemoveCollider(m_pCollision.get());
+
+			//ìñÇΩÇËîªíËÇÃçÏê¨
+			m_pCollision = CollisionDataFactory::CreateSphereForMesh(
+				CollisionBase::ColliderTag::Ground,
+				AssetManager::Mesh(StaticMeshList::floor4),
+				this
+			);
+			break;
+		default:
+			break;
+		}
+	}
+
+	m_OldGroundCount = m_GroundCount;
+}
+
+void CGroundCollisionProxy::OnCollision(CollisionBase* other)
+{
+}
