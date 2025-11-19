@@ -95,6 +95,8 @@ void CPlayerMoveState::Update()
 			D3DXVec3Normalize(&dir, &m_InputDir);
 		}
 
+		hitPlayer.otherDir.y = 0.f;	//地面に埋まらないように高さをなくす.
+
 		//反対方向に押し出す.
 		playerPos += -hitPlayer.otherDir * m_HitPushbackPower;
 		//プレイヤーの位置の設定.
