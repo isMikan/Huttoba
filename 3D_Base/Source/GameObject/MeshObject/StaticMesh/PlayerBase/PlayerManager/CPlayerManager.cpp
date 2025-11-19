@@ -242,12 +242,12 @@ void CPlayerManager::Create()
 
 	for (int pNo = 0; pNo < Player_Max; pNo++)
 	{
-#if 1
+#if 0
 		//プレイヤーのインスタンス生成.
 		m_pPlayers[pNo] = std::make_unique<CPlayer>(pNo);
 #else
 #if 1
-		if (pNo < 3)
+		if (pNo == 0)
 		{
 			m_pPlayers[pNo] = std::make_unique<CPlayer>(pNo);
 		}

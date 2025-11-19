@@ -5,8 +5,8 @@ CGround::CGround()
 	, m_Gravity					( -9.8f )
 	, m_Velocity				()
 
-	, m_ChabgeColorSpeed		( 15.f )
-	, m_ChabgeColorInterval		( 0.1f )
+	, m_ChabgeColorSpeed		( 10.f )
+	, m_ChabgeColorInterval		( 8.f )
 	, m_ShakeSpeed				( 50.f )
 	, m_ShakeWidth				( 0.05f )
 
@@ -88,14 +88,17 @@ void CGround::ChangeColorOfGround()
 		(t - m_ChangeColorTriggerTime) / m_ChangeColorTime;
 	progress = std::clamp(progress, 0.f, 1.f);
 
-	D3DXVECTOR4	groundColor = m_ObjectColor[0].diffuse;;
+	D3DXVECTOR4	groundColor = m_ObjectColor[0].diffuse;
 
 	//色の数値.
 	float colorChange = cosf(progress * D3DX_PI * m_ChabgeColorSpeed) * m_ChabgeColorInterval;
 
+	//デルタタイムを取得.
+	float dt = CTimeManager::GetDeltaTime();
+
 	//点滅.
-	groundColor.x += colorChange;
-	groundColor.y += colorChange;
+	groundColor.x += colorChange * dt;
+	groundColor.y += colorChange * dt;
 	groundColor.z = 0.f;
 
 	m_ObjectColor[0].diffuse = groundColor;
