@@ -139,9 +139,9 @@ void CSceneGameMain::Update()
 {
 	//BGMのループ再生
 	AssetManager::Sound()->PlayLoop(enSoundList::BGM_SceneMain);
-	if(CInputManager::IsDown(Action::Pause, 0))
+	if (CInputManager::IsDown(Action::Pause, 0))
 	{
-		if(!m_IsPause)
+		if (!m_IsPause)
 		{
 			CTimeManager::Pause();
 			m_IsPause = true;
@@ -153,63 +153,62 @@ void CSceneGameMain::Update()
 		}
 	}
 
-		//地面メネージャーの更新処理
-		m_pGroundManager->Update();
+	//地面メネージャーの更新処理
+	m_pGroundManager->Update();
 
-		m_pGroundCollisionProxy->Update();
+	m_pGroundCollisionProxy->Update();
 
-		//プレイヤーの動作
-		m_pPlayerManager->Update();
+	//プレイヤーの動作
+	m_pPlayerManager->MainPlayerUpdate();
 
-		//地面に接地しているか
-		for (auto& player : m_pPlayerManager->GetPlayer())
-		{
-			if (!player) continue;	//プレイヤーがいない場合、次へ
+	//地面に接地しているか
+	for (auto& player : m_pPlayerManager->GetPlayer())
+	{
+		if (!player) continue;	//プレイヤーがいない場合、次へ
 
 		player->OnGroundCollision(*m_pGroundManager);
 	}
 
-		//地面に接地しているか
-		for (auto& item : m_pItemManager->GetItems())
+	//地面に接地しているか
+	for (auto& item : m_pItemManager->GetItems())
+	{
+		item->IsOnGround(*m_pGroundManager);
+	}
+
+	m_pItemManager->Update();
+
+	CollisionManager::GetInstance()->Update();
+
+	//爆発
+	for (auto& exp : m_pExplosiones)
+	{
+		//爆発しているか
+		if (exp->IsStart())
 		{
-			item->IsOnGround(*m_pGroundManager);
+			exp->Update();
 		}
+	}
 
-		m_pItemManager->Update();
+	for (auto& UI : m_pUIMap)
+	{
+		UI.second->Update();
+	}
 
-		CollisionManager::GetInstance()->Update();
+	m_pShadowManager->Update(m_pPlayerManager.get(), m_pItemManager.get());
+	m_pGaugeManager->Update(m_pPlayerManager.get());
 
-		//爆発
-		for (auto& exp : m_pExplosiones)
-		{
-			//爆発しているか
-			if (exp->IsStart())
-			{
-				exp->Update();
-			}
-		}
+	//レーザーの管理
+	ManageEffectLaser();
 
-		for (auto& UI : m_pUIMap)
-		{
-			UI.second->Update();
-		}
+	//次のシーンへ遷移
+	if (GetAsyncKeyState(VK_F4) & 0x8000)
+	{
+		SetNextScene(Result);
+	}
 
-		m_pShadowManager->Update(m_pPlayerManager.get(), m_pItemManager.get());
-		m_pGaugeManager->Update(m_pPlayerManager.get());
-
-		//レーザーの管理
-		ManageEffectLaser();
-
-		//次のシーンへ遷移
-		if (GetAsyncKeyState(VK_F4) & 0x8000)
-		{
-			SetNextScene(Result);
-		}
-
-		if (CSceneData::GameMainEnd())
-		{
-			SetNextScene(Result);
-		}
+	if (CSceneData::GameMainEnd())
+	{
+		SetNextScene(Result);
 	}
 }
 
