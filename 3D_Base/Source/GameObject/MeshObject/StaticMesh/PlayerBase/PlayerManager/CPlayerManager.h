@@ -1,6 +1,7 @@
 #pragma once
 
 #include "PlayerBase/CPlayerBase.h"
+#include "Item/ItemManager/ItemManager.h"
 
 /***********************************************************************
 *   プレイヤーマネージャークラス.				制作者 [甲把]
@@ -24,7 +25,7 @@ public:
 	//--- 準備画面 ---.
 	void StandbyPlayerCreate();
 	//--- メイン ---.
-	void MainPlayerCreate();
+	void MainPlayerCreate(ItemManager* itemManager);
 	//--- リザルト ---.
 	void ResultPlayerCreate();
 

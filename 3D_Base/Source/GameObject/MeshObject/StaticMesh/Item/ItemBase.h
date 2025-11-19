@@ -85,6 +85,8 @@ public:
 	* @brief    アイテムの状態を変更するクラス
 	* @param    state : アイテムの状態を管理する変数
 	*****************************************************************************************/
+	//状態の取得と設定.		制作者 [甲把]
+	State GetState() const { return m_State; }
 	void SetState(State state) { m_State = state; }
 
 

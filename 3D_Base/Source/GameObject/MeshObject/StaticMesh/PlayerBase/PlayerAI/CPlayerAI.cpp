@@ -21,17 +21,22 @@ CPlayerAI::CPlayerAI(int index)
 	: CPlayerBase		( index )
 
 	, m_pPlayerManager	( nullptr )
+	, m_pItemManager	( nullptr )
 
 	, m_CurrentDir		( 0.f, 0.f, 0.f )
 	, m_PreviousDiff	( 99.f, 99.f, 99.f )	//初回は、比較のため大きい数値にしておく.
 
 	, m_NearbyPlayers	()
+	, m_NearbyItems		()
+
 	, m_Sqrt			( 999.f )	//初回は、比較のため大きい数値にしておく.
 {
 }
 
 CPlayerAI::~CPlayerAI()
 {
+	m_pPlayerManager = nullptr;
+	m_pItemManager = nullptr;
 }
 
 //======================================================================
@@ -41,8 +46,6 @@ CPlayerAI::~CPlayerAI()
 //--- 毎フレームの動作 ---.
 void CPlayerAI::Update()
 {
-	AutomaticMovement();
-
 	CPlayerBase::Update();
 }
 
@@ -53,7 +56,7 @@ void CPlayerAI::Draw(
 	CPlayerBase::Draw( View, Proj, Light, Camera );
 }
 
-void CPlayerAI::AutomaticMovement()
+void CPlayerAI::AutomaticMovement(D3DXVECTOR3 targetDir)
 {
 	//移動・回転をしない場合.
 	if (IsAnyActionState<
@@ -63,12 +66,12 @@ void CPlayerAI::AutomaticMovement()
 		CPlayerKnockdownState>())	//ダウン中.
 	{
 		//入力に変化があった場合.
-		if (m_CurrentDir != m_NearbyPlayers.dir)
+		if (m_CurrentDir != targetDir)
 		{
 			SetMoveState(std::make_unique<CPlayerMoveIdleState>(*this));
 			SetTurnState(std::make_unique<CPlayerTurnIdleState>(*this));
 
-			m_CurrentDir = m_NearbyPlayers.dir;	//現在の入力を記録しておく.
+			m_CurrentDir = targetDir;	//現在の入力を記録しておく.
 		}
 	}
 	else
@@ -77,7 +80,7 @@ void CPlayerAI::AutomaticMovement()
 		if (IsAnyActionState<CPlayerFallingState>())	//落ちている.
 		{
 			//入力に変化があった場合.
-			if (m_CurrentDir != m_NearbyPlayers.dir)
+			if (m_CurrentDir != targetDir)
 			{
 				SetTurnState(std::make_unique<CPlayerTurnIdleState>(*this));
 			}
@@ -86,17 +89,17 @@ void CPlayerAI::AutomaticMovement()
 		else
 		{
 			//入力に変化があった場合.
-			if (m_CurrentDir != m_NearbyPlayers.dir)
+			if (m_CurrentDir != targetDir)
 			{
-				SetTurnState(std::make_unique<CPlayerTurnState>(*this, m_NearbyPlayers.dir.x, m_NearbyPlayers.dir.z));
+				SetTurnState(std::make_unique<CPlayerTurnState>(*this, targetDir.x, targetDir.z));
 			}
 		}
 
 		//入力に変化があった場合.
-		if (m_CurrentDir != m_NearbyPlayers.dir)
+		if (m_CurrentDir != targetDir)
 		{
-			SetMoveState(std::make_unique<CPlayerMoveState>(*this, m_NearbyPlayers.dir.x, m_NearbyPlayers.dir.z));
-			m_CurrentDir = m_NearbyPlayers.dir;	//現在の入力を記録しておく.
+			SetMoveState(std::make_unique<CPlayerMoveState>(*this, targetDir.x, targetDir.z));
+			m_CurrentDir = targetDir;	//現在の入力を記録しておく.
 		}
 	}
 }
@@ -134,6 +137,32 @@ void CPlayerAI::FindNearbyPlayers()
 		if (m_NearbyPlayers.sqrt < m_Sqrt)
 		{
 			m_NearbyPlayers.dir = nearestDir;
+		}
+	}
+}
+
+//--- 近くのアイテムを探索 ---.
+void CPlayerAI::FindNearbyItems()
+{
+	m_NearbyItems.sqrt = m_Sqrt;
+	D3DXVECTOR3 nearestDir(0.f, 0.f, 0.f);
+
+	for (int iNo = 0; iNo < m_pItemManager->GetItemVectorNum(); iNo++)
+	{
+		D3DXVECTOR3 itemPos = m_pItemManager->GetItemPos(iNo);
+
+		D3DXVECTOR3 diff = itemPos - m_vPosition;
+		float diffSqrt = D3DXVec3LengthSq(&diff);
+
+		if (diffSqrt < m_NearbyItems.sqrt)
+		{
+			m_NearbyItems.sqrt = diffSqrt;
+			D3DXVec3Normalize(&nearestDir, &diff);
+		}
+
+		if (m_NearbyItems.sqrt < m_Sqrt)
+		{
+			m_NearbyItems.dir = nearestDir;
 		}
 	}
 }

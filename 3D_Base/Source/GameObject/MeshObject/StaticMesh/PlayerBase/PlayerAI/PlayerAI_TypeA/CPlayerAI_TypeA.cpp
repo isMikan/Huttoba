@@ -35,19 +35,27 @@ CPlayerAI_TypeA::~CPlayerAI_TypeA()
 //--- ñàÉtÉåÅ[ÉÄÇÃìÆçÏ ---.
 void CPlayerAI_TypeA::Update()
 {
-	for (int pNo = 0; pNo < Player_Max; pNo++)
+	if(!m_pItemBase)
 	{
-		const auto& player = m_pPlayerManager->GetPlayer(pNo);
-
-		if (pNo == m_PlayerID) continue;
-
-		FindNearbyPlayers();
-
-
-		if (m_NearbyPlayers.sqrt < 1.5f
-			&& IsAnyActionState<CPlayerActionIdleState>())
+		FindNearbyItems();
+		AutomaticMovement(m_NearbyItems.dir);
+	}
+	else
+	{
+		for (int pNo = 0; pNo < Player_Max; pNo++)
 		{
-			SetActionState(std::make_unique<CPlayerHandAttackState>(*this));
+			const auto& player = m_pPlayerManager->GetPlayer(pNo);
+
+			if (pNo == m_PlayerID) continue;
+
+			FindNearbyPlayers();
+			AutomaticMovement(m_NearbyPlayers.dir);
+
+			if (m_NearbyPlayers.sqrt < 1.5f
+				&& IsAnyActionState<CPlayerActionIdleState>())
+			{
+				//SetActionState(std::make_unique<CPlayerHandAttackState>(*this));
+			}
 		}
 	}
 

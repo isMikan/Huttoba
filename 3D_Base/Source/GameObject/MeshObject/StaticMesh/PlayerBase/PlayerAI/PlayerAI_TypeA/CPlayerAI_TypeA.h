@@ -3,7 +3,7 @@
 #include "PlayerBase/PlayerAI/CPlayerAI.h"
 
 /***********************************************************************
-*	プレイヤーAIクラス.
+*	プレイヤーAI : Aタイプクラス.			制作者 [甲把]
 **/
 class CPlayerAI_TypeA
 	: public CPlayerAI	//プレイヤーベースクラスを継承.

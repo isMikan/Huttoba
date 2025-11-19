@@ -111,7 +111,7 @@ void CPlayerManager::StandbyPlayerCreate()
 }
 
 //--- メイン ---.
-void CPlayerManager::MainPlayerCreate()
+void CPlayerManager::MainPlayerCreate(ItemManager* itemManager)
 {
 	Create();
 
@@ -121,6 +121,12 @@ void CPlayerManager::MainPlayerCreate()
 
 		//プレイヤー番号を取得.
 		int id = player->GetPlayerID();
+
+		if(const auto& aiPlayer = dynamic_cast<CPlayerAI*>(player.get()))
+		{
+			aiPlayer->SetPlayerManager(this);
+			aiPlayer->SetItemManager(itemManager);
+		}
 
 		//位置と方向の初期化.
 		InitialSettings(id);
@@ -242,7 +248,7 @@ void CPlayerManager::Create()
 
 	for (int pNo = 0; pNo < Player_Max; pNo++)
 	{
-#if 0
+#if 1
 		//プレイヤーのインスタンス生成.
 		m_pPlayers[pNo] = std::make_unique<CPlayer>(pNo);
 #else
@@ -254,7 +260,6 @@ void CPlayerManager::Create()
 		else
 		{
 			m_pPlayers[pNo] = std::make_unique<CPlayerAI_TypeA>(pNo);
-			dynamic_cast<CPlayerAI*>(m_pPlayers[pNo].get())->SetPlayerManager(this);
 		}
 #else
 		//準備OKのコントローラーの場合.

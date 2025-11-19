@@ -33,7 +33,6 @@ void CGroundManager::LoadData()
 
 	m_pGrounds[FirstFallGround]->AttachMesh(AssetManager::Mesh(StaticMeshList::FirstFallGround));
 	m_pGrounds[SafeGround]->SetTag(GroundTag::FirstFallGround);
-
 }
 
 //--- XVŠÖ” ---.
@@ -81,7 +80,7 @@ void CGroundManager::Update()
 			m_pGrounds[gNo]->SetIsChangeColor(true);
 		}
 
-		m_pGrounds[gNo]->Update();
+		//m_pGrounds[gNo]->Update();
 	}
 }
 

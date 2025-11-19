@@ -71,23 +71,24 @@ private:
 //======================================================================
 // 	   内部で使用する変数.
 //======================================================================
-	ObjectColor	m_DefaultColor;		//初期色.
+	ObjectColor	m_DefaultColor;			//初期色.
 
-	float	m_FallSpeed;			//落下速度.
-	float	m_Gravity;				//重力.
-	float	m_Velocity;				//重力速度.
+	float		m_FallSpeed;			//落下速度.
+	float		m_Gravity;				//重力.
+	float		m_Velocity;				//重力速度.
 
-	float	m_ChabgeColorSpeed;		//色を変える速度.
-	float	m_ChabgeColorInterval;	//色を変える間隔.
-	float	m_ShakeSpeed;			//揺れる速度.
-	float	m_ShakeWidth;			//揺れる幅.
+	float		m_ChabgeColorSpeed;		//色を変える速度.
+	float		m_ChabgeColorInterval;	//色を変える間隔.
+	float		m_ShakeSpeed;			//揺れる速度.
+	float		m_ShakeWidth;			//揺れる幅.
 
-	float	m_ChangeColorTriggerTime;	//色が変わり始めた時間.
-	float	m_ShakeTriggerTime;		//揺れ始めた時間.
+	float		m_ChangeColorTriggerTime;	//色が変わり始めた時間.
+	float		m_ShakeTriggerTime;			//揺れ始めた時間.
 
-	bool	m_IsChangeColor;		//色が変わるか.
-	bool	m_IsShake;				//揺れるか.
-	bool	m_IsFallDown;			//落ちるか.
+	bool		m_IsChangeColor;			//色が変わるか.
+	bool		m_IsShake;					//揺れるか.
+	bool		m_IsFallDown;				//落ちるか.
 
-	GroundTag m_pGroundType;
+	GroundTag	m_pGroundType;		//タグ識別用 製作者 : 佐藤
+
 };
