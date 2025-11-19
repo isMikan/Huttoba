@@ -26,6 +26,8 @@ CSceneGameMain::CSceneGameMain( HWND hWnd)
 	, m_pGroundManager	()
 
 	, m_pItemManager	( nullptr )
+
+	, m_pGroundCollisionProxy	()
 {
 	m_pDx9 = CDirectX9::GetInstance();
 	m_pDx11 = CDirectX11::GetInstance();
@@ -69,6 +71,9 @@ HRESULT CSceneGameMain::Create()
 
 	//アイテムマネージャーの作成
 	m_pItemManager = std::make_unique<ItemManager>();
+
+	//地面の当たり判定クラスの生成
+	m_pGroundCollisionProxy = std::make_unique<CGroundCollisionProxy>(*m_pGroundManager);
 
 	//各オブジェクトのインスタンス作成
 	CreateUI();
@@ -129,65 +134,70 @@ void CSceneGameMain::Destroy()
 
 void CSceneGameMain::Update()
 {
-	//BGMのループ再生
-	AssetManager::Sound()->PlayLoop(enSoundList::BGM_SceneMain);
-
-	CTimeManager::Update();
-
-	//地面メネージャーの更新処理
-	m_pGroundManager->Update();
-
-	//プレイヤーの動作
-	m_pPlayerManager->MainPlayerUpdate();
-
-	//地面に接地しているか
-	for (auto& player : m_pPlayerManager->GetPlayer())
+	if (true)
 	{
-		if (!player) continue;	//プレイヤーがいない場合、次へ
+		//BGMのループ再生
+		AssetManager::Sound()->PlayLoop(enSoundList::BGM_SceneMain);
+
+		CTimeManager::Update();
+
+		//地面メネージャーの更新処理
+		m_pGroundManager->Update();
+
+		m_pGroundCollisionProxy->Update();
+
+		//プレイヤーの動作
+		m_pPlayerManager->Update();
+
+		//地面に接地しているか
+		for (auto& player : m_pPlayerManager->GetPlayer())
+		{
+			if (!player) continue;	//プレイヤーがいない場合、次へ
 
 		player->OnGroundCollision(*m_pGroundManager);
 	}
 
-	//地面に接地しているか
-	for (auto& item : m_pItemManager->GetItems())
-	{
-		item->IsOnGround(*m_pGroundManager);
-	}
-
-	m_pItemManager->Update();
-
-	CollisionManager::GetInstance()->Update();
-
-	//爆発
-	for (auto& exp : m_pExplosiones)
-	{
-		//爆発しているか
-		if (exp->IsStart())
+		//地面に接地しているか
+		for (auto& item : m_pItemManager->GetItems())
 		{
-			exp->Update();
+			item->IsOnGround(*m_pGroundManager);
 		}
-	}
 
-	for (auto& UI : m_pUIMap)
-	{
-		UI.second->Update();
-	}
+		m_pItemManager->Update();
 
-	m_pShadowManager->Update(m_pPlayerManager.get(), m_pItemManager.get());
-	m_pGaugeManager->Update(m_pPlayerManager.get());
+		CollisionManager::GetInstance()->Update();
 
-	//レーザーの管理
-	ManageEffectLaser();
+		//爆発
+		for (auto& exp : m_pExplosiones)
+		{
+			//爆発しているか
+			if (exp->IsStart())
+			{
+				exp->Update();
+			}
+		}
 
-	//次のシーンへ遷移
-	if (GetAsyncKeyState(VK_F4) & 0x8000)
-	{
-		SetNextScene(Result);
-	}
+		for (auto& UI : m_pUIMap)
+		{
+			UI.second->Update();
+		}
 
-	if (CSceneData::GameMainEnd())
-	{
-		SetNextScene(Result);
+		m_pShadowManager->Update(m_pPlayerManager.get(), m_pItemManager.get());
+		m_pGaugeManager->Update(m_pPlayerManager.get());
+
+		//レーザーの管理
+		ManageEffectLaser();
+
+		//次のシーンへ遷移
+		if (GetAsyncKeyState(VK_F4) & 0x8000)
+		{
+			SetNextScene(Result);
+		}
+
+		if (CSceneData::GameMainEnd())
+		{
+			SetNextScene(Result);
+		}
 	}
 }
 
