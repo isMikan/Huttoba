@@ -9,7 +9,8 @@
 namespace { const bool regist = ItemBase::AutoRegister<Fun>(ItemID::Fun); }
 
 Fun::Fun()
-	: m_HaveOffset	()
+	: m_UseDuration	( 2.0f )
+	, m_HaveOffset	()
 
 	, m_Velocity	()
 	, m_MoveSpeed	( 6.0f )		//値を変えると投げた時の移動速度が変化
@@ -25,10 +26,13 @@ Fun::~Fun()
 	CollisionManager::GetInstance()->RemoveCollider(m_pPickUpCollider.get());
 	CollisionManager::GetInstance()->RemoveCollider(m_pUseCollider.get());
 	CollisionManager::GetInstance()->RemoveCollider(m_pNowCollider.get());
+	CollisionManager::GetInstance()->RemoveCollider(m_pCollision.get());
 }
 
 void Fun::Init()
 {
+	m_UseTime = m_UseDuration;
+
 	AttachMesh(AssetManager::Mesh(StaticMeshList::Fun));
 
 	SetPosition(1, 15, 0);
@@ -42,17 +46,7 @@ void Fun::Init()
 	//持つ用と攻撃用の当たり判定をそれぞれ用意
 	//引数の末尾にfalseを入れると自動登録されなくなり、AddColliderで任意追加できるようにした
 	//具体的な使い方はハエたたき見る or 聞く
-
-	////拾う時の当たり判定
-	//std::shared_ptr<CStaticMesh> mesh = AssetManager::Mesh(StaticMeshList::Fun);
-
-	//m_pPickUpCollider = CollisionDataFactory::CreateSphereForMesh(
-	//	CollisionBase::ColliderTag::Fan,
-	//	mesh,
-	//	this,
-	//	false
-	//);
-
+	
 	//使用時の前方に出す当たり判定
 	std::shared_ptr<CStaticMesh> mesh = AssetManager::Mesh(StaticMeshList::FunCol);
 
@@ -62,7 +56,7 @@ void Fun::Init()
 		this
 	);
 
-	SetRotation(D3DXVECTOR3(0.f, D3DXToRadian(-90.f),0.f));
+	//SetRotation(D3DXVECTOR3(0.f, D3DXToRadian(-90.f),0.f));
 	//m_pNowCollider = m_pUseCollider;
 
 	//ここで現在の当たり判定を設定
@@ -75,6 +69,7 @@ void Fun::Init()
 void Fun::Update()
 {
 	ItemBase::Update();
+	m_State;
 }
 
 void Fun::Draw(D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAMERA& Camera)
@@ -114,28 +109,19 @@ void Fun::Use()
 void Fun::Throw()
 {
 	ThrowMove();
-
-	//投げた瞬間に別のアイテムを持ったり使ったりできるように追加
-	//m_pPlayer->SetItemBase(nullptr);
 }
 
 void Fun::Destroy()
 {
-	m_IsDestroy = true;
+
 }
 
 void Fun::ChangeState(State state)
 {
 	switch (state)
 	{
-	case ItemBase::State::Spawn:
-		break;
-	case ItemBase::State::OnGround:
-		break;
 	case ItemBase::State::Throw:
 		OneEnterThrow();
-		break;
-	case ItemBase::State::Destroy:
 		break;
 	default:
 		break;
@@ -166,42 +152,25 @@ void Fun::OnCollision(CollisionBase* other)
 
 void Fun::HaveMove()
 {
-	//if (m_pNowCollider != m_pPickUpCollider)
-	//{
-	//	CollisionManager::GetInstance()->RemoveCollider(m_pNowCollider.get());
-	//	m_pNowCollider = m_pPickUpCollider;
-	//	CollisionManager::GetInstance()->AddCollider(m_pNowCollider);
-	//}
-
 	m_vPosition = m_pPlayer->GetPlayerRightHand().GetPosition();
 	m_vQuaternion = m_pPlayer->GetQuaternion();
 }
 
 void Fun::UseMove()
 {
-	//if (m_pNowCollider != m_pUseCollider)
-	//{
-	//	CollisionManager::GetInstance()->RemoveCollider(m_pNowCollider.get());
-	//	m_pNowCollider = m_pUseCollider;
-	//	CollisionManager::GetInstance()->AddCollider(m_pNowCollider);
-	//}
+	m_UseTime -= CTimeManager::GetDeltaTime();
+	std::cout << m_UseTime << std::endl;
+	if (m_UseTime < 0)
+	{
+		m_IsDestroy = true;
+		if (m_pPlayer->GetItemBase() != nullptr)
+		{
+			m_pPlayer->SetItemBase(nullptr);
+		}
+	}
 
 	m_vPosition = m_pPlayer->GetPlayerRightHand().GetPosition();
 	m_vQuaternion = m_pPlayer->GetQuaternion();
-
-
-	//CollisionManager::GetInstance()->RemoveCollider(m_pUseCollider.get());
-
-	//std::shared_ptr<CStaticMesh> mesh = AssetManager::Mesh(StaticMeshList::FunCol);
-
-	//mesh->SetQuaternion(m_vQuaternion);
-
-	//m_pUseCollider = CollisionDataFactory::CreateHorizontalCapsule(
-	//	CollisionBase::ColliderTag::Fan,
-	//	mesh,
-	//	this
-	//	//false
-	//);
 }
 
 void Fun::ThrowMove()
@@ -219,7 +188,6 @@ void Fun::ThrowMove()
 
 		m_IsDestroy = true;
 
-		m_pPlayer->SetItemBase(nullptr);
 	}
 
 	m_Velocity *= 0.98f;

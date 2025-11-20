@@ -2,6 +2,7 @@
 #include "Item/ItemBase.h"
 
 class CPlayer;
+class ChaseSensor;
 
 class TrackingRobot
     : public ItemBase
@@ -65,19 +66,13 @@ private:
     //追尾処理
     void Homing(D3DXVECTOR3 targetPos);
 
-    //前方索敵用
-    void SearchForward();
-
-    //一番近いプレイヤーを判定
-    void FindNearestTarget();
-
 private:
+    CPlayerBase*                    m_pTarget;
 
-    std::vector<CPlayerBase*> m_pTargetList;
+    std::unique_ptr<ChaseSensor>    m_pChaseSensor;
 
-    CPlayerBase* m_pTarget;
-
-    bool m_IsHoming;
+    //地面に当たっているか
+    bool        m_IsGround;
 
     //移動速度
     D3DXVECTOR3 m_Velocity;
@@ -85,14 +80,11 @@ private:
     //投げた時の移動速度
     float       m_MoveSpeed;
 
-    //投げる時に一度だけ処理するものがあるので追加
-    bool        m_IsThrow;
-
     //投げてから爆発するまでの時間
-    double       m_ExplosionTime;
+    double      m_ExplosionTime;
 
     //爆発するまでのカウント
-    double       m_ExplosionCnt;
+    double      m_ExplosionCnt;
 
     //爆発の吹き飛ばしの力
     float       m_KnockBackPower;

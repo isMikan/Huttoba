@@ -6,19 +6,19 @@
 #include "TimeManager/CTimeManager.h"
 #include "Input/CInputManager.h"
 
+#include "ChaseSensor/ChaseSensor.h"
+
 //Factoryに登録
 namespace { const bool regist = ItemBase::AutoRegister<TrackingRobot>(ItemID::TrackingRobot); }
 
 TrackingRobot::TrackingRobot()
-	: m_pTargetList		()
-	, m_pTarget			()
+	:m_pTarget			()
+	, m_pChaseSensor	()
 
-	, m_IsHoming		( false )
+	, m_IsGround		( false )
 
 	, m_Velocity		()
 	, m_MoveSpeed		( 6.0f )	//値を変えると爆弾の移動速度が変化
-
-	, m_IsThrow			(true)
 
 	, m_ExplosionTime	( 5.0f )	//値を変えると爆発するまでの時間が変化
 	, m_ExplosionCnt	( 0.0f )
@@ -29,34 +29,32 @@ TrackingRobot::TrackingRobot()
 
 	, m_IsExploded		( false )
 
-	, m_CollisionOffSet	()
+	, m_CollisionOffSet	(0.0f, 0.0f, /*1.3*/1.8f)
 {
 	Init();
-	m_vPosition = D3DXVECTOR3(4.0f, 0.0f, 0.0f);
-	m_CollisionOffSet = D3DXVECTOR3(0.0f, 0.0f, 1.3f);
-
-	m_pCollision->SetLocalOffset(m_CollisionOffSet);
+	//m_vPosition = D3DXVECTOR3(4.0f, 0.0f, 0.0f);
 }
 
 TrackingRobot::~TrackingRobot()
 {
 	//当たり判定削除
+	CollisionManager::GetInstance()->RemoveCollider(m_pPickUpCollider.get());
 	CollisionManager::GetInstance()->RemoveCollider(m_pCollision.get());
 }
 
 void TrackingRobot::Init()
 {
+	m_pChaseSensor = std::make_unique<ChaseSensor>(m_vPosition, m_CollisionOffSet);
+
 	AttachMesh(AssetManager::Mesh(StaticMeshList::TrackingRobot));
 
 	m_State = ItemBase::State::Spawn;
 
 	m_tGravity = 0.01f;
 
-	std::shared_ptr<CStaticMesh> mesh = AssetManager::Mesh(StaticMeshList::ExplosionCol);
-
-	m_pCollision = CollisionDataFactory::CreateSphereForMesh(
+	m_pPickUpCollider = CollisionDataFactory::CreateSphereForMesh(
 		CollisionBase::ColliderTag::TrackingRobot,
-		mesh,
+		AssetManager::Mesh(StaticMeshList::TrackingRobot),
 		this
 	);
 }
@@ -119,19 +117,11 @@ void TrackingRobot::ChangeState(State state)
 {
 	switch (state)
 	{
-	case ItemBase::State::Spawn:
-		break;
-	case ItemBase::State::OnGround:
-		break;
-	case ItemBase::State::Have:
-		break;
 	case ItemBase::State::Use:
 		OneEnterUse();
 		break;
 	case ItemBase::State::Throw:
 		OneEnterThrow();
-		break;
-	case ItemBase::State::Destroy:
 		break;
 	default:
 		break;
@@ -147,13 +137,6 @@ void TrackingRobot::OnCollision(CollisionBase* other)
 			if (m_IsExploded)
 			{
 				Smash(*player);
-				return;
-			}
-
-			if (m_IsHoming)
-			{
-				//当たったプレイヤーを記憶
-				m_pTargetList.push_back(player);
 			}
 
 			if (m_State == State::Throw && m_pPlayer != player)
@@ -165,7 +148,15 @@ void TrackingRobot::OnCollision(CollisionBase* other)
 
 	if (other->GetTag() == CollisionBase::ColliderTag::Ground)
 	{
-		std::cout << "地面と接触中" << std::endl;
+		m_IsGround = true;
+		//std::cout << "地面と当たteru" << std::endl;
+
+	}
+	else
+	{
+		m_IsGround = false;
+		//std::cout << "地面と当たってないよ" << std::endl;
+
 	}
 }
 
@@ -177,30 +168,66 @@ void TrackingRobot::HaveMove()
 
 void TrackingRobot::UseMove()
 {
-	//てきとうに移動速度を減少させている
-	m_Velocity -= m_Velocity * static_cast<float>(CTimeManager::GetDeltaTime());
-
-	if (m_vPosition.y > 0.5f)
+	if (m_pChaseSensor->GetIsHitGround())
 	{
-		m_Velocity.y -= m_tGravity;
-		m_tGravity += 0.001f;
+		//てきとうに移動速度を減少させている
+		m_Velocity -= m_Velocity * static_cast<float>(CTimeManager::GetDeltaTime());
+
+		if (m_vPosition.y > 0.5f)
+		{
+			m_Velocity.y -= m_tGravity;
+			m_tGravity += 0.001f;
+		}
+		else
+		{
+			m_Velocity.y = 0;
+		}
+
+		{
+			//索敵の処理を開始
+			m_pChaseSensor->SetIsSensorActive(true);
+
+			m_pChaseSensor->SetPosition(m_vPosition);
+
+			//近いプレイヤーを計算
+			m_pChaseSensor->FindNearestTarget();
+
+			//１フレーム回った後に一番近いプレイヤーのポインタが入る
+			m_pTarget = m_pChaseSensor->GetTarget();
+
+			//索敵の処理を終了
+			m_pChaseSensor->SetIsSensorActive(false);
+		}
+
+		if (m_pTarget != nullptr)
+		{
+			Homing(m_pTarget->GetPosition());
+		}
+		else
+		{
+			D3DXMATRIX matRot;
+
+			//クォータニオンをマトリックス(行列)に変換
+			D3DXMatrixRotationQuaternion(&matRot, &m_vQuaternion);
+
+			//行列の中にあるZ軸成分を取り出す
+			D3DXVECTOR3 forward = D3DXVECTOR3(matRot._31, matRot._32, matRot._33);
+
+			//取り出したZ軸成分をノーマライズ
+			D3DXVec3Normalize(&forward, &forward);
+
+			m_Velocity = forward * m_MoveSpeed;
+		}
+
+
+		m_vPosition += m_Velocity * static_cast<float>(CTimeManager::GetDeltaTime());
 	}
 	else
 	{
-		m_Velocity.y = 0;
-		m_IsHoming = true;
+		//Explosion();
+		//std::cout << "地面と当たってないよ" << std::endl;
+
 	}
-
-	if (m_IsHoming && m_pTarget != nullptr)
-	{
-		Homing(m_pTarget->GetPosition());
-	}
-
-	SearchForward();
-
-	FindNearestTarget();
-
-	m_vPosition += m_Velocity * static_cast<float>(CTimeManager::GetDeltaTime());
 }
 
 void TrackingRobot::ThrowMove()
@@ -266,8 +293,6 @@ void TrackingRobot::OneEnterThrow()
 	D3DXVec3Normalize(&forward, &forward);
 
 	m_Velocity = forward * m_MoveSpeed;
-
-	m_IsThrow = true;
 }
 
 void TrackingRobot::Explosion()
@@ -350,7 +375,6 @@ float TrackingRobot::CalculateForceScalar(float distance)
 
 void TrackingRobot::Homing(D3DXVECTOR3 targetPos)
 {
-
 	//ターゲット方向へのベクトル
 	D3DXVECTOR3 vec = targetPos - m_vPosition;
 
@@ -378,55 +402,5 @@ void TrackingRobot::Homing(D3DXVECTOR3 targetPos)
 			m_Velocity.x /= vlen * speed;
 			m_Velocity.z /= vlen * speed;
 		}
-	}
-}
-
-void TrackingRobot::SearchForward()
-{		
-
-}
-
-void TrackingRobot::FindNearestTarget()
-{
-	//配列の中身が空かどうかを判定
-	if (m_pTargetList.empty())
-	{
-		//索敵範囲にプレイヤーがいない
-		m_pTarget = nullptr;
-	}
-	else
-	{
-		m_pTarget = m_pTargetList[0];
-
-		//ターゲット方向へのベクトルを計算
-		D3DXVECTOR3 nowDirToTarget = m_pTarget->GetPosition() - m_vPosition;
-
-		//ベクトルの長さを計算
-		float nowVecLen = D3DXVec3LengthSq(&nowDirToTarget);
-
-		//一番近いプレイヤーのポインタをとる
-		CPlayerBase* pClosestTarget = m_pTargetList[0];
-
-		for (size_t i = 1; i < m_pTargetList.size();i++)
-		{
-			//ターゲット方向へのベクトルを計算
-			D3DXVECTOR3 nextDirToTarget = m_pTargetList[i]->GetPosition() - m_vPosition;
-
-			//ベクトルの長さを計算
-			float nextVecLen = D3DXVec3LengthSq(&nextDirToTarget);
-
-			//現在のターゲットよりもターゲットリストの方が長さが短いなら
-			if (nowVecLen > nextVecLen)
-			{
-				//長さを短いほうに更新
-				nowVecLen = nextVecLen;
-
-				//ターゲットを更新
-				pClosestTarget = m_pTargetList[i];
-			}
-		}
-
-		//最後に残ったターゲットを入れる
-		m_pTarget = pClosestTarget;
 	}
 }
