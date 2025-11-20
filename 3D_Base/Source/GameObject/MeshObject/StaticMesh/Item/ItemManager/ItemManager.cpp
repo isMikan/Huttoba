@@ -95,11 +95,11 @@ void ItemManager::CreateItem()
 	if (SPAWN_LIMIT < m_pItems.size()) return;
 		
 	//Selectクラスで生成アイテムを選択
-	//ItemID itemId = m_pSpawnItem->SerectSpawnItem(m_pItems);
+	ItemID itemId = m_pSpawnItem->SerectSpawnItem(m_pItems);
 
 	//選択されたアイテム作成
-	//m_pItems.push_back(ItemFactory::GetInstance()->CreateItem(ItemID::Bomb));
-	m_pItems.push_back(ItemFactory::GetInstance()->CreateItem(ItemID::TrackingRobot));
+	m_pItems.push_back(ItemFactory::GetInstance()->CreateItem(ItemID::Bomb));
+	//m_pItems.push_back(ItemFactory::GetInstance()->CreateItem(ItemID::TrackingRobot));
 
 	//生成されたアイテムの位置設定
 	m_pItems.back()->SetPosition(m_pSpawnItemPosition->SerectPosition());
