@@ -7,16 +7,20 @@ class SpawnItemPosition
 {
 public:
 
-	SpawnItemPosition(CGroundManager& GroundMamager);
+	SpawnItemPosition(std::unique_ptr<CGroundManager>& GManager);
 	~SpawnItemPosition();
 
-	D3DXVECTOR3 SpawnItem();
+	D3DXVECTOR3 SerectPosition();
+
+	void Init();
 
 private:
+
+
 
 	//アイテムの出現地点
 	std::vector<std::pair<GroundTag, D3DXVECTOR3>> m_pSpawnPosition;
 	std::unordered_map<GroundTag, bool>			m_IsFallGrounds;
 
-	CGroundManager& m_pGroundManager;
+	std::unique_ptr<CGroundManager>& m_pGroundManager;
 };

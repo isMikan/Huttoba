@@ -9,9 +9,10 @@
 
 //--------------------------------------------------------------------------------------------------------------
 
-ItemManager::ItemManager()
-	: m_pItems			{}
-	, m_pSpawnItem		{ std::make_unique<SelectSpawnItem>() }
+ItemManager::ItemManager(std::unique_ptr<CGroundManager>& GroundManager)
+	: m_pItems				{}
+	, m_pSpawnItem			{ std::make_unique<SelectSpawnItem>() }
+	, m_pSpawnItemPosition	{ std::make_unique<SpawnItemPosition>(GroundManager) }
 {
 	Create();
 }
@@ -91,14 +92,14 @@ void ItemManager::CreateItem()
 	//アイテム数上限の時は作成しない
 	if (SPAWN_LIMIT < m_pItems.size()) return;
 		
-	//Selectクラスで生成アイテムを選択
+	//Selectクラスでランダム選択
 	ItemID itemId = m_pSpawnItem->SerectSpawnItem(m_pItems);
 
-	//選択されたアイテム作成
+	//選択されたアイテ生成
 	m_pItems.push_back(ItemFactory::GetInstance()->CreateItem(itemId));
 
 	//生成されたアイテムの位置設定
-
+	m_pItems.back()->SetPosition(m_pSpawnItemPosition->SerectPosition());
 }
 
 //--------------------------------------------------------------------------------------------------------------

@@ -278,6 +278,7 @@ void CPlayerManager::Create()
 		m_pPlayers[pNo]->SetObjectColor(0, CharacterColorSettings(pNo));
 		//頭の色を設定.
 		m_pPlayers[pNo]->GetPlayerHead().SetObjectColor(1, CharacterColorSettings(pNo));
+
 	}
 }
 
@@ -300,6 +301,10 @@ void CPlayerManager::Update(CPlayerBase* player)
 	player->GetPlayerHead().Update(player->GetQuaternion());	//頭.
 	player->GetPlayerRightHand().Update();						//右手.
 	player->GetPlayerLeftHand().Update();						//左手.
+
+	std::cout << "位置 x: " << m_pPlayers[0]->GetPosition().x << std::endl;
+	std::cout << "位置 z: " << m_pPlayers[0]->GetPosition().z << std::endl;
+
 }
 
 //--- キャラクターの色を設定 ---.
