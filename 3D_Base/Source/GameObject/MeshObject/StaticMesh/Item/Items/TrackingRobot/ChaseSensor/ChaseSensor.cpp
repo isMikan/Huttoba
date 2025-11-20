@@ -1,5 +1,6 @@
 #include "ChaseSensor.h"
 #include "PlayerBase/CPlayerBase.h"
+#include "GroundCollisionProxy/CGroundCollisionProxy.h"
 
 ChaseSensor::ChaseSensor(D3DXVECTOR3 pos, D3DXVECTOR3 searchOffset)
 	: m_pTargetList		()
@@ -24,30 +25,6 @@ ChaseSensor::ChaseSensor(D3DXVECTOR3 pos, D3DXVECTOR3 searchOffset)
 ChaseSensor::~ChaseSensor()
 {
 	CollisionManager::GetInstance()->RemoveCollider(m_pCollision.get());
-}
-
-void ChaseSensor::OnCollision(CollisionBase* other)
-{
-	if (other->GetTag() == CollisionBase::ColliderTag::Player)
-	{
-		if (CPlayerBase* player = dynamic_cast<CPlayerBase*>(other->GetListener()))
-		{
-			//当たったプレイヤーを記憶
-			m_pTargetList.push_back(player);
-		}
-	}
-
-
-	if (other->GetTag() == CollisionBase::ColliderTag::Ground)
-	{
-		m_IsHitGround = true;
-	}
-	else
-	{
-		m_IsHitGround = false;
-		std::cout << "地面と当たってないよ" << std::endl;
-
-	}
 }
 
 void ChaseSensor::FindNearestTarget()
@@ -92,5 +69,28 @@ void ChaseSensor::FindNearestTarget()
 
 		//最後に残ったターゲットを入れる
 		m_pTarget = pClosestTarget;
+	}
+}
+
+void ChaseSensor::OnCollision(CollisionBase* other)
+{
+	if (other->GetTag() == CollisionBase::ColliderTag::Player)
+	{
+		if (CPlayerBase* player = dynamic_cast<CPlayerBase*>(other->GetListener()))
+		{
+			//当たったプレイヤーを記憶
+			m_pTargetList.push_back(player);
+			return;
+		}
+	}
+
+
+	if (other->GetTag() == CollisionBase::ColliderTag::Ground)
+	{
+		if (CGroundCollisionProxy* grond = dynamic_cast<CGroundCollisionProxy*>(other->GetListener()))
+		{
+			m_IsHitGround = true;
+			std::cout << "地面と当たteru" << std::endl;
+		}
 	}
 }

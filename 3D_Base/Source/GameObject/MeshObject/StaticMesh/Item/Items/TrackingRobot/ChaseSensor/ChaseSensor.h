@@ -14,6 +14,7 @@ public:
 	CPlayerBase* GetTarget() { return m_pTarget; }
 
 	bool GetIsHitGround() { return m_IsHitGround; }
+	void SetIsHitGround(bool IsHitGround) { m_IsHitGround = IsHitGround; }
 
 	//õ“G‚ÌƒZƒ“ƒT‚Ìİ’è
 	void SetIsSensorActive(bool sensorActive) { m_IsSensorActive = sensorActive; }

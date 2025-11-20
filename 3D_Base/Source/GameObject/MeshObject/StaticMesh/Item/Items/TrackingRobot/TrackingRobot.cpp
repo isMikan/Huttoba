@@ -183,11 +183,13 @@ void TrackingRobot::UseMove()
 			m_Velocity.y = 0;
 		}
 
+		//m_pChaseSensorのクラスの処理中
 		{
 			//索敵の処理を開始
 			m_pChaseSensor->SetIsSensorActive(true);
 
 			m_pChaseSensor->SetPosition(m_vPosition);
+			m_pChaseSensor->SetQuaternion(m_vQuaternion);
 
 			//近いプレイヤーを計算
 			m_pChaseSensor->FindNearestTarget();
@@ -224,10 +226,12 @@ void TrackingRobot::UseMove()
 	}
 	else
 	{
-		//Explosion();
+		Explosion();
 		//std::cout << "地面と当たってないよ" << std::endl;
 
 	}
+
+	m_pChaseSensor->SetIsHitGround(false);
 }
 
 void TrackingRobot::ThrowMove()

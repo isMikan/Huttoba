@@ -217,7 +217,7 @@ void Bomb::EnterUseThrowCommon()
 	//ˆÚ“®
 	m_Velocity = forward * m_MoveSpeed;
 
-	m_Velocity.y = 3.0f;
+	m_Velocity.y = m_UpSpeed;
 
 	//“–‚½‚è”»’èíœ
 	CollisionManager::GetInstance()->RemoveCollider(m_pCollision.get());
