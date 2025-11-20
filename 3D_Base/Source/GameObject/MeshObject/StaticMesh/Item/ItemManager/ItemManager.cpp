@@ -100,7 +100,6 @@ void ItemManager::CreateItem()
 	//アイテム数上限の時は作成しない
 	if (m_SpawnLimit <= m_pItems.size()) return;
 		
-	std::cout << m_SpawnLimit << std::endl;
 	//Selectクラスで生成アイテムを選択
 	//ItemID itemId = m_pSpawnItem->SerectSpawnItem(m_pItems);
 

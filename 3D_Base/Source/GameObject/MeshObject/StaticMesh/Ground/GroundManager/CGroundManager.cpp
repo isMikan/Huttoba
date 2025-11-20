@@ -9,7 +9,7 @@ CGroundManager::CGroundManager()
 	m_FallTime = { 99.f, 45.f, 30.f, 15.f };
 	m_FallTime = { 999.f, 999.f, 999.f, 999.f };
 */
-	m_FallTime = { 20.f, 15.f, 10.f, 5.f };
+	m_FallTime = { 40.f, 30.f, 20.f, 5.f };
 }
 
 CGroundManager::~CGroundManager()
