@@ -22,5 +22,8 @@ public:
 		D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAMERA& Camera ) override;
 
 private:
+	bool IsSearchPlayer(CPlayerBase* player);
+
+	bool IsSearchItem(ItemBase* item);
 
 };

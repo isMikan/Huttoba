@@ -42,37 +42,39 @@ void CShadowManager::Destroy()
 }
 
 //--- 更新関数 ---.
-void CShadowManager::Update(CPlayerManager* players, ItemManager* item)
+void CShadowManager::Update(
+	CPlayerManager* players, ItemManager* items)
 {
-	for (int pNo = 0; pNo < Player_Max; pNo++)
-	{
-		auto player = players->GetPlayer(pNo);
-
-		//プレイヤーがいなかったら次へ.
-		if (!player) continue;
-
-		//プレイヤーの位置を取得.
-		D3DXVECTOR3 playerPos = player->GetPosition();
-
-		if (player->IsAboveGround())
+		for (auto& player : players->GetPlayer())
 		{
-			m_pShadow[pNo]->Update(playerPos);
+
+			//プレイヤーがいなかったら次へ.
+			if (!player) continue;
+
+			int playerID = player->GetPlayerID();
+
+			//プレイヤーの位置を取得.
+			D3DXVECTOR3 playerPos = player->GetPosition();
+
+			if (player->IsAboveGround())
+			{
+				m_pShadow[playerID]->Update(playerPos);
+			}
+			else
+			{
+				m_pShadow[playerID]->SetPosition(0.f, -10.f, 0.f);
+			}
 		}
-		else
+
+		for (size_t i = Player_Max; i < items->GetItemVectorNum() + Player_Max;i++)
 		{
-			m_pShadow[pNo]->SetPosition(0.f, -10.f, 0.f);
+			m_pShadow[i]->Update(items->GetItemPos(static_cast<int>(i - Player_Max)));
 		}
-	}
 
-	for (size_t i = Player_Max ; i < item->GetItemVectorNum()+ Player_Max;i++)
-	{ 
-		m_pShadow[i]->Update(item->GetItemPos(static_cast<int>(i - Player_Max)));
-	}
-
-	for (size_t i = Player_Max + item->GetItemVectorNum();i < Shadow_Max;i++)
-	{
-		m_pShadow[i]->SetPosition(0, -10.0f, 0);
-	}
+		for (size_t i = Player_Max + items->GetItemVectorNum();i < Shadow_Max;i++)
+		{
+			m_pShadow[i]->SetPosition(0, -10.0f, 0);
+		}
 }
 
 //--- 描画処理 ---.

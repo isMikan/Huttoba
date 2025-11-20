@@ -35,29 +35,43 @@ CPlayerAI_TypeA::~CPlayerAI_TypeA()
 //--- 毎フレームの動作 ---.
 void CPlayerAI_TypeA::Update()
 {
+	m_Control = ActionInstruct::None;
+
 	if(!m_pItemBase)
 	{
-		FindNearbyItems();
+		//比較のため、最大数に設定しておく.
+		m_NearbyItems.sqrt = m_MaxSqrt;
+		for (auto& item : m_pItemManager->GetItems())
+		{
+			FindNearbyObject(item.get(), m_NearbyItems, IsSearchItem(item.get()));
+		}
 		AutomaticMovement(m_NearbyItems.dir);
+
+		if (m_NearbyItems.sqrt < 0.1f)
+		{
+			m_Control = ActionInstruct::ToggleItem;
+		}
 	}
 	else
 	{
-		for (int pNo = 0; pNo < Player_Max; pNo++)
+		//比較のため、最大数に設定しておく.
+		m_NearbyPlayers.sqrt = m_MaxSqrt;
+		for (auto& player : m_pPlayerManager->GetPlayer())
 		{
-			const auto& player = m_pPlayerManager->GetPlayer(pNo);
-
-			if (pNo == m_PlayerID) continue;
-
-			FindNearbyPlayers();
+			if (!player) continue;	//プレイヤーがいない場合、次へ
+			FindNearbyObject(player.get(), m_NearbyPlayers, IsSearchPlayer(player.get()));
+		}
+		if (m_NearbyPlayers.sqrt > 0.5f)
+		{
 			AutomaticMovement(m_NearbyPlayers.dir);
-
-			if (m_NearbyPlayers.sqrt < 1.5f
-				&& IsAnyActionState<CPlayerActionIdleState>())
-			{
-				//SetActionState(std::make_unique<CPlayerHandAttackState>(*this));
-			}
+		}
+		if (m_NearbyPlayers.sqrt < RandomFloat(3.f,5.f)
+			&& IsAnyActionState<CPlayerHoldingIdleState>())
+		{
+			m_Control = ActionInstruct::Attack;
 		}
 	}
+
 
 	CPlayerAI::Update();
 }
@@ -67,4 +81,35 @@ void CPlayerAI_TypeA::Draw(
 	D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAMERA& Camera )
 {
 	CPlayerAI::Draw( View, Proj, Light, Camera );
+}
+
+bool CPlayerAI_TypeA::IsSearchPlayer(CPlayerBase* player)
+{
+	if (player->GetPlayerID() == m_PlayerID)
+	{
+		return false;
+	}
+
+	if (!player->IsAboveGround())
+	{
+		return false;
+	}
+
+	if (player->IsAnyActionState<
+		CPlayerKnockbackState,
+		CPlayerFallingState,
+		CPlayerPushedState>())
+	{
+		return false;
+	}
+
+	return true;
+}
+
+bool CPlayerAI_TypeA::IsSearchItem(ItemBase* item)
+{
+	if(item->GetState() != ItemBase::State::OnGround)
+	{
+		return false;
+	}
 }

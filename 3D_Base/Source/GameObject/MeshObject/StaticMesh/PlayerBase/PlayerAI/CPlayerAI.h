@@ -1,6 +1,7 @@
 #pragma once
 
 #include "PlayerBase/CPlayerBase.h"
+#include "Item/ItemBase.h"
 
 #include "PlayerBase/PlayerManager/CPlayerManager.h"
 #include "Item/ItemManager/ItemManager.h"
@@ -18,8 +19,8 @@ public:
 	//近くのオブジェクト情報.
 	struct NearbyObject
 	{
-		D3DXVECTOR3		dir;	//方向.
-		float			sqrt;	//距離.
+		D3DXVECTOR3		dir;		//方向.
+		float			sqrt = 0.f;	//距離.
 	};
 
 public:
@@ -43,11 +44,34 @@ public:
 	void SetItemManager(ItemManager* manager) { m_pItemManager = manager; }
 
 protected:
-	//--- 近くのプレイヤーを探索 ---.
-	void FindNearbyPlayers();
+	//--- 近くのオブジェクトを探索 ---.
+	template<typename T>
+	void FindNearbyObject(
+		T* ptr, NearbyObject& nearby, bool isSearch)
+	{
+		if (!isSearch) return;
 
-	//--- 近くのアイテムを探索 ---.
-	void FindNearbyItems();
+		D3DXVECTOR3 pos = ptr->GetPosition();
+
+		D3DXVECTOR3 diff = pos - m_vPosition;
+		float diffSqrt = D3DXVec3LengthSq(&diff);
+
+		//現在の最短距離より小さい場合.
+		if (diffSqrt < nearby.sqrt)
+		{
+			nearby.sqrt = diffSqrt;
+			D3DXVec3Normalize(&diff, &diff);
+		}
+
+		//念のため、最大よりも小さいか比較.
+		if (nearby.sqrt < m_MaxSqrt)
+		{
+			nearby.dir = diff;
+		}
+	}
+
+	//--- ランダム数値 ---.
+	float RandomFloat(float min, float max);	//引数 : 数、開始の数.
 
 protected:
 	CPlayerManager*	m_pPlayerManager;	//プレイヤー.
@@ -59,5 +83,5 @@ protected:
 	NearbyObject	m_NearbyPlayers;	//近くのプレイヤー.
 	NearbyObject	m_NearbyItems;		//近くのアイテム.
 
-	float m_Sqrt;
+	float m_MaxSqrt;
 };

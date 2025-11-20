@@ -419,14 +419,18 @@ void CPlayerBase::OnCollision(CollisionBase* pOtherCollider)
 
 		if (ItemBase* item = dynamic_cast<ItemBase*>(pOtherCollider->GetListener()))
 		{
-			//拾う.
-			if(m_Control == ActionInstruct::ToggleItem
-				&& !m_pItemBase)
+			//アイテムが地面にある状態の場合.
+			if(item->GetState() == ItemBase::State::OnGround)
 			{
-				item->SetPlayer(this);
-				item->SetState(ItemBase::State::Have);
-				SetActionState(std::make_unique<CPlayerPickupState>(*this));
-				m_pItemBase = item;
+				//拾う指示をされ、アイテムを持っていない場合.
+				if (m_Control == ActionInstruct::ToggleItem
+					&& !m_pItemBase)
+				{
+					item->SetPlayer(this);
+					item->SetState(ItemBase::State::Have);
+					SetActionState(std::make_unique<CPlayerPickupState>(*this));
+					m_pItemBase = item;
+				}
 			}
 		}
 		break;
