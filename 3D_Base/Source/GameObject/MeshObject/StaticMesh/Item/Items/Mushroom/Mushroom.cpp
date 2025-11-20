@@ -9,7 +9,8 @@
 namespace { const bool regist = ItemBase::AutoRegister<Mushroom>(ItemID::Mushroom); }
 
 Mushroom::Mushroom()
-	: m_IsPlaced		( false )
+	: m_UseDuration		( 20 )		//値を変えるとアイテムの使用可能時間が変化
+	, m_IsPlaced		( false )
 
 	, m_Velocity		()
 	, m_MoveSpeed		( 6.0f )	//値を変えると移動速度が変化
@@ -31,6 +32,8 @@ Mushroom::~Mushroom()
 
 void Mushroom::Init()
 {
+	m_UseTime = m_UseDuration;
+
 	AttachMesh(AssetManager::Mesh(StaticMeshList::Mushroom));
 
 	SetPosition( 3.0f, 15.0f, 0.0f );
@@ -38,9 +41,6 @@ void Mushroom::Init()
 	m_State = ItemBase::State::Spawn;
 
 	m_tGravity = 0.001f;
-
-	//アイテムの耐久値を設定するものだが現在ないので一旦コメントにしておく
-	//m_UseCount = 1;
 
 	std::shared_ptr<CStaticMesh> mesh = AssetManager::Mesh(StaticMeshList::Mushroom);
 
@@ -171,6 +171,14 @@ void Mushroom::UseMove()
 
 	m_vPosition += m_Velocity * static_cast<float>(CTimeManager::GetDeltaTime());
 
+	m_UseTime -= CTimeManager::GetDeltaTime();
+
+	std::cout << m_UseTime << std::endl;
+
+	if (m_UseTime < 0)
+	{
+		m_IsDestroy = true;
+	}
 }
 
 void Mushroom::ThrowMove()

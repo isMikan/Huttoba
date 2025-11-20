@@ -49,6 +49,9 @@ private:
     void Hit(CPlayerBase& playiers);
 
 private:
+    //使用可能時間
+    float       m_UseDuration;
+
     //アイテムを持った際の補正値
     D3DXVECTOR3 m_HaveOffset;
 

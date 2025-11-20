@@ -2,7 +2,7 @@
 #include "CStaticMeshObject.h"
 #include "Ground/GroundManager/CGroundManager.h"
 
-static constexpr int SPAWN_LIMIT = 8;	//ステージ上のアイテム最大出現数
+static constexpr int SPAWN_LIMIT = 0;	//ステージ上のアイテム最大出現数
 
 
 class ItemBase;

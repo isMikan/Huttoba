@@ -22,8 +22,6 @@ void CGroundCollisionProxy::Update()
 	{
 		switch (m_GroundCount)
 		{
-		case 0:
-
 		case 1:
 			//“–‚½‚è”»’èíœ
 			CollisionManager::GetInstance()->RemoveCollider(m_pCollision.get());

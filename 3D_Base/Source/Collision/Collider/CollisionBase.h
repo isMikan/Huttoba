@@ -21,8 +21,10 @@ public:
         Mushroom, 
         Magnet,
         Boomerang,
-        TrackingRobot, 
+        TrackingRobot,
         Bomb,
+
+        TRobotSeachCol,
 
         Max,
         None = -1

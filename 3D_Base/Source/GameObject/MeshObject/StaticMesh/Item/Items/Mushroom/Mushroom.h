@@ -60,6 +60,9 @@ private:
     D3DXVECTOR3 CalculateReflectionDirection(const D3DXVECTOR3& vIncomingDir, const D3DXVECTOR3& vNormal);
 
 private:
+    //使用可能時間
+    float       m_UseDuration;
+
     //アイテムを設置したかをとる
     bool        m_IsPlaced;
 
