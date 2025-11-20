@@ -302,9 +302,6 @@ void CPlayerManager::Update(CPlayerBase* player)
 	player->GetPlayerRightHand().Update();						//右手.
 	player->GetPlayerLeftHand().Update();						//左手.
 
-	std::cout << "位置 x: " << m_pPlayers[0]->GetPosition().x << std::endl;
-	std::cout << "位置 z: " << m_pPlayers[0]->GetPosition().z << std::endl;
-
 }
 
 //--- キャラクターの色を設定 ---.

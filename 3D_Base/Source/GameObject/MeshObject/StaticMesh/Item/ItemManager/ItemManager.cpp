@@ -58,6 +58,8 @@ void ItemManager::Init()
 
 void ItemManager::Update()
 {
+	m_pSpawnItemPosition->Uptate();
+
 	//ƒAƒCƒeƒ€‚Ìì¬
 	CreateItem();
 
