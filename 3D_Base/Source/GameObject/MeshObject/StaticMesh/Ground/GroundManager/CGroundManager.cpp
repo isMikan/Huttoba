@@ -5,11 +5,11 @@ CGroundManager::CGroundManager()
 {
 	Create();
 
-#if 0
+/*	
 	m_FallTime = { 99.f, 45.f, 30.f, 15.f };
-#else
 	m_FallTime = { 999.f, 999.f, 999.f, 999.f };
-#endif
+*/
+	m_FallTime = { 20.f, 15.f, 10.f, 5.f };
 }
 
 CGroundManager::~CGroundManager()
