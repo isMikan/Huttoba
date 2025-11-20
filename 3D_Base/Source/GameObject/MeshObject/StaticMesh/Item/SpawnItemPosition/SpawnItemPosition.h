@@ -22,6 +22,9 @@ public:
 	void Init();
 	void Uptate();
 
+	//ステージの落ち情報を渡す
+	GroundTag GetCurrentFallGround() { return m_CurrentFallGround; }
+
 private:
 
 	//現在のステージの落ち具合をチェック
@@ -29,6 +32,7 @@ private:
 
 	//ランダムで出現位置を設定
 	VECTOR2 SetRandomPos();
+
 
 private:
 	//現在のステージ情報を保存

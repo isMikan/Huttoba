@@ -13,8 +13,10 @@ ItemManager::ItemManager(std::unique_ptr<CGroundManager>& GroundManager)
 	: m_pItems				{}
 	, m_pSpawnItem			{ std::make_unique<SelectSpawnItem>() }
 	, m_pSpawnItemPosition	{ std::make_unique<SpawnItemPosition>(GroundManager) }
+	, m_SpawnLimit			{ 8 }
 {
 	Create();
+	Init();
 }
 
 //--------------------------------------------------------------------------------------------------------------
@@ -48,6 +50,7 @@ HRESULT ItemManager::LoadData()
 
 void ItemManager::Init()
 {
+	m_SpawnLimit = 8;
 	for (auto& item : m_pItems)
 	{
 		item->Init();
@@ -91,8 +94,11 @@ void ItemManager::Draw(D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAMERA&
 
 void ItemManager::CreateItem()
 {
+	//アイテム上限数を決定
+	CheckSpawnLimit();
+
 	//アイテム数上限の時は作成しない
-	if (SPAWN_LIMIT < m_pItems.size()) return;
+	if (m_SpawnLimit <= m_pItems.size()) return;
 		
 	//Selectクラスで生成アイテムを選択
 	ItemID itemId = m_pSpawnItem->SerectSpawnItem(m_pItems);
@@ -125,6 +131,21 @@ void ItemManager::DestroyItem()
 D3DXVECTOR3 ItemManager::GetItemPos(int i)
 {
 	return m_pItems[i]->GetPosition();
+}
+
+//--------------------------------------------------------------------------------------------------------------
+
+void ItemManager::CheckSpawnLimit()
+{
+	//ステージの落ち状況によって上限変更
+	switch (m_pSpawnItemPosition->GetCurrentFallGround())
+	{
+	case GroundTag::SafeGround:			m_SpawnLimit = 1; break;
+	case GroundTag::ThirdFallGround:	m_SpawnLimit = 1; break;
+	case GroundTag::SecondFallGround:	m_SpawnLimit = 4; break;
+	case GroundTag::FirstFallGround:	m_SpawnLimit = 6; break;
+	case GroundTag::None:break;
+	}
 }
 
 //--------------------------------------------------------------------------------------------------------------
