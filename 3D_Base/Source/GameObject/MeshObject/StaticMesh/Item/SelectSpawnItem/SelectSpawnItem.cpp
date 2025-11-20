@@ -50,7 +50,7 @@ ItemID SelectSpawnItem::SerectSpawnItem(std::vector<std::unique_ptr<ItemBase>>& 
 	}
 }
 
-//以下ユーティリティ
+//以下機能
 //--------------------------------------------------------------------------------------------------------------
 
 void SelectSpawnItem::MinItemCount()

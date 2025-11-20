@@ -4,13 +4,15 @@
 #include "PlayerBase/PlayerManager/CPlayerManager.h"
 #include "Input/CInputManager.h"
 #include "Item/SelectSpawnItem/SelectSpawnItem.h"
+#include "Item/SpawnItemPosition/SpawnItemPosition.h"
 
 
 //--------------------------------------------------------------------------------------------------------------
 
-ItemManager::ItemManager()
-	: m_pItems		{}
-	, m_pSpawnItem{ std::make_unique<SelectSpawnItem>() }
+ItemManager::ItemManager(std::unique_ptr<CGroundManager>& GroundManager)
+	: m_pItems				{}
+	, m_pSpawnItem			{ std::make_unique<SelectSpawnItem>() }
+	, m_pSpawnItemPosition	{ std::make_unique<SpawnItemPosition>(GroundManager) }
 {
 	Create();
 }
@@ -56,6 +58,8 @@ void ItemManager::Init()
 
 void ItemManager::Update()
 {
+	m_pSpawnItemPosition->Uptate();
+
 	//アイテムの作成
 	CreateItem();
 
@@ -97,7 +101,7 @@ void ItemManager::CreateItem()
 	m_pItems.push_back(ItemFactory::GetInstance()->CreateItem(ItemID::Bomb));
 
 	//生成されたアイテムの位置設定
-
+	m_pItems.back()->SetPosition(m_pSpawnItemPosition->SerectPosition());
 }
 
 //--------------------------------------------------------------------------------------------------------------

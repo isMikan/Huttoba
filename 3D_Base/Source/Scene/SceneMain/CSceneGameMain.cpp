@@ -72,7 +72,7 @@ HRESULT CSceneGameMain::Create()
 	m_pGroundManager->MainGroundCreate();
 
 	//アイテムマネージャーの作成
-	m_pItemManager = std::make_unique<ItemManager>();
+	m_pItemManager = std::make_unique<ItemManager>(m_pGroundManager);
 
 	m_pPlayerManager->MainPlayerCreate(m_pItemManager.get());
 

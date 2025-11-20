@@ -26,13 +26,14 @@ void CGroundManager::LoadData()
 	m_pGrounds[SafeGround]->SetTag(GroundTag::SafeGround);
 
 	m_pGrounds[ThirdFallGround]->AttachMesh(AssetManager::Mesh(StaticMeshList::ThirdFallGround));
-	m_pGrounds[SafeGround]->SetTag(GroundTag::ThirdFallGround);
+	m_pGrounds[ThirdFallGround]->SetTag(GroundTag::ThirdFallGround);
 
 	m_pGrounds[SecondFallGround]->AttachMesh(AssetManager::Mesh(StaticMeshList::SecondFallGround));
-	m_pGrounds[SafeGround]->SetTag(GroundTag::SecondFallGround);
+	m_pGrounds[SecondFallGround]->SetTag(GroundTag::SecondFallGround);
 
 	m_pGrounds[FirstFallGround]->AttachMesh(AssetManager::Mesh(StaticMeshList::FirstFallGround));
-	m_pGrounds[SafeGround]->SetTag(GroundTag::FirstFallGround);
+	m_pGrounds[FirstFallGround]->SetTag(GroundTag::FirstFallGround);
+
 }
 
 //--- XVŠÖ” ---.

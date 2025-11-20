@@ -1,5 +1,6 @@
 #pragma once
 #include "CStaticMeshObject.h"
+#include "Ground/GroundManager/CGroundManager.h"
 
 static constexpr int SPAWN_LIMIT = 8;	//ステージ上のアイテム最大出現数
 
@@ -7,12 +8,13 @@ static constexpr int SPAWN_LIMIT = 8;	//ステージ上のアイテム最大出現数
 class ItemBase;
 class CPlayerManager;
 class SelectSpawnItem;
+class SpawnItemPosition;
 
 class ItemManager:
 	public CStaticMeshObject
 {
 public:
-	ItemManager();
+	ItemManager(std::unique_ptr<CGroundManager>& GManager);
 	~ItemManager();
 
 	/*****************************************************************************************
@@ -58,12 +60,19 @@ public:
 
 	std::vector<std::unique_ptr<ItemBase>>& GetItems() { return m_pItems; }
 
+	
+
 	//出現中のアイテムの位置を取得
 	D3DXVECTOR3 GetItemPos(int i);
+
+	//void SetSpawnItemPosition(SpawnItemPosition& posClass) { m_pSpawnPosition = posClass; }
 
 private:
 
 	// アイテムのコンテナ
-	std::vector<std::unique_ptr<ItemBase>> m_pItems;
-	std::unique_ptr<SelectSpawnItem> m_pSpawnItem;
+	std::vector<std::unique_ptr<ItemBase>>  m_pItems;
+	std::unique_ptr<SelectSpawnItem>	    m_pSpawnItem;
+	std::unique_ptr<SpawnItemPosition>		m_pSpawnItemPosition;
+	
+
 };
