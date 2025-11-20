@@ -12,8 +12,10 @@ public:
 	CShadow();
 	~CShadow() override;
 
-	void Update(D3DXVECTOR3 objectPos);
-	void Draw(D3DXMATRIX& View, D3DXMATRIX& Proj) override;
+	void Update(
+		D3DXVECTOR3 objectPos);
+	void Draw(
+		D3DXMATRIX& View, D3DXMATRIX& Proj) override;
 
 protected:
 	//égópÇµÇ»Ç¢ override ä÷êî.

@@ -89,29 +89,25 @@ void CPlayer::HandleInput()
 			z = CInputManager::GetLeftSthikY(m_PlayerID);
 		}
 
-		//‰ñ“]‚¾‚¯‚µ‚È‚¢ê‡.
-		if (IsAnyActionState<CPlayerFallingState>())
+		//“ü—Í‚É•Ï‰»‚ª‚ ‚Á‚½ê‡.
+		if (m_CurrentInput != D3DXVECTOR2(x, z))
 		{
-			//“ü—Í‚É•Ï‰»‚ª‚ ‚Á‚½ê‡.
-			if (m_CurrentInput != D3DXVECTOR2(x, z))
+			//‰ñ“]‚¾‚¯‚µ‚È‚¢ê‡.
+			if (IsAnyActionState<CPlayerFallingState>())
 			{
 				SetTurnState(std::make_unique<CPlayerTurnIdleState>(*this));
 			}
-		}
-		//ˆÚ“®E‰ñ“]‚·‚éê‡.
-		else
-		{
-			//“ü—Í‚É•Ï‰»‚ª‚ ‚Á‚½ê‡.
-			if (m_CurrentInput != D3DXVECTOR2(x, z))
+			//ˆÚ“®E‰ñ“]‚·‚éê‡.
+			else
 			{
 				SetTurnState(std::make_unique<CPlayerTurnState>(*this, x, z));
 			}
 		}
 
+		SetMoveState(std::make_unique<CPlayerMoveState>(*this, x, z));
 		//“ü—Í‚É•Ï‰»‚ª‚ ‚Á‚½ê‡.
 		if (m_CurrentInput != D3DXVECTOR2(x, z))
 		{
-			SetMoveState(std::make_unique<CPlayerMoveState>(*this, x, z));
 			m_CurrentInput = D3DXVECTOR2(x, z);	//Œ»İ‚Ì“ü—Í‚ğ‹L˜^‚µ‚Ä‚¨‚­.
 		}
 	}

@@ -13,7 +13,6 @@
 #include "PlayerBase/PlayerState/PlayerActionState/PlayerGetUpState/CPlayerGetUpState.h"
 #include "PlayerBase/PlayerState/PlayerActionState/PlayerKnockdownState/CPlayerKnockdownState.h"
 
-#include "PlayerBase/PlayerManager/CPlayerManager.h"
 
 #include "Sound/CSoundManager.h"
 
@@ -29,7 +28,7 @@ CPlayerAI::CPlayerAI(int index)
 	, m_NearbyPlayers	()
 	, m_NearbyItems		()
 
-	, m_Sqrt			( 999.f )	//初回は、比較のため大きい数値にしておく.
+	, m_MaxSqrt			( 999.f )	//初回は、比較のため大きい数値にしておく.
 {
 }
 
@@ -104,65 +103,15 @@ void CPlayerAI::AutomaticMovement(D3DXVECTOR3 targetDir)
 	}
 }
 
-//--- 近くのプレイヤーを探索 ---.
-void CPlayerAI::FindNearbyPlayers()
+//--- ランダム数値 ---.
+float CPlayerAI::RandomFloat(float min, float max)
 {
-	m_NearbyPlayers.sqrt = m_Sqrt;
-	D3DXVECTOR3 nearestDir(0.f, 0.f, 0.f);
+	//乱数の初期シードを作成.
+	static std::random_device rd;
+	//乱数エンジンを初期化.
+	static std::mt19937 mt(rd());
+	//指定した範囲の float 値を求める.
+	std::uniform_real_distribution<float> dist(min, max);
 
-	for (int pNo = 0; pNo < Player_Max; pNo++)
-	{
-		if (pNo == m_PlayerID) continue;
-
-		const auto& player = m_pPlayerManager->GetPlayer(pNo);
-
-		if (!player || !player->IsAboveGround()) continue;
-
-		if (player->IsAnyActionState<
-			CPlayerKnockbackState,
-			CPlayerFallingState,
-			CPlayerPushedState>()) continue;
-
-		D3DXVECTOR3 playerPos = m_pPlayerManager->GetPlayer(pNo)->GetPosition();
-
-		D3DXVECTOR3 diff = playerPos - m_vPosition;
-		float diffSqrt = D3DXVec3LengthSq(&diff);
-		
-		if (diffSqrt < m_NearbyPlayers.sqrt)
-		{
-			m_NearbyPlayers.sqrt = diffSqrt;
-			D3DXVec3Normalize(&nearestDir, &diff);
-		}
-
-		if (m_NearbyPlayers.sqrt < m_Sqrt)
-		{
-			m_NearbyPlayers.dir = nearestDir;
-		}
-	}
-}
-
-//--- 近くのアイテムを探索 ---.
-void CPlayerAI::FindNearbyItems()
-{
-	m_NearbyItems.sqrt = m_Sqrt;
-	D3DXVECTOR3 nearestDir(0.f, 0.f, 0.f);
-
-	for (int iNo = 0; iNo < m_pItemManager->GetItemVectorNum(); iNo++)
-	{
-		D3DXVECTOR3 itemPos = m_pItemManager->GetItemPos(iNo);
-
-		D3DXVECTOR3 diff = itemPos - m_vPosition;
-		float diffSqrt = D3DXVec3LengthSq(&diff);
-
-		if (diffSqrt < m_NearbyItems.sqrt)
-		{
-			m_NearbyItems.sqrt = diffSqrt;
-			D3DXVec3Normalize(&nearestDir, &diff);
-		}
-
-		if (m_NearbyItems.sqrt < m_Sqrt)
-		{
-			m_NearbyItems.dir = nearestDir;
-		}
-	}
+	return dist(mt);
 }

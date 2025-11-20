@@ -75,11 +75,7 @@ void CTimeManager::Update_Internal()
 
 	m_PreviousTime = currentTime;
 
-
 	//経過時間 = 現在の時刻 - 開始時間.
 	std::chrono::duration<double> total = currentTime - m_StartTime;
 	m_TotalTime = total.count() - m_PauseTime;	//秒単位のものを数値として取り出す.
-
-	std::cout << "トータル" << m_TotalTime << std::endl;
-	std::cout << "でるた" << m_DeltaTime << std::endl;
 }

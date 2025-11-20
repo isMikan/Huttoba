@@ -3,7 +3,8 @@
 #include "GameObject/SpriteObject/Shadow/CShadow.h"
 
 #include "PlayerBase/PlayerManager/CPlayerManager.h"
-#include "GameObject/MeshObject/StaticMesh/Item/ItemManager/ItemManager.h"
+#include "Item/ItemManager/ItemManager.h"
+#include "Ground/GroundManager/CGroundManager.h"
 
 /***********************************************************************
 *	影マネージャークラス
@@ -21,7 +22,8 @@ public:
 	//--- 破棄関数 ---.
 	void Destroy();
 	//--- 更新関数 ---.
-	void Update(CPlayerManager* player, ItemManager* item);
+	void Update(
+		CPlayerManager* players, ItemManager* items);
 	//--- 描画処理 ---.
 	virtual void Draw(
 		CDirectX11* pDx11, D3DXMATRIX& View, D3DXMATRIX& Proj);
