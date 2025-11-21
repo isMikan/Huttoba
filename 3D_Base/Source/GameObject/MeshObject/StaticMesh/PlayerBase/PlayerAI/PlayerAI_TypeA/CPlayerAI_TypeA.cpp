@@ -112,7 +112,7 @@ bool CPlayerAI_TypeA::IsSearchPlayer(CPlayerBase* player)
 
 bool CPlayerAI_TypeA::IsSearchItem(ItemBase* item)
 {
-	if(item->GetState() != ItemBase::State::OnGround)
+	if(item->GetState() != IItemObserver::IItemObserver::State::OnGround)
 	{
 		return false;
 	}

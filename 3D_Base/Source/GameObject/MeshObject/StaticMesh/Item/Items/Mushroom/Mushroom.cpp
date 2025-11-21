@@ -33,12 +33,14 @@ Mushroom::~Mushroom()
 void Mushroom::Init()
 {
 	m_UseTime = m_UseDuration;
+	//ÉQÅ[ÉWÇÃÇΩÇﬂÇ…í«â¡.	êßçÏé“	[çbîc]
+	m_UsageLimit = { m_UseTime, m_UseDuration };
 
 	AttachMesh(AssetManager::Mesh(StaticMeshList::Mushroom));
 
 	SetPosition( 3.0f, 15.0f, 0.0f );
 
-	m_State = ItemBase::State::Spawn;
+	m_State = IItemObserver::IItemObserver::State::Spawn;
 
 	m_tGravity = 0.001f;
 
@@ -72,7 +74,7 @@ void Mushroom::Spawn()
 	else
 	{
 		//èÛë‘Çínñ Ç…Ç¬Ç¢ÇΩÇ∆Ç´Ç…ïœçX
-		m_State = ItemBase::State::OnGround;
+		m_State = IItemObserver::IItemObserver::State::OnGround;
 	}
 }
 
@@ -101,23 +103,23 @@ void Mushroom::Destroy()
 	m_IsDestroy = true;
 }
 
-void Mushroom::ChangeState(State state)
+void Mushroom::ItemState(IItemObserver::State state)
 {
 	switch (state)
 	{
-	case ItemBase::State::Spawn:
+	case IItemObserver::IItemObserver::State::Spawn:
 		break;
-	case ItemBase::State::OnGround:
+	case IItemObserver::IItemObserver::State::OnGround:
 		break;
-	case ItemBase::State::Have:
+	case IItemObserver::IItemObserver::State::Have:
 		break;
-	case ItemBase::State::Use:
+	case IItemObserver::IItemObserver::State::Use:
 		OneEnterUse();
 		break;
-	case ItemBase::State::Throw:
+	case IItemObserver::IItemObserver::State::Throw:
 		OneEnterThrow();
 		break;
-	case ItemBase::State::Destroy:
+	case IItemObserver::IItemObserver::State::Destroy:
 		break;
 	default:
 		break;
@@ -135,7 +137,7 @@ void Mushroom::OnCollision(CollisionBase* other)
 				Smash(*player);
 			}
 
-			if (m_State==State::Throw&& m_pPlayer != player)
+			if (m_State==IItemObserver::State::Throw&& m_pPlayer != player)
 			{
 				ThrowSmash(*player);
 			}
@@ -172,6 +174,8 @@ void Mushroom::UseMove()
 	m_vPosition += m_Velocity * static_cast<float>(CTimeManager::GetDeltaTime());
 
 	m_UseTime -= CTimeManager::GetDeltaTime();
+
+	m_UsageLimit.remaining = m_UseTime;
 
 	std::cout << m_UseTime << std::endl;
 

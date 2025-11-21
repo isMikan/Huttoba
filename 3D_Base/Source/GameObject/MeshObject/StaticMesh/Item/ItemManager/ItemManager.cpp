@@ -104,7 +104,7 @@ void ItemManager::CreateItem()
 	ItemID itemId = m_pSpawnItem->SerectSpawnItem(m_pItems);
 
 	//選択されたアイテム作成
-	m_pItems.push_back(ItemFactory::GetInstance()->CreateItem(ItemID::Bomb));
+	m_pItems.push_back(ItemFactory::GetInstance()->CreateItem(itemId));
 	//m_pItems.push_back(ItemFactory::GetInstance()->CreateItem(ItemID::TrackingRobot));
 
 	//生成されたアイテムの位置設定

@@ -71,7 +71,7 @@ void Haetataki::Init()
 	SetPosition(INITAL_POS_X, INITAL_POS_Y, INITAL_POS_Z);
 	SetRotation(INITAL_ROT_X, INITAL_ROT_Y, INITAL_ROT_Z);
 
-	m_State = ItemBase::State::Spawn;
+	m_State = IItemObserver::IItemObserver::State::Spawn;
 	m_UseCount = USE_COUNT;
 	m_tGravity = INITAL_GRAVITY;
 
@@ -127,7 +127,7 @@ void Haetataki::Spawn()
 	}
 	else
 	{
-		m_State = ItemBase::State::OnGround;
+		m_State = IItemObserver::IItemObserver::State::OnGround;
 	}
 }
 
@@ -150,7 +150,7 @@ void Haetataki::Have()
 	//Nキーで使用状態へ
 	if (GetAsyncKeyState('N') & 0x0001)
 	{
-		m_State = ItemBase::State::Use;
+		m_State = IItemObserver::IItemObserver::State::Use;
 	}
 }
 
@@ -172,7 +172,7 @@ void Haetataki::Use()
 	//モーション終了で所持状態へ戻る
 	if (!AttackMostion())
 	{
-		m_State = ItemBase::State::Have;
+		m_State = IItemObserver::IItemObserver::State::Have;
 		m_IsMissAttack = false; //初期化
 
 		CollisionManager::GetInstance()->RemoveCollider(m_pNowCollider.get());
@@ -187,7 +187,7 @@ void Haetataki::Throw()
 {
 	if (GetAsyncKeyState('N') & 0x8000)
 	{
-		m_State = ItemBase::State::Destroy;
+		m_State = IItemObserver::IItemObserver::State::Destroy;
 	}
 }
 
@@ -200,7 +200,7 @@ void Haetataki::Destroy()
 
 //--------------------------------------------------------------------------------------------------------------
 
-void Haetataki::ChangeState(State state)
+void Haetataki::ItemState(IItemObserver::State state)
 {
 }
 
@@ -282,7 +282,7 @@ void Haetataki::OnCollision(CollisionBase* other)
 	{
 		if (CPlayer* player = dynamic_cast<CPlayer*>(other->GetListener()))
 		{
-			if(m_State == State::Use)
+			if(m_State == IItemObserver::State::Use)
 			Smash(*player);
 		}
 	}

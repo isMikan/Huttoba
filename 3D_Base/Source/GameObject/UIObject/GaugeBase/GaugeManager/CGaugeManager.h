@@ -5,12 +5,16 @@
 #include "PlayerBase/PlayerManager/CPlayerManager.h"
 #include "PlayerBase/CPlayerBase.h"
 
+#include "Item/ItemBase.h"
+#include "Item/ItemObserver/IItemObserver.h"
+
 #include <unordered_set>
 
 /***********************************************************************
 *	ゲージマネージャークラス.
 **/
 class CGaugeManager
+	: public IItemObserver 
 {
 public:
 	CGaugeManager();
@@ -21,15 +25,18 @@ public:
 //======================================================================
 	//--- 構築関数 ---.
 	void Create(
-		CPlayerManager* playerManager);
+		CPlayerManager* playerManager, ItemManager* itemManager);
 	//--- 破棄関数 ---.
 	void Destroy();
 	//--- 更新関数 ---.
-	void Update(
-		CPlayerManager* playerManager);
+	void Update();
 	//--- 描画処理 ---.
-	virtual void Draw(
+	void Draw(
 		D3DXMATRIX& View, D3DXMATRIX& Proj);
+
+	void ItemState(IItemObserver::State state) override;
+
+protected:
 
 protected:
 //======================================================================
@@ -37,6 +44,12 @@ protected:
 //======================================================================
 	std::vector<std::unique_ptr<CGaugeBase>>	m_pGauge;			//ゲージ.
 
-	std::unordered_map<CPlayerBase*, int>		m_PlayerGauge;		//プレイヤーとゲージを照らし合わせる.	
-	std::unordered_set<CPlayerBase*>			m_SubscribePlayers;	//プレイヤーの購買リスト.
+	CPlayerManager*		m_pPlayerManager;	//プレイヤー.
+	ItemManager*		m_pItemManager;		//アイテム.
+	
+	std::unordered_map<CPlayerBase*, int>	m_PlayerGauge;			//プレイヤーとゲージを照らし合わせる.	
+	std::unordered_set<CPlayerBase*>		m_SubscribePlayers;		//プレイヤーの購買リスト.
+
+	std::unordered_map<ItemBase*, int>		m_ItemGauge;			//アイテムとゲージを照らし合わせる.	
+	std::unordered_set<ItemBase*>			m_SubscribeItems;		//アイテムの購買リスト.
 };

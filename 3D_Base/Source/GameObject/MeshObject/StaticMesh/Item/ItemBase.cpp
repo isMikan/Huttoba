@@ -4,8 +4,8 @@
 #include "Collision/CollisionUtility/CollisionUtility.h"
 
 ItemBase::ItemBase()
-	: m_State		{ State::Spawn }
-	, m_OldState	{ State::None }
+	: m_State		{ IItemObserver::State::Spawn }
+	, m_OldState	{ IItemObserver::State::None }
 	, m_pPlayer		{ nullptr }
 	, m_tGravity	{ 9.8f }
 	, m_IsDestroy	{ false }
@@ -28,7 +28,7 @@ void ItemBase::Update()
 	//ÉAÉCÉeÉÄÇÃèÛë‘Ç™êÿÇËë÷ÇÌÇÍÇŒ
 	if (m_State != m_OldState)
 	{
-		ChangeState(m_State);
+		ItemState(m_State);
 
 		m_OldState = m_State;
 	}
@@ -36,13 +36,13 @@ void ItemBase::Update()
 	//èÛë‘Ç…ÇÊÇ¡ÇƒëJà⁄
 	switch (m_State)
 	{
-	case ItemBase::State::None:						break;
-	case ItemBase::State::Spawn:	Spawn();		break;
-	case ItemBase::State::OnGround: OnGround();		break;
-	case ItemBase::State::Have:		Have();			break;
-	case ItemBase::State::Use:		Use();			break;
-	case ItemBase::State::Throw:	Throw();		break;
-	case ItemBase::State::Destroy:	Destroy();		break;
+	case IItemObserver::IItemObserver::State::None:						break;
+	case IItemObserver::IItemObserver::State::Spawn:	Spawn();		break;
+	case IItemObserver::IItemObserver::State::OnGround: OnGround();		break;
+	case IItemObserver::IItemObserver::State::Have:		Have();			break;
+	case IItemObserver::IItemObserver::State::Use:		Use();			break;
+	case IItemObserver::IItemObserver::State::Throw:	Throw();		break;
+	case IItemObserver::IItemObserver::State::Destroy:	Destroy();		break;
 	default: break;
 	}
 
@@ -53,7 +53,7 @@ void ItemBase::Update()
 	static constexpr float UNDER_MAX = -5.f;
 	if (m_vPosition.y < UNDER_MAX)
 	{
-		m_State = State::Destroy;
+		m_State = IItemObserver::State::Destroy;
 	}
 
 }
@@ -65,7 +65,7 @@ void ItemBase::Draw(D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAMERA& Ca
 
 bool ItemBase::IsUse()
 {
-	if (m_State == State::Use)
+	if (m_State == IItemObserver::State::Use)
 	{
 		return true;
 	}
@@ -92,7 +92,7 @@ void ItemBase::IsOnGround(CGroundManager& pGroundMgr)
 
 void ItemBase::DestroyItem()
 {
-	m_State = State::Destroy;
+	m_State = IItemObserver::State::Destroy;
 }
 
 void ItemBase::Fall()
@@ -105,6 +105,10 @@ void ItemBase::Fall()
 void ItemBase::OnCollision(CollisionBase* other)
 {
 
+}
+
+void ItemBase::ItemState(IItemObserver::State state)
+{
 }
 
 void ItemBase::ThrowSmash(CPlayerBase& playiers)

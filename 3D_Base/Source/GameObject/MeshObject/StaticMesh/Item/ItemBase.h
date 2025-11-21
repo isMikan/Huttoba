@@ -5,9 +5,10 @@
 #include "PlayerBase/Player/CPlayer.h"
 #include "Collision/CollisionDraw/CollisionDraw.h"
 
+#include "Item/ItemObserver/IItemObserver.h"
+
 class ItemBase :
-	public CStaticMeshObject,public ICollisionListener
-	
+	public CStaticMeshObject, public ICollisionListener, public IItemObserver
 {
 public:
 	ItemBase();
@@ -37,17 +38,6 @@ public:
 		return true;
 	}
 	
-	// アイテムの状態
-	enum class State
-	{
-		None = -1,
-		Spawn,
-		OnGround,
-		Have,
-		Use,
-		Throw,
-		Destroy,
-	};
 
 
 	/*****************************************************************************************
@@ -86,8 +76,8 @@ public:
 	* @param    state : アイテムの状態を管理する変数
 	*****************************************************************************************/
 	//状態の取得と設定.		制作者 [甲把]
-	State GetState() const { return m_State; }
-	void SetState(State state) { m_State = state; }
+	IItemObserver::State GetState() const { return m_State; }
+	void SetState(IItemObserver::State state) { m_State = state; }
 
 
 	/*****************************************************************************************
@@ -114,6 +104,9 @@ public:
 	bool GetIsOnGround() { return m_IsOnGround; }
 	bool GetIsUse()   { return m_IsUse;	}
 
+	//使用制限の取得（ゲージに必要）.	制作者	[甲把]
+	Gauge GetUsageLimit() const { return m_UsageLimit; }
+
 	void Fall();
 
 	//アイテム消去(他クラスで読み込む用)
@@ -122,6 +115,7 @@ public:
 	//当たり判定処理
 	virtual void OnCollision(CollisionBase* other)override;
 
+	virtual void ItemState(IItemObserver::State state) override;
 
 protected:
 
@@ -131,8 +125,6 @@ protected:
 	virtual void Use	 ()	= 0; // 使用
 	virtual void Throw	 ()	= 0; // 投擲
 	virtual void Destroy ()	= 0; // 消滅
-
-	virtual void ChangeState(State state) = 0;	//状態変化時に一度だけ処理
 
 	//投擲の吹き飛ばし
 	void ThrowSmash(CPlayerBase& playiers);
@@ -146,10 +138,12 @@ protected:
 	bool m_IsOnGround;	// 地面に接触しているか
 	bool m_IsUse;		// 使用中か
 
+	Gauge m_UsageLimit;	//使用制限.
+
 	float m_ThrowSmashPower;	//投擲での吹き飛ばし力
 
-	State m_State;		// アイテムの状態
-	State m_OldState;	// アイテムの前の状態
+	IItemObserver::State m_State;		// アイテムの状態
+	IItemObserver::State m_OldState;	// アイテムの前の状態
 
 	CPlayerBase* m_pPlayer; //当たり判定で接触したPlayerを入れるポインタ	
 

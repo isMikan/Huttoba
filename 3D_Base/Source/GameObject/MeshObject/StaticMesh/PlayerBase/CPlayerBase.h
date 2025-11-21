@@ -217,7 +217,7 @@ public:
 	template<typename... Ts>
 	//複数の条件に対応して結果を返す.
 	bool IsAnyActionState() const { 
-		return ( ... || IsActionState<Ts>());	//... 条件にしたいStateを入れる.
+		return ( ... || IsActionState<Ts>());	//... 条件にしたいIItemObserver::Stateを入れる.
 	}
 
 	//イベントバスを持つ.
@@ -228,7 +228,7 @@ protected:
 // 	   内部で呼び出す関数.
 //======================================================================
 	//--- 状態を変更を処理する ---.
-	void ChangeState(
+	void ItemState(
 		std::unique_ptr<CPlayerState>& currentState,
 		std::unique_ptr<CPlayerState> newScene);
 

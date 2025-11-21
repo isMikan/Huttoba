@@ -50,9 +50,11 @@ void Bomb::Init()
 
 	AttachMesh(AssetManager::Mesh(StaticMeshList::Bomb));
 
-	m_State = ItemBase::State::Spawn;
+	m_State = IItemObserver::IItemObserver::State::Spawn;
 	m_tGravity = 0.01f;
 	m_UseCount = USE_COUNT;
+	//ゲージのために追加.	制作者	[甲把]
+	m_UsageLimit = { USE_COUNT, USE_COUNT };
 
 	std::shared_ptr<CStaticMesh> mesh = AssetManager::Mesh(StaticMeshList::Bomb);
 
@@ -84,7 +86,7 @@ void Bomb::Spawn()
 	else
 	{
 		//状態を地面についたときに変更
-		m_State = ItemBase::State::OnGround;
+		m_State = IItemObserver::IItemObserver::State::OnGround;
 	}
 }
 
@@ -112,23 +114,23 @@ void Bomb::Destroy()
 	m_IsDestroy = true;
 }
 
-void Bomb::ChangeState(State state)
+void Bomb::ItemState(IItemObserver::State state)
 {
 	switch (state)
 	{
-	case ItemBase::State::Spawn:
+	case IItemObserver::IItemObserver::State::Spawn:
 		break;
-	case ItemBase::State::OnGround:
+	case IItemObserver::IItemObserver::State::OnGround:
 		break;
-	case ItemBase::State::Have:
+	case IItemObserver::IItemObserver::State::Have:
 		break;
-	case ItemBase::State::Use:
+	case IItemObserver::IItemObserver::State::Use:
 		OneEnterUse();
 		break;
-	case ItemBase::State::Throw:
+	case IItemObserver::IItemObserver::State::Throw:
 		OneEnterThrow();
 		break;
-	case ItemBase::State::Destroy:
+	case IItemObserver::IItemObserver::State::Destroy:
 		break;
 	default:
 		break;
@@ -248,7 +250,7 @@ void Bomb::Explosion()
 		AssetManager::Effect()->SetScale(hEffect, D3DXVECTOR3(0.6f, 0.6f, 0.6f));
 
 		//アイテムの状態を破棄にする
-		m_State = ItemBase::State::Destroy;
+		m_State = IItemObserver::IItemObserver::State::Destroy;
 	}
 }
 

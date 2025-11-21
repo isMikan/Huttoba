@@ -53,7 +53,7 @@ void CPlayerKnockdownState::Enter()
 
 	if (item)
 	{
-		item->SetState(ItemBase::State::Destroy);
+		item->SetState(IItemObserver::IItemObserver::State::Destroy);
 		m_pPlayer.SetItemBase(nullptr);
 	}
 

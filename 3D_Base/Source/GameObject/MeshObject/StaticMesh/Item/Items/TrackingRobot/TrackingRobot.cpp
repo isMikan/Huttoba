@@ -48,7 +48,7 @@ void TrackingRobot::Init()
 
 	AttachMesh(AssetManager::Mesh(StaticMeshList::TrackingRobot));
 
-	m_State = ItemBase::State::Spawn;
+	m_State = IItemObserver::IItemObserver::State::Spawn;
 
 	m_tGravity = 0.01f;
 
@@ -83,7 +83,7 @@ void TrackingRobot::Spawn()
 	else
 	{
 		//ó‘Ô‚ð’n–Ê‚É‚Â‚¢‚½‚Æ‚«‚É•ÏX
-		m_State = ItemBase::State::OnGround;
+		m_State = IItemObserver::IItemObserver::State::OnGround;
 	}
 }
 
@@ -113,14 +113,14 @@ void TrackingRobot::Destroy()
 	m_IsDestroy = true;
 }
 
-void TrackingRobot::ChangeState(State state)
+void TrackingRobot::ItemState(IItemObserver::State state)
 {
 	switch (state)
 	{
-	case ItemBase::State::Use:
+	case IItemObserver::IItemObserver::State::Use:
 		OneEnterUse();
 		break;
-	case ItemBase::State::Throw:
+	case IItemObserver::IItemObserver::State::Throw:
 		OneEnterThrow();
 		break;
 	default:
@@ -139,7 +139,7 @@ void TrackingRobot::OnCollision(CollisionBase* other)
 				Smash(*player);
 			}
 
-			if (m_State == State::Throw && m_pPlayer != player)
+			if (m_State == IItemObserver::State::Throw && m_pPlayer != player)
 			{
 				Smash(*player);
 			}
@@ -310,7 +310,7 @@ void TrackingRobot::Explosion()
 		//ŠgkÝ’è
 		AssetManager::Effect()->SetScale(hEffect, D3DXVECTOR3(0.6f, 0.6f, 0.6f));
 
-		m_State = ItemBase::State::Destroy;
+		m_State = IItemObserver::IItemObserver::State::Destroy;
 	}
 }
 

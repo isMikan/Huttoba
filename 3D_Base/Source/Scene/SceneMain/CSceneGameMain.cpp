@@ -84,7 +84,7 @@ HRESULT CSceneGameMain::Create()
 	CteateExplosion();
 
 	//ゲージを作成.
-	m_pGaugeManager->Create(m_pPlayerManager.get());
+	m_pGaugeManager->Create(m_pPlayerManager.get(), m_pItemManager.get());
 
 	return S_OK;
 }
@@ -196,7 +196,7 @@ void CSceneGameMain::Update()
 	}
 
 	m_pShadowManager->Update(m_pPlayerManager.get(), m_pItemManager.get());
-	m_pGaugeManager->Update(m_pPlayerManager.get());
+	m_pGaugeManager->Update();
 
 	//レーザーの管理
 	ManageEffectLaser();
