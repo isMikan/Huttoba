@@ -66,8 +66,13 @@ private:
     //追尾処理
     void Homing(D3DXVECTOR3 targetPos);
 
+    //一番近いプレイヤーをターゲットに設定
+    void UpdateChaseSensor();
+
 private:
     CPlayerBase*                    m_pTarget;
+    //追尾から無視するプレイヤー
+   // CPlayerBase*                    m_pIgnoredPlayer;
 
     std::unique_ptr<ChaseSensor>    m_pChaseSensor;
 
@@ -77,8 +82,14 @@ private:
     //移動速度
     D3DXVECTOR3 m_Velocity;
 
-    //投げた時の移動速度
+    //使用時の移動速度
     float       m_MoveSpeed;
+
+    //旋回の角度
+    float       m_TurnRate;
+
+    //投げた時の移動速度
+    float       m_ThrowSpeed;
 
     //投げてから爆発するまでの時間
     double      m_ExplosionTime;

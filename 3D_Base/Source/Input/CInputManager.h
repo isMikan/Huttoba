@@ -2,23 +2,6 @@
 #include "CInput.h"
 #include <array>
 
-//準備画面でのプレイヤーの状態(※絶対ここに書くべきではないので学校でどこに入れるかみんなに聞く).
-enum class PlayerSlotState
-{
-	None,
-	Player,
-	COM,
-
-	Max
-};
-
-//プレイヤーの情報をまとめる(※上に同じ).
-struct PlayerSlot
-{
-	PlayerSlotState state;	//準備画面でのプレイヤーの状態.
-    bool ready = false;			    //準備状態.
-};
-
 class CInputManager
 {
 public:
@@ -36,13 +19,13 @@ public:
     //第2引数で指定のInputに入力設定
     static void BindKey(Action action, const InputBinding& binding, int index);
 
-    //第2引数で指定したInputのIsDown
+    //第2引数で指定したInputのIsDown(押した)
     static bool IsDown(Action action, int index);
     
-    //第2引数で指定したInputのIsUp
+    //第2引数で指定したInputのIsUp(離した)
     static bool IsUp(Action action, int index);
 
-    //第2引数で指定したInputのIsRepeat
+    //第2引数で指定したInputのIsRepeat(押し続けているか)
     static bool IsRepeat(Action action, int index);
     
     //引数で指定したパッドの左スティックの正規化したX軸を取得
@@ -57,46 +40,6 @@ public:
     //引数で指定したパッドが接続されているかを取得
     static bool IsConnect(int index) { return Instance().m_pInputs[index]->IsConnect(); }
 
-    //別の場所に追加するべき----------
-    //static PlayerSlot& GetSlot(int index) { return Instance().m_IsSlot[index]; }
-
-    //com作る時にもっと練って作り直しておく
-    static bool ChangeSlot(int index)
-    {
-        return !Instance().m_IsSlot[index].ready;
-        if (Instance().m_IsSlot[index].ready)
-        {
-            Instance().m_IsSlot[index].ready = false;
-        }
-        else
-        {
-            Instance().m_IsSlot[index].ready = true;
-        }
-    }
-    ////CInputのものではない
-    //static void SetHuman(int index)
-    //{
-    //    Instance().m_IsSlot[index].state = PlayerSlotState::Player;
-    //    Instance().m_IsSlot[index].ready = true;
-    //}
-    ////CInputのものではない
-    //static void SetCPU(int index)
-    //{
-    //    Instance().m_IsSlot[index].state = PlayerSlotState::COM;
-    //    Instance().m_IsSlot[index].ready = false;
-    //}
-
-    /// <summary>
-    /// プレイヤースロットの準備状態を取得
-    /// </summary>
-    /// <param name="index">取得したいプレイヤー番号</param>
-    /// <returns>引数の番号のプレイヤーがtrueなら人,falseならCOM</returns>
-    bool GetSlotRedy(int index)
-    {
-        return Instance().m_IsSlot[index].ready;
-    }
-    //-------
-
 private:
     CInputManager();
     CInputManager(const CInputManager&) = delete;
@@ -104,6 +47,4 @@ private:
 
 private:
     std::array<std::unique_ptr<CInput>, 4>  m_pInputs;
-
-    std::array<PlayerSlot, 4>                m_IsSlot;    //仮置き
 };
