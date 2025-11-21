@@ -102,14 +102,10 @@ void CPlayer::HandleInput()
 			{
 				SetTurnState(std::make_unique<CPlayerTurnState>(*this, x, z));
 			}
+			m_CurrentInput = D3DXVECTOR2(x, z);	//現在の入力を記録しておく.
 		}
 
 		SetMoveState(std::make_unique<CPlayerMoveState>(*this, x, z));
-		//入力に変化があった場合.
-		if (m_CurrentInput != D3DXVECTOR2(x, z))
-		{
-			m_CurrentInput = D3DXVECTOR2(x, z);	//現在の入力を記録しておく.
-		}
 	}
 
 	//何もしていない、起こっていない状態なら.

@@ -37,12 +37,12 @@ void CPlayerAI_TypeA::Update()
 {
 	m_Control = ActionInstruct::None;
 
+	//比較のため、最大数に設定しておく.
+	m_NearbyItems.sqrt = m_MaxSqrt;
 	for (auto& item : m_pItemManager->GetItems())
 	{
 		if (!m_pItemBase && IsSearchItem(item.get()))
 		{
-			//比較のため、最大数に設定しておく.
-			m_NearbyItems.sqrt = m_MaxSqrt;
 			FindNearbyObject(item.get(), m_NearbyItems, IsSearchItem(item.get()));
 			AutomaticMovement(m_NearbyItems.dir);
 
@@ -67,7 +67,7 @@ void CPlayerAI_TypeA::Update()
 				AutomaticMovement(m_NearbyPlayers.dir);
 			}
 			std::cout << "プレイヤー" << std::endl;
-			if (m_NearbyPlayers.sqrt < RandomFloat(1.f, 5.f)
+			if (m_NearbyPlayers.sqrt < RandomFloat(2.f, 6.f)
 				&& (IsAnyActionState<CPlayerActionIdleState>()
 				|| IsAnyActionState<CPlayerHoldingIdleState>()))
 			{
@@ -76,7 +76,6 @@ void CPlayerAI_TypeA::Update()
 			}
 		}
 	}
-
 
 	CPlayerAI::Update();
 }
