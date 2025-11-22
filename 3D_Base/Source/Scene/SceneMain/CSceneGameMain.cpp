@@ -13,8 +13,6 @@ CSceneGameMain::CSceneGameMain( HWND hWnd)
 
 	, m_pDbgText		( nullptr )
 
-	, m_pUIMap			()
-
 	, m_pExplosiones	()
 
 	, m_pShadowManager	()
@@ -80,7 +78,6 @@ HRESULT CSceneGameMain::Create()
 	m_pGroundCollisionProxy = std::make_unique<CGroundCollisionProxy>(*m_pGroundManager);
 
 	//各オブジェクトのインスタンス作成
-	CreateUI();
 	CteateExplosion();
 
 	//ゲージを作成.
@@ -104,13 +101,6 @@ HRESULT CSceneGameMain::LoadData()
 	for (const auto& exp : m_pExplosiones)
 	{
 		exp->AttachSprite(AssetManager::Sprite(Sprite3DList::Explosion));
-	}
-
-
-	//Pモンスプライトを設定
-	for (auto& UI : m_pUIMap)
-	{
-		UI.second->AttachSprite(AssetManager::Sprite(Sprite2DList::PMon));
 	}
 
 	//影マネージャーの読み込み.
@@ -188,11 +178,6 @@ void CSceneGameMain::Update()
 		{
 			exp->Update();
 		}
-	}
-
-	for (auto& UI : m_pUIMap)
-	{
-		UI.second->Update();
 	}
 
 	m_pShadowManager->Update(m_pPlayerManager.get(), m_pItemManager.get());
@@ -274,12 +259,9 @@ void CSceneGameMain::Draw()
 	//深度テスト無効にすることで、処理順番で描画させることができる
 	m_pDx11->SetDepth(false);
 
-	for (auto& UI : m_pUIMap)
-	{
-		//UI.second->Draw();
-	}
-
 	m_pGaugeManager->Draw(view, proj);
+
+	CFadeManager::GetInstance().Draw(0.f, GameMain_StartTime, true);
 
 	//やりたいことが終わったので、深度テストを有効にしておく
 	m_pDx11->SetDepth(true);
@@ -321,22 +303,6 @@ void CSceneGameMain::Draw()
 	}
 
 #endif // DEBUG
-}
-
-HRESULT CSceneGameMain::CreateUI()
-{
-	UIList UI[] =
-	{
-		UIList::Pmon,
-	};
-
-	for (auto& id : UI)
-	{
-		m_pUIMap[id] = std::make_unique<CUIObject>();
-		if (!m_pUIMap[id]) return E_POINTER;
-	}
-
-	return S_OK;
 }
 
 HRESULT CSceneGameMain::CteateExplosion()

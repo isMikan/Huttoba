@@ -57,7 +57,7 @@ HRESULT SpriteManager::CreateSprite2D()
 {
 	//äesprite2DÇÃèÓïÒÇìoò^(Ç±Ç±Ç…sprite2Dìoò^)
 //Å´-----------------------------------------------------------------------------------------------------------------------------Å´
-	RegisterSprite2D(Sprite2DList::PMon,		_T("Data\\Texture\\pmon.png"),			{ 64.f, 64.f, 896.f, 560.f, 896.f / 16.f, 560.f / 10.f });
+	RegisterSprite2D(Sprite2DList::Fade,		_T("Data\\Texture\\fade.png"),			{ WND_W,WND_H,WND_W,WND_H,WND_W,WND_H });
 	RegisterSprite2D(Sprite2DList::GaugeFrame,	_T("Data\\Texture\\gauge_frame.png"),	{ 160.f, 24.f, 160.f, 24.f, 160.f, 24.f });
 	RegisterSprite2D(Sprite2DList::Gauge,		_T("Data\\Texture\\gauge.png"),			{ 160.f, 24.f, 160.f, 24.f, 160.f, 24.f });
 	RegisterSprite2D(Sprite2DList::Title,		_T("Data\\Texture\\Title_kari.png"),	{ WND_W,WND_H,WND_W,WND_H,WND_W,WND_H });

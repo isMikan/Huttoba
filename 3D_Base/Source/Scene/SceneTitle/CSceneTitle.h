@@ -25,7 +25,8 @@ private:
 	void MoveSelector();
 
 private:
-	HWND						m_hWnd;				//ウィンドウハンドル.
+	CDirectX11*			m_pDx11;
+	HWND				m_hWnd;			//ウィンドウハンドル.
 
 	std::vector<std::function<void()>>	m_Action;	//画面遷移時の動作を入れる.
 

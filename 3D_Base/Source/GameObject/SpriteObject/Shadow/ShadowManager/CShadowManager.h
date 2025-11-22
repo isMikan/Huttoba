@@ -7,7 +7,7 @@
 #include "Ground/GroundManager/CGroundManager.h"
 
 /***********************************************************************
-*	影マネージャークラス
+*	影マネージャークラス.						制作者 [甲把]
 **/
 class CShadowManager
 {
@@ -15,6 +15,9 @@ public:
 	CShadowManager();
 	~CShadowManager();
 
+//======================================================================
+// 	   外部で呼び出す関数.
+//======================================================================
 	//--- 構築関数 ---.
 	void Create();
 	//--- 読込関数 ---.
@@ -29,7 +32,6 @@ public:
 		CDirectX11* pDx11, D3DXMATRIX& View, D3DXMATRIX& Proj);
 
 private:
-	//影クラス.
-	std::vector<std::unique_ptr<CShadow>> 		m_pShadow;
+	std::vector<std::unique_ptr<CShadow>> 		m_pShadow;	//影.
 
 };

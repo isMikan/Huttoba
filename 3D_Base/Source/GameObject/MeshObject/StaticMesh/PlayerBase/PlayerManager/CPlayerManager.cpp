@@ -16,7 +16,7 @@ CPlayerManager::CPlayerManager()
 	: m_pPlayers		()
 
 	, m_CreateTime		()
-	, m_ReadyTime		( 0.5f )
+	, m_ReadyTime		( GameMain_StartTime )
 {
 }
 

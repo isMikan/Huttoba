@@ -127,6 +127,7 @@ void CSceneStandby::Draw()
 	D3DXMATRIX proj = CCameraManager::GetProjection();	//プロジェクション.
 	//==================.
 
+		
 	//地面マネージャーの描画.
 	//m_pGroundManager->Draw(view, proj, light, camera);
 
@@ -149,6 +150,8 @@ void CSceneStandby::Draw()
 
 	m_pSpriteSelector->Draw();
 	m_pSpriteStandbyImg->Draw();	//一番前に表示されるので文字などを表示させたい際は要検証.
+
+	CFadeManager::GetInstance().Draw(0.f, 1.f, true);
 
 	m_pDx11->SetDepth(true);
 }

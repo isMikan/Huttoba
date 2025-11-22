@@ -44,7 +44,6 @@ public:
 	void Update() override;
 	void Draw() override;
 
-	HRESULT CreateUI();
 	HRESULT CteateExplosion();
 
 	void ManageEffectLaser();
@@ -59,9 +58,6 @@ private:
 
 	//爆発クラス
 	std::vector<std::unique_ptr<CExplosion>> 	m_pExplosiones;
-
-	//UIオブジェクトクラス
-	std::unordered_map<UIList, std::unique_ptr<CUIObject> > m_pUIMap;
 
 	//影クラス.
 	std::unique_ptr<CShadowManager>		m_pShadowManager;
