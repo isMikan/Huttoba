@@ -143,7 +143,7 @@ void Boomerang::OnCollision(CollisionBase* other)
 	{
 		if (CPlayerBase* player = dynamic_cast<CPlayerBase*>(other->GetListener()))
 		{
-			if (m_IsUseThrow)
+			if (m_IsUseThrow && player != m_pPlayer)
 			{
 				Smash(*player);
 			}
@@ -215,20 +215,11 @@ void Boomerang::EnterUseThrowCommon()
 
 void Boomerang::UseThrow()
 {
-	//非爆発時に一度だけ処理する
+	//非使用時に一度だけ処理する
 	if (!m_IsUseThrow)
 	{
-		//爆発フラグをオンに
+		//使用フラグをオンに
 		m_IsUseThrow = true;
-
-		static ::EsHandle hEffect = 1;
-
-		//エフェクト追加
-		hEffect = AssetManager::Effect()->Play("Explosion", m_vPosition);
-
-		//エフェクトの拡縮設定
-		AssetManager::Effect()->SetScale(hEffect, D3DXVECTOR3(0.6f, 0.6f, 0.6f));
-
 	}
 }
 
@@ -246,6 +237,15 @@ void Boomerang::Smash(CPlayerBase& playiers)
 	playiers.SetHitAttack(
 		SmashVel,
 		CPlayerBase::HitEvent::Knockdown);
+
+	static ::EsHandle hEffect = 1;
+
+	//エフェクト追加
+	hEffect = AssetManager::Effect()->Play("Explosion", m_vPosition);
+
+	//エフェクトの拡縮設定
+	AssetManager::Effect()->SetScale(hEffect, D3DXVECTOR3(0.6f, 0.6f, 0.6f));
+
 }
 
 void Boomerang::ChangeColor()
