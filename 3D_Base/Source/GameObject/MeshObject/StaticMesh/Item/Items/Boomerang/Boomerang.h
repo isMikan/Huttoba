@@ -68,6 +68,8 @@ private:
 private:
     //移動速度
     D3DXVECTOR3 m_Velocity;
+    //どれだけ進んだか保存(折り返しに使用)
+    D3DXVECTOR3 m_TotalVelocity;
 
     //投げた時の移動速度
     float       m_MoveSpeed;
@@ -86,6 +88,8 @@ private:
 
     //使用時の処理
     bool        m_IsUseThrow;
+
+    bool        m_ComeBack;
 
     //爆発の中心位置に近いほど多く吹き飛ぶので最小と最大の吹き飛ばし力を追加
 

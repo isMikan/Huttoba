@@ -10,6 +10,7 @@ namespace { const bool regist = ItemBase::AutoRegister<Boomerang>(ItemID::Boomer
 
 Boomerang::Boomerang()
 	: m_Velocity		()
+	, m_TotalVelocity	()
 	, m_MoveSpeed		( 8.0f )	//値を変えると爆弾の移動速度が変化
 	, m_UpSpeed			( 5.0f )	//値を変えると爆弾のy軸の上昇量が変化
 
@@ -18,7 +19,8 @@ Boomerang::Boomerang()
 
 	, m_ColorTimer		( 0.0 )
 	
-	, m_IsUseThrow( false )
+	, m_IsUseThrow	( false )
+	, m_ComeBack	( false )
 
 	, m_MinSmashPower	( 6.0f )	//値を変えるとプレイヤーの最小吹き飛ばし力が変化
 
@@ -160,6 +162,16 @@ void Boomerang::UseMove()
 {
 	//位置を移動速度*デルタタイムで計算
 	m_vPosition += m_Velocity * CTimeManager::GetDeltaTime();
+	m_TotalVelocity += m_Velocity * CTimeManager::GetDeltaTime();;
+
+	m_Velocity.x -= m_Velocity.x * 0.01;
+	m_Velocity.z -= m_Velocity.z * 0.01;
+
+	if (m_Velocity.x < 2.f && m_Velocity.z < 2.f)
+	{
+		m_vPosition = m_pPlayer->GetPosition();
+	}
+
 	UseThrow();
 }
 
@@ -184,6 +196,7 @@ void Boomerang::OneEnterThrow()
 
 void Boomerang::EnterUseThrowCommon()
 {
+
 	//プレイヤーのクォータニオン(向いている方向)記録
 	m_vQuaternion = m_pPlayer->GetQuaternion();
 
