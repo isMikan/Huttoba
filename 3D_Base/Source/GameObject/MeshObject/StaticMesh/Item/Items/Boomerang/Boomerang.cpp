@@ -224,7 +224,7 @@ void Boomerang::EnterUseThrowCommon()
 	//“–‚½‚è”»’èíœ
 	CollisionManager::GetInstance()->RemoveCollider(m_pCollision.get());
 
-	std::shared_ptr<CStaticMesh> mesh = AssetManager::Mesh(StaticMeshList::ExplosionCol);
+	std::shared_ptr<CStaticMesh> mesh = AssetManager::Mesh(StaticMeshList::BoomerangCol);
 
 	m_pCollision = CollisionDataFactory::CreateSphereForMesh(
 		CollisionBase::ColliderTag::Boomerang,
