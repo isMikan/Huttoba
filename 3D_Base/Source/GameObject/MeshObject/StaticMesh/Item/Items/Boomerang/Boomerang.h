@@ -31,6 +31,8 @@ public:
     //状態変化時に一度だけ処理
     void ItemState(IItemObserver::State state)override;
 
+	bool GetIsUseThrow() { return m_IsUseThrow; }
+
 private:
     //当たった際の処理
     void OnCollision(CollisionBase* other)override;
@@ -82,7 +84,7 @@ private:
     //点滅の経過時間を記録
     double      m_ColorTimer;
 
-    //爆発時の処理
+    //使用時の処理
     bool        m_IsUseThrow;
 
     //爆発の中心位置に近いほど多く吹き飛ぶので最小と最大の吹き飛ばし力を追加

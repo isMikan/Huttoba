@@ -71,7 +71,7 @@ void ItemManager::Update()
 		//ˆê’UPlayer0‚µ‚©Ž‚Ä‚È‚¢‚æ‚¤‚É‚·‚é
 		item->Update();
 
-		if (!item->GetIsOnGround())
+		if (!item->GetIsOnGround() && item->GetIsOkFall())
 		{
 			item->Fall();
 		}

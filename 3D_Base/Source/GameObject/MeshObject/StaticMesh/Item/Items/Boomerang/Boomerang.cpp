@@ -211,16 +211,14 @@ void Boomerang::EnterUseThrowCommon()
 		mesh,
 		this
 	);
+
+	m_IsOkFall = false;
 }
 
 void Boomerang::UseThrow()
 {
-	//非使用時に一度だけ処理する
-	if (!m_IsUseThrow)
-	{
-		//使用フラグをオンに
-		m_IsUseThrow = true;
-	}
+	//使用フラグをオンに
+	m_IsUseThrow = true;
 }
 
 void Boomerang::Smash(CPlayerBase& playiers)
