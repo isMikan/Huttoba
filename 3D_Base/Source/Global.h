@@ -193,6 +193,7 @@ enum class ItemID
 	Mushroom,
 	SmashBat,
 	TrackingRobot,
+	Boomerang,
 
 	Max,
 	None = -1,

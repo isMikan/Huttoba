@@ -259,6 +259,7 @@
     <ClCompile Include="Source\Camera\CCamera.cpp" />
     <ClCompile Include="Source\Assets\Sprite\SpriteManager.cpp" />
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\GroundCollisionProxy\CGroundCollisionProxy.cpp" />
+    <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\Item\Items\Boomerang\Boomerang.cpp" />
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\Item\Items\Fun\Fun.cpp" />
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\Item\Items\Mushroom\Mushroom.cpp" />
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\Item\Items\TrackingRobot\ChaseSensor\ChaseSensor.cpp" />
@@ -380,6 +381,7 @@
     <ClInclude Include="Source\Camera\CCamera.h" />
     <ClInclude Include="Source\Assets\Sprite\SpriteManager.h" />
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\GroundCollisionProxy\CGroundCollisionProxy.h" />
+    <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\Item\Items\Boomerang\Boomerang.h" />
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\Item\Items\Fun\Fun.h" />
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\Item\Items\Mushroom\Mushroom.h" />
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\Item\Items\TrackingRobot\ChaseSensor\ChaseSensor.h" />
