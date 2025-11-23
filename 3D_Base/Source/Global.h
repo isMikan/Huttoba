@@ -130,6 +130,7 @@ enum class StaticMeshList
 	Fun,
 	Mushroom,
 	TrackingRobot,
+	Boomerang,
 
 	ExplosionCol,
 	FunCol,
