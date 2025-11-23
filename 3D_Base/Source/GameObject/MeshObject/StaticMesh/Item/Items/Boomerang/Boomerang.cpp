@@ -10,7 +10,7 @@ namespace { const bool regist = ItemBase::AutoRegister<Boomerang>(ItemID::Boomer
 
 Boomerang::Boomerang()
 	: m_Velocity		()
-	, m_MoveSpeed		( 3.0f )	//値を変えると爆弾の移動速度が変化
+	, m_MoveSpeed		( 8.0f )	//値を変えると爆弾の移動速度が変化
 	, m_UpSpeed			( 5.0f )	//値を変えると爆弾のy軸の上昇量が変化
 
 	, m_ExplosionTime	( 5.0f )	//値を変えると爆発するまでの時間が変化
@@ -18,7 +18,7 @@ Boomerang::Boomerang()
 
 	, m_ColorTimer		( 0.0 )
 	
-	, m_IsExploded		( false )
+	, m_IsUseThrow( false )
 
 	, m_MinSmashPower	( 6.0f )	//値を変えるとプレイヤーの最小吹き飛ばし力が変化
 
@@ -143,7 +143,7 @@ void Boomerang::OnCollision(CollisionBase* other)
 	{
 		if (CPlayerBase* player = dynamic_cast<CPlayerBase*>(other->GetListener()))
 		{
-			if (m_IsExploded)
+			if (m_IsUseThrow)
 			{
 				Smash(*player);
 			}
@@ -158,27 +158,9 @@ void Boomerang::HaveMove()
 
 void Boomerang::UseMove()
 {
-	//現在の高さによって落下するかを決める
-	if (m_vPosition.y > 0.1f)
-	{
-		//最後にm_vPositionに+するので重力加速度を-で計算する
-		m_Velocity.y -= m_tGravity;
-
-		//上が-=の計算なので+=で加速度を増やす
-		m_tGravity += 0.001f;
-	}
-	else
-	{
-		//地面の高さなのでy軸移動量を0にする
-		m_Velocity.y = 0;
-
-		Explosion();
-	}
-
 	//位置を移動速度*デルタタイムで計算
-	m_vPosition += m_Velocity * static_cast<float>(CTimeManager::GetDeltaTime());
-
-	ChangeColor();
+	m_vPosition += m_Velocity * CTimeManager::GetDeltaTime();
+	UseThrow();
 }
 
 void Boomerang::ThrowMove()
@@ -219,8 +201,6 @@ void Boomerang::EnterUseThrowCommon()
 	//移動
 	m_Velocity = forward * m_MoveSpeed;
 
-	m_Velocity.y = 3.0f;
-
 	//当たり判定削除
 	CollisionManager::GetInstance()->RemoveCollider(m_pCollision.get());
 
@@ -233,13 +213,13 @@ void Boomerang::EnterUseThrowCommon()
 	);
 }
 
-void Boomerang::Explosion()
+void Boomerang::UseThrow()
 {
 	//非爆発時に一度だけ処理する
-	if (!m_IsExploded)
+	if (!m_IsUseThrow)
 	{
 		//爆発フラグをオンに
-		m_IsExploded = true;
+		m_IsUseThrow = true;
 
 		static ::EsHandle hEffect = 1;
 
@@ -249,8 +229,6 @@ void Boomerang::Explosion()
 		//エフェクトの拡縮設定
 		AssetManager::Effect()->SetScale(hEffect, D3DXVECTOR3(0.6f, 0.6f, 0.6f));
 
-		//アイテムの状態を破棄にする
-		m_State = IItemObserver::IItemObserver::State::Destroy;
 	}
 }
 

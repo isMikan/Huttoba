@@ -52,7 +52,7 @@ private:
     void EnterUseThrowCommon();
 
     //”š”­ˆ—
-    void Explosion();
+    void UseThrow();
 
     //‚«”ò‚Î‚µˆ—
     void Smash(CPlayerBase& playiers);
@@ -83,7 +83,7 @@ private:
     double      m_ColorTimer;
 
     //”š”­‚Ìˆ—
-    bool        m_IsExploded;
+    bool        m_IsUseThrow;
 
     //”š”­‚Ì’†SˆÊ’u‚É‹ß‚¢‚Ù‚Ç‘½‚­‚«”ò‚Ô‚Ì‚ÅÅ¬‚ÆÅ‘å‚Ì‚«”ò‚Î‚µ—Í‚ğ’Ç‰Á
 
