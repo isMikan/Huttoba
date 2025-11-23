@@ -228,7 +228,7 @@ protected:
 // 	   “à•”‚ÅŒÄ‚Ño‚·ŠÖ”.
 //======================================================================
 	//--- ó‘Ô‚ğ•ÏX‚ğˆ—‚·‚é ---.
-	void ItemState(
+	void ChangeState(
 		std::unique_ptr<CPlayerState>& currentState,
 		std::unique_ptr<CPlayerState> newScene);
 

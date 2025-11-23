@@ -166,19 +166,19 @@ void CPlayerBase::ResultUpdate()
 //--- ˆÚ“®ó‘Ô‚ğİ’è ---.
 void CPlayerBase::SetMoveState(std::unique_ptr<CPlayerState> newState)
 {
-	ItemState(m_pMoveState, std::move(newState));
+	ChangeState(m_pMoveState, std::move(newState));
 }
 
 //--- ‰ñ“]ó‘Ô‚ğİ’è ---.
 void CPlayerBase::SetTurnState(std::unique_ptr<CPlayerState> newState)
 {
-	ItemState(m_pTurnState, std::move(newState));
+	ChangeState(m_pTurnState, std::move(newState));
 }
 
 //--- s“®ó‘Ô‚ğİ’è ---.
 void CPlayerBase::SetActionState(std::unique_ptr<CPlayerState> newState)
 {
-	ItemState(m_pActionState, std::move(newState));
+	ChangeState(m_pActionState, std::move(newState));
 	m_Bus.Publish(m_pActionState.get());
 }
 
@@ -350,7 +350,7 @@ float CPlayerBase::WrapAngle(float value)
 //======================================================================
 
 //--- ó‘Ô‘JˆÚ‚Ìˆ—ŠÖ” ---.
-void CPlayerBase::ItemState(
+void CPlayerBase::ChangeState(
 	std::unique_ptr<CPlayerState>& currentState,
 	std::unique_ptr<CPlayerState> newState)
 {
