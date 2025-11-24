@@ -78,31 +78,26 @@ void SpawnItemPosition::CheckCurrentGround()
 	case GroundTag::SafeGround:
 		m_CurrentClampRangeMax = SAFE_GROUND_RANGE_MAX;
 		m_CurrentClampRangeMin = SAFE_GROUND_RANGE_MIN;
-		std::cout << "SafeGround" << std::endl;
 
 		break;
 	case GroundTag::ThirdFallGround:
 		m_CurrentClampRangeMax = SAFE_GROUND_RANGE_MAX;
 		m_CurrentClampRangeMin = SAFE_GROUND_RANGE_MIN;
-		std::cout << "SafeFallGround" << std::endl;
 
 		break;
 	case GroundTag::SecondFallGround:
 		m_CurrentClampRangeMax = THIRD_GROUND_RANGE_MAX;
 		m_CurrentClampRangeMin = THIRD_GROUND_RANGE_MIN;
-		std::cout << "ThirdRange" << std::endl;
 
 		break;
 	case GroundTag::FirstFallGround:
 		m_CurrentClampRangeMax = SECOND_GROUND_RANGE_MAX;
 		m_CurrentClampRangeMin = SECOND_GROUND_RANGE_MIN;
-		std::cout << "SecondRange" << std::endl;
 
 		break;
 	case GroundTag::None:
 		m_CurrentClampRangeMax = FIRST_GROUND_RANGE_MAX;
 		m_CurrentClampRangeMin = FIRST_GROUND_RANGE_MIN;
-		std::cout << "FirstRange" << std::endl;
 
 		break;
 	}
