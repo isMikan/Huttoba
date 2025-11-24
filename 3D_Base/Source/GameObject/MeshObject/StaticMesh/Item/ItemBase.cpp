@@ -10,6 +10,7 @@ ItemBase::ItemBase()
 	, m_tGravity	{ 9.8f }
 	, m_IsDestroy	{ false }
 	, m_IsOnGround	{ false }
+	, m_IsOkFall	{ true }
 
 	, m_ThrowSmashPower	{ 5.0f }
 {

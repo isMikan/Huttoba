@@ -103,6 +103,7 @@ public:
 
 	bool GetIsOnGround() { return m_IsOnGround; }
 	bool GetIsUse()   { return m_IsUse;	}
+	bool GetIsOkFall()   { return m_IsOkFall;	}
 
 	//使用制限の取得（ゲージに必要）.	制作者	[甲把]
 	Gauge GetUsageLimit() const { return m_UsageLimit; }
@@ -137,6 +138,7 @@ protected:
 	bool m_IsDestroy;	// 破壊するかどうか
 	bool m_IsOnGround;	// 地面に接触しているか
 	bool m_IsUse;		// 使用中か
+	bool m_IsOkFall;		// 落下可能かどうか
 
 	Gauge m_UsageLimit;	//使用制限.
 

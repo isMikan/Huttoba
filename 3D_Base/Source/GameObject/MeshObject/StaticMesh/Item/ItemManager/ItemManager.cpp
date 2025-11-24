@@ -71,7 +71,7 @@ void ItemManager::Update()
 		//一旦Player0しか持てないようにする
 		item->Update();
 
-		if (!item->GetIsOnGround())
+		if (!item->GetIsOnGround() && item->GetIsOkFall())
 		{
 			item->Fall();
 		}
@@ -104,8 +104,8 @@ void ItemManager::CreateItem()
 	ItemID itemId = m_pSpawnItem->SerectSpawnItem(m_pItems);
 
 	//選択されたアイテム作成
-	m_pItems.push_back(ItemFactory::GetInstance()->CreateItem(itemId));
-	//m_pItems.push_back(ItemFactory::GetInstance()->CreateItem(ItemID::TrackingRobot));
+	//m_pItems.push_back(ItemFactory::GetInstance()->CreateItem(itemId));
+	m_pItems.push_back(ItemFactory::GetInstance()->CreateItem(ItemID::Boomerang));
 
 	//生成されたアイテムの位置設定
 	m_pItems.back()->SetPosition(m_pSpawnItemPosition->SerectPosition());

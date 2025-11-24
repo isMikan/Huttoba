@@ -130,10 +130,12 @@ enum class StaticMeshList
 	Fun,
 	Mushroom,
 	TrackingRobot,
+	Boomerang,
 
 	ExplosionCol,
 	FunCol,
 	TestPlayer,
+	BoomerangCol,
 
 	floor1,
 	floor2,
@@ -192,6 +194,7 @@ enum class ItemID
 	Mushroom,
 	SmashBat,
 	TrackingRobot,
+	Boomerang,
 
 	Max,
 	None = -1,
