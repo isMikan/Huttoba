@@ -48,6 +48,8 @@ Boomerang::~Boomerang()
 
 void Boomerang::Init()
 {
+	m_ComeBack = false;
+
 	static const int USE_COUNT = 1;
 
 	AttachMesh(AssetManager::Mesh(StaticMeshList::Boomerang));
@@ -160,17 +162,37 @@ void Boomerang::HaveMove()
 
 void Boomerang::UseMove()
 {
+	if (!m_ComeBack)
+	{
+		//だんだん減速
+		m_Velocity.x -= m_Velocity.x * 0.01;
+		m_Velocity.z -= m_Velocity.z * 0.01;
+	}
+	else
+	{
+		D3DXVECTOR3 vector = m_pPlayer->GetPosition() - m_vPosition;
+		D3DXVECTOR3 initVector;
+		D3DXVec3Normalize(&initVector, &vector);
+
+		//だんだん加速
+		m_Velocity = initVector * m_MoveSpeed;
+
+		m_Velocity.x += m_Velocity.x * 0.25;
+		m_Velocity.z += m_Velocity.z * 0.25;
+	}
+
+	//推進力が一定まで下がるとPlayerに戻る
+	if (m_Velocity.x < 2.f && m_Velocity.z < 2.f)
+	{
+		m_ComeBack = true;
+	}
+
 	//位置を移動速度*デルタタイムで計算
 	m_vPosition += m_Velocity * CTimeManager::GetDeltaTime();
 	m_TotalVelocity += m_Velocity * CTimeManager::GetDeltaTime();;
 
-	m_Velocity.x -= m_Velocity.x * 0.01;
-	m_Velocity.z -= m_Velocity.z * 0.01;
-
-	if (m_Velocity.x < 2.f && m_Velocity.z < 2.f)
-	{
-		m_vPosition = m_pPlayer->GetPosition();
-	}
+	//回転
+	m_vRotation.x = m_vRotation.x + (D3DXToRadian(10.f));
 
 	UseThrow();
 }
