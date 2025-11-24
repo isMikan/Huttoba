@@ -26,6 +26,8 @@ public:
 	//ステージの落ち情報を渡す
 	GroundTag GetCurrentFallGround() { return m_CurrentFallGround; }
 
+	bool GetIsFirstSpawn() { return IsFirstSpawn; }
+
 private:
 
 	//現在のステージの落ち具合をチェック
@@ -33,6 +35,15 @@ private:
 
 	//ランダムで出現位置を設定
 	VECTOR2 SetRandomPos();
+
+	//初期位置決定
+	void DecitionFirstPosition();
+
+	//最初の固定沸き
+	D3DXVECTOR3 DecitionSpawn();
+
+	//通常のランダム沸き
+	D3DXVECTOR3 RamdomSpawn();
 
 
 private:

@@ -2,6 +2,7 @@
 #include "SpawnItemPosition.h"
 #include <algorithm>
 
+static constexpr float SPAWN_POSITION_Y = 15.f;
 
 SpawnItemPosition::SpawnItemPosition(std::unique_ptr<CGroundManager>& GroundMamager)
 	: m_pGroundManager	{ GroundMamager }
@@ -26,14 +27,7 @@ void SpawnItemPosition::Init()
 	m_CurrentFallGround = GroundTag::None;
 
 	IsFirstSpawn = true;
-	m_pFirstSpawnPosition.push_back(D3DXVECTOR3(-5.f, 10.f, 1.f));
-	m_pFirstSpawnPosition.push_back(D3DXVECTOR3(-4.f, 10.f, 1.f));
-	m_pFirstSpawnPosition.push_back(D3DXVECTOR3(-3.f, 10.f, 1.f));
-	m_pFirstSpawnPosition.push_back(D3DXVECTOR3(-2.f, 10.f, 5.f));
-	m_pFirstSpawnPosition.push_back(D3DXVECTOR3(-1.f, 10.f, 5.f));
-	m_pFirstSpawnPosition.push_back(D3DXVECTOR3( 0.f, 10.f, 10.f));
-	m_pFirstSpawnPosition.push_back(D3DXVECTOR3( 1.f, 10.f, 10.f));
-	m_pFirstSpawnPosition.push_back(D3DXVECTOR3( 2.f, 10.f, 10.f));
+	DecitionFirstPosition();
 }
 
 //--------------------------------------------------------------------------------------------------------------
@@ -60,19 +54,14 @@ D3DXVECTOR3 SpawnItemPosition::SerectPosition()
 	VECTOR2 pos;
 	D3DXVECTOR3 returnPos;
 
+	//最初の固定沸きかどうか
 	if (IsFirstSpawn)
 	{
-		returnPos = m_pFirstSpawnPosition[FirstSpawnCount];
-		FirstSpawnCount++;
+		returnPos = DecitionSpawn();
 	}
 	else
 	{
-		//現在のスポーン範囲を設定
-		CheckCurrentGround();
-
-		//現在のスポーン範囲からランダムに位置を設定
-		pos = SetRandomPos();
-		returnPos = { pos.x ,15.f,pos.z };
+		returnPos = RamdomSpawn();
 	}
 
 	//初期配置地点が埋まると固定配置を終了
@@ -89,7 +78,6 @@ D3DXVECTOR3 SpawnItemPosition::StartPosition()
 	return D3DXVECTOR3();
 }
 
-//以下機能
 //--------------------------------------------------------------------------------------------------------------
 
 void SpawnItemPosition::CheckCurrentGround()
@@ -150,5 +138,48 @@ VECTOR2 SpawnItemPosition::SetRandomPos()
 	std::uniform_real_distribution<float> RandomPosZ(m_CurrentClampRangeMin.z, m_CurrentClampRangeMax.z);
 
 	return VECTOR2(RandomPosX(gen), RandomPosZ(gen));
+}
+
+//--------------------------------------------------------------------------------------------------------------
+
+void SpawnItemPosition::DecitionFirstPosition()
+{
+	m_pFirstSpawnPosition.push_back(D3DXVECTOR3(-5.f, SPAWN_POSITION_Y, 1.f));
+	m_pFirstSpawnPosition.push_back(D3DXVECTOR3(-4.f, SPAWN_POSITION_Y, 1.f));
+	m_pFirstSpawnPosition.push_back(D3DXVECTOR3(-3.f, SPAWN_POSITION_Y, 1.f));
+	m_pFirstSpawnPosition.push_back(D3DXVECTOR3(-2.f, SPAWN_POSITION_Y, 5.f));
+	m_pFirstSpawnPosition.push_back(D3DXVECTOR3(-1.f, SPAWN_POSITION_Y, 5.f));
+	m_pFirstSpawnPosition.push_back(D3DXVECTOR3(0.f,  SPAWN_POSITION_Y, 10.f));
+	m_pFirstSpawnPosition.push_back(D3DXVECTOR3(1.f,  SPAWN_POSITION_Y, 10.f));
+	m_pFirstSpawnPosition.push_back(D3DXVECTOR3(2.f,  SPAWN_POSITION_Y, 10.f));
+}
+
+//--------------------------------------------------------------------------------------------------------------
+
+D3DXVECTOR3 SpawnItemPosition::DecitionSpawn()
+{
+	D3DXVECTOR3 returnPos;
+
+	returnPos = m_pFirstSpawnPosition[FirstSpawnCount];
+	FirstSpawnCount++;
+
+	return returnPos;
+}
+
+//--------------------------------------------------------------------------------------------------------------
+
+D3DXVECTOR3 SpawnItemPosition::RamdomSpawn()
+{
+	VECTOR2 pos;
+	D3DXVECTOR3 returnPos;
+
+	//現在のスポーン範囲を設定
+	CheckCurrentGround();
+
+	//現在のスポーン範囲からランダムに位置を設定
+	pos = SetRandomPos();
+	returnPos = { pos.x ,SPAWN_POSITION_Y,pos.z };
+
+	return returnPos;
 }
 

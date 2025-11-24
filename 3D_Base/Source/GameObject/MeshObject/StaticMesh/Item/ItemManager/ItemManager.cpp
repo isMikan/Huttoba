@@ -13,7 +13,7 @@ ItemManager::ItemManager(std::unique_ptr<CGroundManager>& GroundManager)
 	: m_pItems				{}
 	, m_pSpawnItem			{ std::make_unique<SelectSpawnItem>() }
 	, m_pSpawnItemPosition	{ std::make_unique<SpawnItemPosition>(GroundManager) }
-	, m_SpawnLimit			{ 8 }
+	, m_SpawnLimit			{ }
 {
 	Create();
 	Init();
@@ -64,7 +64,8 @@ void ItemManager::Update()
 	m_pSpawnItemPosition->Uptate();
 
 	//アイテム数上限の時は作成しない
-	if (m_SpawnLimit >= m_pItems.size())
+	bool canCreateItem = m_pSpawnItemPosition->GetIsFirstSpawn() || (m_pItems.size() < m_SpawnLimit);
+	if (canCreateItem)
 	{
 		//アイテムの作成
 		CreateItem();
