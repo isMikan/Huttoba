@@ -8,6 +8,9 @@ SpawnItemPosition::SpawnItemPosition(std::unique_ptr<CGroundManager>& GroundMama
 	, m_CurrentFallGround{}
 	, m_CurrentClampRangeMax	{}
 	, m_CurrentClampRangeMin	{}
+	, IsFirstSpawn				{ true }
+	, FirstSpawnCount			{}
+	, m_pFirstSpawnPosition		{}
 {
 	Init();
 }
@@ -21,6 +24,16 @@ SpawnItemPosition::~SpawnItemPosition()
 void SpawnItemPosition::Init()
 {
 	m_CurrentFallGround = GroundTag::None;
+
+	IsFirstSpawn = true;
+	m_pFirstSpawnPosition.push_back(D3DXVECTOR3(-5.f, 10.f, 1.f));
+	m_pFirstSpawnPosition.push_back(D3DXVECTOR3(-4.f, 10.f, 1.f));
+	m_pFirstSpawnPosition.push_back(D3DXVECTOR3(-3.f, 10.f, 1.f));
+	m_pFirstSpawnPosition.push_back(D3DXVECTOR3(-2.f, 10.f, 5.f));
+	m_pFirstSpawnPosition.push_back(D3DXVECTOR3(-1.f, 10.f, 5.f));
+	m_pFirstSpawnPosition.push_back(D3DXVECTOR3( 0.f, 10.f, 10.f));
+	m_pFirstSpawnPosition.push_back(D3DXVECTOR3( 1.f, 10.f, 10.f));
+	m_pFirstSpawnPosition.push_back(D3DXVECTOR3( 2.f, 10.f, 10.f));
 }
 
 //--------------------------------------------------------------------------------------------------------------
@@ -44,13 +57,29 @@ void SpawnItemPosition::Uptate()
 //=================================================
 D3DXVECTOR3 SpawnItemPosition::SerectPosition()
 {
-	//現在のスポーン範囲を設定
-	CheckCurrentGround();
+	VECTOR2 pos;
+	D3DXVECTOR3 returnPos;
 
-	//現在のスポーン範囲からランダムに位置を設定
-	VECTOR2 pos = SetRandomPos();
-	D3DXVECTOR3 returnPos = { pos.x ,15.f,pos.z };
+	if (IsFirstSpawn)
+	{
+		returnPos = m_pFirstSpawnPosition[FirstSpawnCount];
+		FirstSpawnCount++;
+	}
+	else
+	{
+		//現在のスポーン範囲を設定
+		CheckCurrentGround();
 
+		//現在のスポーン範囲からランダムに位置を設定
+		pos = SetRandomPos();
+		returnPos = { pos.x ,15.f,pos.z };
+	}
+
+	//初期配置地点が埋まると固定配置を終了
+	if (FirstSpawnCount >= m_pFirstSpawnPosition.size())
+	{
+		IsFirstSpawn = false;
+	}
 	return returnPos;
 }
 

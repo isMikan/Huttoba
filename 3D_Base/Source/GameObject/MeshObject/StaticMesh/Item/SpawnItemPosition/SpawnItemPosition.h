@@ -45,4 +45,9 @@ private:
 	//アイテムの出現幅
 	VECTOR2 m_CurrentClampRangeMax;
 	VECTOR2 m_CurrentClampRangeMin;
+
+	bool IsFirstSpawn;
+	int  FirstSpawnCount;
+
+	std::vector<D3DXVECTOR3> m_pFirstSpawnPosition;
 };
