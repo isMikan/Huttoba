@@ -63,8 +63,12 @@ void ItemManager::Update()
 {
 	m_pSpawnItemPosition->Uptate();
 
-	//アイテムの作成
-	CreateItem();
+	//アイテム数上限の時は作成しない
+	if (m_SpawnLimit >= m_pItems.size())
+	{
+		//アイテムの作成
+		CreateItem();
+	}
 
 	for (auto& item : m_pItems)
 	{
@@ -96,9 +100,6 @@ void ItemManager::CreateItem()
 {
 	//アイテム上限数を決定
 	CheckSpawnLimit();
-
-	//アイテム数上限の時は作成しない
-	if (m_SpawnLimit <= m_pItems.size()) return;
 		
 	//Selectクラスで生成アイテムを選択
 	ItemID itemId = m_pSpawnItem->SerectSpawnItem(m_pItems);

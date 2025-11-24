@@ -17,6 +17,7 @@ public:
 
 	//oŒ»ˆÊ’u‚ğİ’è
 	D3DXVECTOR3 SerectPosition();
+	D3DXVECTOR3 StartPosition();
 
 
 	void Init();

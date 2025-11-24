@@ -54,6 +54,12 @@ D3DXVECTOR3 SpawnItemPosition::SerectPosition()
 	return returnPos;
 }
 
+D3DXVECTOR3 SpawnItemPosition::StartPosition()
+{
+
+	return D3DXVECTOR3();
+}
+
 //ˆÈ‰º‹@”\
 //--------------------------------------------------------------------------------------------------------------
 
