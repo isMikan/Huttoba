@@ -13,8 +13,10 @@ ItemManager::ItemManager(std::unique_ptr<CGroundManager>& GroundManager)
 	: m_pItems				{}
 	, m_pSpawnItem			{ std::make_unique<SelectSpawnItem>() }
 	, m_pSpawnItemPosition	{ std::make_unique<SpawnItemPosition>(GroundManager) }
+	, m_SpawnLimit			{ }
 {
 	Create();
+	Init();
 }
 
 //--------------------------------------------------------------------------------------------------------------
@@ -48,6 +50,7 @@ HRESULT ItemManager::LoadData()
 
 void ItemManager::Init()
 {
+	m_SpawnLimit = 8;
 	for (auto& item : m_pItems)
 	{
 		item->Init();
@@ -60,15 +63,20 @@ void ItemManager::Update()
 {
 	m_pSpawnItemPosition->Uptate();
 
-	//アイテムの作成
-	CreateItem();
+	//アイテム数上限の時は作成しない
+	bool canCreateItem = m_pSpawnItemPosition->GetIsFirstSpawn() || (m_pItems.size() < m_SpawnLimit);
+	if (canCreateItem)
+	{
+		//アイテムの作成
+		CreateItem();
+	}
 
 	for (auto& item : m_pItems)
 	{
 		//一旦Player0しか持てないようにする
 		item->Update();
 
-		if (!item->GetIsOnGround())
+		if (!item->GetIsOnGround() && item->GetIsOkFall())
 		{
 			//item->Fall();
 		}
@@ -82,7 +90,6 @@ void ItemManager::Update()
 
 void ItemManager::Draw(D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAMERA& Camera)
 {
-
 	for (auto& item : m_pItems)
 	{
 		item->Draw(View,Proj, Light,Camera);
@@ -91,15 +98,15 @@ void ItemManager::Draw(D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAMERA&
 
 void ItemManager::CreateItem()
 {
-	//アイテム数上限の時は作成しない
-	if (SPAWN_LIMIT < m_pItems.size()) return;
+	//アイテム上限数を決定
+	CheckSpawnLimit();
 		
 	//Selectクラスで生成アイテムを選択
-	//ItemID itemId = m_pSpawnItem->SerectSpawnItem(m_pItems);
+	ItemID itemId = m_pSpawnItem->SerectSpawnItem(m_pItems);
 
 	//選択されたアイテム作成
-	//m_pItems.push_back(ItemFactory::GetInstance()->CreateItem(ItemID::Bomb));
-	m_pItems.push_back(ItemFactory::GetInstance()->CreateItem(ItemID::TrackingRobot));
+	m_pItems.push_back(ItemFactory::GetInstance()->CreateItem(itemId));
+	//m_pItems.push_back(ItemFactory::GetInstance()->CreateItem(ItemID::Boomerang)); ←指定アイテム生成
 
 	//生成されたアイテムの位置設定
 	m_pItems.back()->SetPosition(m_pSpawnItemPosition->SerectPosition());
@@ -125,6 +132,21 @@ void ItemManager::DestroyItem()
 D3DXVECTOR3 ItemManager::GetItemPos(int i)
 {
 	return m_pItems[i]->GetPosition();
+}
+
+//--------------------------------------------------------------------------------------------------------------
+
+void ItemManager::CheckSpawnLimit()
+{
+	//ステージの落ち状況によって上限変更
+	switch (m_pSpawnItemPosition->GetCurrentFallGround())
+	{
+	case GroundTag::SafeGround:			m_SpawnLimit = 1; break;
+	case GroundTag::ThirdFallGround:	m_SpawnLimit = 1; break;
+	case GroundTag::SecondFallGround:	m_SpawnLimit = 4; break;
+	case GroundTag::FirstFallGround:	m_SpawnLimit = 6; break;
+	case GroundTag::None:break;
+	}
 }
 
 //--------------------------------------------------------------------------------------------------------------

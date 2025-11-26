@@ -94,13 +94,13 @@ void CPlayerBase::Update()
 		//アイテムを投げる.
 		if (m_Control == ActionInstruct::ToggleItem)
 		{
-			m_pItemBase->SetState(ItemBase::State::Throw);
+			m_pItemBase->SetState(IItemObserver::State::Throw);
 			SetActionState(std::make_unique<CPlayerThrowState>(*this));
 		}
 		//アイテムの攻撃.
 		if (m_Control == ActionInstruct::Attack)
 		{
-			m_pItemBase->SetState(ItemBase::State::Use);
+			m_pItemBase->SetState(IItemObserver::State::Use);
 			SetActionState(std::make_unique<CPlayerItemAttackState>(*this));
 		}
 	}
@@ -420,14 +420,14 @@ void CPlayerBase::OnCollision(CollisionBase* pOtherCollider)
 		if (ItemBase* item = dynamic_cast<ItemBase*>(pOtherCollider->GetListener()))
 		{
 			//アイテムが地面にある状態の場合.
-			if(item->GetState() == ItemBase::State::OnGround)
+			if(item->GetState() == IItemObserver::State::OnGround)
 			{
 				//拾う指示をされ、アイテムを持っていない場合.
 				if (m_Control == ActionInstruct::ToggleItem
 					&& !m_pItemBase)
 				{
 					item->SetPlayer(this);
-					item->SetState(ItemBase::State::Have);
+					item->SetState(IItemObserver::State::Have);
 					SetActionState(std::make_unique<CPlayerPickupState>(*this));
 					m_pItemBase = item;
 				}

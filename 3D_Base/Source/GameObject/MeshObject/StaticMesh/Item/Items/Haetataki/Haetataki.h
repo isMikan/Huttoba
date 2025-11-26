@@ -37,7 +37,7 @@ public:
 	void Use()		override; // 使用
 	void Throw()	override; // 投擲
 	void Destroy()	override; // 消滅
-	void ChangeState(State state)override; //状態変化時に一度だけ処理
+	void ItemState(IItemObserver::State state)override; //状態変化時に一度だけ処理
 
 	/*****************************************************************************************
 	* @brief    ハエたたき取得モーション

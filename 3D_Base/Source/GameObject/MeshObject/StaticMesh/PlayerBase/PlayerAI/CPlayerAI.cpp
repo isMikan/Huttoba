@@ -75,31 +75,23 @@ void CPlayerAI::AutomaticMovement(D3DXVECTOR3 targetDir)
 	}
 	else
 	{
-		//‰ñ“]‚¾‚¯‚µ‚È‚¢ê‡.
-		if (IsAnyActionState<CPlayerFallingState>())	//—‚¿‚Ä‚¢‚é.
-		{
-			//“ü—Í‚É•Ï‰»‚ª‚ ‚Á‚½ê‡.
-			if (m_CurrentDir != targetDir)
-			{
-				SetTurnState(std::make_unique<CPlayerTurnIdleState>(*this));
-			}
-		}
-		//ˆÚ“®E‰ñ“]‚·‚éê‡.
-		else
-		{
-			//“ü—Í‚É•Ï‰»‚ª‚ ‚Á‚½ê‡.
-			if (m_CurrentDir != targetDir)
-			{
-				SetTurnState(std::make_unique<CPlayerTurnState>(*this, targetDir.x, targetDir.z));
-			}
-		}
-
 		//“ü—Í‚É•Ï‰»‚ª‚ ‚Á‚½ê‡.
 		if (m_CurrentDir != targetDir)
 		{
-			SetMoveState(std::make_unique<CPlayerMoveState>(*this, targetDir.x, targetDir.z));
+			//‰ñ“]‚¾‚¯‚µ‚È‚¢ê‡.
+			if (IsAnyActionState<CPlayerFallingState>())	//—‚¿‚Ä‚¢‚é.
+			{
+				SetTurnState(std::make_unique<CPlayerTurnIdleState>(*this));
+			}
+			//ˆÚ“®E‰ñ“]‚·‚éê‡.
+			else
+			{
+				SetTurnState(std::make_unique<CPlayerTurnState>(*this, targetDir.x, targetDir.z));
+			}
 			m_CurrentDir = targetDir;	//Œ»İ‚Ì“ü—Í‚ğ‹L˜^‚µ‚Ä‚¨‚­.
 		}
+
+		SetMoveState(std::make_unique<CPlayerMoveState>(*this, targetDir.x, targetDir.z));
 	}
 }
 

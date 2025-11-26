@@ -1,8 +1,6 @@
 #pragma once
 #include "Global.h"
 
-#include<memory>
-
 #include "CScene.h"
 #include "Scene/SceneTitle/CSceneTitle.h"
 #include "Scene/SceneStandby/CSceneStandby.h"

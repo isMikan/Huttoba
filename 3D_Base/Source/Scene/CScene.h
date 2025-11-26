@@ -1,6 +1,11 @@
 #pragma once
+
 #include "Global.h"
 #include "MyMacro.h"
+
+#include "Camera/CameraManager/CCameraManager.h"
+#include "GameObject/UIObject/Fade/FadeManager/CFadeManager.h"
+
 class CScene
 {
 public:

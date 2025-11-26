@@ -2,12 +2,16 @@
 #include "SpawnItemPosition.h"
 #include <algorithm>
 
+static constexpr float SPAWN_POSITION_Y = 15.f;
 
 SpawnItemPosition::SpawnItemPosition(std::unique_ptr<CGroundManager>& GroundMamager)
 	: m_pGroundManager	{ GroundMamager }
 	, m_CurrentFallGround{}
 	, m_CurrentClampRangeMax	{}
 	, m_CurrentClampRangeMin	{}
+	, IsFirstSpawn				{ true }
+	, FirstSpawnCount			{}
+	, m_pFirstSpawnPosition		{}
 {
 	Init();
 }
@@ -21,6 +25,9 @@ SpawnItemPosition::~SpawnItemPosition()
 void SpawnItemPosition::Init()
 {
 	m_CurrentFallGround = GroundTag::None;
+
+	IsFirstSpawn = true;
+	DecitionFirstPosition();
 }
 
 //--------------------------------------------------------------------------------------------------------------
@@ -44,17 +51,33 @@ void SpawnItemPosition::Uptate()
 //=================================================
 D3DXVECTOR3 SpawnItemPosition::SerectPosition()
 {
-	//現在のスポーン範囲を設定
-	CheckCurrentGround();
+	VECTOR2 pos;
+	D3DXVECTOR3 returnPos;
 
-	//現在のスポーン範囲からランダムに位置を設定
-	VECTOR2 pos = SetRandomPos();
-	D3DXVECTOR3 returnPos = { pos.x ,15.f,pos.z };
+	//最初の固定沸きかどうか
+	if (IsFirstSpawn)
+	{
+		returnPos = DecitionSpawn();
+	}
+	else
+	{
+		returnPos = RamdomSpawn();
+	}
 
+	//初期配置地点が埋まると固定配置を終了
+	if (FirstSpawnCount >= m_pFirstSpawnPosition.size())
+	{
+		IsFirstSpawn = false;
+	}
 	return returnPos;
 }
 
-//以下機能
+D3DXVECTOR3 SpawnItemPosition::StartPosition()
+{
+
+	return D3DXVECTOR3();
+}
+
 //--------------------------------------------------------------------------------------------------------------
 
 void SpawnItemPosition::CheckCurrentGround()
@@ -78,31 +101,26 @@ void SpawnItemPosition::CheckCurrentGround()
 	case GroundTag::SafeGround:
 		m_CurrentClampRangeMax = SAFE_GROUND_RANGE_MAX;
 		m_CurrentClampRangeMin = SAFE_GROUND_RANGE_MIN;
-		std::cout << "SafeGround" << std::endl;
 
 		break;
 	case GroundTag::ThirdFallGround:
 		m_CurrentClampRangeMax = SAFE_GROUND_RANGE_MAX;
 		m_CurrentClampRangeMin = SAFE_GROUND_RANGE_MIN;
-		std::cout << "SafeFallGround" << std::endl;
 
 		break;
 	case GroundTag::SecondFallGround:
 		m_CurrentClampRangeMax = THIRD_GROUND_RANGE_MAX;
 		m_CurrentClampRangeMin = THIRD_GROUND_RANGE_MIN;
-		std::cout << "ThirdRange" << std::endl;
 
 		break;
 	case GroundTag::FirstFallGround:
 		m_CurrentClampRangeMax = SECOND_GROUND_RANGE_MAX;
 		m_CurrentClampRangeMin = SECOND_GROUND_RANGE_MIN;
-		std::cout << "SecondRange" << std::endl;
 
 		break;
 	case GroundTag::None:
 		m_CurrentClampRangeMax = FIRST_GROUND_RANGE_MAX;
 		m_CurrentClampRangeMin = FIRST_GROUND_RANGE_MIN;
-		std::cout << "FirstRange" << std::endl;
 
 		break;
 	}
@@ -120,5 +138,48 @@ VECTOR2 SpawnItemPosition::SetRandomPos()
 	std::uniform_real_distribution<float> RandomPosZ(m_CurrentClampRangeMin.z, m_CurrentClampRangeMax.z);
 
 	return VECTOR2(RandomPosX(gen), RandomPosZ(gen));
+}
+
+//--------------------------------------------------------------------------------------------------------------
+
+void SpawnItemPosition::DecitionFirstPosition()
+{
+	m_pFirstSpawnPosition.push_back(D3DXVECTOR3(-5.f, SPAWN_POSITION_Y, 1.f));
+	m_pFirstSpawnPosition.push_back(D3DXVECTOR3(-4.f, SPAWN_POSITION_Y, 1.f));
+	m_pFirstSpawnPosition.push_back(D3DXVECTOR3(-3.f, SPAWN_POSITION_Y, 1.f));
+	m_pFirstSpawnPosition.push_back(D3DXVECTOR3(-2.f, SPAWN_POSITION_Y, 5.f));
+	m_pFirstSpawnPosition.push_back(D3DXVECTOR3(-1.f, SPAWN_POSITION_Y, 5.f));
+	m_pFirstSpawnPosition.push_back(D3DXVECTOR3(0.f,  SPAWN_POSITION_Y, 10.f));
+	m_pFirstSpawnPosition.push_back(D3DXVECTOR3(1.f,  SPAWN_POSITION_Y, 10.f));
+	m_pFirstSpawnPosition.push_back(D3DXVECTOR3(2.f,  SPAWN_POSITION_Y, 10.f));
+}
+
+//--------------------------------------------------------------------------------------------------------------
+
+D3DXVECTOR3 SpawnItemPosition::DecitionSpawn()
+{
+	D3DXVECTOR3 returnPos;
+
+	returnPos = m_pFirstSpawnPosition[FirstSpawnCount];
+	FirstSpawnCount++;
+
+	return returnPos;
+}
+
+//--------------------------------------------------------------------------------------------------------------
+
+D3DXVECTOR3 SpawnItemPosition::RamdomSpawn()
+{
+	VECTOR2 pos;
+	D3DXVECTOR3 returnPos;
+
+	//現在のスポーン範囲を設定
+	CheckCurrentGround();
+
+	//現在のスポーン範囲からランダムに位置を設定
+	pos = SetRandomPos();
+	returnPos = { pos.x ,SPAWN_POSITION_Y,pos.z };
+
+	return returnPos;
 }
 

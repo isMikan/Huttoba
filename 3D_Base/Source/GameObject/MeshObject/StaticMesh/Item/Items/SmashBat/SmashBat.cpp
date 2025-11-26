@@ -73,7 +73,7 @@ void SmashBat::Destroy()
 
 //--------------------------------------------------------------------------------------------------------------
 
-void SmashBat::ChangeState(State state)
+void SmashBat::ItemState(IItemObserver::State state)
 {
 }
 

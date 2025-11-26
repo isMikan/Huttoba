@@ -259,6 +259,7 @@
     <ClCompile Include="Source\Camera\CCamera.cpp" />
     <ClCompile Include="Source\Assets\Sprite\SpriteManager.cpp" />
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\GroundCollisionProxy\CGroundCollisionProxy.cpp" />
+    <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\Item\Items\Boomerang\Boomerang.cpp" />
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\Item\Items\Fun\Fun.cpp" />
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\Item\Items\Mushroom\Mushroom.cpp" />
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\Item\Items\TrackingRobot\ChaseSensor\ChaseSensor.cpp" />
@@ -275,6 +276,8 @@
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\PlayerBase\PlayerState\PlayerActionState\PlayerResultWin_TypeA\CPlayerResultWin_TypeA.cpp" />
     <ClCompile Include="Source\GameObject\SpriteObject\Shadow\CShadow.cpp" />
     <ClCompile Include="Source\GameObject\SpriteObject\Shadow\ShadowManager\CShadowManager.cpp" />
+    <ClCompile Include="Source\GameObject\UIObject\Fade\FadeBase\CFadeBase.cpp" />
+    <ClCompile Include="Source\GameObject\UIObject\Fade\FadeManager\CFadeManager.cpp" />
     <ClCompile Include="Source\GameObject\UIObject\GaugeBase\CGaugeBase.cpp" />
     <ClCompile Include="Source\GameObject\UIObject\GaugeBase\GaugeFrame\CGaugeFrame.cpp" />
     <ClCompile Include="Source\GameObject\UIObject\GaugeBase\GaugeManager\CGaugeManager.cpp" />
@@ -378,6 +381,7 @@
     <ClInclude Include="Source\Camera\CCamera.h" />
     <ClInclude Include="Source\Assets\Sprite\SpriteManager.h" />
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\GroundCollisionProxy\CGroundCollisionProxy.h" />
+    <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\Item\Items\Boomerang\Boomerang.h" />
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\Item\Items\Fun\Fun.h" />
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\Item\Items\Mushroom\Mushroom.h" />
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\Item\Items\TrackingRobot\ChaseSensor\ChaseSensor.h" />
@@ -394,6 +398,8 @@
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\PlayerBase\PlayerState\PlayerActionState\PlayerResultWin_TypeA\CPlayerResultWin_TypeA.h" />
     <ClInclude Include="Source\GameObject\SpriteObject\Shadow\CShadow.h" />
     <ClInclude Include="Source\GameObject\SpriteObject\Shadow\ShadowManager\CShadowManager.h" />
+    <ClInclude Include="Source\GameObject\UIObject\Fade\FadeBase\CFadeBase.h" />
+    <ClInclude Include="Source\GameObject\UIObject\Fade\FadeManager\CFadeManager.h" />
     <ClInclude Include="Source\GameObject\UIObject\GaugeBase\CGaugeBase.h" />
     <ClInclude Include="Source\GameObject\UIObject\GaugeBase\GaugeFrame\CGaugeFrame.h" />
     <ClInclude Include="Source\GameObject\UIObject\GaugeBase\GaugeManager\CGaugeManager.h" />

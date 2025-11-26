@@ -17,10 +17,16 @@ public:
 
 	//出現位置を設定
 	D3DXVECTOR3 SerectPosition();
+	D3DXVECTOR3 StartPosition();
 
 
 	void Init();
 	void Uptate();
+
+	//ステージの落ち情報を渡す
+	GroundTag GetCurrentFallGround() { return m_CurrentFallGround; }
+
+	bool GetIsFirstSpawn() { return IsFirstSpawn; }
 
 private:
 
@@ -29,6 +35,16 @@ private:
 
 	//ランダムで出現位置を設定
 	VECTOR2 SetRandomPos();
+
+	//初期位置決定
+	void DecitionFirstPosition();
+
+	//最初の固定沸き
+	D3DXVECTOR3 DecitionSpawn();
+
+	//通常のランダム沸き
+	D3DXVECTOR3 RamdomSpawn();
+
 
 private:
 	//現在のステージ情報を保存
@@ -40,4 +56,9 @@ private:
 	//アイテムの出現幅
 	VECTOR2 m_CurrentClampRangeMax;
 	VECTOR2 m_CurrentClampRangeMin;
+
+	bool IsFirstSpawn;
+	int  FirstSpawnCount;
+
+	std::vector<D3DXVECTOR3> m_pFirstSpawnPosition;
 };

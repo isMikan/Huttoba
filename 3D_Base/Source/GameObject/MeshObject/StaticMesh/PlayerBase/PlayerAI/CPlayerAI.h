@@ -61,11 +61,6 @@ protected:
 		{
 			nearby.sqrt = diffSqrt;
 			D3DXVec3Normalize(&diff, &diff);
-		}
-
-		//îOÇÃÇΩÇﬂÅAç≈ëÂÇÊÇËÇ‡è¨Ç≥Ç¢Ç©î‰är.
-		if (nearby.sqrt < m_MaxSqrt)
-		{
 			nearby.dir = diff;
 		}
 	}

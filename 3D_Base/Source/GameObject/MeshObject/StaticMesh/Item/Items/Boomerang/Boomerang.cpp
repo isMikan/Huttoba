@@ -1,16 +1,17 @@
 #include "stdafx.h"
-#include "Bomb.h"
+#include "Boomerang.h"
 #include "PlayerBase/PlayerManager/CPlayerManager.h"
 
 #include "TimeManager/CTimeManager.h"
 #include "Input/CInputManager.h"
 
 //Factoryに登録
-namespace { const bool regist = ItemBase::AutoRegister<Bomb>(ItemID::Bomb); }
+namespace { const bool regist = ItemBase::AutoRegister<Boomerang>(ItemID::Boomerang); }
 
-Bomb::Bomb()
+Boomerang::Boomerang()
 	: m_Velocity		()
-	, m_MoveSpeed		( 3.0f )	//値を変えると爆弾の移動速度が変化
+	, m_TotalVelocity	()
+	, m_MoveSpeed		( 8.0f )	//値を変えると爆弾の移動速度が変化
 	, m_UpSpeed			( 5.0f )	//値を変えると爆弾のy軸の上昇量が変化
 
 	, m_ExplosionTime	( 5.0f )	//値を変えると爆発するまでの時間が変化
@@ -18,7 +19,8 @@ Bomb::Bomb()
 
 	, m_ColorTimer		( 0.0 )
 	
-	, m_IsExploded		( false )
+	, m_IsUseThrow	( false )
+	, m_ComeBack	( false )
 
 	, m_MinSmashPower	( 6.0f )	//値を変えるとプレイヤーの最小吹き飛ばし力が変化
 
@@ -38,17 +40,19 @@ Bomb::Bomb()
 
 }
 
-Bomb::~Bomb()
+Boomerang::~Boomerang()
 {
 	//当たり判定削除
 	CollisionManager::GetInstance()->RemoveCollider(m_pCollision.get());
 }
 
-void Bomb::Init()
+void Boomerang::Init()
 {
+	m_ComeBack = false;
+
 	static const int USE_COUNT = 1;
 
-	AttachMesh(AssetManager::Mesh(StaticMeshList::Bomb));
+	AttachMesh(AssetManager::Mesh(StaticMeshList::Boomerang));
 
 	m_State = IItemObserver::IItemObserver::State::Spawn;
 	m_tGravity = 0.01f;
@@ -65,17 +69,17 @@ void Bomb::Init()
 	);
 }
 
-void Bomb::Update()
+void Boomerang::Update()
 {
 	ItemBase::Update();
 }
 
-void Bomb::Draw(D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAMERA& Camera)
+void Boomerang::Draw(D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAMERA& Camera)
 {
 	ItemBase::Draw(View, Proj, Light, Camera);
 }
 
-void Bomb::Spawn()
+void Boomerang::Spawn()
 {
 	//落下処理
 	if (m_vPosition.y > 0.5f)
@@ -90,31 +94,31 @@ void Bomb::Spawn()
 	}
 }
 
-void Bomb::OnGround()
+void Boomerang::OnGround()
 {
 }
 
-void Bomb::Have()
+void Boomerang::Have()
 {
 	HaveMove();
 }
 
-void Bomb::Use()
+void Boomerang::Use()
 {
 	UseMove();
 }
 
-void Bomb::Throw()
+void Boomerang::Throw()
 {
 	ThrowMove();
 }
 
-void Bomb::Destroy()
+void Boomerang::Destroy()
 {
 	m_IsDestroy = true;
 }
 
-void Bomb::ItemState(IItemObserver::State state)
+void Boomerang::ItemState(IItemObserver::State state)
 {
 	switch (state)
 	{
@@ -137,13 +141,13 @@ void Bomb::ItemState(IItemObserver::State state)
 	}
 }
 
-void Bomb::OnCollision(CollisionBase* other)
+void Boomerang::OnCollision(CollisionBase* other)
 {
 	if (other->GetTag() == CollisionBase::ColliderTag::Player)
 	{
 		if (CPlayerBase* player = dynamic_cast<CPlayerBase*>(other->GetListener()))
 		{
-			if (m_IsExploded)
+			if (m_IsUseThrow && player != m_pPlayer)
 			{
 				Smash(*player);
 			}
@@ -151,43 +155,55 @@ void Bomb::OnCollision(CollisionBase* other)
 	}
 }
 
-void Bomb::HaveMove()
+void Boomerang::HaveMove()
 {
 	m_vPosition = m_pPlayer->GetPlayerRightHand().GetPosition();
 }
 
-void Bomb::UseMove()
+void Boomerang::UseMove()
 {
-	//現在の高さによって落下するかを決める
-	if (m_vPosition.y > 0.1f)
+	if (!m_ComeBack)
 	{
-		//最後にm_vPositionに+するので重力加速度を-で計算する
-		m_Velocity.y -= m_tGravity;
-
-		//上が-=の計算なので+=で加速度を増やす
-		m_tGravity += 0.001f;
+		//だんだん減速
+		m_Velocity.x -= m_Velocity.x * 0.01;
+		m_Velocity.z -= m_Velocity.z * 0.01;
 	}
 	else
 	{
-		//地面の高さなのでy軸移動量を0にする
-		m_Velocity.y = 0;
+		D3DXVECTOR3 vector = m_pPlayer->GetPosition() - m_vPosition;
+		D3DXVECTOR3 initVector;
+		D3DXVec3Normalize(&initVector, &vector);
 
-		Explosion();
+		//だんだん加速
+		m_Velocity = initVector * m_MoveSpeed;
+
+		m_Velocity.x += m_Velocity.x * 0.25;
+		m_Velocity.z += m_Velocity.z * 0.25;
+	}
+
+	//推進力が一定まで下がるとPlayerに戻る
+	if (m_Velocity.x < 2.f && m_Velocity.z < 2.f)
+	{
+		m_ComeBack = true;
 	}
 
 	//位置を移動速度*デルタタイムで計算
-	m_vPosition += m_Velocity * static_cast<float>(CTimeManager::GetDeltaTime());
+	m_vPosition += m_Velocity * CTimeManager::GetDeltaTime();
+	m_TotalVelocity += m_Velocity * CTimeManager::GetDeltaTime();;
 
-	ChangeColor();
+	//回転
+	m_vRotation.x = m_vRotation.x + (D3DXToRadian(10.f));
+
+	UseThrow();
 }
 
-void Bomb::ThrowMove()
+void Boomerang::ThrowMove()
 {
 	//投げる動作が使う動作と同じなのでこの処理
 	UseMove();
 }
 
-void Bomb::OneEnterUse()
+void Boomerang::OneEnterUse()
 {
 	EnterUseThrowCommon();
 
@@ -195,13 +211,14 @@ void Bomb::OneEnterUse()
 	m_pPlayer->SetItemBase(nullptr);
 }
 
-void Bomb::OneEnterThrow()
+void Boomerang::OneEnterThrow()
 {
 	EnterUseThrowCommon();
 }
 
-void Bomb::EnterUseThrowCommon()
+void Boomerang::EnterUseThrowCommon()
 {
+
 	//プレイヤーのクォータニオン(向いている方向)記録
 	m_vQuaternion = m_pPlayer->GetQuaternion();
 
@@ -219,42 +236,27 @@ void Bomb::EnterUseThrowCommon()
 	//移動
 	m_Velocity = forward * m_MoveSpeed;
 
-	m_Velocity.y = m_UpSpeed;
-
 	//当たり判定削除
 	CollisionManager::GetInstance()->RemoveCollider(m_pCollision.get());
 
-	std::shared_ptr<CStaticMesh> mesh = AssetManager::Mesh(StaticMeshList::ExplosionCol);
+	std::shared_ptr<CStaticMesh> mesh = AssetManager::Mesh(StaticMeshList::BoomerangCol);
 
 	m_pCollision = CollisionDataFactory::CreateSphereForMesh(
-		CollisionBase::ColliderTag::Bomb,
+		CollisionBase::ColliderTag::Boomerang,
 		mesh,
 		this
 	);
+
+	m_IsOkFall = false;
 }
 
-void Bomb::Explosion()
+void Boomerang::UseThrow()
 {
-	//非爆発時に一度だけ処理する
-	if (!m_IsExploded)
-	{
-		//爆発フラグをオンに
-		m_IsExploded = true;
-
-		static ::EsHandle hEffect = 1;
-
-		//エフェクト追加
-		hEffect = AssetManager::Effect()->Play("Explosion", m_vPosition);
-
-		//エフェクトの拡縮設定
-		AssetManager::Effect()->SetScale(hEffect, D3DXVECTOR3(0.6f, 0.6f, 0.6f));
-
-		//アイテムの状態を破棄にする
-		m_State = IItemObserver::IItemObserver::State::Destroy;
-	}
+	//使用フラグをオンに
+	m_IsUseThrow = true;
 }
 
-void Bomb::Smash(CPlayerBase& playiers)
+void Boomerang::Smash(CPlayerBase& playiers)
 {
 	//爆弾とプレイヤーの位置でベクトルをとる
 	D3DXVECTOR3 vecLen = m_vPosition - playiers.GetPosition();
@@ -268,9 +270,18 @@ void Bomb::Smash(CPlayerBase& playiers)
 	playiers.SetHitAttack(
 		SmashVel,
 		CPlayerBase::HitEvent::Knockdown);
+
+	static ::EsHandle hEffect = 1;
+
+	//エフェクト追加
+	hEffect = AssetManager::Effect()->Play("Explosion", m_vPosition);
+
+	//エフェクトの拡縮設定
+	AssetManager::Effect()->SetScale(hEffect, D3DXVECTOR3(0.6f, 0.6f, 0.6f));
+
 }
 
-void Bomb::ChangeColor()
+void Boomerang::ChangeColor()
 {
 	m_ColorTimer += CTimeManager::GetDeltaTime();
 
@@ -295,7 +306,7 @@ void Bomb::ChangeColor()
 	m_ObjectColor[0].diffuse = color;
 }
 
-float Bomb::CalculateForceScalar(float distance)
+float Boomerang::CalculateForceScalar(float distance)
 {
 	//爆発の当たる範囲を仮設定
 	//当たり判定用メッシュの大きさにする

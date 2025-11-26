@@ -20,6 +20,8 @@ CSceneTitle::CSceneTitle(HWND hWnd)
 									//スティックの最低値が変化する.
 
 {
+	m_pDx11 = CDirectX11::GetInstance();
+
 	Create();
 	LoadData();
 	SetSelectorPos();
@@ -91,6 +93,10 @@ void CSceneTitle::Draw()
 	m_pSpriteSelector->Draw();
 
 	//m_pSpriteTitlImg->Draw();
+
+	m_pDx11->SetDepth(false);
+	CFadeManager::GetInstance().Draw(0.f, 1.f, true);
+	m_pDx11->SetDepth(true);
 }
 
 void CSceneTitle::Destroy()

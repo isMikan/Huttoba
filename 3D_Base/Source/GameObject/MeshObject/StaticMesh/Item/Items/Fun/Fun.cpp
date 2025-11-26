@@ -32,12 +32,13 @@ Fun::~Fun()
 void Fun::Init()
 {
 	m_UseTime = m_UseDuration;
+	m_UsageLimit = { m_UseTime, m_UseDuration };
 
 	AttachMesh(AssetManager::Mesh(StaticMeshList::Fun));
 
 	SetPosition(1, 15, 0);
 
-	m_State = ItemBase::State::Spawn;
+	m_State = IItemObserver::IItemObserver::State::Spawn;
 
 	m_tGravity = 0.01f;
 
@@ -88,7 +89,7 @@ void Fun::Spawn()
 	else
 	{
 		//èÛë‘Çínñ Ç…Ç¬Ç¢ÇΩÇ∆Ç´Ç…ïœçX
-		m_State = ItemBase::State::OnGround;
+		m_State = IItemObserver::IItemObserver::State::OnGround;
 	}
 }
 
@@ -116,11 +117,11 @@ void Fun::Destroy()
 
 }
 
-void Fun::ChangeState(State state)
+void Fun::ItemState(IItemObserver::State state)
 {
 	switch (state)
 	{
-	case ItemBase::State::Throw:
+	case IItemObserver::IItemObserver::State::Throw:
 		OneEnterThrow();
 		break;
 	default:
@@ -134,7 +135,7 @@ void Fun::OnCollision(CollisionBase* other)
 	{
 		if (CPlayerBase* player = dynamic_cast<CPlayerBase*>(other->GetListener()))
 		{
-			if (m_State == State::Use)
+			if (m_State == IItemObserver::State::Use)
 			{
 				if(m_pPlayer!=player)
 				{
@@ -142,7 +143,7 @@ void Fun::OnCollision(CollisionBase* other)
 					//std::cout << player->GetPlayerID() << "Ç∆ìñÇΩÇ¡ÇΩ" << std::endl;
 				}
 			}
-			if (m_State == State::Throw && m_pPlayer != player)
+			if (m_State == IItemObserver::State::Throw && m_pPlayer != player)
 			{
 				ThrowSmash(*player);
 			}
@@ -159,6 +160,9 @@ void Fun::HaveMove()
 void Fun::UseMove()
 {
 	m_UseTime -= CTimeManager::GetDeltaTime();
+	//ÉQÅ[ÉWÇÃÇΩÇﬂÇ…í«â¡.	êßçÏé“	[çbîc]
+	m_UsageLimit.remaining = m_UseTime;
+
 	std::cout << m_UseTime << std::endl;
 	if (m_UseTime < 0)
 	{

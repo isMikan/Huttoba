@@ -1,15 +1,12 @@
 #pragma once
 #include "Item/ItemBase.h"
 
-class CPlayer;
-class ChaseSensor;
-
-class TrackingRobot
+class Boomerang
     : public ItemBase
 {
 public:
-    TrackingRobot();
-    ~TrackingRobot();
+    Boomerang();
+    ~Boomerang();
 
     void Init()override;
 
@@ -34,13 +31,15 @@ public:
     //状態変化時に一度だけ処理
     void ItemState(IItemObserver::State state)override;
 
+	bool GetIsUseThrow() { return m_IsUseThrow; }
+
 private:
     //当たった際の処理
     void OnCollision(CollisionBase* other)override;
 
-    //所持中の移動処理
+    //所持の移動処理
     void HaveMove();
-    //使用中の移動処理
+    //使用の移動処理
     void UseMove();
     //投擲の移動処理
     void ThrowMove();
@@ -51,61 +50,52 @@ private:
     //投擲に状態が変化したときの処理
     void OneEnterThrow();
 
+    //使用と投擲に状態が変化したときの共通処理
+    void EnterUseThrowCommon();
+
     //爆発処理
-    void Explosion();
+    void UseThrow();
 
     //吹き飛ばし処理
     void Smash(CPlayerBase& playiers);
 
-    //爆発前の色の変更処理
+    //爆弾の爆発前の色の変更処理
     void ChangeColor();
 
-    //プレイヤーの距離に応じて吹き飛ばし力を計算
+    //爆弾とプレイヤーの距離に応じて吹き飛ばし力を計算
     float CalculateForceScalar(float distance);
 
-    //追尾処理
-    void Homing(D3DXVECTOR3 targetPos);
-
-    //一番近いプレイヤーをターゲットに設定
-    void UpdateChaseSensor();
-
 private:
-    CPlayerBase*                    m_pTarget;
-    //追尾から無視するプレイヤー
-   // CPlayerBase*                    m_pIgnoredPlayer;
-
-    std::unique_ptr<ChaseSensor>    m_pChaseSensor;
-
-    //地面に当たっているか
-    bool        m_IsGround;
-
     //移動速度
     D3DXVECTOR3 m_Velocity;
-
-    //使用時の移動速度
-    float       m_MoveSpeed;
-
-    //旋回の角度
-    float       m_TurnRate;
+    //どれだけ進んだか保存(折り返しに使用)
+    D3DXVECTOR3 m_TotalVelocity;
 
     //投げた時の移動速度
-    float       m_ThrowSpeed;
+    float       m_MoveSpeed;
+
+    //投げた時のy軸の上昇量
+    float       m_UpSpeed;
 
     //投げてから爆発するまでの時間
-    double      m_ExplosionTime;
+    double       m_ExplosionTime;
 
     //爆発するまでのカウント
-    double      m_ExplosionCnt;
-
-    //爆発の吹き飛ばしの力
-    float       m_KnockBackPower;
+    double       m_ExplosionCnt;
 
     //点滅の経過時間を記録
     double      m_ColorTimer;
 
-    //爆発時の処理
-    bool        m_IsExploded;
+    //使用時の処理
+    bool        m_IsUseThrow;
 
-    //索敵の当たり判定の位置の補正値
-    D3DXVECTOR3 m_CollisionOffSet;
+    bool        m_ComeBack;
+
+    //爆発の中心位置に近いほど多く吹き飛ぶので最小と最大の吹き飛ばし力を追加
+
+    //爆発の最小吹き飛ばし力
+    float       m_MinSmashPower;
+
+    //爆発の最大吹き飛ばし力
+    float       m_MaxSmashPower;
 };

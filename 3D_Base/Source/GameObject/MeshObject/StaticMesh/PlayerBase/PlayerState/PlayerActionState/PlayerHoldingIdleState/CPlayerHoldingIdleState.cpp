@@ -42,7 +42,7 @@ void CPlayerHoldingIdleState::Enter()
 
 	if (item)
 	{
-		item->SetState(ItemBase::State::Have);
+		item->SetState(IItemObserver::IItemObserver::State::Have);
 	}
 
 	//アニメーション開始時間.

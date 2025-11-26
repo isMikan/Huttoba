@@ -1,7 +1,5 @@
 #include "Scene/SceneResult/CSceneResult.h"
 
-#include "Camera/CameraManager/CCameraManager.h"
-
 CSceneResult::CSceneResult()
 	: m_Action				()
 
@@ -133,6 +131,9 @@ void CSceneResult::Draw()
 	m_pDx11->SetDepth(false);
 	m_pSpriteSelector->Draw();
 	m_pSpriteResultImg->Draw();
+
+	CFadeManager::GetInstance().Draw(0.f, 1.f, true);
+
 	m_pDx11->SetDepth(true);
 }
 

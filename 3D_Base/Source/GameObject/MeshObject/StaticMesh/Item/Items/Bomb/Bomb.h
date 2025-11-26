@@ -29,7 +29,7 @@ public:
     void Destroy()override;
 
     //ó‘Ô•Ï‰»‚Éˆê“x‚¾‚¯ˆ—
-    void ChangeState(State state)override;
+    void ItemState(IItemObserver::State state)override;
 
 private:
     //“–‚½‚Á‚½Û‚Ìˆ—
