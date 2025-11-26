@@ -41,6 +41,9 @@ public:
 	//コントローラーが接続されているかを返す.
 	bool IsConnect() { return m_pXInput->IsConnect(); }
 
+	//レバガチャ用のボタンを入力したかを渡す.
+	bool IsDownKey() { return m_pXInput->IsDownKey(); }
+
 private:
 	//正規化したスティックの値を渡す.
 	float SthikNormalize(SHORT sthik);

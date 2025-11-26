@@ -131,7 +131,7 @@ void CPlayerKnockdownState::ChildPlayer(int index)
 	float y = CInputManager::GetLeftSthikY(index);
 
 	//“ü—Í‚ğŠ´’m‚µ‚½ê‡.
-	if (IsInput(x, y, index))
+	if (IsInput(x, y, index)|| CInputManager::IsDownKey(index))
 	{
 		//ƒŒƒoƒKƒ`ƒƒ‚ª”½‰‚µ‚Ä‚¢‚È‚¢ê‡.
 		if (!m_IsTimeDecreasing)

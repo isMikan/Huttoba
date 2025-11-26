@@ -12,13 +12,17 @@
 namespace { const bool regist = ItemBase::AutoRegister<TrackingRobot>(ItemID::TrackingRobot); }
 
 TrackingRobot::TrackingRobot()
-	:m_pTarget			()
+	: m_pTarget			()
+	//, m_pIgnoredPlayer	()
 	, m_pChaseSensor	()
 
 	, m_IsGround		( false )
 
 	, m_Velocity		()
-	, m_MoveSpeed		( 6.0f )	//値を変えると爆弾の移動速度が変化
+	, m_MoveSpeed		( 4.0f )	//値を変えると使用時の移動速度が変化
+	, m_TurnRate		( 1.4f )	//値を変えると使用時の旋回の角度が変化
+
+	, m_ThrowSpeed		( 6.0f )	//値を変えると投擲時の移動速度が変化
 
 	, m_ExplosionTime	( 5.0f )	//値を変えると爆発するまでの時間が変化
 	, m_ExplosionCnt	( 0.0f )
@@ -37,6 +41,7 @@ TrackingRobot::TrackingRobot()
 
 TrackingRobot::~TrackingRobot()
 {
+	//SAFE_DELETE(m_pIgnoredPlayer);
 	//当たり判定削除
 	CollisionManager::GetInstance()->RemoveCollider(m_pPickUpCollider.get());
 	CollisionManager::GetInstance()->RemoveCollider(m_pCollision.get());
@@ -44,8 +49,6 @@ TrackingRobot::~TrackingRobot()
 
 void TrackingRobot::Init()
 {
-	m_pChaseSensor = std::make_unique<ChaseSensor>(m_vPosition, m_CollisionOffSet);
-
 	AttachMesh(AssetManager::Mesh(StaticMeshList::TrackingRobot));
 
 	m_State = IItemObserver::IItemObserver::State::Spawn;
@@ -134,6 +137,12 @@ void TrackingRobot::OnCollision(CollisionBase* other)
 	{
 		if (CPlayerBase* player = dynamic_cast<CPlayerBase*>(other->GetListener()))
 		{
+			if (m_State == State::Use)
+			{
+				if (m_pPlayer != player)
+					Explosion();
+			}
+
 			if (m_IsExploded)
 			{
 				Smash(*player);
@@ -144,19 +153,6 @@ void TrackingRobot::OnCollision(CollisionBase* other)
 				Smash(*player);
 			}
 		}
-	}
-
-	if (other->GetTag() == CollisionBase::ColliderTag::Ground)
-	{
-		m_IsGround = true;
-		//std::cout << "地面と当たteru" << std::endl;
-
-	}
-	else
-	{
-		m_IsGround = false;
-		//std::cout << "地面と当たってないよ" << std::endl;
-
 	}
 }
 
@@ -183,21 +179,7 @@ void TrackingRobot::UseMove()
 			m_Velocity.y = 0;
 		}
 
-		{
-			//索敵の処理を開始
-			m_pChaseSensor->SetIsSensorActive(true);
-
-			m_pChaseSensor->SetPosition(m_vPosition);
-
-			//近いプレイヤーを計算
-			m_pChaseSensor->FindNearestTarget();
-
-			//１フレーム回った後に一番近いプレイヤーのポインタが入る
-			m_pTarget = m_pChaseSensor->GetTarget();
-
-			//索敵の処理を終了
-			m_pChaseSensor->SetIsSensorActive(false);
-		}
+		UpdateChaseSensor();
 
 		if (m_pTarget != nullptr)
 		{
@@ -224,10 +206,10 @@ void TrackingRobot::UseMove()
 	}
 	else
 	{
-		//Explosion();
-		//std::cout << "地面と当たってないよ" << std::endl;
-
+		Explosion();
 	}
+
+	m_pChaseSensor->SetIsHitGround(false);
 }
 
 void TrackingRobot::ThrowMove()
@@ -245,6 +227,7 @@ void TrackingRobot::ThrowMove()
 
 void TrackingRobot::OneEnterUse()
 {
+
 	//プレイヤーのクォータニオン(向いている方向)記録
 	m_vQuaternion = m_pPlayer->GetQuaternion();
 
@@ -259,11 +242,15 @@ void TrackingRobot::OneEnterUse()
 	//取り出したZ軸成分をノーマライズ
 	D3DXVec3Normalize(&forward, &forward);
 
-	m_Velocity = forward * m_MoveSpeed;
-	m_Velocity.y = 3.0f;
-
 	//投げた瞬間に別のアイテムを持ったり使ったりできるように追加
 	m_pPlayer->SetItemBase(nullptr);
+
+	//索敵判定クラスの生成
+	m_pChaseSensor = std::make_unique<ChaseSensor>(m_vPosition, m_CollisionOffSet);
+
+	//m_pIgnoredPlayer = m_pPlayer;
+//	if (m_pIgnoredPlayer != nullptr)
+//		m_pChaseSensor->SetIgnoredPlayer(m_pPlayer);
 }
 
 void TrackingRobot::OneEnterThrow()
@@ -282,7 +269,7 @@ void TrackingRobot::OneEnterThrow()
 	//取り出したZ軸成分をノーマライズ
 	D3DXVec3Normalize(&forward, &forward);
 
-	m_Velocity = forward * m_MoveSpeed;
+	m_Velocity = forward * m_ThrowSpeed;
 }
 
 void TrackingRobot::Explosion()
@@ -368,29 +355,50 @@ void TrackingRobot::Homing(D3DXVECTOR3 targetPos)
 	//ターゲット方向へのベクトル
 	D3DXVECTOR3 vec = targetPos - m_vPosition;
 
-	float dist = std::sqrtf(vec.x * vec.x + vec.z * vec.z);
+	//y軸方向は無視して計算する
+	float dist = vec.x * vec.x + vec.z * vec.z;
 
-	if (dist > 0.001f)
-	{
-		//目標への単位ベクトルに変換
-		float tx = vec.x / dist;
-		float tz = vec.z / dist;
+	//距離が近すぎると計算しない
+	if (dist < 0.001f) return;
 
-		//旋回率(小さいほど旋回が緩やかになる)
-		float turnRate = 0.4f;
+	//目標への単位ベクトルに変換
+	D3DXVECTOR3 nolVec = { vec.x / dist,0,vec.z / dist };
 
-		float speed = 0.4f;
+	//目標の向きを計算
+	float angle = std::atan2(nolVec.z, nolVec.x);
 
-		m_Velocity.x = (1 - turnRate) * m_Velocity.x + turnRate * tx * speed;
+	D3DXQUATERNION targetRot;
+	//y軸を回転の軸に
+	D3DXVECTOR3 axisY = { 0.0f,1.0f,0.0f };
 
-		m_Velocity.z = (1 - turnRate) * m_Velocity.z + turnRate * tz * speed;
+	//2引数で指定した回転の軸に３引数で指定した角度のクォータニオンを返す
+	D3DXQuaternionRotationAxis(&targetRot, &axisY, angle);
 
-		float vlen = sqrtf(m_Velocity.x * m_Velocity.x + m_Velocity.z * m_Velocity.z);
+	//旋回率
+	float turnRate = m_TurnRate * CTimeManager::GetDeltaTime();
+	
+	turnRate = std::clamp(turnRate, 0.f, 1.f);
 
-		if (vlen > 0.001)
-		{
-			m_Velocity.x /= vlen * speed;
-			m_Velocity.z /= vlen * speed;
-		}
-	}
+	D3DXQuaternionSlerp(&m_vQuaternion, &m_vQuaternion, &targetRot, turnRate);
+
+	D3DXMATRIX matRot;
+	D3DXMatrixRotationQuaternion(&matRot, &m_vQuaternion);
+	D3DXVECTOR3 forward(matRot._31, 0.0f, matRot._33); // Y成分は0にしておく
+	D3DXVec3Normalize(&forward, &forward);
+
+	// 移動速度を反映（Y成分=重力 は触らないように注意！）
+	m_Velocity.x = forward.x * m_MoveSpeed;
+	m_Velocity.z = forward.z * m_MoveSpeed;
+}
+
+void TrackingRobot::UpdateChaseSensor()
+{
+	m_pChaseSensor->SetPosition(m_vPosition);
+	m_pChaseSensor->SetQuaternion(m_vQuaternion);
+
+	//近いプレイヤーを計算
+	m_pChaseSensor->Update();
+
+	//一番近いプレイヤーのポインタが入る
+	m_pTarget = m_pChaseSensor->GetTarget();
 }

@@ -78,7 +78,7 @@ void ItemManager::Update()
 
 		if (!item->GetIsOnGround() && item->GetIsOkFall())
 		{
-			item->Fall();
+			//item->Fall();
 		}
 	}
 
