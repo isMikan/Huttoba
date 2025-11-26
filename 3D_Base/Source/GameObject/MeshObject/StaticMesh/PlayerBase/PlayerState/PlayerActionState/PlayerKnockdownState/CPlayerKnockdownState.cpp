@@ -53,8 +53,8 @@ void CPlayerKnockdownState::Enter()
 
 	if (item)
 	{
-		item->SetState(IItemObserver::IItemObserver::State::Destroy);
 		m_pPlayer.SetItemBase(nullptr);
+		item->DestroyItem();
 	}
 
 	//攻撃の開始時間を取得.
@@ -131,7 +131,7 @@ void CPlayerKnockdownState::ChildPlayer(int index)
 	float y = CInputManager::GetLeftSthikY(index);
 
 	//入力を感知した場合.
-	if (IsInput(x, y, index))
+	if (IsInput(x, y, index)|| CInputManager::IsDownKey(index))
 	{
 		//レバガチャが反応していない場合.
 		if (!m_IsTimeDecreasing)

@@ -59,9 +59,6 @@ HRESULT CSceneGameMain::Create()
 	//影マネージャーのインスタンス作成
 	m_pShadowManager = std::make_unique<CShadowManager>();
 
-	//ゲージマネージャーのインスタンス作成.
-	m_pGaugeManager = std::make_unique<CGaugeManager>();
-
 	//プレイヤーマネージャーのインスタンス作成.
 	m_pPlayerManager = std::make_unique<CPlayerManager>();
 
@@ -80,8 +77,10 @@ HRESULT CSceneGameMain::Create()
 	//各オブジェクトのインスタンス作成
 	CteateExplosion();
 
+	//ゲージマネージャーのインスタンス作成.
+	m_pGaugeManager = std::make_unique<CGaugeManager>(m_pPlayerManager, m_pItemManager);
 	//ゲージを作成.
-	m_pGaugeManager->Create(m_pPlayerManager.get(), m_pItemManager.get());
+	m_pGaugeManager->Create();
 
 	return S_OK;
 }
@@ -149,6 +148,8 @@ void CSceneGameMain::Update()
 
 	m_pGroundCollisionProxy->Update();
 
+	m_pItemManager->Update();
+
 	//プレイヤーの動作
 	m_pPlayerManager->MainPlayerUpdate();
 
@@ -165,8 +166,6 @@ void CSceneGameMain::Update()
 	{
 		item->IsOnGround(*m_pGroundManager);
 	}
-
-	m_pItemManager->Update();
 
 	CollisionManager::GetInstance()->Update();
 

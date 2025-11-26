@@ -156,6 +156,10 @@ bool CXInput::SetVibration( WORD LMotorSpd, WORD RMotorSpd )
 //レバガチャ用のボタンを入力したかを渡す.
 bool CXInput::IsDownKey()
 {
+	if (m_state.Gamepad.wButtons & ~m_stateOld.Gamepad.wButtons)
+	{
+		return true;
+	}
 	return false;
 }
 

@@ -9,6 +9,7 @@
 #include "Item/Items/Bomb/Bomb.h"
 #include "Item/Items/Mushroom/Mushroom.h"
 #include "Item/Items/Fun/Fun.h"
+#include "Item/Items/Boomerang/Boomerang.h"
 #include "Item/Items/TrackingRobot/TrackingRobot.h"
 
 CPlayerHoldingIdleState::CPlayerHoldingIdleState(CPlayerBase& pPlayer)
@@ -38,13 +39,6 @@ CPlayerHoldingIdleState::~CPlayerHoldingIdleState()
 //--- 状態の開始時に呼び出す ---.
 void CPlayerHoldingIdleState::Enter()
 {
-	ItemBase* item = m_pPlayer.GetItemBase();
-
-	if (item)
-	{
-		item->SetState(IItemObserver::IItemObserver::State::Have);
-	}
-
 	//アニメーション開始時間.
 	m_StartTime = CTimeManager::GetTotalTime();
 		
@@ -96,10 +90,15 @@ void CPlayerHoldingIdleState::Update()
 	D3DXVECTOR3 leftHandOffsetPos = m_pPlayer.GetPlayerLeftHand().GetOffsetPos();
 
 	if (dynamic_cast<Haetataki*>(item)
-		|| dynamic_cast<SmashBat*>(item))
+		|| dynamic_cast<SmashBat*>(item)
+		|| dynamic_cast<Boomerang*>(item))
 	{
 		rightHandOffsetPos += m_OneHand_RightHandEndPos;
 		leftHandOffsetPos += m_OneHand_LeftHandEndPos;
+		if (!dynamic_cast<Boomerang*>(item))
+		{
+			item->SetState(IItemObserver::IItemObserver::State::Have);
+		}
 	}
 	else if (dynamic_cast<Bomb*>(item)
 		|| dynamic_cast<Mushroom*>(item)
@@ -108,6 +107,7 @@ void CPlayerHoldingIdleState::Update()
 	{
 		rightHandOffsetPos += m_HoldBothHands_RightHandEndPos;
 		leftHandOffsetPos += m_HoldBothHands_LeftHandEndPos;
+		item->SetState(IItemObserver::IItemObserver::State::Have);
 	}
 
 	//経過時間を取得.

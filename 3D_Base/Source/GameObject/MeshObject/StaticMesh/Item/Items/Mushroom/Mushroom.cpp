@@ -100,7 +100,7 @@ void Mushroom::Throw()
 
 void Mushroom::Destroy()
 {
-	m_IsDestroy = true;
+	DestroyItem();
 }
 
 void Mushroom::ItemState(IItemObserver::State state)
@@ -181,7 +181,7 @@ void Mushroom::UseMove()
 
 	if (m_UseTime < 0)
 	{
-		m_IsDestroy = true;
+		DestroyItem();
 	}
 }
 
@@ -190,17 +190,7 @@ void Mushroom::ThrowMove()
 	//移動量が一定以下なら
 	if (D3DXVec3Length(&m_Velocity) <= 0.3f)
 	{
-		static ::EsHandle hEffect = 1;
-
-		//エフェクト追加
-		hEffect = AssetManager::Effect()->Play("Break", m_vPosition);
-
-		//エフェクトの拡縮設定
-		AssetManager::Effect()->SetScale(hEffect, D3DXVECTOR3(0.3f, 0.3f, 0.3f));
-
-		m_IsDestroy = true;
-
-		m_pPlayer->SetItemBase(nullptr);
+		DestroyItem();
 	}
 
 	m_Velocity *= 0.98f;

@@ -37,13 +37,13 @@ void ItemBase::Update()
 	//状態によって遷移
 	switch (m_State)
 	{
-	case IItemObserver::IItemObserver::State::None:						break;
-	case IItemObserver::IItemObserver::State::Spawn:	Spawn();		break;
-	case IItemObserver::IItemObserver::State::OnGround: OnGround();		break;
-	case IItemObserver::IItemObserver::State::Have:		Have();			break;
-	case IItemObserver::IItemObserver::State::Use:		Use();			break;
-	case IItemObserver::IItemObserver::State::Throw:	Throw();		break;
-	case IItemObserver::IItemObserver::State::Destroy:	Destroy();		break;
+	case IItemObserver::State::None:					break;
+	case IItemObserver::State::Spawn:		Spawn();	break;
+	case IItemObserver::State::OnGround:	OnGround();	break;
+	case IItemObserver::State::Have:		Have();		break;
+	case IItemObserver::State::Use:			Use();		break;
+	case IItemObserver::State::Throw:		Throw();	break;
+	case IItemObserver::State::Destroy:		Destroy();	break;
 	default: break;
 	}
 
@@ -54,7 +54,7 @@ void ItemBase::Update()
 	static constexpr float UNDER_MAX = -5.f;
 	if (m_vPosition.y < UNDER_MAX)
 	{
-		m_State = IItemObserver::State::Destroy;
+		DestroyItem();
 	}
 
 }
@@ -93,7 +93,20 @@ void ItemBase::IsOnGround(CGroundManager& pGroundMgr)
 
 void ItemBase::DestroyItem()
 {
-	m_State = IItemObserver::State::Destroy;
+	if (m_pPlayer->GetItemBase())
+	{
+		m_pPlayer->SetItemBase(nullptr);
+	}
+
+	static ::EsHandle hEffect = 1;
+
+	//エフェクト追加
+	hEffect = AssetManager::Effect()->Play("Break", m_vPosition);
+
+	//エフェクトの拡縮設定
+	AssetManager::Effect()->SetScale(hEffect, D3DXVECTOR3(0.3f, 0.3f, 0.3f));
+
+	m_IsDestroy = true;
 }
 
 void ItemBase::Fall()

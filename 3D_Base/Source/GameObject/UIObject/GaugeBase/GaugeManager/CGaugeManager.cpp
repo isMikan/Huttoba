@@ -9,11 +9,13 @@
 
 #include "Item/Items/Mushroom/Mushroom.h"
 
-CGaugeManager::CGaugeManager()
+CGaugeManager::CGaugeManager(
+	std::unique_ptr<CPlayerManager>& playerManager,
+	std::unique_ptr<ItemManager>& itemManager)
 	: m_pGauge				()
 
-	, m_pPlayerManager		( nullptr )
-	, m_pItemManager		( nullptr )
+	, m_pPlayerManager		( playerManager )
+	, m_pItemManager		( itemManager )
 
 	, m_PlayerGauge			()
 	, m_SubscribePlayers	()
@@ -28,9 +30,6 @@ CGaugeManager::CGaugeManager()
 CGaugeManager::~CGaugeManager()
 {
 	Destroy();
-
-	m_pItemManager = nullptr;
-	m_pPlayerManager = nullptr;
 }
 
 //======================================================================
@@ -38,17 +37,14 @@ CGaugeManager::~CGaugeManager()
 //======================================================================
 
 //--- 構築関数 ---.
-void CGaugeManager::Create(CPlayerManager* playerManager, ItemManager* itemManager)
+void CGaugeManager::Create()
 {
-	m_pPlayerManager = playerManager;
-	m_pItemManager = itemManager;
-
 	//ゲージのインスタンス作成.
 	for (auto& player : m_pPlayerManager->GetPlayer())
 	{
-		if (!player) continue;	//存在しなかったら次へ.
+		if (!player.get()) continue;	//存在しなかったら次へ.
 
-		auto& bus = player->GetBus();
+		auto& bus = player.get()->GetBus();
 		//購買処理.
 		bus.Subscribe([this, &player](CPlayerState* state) {
 			if (dynamic_cast<CPlayerKnockdownState*>(state))
@@ -68,7 +64,7 @@ void CGaugeManager::Create(CPlayerManager* playerManager, ItemManager* itemManag
 					//タイムゲージの作成.
 					m_pGauge[gaugeNo] = std::make_unique<CTimerGauge>();							//インスタンス作成.
 					m_pGauge[gaugeNo]->AttachSprite(AssetManager::Sprite(Sprite2DList::Gauge));		//スプライト設定.
-					m_pGauge[gaugeNo]->SetGaugeInfo(player->GetKnockdownTime());					//時間を設定.
+					m_pGauge[gaugeNo]->SetGaugeInfo(player.get()->GetKnockdownTime());					//時間を設定.
 
 					m_SubscribePlayers.insert(player.get());
 
@@ -93,7 +89,7 @@ void CGaugeManager::Create(CPlayerManager* playerManager, ItemManager* itemManag
 					//タイムゲージの作成.
 					m_pGauge[gaugeNo] = std::make_unique<CTimerGauge>();							//インスタンス作成.
 					m_pGauge[gaugeNo]->AttachSprite(AssetManager::Sprite(Sprite2DList::Gauge));		//スプライト設定.
-					m_pGauge[gaugeNo]->SetGaugeInfo(player->GetItemBase()->GetUsageLimit());		//時間を設定.
+					m_pGauge[gaugeNo]->SetGaugeInfo(player.get()->GetItemBase()->GetUsageLimit());		//時間を設定.
 
 					m_SubscribePlayers.insert(player.get());
 
@@ -102,7 +98,7 @@ void CGaugeManager::Create(CPlayerManager* playerManager, ItemManager* itemManag
 					break;	//1つだけゲージを作成.
 				}
 			}
-			else if (!player->GetItemBase())
+			else if (!player.get()->GetItemBase())
 			{
 				//プレイヤーを探す.
 				auto playerGauge = m_PlayerGauge.find(player.get());
@@ -120,7 +116,6 @@ void CGaugeManager::Create(CPlayerManager* playerManager, ItemManager* itemManag
 				}
 			}
 		});
-
 	}
 }
 
@@ -135,11 +130,33 @@ void CGaugeManager::Destroy()
 //--- 更新処理 ---.
 void CGaugeManager::Update()
 {
+	bool test = false;
+	bool test2 = false;
+	CPlayerBase* Player = nullptr;
+	int a = 0;
+	int b = 0;
 	for (auto& [player, frameNo] : m_PlayerGauge)
 	{
+		if (!m_pGauge[frameNo] || !m_pGauge[frameNo + 1])
+		{
+			if (m_PlayerGauge[player])
+			{
+				test2 = true;
+				Player = player;
+			}
+
+			continue;
+		}
+
 		int gaugeNo = frameNo + 1;			//ゲージ番号.
 
-		if (!m_pGauge[frameNo] || !m_pGauge[gaugeNo]) continue;
+		if (player->GetPosition().y < -1.f)
+		{
+			a = frameNo;
+			b = gaugeNo;
+			test = true;
+
+		}
 
 		//タイムゲージクラスの場合.
 		if (dynamic_cast<CTimerGauge*>(m_pGauge[gaugeNo].get()))
@@ -186,6 +203,27 @@ void CGaugeManager::Update()
 		//ゲージ.
 		m_pGauge[gaugeNo]->Update();	//更新.
 		m_pGauge[gaugeNo]->SetWorldPos(item->GetPosition());	//世界座標を設定.
+	}
+
+	if (test)
+	{
+		m_pGauge[a].reset();
+		m_pGauge[b].reset();
+		//ゲージのインスタンス作成.
+		for (auto& player : m_pPlayerManager->GetPlayer())
+		{
+		}
+	}
+	if (test2)
+	{
+		//プレイヤーを探す.
+		auto playerGauge = m_PlayerGauge.find(Player);
+		//見つかった場合.
+		if (playerGauge != m_PlayerGauge.end())
+		{
+			m_SubscribePlayers.erase(Player);
+			m_PlayerGauge.erase(playerGauge);
+		}
 	}
 }
 

@@ -10,6 +10,7 @@
 #include "Item/Items/Bomb/Bomb.h"
 #include "Item/Items/Mushroom/Mushroom.h"
 #include "Item/Items/Fun/Fun.h"
+#include "Item/Items/Boomerang/Boomerang.h"
 #include "Item/Items/TrackingRobot/TrackingRobot.h"
 
 #include "Input/CInputManager.h"
@@ -70,7 +71,8 @@ void CPlayerItemAttackState::Enter()
 	ItemBase* item = m_pPlayer.GetItemBase();
 
 	if (dynamic_cast<Haetataki*>(item) 
-		|| dynamic_cast<SmashBat*>(item))
+		|| dynamic_cast<SmashBat*>(item)
+		|| dynamic_cast<Boomerang*>(item))
 	{
 		m_RightHandEndPos = m_OneHand_RightHandEndPos;
 		m_LeftHandEndPos = m_OneHand_LeftHandEndPos;
