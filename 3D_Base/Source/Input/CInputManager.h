@@ -40,6 +40,9 @@ public:
     //引数で指定したパッドが接続されているかを取得
     static bool IsConnect(int index) { return Instance().m_pInputs[index]->IsConnect(); }
 
+    //レバガチャ用のボタンを入力したかを渡す.
+    static bool IsDownKey(int index) { return  Instance().m_pInputs[index]->IsDownKey(); }
+
 private:
     CInputManager();
     CInputManager(const CInputManager&) = delete;
