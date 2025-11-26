@@ -2,6 +2,7 @@
 
 #include "GameObject/UIObject/GaugeBase/CGaugeBase.h"
 
+#include "GameObject/MeshObject/StaticMesh/CStaticMeshObject.h"
 #include "PlayerBase/PlayerManager/CPlayerManager.h"
 #include "PlayerBase/CPlayerBase.h"
 
@@ -28,7 +29,8 @@ public:
 	//--- 構築関数 ---.
 	void Create();
 	//--- 破棄関数 ---.
-	void Destroy();
+	void Destroy(
+		int frameNo, CStaticMeshObject* object);
 	//--- 更新関数 ---.
 	void Update();
 	//--- 描画処理 ---.
@@ -46,9 +48,7 @@ protected:
 	std::unique_ptr<CPlayerManager>&			m_pPlayerManager;	//プレイヤー.
 	std::unique_ptr<ItemManager>&				m_pItemManager;		//アイテム.
 	
-	std::unordered_map<CPlayerBase*, int>	m_PlayerGauge;			//プレイヤーとゲージを照らし合わせる.	
-	std::unordered_set<CPlayerBase*>		m_SubscribePlayers;		//プレイヤーの購買リスト.
+	std::unordered_map<CStaticMeshObject*, int>	m_PlayerGauge;			//プレイヤーとゲージを照らし合わせる.	
+	std::unordered_set<CStaticMeshObject*>		m_SubscribePlayers;		//プレイヤーの購買リスト.
 
-	std::unordered_map<ItemBase*, int>		m_ItemGauge;			//アイテムとゲージを照らし合わせる.	
-	std::unordered_set<ItemBase*>			m_SubscribeItems;		//アイテムの購買リスト.
 };

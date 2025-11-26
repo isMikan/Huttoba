@@ -56,7 +56,6 @@ void ItemBase::Update()
 	{
 		DestroyItem();
 	}
-
 }
 
 void ItemBase::Draw(D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAMERA& Camera)

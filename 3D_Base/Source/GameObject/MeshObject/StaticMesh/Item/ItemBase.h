@@ -131,7 +131,6 @@ protected:
 	void ThrowSmash(CPlayerBase& playiers);
 
 protected:
-
 	float m_tGravity;	// 重力加速度(簡易版)
 	float m_UseTime;	// 使用時間
 	int  m_UseCount;	// 使用回数
