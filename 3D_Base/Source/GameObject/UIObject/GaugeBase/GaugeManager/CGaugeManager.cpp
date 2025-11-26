@@ -98,7 +98,7 @@ void CGaugeManager::Create()
 					break;	//1つだけゲージを作成.
 				}
 			}
-			else if (!player.get()->GetItemBase())
+			else if (!player || !player.get()->GetItemBase())
 			{
 				//プレイヤーを探す.
 				auto playerGauge = m_PlayerGauge.find(player.get());
@@ -131,7 +131,6 @@ void CGaugeManager::Destroy()
 void CGaugeManager::Update()
 {
 	bool test = false;
-	bool test2 = false;
 	CPlayerBase* Player = nullptr;
 	int a = 0;
 	int b = 0;
@@ -139,12 +138,6 @@ void CGaugeManager::Update()
 	{
 		if (!m_pGauge[frameNo] || !m_pGauge[frameNo + 1])
 		{
-			if (m_PlayerGauge[player])
-			{
-				test2 = true;
-				Player = player;
-			}
-
 			continue;
 		}
 
@@ -154,6 +147,7 @@ void CGaugeManager::Update()
 		{
 			a = frameNo;
 			b = gaugeNo;
+			Player = player;
 			test = true;
 
 		}
@@ -209,13 +203,6 @@ void CGaugeManager::Update()
 	{
 		m_pGauge[a].reset();
 		m_pGauge[b].reset();
-		//ゲージのインスタンス作成.
-		for (auto& player : m_pPlayerManager->GetPlayer())
-		{
-		}
-	}
-	if (test2)
-	{
 		//プレイヤーを探す.
 		auto playerGauge = m_PlayerGauge.find(Player);
 		//見つかった場合.
