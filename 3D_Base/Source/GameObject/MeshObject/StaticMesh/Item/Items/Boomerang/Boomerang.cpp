@@ -50,15 +50,11 @@ void Boomerang::Init()
 {
 	m_ComeBack = false;
 
-	static const int USE_COUNT = 1;
 
 	AttachMesh(AssetManager::Mesh(StaticMeshList::Boomerang));
 
 	m_State = IItemObserver::IItemObserver::State::Spawn;
 	m_tGravity = 0.01f;
-	m_UseCount = USE_COUNT;
-	//ゲージのために追加.	制作者	[甲把]
-	m_UsageLimit = { USE_COUNT, USE_COUNT };
 
 	std::shared_ptr<CStaticMesh> mesh = AssetManager::Mesh(StaticMeshList::Bomb);
 
@@ -100,6 +96,8 @@ void Boomerang::OnGround()
 
 void Boomerang::Have()
 {
+	m_ComeBack = false;
+
 	HaveMove();
 }
 
@@ -115,7 +113,7 @@ void Boomerang::Throw()
 
 void Boomerang::Destroy()
 {
-	m_IsDestroy = true;
+	DestroyItem();
 }
 
 void Boomerang::ItemState(IItemObserver::State state)
@@ -147,7 +145,8 @@ void Boomerang::OnCollision(CollisionBase* other)
 	{
 		if (CPlayerBase* player = dynamic_cast<CPlayerBase*>(other->GetListener()))
 		{
-			if (m_IsUseThrow && player != m_pPlayer)
+			if ((m_State == State::Use || m_State == State::Throw )
+				&& player != m_pPlayer)
 			{
 				Smash(*player);
 			}
@@ -182,7 +181,7 @@ void Boomerang::UseMove()
 	}
 
 	//推進力が一定まで下がるとPlayerに戻る
-	if (m_Velocity.x < 2.f && m_Velocity.z < 2.f)
+	if (std::fabs(m_Velocity.x) < 2.f && std::fabs(m_Velocity.z) < 2.f)
 	{
 		m_ComeBack = true;
 	}
@@ -199,16 +198,23 @@ void Boomerang::UseMove()
 
 void Boomerang::ThrowMove()
 {
-	//投げる動作が使う動作と同じなのでこの処理
-	UseMove();
+	//移動量が一定以下なら
+	if (D3DXVec3Length(&m_Velocity) <= 0.3f)
+	{
+		DestroyItem();
+	}
+
+	m_Velocity *= 0.98f;
+
+	m_vPosition += m_Velocity * static_cast<float>(CTimeManager::GetDeltaTime());
 }
 
 void Boomerang::OneEnterUse()
 {
 	EnterUseThrowCommon();
 
-	//投げた瞬間に別のアイテムを持ったり使ったりできるように追加
-	m_pPlayer->SetItemBase(nullptr);
+	////投げた瞬間に別のアイテムを持ったり使ったりできるように追加
+	//m_pPlayer->SetItemBase(nullptr);
 }
 
 void Boomerang::OneEnterThrow()
@@ -228,10 +234,12 @@ void Boomerang::EnterUseThrowCommon()
 	D3DXMatrixRotationQuaternion(&matRot, &m_vQuaternion);
 
 	//行列の中にあるZ軸成分を取り出す
-	D3DXVECTOR3 forward = D3DXVECTOR3(matRot._31, matRot._32, matRot._33);
+	//D3DXVECTOR3 forward = D3DXVECTOR3(matRot._31, matRot._32, matRot._33);
 
 	//取り出したZ軸成分をノーマライズ
-	D3DXVec3Normalize(&forward, &forward);
+	//D3DXVec3Normalize(&forward, &forward);
+
+	D3DXVECTOR3 forward = m_pPlayer->GetLocalAxes().forward;
 
 	//移動
 	m_Velocity = forward * m_MoveSpeed;

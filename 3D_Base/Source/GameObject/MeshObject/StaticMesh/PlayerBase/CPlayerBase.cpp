@@ -17,6 +17,7 @@
 #include "PlayerBase/PlayerState/PlayerActionState/PlayerResultLose_TypeA/CPlayerResultLose_TypeA.h"
 
 #include "Item/ItemBase.h"	
+#include "Item/Items/Boomerang/Boomerang.h"
 #include "Collision/CollisionUtility/CollisionUtility.h"
 #include "Scene/SceneData/CSceneData.h"
 
@@ -414,7 +415,6 @@ void CPlayerBase::OnCollision(CollisionBase* pOtherCollider)
 	case CollisionBase::ColliderTag::Mushroom:
 	case CollisionBase::ColliderTag::Fan:
 	case CollisionBase::ColliderTag::Magnet:
-	case CollisionBase::ColliderTag::Boomerang:
 	case CollisionBase::ColliderTag::TrackingRobot:
 
 		if (ItemBase* item = dynamic_cast<ItemBase*>(pOtherCollider->GetListener()))
@@ -434,7 +434,19 @@ void CPlayerBase::OnCollision(CollisionBase* pOtherCollider)
 			}
 		}
 		break;
+	case CollisionBase::ColliderTag::Boomerang:
 
+		if (Boomerang* item = dynamic_cast<Boomerang*>(pOtherCollider->GetListener()))
+		{
+			if (m_pItemBase == item)
+			{
+				if (item->GetIsComeBack())
+				{
+					item->SetState(IItemObserver::State::Have);
+				}
+			}
+		}
+		break;
 	default:
 		break;
 	}

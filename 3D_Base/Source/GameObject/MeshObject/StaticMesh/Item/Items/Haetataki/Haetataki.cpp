@@ -185,17 +185,13 @@ void Haetataki::Use()
 
 void Haetataki::Throw()
 {
-	if (GetAsyncKeyState('N') & 0x8000)
-	{
-		m_State = IItemObserver::IItemObserver::State::Destroy;
-	}
 }
 
 //--------------------------------------------------------------------------------------------------------------
 
 void Haetataki::Destroy()
 {
-	m_IsDestroy = true;
+	DestroyItem();
 }
 
 //--------------------------------------------------------------------------------------------------------------
