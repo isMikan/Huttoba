@@ -2,6 +2,7 @@
 
 #include "GameObject/UIObject/GaugeBase/CGaugeBase.h"
 
+#include "GameObject/MeshObject/StaticMesh/CStaticMeshObject.h"
 #include "PlayerBase/PlayerManager/CPlayerManager.h"
 #include "PlayerBase/CPlayerBase.h"
 
@@ -17,17 +18,19 @@ class CGaugeManager
 	: public IItemObserver 
 {
 public:
-	CGaugeManager();
+	CGaugeManager(
+		std::unique_ptr<CPlayerManager>& playerManager,
+		std::unique_ptr<ItemManager>& itemManager);
 	~CGaugeManager();
 
 //======================================================================
 // 	   外部で呼び出す関数.
 //======================================================================
 	//--- 構築関数 ---.
-	void Create(
-		CPlayerManager* playerManager, ItemManager* itemManager);
+	void Create();
 	//--- 破棄関数 ---.
-	void Destroy();
+	void Destroy(
+		int frameNo, CStaticMeshObject* object);
 	//--- 更新関数 ---.
 	void Update();
 	//--- 描画処理 ---.
@@ -37,19 +40,15 @@ public:
 	void ItemState(IItemObserver::State state) override;
 
 protected:
-
-protected:
 //======================================================================
 // 	   内部で使用する変数.
 //======================================================================
 	std::vector<std::unique_ptr<CGaugeBase>>	m_pGauge;			//ゲージ.
 
-	CPlayerManager*		m_pPlayerManager;	//プレイヤー.
-	ItemManager*		m_pItemManager;		//アイテム.
+	std::unique_ptr<CPlayerManager>&			m_pPlayerManager;	//プレイヤー.
+	std::unique_ptr<ItemManager>&				m_pItemManager;		//アイテム.
 	
-	std::unordered_map<CPlayerBase*, int>	m_PlayerGauge;			//プレイヤーとゲージを照らし合わせる.	
-	std::unordered_set<CPlayerBase*>		m_SubscribePlayers;		//プレイヤーの購買リスト.
+	std::unordered_map<CStaticMeshObject*, int>	m_PlayerGauge;			//プレイヤーとゲージを照らし合わせる.	
+	std::unordered_set<CStaticMeshObject*>		m_SubscribePlayers;		//プレイヤーの購買リスト.
 
-	std::unordered_map<ItemBase*, int>		m_ItemGauge;			//アイテムとゲージを照らし合わせる.	
-	std::unordered_set<ItemBase*>			m_SubscribeItems;		//アイテムの購買リスト.
 };

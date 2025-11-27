@@ -111,7 +111,7 @@ void Bomb::Throw()
 
 void Bomb::Destroy()
 {
-	m_IsDestroy = true;
+	DestroyItem();
 }
 
 void Bomb::ItemState(IItemObserver::State state)
@@ -250,7 +250,7 @@ void Bomb::Explosion()
 		AssetManager::Effect()->SetScale(hEffect, D3DXVECTOR3(0.6f, 0.6f, 0.6f));
 
 		//ƒAƒCƒeƒ€‚Ìó‘Ô‚ğ”jŠü‚É‚·‚é
-		m_State = IItemObserver::IItemObserver::State::Destroy;
+		DestroyItem();
 	}
 }
 

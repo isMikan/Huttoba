@@ -20,6 +20,4 @@ public:
 	//--- •`‰æˆ— ---.
 	void Draw(D3DXMATRIX& View, D3DXMATRIX& Proj) override;
 
-private:
-
 };

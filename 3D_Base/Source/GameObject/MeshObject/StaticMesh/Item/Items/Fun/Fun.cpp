@@ -174,11 +174,7 @@ void Fun::UseMove()
 
 	if (m_UseTime < 0)
 	{
-		m_IsDestroy = true;
-		if (m_pPlayer->GetItemBase() != nullptr)
-		{
-			m_pPlayer->SetItemBase(nullptr);
-		}
+		DestroyItem();
 	}
 
 	m_vPosition = m_pPlayer->GetPlayerRightHand().GetPosition();
@@ -205,17 +201,7 @@ void Fun::ThrowMove()
 	//移動量が一定以下なら
 	if (D3DXVec3Length(&m_Velocity) <= 0.6f)
 	{
-		//::EsHandle hEffect = 1;
-
-		//エフェクト追加
-		hEffect = AssetManager::Effect()->Play("Break", m_vPosition);
-		AssetManager::Effect()->SetSpeed(hEffect, 1.f);
-
-		//エフェクトの拡縮設定
-		AssetManager::Effect()->SetScale(hEffect, D3DXVECTOR3(0.3f, 0.3f, 0.3f));
-
-		m_IsDestroy = true;
-
+		DestroyItem();
 	}
 
 	m_Velocity *= 0.98f;

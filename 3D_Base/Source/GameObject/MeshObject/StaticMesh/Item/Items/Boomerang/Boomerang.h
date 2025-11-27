@@ -31,7 +31,8 @@ public:
     //ó‘Ô•Ï‰»‚Éˆê“x‚¾‚¯ˆ—
     void ItemState(IItemObserver::State state)override;
 
-	bool GetIsUseThrow() { return m_IsUseThrow; }
+    bool GetIsUseThrow() const { return m_IsUseThrow; }
+    bool GetIsComeBack() const { return m_ComeBack; }
 
 private:
     //“–‚½‚Á‚½Û‚Ìˆ—

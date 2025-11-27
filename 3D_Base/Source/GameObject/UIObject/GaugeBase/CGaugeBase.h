@@ -54,11 +54,16 @@ protected:
 //======================================================================
 // 	   内部で使用する変数.
 //======================================================================
+	std::unique_ptr<CStaticMeshObject>		m_pObject;
+		
 	ComPtr<ID3D11DeviceContext>		m_pContext11;	//コンテキスト.
 
 	Gauge			m_GaugeInfo;	//ゲージの情報.
 
 	D3DXVECTOR3		m_WorldPos;		//世界座標.
 	D3DXVECTOR3		m_OffsetPos;	//調整座標.
+
+
+	int		m_GaugeNo;
 
 };
