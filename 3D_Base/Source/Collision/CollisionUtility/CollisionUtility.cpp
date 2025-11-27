@@ -84,12 +84,12 @@ namespace CollisionUtility
         }
         pMeshDx9->UnlockVertexBuffer();
 
-        // --- 1. カプセル半径（太さ）の計算 ---
+        // カプセル半径の計算
         float halfWidthX = (maxX - minX) * 0.5f;
         float halfWidthZ = (maxZ - minZ) * 0.5f;
         outRadius = std::max(halfWidthX, halfWidthZ);
 
-        // --- 2. 軸線分 A, B の計算（Y軸） ---
+        //軸線分 A, B の計算
 
         // Y軸の全長
         float totalWidthY = maxY - minY;
@@ -111,7 +111,6 @@ namespace CollisionUtility
         {
             float halfLength = coreLength * 0.5f;
 
-            // ★ 修正点: オフセットをローカル原点 {0, 0, 0} を中心に配置する ★
             // XZ座標は常に 0.0f に固定する
             // A: 上端側 (+Y軸方向)
             outLocalOffsetA = D3DXVECTOR3(0.0f, halfLength, 0.0f);

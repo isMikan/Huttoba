@@ -83,56 +83,56 @@ std::shared_ptr<CollisionBase> CollisionDataFactory::CreateCapsuleForMesh(
     return newCollider;
 }
 
-std::shared_ptr<CollisionBase> CollisionDataFactory::CreateHorizontalCapsuleForMesh(
-    CollisionBase::ColliderTag tag,
-    std::shared_ptr<CStaticMesh> pMesh,
-    CGameObject* pOwner,
-    bool IsAddCollider
-)
-{
-    // カプセルに必要なローカル情報
-    float calculatedRadius = 0.0f;
-    D3DXVECTOR3 localOffsetA(0.0f, 0.0f, 0.0f);
-    D3DXVECTOR3 localOffsetB(0.0f, 0.0f, 0.0f);
-
-    // メッシュからカプセルのパラメータを計算
-    if (!CollisionUtility::CalculateBoundingCapsule(
-        pMesh, calculatedRadius, localOffsetA, localOffsetB))
-    {
-        return nullptr;
-    }
-
-    ICollisionListener* listener = dynamic_cast<ICollisionListener*>(pOwner);
-    const D3DXVECTOR3& posRef = pOwner->GetPosition();
-
-    // CollisionCapsuleのインスタンスを生成
-    std::shared_ptr<CollisionBase> newCollider = std::make_shared<CollisionCapsule>(
-        listener,
-        posRef,               // SyncPositionとして親の位置を参照
-        tag,
-        calculatedRadius,
-        localOffsetA,         // 軸線分Aのローカルオフセット
-        localOffsetB          // 軸線分Bのローカルオフセット
-    );
-
-    // アイテムの判定を横向きにするための行列を作成
-    D3DXMATRIX mRot;
-    // Z軸周り90度回転（ローカルY軸カプセルをX軸に倒す）
-    D3DXMatrixRotationX(&mRot, D3DXToRadian(90.0f));
-
-    // カプセルインスタンスにローカル回転を設定
-    std::shared_ptr<CollisionCapsule> pCapsule =
-        std::dynamic_pointer_cast<CollisionCapsule>(newCollider);
-    if (pCapsule) {
-        pCapsule->SetLocalCapsuleRotation(mRot);
-    }
-
-    if (IsAddCollider)
-    {
-        CollisionManager::GetInstance()->AddCollider(newCollider);
-        CollisionDraw::GetInstance()->AddDrawMesh(pMesh, pOwner, newCollider);
-    }
-
-    return newCollider;
-}
+//std::shared_ptr<CollisionBase> CollisionDataFactory::CreateHorizontalCapsuleForMesh(
+//    CollisionBase::ColliderTag tag,
+//    std::shared_ptr<CStaticMesh> pMesh,
+//    CGameObject* pOwner,
+//    bool IsAddCollider
+//)
+//{
+//    // カプセルに必要なローカル情報
+//    float calculatedRadius = 0.0f;
+//    D3DXVECTOR3 localOffsetA(0.0f, 0.0f, 0.0f);
+//    D3DXVECTOR3 localOffsetB(0.0f, 0.0f, 0.0f);
+//
+//    // メッシュからカプセルのパラメータを計算
+//    if (!CollisionUtility::CalculateBoundingCapsule(
+//        pMesh, calculatedRadius, localOffsetA, localOffsetB))
+//    {
+//        return nullptr;
+//    }
+//
+//    ICollisionListener* listener = dynamic_cast<ICollisionListener*>(pOwner);
+//    const D3DXVECTOR3& posRef = pOwner->GetPosition();
+//
+//    // CollisionCapsuleのインスタンスを生成
+//    std::shared_ptr<CollisionBase> newCollider = std::make_shared<CollisionCapsule>(
+//        listener,
+//        posRef,               // SyncPositionとして親の位置を参照
+//        tag,
+//        calculatedRadius,
+//        localOffsetA,         // 軸線分Aのローカルオフセット
+//        localOffsetB          // 軸線分Bのローカルオフセット
+//    );
+//
+//    // アイテムの判定を横向きにするための行列を作成
+//    D3DXMATRIX mRot;
+//    // Z軸周り90度回転（ローカルY軸カプセルをX軸に倒す）
+//    D3DXMatrixRotationX(&mRot, D3DXToRadian(90.0f));
+//
+//    // カプセルインスタンスにローカル回転を設定
+//    std::shared_ptr<CollisionCapsule> pCapsule =
+//        std::dynamic_pointer_cast<CollisionCapsule>(newCollider);
+//    if (pCapsule) {
+//        pCapsule->SetLocalCapsuleRotation(mRot);
+//    }
+//
+//    if (IsAddCollider)
+//    {
+//        CollisionManager::GetInstance()->AddCollider(newCollider);
+//        CollisionDraw::GetInstance()->AddDrawMesh(pMesh, pOwner, newCollider);
+//    }
+//
+//    return newCollider;
+//}
 

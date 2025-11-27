@@ -51,7 +51,7 @@ void Fun::Init()
 	//使用時の前方に出す当たり判定
 	std::shared_ptr<CStaticMesh> mesh = AssetManager::Mesh(StaticMeshList::FunCol);
 
-	m_pUseCollider = CollisionDataFactory::CreateHorizontalCapsuleForMesh(
+	m_pUseCollider = CollisionDataFactory::CreateCapsuleForMesh(
 		CollisionBase::ColliderTag::Fan,
 		mesh,
 		this

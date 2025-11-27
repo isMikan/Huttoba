@@ -68,7 +68,7 @@ HRESULT SpriteManager::CreateSprite2D()
 	RegisterSprite2D(Sprite2DList::Selector,	_T("Data\\Texture\\yajirusi_kari.png"), { 64,64,64,64,64,64 });
 	RegisterSprite2D(Sprite2DList::FontUI,		_T("Data\\Texture\\UI.png"),			{ 400,64,400,544,400,64 });
 	RegisterSprite2D(Sprite2DList::BigFontUI,	_T("Data\\Texture\\BigUI.png"),			{ 800,200,800,620,800,200 });
-	RegisterSprite2D(Sprite2DList::Clock,		_T("Data\\Texture\\clock.png"),			{ 64,64,64,64,64,64 });
+	RegisterSprite2D(Sprite2DList::Clock,		_T("Data\\Texture\\clock.png"),			{ 56,63,56,63,56,63 });
 	RegisterSprite2D(Sprite2DList::TimeNumber,	_T("Data\\Texture\\number.png"),		{ 40,40,330,32,33,31 });
 
 	

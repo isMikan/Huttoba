@@ -1,7 +1,7 @@
 #include "CTimeManager.h"
 
 //制限時間
-constexpr int TIME_LIMIT = 10;
+constexpr int TIME_LIMIT = 11;
 
 CTimeManager::CTimeManager()
 	: m_PauseStateTime		()
@@ -86,8 +86,12 @@ void CTimeManager::Update_Internal()
 	std::chrono::duration<double> total = currentTime - m_StartTime;
 	m_TotalTime = total.count() - m_PauseTime;	//秒単位のものを数値として取り出す.
 
-	//制限時間を計算
-	Calculate_TimeLimit();
+	//終了していなければ
+	if (!m_IsFinish)
+	{
+		//制限時間を計算
+		Calculate_TimeLimit();
+	}
 }
 
 void CTimeManager::Calculate_TimeLimit()
@@ -102,5 +106,7 @@ void CTimeManager::Calculate_TimeLimit()
 	if (RemainingTime < 0)
 	{
 		m_IsFinish = true;
+		m_TimeLimit.first = 0;
+		m_TimeLimit.second = 0;
 	}
 }
