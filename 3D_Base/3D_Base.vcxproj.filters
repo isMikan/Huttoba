@@ -119,7 +119,7 @@
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\Item\Items\Boomerang\Boomerang.cpp" />
     <ClCompile Include="Source\GameObject\UIObject\Fade\FadeBase\CFadeBase.cpp" />
     <ClCompile Include="Source\GameObject\UIObject\Fade\FadeManager\CFadeManager.cpp" />
-    <ClCompile Include="Source\GameObject\SpriteObject\DrawTimer\CTimer.cpp" />
+    <ClCompile Include="Source\GameObject\SpriteObject\DrawTimer\DrawTimer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Assets\AssetManager.h" />
@@ -242,6 +242,6 @@
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\Item\Items\Boomerang\Boomerang.h" />
     <ClInclude Include="Source\GameObject\UIObject\Fade\FadeBase\CFadeBase.h" />
     <ClInclude Include="Source\GameObject\UIObject\Fade\FadeManager\CFadeManager.h" />
-    <ClInclude Include="Source\GameObject\SpriteObject\DrawTimer\CTimer.h" />
+    <ClInclude Include="Source\GameObject\SpriteObject\DrawTimer\DrawTimer.h" />
   </ItemGroup>
 </Project>

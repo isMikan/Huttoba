@@ -37,6 +37,12 @@ public:
 	//経過時間を取得.
 	static float GetTotalTime() { return static_cast<float>(GetInstance().m_TotalTime); }
 
+	//製作者 : 佐藤
+	//残り制限時間を取得
+	static std::pair<int, int> GetTimeLimit() { return GetInstance().m_TimeLimit; }
+	//制限時間が過ぎたかどうか
+	bool GetIsFinish() { return m_IsFinish; }
+
 private:
 //======================================================================
 // 	   内部で呼び出す関数.
@@ -49,6 +55,10 @@ private:
 	void Resume_Internal();
 	//--- 更新処理 ---.
 	void Update_Internal();
+
+	//製作者 : 佐藤
+	//--- 残り時間計算 ---.
+	void Calculate_TimeLimit();
 
 private:
 //======================================================================
@@ -68,4 +78,8 @@ private:
 	double		m_PauseTime;	//ポーズ時間.
 
 	bool		m_IsPaused;		//一時停止しているか.
+	bool		m_IsFinish;		//一時停止しているか.
+
+	//製作者 : 佐藤
+	std::pair<int, int> m_TimeLimit;	//残り制限時間
 };

@@ -161,7 +161,9 @@ enum class Sprite2DList
 	Result,
 	Selector,
 	FontUI,		//選択肢などのちょっと小さい文字.
-	BigFontUI	//タイトルなどの大き目の文字.
+	BigFontUI,	//タイトルなどの大き目の文字.
+	Clock,	
+	TimeNumber,	
 };
 
 //サウンドリスト列挙型
