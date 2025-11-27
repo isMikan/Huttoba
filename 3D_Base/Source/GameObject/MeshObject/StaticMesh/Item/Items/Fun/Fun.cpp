@@ -23,6 +23,9 @@ Fun::Fun()
 
 Fun::~Fun()
 {
+	AssetManager::Effect()->Stop(hEffect);
+
+
 	CollisionManager::GetInstance()->RemoveCollider(m_pPickUpCollider.get());
 	CollisionManager::GetInstance()->RemoveCollider(m_pUseCollider.get());
 	CollisionManager::GetInstance()->RemoveCollider(m_pNowCollider.get());
@@ -64,7 +67,6 @@ void Fun::Init()
 	//CollisionManager::GetInstance()->AddCollider(m_pNowCollider);
 
 	//--------------------------------------------------------------------------------------------------------------
-
 }
 
 void Fun::Update()
@@ -124,18 +126,8 @@ void Fun::ItemState(IItemObserver::State state)
 	switch (state)
 	{
 	case IItemObserver::IItemObserver::State::Use:
-		//::EsHandle hEffect = 1;
-
 		//エフェクト追加
 		hEffect = AssetManager::Effect()->Play("FunWind", m_vPosition);
-
-		//エフェクトの拡縮設定
-		AssetManager::Effect()->SetScale(hEffect, D3DXVECTOR3(0.3f, 0.3f, 0.3f));
-
-		AssetManager::Effect()->SetRotation(hEffect, D3DXVECTOR3(0, 0, 1), D3DXToRadian(90));
-
-		AssetManager::Effect()->SetLocation(hEffect, m_vPosition);
-		//ssetManager::Effect()->SetRotation(hEffect, m_vQuaternion);
 
 		break;
 	case IItemObserver::IItemObserver::State::Throw:
@@ -193,6 +185,19 @@ void Fun::UseMove()
 	m_vQuaternion = m_pPlayer->GetQuaternion();
 
 
+
+	//エフェクトの拡縮設定
+	AssetManager::Effect()->SetScale(hEffect, D3DXVECTOR3(0.3f, 0.3f, 0.3f));
+
+	D3DXVECTOR3 flowerd = m_pPlayer->GetLocalAxes().forward;
+	
+	float a = atan2f(flowerd.x, flowerd.z);
+
+	AssetManager::Effect()->SetRotation(hEffect, D3DXVECTOR3(D3DXToRadian(90), a, 0));
+
+	AssetManager::Effect()->SetSpeed(hEffect, 4.f);
+
+	AssetManager::Effect()->SetLocation(hEffect, m_vPosition);
 }
 
 void Fun::ThrowMove()
@@ -204,6 +209,7 @@ void Fun::ThrowMove()
 
 		//エフェクト追加
 		hEffect = AssetManager::Effect()->Play("Break", m_vPosition);
+		AssetManager::Effect()->SetSpeed(hEffect, 1.f);
 
 		//エフェクトの拡縮設定
 		AssetManager::Effect()->SetScale(hEffect, D3DXVECTOR3(0.3f, 0.3f, 0.3f));
