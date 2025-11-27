@@ -59,6 +59,8 @@ HRESULT CSceneGameMain::Create()
 	//影マネージャーのインスタンス作成
 	m_pShadowManager = std::make_unique<CShadowManager>();
 
+	m_pDrawTimer = std::make_unique<DrawTimer>();
+
 	//プレイヤーマネージャーのインスタンス作成.
 	m_pPlayerManager = std::make_unique<CPlayerManager>();
 
@@ -174,11 +176,12 @@ void CSceneGameMain::Update()
 	{
 		//爆発しているか
 		if (exp->IsStart())
-		{
+		{	
 			exp->Update();
 		}
 	}
 
+	m_pDrawTimer->Update();
 	m_pShadowManager->Update(m_pPlayerManager.get(), m_pItemManager.get());
 	m_pGaugeManager->Update();
 
@@ -245,6 +248,8 @@ void CSceneGameMain::Draw()
 
 	//影マネージャーの描画.
 	m_pShadowManager->Draw(m_pDx11, view, proj);
+
+	m_pDrawTimer->Draw();
 
 	//プレイヤーの描画.
 	m_pPlayerManager->Draw(view, proj, light, camera);

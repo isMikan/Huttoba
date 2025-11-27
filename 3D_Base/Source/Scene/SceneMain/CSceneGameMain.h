@@ -12,6 +12,7 @@
 #include "Assets/Mesh/SkinMesh/CSkinMesh.h"
 
 #include "GameObject/SpriteObject/CSpriteObject.h"
+#include "GameObject/SpriteObject/DrawTimer/DrawTimer.h"
 #include "GameObject/SpriteObject/Explosion/CExplosion.h"
 
 #include "GameObject/UIObject/CUIObject.h"
@@ -61,6 +62,8 @@ private:
 
 	//影クラス.
 	std::unique_ptr<CShadowManager>		m_pShadowManager;
+
+	std::unique_ptr<DrawTimer>			m_pDrawTimer;
 
 	//ゲージマネージャークラス.
 	std::unique_ptr<CGaugeManager>		m_pGaugeManager;

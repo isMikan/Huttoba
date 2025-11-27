@@ -1,7 +1,12 @@
 #include "CTimeManager.h"
 
+//制限時間
+constexpr int TIME_LIMIT = 10;
+
 CTimeManager::CTimeManager()
 	: m_PauseStateTime		()
+	, m_TimeLimit			()
+	, m_IsFinish			( false )
 {
 	Reset_Internal();	//初期化.
 }
@@ -23,8 +28,10 @@ void CTimeManager::Reset_Internal()
 	m_DeltaTime = 0.0;
 	m_TotalTime = 0.0;
 	m_PauseTime = 0.0;
+	m_TimeLimit = { 0,0 };
 
 	m_IsPaused = false;
+	m_IsFinish = false;
 }
 
 //--- 一時停止関数 ---.
@@ -78,4 +85,22 @@ void CTimeManager::Update_Internal()
 	//経過時間 = 現在の時刻 - 開始時間.
 	std::chrono::duration<double> total = currentTime - m_StartTime;
 	m_TotalTime = total.count() - m_PauseTime;	//秒単位のものを数値として取り出す.
+
+	//制限時間を計算
+	Calculate_TimeLimit();
+}
+
+void CTimeManager::Calculate_TimeLimit()
+{
+	//経過時間
+	int RemainingTime = TIME_LIMIT - static_cast<int>(CTimeManager::GetInstance().GetTotalTime());
+
+	//firstに十の位、secondに一の位
+	m_TimeLimit.first = RemainingTime / 10, 0;
+	m_TimeLimit.second = RemainingTime % 10, 0;
+
+	if (RemainingTime < 0)
+	{
+		m_IsFinish = true;
+	}
 }
