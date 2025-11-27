@@ -119,8 +119,25 @@ void Fun::Destroy()
 
 void Fun::ItemState(IItemObserver::State state)
 {
+	AssetManager::Effect()->Stop(hEffect);
+
 	switch (state)
 	{
+	case IItemObserver::IItemObserver::State::Use:
+		//::EsHandle hEffect = 1;
+
+		//エフェクト追加
+		hEffect = AssetManager::Effect()->Play("FunWind", m_vPosition);
+
+		//エフェクトの拡縮設定
+		AssetManager::Effect()->SetScale(hEffect, D3DXVECTOR3(0.3f, 0.3f, 0.3f));
+
+		AssetManager::Effect()->SetRotation(hEffect, D3DXVECTOR3(0, 0, 1), D3DXToRadian(90));
+
+		AssetManager::Effect()->SetLocation(hEffect, m_vPosition);
+		//ssetManager::Effect()->SetRotation(hEffect, m_vQuaternion);
+
+		break;
 	case IItemObserver::IItemObserver::State::Throw:
 		OneEnterThrow();
 		break;
@@ -163,7 +180,6 @@ void Fun::UseMove()
 	//ゲージのために追加.	制作者	[甲把]
 	m_UsageLimit.remaining = m_UseTime;
 
-	std::cout << m_UseTime << std::endl;
 	if (m_UseTime < 0)
 	{
 		m_IsDestroy = true;
@@ -175,14 +191,16 @@ void Fun::UseMove()
 
 	m_vPosition = m_pPlayer->GetPlayerRightHand().GetPosition();
 	m_vQuaternion = m_pPlayer->GetQuaternion();
+
+
 }
 
 void Fun::ThrowMove()
 {
 	//移動量が一定以下なら
-	if (D3DXVec3Length(&m_Velocity) <= 0.3f)
+	if (D3DXVec3Length(&m_Velocity) <= 0.6f)
 	{
-		static ::EsHandle hEffect = 1;
+		//::EsHandle hEffect = 1;
 
 		//エフェクト追加
 		hEffect = AssetManager::Effect()->Play("Break", m_vPosition);

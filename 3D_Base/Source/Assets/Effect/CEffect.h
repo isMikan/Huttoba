@@ -130,6 +130,18 @@ public:
 		m_pManager->SetRotation(handle, ::EsVec3(vAxis.x, vAxis.y, vAxis.z), angle);
 	}
 
+	//回転を指定する(クォータニオンを使用)
+	void SetRotation(::EsHandle handle, D3DXQUATERNION qua)
+	{
+		D3DXVECTOR3 axis;
+		float angle;
+
+		//クォータニオンから軸と角度に変換
+		D3DXQuaternionToAxisAngle(&qua, &axis, &angle);
+
+		m_pManager->SetRotation(handle, ::EsVec3(axis.x, axis.y, axis.z), angle);
+	}
+
 	//サイズを指定する
 	void SetScale(::EsHandle handle, D3DXVECTOR3 scale)
 	{
