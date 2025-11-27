@@ -64,9 +64,6 @@ public:
 	//アイテムの最大出現数を決定
 	void CheckSpawnLimit();
 
-	//オブサーバーの登録.	制作者 [甲把]
-	void AddObserver(std::unique_ptr<IItemObserver> observer);
-
 	//void SetSpawnItemPosition(SpawnItemPosition& posClass) { m_pSpawnPosition = posClass; }
 
 private:
@@ -80,7 +77,4 @@ private:
 	//アイテム生成関連クラス
 	std::unique_ptr<SelectSpawnItem>	    m_pSpawnItem;
 	std::unique_ptr<SpawnItemPosition>		m_pSpawnItemPosition;
-	
-	std::vector<std::unique_ptr<IItemObserver>>	m_pObserver;	//オブサーバー.	制作者 [甲把]
-
 };

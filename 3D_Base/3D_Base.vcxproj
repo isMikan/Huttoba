@@ -470,6 +470,9 @@
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\Item\SelectSpawnItem\SelectSpawnItem.h" />
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\Item\SpawnItemPosition\SpawnItemPosition.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="cpp.hint" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

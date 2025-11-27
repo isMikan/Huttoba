@@ -85,7 +85,7 @@ public:
 	* @return	true : 使用している
 	*			false: 使用していない
 	*****************************************************************************************/
-	bool IsUse(); 
+	bool IsUse() const; 
 
 
 	/*****************************************************************************************
@@ -96,14 +96,14 @@ public:
 	*			false: なにもしない
 	* 
 	*****************************************************************************************/
-	bool IsDestroy() { return m_IsDestroy; }
+	bool IsDestroy() const { return m_IsDestroy; }
 
 	//地面との判定
 	void IsOnGround(CGroundManager& pGroundMgr);
 
-	bool GetIsOnGround() { return m_IsOnGround; }
-	bool GetIsUse()   { return m_IsUse;	}
-	bool GetIsOkFall()   { return m_IsOkFall;	}
+	bool GetIsOnGround() const { return m_IsOnGround; }
+	bool GetIsUse() const { return m_IsUse; }
+	bool GetIsOkFall() const { return m_IsOkFall; }
 
 	//使用制限の取得（ゲージに必要）.	制作者	[甲把]
 	Gauge GetUsageLimit() const { return m_UsageLimit; }

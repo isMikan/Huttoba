@@ -5,8 +5,6 @@
 #include "Input/CInputManager.h"
 #include "Item/SelectSpawnItem/SelectSpawnItem.h"
 #include "Item/SpawnItemPosition/SpawnItemPosition.h"
-#include "GameObject/UIObject/GaugeBase/GaugeManager/CGaugeManager.h"
-
 
 //--------------------------------------------------------------------------------------------------------------
 
@@ -15,8 +13,6 @@ ItemManager::ItemManager(std::unique_ptr<CGroundManager>& GroundManager)
 	, m_pSpawnItem			{ std::make_unique<SelectSpawnItem>() }
 	, m_pSpawnItemPosition	{ std::make_unique<SpawnItemPosition>(GroundManager) }
 	, m_SpawnLimit			{ }
-
-	, m_pObserver			()
 {
 	Create();
 	Init();
@@ -57,7 +53,6 @@ void ItemManager::Init()
 	for (auto& item : m_pItems)
 	{
 		item->Init();
-		//AddObserver(std::make_unique<CGaugeManager>(manager, this));
 	}
 }
 
@@ -83,11 +78,6 @@ void ItemManager::Update()
 		if (!item->GetIsOnGround() && item->GetIsOkFall())
 		{
 			//item->Fall();
-		}
-	
-		for (auto& obs : m_pObserver)
-		{
-			obs->ItemState(item->GetState());
 		}
 	}
 
@@ -160,10 +150,3 @@ void ItemManager::CheckSpawnLimit()
 }
 
 //--------------------------------------------------------------------------------------------------------------
-
-//ÉIÉuÉTÅ[ÉoÅ[ÇÃìoò^.	êßçÏé“ [çbîc]
-void ItemManager::AddObserver(std::unique_ptr<IItemObserver> observer)
-{
-	m_pObserver.push_back(std::move(observer));
-}
-

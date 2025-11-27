@@ -48,6 +48,7 @@ ItemID SelectSpawnItem::SerectSpawnItem(std::vector<std::unique_ptr<ItemBase>>& 
 			return 	item.first;
 		}
 	}
+	return ItemID::None;
 }
 
 //ˆÈ‰º‹@”\

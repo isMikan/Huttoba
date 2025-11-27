@@ -116,4 +116,6 @@ bool CPlayerAI_TypeA::IsSearchItem(ItemBase* item)
 	{
 		return false;
 	}
+
+	return true;
 }

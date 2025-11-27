@@ -7,7 +7,6 @@
 #include "PlayerBase/CPlayerBase.h"
 
 #include "Item/ItemBase.h"
-#include "Item/ItemObserver/IItemObserver.h"
 
 #include <unordered_set>
 
@@ -15,40 +14,40 @@
 *	ゲージマネージャークラス.
 **/
 class CGaugeManager
-	: public IItemObserver 
 {
 public:
-	CGaugeManager(
-		std::unique_ptr<CPlayerManager>& playerManager,
-		std::unique_ptr<ItemManager>& itemManager);
+	CGaugeManager(ItemManager* itemManager);
 	~CGaugeManager();
 
 //======================================================================
 // 	   外部で呼び出す関数.
 //======================================================================
-	//--- 構築関数 ---.
-	void Create();
-	//--- 破棄関数 ---.
-	void Destroy(
-		int frameNo, CStaticMeshObject* object);
-	//--- 更新関数 ---.
+	//--- 構築処理 ---.
+	void Create(CPlayerManager* playerManager);
+	//--- 更新処理 ---.
 	void Update();
 	//--- 描画処理 ---.
 	void Draw(
 		D3DXMATRIX& View, D3DXMATRIX& Proj);
 
-	void ItemState(IItemObserver::State state) override;
+protected:
+//======================================================================
+// 	   内部で呼び出す関数.
+//======================================================================
+	//--- ゲージの構築処理 ---.
+	void GaugeCreate(CStaticMeshObject* object, Gauge usageLimit);
+	//--- 破棄処理 ---.
+	void Destroy(CStaticMeshObject* object);
 
 protected:
 //======================================================================
 // 	   内部で使用する変数.
 //======================================================================
-	std::vector<std::unique_ptr<CGaugeBase>>	m_pGauge;			//ゲージ.
+	std::vector<std::unique_ptr<CGaugeBase>>	m_pGauge;				//ゲージ.
 
-	std::unique_ptr<CPlayerManager>&			m_pPlayerManager;	//プレイヤー.
-	std::unique_ptr<ItemManager>&				m_pItemManager;		//アイテム.
-	
-	std::unordered_map<CStaticMeshObject*, int>	m_PlayerGauge;			//プレイヤーとゲージを照らし合わせる.	
-	std::unordered_set<CStaticMeshObject*>		m_SubscribePlayers;		//プレイヤーの購買リスト.
+	std::unordered_map<CStaticMeshObject*, std::pair<int, int>>	m_ObjectGauge;		//プレイヤーとゲージを照らし合わせる.	
+	std::unordered_set<CStaticMeshObject*>						m_SubscribeObjects;	//プレイヤーの購買リスト.
 
+	CPlayerManager*		m_pPlayerManager;		//プレイヤー.
+	ItemManager*		m_pItemManager;			//アイテム.
 };
