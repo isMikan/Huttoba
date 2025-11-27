@@ -31,6 +31,8 @@ public:
     //状態変化時に一度だけ処理
     void ItemState(IItemObserver::State state)override;
 
+    bool GetIsPlaced() const { return m_IsPlaced; }
+
 private:
     //当たった際の処理
     void OnCollision(CollisionBase* other)override;
@@ -52,12 +54,13 @@ private:
     void Smash(CPlayerBase& playiers);
     
     //スカラーの計算
-    float CalculateForceScalar(float distance);
+    float CalculateForceScalar(float distance) const;
 
     //反射方向の計算
     //第一引数に入射ベクトル、第二引数に法線ベクトルをいれる
     //戻り値は正規化した方向ベクトルを返す
     D3DXVECTOR3 CalculateReflectionDirection(const D3DXVECTOR3& vIncomingDir, const D3DXVECTOR3& vNormal);
+
 
 private:
     //使用可能時間

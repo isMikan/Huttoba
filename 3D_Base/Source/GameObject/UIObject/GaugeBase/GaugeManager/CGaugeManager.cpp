@@ -6,19 +6,20 @@
 #include "PlayerBase/PlayerState/PlayerActionState/PlayerActionIdleState/CPlayerActionIdleState.h"
 #include "PlayerBase/PlayerState/PlayerActionState/PlayerHoldingIdleState/CPlayerHoldingIdleState.h"
 #include "PlayerBase/PlayerState/PlayerActionState/PlayerKnockdownState/CPlayerKnockdownState.h"
+#include "PlayerBase/PlayerState/PlayerActionState/PlayerItemAttackState/CPlayerItemAttackState.h"
 
+#include "Item/Items/Bomb/Bomb.h"
 #include "Item/Items/Mushroom/Mushroom.h"
+#include "Item/Items/TrackingRobot/TrackingRobot.h"
 
-CGaugeManager::CGaugeManager(
-	std::unique_ptr<CPlayerManager>& playerManager,
-	std::unique_ptr<ItemManager>& itemManager)
+CGaugeManager::CGaugeManager(ItemManager* itemManager)
 	: m_pGauge				()
 
-	, m_pPlayerManager		( playerManager )
-	, m_pItemManager		( itemManager )
+	, m_ObjectGauge			()
+	, m_SubscribeObjects	()
 
-	, m_PlayerGauge			()
-	, m_SubscribePlayers	()
+	, m_pPlayerManager		()
+	, m_pItemManager		(itemManager)
 {
 	m_pGauge.clear();
 	m_pGauge.resize(Gauge_Max);
@@ -26,8 +27,8 @@ CGaugeManager::CGaugeManager(
 
 CGaugeManager::~CGaugeManager()
 {
-	m_SubscribePlayers.clear();
-	m_PlayerGauge.clear();
+	m_SubscribeObjects.clear();
+	m_ObjectGauge.clear();
 	m_pGauge.clear();
 }
 
@@ -36,8 +37,11 @@ CGaugeManager::~CGaugeManager()
 //======================================================================
 
 //--- 構築関数 ---.
-void CGaugeManager::Create()
+void CGaugeManager::Create(
+	CPlayerManager* playerManager)
 {
+	m_pPlayerManager = playerManager;
+
 	//ゲージのインスタンス作成.
 	for (auto& player : m_pPlayerManager->GetPlayer())
 	{
@@ -48,112 +52,80 @@ void CGaugeManager::Create()
 		bus.Subscribe([this, &player](CPlayerState* state) {
 			if (dynamic_cast<CPlayerKnockdownState*>(state))
 			{
-				for (int frameNo = 0; frameNo < Gauge_Max; frameNo++)
-				{
-					if (m_SubscribePlayers.contains(player.get())) return;
-
-					if (m_pGauge[frameNo]) continue;	//作成されていたら次へ.
-
-					int gaugeNo = frameNo + 1;	//ゲージ番号.
-
-					//ゲージフレームの作成.
-					m_pGauge[frameNo] = std::make_unique<CGaugeFrame>();								//インスタンス作成.
-					m_pGauge[frameNo]->AttachSprite(AssetManager::Sprite(Sprite2DList::GaugeFrame));	//スプライト設定.
-
-					//タイムゲージの作成.
-					m_pGauge[gaugeNo] = std::make_unique<CTimerGauge>();							//インスタンス作成.
-					m_pGauge[gaugeNo]->AttachSprite(AssetManager::Sprite(Sprite2DList::Gauge));		//スプライト設定.
-					m_pGauge[gaugeNo]->SetGaugeInfo(player.get()->GetKnockdownTime());					//時間を設定.
-
-					m_SubscribePlayers.insert(player.get());
-
-					m_PlayerGauge[player.get()] = frameNo;	//フレーム番号を保存.
-
-					break;	//1つだけゲージを作成.
-				}
+				GaugeCreate(player.get(), player.get()->GetKnockdownTime());
 			}
 			else if (dynamic_cast<CPlayerHoldingIdleState*>(state))
 			{
-				for (int frameNo = 0; frameNo < Gauge_Max; frameNo++)
+				auto item = player.get()->GetItemBase();
+				if (item && (!dynamic_cast<Bomb*>(item)
+					&& !dynamic_cast<Mushroom*>(item)
+					&& !dynamic_cast<TrackingRobot*>(item)))
 				{
-					if (m_SubscribePlayers.contains(player.get())) return;
-					if (m_pGauge[frameNo]) continue;	//作成されていたら次へ.
-
-					int gaugeNo = frameNo + 1;	//ゲージ番号.
-
-					//ゲージフレームの作成.
-					m_pGauge[frameNo] = std::make_unique<CGaugeFrame>();								//インスタンス作成.
-					m_pGauge[frameNo]->AttachSprite(AssetManager::Sprite(Sprite2DList::GaugeFrame));	//スプライト設定.
-
-					//タイムゲージの作成.
-					m_pGauge[gaugeNo] = std::make_unique<CTimerGauge>();							//インスタンス作成.
-					m_pGauge[gaugeNo]->AttachSprite(AssetManager::Sprite(Sprite2DList::Gauge));		//スプライト設定.
-					m_pGauge[gaugeNo]->SetGaugeInfo(player.get()->GetItemBase()->GetUsageLimit());		//時間を設定.
-
-					m_SubscribePlayers.insert(player.get());
-
-					m_PlayerGauge[player.get()] = frameNo;	//フレーム番号を保存.
-
-					break;	//1つだけゲージを作成.
+					GaugeCreate(player.get(), item->GetUsageLimit());
 				}
 			}
-			else if (!player || !player.get()->GetItemBase())
+			else if ((!player || !player.get()->GetItemBase()) 
+				&& !dynamic_cast<CPlayerItemAttackState*>(state))
 			{
-				//プレイヤーを探す.
-				auto playerGauge = m_PlayerGauge.find(player.get());
-				//見つかった場合.
-				if (playerGauge != m_PlayerGauge.end())
-				{
-					int frameNo = playerGauge->second;	//フレーム番号.
-					Destroy(frameNo, player.get());
-				}
+				Destroy(dynamic_cast<CStaticMeshObject*>(player.get()));
 			}
-			});
+		});
 	}
-}
-
-//--- 破棄関数 ---.
-void CGaugeManager::Destroy(
-	int frameNo, CStaticMeshObject* object)
-{
-	int gaugeNo = frameNo + 1;			//ゲージ番号.
-
-	m_pGauge[frameNo].reset();
-	m_pGauge[gaugeNo].reset();
-
-	m_SubscribePlayers.erase(object);
-	m_PlayerGauge.erase(object);
 }
 
 //--- 更新処理 ---.
 void CGaugeManager::Update()
 {
-	bool test = false;
-	CStaticMeshObject* deleteObject = nullptr;
-	int a = 0;
-	int b = 0;
-	for (auto& [object, frameNo] : m_PlayerGauge)
+	for (auto& item : m_pItemManager->GetItems())
 	{
-		if (!m_pGauge[frameNo] || !m_pGauge[frameNo + 1])
+		if (Mushroom* mush = dynamic_cast<Mushroom*>(item.get()))
 		{
+			if (mush->GetIsPlaced())
+			{
+				GaugeCreate(mush, mush->GetUsageLimit());
+			}
+			else
+			{
+				Destroy(dynamic_cast<CStaticMeshObject*>(mush));
+			}
+		}
+	}
+
+	bool isDelete = false;
+	std::vector<CStaticMeshObject*>  deleteObject{};
+	int deleteFrame = 0;
+	int deleteGauge = 0;
+
+	for (auto it = m_ObjectGauge.begin(); it != m_ObjectGauge.end(); it++)
+	{
+		auto object = it->first;
+		auto pair = it->second;	
+		int frameNo = pair.first;	//フレーム番号.
+		int gaugeNo = pair.second;	//ゲージ番号.
+
+		if (!m_pGauge[frameNo] || !m_pGauge[gaugeNo]) continue;
+
+		if (object->GetPosition().y < -5.f)
+		{
+			deleteFrame = frameNo;
+			deleteGauge = gaugeNo;
+			deleteObject.push_back(object);
+			isDelete = true;
 			continue;
 		}
 
-		int gaugeNo = frameNo + 1;			//ゲージ番号.
+		//フレーム.
+		m_pGauge[frameNo]->Update();	//更新.
+		m_pGauge[frameNo]->SetWorldPos(object->GetPosition());	//世界座標を設定.
 
-		if (object->GetPosition().y < -1.f)
-		{
-			a = frameNo;
-			b = gaugeNo;
-			deleteObject = object;
-			test = true;
-
-		}
+		//ゲージ.
+		m_pGauge[gaugeNo]->Update();	//更新.
+		m_pGauge[gaugeNo]->SetWorldPos(object->GetPosition());	//世界座標を設定.
 
 		//タイムゲージクラスの場合.
 		if (dynamic_cast<CTimerGauge*>(m_pGauge[gaugeNo].get()))
 		{
-			if(CPlayerBase* player = dynamic_cast<CPlayerBase*>(object))
+			if (CPlayerBase* player = dynamic_cast<CPlayerBase*>(object))
 			{
 				if (player->IsAnyActionState<CPlayerKnockdownState>())
 				{
@@ -166,35 +138,28 @@ void CGaugeManager::Update()
 					m_pGauge[gaugeNo]->SetGaugeInfo(player->GetItemBase()->GetUsageLimit());
 				}
 			}
-			else if (ItemBase* item = dynamic_cast<ItemBase*>(object))
+			if (Mushroom* mush = dynamic_cast<Mushroom*>(object))
 			{
-				if (item)
-				{
-					//時間を取得し、ゲージクラスに渡す.
-					m_pGauge[gaugeNo]->SetGaugeInfo(item->GetUsageLimit());
-				}
+				//時間を取得し、ゲージクラスに渡す.
+				m_pGauge[gaugeNo]->SetGaugeInfo(mush->GetUsageLimit());
 			}
 		}
-		//フレーム.
-		m_pGauge[frameNo]->Update();	//更新.
-		m_pGauge[frameNo]->SetWorldPos(object->GetPosition());	//世界座標を設定.
-
-		//ゲージ.
-		m_pGauge[gaugeNo]->Update();	//更新.
-		m_pGauge[gaugeNo]->SetWorldPos(object->GetPosition());	//世界座標を設定.
 	}
 
-	if (test)
+	if (isDelete)
 	{
-		m_pGauge[a].reset();
-		m_pGauge[b].reset();
-		//プレイヤーを探す.
-		auto playerGauge = m_PlayerGauge.find(deleteObject);
-		//見つかった場合.
-		if (playerGauge != m_PlayerGauge.end())
-		{
-			m_SubscribePlayers.erase(deleteObject);
-			m_PlayerGauge.erase(playerGauge);
+		m_pGauge[deleteFrame].reset();
+		m_pGauge[deleteGauge].reset();
+		for (auto* obj : deleteObject)
+		{	
+			//プレイヤーを探す.
+			auto objectGauge = m_ObjectGauge.find(obj);
+			//見つかった場合.
+			if (objectGauge != m_ObjectGauge.end())
+			{
+				m_SubscribeObjects.erase(obj);
+				m_ObjectGauge.erase(obj);
+			};
 		}
 	}
 }
@@ -211,49 +176,54 @@ void CGaugeManager::Draw(
 	}
 }
 
-void CGaugeManager::ItemState(IItemObserver::State state)
+//======================================================================
+// 	   内部で呼び出す関数.
+//======================================================================
+
+//--- ゲージの構築処理 ---.
+void CGaugeManager::GaugeCreate(CStaticMeshObject* object, Gauge usageLimit)
 {
-	for (auto& item : m_pItemManager->GetItems())
+	for (int frameNo = 0; frameNo < Gauge_Max; frameNo++)
 	{
-		if (Mushroom* mush = dynamic_cast<Mushroom*>(item.get()))
-		{
-			if (state == IItemObserver::State::Use)
-			{
-				for (int frameNo = Player_Max; frameNo < Gauge_Max; frameNo++)
-				{
-					if (m_SubscribePlayers.contains(item.get())) return;
-					if (m_pGauge[frameNo]) continue;	//作成されていたら次へ.
+		if (m_SubscribeObjects.contains(object)) break;
+		if (m_pGauge[frameNo]) continue;	//作成されていたら次へ.
 
-					int gaugeNo = frameNo + 1;	//ゲージ番号.
+		int gaugeNo = frameNo + 1;	//ゲージ番号.
 
-					//ゲージフレームの作成.
-					m_pGauge[frameNo] = std::make_unique<CGaugeFrame>();								//インスタンス作成.
-					m_pGauge[frameNo]->AttachSprite(AssetManager::Sprite(Sprite2DList::GaugeFrame));	//スプライト設定.
+		//ゲージフレームの作成.
+		m_pGauge[frameNo] = std::make_unique<CGaugeFrame>();								//インスタンス作成.
+		m_pGauge[frameNo]->AttachSprite(AssetManager::Sprite(Sprite2DList::GaugeFrame));	//スプライト設定.
 
-					//タイムゲージの作成.
-					m_pGauge[gaugeNo] = std::make_unique<CTimerGauge>();						//インスタンス作成.
-					m_pGauge[gaugeNo]->AttachSprite(AssetManager::Sprite(Sprite2DList::Gauge));	//スプライト設定.
-					m_pGauge[gaugeNo]->SetGaugeInfo(item->GetUsageLimit());	//時間を設定.
+		//タイムゲージの作成.
+		m_pGauge[gaugeNo] = std::make_unique<CTimerGauge>();							//インスタンス作成.
+		m_pGauge[gaugeNo]->AttachSprite(AssetManager::Sprite(Sprite2DList::Gauge));		//スプライト設定.
+		m_pGauge[gaugeNo]->SetGaugeInfo(usageLimit);		//時間を設定.
 
-					m_SubscribePlayers.insert(item.get());
+		m_ObjectGauge[object].first = frameNo;	//フレーム番号を保存.
+		m_ObjectGauge[object].second = gaugeNo;	//ゲージ番号を保存.
 
-					m_PlayerGauge[item.get()] = frameNo;	//フレーム番号を保存.
+		m_SubscribeObjects.insert(object);
 
-					break;	//1つだけゲージを作成.
-				}
-			}
-		}
-		else if (item)
-		{
-			//プレイヤーを探す.
-			auto itemGauge = m_PlayerGauge.find(item.get());
-			//見つかった場合.
-			if (itemGauge != m_PlayerGauge.end())
-			{
-				int frameNo = itemGauge->second;	//フレーム番号.
+		break;	//1つだけゲージを作成.
+	}
+}
 
-				Destroy(frameNo, item.get());
-			}
-		}
+//--- 破棄関数 ---.
+void CGaugeManager::Destroy(CStaticMeshObject* object)
+{
+	//オブジェクトを探す.
+	auto objectGauge = m_ObjectGauge.find(object);
+	//見つかった場合.
+	if (objectGauge != m_ObjectGauge.end())
+	{
+		auto pair = objectGauge->second;
+		int frameNo = pair.first;	//フレーム番号.
+		int gaugeNo = pair.second;	//ゲージ番号.
+
+		m_pGauge[frameNo].reset();
+		m_pGauge[gaugeNo].reset();
+
+		m_SubscribeObjects.erase(object);
+		m_ObjectGauge.erase(object);
 	}
 }

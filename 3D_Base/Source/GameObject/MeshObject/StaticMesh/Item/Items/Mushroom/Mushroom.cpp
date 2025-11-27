@@ -260,7 +260,7 @@ void Mushroom::Smash(CPlayerBase& playiers)
 		CPlayerBase::HitEvent::Knockback);
 }
 
-float Mushroom::CalculateForceScalar(float distance)
+float Mushroom::CalculateForceScalar(float distance) const
 {
 	//”¼Œa‚ğ‰¼İ’è
 	//“–‚½‚è”»’è—pƒƒbƒVƒ…‚Ì‘å‚«‚³‚É‚µ‚½‚¢

@@ -78,9 +78,9 @@ HRESULT CSceneGameMain::Create()
 	CteateExplosion();
 
 	//ゲージマネージャーのインスタンス作成.
-	m_pGaugeManager = std::make_unique<CGaugeManager>(m_pPlayerManager, m_pItemManager);
+	m_pGaugeManager = std::make_unique<CGaugeManager>(m_pItemManager.get());
 	//ゲージを作成.
-	m_pGaugeManager->Create();
+	m_pGaugeManager->Create(m_pPlayerManager.get());
 
 	return S_OK;
 }

@@ -74,6 +74,7 @@ void CPlayerBase::Update()
 		CPlayerFallingState, 
 		CPlayerKnockbackState>())
 	{
+		m_HitAttack.hitEvent = HitEvent::None;
 		SetActionState(std::make_unique<CPlayerFallingState>(*this));
 	}
 

@@ -13,6 +13,7 @@ ItemBase::ItemBase()
 	, m_IsOkFall	{ true }
 
 	, m_ThrowSmashPower	{ 5.0f }
+
 {
 }
 
@@ -63,7 +64,7 @@ void ItemBase::Draw(D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAMERA& Ca
 	CStaticMeshObject::Draw(View, Proj, Light, Camera);
 }
 
-bool ItemBase::IsUse()
+bool ItemBase::IsUse() const
 {
 	if (m_State == IItemObserver::State::Use)
 	{
@@ -92,7 +93,7 @@ void ItemBase::IsOnGround(CGroundManager& pGroundMgr)
 
 void ItemBase::DestroyItem()
 {
-	if (m_pPlayer->GetItemBase())
+	if (m_pPlayer->GetItemBase() == this)
 	{
 		m_pPlayer->SetItemBase(nullptr);
 	}

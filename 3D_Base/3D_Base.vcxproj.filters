@@ -116,6 +116,9 @@
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\Item\SpawnItemPosition\SpawnItemPosition.cpp" />
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\PlayerBase\PlayerAI\PlayerAI_TypeB\CPlayerAI_TypeB.cpp" />
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\Item\Items\TrackingRobot\ChaseSensor\ChaseSensor.cpp" />
+    <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\Item\Items\Boomerang\Boomerang.cpp" />
+    <ClCompile Include="Source\GameObject\UIObject\Fade\FadeBase\CFadeBase.cpp" />
+    <ClCompile Include="Source\GameObject\UIObject\Fade\FadeManager\CFadeManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Assets\AssetManager.h" />
@@ -235,5 +238,11 @@
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\Item\SpawnItemPosition\SpawnItemPosition.h" />
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\PlayerBase\PlayerAI\PlayerAI_TypeB\CPlayerAI_TypeB.h" />
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\Item\Items\TrackingRobot\ChaseSensor\ChaseSensor.h" />
+    <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\Item\Items\Boomerang\Boomerang.h" />
+    <ClInclude Include="Source\GameObject\UIObject\Fade\FadeBase\CFadeBase.h" />
+    <ClInclude Include="Source\GameObject\UIObject\Fade\FadeManager\CFadeManager.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="cpp.hint" />
   </ItemGroup>
 </Project>

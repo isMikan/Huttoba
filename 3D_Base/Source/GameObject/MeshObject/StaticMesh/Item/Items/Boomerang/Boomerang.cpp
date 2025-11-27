@@ -164,8 +164,8 @@ void Boomerang::UseMove()
 	if (!m_ComeBack)
 	{
 		//‚¾‚ñ‚¾‚ñŒ¸‘¬
-		m_Velocity.x -= m_Velocity.x * 0.01;
-		m_Velocity.z -= m_Velocity.z * 0.01;
+		m_Velocity.x -= m_Velocity.x * 0.01f;
+		m_Velocity.z -= m_Velocity.z * 0.01f;
 	}
 	else
 	{
@@ -176,8 +176,8 @@ void Boomerang::UseMove()
 		//‚¾‚ñ‚¾‚ñ‰Á‘¬
 		m_Velocity = initVector * m_MoveSpeed;
 
-		m_Velocity.x += m_Velocity.x * 0.25;
-		m_Velocity.z += m_Velocity.z * 0.25;
+		m_Velocity.x += m_Velocity.x * 0.25f;
+		m_Velocity.z += m_Velocity.z * 0.25f;
 	}
 
 	//„i—Í‚ªˆê’è‚Ü‚Å‰º‚ª‚é‚ÆPlayer‚É–ß‚é
