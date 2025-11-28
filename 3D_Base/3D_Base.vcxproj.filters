@@ -120,6 +120,8 @@
     <ClCompile Include="Source\GameObject\UIObject\Fade\FadeBase\CFadeBase.cpp" />
     <ClCompile Include="Source\GameObject\UIObject\Fade\FadeManager\CFadeManager.cpp" />
     <ClCompile Include="Source\GameObject\SpriteObject\DrawTimer\DrawTimer.cpp" />
+
+    <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\Item\Items\Fun\Wind\Wind.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Assets\AssetManager.h" />
@@ -243,5 +245,7 @@
     <ClInclude Include="Source\GameObject\UIObject\Fade\FadeBase\CFadeBase.h" />
     <ClInclude Include="Source\GameObject\UIObject\Fade\FadeManager\CFadeManager.h" />
     <ClInclude Include="Source\GameObject\SpriteObject\DrawTimer\DrawTimer.h" />
+   
+    <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\Item\Items\Fun\Wind\Wind.h" />
   </ItemGroup>
 </Project>

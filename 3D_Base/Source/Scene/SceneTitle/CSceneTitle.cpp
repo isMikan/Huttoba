@@ -46,6 +46,7 @@ HRESULT CSceneTitle::Create()
 HRESULT CSceneTitle::LoadData()
 {
 	m_pSpriteTitlImg->AttachSprite(AssetManager::Sprite(Sprite2DList::Title));
+	m_pSpriteTitlImg->SetPosition(300.f, 0.f, 0.f);
 
 	m_pSpriteSelector->AttachSprite(AssetManager::Sprite(Sprite2DList::Selector));
 
@@ -86,13 +87,13 @@ void CSceneTitle::Update()
 
 void CSceneTitle::Draw()
 {
-	m_pSpriteTitleFont->Draw();
+	//m_pSpriteTitleFont->Draw();
 	m_pSpriteStartFont->Draw();
 	m_pSpriteEndFont->Draw();
 
 	m_pSpriteSelector->Draw();
 
-	//m_pSpriteTitlImg->Draw();
+	m_pSpriteTitlImg->Draw();
 
 	m_pDx11->SetDepth(false);
 	CFadeManager::GetInstance().Draw(0.f, 1.f, true);

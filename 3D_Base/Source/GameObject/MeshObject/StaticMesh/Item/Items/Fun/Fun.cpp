@@ -9,7 +9,7 @@
 namespace { const bool regist = ItemBase::AutoRegister<Fun>(ItemID::Fun); }
 
 Fun::Fun()
-	: m_UseDuration	( 2.0f )
+	: m_UseDuration	( 2.0f )		//値を変えるとアイテムの使用可能時間が変化
 	, m_HaveOffset	()
 
 	, m_Velocity	()
@@ -23,6 +23,9 @@ Fun::Fun()
 
 Fun::~Fun()
 {
+	AssetManager::Effect()->Stop(hEffect);
+
+
 	CollisionManager::GetInstance()->RemoveCollider(m_pPickUpCollider.get());
 	CollisionManager::GetInstance()->RemoveCollider(m_pUseCollider.get());
 	CollisionManager::GetInstance()->RemoveCollider(m_pNowCollider.get());
@@ -64,7 +67,6 @@ void Fun::Init()
 	//CollisionManager::GetInstance()->AddCollider(m_pNowCollider);
 
 	//--------------------------------------------------------------------------------------------------------------
-
 }
 
 void Fun::Update()
@@ -119,8 +121,15 @@ void Fun::Destroy()
 
 void Fun::ItemState(IItemObserver::State state)
 {
+	AssetManager::Effect()->Stop(hEffect);
+
 	switch (state)
 	{
+	case IItemObserver::IItemObserver::State::Use:
+		//エフェクト追加
+		hEffect = AssetManager::Effect()->Play("FunWind", m_vPosition);
+
+		break;
 	case IItemObserver::IItemObserver::State::Throw:
 		OneEnterThrow();
 		break;
@@ -163,7 +172,6 @@ void Fun::UseMove()
 	//ゲージのために追加.	制作者	[甲把]
 	m_UsageLimit.remaining = m_UseTime;
 
-	std::cout << m_UseTime << std::endl;
 	if (m_UseTime < 0)
 	{
 		DestroyItem();
@@ -171,12 +179,27 @@ void Fun::UseMove()
 
 	m_vPosition = m_pPlayer->GetPlayerRightHand().GetPosition();
 	m_vQuaternion = m_pPlayer->GetQuaternion();
+
+
+
+	//エフェクトの拡縮設定
+	AssetManager::Effect()->SetScale(hEffect, D3DXVECTOR3(0.3f, 0.3f, 0.3f));
+
+	D3DXVECTOR3 flowerd = m_pPlayer->GetLocalAxes().forward;
+	
+	float a = atan2f(flowerd.x, flowerd.z);
+
+	AssetManager::Effect()->SetRotation(hEffect, D3DXVECTOR3(D3DXToRadian(90), a, 0));
+
+	AssetManager::Effect()->SetSpeed(hEffect, 4.f);
+
+	AssetManager::Effect()->SetLocation(hEffect, m_vPosition);
 }
 
 void Fun::ThrowMove()
 {
 	//移動量が一定以下なら
-	if (D3DXVec3Length(&m_Velocity) <= 0.3f)
+	if (D3DXVec3Length(&m_Velocity) <= 0.6f)
 	{
 		DestroyItem();
 	}

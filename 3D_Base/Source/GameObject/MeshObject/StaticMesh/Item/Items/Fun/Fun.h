@@ -63,4 +63,6 @@ private:
 
     //“–‚½‚è”»’è‚ğØ‚è‘Ö‚¦‚é‚½‚ß‚É’Ç‰Á
     std::shared_ptr<CollisionBase>	m_pNowCollider;	
+
+    ::EsHandle hEffect = 1;
 };
