@@ -76,13 +76,12 @@ void Haetataki::Init()
 	m_tGravity = INITAL_GRAVITY;
 
 
-	std::shared_ptr<CStaticMesh> mesh = AssetManager::Mesh(StaticMeshList::Bomb);
+	std::shared_ptr<CStaticMesh> mesh = AssetManager::Mesh(StaticMeshList::PickUpCol);
 
 	m_pPickUpCollider = CollisionDataFactory::CreateSphereForMesh(
-		CollisionBase::ColliderTag::Haetataki,
+		CollisionBase::ColliderTag::PickUpCol,
 		mesh,
-		this,
-		false
+		this
 	);
 
 	mesh = AssetManager::Mesh(StaticMeshList::BCapsule);
@@ -94,9 +93,6 @@ void Haetataki::Init()
 		false
 	);
 
-	m_pNowCollider = m_pPickUpCollider;
-
-	CollisionManager::GetInstance()->AddCollider(m_pNowCollider);
 }
 
 //--------------------------------------------------------------------------------------------------------------

@@ -24,6 +24,8 @@ public:
         TrackingRobot,
         Bomb,
 
+        PickUpCol,
+
         TRobotSeachCol,
 
         Max,
