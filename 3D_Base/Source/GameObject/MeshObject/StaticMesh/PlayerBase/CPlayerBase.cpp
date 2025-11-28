@@ -197,8 +197,15 @@ void CPlayerBase::CreateCollider()
 			this
 		);
 
-	//D3DXVECTOR3 a = { 2.f,2.f,2.f };
-	//m_pCollision->SetLocalOffSetToCapsule(a,a);
+	////新しい CollisionDataFactory を使ったコリジョンデータの生成と登録.
+	//std::shared_ptr<CStaticMesh> hand = AssetManager::Mesh(StaticMeshList::BCapsule);
+
+	//m_pCollision =
+	//	CollisionDataFactory::CreateCapsuleForMesh(
+	//		CollisionBase::ColliderTag::HandAttack,
+	//		hand,	
+	//		this
+	//	);
 }
 
 //--- 地面との衝突判定 ---.

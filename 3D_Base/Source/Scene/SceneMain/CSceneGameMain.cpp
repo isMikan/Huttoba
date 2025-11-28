@@ -145,8 +145,26 @@ void CSceneGameMain::Update()
 		}
 	}
 
-	//地面メネージャーの更新処理
+	//地面マネージャーの更新処理
 	m_pGroundManager->Update();
+	
+	//地面に接地しているか
+	for (auto& item : m_pItemManager->GetItems())
+	{
+		item->IsOnGround(*m_pGroundManager);
+	}
+
+	CollisionManager::GetInstance()->Update();
+
+	//爆発
+	for (auto& exp : m_pExplosiones)
+	{
+		//爆発しているか
+		if (exp->IsStart())
+		{
+			exp->Update();
+		}
+	}
 
 	m_pGroundCollisionProxy->Update();
 
@@ -161,24 +179,6 @@ void CSceneGameMain::Update()
 		if (!player) continue;	//プレイヤーがいない場合、次へ
 
 		player->OnGroundCollision(*m_pGroundManager);
-	}
-
-	//地面に接地しているか
-	for (auto& item : m_pItemManager->GetItems())
-	{
-		item->IsOnGround(*m_pGroundManager);
-	}
-
-	CollisionManager::GetInstance()->Update();
-
-	//爆発
-	for (auto& exp : m_pExplosiones)
-	{
-		//爆発しているか
-		if (exp->IsStart())
-		{	
-			exp->Update();
-		}
 	}
 
 	m_pDrawTimer->Update();
@@ -207,7 +207,7 @@ void CSceneGameMain::Draw()
 	//カメラの処理.
 	CCameraManager::Update();
 	//カメラを動かす処理.
-	CCameraManager::PositionUpdate(m_pGroundManager.get());
+	CCameraManager::PositionByGround(m_pGroundManager.get());
 
 //=== 情報を取得 ===.
 	CAMERA camera = CCameraManager::GetCamera();		//カメラ.
