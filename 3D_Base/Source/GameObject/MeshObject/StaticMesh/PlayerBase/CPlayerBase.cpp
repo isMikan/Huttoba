@@ -196,6 +196,16 @@ void CPlayerBase::CreateCollider()
 			mesh,	
 			this
 		);
+
+	////新しい CollisionDataFactory を使ったコリジョンデータの生成と登録.
+	//std::shared_ptr<CStaticMesh> hand = AssetManager::Mesh(StaticMeshList::BCapsule);
+
+	//m_pCollision =
+	//	CollisionDataFactory::CreateCapsuleForMesh(
+	//		CollisionBase::ColliderTag::HandAttack,
+	//		hand,	
+	//		this
+	//	);
 }
 
 //--- 地面との衝突判定 ---.

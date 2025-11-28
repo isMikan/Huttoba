@@ -39,41 +39,42 @@ void CPlayerAI_TypeA::Update()
 
 	//比較のため、最大数に設定しておく.
 	m_NearbyItems.sqrt = m_MaxSqrt;
-	for (auto& item : m_pItemManager->GetItems())
-	{
-		if (!m_pItemBase && IsSearchItem(item.get()))
-		{
-			FindNearbyObject(item.get(), m_NearbyItems, IsSearchItem(item.get()));
-			AutomaticMovement(m_NearbyItems.dir);
 
-			if (m_NearbyItems.sqrt < 0.5f)
-			{
-				m_Control = ActionInstruct::ToggleItem;
-				std::cout << "拾う" << std::endl;
-			}
-			std::cout << "アイテム" << std::endl;
-		}
-		else
+	if (m_pItemManager->GetItemVectorNum() > 0
+		&& !m_pItemBase)
+	{
+		for (auto& item : m_pItemManager->GetItems())
 		{
-			//比較のため、最大数に設定しておく.
-			m_NearbyPlayers.sqrt = m_MaxSqrt;
-			for (auto& player : m_pPlayerManager->GetPlayer())
+			if(IsSearchItem(item.get()))
 			{
-				if (!player) continue;	//プレイヤーがいない場合、次へ
-				FindNearbyObject(player.get(), m_NearbyPlayers, IsSearchPlayer(player.get()));
+				FindNearbyObject(item.get(), m_NearbyItems, IsSearchItem(item.get()));
+				AutomaticMovement(m_NearbyItems.dir);
+
+				if (m_NearbyItems.sqrt < 0.5f)
+				{
+					m_Control = ActionInstruct::ToggleItem;
+				}
 			}
-			if (m_NearbyPlayers.sqrt > 0.5f)
-			{
-				AutomaticMovement(m_NearbyPlayers.dir);
-			}
-			std::cout << "プレイヤー" << std::endl;
-			if (m_NearbyPlayers.sqrt < RandomFloat(2.f, 6.f)
-				&& (IsAnyActionState<CPlayerActionIdleState>()
+		}
+	}
+	else
+	{
+		//比較のため、最大数に設定しておく.
+		m_NearbyPlayers.sqrt = m_MaxSqrt;
+		for (auto& player : m_pPlayerManager->GetPlayer())
+		{
+			if (!player) continue;	//プレイヤーがいない場合、次へ
+			FindNearbyObject(player.get(), m_NearbyPlayers, IsSearchPlayer(player.get()));
+		}
+		if (m_NearbyPlayers.sqrt > 0.5f)
+		{
+			AutomaticMovement(m_NearbyPlayers.dir);
+		}
+		if (m_NearbyPlayers.sqrt < RandomFloat(2.f, 6.f)
+			&& (IsAnyActionState<CPlayerActionIdleState>()
 				|| IsAnyActionState<CPlayerHoldingIdleState>()))
-			{
-				m_Control = ActionInstruct::Attack;
-				std::cout << "攻撃" << std::endl;
-			}
+		{
+			m_Control = ActionInstruct::Attack;
 		}
 	}
 

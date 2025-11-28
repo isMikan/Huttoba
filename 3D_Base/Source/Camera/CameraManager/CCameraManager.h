@@ -23,11 +23,15 @@ public:
 //======================================================================
 // 	   外部で呼び出す関数.
 //======================================================================
-	//更新関数を外部へ.
+	//更新処理を外部へ.
 	static void Update() { GetInstance().Update_Internal(); }
-	//更新関数を外部へ.
-	static void PositionUpdate(CGroundManager* groundManager) {
-		GetInstance().PositionUpdate_Internal(groundManager);
+	//地面によるカメラの位置を更新処理を外部へ.
+	static void PositionUpdate(D3DXVECTOR3 pos, D3DXVECTOR3 look) {
+		GetInstance().PositionUpdate_Internal(pos, look);
+	}
+	//地面によるカメラの位置を更新処理を外部へ.
+	static void PositionByGround(CGroundManager* groundManager) {
+		GetInstance().PositionByGround_Internal(groundManager);
 	}
 		
 //======================================================================
@@ -69,7 +73,12 @@ private:
 //======================================================================
 	//--- 更新処理 ---.
 	void Update_Internal();
-	void PositionUpdate_Internal(CGroundManager* groundManager);
+	//--- 位置の更新処理 ---.
+	void PositionUpdate_Internal(
+		D3DXVECTOR3 pos, D3DXVECTOR3 look);
+	//--- 地面によるカメラの位置を更新処理 ---.
+	void PositionByGround_Internal(
+		CGroundManager* groundManager);
 
 private:
 //======================================================================

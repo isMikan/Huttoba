@@ -5,17 +5,22 @@ CSceneTitle::CSceneTitle(HWND hWnd)
 
 	, m_Action			()
 
-	, m_pSpriteTitlImg	( nullptr )
-	, m_pSpriteSelector	( nullptr )
+	, m_pPlayerManager	()
+	, m_pGroundManager	()
 
-	, m_pSpriteTitleFont( nullptr )
-	, m_pSpriteStartFont( nullptr )
-	, m_pSpriteEndFont	( nullptr )
+	, m_pSpriteTitlImg	()
+	, m_pSpriteSelector	()
+
+	, m_pSpriteTitleFont()
+	, m_pSpriteStartFont()
+	, m_pSpriteEndFont	()
 
 	, m_SelectorPos		()
 
 	, m_SelectorNumber	( 0 )
 
+	, m_StartTime		()
+	, m_EndTime			( 30.f )
 	//, m_SthikThreshold	(0.5f)		//ここの値を変えると選択肢を動かす
 									//スティックの最低値が変化する.
 
@@ -33,6 +38,13 @@ CSceneTitle::~CSceneTitle()
 
 HRESULT CSceneTitle::Create()
 {
+	//プレイヤーマネージャーのインスタンス作成.
+	m_pPlayerManager = std::make_unique<CPlayerManager>();
+
+	//地面マネージャークラスのインスタンス作成.
+	m_pGroundManager = std::make_unique<CGroundManager>();
+	m_pGroundManager->MainGroundCreate();
+
 	m_pSpriteTitlImg = std::make_unique<CUIObject>();
 	m_pSpriteSelector = std::make_unique<CUIObject>();
 
@@ -40,12 +52,26 @@ HRESULT CSceneTitle::Create()
 	m_pSpriteStartFont = std::make_unique<CUIObject>();
 	m_pSpriteEndFont = std::make_unique<CUIObject>();
 
+	//アイテムマネージャーの作成
+	m_pItemManager = std::make_unique<ItemManager>(m_pGroundManager);
+	m_pPlayerManager->MainPlayerCreate(m_pItemManager.get());
+
 	return S_OK;
 }
 
 HRESULT CSceneTitle::LoadData()
 {
-	m_pSpriteTitlImg->AttachSprite(AssetManager::Sprite(Sprite2DList::Title));
+	CCameraManager::SetPosition(0.f, 3.f, -10.f);
+	CCameraManager::SetLook(0.f, 2.f, 6.f);
+	CCameraManager::SetLight(0.f, 30.f, -10.f);
+
+	//プレイヤーマネージャーの読み込み.
+	m_pPlayerManager->LoadData();
+
+	//地面マネージャーの読み込み.
+	m_pGroundManager->LoadData();
+	
+	//m_pSpriteTitlImg->AttachSprite(AssetManager::Sprite(Sprite2DList::Title));
 
 	m_pSpriteSelector->AttachSprite(AssetManager::Sprite(Sprite2DList::Selector));
 
@@ -61,6 +87,8 @@ HRESULT CSceneTitle::LoadData()
 	m_pSpriteEndFont->SetPatternNo(0, 1);
 	m_pSpriteEndFont->SetPosition(570, 540, 0);
 
+	//m_pItemManager->LoadData();
+
 	//関数を入れる
 	m_Action =
 	{
@@ -75,6 +103,17 @@ HRESULT CSceneTitle::LoadData()
 
 void CSceneTitle::Update()
 {
+	//地面に接地しているか
+	for (auto& player : m_pPlayerManager->GetPlayer())
+	{
+		if (!player) continue;	//プレイヤーがいない場合、次へ
+
+		player->OnGroundCollision(*m_pGroundManager);
+	}
+
+	//プレイヤーの動作
+	m_pPlayerManager->MainPlayerUpdate();
+
 	MoveSelector();
 
 	if (CInputManager::IsDown(Action::Decide,0))
@@ -82,19 +121,72 @@ void CSceneTitle::Update()
 		//選択中の番号で処理される関数が変わる.
 		m_Action[m_SelectorNumber]();
 	}
+	CollisionManager::GetInstance()->Update();
+
+	//m_pItemManager->Update();
 }
 
 void CSceneTitle::Draw()
 {
+	//カメラの処理.
+	CCameraManager::Update();
+
+	//経過時間を取得.
+	float t = CTimeManager::GetTotalTime();
+
+	static float baseAngle = 0.f;
+
+	static D3DXVECTOR3 cameraPos;
+	if(t < 5.f)
+	{
+		cameraPos = D3DXVECTOR3(0.f, 15.f, -15.f);
+		baseAngle = atan2f(cameraPos.z, cameraPos.x);
+	}
+	else
+	{
+		if (t - m_StartTime > m_EndTime)
+		{
+			m_StartTime = t;
+		}
+		//全体の時間の現在の割合.
+		float progress = (t - m_StartTime) / m_EndTime;
+		progress = std::clamp(progress, 0.f, 1.f);
+
+		float angle = baseAngle + progress * D3DX_PI * 2.f;
+		
+		cameraPos.x = cosf(angle) * 25.f;
+		cameraPos.z = sinf(angle) * 25.f + 10.f;
+	}
+
+	//カメラを動かす処理.
+	CCameraManager::PositionUpdate(
+		cameraPos, D3DXVECTOR3(0.f, 0.5f, 10.f));
+
+//=== 情報を取得 ===.
+	CAMERA camera = CCameraManager::GetCamera();		//カメラ.
+	LIGHT light = CCameraManager::GetLight();			//ライト.
+	D3DXMATRIX view = CCameraManager::GetView();		//ビュー.
+	D3DXMATRIX proj = CCameraManager::GetProjection();	//プロジェクション.
+//==================.
+
+	//地面マネージャーの描画.
+	m_pGroundManager->Draw(view, proj, light, camera);
+
+	//プレイヤーの描画.
+	m_pPlayerManager->Draw(view, proj, light, camera);
+	
+	m_pItemManager->Draw(view, proj, light, camera);
+
+	m_pSpriteTitlImg->Draw();
+
+	m_pDx11->SetDepth(false);
+
 	m_pSpriteTitleFont->Draw();
 	m_pSpriteStartFont->Draw();
 	m_pSpriteEndFont->Draw();
 
 	m_pSpriteSelector->Draw();
 
-	//m_pSpriteTitlImg->Draw();
-
-	m_pDx11->SetDepth(false);
 	CFadeManager::GetInstance().Draw(0.f, 1.f, true);
 	m_pDx11->SetDepth(true);
 }

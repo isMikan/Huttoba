@@ -13,6 +13,7 @@ public:
     enum class ColliderTag
     {
         Player = 0,
+        HandAttack,
         Item, 
         Ground, 
         Haetataki, 
