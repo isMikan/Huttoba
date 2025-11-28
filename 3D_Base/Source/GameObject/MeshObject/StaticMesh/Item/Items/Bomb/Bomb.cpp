@@ -158,6 +158,9 @@ void Bomb::HaveMove()
 
 void Bomb::UseMove()
 {
+	if (m_IsExploded)
+		m_IsDestroy = true;
+
 	//現在の高さによって落下するかを決める
 	if (m_vPosition.y > 0.1f)
 	{
@@ -165,7 +168,7 @@ void Bomb::UseMove()
 		m_Velocity.y -= m_tGravity;
 
 		//上が-=の計算なので+=で加速度を増やす
-		m_tGravity += 0.001f;
+		m_tGravity += 0.0001f;
 	}
 	else
 	{
@@ -249,8 +252,8 @@ void Bomb::Explosion()
 		//エフェクトの拡縮設定
 		AssetManager::Effect()->SetScale(hEffect, D3DXVECTOR3(0.6f, 0.6f, 0.6f));
 
-		//アイテムの状態を破棄にする
-		DestroyItem();
+		////アイテムの状態を破棄にする
+		//DestroyItem();
 	}
 }
 

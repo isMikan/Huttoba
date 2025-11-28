@@ -164,21 +164,9 @@ void TrackingRobot::HaveMove()
 
 void TrackingRobot::UseMove()
 {
-	if (m_pChaseSensor->GetIsHitGround())
+	//if (m_pChaseSensor->GetIsHitGround())
+	if(m_IsOnGround)
 	{
-		//てきとうに移動速度を減少させている
-		m_Velocity -= m_Velocity * static_cast<float>(CTimeManager::GetDeltaTime());
-
-		if (m_vPosition.y > 0.5f)
-		{
-			m_Velocity.y -= m_tGravity;
-			m_tGravity += 0.001f;
-		}
-		else
-		{
-			m_Velocity.y = 0;
-		}
-
 		UpdateChaseSensor();
 
 		if (m_pTarget != nullptr)
@@ -209,7 +197,7 @@ void TrackingRobot::UseMove()
 		Explosion();
 	}
 
-	m_pChaseSensor->SetIsHitGround(false);
+	//m_pChaseSensor->SetIsHitGround(false);
 }
 
 void TrackingRobot::ThrowMove()
@@ -247,10 +235,6 @@ void TrackingRobot::OneEnterUse()
 
 	//索敵判定クラスの生成
 	m_pChaseSensor = std::make_unique<ChaseSensor>(m_vPosition, m_CollisionOffSet);
-
-	//m_pIgnoredPlayer = m_pPlayer;
-//	if (m_pIgnoredPlayer != nullptr)
-//		m_pChaseSensor->SetIgnoredPlayer(m_pPlayer);
 }
 
 void TrackingRobot::OneEnterThrow()
@@ -361,11 +345,13 @@ void TrackingRobot::Homing(D3DXVECTOR3 targetPos)
 	//距離が近すぎると計算しない
 	if (dist < 0.001f) return;
 
+	dist = sqrtf(dist);
+
 	//目標への単位ベクトルに変換
 	D3DXVECTOR3 nolVec = { vec.x / dist,0,vec.z / dist };
 
-	//目標の向きを計算
-	float angle = std::atan2(nolVec.z, nolVec.x);
+	//目標の向きを計算(モデルの正面の方向によってxとzが逆にすることも)
+	float angle = std::atan2(nolVec.x, nolVec.z);
 
 	D3DXQUATERNION targetRot;
 	//y軸を回転の軸に
@@ -383,10 +369,10 @@ void TrackingRobot::Homing(D3DXVECTOR3 targetPos)
 
 	D3DXMATRIX matRot;
 	D3DXMatrixRotationQuaternion(&matRot, &m_vQuaternion);
-	D3DXVECTOR3 forward(matRot._31, 0.0f, matRot._33); // Y成分は0にしておく
+	D3DXVECTOR3 forward(matRot._31, 0.0f, matRot._33); //Y成分は0にしておく
 	D3DXVec3Normalize(&forward, &forward);
 
-	// 移動速度を反映（Y成分=重力 は触らないように注意！）
+	//移動速度を反映
 	m_Velocity.x = forward.x * m_MoveSpeed;
 	m_Velocity.z = forward.z * m_MoveSpeed;
 }

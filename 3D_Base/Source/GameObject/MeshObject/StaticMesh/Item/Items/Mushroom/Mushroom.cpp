@@ -153,14 +153,14 @@ void Mushroom::HaveMove()
 
 void Mushroom::UseMove()
 {
-	if (m_vPosition.y > 0.05f)
+	if (m_vPosition.y > 0.5f)
 	{
 		m_tGravity += 0.001f;
 		m_vPosition.y -= m_tGravity;
 	}
 	else
 	{
-		m_vPosition.y = 0;
+		m_vPosition.y = 0.5f;
 
 		m_Velocity = D3DXVECTOR3(0, 0, 0);
 		

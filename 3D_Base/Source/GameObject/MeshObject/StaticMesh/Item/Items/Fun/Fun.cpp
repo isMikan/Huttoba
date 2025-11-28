@@ -9,7 +9,7 @@
 namespace { const bool regist = ItemBase::AutoRegister<Fun>(ItemID::Fun); }
 
 Fun::Fun()
-	: m_UseDuration	( 2.0f )
+	: m_UseDuration	( 2.0f )		//値を変えるとアイテムの使用可能時間が変化
 	, m_HaveOffset	()
 
 	, m_Velocity	()
