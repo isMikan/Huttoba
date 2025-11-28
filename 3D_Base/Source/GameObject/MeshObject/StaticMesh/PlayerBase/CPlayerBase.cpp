@@ -196,6 +196,9 @@ void CPlayerBase::CreateCollider()
 			mesh,	
 			this
 		);
+
+	//D3DXVECTOR3 a = { 2.f,2.f,2.f };
+	//m_pCollision->SetLocalOffSetToCapsule(a,a);
 }
 
 //--- ’n–Ê‚Æ‚ÌÕ“Ë”»’è ---.

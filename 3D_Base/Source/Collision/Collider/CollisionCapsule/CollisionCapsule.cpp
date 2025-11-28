@@ -40,7 +40,7 @@ void CollisionCapsule::UpdateWorldPosition()
     // 軸線分の始点Aと終点Bをワールド行列で変換
     // D3DXVec3TransformCoord は D3DXMATRIXの回転、スケール、平行移動を全て適用
     D3DXVec3TransformCoord(&m_WorldCapsule.StartPoint, &totalOffSetA, &mWorld);
-    D3DXVec3TransformCoord(&m_WorldCapsule.EndPoint, &totalOffSetA, &mWorld);
+    D3DXVec3TransformCoord(&m_WorldCapsule.EndPoint, &totalOffSetB, &mWorld);
 
     // 半径の設定
     m_WorldCapsule.Rad = m_Radius;

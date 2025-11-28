@@ -44,9 +44,6 @@ private:
 	// カプセル固有のローカルデータ
 	FLOAT m_Radius;
 
-	//カプセルのローカルオフセット
-	D3DXVECTOR3 m_LocalOffsetA;
-	D3DXVECTOR3 m_LocalOffsetB;
 
 	// カプセルの回転情報保存
 	D3DXMATRIX m_LocalCapsuleRotation; 

@@ -122,8 +122,11 @@ public:
     const D3DXVECTOR3& GetLocalOffset() const { return m_LocalOffset; }
     void SetLocalOffset(D3DXVECTOR3& offset)  { m_LocalOffset = offset; }
 
-    //カプセルのオフセット
+    //カプセルのオフセットを設定
     void SetLocalOffSetToCapsule(const D3DXVECTOR3& localOffsetA, const D3DXVECTOR3& localOffsetB);
+
+    //カプセルの回転を設定
+    void RotationXCapsule(float rad);
 
 
     /*****************************************************************************************
@@ -154,6 +157,10 @@ protected:
     //カプセルの移動用オフセット
     D3DXVECTOR3 m_MoveOffsetA;
     D3DXVECTOR3 m_MoveOffsetB;
+
+    //カプセルのローカルオフセット
+    D3DXVECTOR3 m_LocalOffsetA;
+    D3DXVECTOR3 m_LocalOffsetB;
 
     //現在の座標
     D3DXVECTOR3	m_WorldPosition;

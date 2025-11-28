@@ -167,6 +167,10 @@ void Fun::HaveMove()
 	m_vQuaternion = m_pPlayer->GetQuaternion();
 
 
+	D3DXVECTOR3 a = { 0.f, 0.f, 1.f };
+	m_pCollision->RotationXCapsule(90.f);
+	m_pCollision->SetLocalOffSetToCapsule(a, a);
+
 }
 
 void Fun::UseMove()
