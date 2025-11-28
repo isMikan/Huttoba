@@ -140,12 +140,13 @@ void CSceneStandby::Draw()
 	{
 		if (CSceneData::GetSlot(i))
 		{
-			m_pRedyFontImg[i]->Draw();
+			m_pRedyFontImg[i]->SetPatternNo(0, i);
 		}
 		else
 		{
-			m_pNotRedyFontImg[i]->Draw();
+			m_pRedyFontImg[i]->SetPatternNo(0, 4 + i);
 		}
+		m_pRedyFontImg[i]->Draw();
 	}
 
 	m_pSpriteSelector->Draw();

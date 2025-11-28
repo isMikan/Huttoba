@@ -114,6 +114,7 @@ void ChaseSensor::FindNearestTarget()
 			}
 		}
 
+		//近いプレイヤー検索し終わったので中身を破棄
 		m_pTargetList.clear();
 
 		//最後に残ったターゲットを入れる
