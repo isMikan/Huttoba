@@ -66,26 +66,20 @@ bool CollisionCapsuleCapsule::CheckCollision(
 	}
 	else // 線分が交差または斜めの場合
 	{
-		//  s, t を線分の延長線上で計算
 		float invDenom = 1.0f / denom;
-		s = (b * D3DXVec3Dot(&v, &w) - c * D3DXVec3Dot(&u, &w)) * invDenom;
-		t = (a * D3DXVec3Dot(&v, &w) - b * D3DXVec3Dot(&u, &w)) * invDenom;
+		s = (b * e - c * d) * invDenom;
+		t = (a * e - b * d) * invDenom;
 
-		//  s を [0, 1] にクランプ
-		if (s < 0.0f) s = 0.0f;
-		else if (s > 1.0f) s = 1.0f;
+		// clamp s first
+		s = std::max(0.0f, std::min(1.0f, s));
 
-		// s をクランプした状態で、t を線分 B 上の正しい点に再計算し、t もクランプ
-		// s=0 の場合、t は線分 B 上で A1 に最も近い点になる
-		if (s < EPSILON)
-		{
-			t = std::max(0.0f, std::min(1.0f, D3DXVec3Dot(&v, &w) / c));
-		}
-		// s=1 の場合、t は線分 B 上で A2 に最も近い点になる
-		else if (s > 1.0f - EPSILON)
-		{
-			t = std::max(0.0f, std::min(1.0f, (D3DXVec3Dot(&v, &w) + b) / c));
-		}
+		// recompute t
+		t = (b * s + e) / c;
+		t = std::max(0.0f, std::min(1.0f, t));
+
+		// recompute s again
+		s = (b * t - d) / a;
+		s = std::max(0.0f, std::min(1.0f, s));
 	}
 	// Note: t も先にクランプしてから s を再計算するパターンもありますが、
 	// この s を優先し t を再計算するパターンは、多くの衝突ライブラリで採用される標準的な方法の一つです。

@@ -68,54 +68,51 @@ namespace CollisionUtility
             return false;
         }
 
-        // Min/Maxの初期値設定（最初の頂点で初期化）
-        float minX = vertices[0].Pos.x, maxX = vertices[0].Pos.x;
-        float minY = vertices[0].Pos.y, maxY = vertices[0].Pos.y;
-        float minZ = vertices[0].Pos.z, maxZ = vertices[0].Pos.z;
+        float minY = vertices[0].Pos.y;
+        float maxY = vertices[0].Pos.y;
 
-        // 全頂点を走査し、各軸のMin/Maxを求める
+        // 半径候補
+        float maxXZ = 0.0f;
+
         for (DWORD i = 0; i < numVertices; ++i)
         {
             const D3DXVECTOR3& pos = vertices[i].Pos;
 
-            minX = std::min(minX, pos.x); maxX = std::max(maxX, pos.x);
-            minY = std::min(minY, pos.y); maxY = std::max(maxY, pos.y);
-            minZ = std::min(minZ, pos.z); maxZ = std::max(maxZ, pos.z);
+            // Y方向の最小・最大
+            minY = std::min(minY, pos.y);
+            maxY = std::max(maxY, pos.y);
+
+            // XZ平面距離（カプセル半径）
+            float xz = pos.x * pos.x + pos.z * pos.z;
+            maxXZ = std::max(maxXZ, xz);
         }
         pMeshDx9->UnlockVertexBuffer();
 
-        // カプセル半径の計算
-        float halfWidthX = (maxX - minX) * 0.5f;
-        float halfWidthZ = (maxZ - minZ) * 0.5f;
-        outRadius = std::max(halfWidthX, halfWidthZ);
+        // √を最後に
+        outRadius = std::sqrt(maxXZ);
 
-        //軸線分 A, B の計算
+        // 軸線の中心（メッシュ中央位置の補正）
+        float centerY = (minY + maxY) * 0.5f;
 
-        // Y軸の全長
-        float totalWidthY = maxY - minY;
+        // 全長（Y幅）
+        float totalY = maxY - minY;
 
-        // 軸線分の長さ (Y軸の全長から両端の直径 (2R) を引く)
-        float coreLength = totalWidthY - (2.0f * outRadius);
+        // 軸線の長さ = 全長 - (2R)
+        float coreLength = totalY - (2.0f * outRadius);
 
-        // 【重要】メッシュの実際の中心座標は、オフセット計算に含めない
-        // float centerY = (minY + maxY) * 0.5f; // 不要
-
-        // 軸線分が潰れる場合の処理 (球体判定)
         if (coreLength <= 0.0f)
         {
-            // 軸線分をローカル原点に集約
-            outLocalOffsetA = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-            outLocalOffsetB = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+            // 球として扱う
+            outLocalOffsetA = D3DXVECTOR3(0.0f, centerY, 0.0f);
+            outLocalOffsetB = D3DXVECTOR3(0.0f, centerY, 0.0f);
         }
         else
         {
-            float halfLength = coreLength * 0.5f;
+            float half = coreLength * 0.5f;
 
-            // XZ座標は常に 0.0f に固定する
-            // A: 上端側 (+Y軸方向)
-            outLocalOffsetA = D3DXVECTOR3(0.0f, halfLength, 0.0f);
-            // B: 下端側 (-Y軸方向)
-            outLocalOffsetB = D3DXVECTOR3(0.0f, -halfLength, 0.0f);
+            // カプセルの軸端点
+            outLocalOffsetA = D3DXVECTOR3(0.0f, centerY + half, 0.0f);
+            outLocalOffsetB = D3DXVECTOR3(0.0f, centerY - half, 0.0f);
         }
 
         return true;
