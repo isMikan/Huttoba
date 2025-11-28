@@ -30,7 +30,6 @@ public:
 	void UpdateWorldPosition() override;
 
 	const BoundingCapsule& GetWorldCapsule() const { return m_WorldCapsule; }
-	void SetLocalOffSet(const D3DXVECTOR3& localOffsetA, const D3DXVECTOR3& localOffsetB);
 
 	//カプセルを回転させる関数
 	void SetLocalCapsuleRotation(const D3DXMATRIX& rotation) {m_LocalCapsuleRotation = rotation;}
@@ -44,8 +43,6 @@ private:
 
 	// カプセル固有のローカルデータ
 	FLOAT m_Radius;
-	D3DXVECTOR3 m_LocalOffsetA;
-	D3DXVECTOR3 m_LocalOffsetB;
 
 	// カプセルの回転情報保存
 	D3DXMATRIX m_LocalCapsuleRotation; 

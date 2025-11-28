@@ -122,6 +122,9 @@ public:
     const D3DXVECTOR3& GetLocalOffset() const { return m_LocalOffset; }
     void SetLocalOffset(D3DXVECTOR3& offset)  { m_LocalOffset = offset; }
 
+    //カプセルのオフセット
+    void SetLocalOffSetToCapsule(const D3DXVECTOR3& localOffsetA, const D3DXVECTOR3& localOffsetB);
+
 
     /*****************************************************************************************
     * @brief    親GameObjectの位置を参照し、ワールド座標を更新する
@@ -147,6 +150,10 @@ protected:
 
     // 形状の相対位置 (親オブジェクトからの微調整オフセット)
     D3DXVECTOR3	m_LocalOffset;
+
+    //カプセルのローカルオフセット
+    D3DXVECTOR3 m_LocalOffsetA;
+    D3DXVECTOR3 m_LocalOffsetB;
 
     //現在の座標
     D3DXVECTOR3	m_WorldPosition;

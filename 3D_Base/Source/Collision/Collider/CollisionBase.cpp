@@ -19,6 +19,14 @@ CollisionBase::CollisionBase(
 {
 }
 
+void CollisionBase::SetLocalOffSetToCapsule(
+    const D3DXVECTOR3& localOffsetA,
+    const D3DXVECTOR3& localOffsetB)
+{
+    m_LocalOffsetA = localOffsetA;
+    m_LocalOffsetB = localOffsetB;
+}
+
 void CollisionBase::InvokeCollision(CollisionBase* pOther)
 {
     if (m_pListener)

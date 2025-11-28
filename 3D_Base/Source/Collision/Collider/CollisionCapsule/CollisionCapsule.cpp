@@ -1,20 +1,21 @@
 #include "CollisionCapsule.h"
 
 CollisionCapsule::CollisionCapsule(
-	ICollisionListener* pListener, 
-	const D3DXVECTOR3 syncPosition,
-	ColliderTag tag,
-	float radius, 
-	const D3DXVECTOR3 localOffsetA, 
-	const D3DXVECTOR3 localOffsetB, 
-	const D3DXVECTOR3 localOffset
+    ICollisionListener* pListener,
+    const D3DXVECTOR3 syncPosition,
+    ColliderTag tag,
+    float radius,
+    const D3DXVECTOR3 localOffsetA,
+    const D3DXVECTOR3 localOffsetB,
+    const D3DXVECTOR3 localOffset
 )
-	: CollisionBase(pListener, syncPosition, tag, localOffset)
-	, m_Radius(radius)
-	, m_LocalOffsetA(localOffsetA)
-	, m_LocalOffsetB(localOffsetB)
-	, m_WorldCapsule({}) 
+    : CollisionBase(pListener, syncPosition, tag, localOffset)
+    , m_Radius(radius)
+    , m_WorldCapsule({})
 {
+    m_LocalOffsetA = localOffsetA;
+    m_LocalOffsetB = localOffsetB;
+
 }
 
 
@@ -87,10 +88,3 @@ void CollisionCapsule::UpdateWorldPosition()
     m_DrawRotation = qRotation;
 }
 
-void CollisionCapsule::SetLocalOffSet(
-    const D3DXVECTOR3& localOffsetA,
-    const D3DXVECTOR3& localOffsetB)
-{
-    m_LocalOffsetA = localOffsetA;
-    m_LocalOffsetB = localOffsetB;
-}
