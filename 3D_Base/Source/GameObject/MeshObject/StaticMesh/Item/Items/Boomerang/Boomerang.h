@@ -51,17 +51,8 @@ private:
     //投擲に状態が変化したときの処理
     void OneEnterThrow();
 
-    //使用と投擲に状態が変化したときの共通処理
-    void EnterUseThrowCommon();
-
-    //爆発処理
-    void UseThrow();
-
     //吹き飛ばし処理
     void Smash(CPlayerBase& playiers);
-
-    //爆弾の爆発前の色の変更処理
-    void ChangeColor();
 
     //爆弾とプレイヤーの距離に応じて吹き飛ばし力を計算
     float CalculateForceScalar(float distance);
@@ -78,25 +69,8 @@ private:
     //投げた時のy軸の上昇量
     float       m_UpSpeed;
 
-    //投げてから爆発するまでの時間
-    double       m_ExplosionTime;
-
-    //爆発するまでのカウント
-    double       m_ExplosionCnt;
-
-    //点滅の経過時間を記録
-    double      m_ColorTimer;
-
     //使用時の処理
     bool        m_IsUseThrow;
 
     bool        m_ComeBack;
-
-    //爆発の中心位置に近いほど多く吹き飛ぶので最小と最大の吹き飛ばし力を追加
-
-    //爆発の最小吹き飛ばし力
-    float       m_MinSmashPower;
-
-    //爆発の最大吹き飛ばし力
-    float       m_MaxSmashPower;
 };
