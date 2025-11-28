@@ -10,23 +10,39 @@ ChaseSensor::ChaseSensor(D3DXVECTOR3 pos, D3DXVECTOR3 searchOffset)
 	, m_pCollision		()
 
 	, m_CollisionOffSet	()
-	
-	, m_IsHitGround		( true )
 {
-	m_pCollision = CollisionDataFactory::CreateSphereForMesh(
-		CollisionBase::ColliderTag::TRobotSeachCol,
-		AssetManager::Mesh(StaticMeshList::ExplosionCol),
-		this
-	);
+	for (int i = 0;i < 3;i++)
+	{
+		m_pCollision[i] = CollisionDataFactory::CreateSphereForMesh(
+			CollisionBase::ColliderTag::TRobotSeachCol,
+			AssetManager::Mesh(StaticMeshList::ExplosionCol),
+			this
+		);
+	}	
+
+	D3DXVECTOR3 Offset = searchOffset;
+
+	m_pCollision[0]->SetLocalOffset(Offset);
+
+	Offset.x = -1;
+
+	Offset.z += (Offset.z / 2);
 
 	//当たり判定の補正値を追加
-	m_pCollision->SetLocalOffset(searchOffset);
+	m_pCollision[1]->SetLocalOffset(Offset);
+
+
+	Offset.x = 1;
+
+	m_pCollision[2]->SetLocalOffset(Offset);
 }
 
 ChaseSensor::~ChaseSensor()
 {
-	//SAFE_DELETE(m_pIgnoredPlayer);
-	CollisionManager::GetInstance()->RemoveCollider(m_pCollision.get());
+	for (int i = 0;i < m_pCollision.size();i++)
+	{
+		CollisionManager::GetInstance()->RemoveCollider(m_pCollision[i].get());
+	}
 }
 
 void ChaseSensor::Update()
@@ -48,13 +64,13 @@ void ChaseSensor::OnCollision(CollisionBase* other)
 		}
 	}
 
-	if (other->GetTag() == CollisionBase::ColliderTag::Ground)
-	{
-		if (CGroundCollisionProxy* grond = dynamic_cast<CGroundCollisionProxy*>(other->GetListener()))
-		{
-			m_IsHitGround = true;
-		}
-	}
+	//if (other->GetTag() == CollisionBase::ColliderTag::Ground)
+	//{
+	//	if (CGroundCollisionProxy* grond = dynamic_cast<CGroundCollisionProxy*>(other->GetListener()))
+	//	{
+	//		m_IsHitGround = true;
+	//	}
+	//}
 }
 
 void ChaseSensor::FindNearestTarget()
@@ -94,8 +110,11 @@ void ChaseSensor::FindNearestTarget()
 
 				//ターゲットを更新
 				pClosestTarget = m_pTargetList[i];
+
 			}
 		}
+
+		m_pTargetList.clear();
 
 		//最後に残ったターゲットを入れる
 		m_pTarget = pClosestTarget;

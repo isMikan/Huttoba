@@ -17,8 +17,8 @@ public:
 
 	void SetIgnoredPlayer(CPlayerBase* pIgnoredPlayer) { m_pIgnoredPlayer = pIgnoredPlayer; }
 
-	bool GetIsHitGround() { return m_IsHitGround; }
-	void SetIsHitGround(bool IsHitGround) { m_IsHitGround = IsHitGround; }
+	//bool GetIsHitGround() { return m_IsHitGround; }
+	//void SetIsHitGround(bool IsHitGround) { m_IsHitGround = IsHitGround; }
 
 	void SetIsCollisionEnabled(bool set) { m_IsCollisionEnabled = set; }
 
@@ -39,13 +39,10 @@ private:
 	//追尾から無視するプレイヤー
 	CPlayerBase* m_pIgnoredPlayer;
 
-	std::shared_ptr<CollisionBase>	m_pCollision;
+	std::array<std::shared_ptr<CollisionBase>, 3>	m_pCollision;
 
 	//索敵の当たり判定の位置の補正値
 	D3DXVECTOR3 m_CollisionOffSet;
-
-	//地面の当たり判定と当たっているか
-	bool m_IsHitGround;
 
 	//当たり判定の処理が有効か
 	bool	m_IsCollisionEnabled;
