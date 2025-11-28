@@ -151,9 +151,9 @@ protected:
     // 形状の相対位置 (親オブジェクトからの微調整オフセット)
     D3DXVECTOR3	m_LocalOffset;
 
-    //カプセルのローカルオフセット
-    D3DXVECTOR3 m_LocalOffsetA;
-    D3DXVECTOR3 m_LocalOffsetB;
+    //カプセルの移動用オフセット
+    D3DXVECTOR3 m_MoveOffsetA;
+    D3DXVECTOR3 m_MoveOffsetB;
 
     //現在の座標
     D3DXVECTOR3	m_WorldPosition;

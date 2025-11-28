@@ -16,15 +16,19 @@ CollisionBase::CollisionBase(
     , m_WorldPosition(0.0f, 0.0f, 0.0f)
     , m_IsActive    (true)
     , m_IsHit       (false)
+    , m_MoveOffsetA ()
+    , m_MoveOffsetB ()
 {
+    m_MoveOffsetA = { 0.f,0.f, 0.f };
+    m_MoveOffsetB = { 0.f,0.f, 0.f };
 }
 
 void CollisionBase::SetLocalOffSetToCapsule(
     const D3DXVECTOR3& localOffsetA,
     const D3DXVECTOR3& localOffsetB)
 {
-    m_LocalOffsetA = localOffsetA;
-    m_LocalOffsetB = localOffsetB;
+    m_MoveOffsetA = localOffsetA;
+    m_MoveOffsetB = localOffsetB;
 }
 
 void CollisionBase::InvokeCollision(CollisionBase* pOther)

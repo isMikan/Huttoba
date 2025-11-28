@@ -52,19 +52,20 @@ void Fun::Init()
 	//具体的な使い方はハエたたき見る or 聞く
 	
 	//使用時の前方に出す当たり判定
-	std::shared_ptr<CStaticMesh> mesh = AssetManager::Mesh(StaticMeshList::FunCol);
+	std::shared_ptr<CStaticMesh> mesh = AssetManager::Mesh(StaticMeshList::BCapsule);
 
-	m_pUseCollider = CollisionDataFactory::CreateCapsuleForMesh(
+	m_pCollision = CollisionDataFactory::CreateCapsuleForMesh(
 		CollisionBase::ColliderTag::Fan,
 		mesh,
 		this
 	);
 
+
 	//SetRotation(D3DXVECTOR3(0.f, D3DXToRadian(-90.f),0.f));
 	//m_pNowCollider = m_pUseCollider;
 
 	//ここで現在の当たり判定を設定
-	//CollisionManager::GetInstance()->AddCollider(m_pNowCollider);
+	CollisionManager::GetInstance()->AddCollider(m_pNowCollider);
 
 	//--------------------------------------------------------------------------------------------------------------
 }
@@ -164,6 +165,8 @@ void Fun::HaveMove()
 {
 	m_vPosition = m_pPlayer->GetPlayerRightHand().GetPosition();
 	m_vQuaternion = m_pPlayer->GetQuaternion();
+
+
 }
 
 void Fun::UseMove()

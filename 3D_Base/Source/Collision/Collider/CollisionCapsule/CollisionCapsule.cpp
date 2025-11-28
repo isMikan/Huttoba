@@ -15,7 +15,6 @@ CollisionCapsule::CollisionCapsule(
 {
     m_LocalOffsetA = localOffsetA;
     m_LocalOffsetB = localOffsetB;
-
 }
 
 
@@ -35,10 +34,13 @@ void CollisionCapsule::UpdateWorldPosition()
 
     const D3DXMATRIX mWorld = obj->GetWorldMatrix();
 
+    D3DXVECTOR3 totalOffSetA =  m_LocalOffsetA + m_MoveOffsetA;
+    D3DXVECTOR3 totalOffSetB =  m_LocalOffsetB + m_MoveOffsetB;
+
     // 軸線分の始点Aと終点Bをワールド行列で変換
     // D3DXVec3TransformCoord は D3DXMATRIXの回転、スケール、平行移動を全て適用
-    D3DXVec3TransformCoord(&m_WorldCapsule.StartPoint, &m_LocalOffsetA, &mWorld);
-    D3DXVec3TransformCoord(&m_WorldCapsule.EndPoint, &m_LocalOffsetB, &mWorld);
+    D3DXVec3TransformCoord(&m_WorldCapsule.StartPoint, &totalOffSetA, &mWorld);
+    D3DXVec3TransformCoord(&m_WorldCapsule.EndPoint, &totalOffSetA, &mWorld);
 
     // 半径の設定
     m_WorldCapsule.Rad = m_Radius;
