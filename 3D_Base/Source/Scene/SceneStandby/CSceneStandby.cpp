@@ -68,7 +68,6 @@ HRESULT CSceneStandby::LoadData()
 	for (int i = 0;i < 4;i++)
 	{
 		m_pRedyFontImg[i]->AttachSprite(AssetManager::Sprite(Sprite2DList::RedyFont));
-		m_pNotRedyFontImg[i]->AttachSprite(AssetManager::Sprite(Sprite2DList::NotRedyFont));
 	}
 
 	m_pSpriteSelector->AttachSprite(AssetManager::Sprite(Sprite2DList::Selector));
@@ -150,7 +149,7 @@ void CSceneStandby::Draw()
 	}
 
 	m_pSpriteSelector->Draw();
-	m_pSpriteStandbyImg->Draw();	//一番前に表示されるので文字などを表示させたい際は要検証.
+	m_pSpriteStandbyImg->Draw();
 
 	CFadeManager::GetInstance().Draw(0.f, 1.f, true);
 
