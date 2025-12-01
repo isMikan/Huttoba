@@ -58,6 +58,8 @@ Haetataki::Haetataki()
 Haetataki::~Haetataki()
 {
 	CollisionManager::GetInstance()->RemoveCollider(m_pPickUpCollider.get());
+	CollisionManager::GetInstance()->RemoveCollider(m_pCollision.get());
+
 }
 
 //--------------------------------------------------------------------------------------------------------------
@@ -76,22 +78,22 @@ void Haetataki::Init()
 	m_tGravity = INITAL_GRAVITY;
 
 
-	std::shared_ptr<CStaticMesh> mesh = AssetManager::Mesh(StaticMeshList::PickUpCol);
+	std::shared_ptr<CStaticMesh> mesh = AssetManager::Mesh(StaticMeshList::BCapsule);
 
-	m_pPickUpCollider = CollisionDataFactory::CreateSphereForMesh(
-		CollisionBase::ColliderTag::PickUpCol,
+	m_pCollision = CollisionDataFactory::CreateSphereForMesh(
+		CollisionBase::ColliderTag::Bomb,
 		mesh,
 		this
 	);
 
-	mesh = AssetManager::Mesh(StaticMeshList::BCapsule);
+	//mesh = AssetManager::Mesh(StaticMeshList::BCapsule);
 
-	m_pUseCollider = CollisionDataFactory::CreateCapsuleForMesh(
-		CollisionBase::ColliderTag::Haetataki,
-		mesh,
-		this,
-		false
-	);
+	//m_pCollision = CollisionDataFactory::CreateSphereForMesh(
+	//	CollisionBase::ColliderTag::Haetataki,
+	//	mesh,
+	//	this,
+	//	false
+	//);
 
 }
 
@@ -148,18 +150,17 @@ void Haetataki::Have()
 	{
 		m_State = IItemObserver::IItemObserver::State::Use;
 	}
+
+	D3DXVECTOR3 a = { 2.f,2.f,2.f };
+	m_pCollision->SetLocalOffSetToCapsule(a, a);
+
+
 }
 
 //--------------------------------------------------------------------------------------------------------------
 
 void Haetataki::Use()
 {
-	if (m_pNowCollider != m_pUseCollider)
-	{
-		CollisionManager::GetInstance()->RemoveCollider(m_pNowCollider.get());
-		m_pNowCollider = m_pUseCollider;
-		CollisionManager::GetInstance()->AddCollider(m_pNowCollider);
-	}
 	//アイテムをプレイヤーの位置に合わせる
 	m_vPosition = m_pPlayer->GetPosition() + m_Offset;
 
@@ -170,10 +171,6 @@ void Haetataki::Use()
 	{
 		m_State = IItemObserver::IItemObserver::State::Have;
 		m_IsMissAttack = false; //初期化
-
-		CollisionManager::GetInstance()->RemoveCollider(m_pNowCollider.get());
-		m_pNowCollider = m_pPickUpCollider;
-		CollisionManager::GetInstance()->AddCollider(m_pNowCollider);
 	}
 }
 
@@ -194,6 +191,27 @@ void Haetataki::Destroy()
 
 void Haetataki::ItemState(IItemObserver::State state)
 {
+	std::shared_ptr<CStaticMesh> mesh = AssetManager::Mesh(StaticMeshList::BCapsule);
+
+
+	switch (state)
+	{
+	case IItemObserver::IItemObserver::State::Have:
+
+		break;
+
+	case IItemObserver::IItemObserver::State::Use:
+		//エフェクト追加
+
+
+
+		break;
+	case IItemObserver::IItemObserver::State::Throw:
+		break;
+	default:
+		break;
+	}
+
 }
 
 //--------------------------------------------------------------------------------------------------------------

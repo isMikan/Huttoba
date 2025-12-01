@@ -28,6 +28,7 @@ using Microsoft::WRL::ComPtr;
 #include "TimeManager/CTimeManager.h"
 #include "DebugText/DebugDrawManager/DebugDrawManager.h"
 #include "Collision/CollisionManager/CollisionManager.h"
+#include "Collision/CollisionDraw/CollisionDraw.h"
 #include "Collision/CollisionData/CollisionDataFactory/CollisionDataFactory.h" 
 #include "Collision/CollisionListener/ICollisionListener.h"
 #include "CDirectX11.h"

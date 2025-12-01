@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "CollisionDataFactory.h"
-#include "Collision/CollisionDraw/CollisionDraw.h"
 
 std::shared_ptr<CollisionBase> CollisionDataFactory::CreateSphereForMesh(
     CollisionBase::ColliderTag tag,
