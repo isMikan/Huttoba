@@ -71,9 +71,8 @@ private:
 
 private:
     CPlayerBase*                    m_pTarget;
-    //追尾から無視するプレイヤー
-   // CPlayerBase*                    m_pIgnoredPlayer;
 
+    //索敵判定クラス
     std::unique_ptr<ChaseSensor>    m_pChaseSensor;
 
     //地面に当たっているか

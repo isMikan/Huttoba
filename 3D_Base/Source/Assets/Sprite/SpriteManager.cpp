@@ -57,19 +57,18 @@ HRESULT SpriteManager::CreateSprite2D()
 {
 	//äesprite2DÇÃèÓïÒÇìoò^(Ç±Ç±Ç…sprite2Dìoò^)
 //Å´-----------------------------------------------------------------------------------------------------------------------------Å´
-	RegisterSprite2D(Sprite2DList::Fade,		_T("Data\\Texture\\fade.png"),			{ WND_W,WND_H,WND_W,WND_H,WND_W,WND_H });
-	RegisterSprite2D(Sprite2DList::GaugeFrame,	_T("Data\\Texture\\gauge_frame.png"),	{ 160.f, 24.f, 160.f, 24.f, 160.f, 24.f });
-	RegisterSprite2D(Sprite2DList::Gauge,		_T("Data\\Texture\\gauge.png"),			{ 160.f, 24.f, 160.f, 24.f, 160.f, 24.f });
-	//RegisterSprite2D(Sprite2DList::Title,		_T("Data\\Texture\\Title_kari.png"),	{ WND_W,WND_H,WND_W,WND_H,WND_W,WND_H });
-	RegisterSprite2D(Sprite2DList::Title,		_T("Data\\Texture\\Title.png"),			{ 695,400,695,400,695,400 });
-	RegisterSprite2D(Sprite2DList::Standby,		_T("Data\\Texture\\Standby_kari.png"),	{ WND_W,WND_H,WND_W,WND_H,WND_W,WND_H });
-	RegisterSprite2D(Sprite2DList::RedyFont,	_T("Data\\Texture\\ReadyUI.png"),		{ 230,64, 230,510, 230,64 });
-	RegisterSprite2D(Sprite2DList::Result,		_T("Data\\Texture\\Result_kari.png"),	{ WND_W,WND_H,WND_W,WND_H,WND_W,WND_H });
-	RegisterSprite2D(Sprite2DList::Selector,	_T("Data\\Texture\\yajirusi_kari.png"), { 64,64,64,64,64,64 });
-	RegisterSprite2D(Sprite2DList::FontUI,		_T("Data\\Texture\\AIUI.png"),			{ 400,64,400,544,400,64 });
-	RegisterSprite2D(Sprite2DList::BigFontUI,	_T("Data\\Texture\\BigUI.png"),			{ 800,200,800,620,800,200 });
-	RegisterSprite2D(Sprite2DList::Clock,		_T("Data\\Texture\\clock.png"),			{ 56,63,56,63,56,63 });
-	RegisterSprite2D(Sprite2DList::TimeNumber,	_T("Data\\Texture\\number.png"),		{ 40,40,330,32,33,31 });
+	RegisterSprite2D(Sprite2DList::Fade,		_T("Data\\Texture\\fade.png"),				{ WND_W,WND_H,WND_W,WND_H,WND_W,WND_H });
+	RegisterSprite2D(Sprite2DList::GaugeFrame,	_T("Data\\Texture\\gauge_frame.png"),		{ 160.f, 24.f, 160.f, 24.f, 160.f, 24.f });
+	RegisterSprite2D(Sprite2DList::Gauge,		_T("Data\\Texture\\gauge.png"),				{ 160.f, 24.f, 160.f, 24.f, 160.f, 24.f });
+	RegisterSprite2D(Sprite2DList::font_Title,	_T("Data\\Texture\\font_title.png"),		{ 695,400,695,400,695,400 });
+	RegisterSprite2D(Sprite2DList::Standby,		_T("Data\\Texture\\Standby_kari.png"),		{ WND_W,WND_H,WND_W,WND_H,WND_W,WND_H });
+	RegisterSprite2D(Sprite2DList::RedyFont,	_T("Data\\Texture\\font_ui_ready.png"),		{ 230,64, 230,510, 230,64 });
+	RegisterSprite2D(Sprite2DList::Result,		_T("Data\\Texture\\Result_kari.png"),		{ WND_W,WND_H,WND_W,WND_H,WND_W,WND_H });
+	RegisterSprite2D(Sprite2DList::Selector,	_T("Data\\Texture\\ui_select_arrow.png"),	{ 64,64,64,256,64,64 });
+	RegisterSprite2D(Sprite2DList::FontUI,		_T("Data\\Texture\\font_ui_common.png"),	{ 400,64,400,544,400,64 });
+	RegisterSprite2D(Sprite2DList::BigFontUI,	_T("Data\\Texture\\BigUI.png"),				{ 800,200,800,620,800,200 });
+	RegisterSprite2D(Sprite2DList::Clock,		_T("Data\\Texture\\clock.png"),				{ 56,63,56,63,56,63 });
+	RegisterSprite2D(Sprite2DList::TimeNumber,	_T("Data\\Texture\\number.png"),			{ 40,40,330,32,33,31 });
 
 	
 //Å™-----------------------------------------------------------------------------------------------------------------------------Å™

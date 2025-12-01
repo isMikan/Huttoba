@@ -140,8 +140,10 @@ void CPlayerKnockdownState::ChildPlayer(int index)
 			m_DecreaseTriggerTime = CTimeManager::GetTotalTime();
 
 			//ÉåÉoÉKÉ`ÉÉê¨å˜éûÇÃílÇï€ë∂.
-			m_PrevSthikX = x;
-			m_PrevSthikY = y;
+			if (fabs(x) > 0.0f)
+				m_PrevSthikX = x;
+			if (fabs(y) > 0.0f)
+				m_PrevSthikY = y;
 
 			m_EndTime -= m_TimeDecreaseByMashing;	//å∏è≠Ç∑ÇÈ.
 			m_IsTimeDecreasing = true;

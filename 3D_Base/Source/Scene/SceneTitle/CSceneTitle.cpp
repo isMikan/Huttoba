@@ -10,7 +10,7 @@ CSceneTitle::CSceneTitle(HWND hWnd)
 	, m_pPlayerManager	()
 	, m_pGroundManager	()
 
-	, m_pSpriteTitlImg	()
+	, m_pSpriteTitleImg	()
 	, m_pSpriteSelector	()
 
 	//, m_pSpriteTitleFont()
@@ -49,7 +49,7 @@ HRESULT CSceneTitle::Create()
 	m_pGroundManager = std::make_unique<CGroundManager>();
 	m_pGroundManager->MainGroundCreate();
 
-	m_pSpriteTitlImg = std::make_unique<CUIObject>();
+	m_pSpriteTitleImg = std::make_unique<CUIObject>();
 	m_pSpriteSelector = std::make_unique<CUIObject>();
 
 	//m_pSpriteTitleFont = std::make_unique<CUIObject>();
@@ -75,14 +75,10 @@ HRESULT CSceneTitle::LoadData()
 	//地面マネージャーの読み込み.
 	m_pGroundManager->LoadData();
 	
-	m_pSpriteTitlImg->AttachSprite(AssetManager::Sprite(Sprite2DList::Title));
-	m_pSpriteTitlImg->SetPosition(300.f, 0.f, 0.f);
+	m_pSpriteTitleImg->AttachSprite(AssetManager::Sprite(Sprite2DList::font_Title));
+	m_pSpriteTitleImg->SetPosition(300.f, 20.f, 0.f);
 
 	m_pSpriteSelector->AttachSprite(AssetManager::Sprite(Sprite2DList::Selector));
-
-	//m_pSpriteTitleFont->AttachSprite(AssetManager::Sprite(Sprite2DList::BigFontUI));
-	//m_pSpriteTitleFont->SetPatternNo(0, 0);
-	//m_pSpriteTitleFont->SetPosition(330, 50, 0);
 
 	m_pSpriteStartFont->AttachSprite(AssetManager::Sprite(Sprite2DList::FontUI));
 	m_pSpriteStartFont->SetPatternNo(0, 0);
@@ -183,7 +179,7 @@ void CSceneTitle::Draw()
 	
 	m_pItemManager->Draw(view, proj, light, camera);
 
-	m_pSpriteTitlImg->Draw();
+	m_pSpriteTitleImg->Draw();
 
 	m_pDx11->SetDepth(false);
 
@@ -193,7 +189,7 @@ void CSceneTitle::Draw()
 
 	m_pSpriteSelector->Draw();
 
-	m_pSpriteTitlImg->Draw();
+	m_pSpriteTitleImg->Draw();
 
 	m_pDx11->SetDepth(false);
 

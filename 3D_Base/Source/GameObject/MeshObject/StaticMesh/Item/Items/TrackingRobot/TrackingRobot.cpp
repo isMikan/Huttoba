@@ -13,7 +13,6 @@ namespace { const bool regist = ItemBase::AutoRegister<TrackingRobot>(ItemID::Tr
 
 TrackingRobot::TrackingRobot()
 	: m_pTarget			()
-	//, m_pIgnoredPlayer	()
 	, m_pChaseSensor	()
 
 	, m_IsGround		( false )
@@ -41,7 +40,6 @@ TrackingRobot::TrackingRobot()
 
 TrackingRobot::~TrackingRobot()
 {
-	//SAFE_DELETE(m_pIgnoredPlayer);
 	//当たり判定削除
 	CollisionManager::GetInstance()->RemoveCollider(m_pPickUpCollider.get());
 	CollisionManager::GetInstance()->RemoveCollider(m_pCollision.get());
@@ -92,8 +90,6 @@ void TrackingRobot::Spawn()
 
 void TrackingRobot::OnGround()
 {
-	//後で地面がなければ落下する処理を追加する
-
 }
 
 void TrackingRobot::Have()
@@ -215,7 +211,6 @@ void TrackingRobot::ThrowMove()
 
 void TrackingRobot::OneEnterUse()
 {
-
 	//プレイヤーのクォータニオン(向いている方向)記録
 	m_vQuaternion = m_pPlayer->GetQuaternion();
 
@@ -235,6 +230,9 @@ void TrackingRobot::OneEnterUse()
 
 	//索敵判定クラスの生成
 	m_pChaseSensor = std::make_unique<ChaseSensor>(m_vPosition, m_CollisionOffSet);
+
+	//使用したプレイヤーを索敵から無視する
+	m_pChaseSensor->SetIgnoredPlayer(m_pPlayer);
 }
 
 void TrackingRobot::OneEnterThrow()

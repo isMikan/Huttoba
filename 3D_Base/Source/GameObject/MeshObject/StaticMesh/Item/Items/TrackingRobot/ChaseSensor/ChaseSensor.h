@@ -1,5 +1,4 @@
 #pragma once
-//#include "Collision/"
 
 class CPlayerBase;
 
@@ -15,12 +14,8 @@ public:
 	//一番近いプレイヤーを渡す
 	CPlayerBase* GetTarget() { return m_pTarget; }
 
+	//追尾から無視するプレイヤーを設定
 	void SetIgnoredPlayer(CPlayerBase* pIgnoredPlayer) { m_pIgnoredPlayer = pIgnoredPlayer; }
-
-	//bool GetIsHitGround() { return m_IsHitGround; }
-	//void SetIsHitGround(bool IsHitGround) { m_IsHitGround = IsHitGround; }
-
-	void SetIsCollisionEnabled(bool set) { m_IsCollisionEnabled = set; }
 
 private:
 	//当たり判定処理
@@ -39,11 +34,12 @@ private:
 	//追尾から無視するプレイヤー
 	CPlayerBase* m_pIgnoredPlayer;
 
-	std::array<std::shared_ptr<CollisionBase>, 3>	m_pCollision;
+	//当たり判定のコライダーの数を指定
+	static constexpr int m_ColliderCount = 3;
+
+	//当たり判定を複数
+	std::array<std::shared_ptr<CollisionBase>, m_ColliderCount>	m_pCollision;
 
 	//索敵の当たり判定の位置の補正値
 	D3DXVECTOR3 m_CollisionOffSet;
-
-	//当たり判定の処理が有効か
-	bool	m_IsCollisionEnabled;
 };
