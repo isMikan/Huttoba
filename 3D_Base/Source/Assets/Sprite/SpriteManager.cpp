@@ -64,7 +64,6 @@ HRESULT SpriteManager::CreateSprite2D()
 	RegisterSprite2D(Sprite2DList::Title,		_T("Data\\Texture\\Title.png"),			{ 695,400,695,400,695,400 });
 	RegisterSprite2D(Sprite2DList::Standby,		_T("Data\\Texture\\Standby_kari.png"),	{ WND_W,WND_H,WND_W,WND_H,WND_W,WND_H });
 	RegisterSprite2D(Sprite2DList::RedyFont,	_T("Data\\Texture\\ReadyUI.png"),		{ 230,64, 230,510, 230,64 });
-	RegisterSprite2D(Sprite2DList::NotRedyFont, _T("Data\\Texture\\NotReady_kari.png"), { 200,100, 200,100, 200,100 });
 	RegisterSprite2D(Sprite2DList::Result,		_T("Data\\Texture\\Result_kari.png"),	{ WND_W,WND_H,WND_W,WND_H,WND_W,WND_H });
 	RegisterSprite2D(Sprite2DList::Selector,	_T("Data\\Texture\\yajirusi_kari.png"), { 64,64,64,64,64,64 });
 	RegisterSprite2D(Sprite2DList::FontUI,		_T("Data\\Texture\\AIUI.png"),			{ 400,64,400,544,400,64 });

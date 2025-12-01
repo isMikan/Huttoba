@@ -158,7 +158,6 @@ enum class Sprite2DList
 	Title,
 	Standby,
 	RedyFont,
-	NotRedyFont,
 	Result,
 	Selector,
 	FontUI,		//‘I‘ğˆ‚È‚Ç‚Ì‚¿‚å‚Á‚Æ¬‚³‚¢•¶š.

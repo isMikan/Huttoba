@@ -29,9 +29,9 @@ private:
 
 private:
 	CDirectX11*			m_pDx11;
-	HWND				m_hWnd;			//ウィンドウハンドル.
+	HWND				m_hWnd;			//ウィンドウハンドル
 
-	std::vector<std::function<void()>>	m_Action;	//画面遷移時の動作を入れる.
+	std::vector<std::function<void()>>	m_Action;	//画面遷移時の動作を入れる
 
 	//プレイヤーマネージャークラス.
 	std::unique_ptr<CPlayerManager>		m_pPlayerManager;
@@ -39,19 +39,18 @@ private:
 	//地面マネージャークラス.
 	std::unique_ptr<CGroundManager> 	m_pGroundManager;
 	
-	std::unique_ptr<CUIObject>	m_pSpriteTitlImg;	//タイトル画面.
-	std::unique_ptr<CUIObject>	m_pSpriteSelector;	//選択矢印.
+	std::unique_ptr<CUIObject>	m_pSpriteTitlImg;	//タイトル
+	std::unique_ptr<CUIObject>	m_pSpriteSelector;	//選択矢印
 
-	std::unique_ptr<CUIObject>	m_pSpriteTitleFont;
-	std::unique_ptr<CUIObject>	m_pSpriteStartFont;
-	std::unique_ptr<CUIObject>	m_pSpriteEndFont;
+	std::unique_ptr<CUIObject>	m_pSpriteStartFont;	//
+	std::unique_ptr<CUIObject>	m_pSpriteEndFont;	//
 
-	std::vector<D3DXVECTOR3>	m_SelectorPos;		//選択矢印の座標.
+	std::vector<D3DXVECTOR3>	m_SelectorPos;		//選択矢印の座標
 
 	std::unique_ptr<ItemManager> m_pItemManager;
 
 	//8ビットの符号付整数型.
-	uint8_t						m_SelectorNumber;	//現在選択中の番号.
+	uint8_t						m_SelectorNumber;	//現在選択中の番号
 
 	float m_StartTime;
 	float m_EndTime;
