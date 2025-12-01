@@ -275,16 +275,6 @@ void CSceneGameMain::Draw()
 		exp->Draw(view, proj);
 	}
 
-	////デバッグテキストの描画
-	//m_pDbgText->SetColor(0.9f, 0.6f, 0.f);	//色の設定
-	//m_pDbgText->Render(_T("ABCD"), 10, 100);
-
-	////デバッグテキスト(数値入り)の描画
-	//m_pDbgText->SetColor(1.f, 0.f, 0.f);
-	//TCHAR dbgText[64];
-	//_stprintf_s(dbgText, _T("Float:%f, %f"), 1.f, 2.2f);
-	//m_pDbgText->Render(dbgText, 10, 110);
-
 	//Effectクラス
 	AssetManager::Effect()->Draw(view, proj, light, camera);
 

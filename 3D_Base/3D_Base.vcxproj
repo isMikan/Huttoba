@@ -261,7 +261,6 @@
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\GroundCollisionProxy\CGroundCollisionProxy.cpp" />
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\Item\Items\Boomerang\Boomerang.cpp" />
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\Item\Items\Fun\Fun.cpp" />
-    <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\Item\Items\Fun\Wind\Wind.cpp" />
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\Item\Items\Mushroom\Mushroom.cpp" />
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\Item\Items\TrackingRobot\ChaseSensor\ChaseSensor.cpp" />
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\Item\Items\TrackingRobot\TrackingRobot.cpp" />
@@ -337,6 +336,10 @@
     <ClCompile Include="Source\Scene\CSceneManager.cpp" />
     <ClCompile Include="Source\Scene\SceneData\CSceneData.cpp" />
     <ClCompile Include="Source\Scene\SceneMain\CSceneGameMain.cpp" />
+    <ClCompile Include="Source\Scene\SceneMain\GameStateBase\GameFinishState\GameFinishState.cpp" />
+    <ClCompile Include="Source\Scene\SceneMain\GameStateBase\GamePlayState\GamePlayState.cpp" />
+    <ClCompile Include="Source\Scene\SceneMain\GameStateBase\GameReadyState\GameReadyState.cpp" />
+    <ClCompile Include="Source\Scene\SceneMain\GameStateBase\GameStateBase.cpp" />
     <ClCompile Include="Source\Scene\SceneStandby\CSceneStandby.cpp" />
     <ClCompile Include="Source\Scene\SceneResult\CSceneResult.cpp" />
     <ClCompile Include="Source\Scene\SceneTitle\CSceneTitle.cpp" />
@@ -385,7 +388,6 @@
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\GroundCollisionProxy\CGroundCollisionProxy.h" />
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\Item\Items\Boomerang\Boomerang.h" />
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\Item\Items\Fun\Fun.h" />
-    <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\Item\Items\Fun\Wind\Wind.h" />
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\Item\Items\Mushroom\Mushroom.h" />
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\Item\Items\TrackingRobot\ChaseSensor\ChaseSensor.h" />
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\Item\Items\TrackingRobot\TrackingRobot.h" />
@@ -464,6 +466,10 @@
     <ClInclude Include="Source\Scene\CSceneManager.h" />
     <ClInclude Include="Source\Scene\SceneData\CSceneData.h" />
     <ClInclude Include="Source\Scene\SceneMain\CSceneGameMain.h" />
+    <ClInclude Include="Source\Scene\SceneMain\GameStateBase\GameFinishState\GameFinishState.h" />
+    <ClInclude Include="Source\Scene\SceneMain\GameStateBase\GamePlayState\GamePlayState.h" />
+    <ClInclude Include="Source\Scene\SceneMain\GameStateBase\GameReadyState\GameReadyState.h" />
+    <ClInclude Include="Source\Scene\SceneMain\GameStateBase\GameStateBase.h" />
     <ClInclude Include="Source\Scene\SceneStandby\CSceneStandby.h" />
     <ClInclude Include="Source\Scene\SceneResult\CSceneResult.h" />
     <ClInclude Include="Source\Scene\SceneTitle\CSceneTitle.h" />

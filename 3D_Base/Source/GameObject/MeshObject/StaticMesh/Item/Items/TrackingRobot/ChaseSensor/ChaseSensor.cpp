@@ -3,13 +3,13 @@
 #include "GroundCollisionProxy/CGroundCollisionProxy.h"
 
 ChaseSensor::ChaseSensor(D3DXVECTOR3 pos, D3DXVECTOR3 searchOffset)
-	: m_pTarget			()
-	, m_pIgnoredPlayer	()
-	, m_pTargetList		()
+	: m_pTarget				()
+	, m_pIgnoredPlayer		()
+	, m_pTargetList			()
 
-	, m_pCollision		()
+	, m_pCollision			()
 
-	, m_CollisionOffSet	()
+	, m_CollisionOffSet		()
 {
 	for (int i = 0;i < 3;i++)
 	{
@@ -63,14 +63,6 @@ void ChaseSensor::OnCollision(CollisionBase* other)
 			}
 		}
 	}
-
-	//if (other->GetTag() == CollisionBase::ColliderTag::Ground)
-	//{
-	//	if (CGroundCollisionProxy* grond = dynamic_cast<CGroundCollisionProxy*>(other->GetListener()))
-	//	{
-	//		m_IsHitGround = true;
-	//	}
-	//}
 }
 
 void ChaseSensor::FindNearestTarget()

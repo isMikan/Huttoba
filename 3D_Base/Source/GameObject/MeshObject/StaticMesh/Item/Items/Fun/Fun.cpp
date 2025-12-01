@@ -60,20 +60,15 @@ void Fun::Init()
 		this
 	);
 
+	m_pCollision->RotationXCapsule(90.f);
 
-	//SetRotation(D3DXVECTOR3(0.f, D3DXToRadian(-90.f),0.f));
-	//m_pNowCollider = m_pUseCollider;
-
-	//ここで現在の当たり判定を設定
-	CollisionManager::GetInstance()->AddCollider(m_pNowCollider);
-
+	m_HaveOffset = { 0.f, 0.f, 1.f };
 	//--------------------------------------------------------------------------------------------------------------
 }
 
 void Fun::Update()
 {
 	ItemBase::Update();
-	m_State;
 }
 
 void Fun::Draw(D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAMERA& Camera)
@@ -126,6 +121,8 @@ void Fun::ItemState(IItemObserver::State state)
 
 	switch (state)
 	{
+	case IItemObserver::IItemObserver::State::Have:
+		break;
 	case IItemObserver::IItemObserver::State::Use:
 		//エフェクト追加
 		hEffect = AssetManager::Effect()->Play("FunWind", m_vPosition);
@@ -150,7 +147,7 @@ void Fun::OnCollision(CollisionBase* other)
 				if(m_pPlayer!=player)
 				{
 					Hit(*player);
-					//std::cout << player->GetPlayerID() << "と当たった" << std::endl;
+					std::cout << player->GetPlayerID() << "と当たった" << std::endl;
 				}
 			}
 			if (m_State == IItemObserver::State::Throw && m_pPlayer != player)
@@ -166,10 +163,7 @@ void Fun::HaveMove()
 	m_vPosition = m_pPlayer->GetPlayerRightHand().GetPosition();
 	m_vQuaternion = m_pPlayer->GetQuaternion();
 
-
-	D3DXVECTOR3 a = { 0.f, 0.f, 1.f };
-	m_pCollision->RotationXCapsule(90.f);
-	m_pCollision->SetLocalOffSetToCapsule(a, a);
+	m_pCollision->SetLocalOffSetToCapsule(m_HaveOffset, m_HaveOffset);
 
 }
 
@@ -233,18 +227,12 @@ void Fun::OneEnterThrow()
 	D3DXVec3Normalize(&forward, &forward);
 
 	m_Velocity = forward * m_MoveSpeed;
-
-	//当たり判定削除
-	CollisionManager::GetInstance()->RemoveCollider(m_pCollision.get());
 }
 
 void Fun::Hit(CPlayerBase& playiers)
 {
 	//プレイヤーの押し出しの計算
-	//D3DXVECTOR3 SmashVel = playiers.GetVelocity(m_vPosition, 2, 10.0f);
-	
-	//プレイヤーの押し出しの計算
-	D3DXVECTOR3 SmashVel = playiers.GetPushbackVelocity(m_vPosition, 0.05f);
+	D3DXVECTOR3 SmashVel = playiers.GetPushbackVelocity(m_vPosition, 1.6f);
 
 	playiers.SetHitAttack(
 		SmashVel,
