@@ -36,27 +36,23 @@ public:
         Instance().m_IsPlayerLiving[index] = live; 
     }
 
+    //生きているプレイヤーの数.
+    static int GetPlayerLivingNum() {
+        int count = 0;
+        for (int index = 0; index < Player_Max; index++)
+        {
+            //生きている場合.
+            if (Instance().m_IsPlayerLiving[index]) count++;
+        }
+        return count;
+    }
+
+    //プレイヤーが生きているかを初期化.
     static void PlayerAllLive() {
         for (int index = 0; index < Player_Max; index++)
         {
             Instance().m_IsPlayerLiving[index] = true;
         }
-    }
-
-    //ゲームメインを終了するか.
-    static bool GameMainEnd() {
-        int count = 0;
-        for (int index = 0; index < Player_Max; index++)
-        {
-            //生きている場合
-            if (Instance().m_IsPlayerLiving[index]) count++;
-        }
-        //生きているのが一人以下の場合.
-        if (count <= 1)
-        {
-            return true;
-        }
-        return false;
     }
 
     //プレイヤーが生きているのか.

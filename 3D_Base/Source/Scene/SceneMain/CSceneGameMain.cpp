@@ -194,7 +194,8 @@ void CSceneGameMain::Update()
 		SetNextScene(Result);
 	}
 
-	if (CSceneData::GameMainEnd())
+	//プレイヤーが一人以下の場合.
+	if (CSceneData::GetPlayerLivingNum() <= 1)
 	{
 		SetNextScene(Result);
 	}
@@ -265,7 +266,7 @@ void CSceneGameMain::Draw()
 
 	m_pGaugeManager->Draw(view, proj);
 
-	CFadeManager::GetInstance().Draw(0.f, GameMain_StartTime, true);
+	CFadeManager::Draw(0.f, GameMain_StartTime, true);
 
 	//やりたいことが終わったので、深度テストを有効にしておく
 	m_pDx11->SetDepth(true);

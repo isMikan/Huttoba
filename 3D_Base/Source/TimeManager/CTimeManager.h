@@ -41,7 +41,7 @@ public:
 	//c‚è§ŒÀŠÔ‚ğæ“¾
 	static std::pair<int, int> GetTimeLimit() { return GetInstance().m_TimeLimit; }
 	//§ŒÀŠÔ‚ª‰ß‚¬‚½‚©‚Ç‚¤‚©
-	bool GetIsFinish() { return m_IsFinish; }
+	bool GetIsFinish() const { return m_IsFinish; }
 
 private:
 //======================================================================

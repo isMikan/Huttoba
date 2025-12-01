@@ -152,7 +152,7 @@ void CSceneStandby::Draw()
 	m_pSpriteSelector->Draw();
 	m_pSpriteStandbyImg->Draw();	//一番前に表示されるので文字などを表示させたい際は要検証.
 
-	CFadeManager::GetInstance().Draw(0.f, 1.f, true);
+	CFadeManager::Draw(0.f, 1.f, true);
 
 	m_pDx11->SetDepth(true);
 }

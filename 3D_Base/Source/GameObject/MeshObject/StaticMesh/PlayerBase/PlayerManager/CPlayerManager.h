@@ -30,6 +30,8 @@ public:
 	void ResultPlayerCreate();
 
 //=== 各シーンの更新関数 ===.
+	//--- タイトル ---.
+	void TitlePlayerUpdate();
 	//--- メイン ---.
 	void MainPlayerUpdate();
 	//--- リザルト ---.
@@ -69,4 +71,5 @@ private:
 	float			m_CreateTime;		//作成された時間.
 	float			m_ReadyTime;		//準備OKの時間.
 
+	float			m_InitialSetPosY;	//y軸の初期位置.
 };

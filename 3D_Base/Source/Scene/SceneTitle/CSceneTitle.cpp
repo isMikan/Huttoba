@@ -1,5 +1,7 @@
 #include "CSceneTitle.h"
 
+#include "Scene/SceneData/CSceneData.h"
+
 CSceneTitle::CSceneTitle(HWND hWnd)
 	: m_hWnd			(hWnd)
 
@@ -26,6 +28,8 @@ CSceneTitle::CSceneTitle(HWND hWnd)
 
 {
 	m_pDx11 = CDirectX11::GetInstance();
+
+	CSceneData::PlayerAllLive();
 
 	Create();
 	LoadData();
@@ -61,8 +65,8 @@ HRESULT CSceneTitle::Create()
 
 HRESULT CSceneTitle::LoadData()
 {
-	CCameraManager::SetPosition(0.f, 3.f, -10.f);
-	CCameraManager::SetLook(0.f, 2.f, 6.f);
+	CCameraManager::SetPosition(0.f, 2.f, -8.f);
+	CCameraManager::SetLook(0.f, 1.f, 5.f);
 	CCameraManager::SetLight(0.f, 30.f, -10.f);
 
 	//プレイヤーマネージャーの読み込み.
@@ -105,6 +109,9 @@ HRESULT CSceneTitle::LoadData()
 
 void CSceneTitle::Update()
 {
+	//経過時間を取得.
+	float t = CTimeManager::GetTotalTime();
+
 	//地面に接地しているか
 	for (auto& player : m_pPlayerManager->GetPlayer())
 	{
@@ -114,7 +121,7 @@ void CSceneTitle::Update()
 	}
 
 	//プレイヤーの動作
-	m_pPlayerManager->MainPlayerUpdate();
+	m_pPlayerManager->TitlePlayerUpdate();
 
 	MoveSelector();
 
@@ -136,29 +143,27 @@ void CSceneTitle::Draw()
 	//経過時間を取得.
 	float t = CTimeManager::GetTotalTime();
 
-	static float baseAngle = 0.f;
+	static float baseAngle = 0.f;	//ベースの角度.
 
 	static D3DXVECTOR3 cameraPos;
-	if(t < 5.f)
+	if(t < 4.f)
 	{
-		cameraPos = D3DXVECTOR3(0.f, 15.f, -15.f);
-		baseAngle = atan2f(cameraPos.z, cameraPos.x);
+		cameraPos = D3DXVECTOR3(0.f, 15.f, -15.f);		
+		baseAngle = atan2f(cameraPos.z, cameraPos.x);	//元の角度からずれないように.
 	}
-	else
+	//開始時間が終了時間を超えた場合.
+	if (t - m_StartTime > m_EndTime)
 	{
-		if (t - m_StartTime > m_EndTime)
-		{
-			m_StartTime = t;
-		}
-		//全体の時間の現在の割合.
-		float progress = (t - m_StartTime) / m_EndTime;
-		progress = std::clamp(progress, 0.f, 1.f);
+		m_StartTime = t;
+	}
+	//全体の時間の現在の割合.
+	float progress = (t - m_StartTime) / m_EndTime;
+	progress = std::clamp(progress, 0.f, 1.f);
 
-		float angle = baseAngle + progress * D3DX_PI * 2.f;
+	float angle = baseAngle + progress * D3DX_PI * 2.f;	//ベースの角度を加え一周する.
 		
-		cameraPos.x = cosf(angle) * 25.f;
-		cameraPos.z = sinf(angle) * 25.f + 10.f;
-	}
+	cameraPos.x = cosf(angle) * 25.f;
+	cameraPos.z = sinf(angle) * 25.f + 10.f;	//奥にするとちょうどいいので 10 足す.
 
 	//カメラを動かす処理.
 	CCameraManager::PositionUpdate(
@@ -192,7 +197,35 @@ void CSceneTitle::Draw()
 	m_pSpriteTitlImg->Draw();
 
 	m_pDx11->SetDepth(false);
-	CFadeManager::GetInstance().Draw(0.f, 1.f, true);
+
+	CFadeManager::Draw(0.f, 1.f, true);
+
+	static float startTime;
+	static bool isFade = false;
+	//プレイヤーが一人の場合.
+	if (CSceneData::GetPlayerLivingNum() <= 0)
+	{
+		if (!isFade)
+		{
+			startTime = t;
+			isFade = true;
+		}
+
+		CFadeManager::Draw(startTime, 1.f, false);
+
+		if (t - startTime > 2.f)
+		{
+			CSceneData::PlayerAllLive();
+		}
+	}
+	else
+	{
+		if (isFade)
+		{
+			isFade = false;
+		}
+	}
+
 	m_pDx11->SetDepth(true);
 }
 

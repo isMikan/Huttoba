@@ -79,6 +79,7 @@ void Boomerang::OnGround()
 void Boomerang::Have()
 {
 	m_ComeBack = false;
+	m_IsUseThrow = false;
 
 	HaveMove();
 }

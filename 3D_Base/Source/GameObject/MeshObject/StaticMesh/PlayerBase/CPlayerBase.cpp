@@ -91,7 +91,7 @@ void CPlayerBase::Update()
 	}
 
 	//アイテムが存在する場合.
-	if(m_pItemBase)
+	if (m_pItemBase)
 	{
 		//アイテムを投げる.
 		if (m_Control == ActionInstruct::ToggleItem)
@@ -102,8 +102,16 @@ void CPlayerBase::Update()
 		//アイテムの攻撃.
 		if (m_Control == ActionInstruct::Attack)
 		{
-			m_pItemBase->SetState(IItemObserver::State::Use);
-			SetActionState(std::make_unique<CPlayerItemAttackState>(*this));
+			if (dynamic_cast<Boomerang*>(m_pItemBase)
+				&& dynamic_cast<Boomerang*>(m_pItemBase)->GetIsUseThrow())
+			{
+				SetActionState(std::make_unique<CPlayerHandAttackState>(*this));
+			}
+			else
+			{
+				m_pItemBase->SetState(IItemObserver::State::Use);
+				SetActionState(std::make_unique<CPlayerItemAttackState>(*this));
+			}
 		}
 	}
 	else

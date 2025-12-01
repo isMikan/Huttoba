@@ -15,12 +15,6 @@ CFadeManager::~CFadeManager()
 // 	   外部で呼び出す関数.
 //======================================================================
 
-//--- リセット ---.
-void CFadeManager::Reset(float alpha)
-{
-	m_pFadeBase->Reset(alpha);
-}
-
 //--- 構築処理 ---.
 void CFadeManager::Create()
 {
@@ -35,8 +29,14 @@ void CFadeManager::LoadData()
 	m_pFadeBase->AttachSprite(AssetManager::Sprite(Sprite2DList::Fade));
 }
 
+//--- リセット ---.
+void CFadeManager::Reset_Internal(float alpha)
+{
+	m_pFadeBase->Reset(alpha);
+}
+
 //--- 描画処理 ---.
-void CFadeManager::Draw(
+void CFadeManager::Draw_Internal(
 	float startTime, float duration,
 	bool isFade)	//true : フェードイン・false : フェードアウト.
 {
@@ -50,4 +50,10 @@ void CFadeManager::Draw(
 	}
 
 	m_pFadeBase->Draw();
+}
+
+//--- α値をフェードベースから取得 ---.
+float CFadeManager::GetAlpha_Internal()
+{
+	return m_pFadeBase->GetAlpha();
 }

@@ -17,6 +17,8 @@ CPlayerManager::CPlayerManager()
 
 	, m_CreateTime		()
 	, m_ReadyTime		( GameMain_StartTime )
+
+	, m_InitialSetPosY	()
 {
 }
 
@@ -128,6 +130,7 @@ void CPlayerManager::MainPlayerCreate(ItemManager* itemManager)
 			aiPlayer->SetItemManager(itemManager);
 		}
 
+		m_InitialSetPosY = 0.1f;
 		//位置と方向の初期化.
 		InitialSettings(id);
 	}
@@ -173,6 +176,38 @@ void CPlayerManager::ResultPlayerCreate()
 
 //=== 各シーンの更新処理 ===.
 
+//--- タイトル ---.
+void CPlayerManager::TitlePlayerUpdate()
+{
+	//経過時間を取得.
+	float t = CTimeManager::GetTotalTime();
+
+	for (auto& player : m_pPlayers)
+	{
+		if (!player) continue;	//プレイヤーがいない場合、次へ.
+
+		int id = player->GetPlayerID();
+		if (!CSceneData::GetPlayerLiving(id)) continue;	//プレイヤーが生きていない場合、次へ.
+
+		//作成から開始時間を上回った場合.
+		if (t - m_CreateTime > m_ReadyTime)		//開始時すぐには動けないようにする.
+		{
+			player->Update();	//胴体.
+		}
+
+		Update(player.get());
+
+		//落ちた場合、死亡判定にする.
+		if (player->GetPosition().y < -20.f)
+		{
+			CSceneData::SetPlayerLive(id, false);
+
+			m_InitialSetPosY = 30.f;
+			InitialSettings(id);
+		}
+	}
+}
+
 //--- メイン ---.
 void CPlayerManager::MainPlayerUpdate()
 {
@@ -191,6 +226,7 @@ void CPlayerManager::MainPlayerUpdate()
 
 		Update(player.get());
 
+		//落ちた場合、削除.
 		if (player->GetPosition().y < -10.f)
 		{
 			Destroy(player.get());
@@ -248,11 +284,11 @@ void CPlayerManager::Create()
 
 	for (int pNo = 0; pNo < Player_Max; pNo++)
 	{
-#if 1
+#if 0
 		//プレイヤーのインスタンス生成.
 		m_pPlayers[pNo] = std::make_unique<CPlayer>(pNo);
 #else
-#if 1
+#if 0
 		if (pNo == 0)
 		{
 			m_pPlayers[pNo] = std::make_unique<CPlayer>(pNo);
@@ -283,7 +319,6 @@ void CPlayerManager::Create()
 		m_pPlayers[pNo]->SetObjectColor(0, CharacterColorSettings(pNo));
 		//頭の色を設定.
 		m_pPlayers[pNo]->GetPlayerHead().SetObjectColor(1, CharacterColorSettings(pNo));
-
 	}
 }
 
@@ -355,22 +390,22 @@ void CPlayerManager::InitialSettings(int index)
 		InitialSetting
 		//プレイヤー1.
 		{
-			{ D3DXVECTOR3(-6.f, 0.1f, 4.f),
+			{ D3DXVECTOR3(-6.f, 0.f, 4.f),
 				D3DXQUATERNION(0.f, D3DXToRadian(30.f), 0.f, 1.f) }
 		},
 		//プレイヤー2.
 		{
-			{ D3DXVECTOR3(6.f, 0.1f, 4.f),
+			{ D3DXVECTOR3(6.f, 0.f, 4.f),
 				D3DXQUATERNION(0.f, D3DXToRadian(-30.f), 0.f, 1.f) }
 		},
 		//プレイヤー3.
 		{
-			{ D3DXVECTOR3(-6.f, 0.1f, 15.f),
+			{ D3DXVECTOR3(-6.f, 0.f, 15.f),
 				D3DXQUATERNION(0.f, D3DXToRadian(120.f), 0.f, 1.f) }
 		},
 		//プレイヤー4.
 		{
-			{ D3DXVECTOR3(6.f, 0.1f, 15.f),
+			{ D3DXVECTOR3(6.f, 0.f, 15.f),
 				D3DXQUATERNION(0.f, D3DXToRadian(-120.f), 0.f, 1.f) }
 		}
 	};
@@ -379,6 +414,7 @@ void CPlayerManager::InitialSettings(int index)
 	{
 		//プレイヤーの位置を設定.
 		D3DXVECTOR3 pos = setting.first;
+		pos.y += m_InitialSetPosY;
 		m_pPlayers[index]->SetPosition(pos);
 
 		//プレイヤーの向きを設定.

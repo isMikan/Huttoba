@@ -60,7 +60,7 @@ void CSceneManager::CreateScene(int Scene)
 
 	CTimeManager::Resume();
 	CTimeManager::Reset();
-	CFadeManager::GetInstance().Reset(255.f);
+	CFadeManager::Reset(255.f);
 
 	//ƒV[ƒ“ì¬
 	switch (Scene)

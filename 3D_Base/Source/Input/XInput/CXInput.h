@@ -96,7 +96,7 @@ public:
 	DWORD GetPadID() const	{	return m_padId;		}
 
 	//レバガチャ用のボタンを入力したかを渡す.
-	bool IsDownKey();
+	bool IsDownKey() const;
 
 private:
 	//キー入力の更新.

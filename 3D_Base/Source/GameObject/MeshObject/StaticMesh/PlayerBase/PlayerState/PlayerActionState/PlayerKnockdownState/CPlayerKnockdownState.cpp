@@ -131,7 +131,7 @@ void CPlayerKnockdownState::ChildPlayer(int index)
 	float y = CInputManager::GetLeftSthikY(index);
 
 	//入力を感知した場合.
-	if (IsInput(x, y, index)|| CInputManager::IsDownKey(index))
+	if (IsInput(x, y, index))
 	{
 		//レバガチャが反応していない場合.
 		if (!m_IsTimeDecreasing)
@@ -193,6 +193,8 @@ bool CPlayerKnockdownState::IsInput(float x, float y, int index) const
 		//積がマイナスになったら、以前と現在のスティック数値の符号が異なる.
 		if (m_PrevSthikX * x < 0.f 
 			|| m_PrevSthikY * y < 0.f) return true;
+
+		return CInputManager::IsDownKey(index);
 	}
 	//キーボードの場合.
 	else
