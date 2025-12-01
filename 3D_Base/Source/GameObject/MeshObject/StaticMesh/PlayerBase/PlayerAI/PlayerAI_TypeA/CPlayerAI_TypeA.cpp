@@ -17,6 +17,8 @@
 #include "PlayerBase/PlayerState/PlayerActionState/PlayerGetUpState/CPlayerGetUpState.h"
 #include "PlayerBase/PlayerState/PlayerActionState/PlayerKnockdownState/CPlayerKnockdownState.h"
 
+#include "Item/Items/Boomerang/Boomerang.h"
+
 #include "Sound/CSoundManager.h"
 
 CPlayerAI_TypeA::CPlayerAI_TypeA(int index)
@@ -47,7 +49,11 @@ void CPlayerAI_TypeA::Update()
 		{
 			if(IsSearchItem(item.get()))
 			{
-				FindNearbyObject(item.get(), m_NearbyItems, IsSearchItem(item.get()));
+				Boomerang* boomerang = dynamic_cast<Boomerang*>(item.get());
+				if(boomerang)
+				{
+					FindNearbyObject(boomerang, m_NearbyItems, IsSearchItem(boomerang));
+				}
 				AutomaticMovement(m_NearbyItems.dir);
 
 				if (m_NearbyItems.sqrt < 0.5f)
