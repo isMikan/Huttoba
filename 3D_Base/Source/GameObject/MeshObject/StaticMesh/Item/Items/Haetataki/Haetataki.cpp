@@ -20,7 +20,10 @@ constexpr float ADD_POS_X = 0.02f;
 
 //モーションの回転加速度
 constexpr float ADD_ROT_X = 0.2f;		
-constexpr float ADD_ROT_Y = 0.2f;		
+constexpr float ADD_ROT_Y = 0.2f;
+constexpr float ADD_ROT_Z = 0.2f;
+
+constexpr float THROW_SPEED = 6.0f;
 
 //初期位置
 constexpr float INITAL_POS_X = 0.f;		
@@ -39,16 +42,21 @@ constexpr float ADD_GRAVITY = 0.001f;
 //ステージの高さ(当たり判定ができたら消す)突貫
 constexpr float STAGE_HEIGHT = 1.2f;
 
+constexpr float OFFSET_USE_COLLISION_X = 0.0f;
+constexpr float OFFSET_USE_COLLISION_Y = 1.1f;
+constexpr float OFFSET_USE_COLLISION_Z = 0.0f;
+
 //--------------------------------------------------------------------------------------------------------------
 
 Haetataki::Haetataki()
 	: m_Offset			( OFFSET_X, OFFSET_Y, 0.f )
 	, m_AddPos			( 0.f, 0.f, 0.f )
-	, m_AddRot			( ADD_ROT_X, ADD_ROT_Y, 0.f )
+	, m_AddRot			( ADD_ROT_X, ADD_ROT_Y, ADD_ROT_Z)
 	, m_SwitchDir		( false )
 	, m_IsFlyAway		( false )
 	, m_IsFlyAwayPower	( 3.f )
 	, m_IsMissAttack	( false )
+	, m_Velocity		()
 {
 	Init();
 }
@@ -58,6 +66,7 @@ Haetataki::Haetataki()
 Haetataki::~Haetataki()
 {
 	CollisionManager::GetInstance()->RemoveCollider(m_pPickUpCollider.get());
+	CollisionManager::GetInstance()->RemoveCollider(m_pUseCollider.get());
 }
 
 //--------------------------------------------------------------------------------------------------------------
@@ -69,30 +78,35 @@ void Haetataki::Init()
 	AttachMesh(AssetManager::Mesh(StaticMeshList::Haetataki));
 
 	SetPosition(INITAL_POS_X, INITAL_POS_Y, INITAL_POS_Z);
-	SetRotation(INITAL_ROT_X, INITAL_ROT_Y, INITAL_ROT_Z);
+	//SetRotation(INITAL_ROT_X, INITAL_ROT_Y, INITAL_ROT_Z);
 
 	m_State = IItemObserver::IItemObserver::State::Spawn;
 	m_UseCount = USE_COUNT;
 	m_tGravity = INITAL_GRAVITY;
 
 
-	std::shared_ptr<CStaticMesh> mesh = AssetManager::Mesh(StaticMeshList::PickUpCol);
+	std::shared_ptr<CStaticMesh> mesh = AssetManager::Mesh(StaticMeshList::Bomb);
 
 	m_pPickUpCollider = CollisionDataFactory::CreateSphereForMesh(
-		CollisionBase::ColliderTag::PickUpCol,
+		CollisionBase::ColliderTag::Haetataki,
 		mesh,
 		this
 	);
 
-	mesh = AssetManager::Mesh(StaticMeshList::BCapsule);
+	mesh = AssetManager::Mesh(StaticMeshList::HaetatakiCol);
 
 	m_pUseCollider = CollisionDataFactory::CreateCapsuleForMesh(
 		CollisionBase::ColliderTag::Haetataki,
 		mesh,
-		this,
-		false
+		this
 	);
 
+	//使用しない
+	m_pUseCollider->SetActive(false);
+
+	D3DXVECTOR3 UseOffset = { OFFSET_USE_COLLISION_X,OFFSET_USE_COLLISION_Y,OFFSET_USE_COLLISION_Z };
+
+	m_pUseCollider->SetLocalOffSetToCapsule(UseOffset, UseOffset);
 }
 
 //--------------------------------------------------------------------------------------------------------------
@@ -140,8 +154,20 @@ void Haetataki::Have()
 	//アイテムを拾うモーション
 	TakeMostion();
 
-	//アイテムをプレイヤーの位置に合わせる
-	m_vPosition = m_pPlayer->GetPosition() + m_Offset;
+	m_pPickUpCollider->SetActive(false);
+	m_pUseCollider->SetActive(true);
+
+	// プレイヤーの回転
+	D3DXQUATERNION playerQ = m_pPlayer->GetQuaternion();
+
+	// ハエたたきの補正角
+	D3DXQUATERNION fix;
+	D3DXQuaternionRotationYawPitchRoll(&fix, 0, 0, 0);
+
+	m_vQuaternion = playerQ * fix;
+
+	//位置を合わせる
+	m_vPosition = m_pPlayer->GetPlayerRightHand().GetPosition();
 
 	//Nキーで使用状態へ
 	if (GetAsyncKeyState('N') & 0x0001)
@@ -154,15 +180,8 @@ void Haetataki::Have()
 
 void Haetataki::Use()
 {
-	if (m_pNowCollider != m_pUseCollider)
-	{
-		CollisionManager::GetInstance()->RemoveCollider(m_pNowCollider.get());
-		m_pNowCollider = m_pUseCollider;
-		CollisionManager::GetInstance()->AddCollider(m_pNowCollider);
-	}
-	//アイテムをプレイヤーの位置に合わせる
-	m_vPosition = m_pPlayer->GetPosition() + m_Offset;
-
+	m_vPosition = m_pPlayer->GetPlayerRightHand().GetPosition();
+	m_vQuaternion = m_pPlayer->GetQuaternion();
 
 
 	//モーション終了で所持状態へ戻る
@@ -170,10 +189,6 @@ void Haetataki::Use()
 	{
 		m_State = IItemObserver::IItemObserver::State::Have;
 		m_IsMissAttack = false; //初期化
-
-		CollisionManager::GetInstance()->RemoveCollider(m_pNowCollider.get());
-		m_pNowCollider = m_pPickUpCollider;
-		CollisionManager::GetInstance()->AddCollider(m_pNowCollider);
 	}
 }
 
@@ -181,6 +196,16 @@ void Haetataki::Use()
 
 void Haetataki::Throw()
 {
+	//移動量が一定以下なら
+	if (D3DXVec3Length(&m_Velocity) <= 0.6f)
+	{
+		DestroyItem();
+	}
+
+	m_Velocity *= 0.98f;
+
+	m_vPosition += m_Velocity * static_cast<float>(CTimeManager::GetDeltaTime());
+
 }
 
 //--------------------------------------------------------------------------------------------------------------
@@ -194,75 +219,76 @@ void Haetataki::Destroy()
 
 void Haetataki::ItemState(IItemObserver::State state)
 {
+	switch (state)
+	{
+	case IItemObserver::State::Have:
+		break;
+	case IItemObserver::State::Use:
+		break;
+	case IItemObserver::State::Throw:
+		OneEnterThrow();
+		break;
+	case IItemObserver::State::Destroy:
+		break;
+	default:
+		break;
+	}
 }
 
 //--------------------------------------------------------------------------------------------------------------
 
 void Haetataki::TakeMostion()
 {
-	//目標角度
-	constexpr float TARGET_ANGLE_X = 90;
-	constexpr float TARGET_ANGLE_Y = 180;
-
-	//所持モーション
-	if (m_vRotation.x < D3DXToRadian(TARGET_ANGLE_X))
-	{
-		m_vRotation.x += m_AddRot.x;
-	}
-	if (m_vRotation.y < D3DXToRadian(TARGET_ANGLE_Y))
-	{
-		m_vRotation.y += m_AddRot.y;
-	}
 }
 
 //--------------------------------------------------------------------------------------------------------------
 
 bool Haetataki::AttackMostion()
 {
-	//定数宣言
-	constexpr float RIGHT_TARGET_POS_X = 0.1f;
-	constexpr float LEFT_TARGET_POS_X = 0.2f;
+	////定数宣言
+	//constexpr float RIGHT_TARGET_POS_X = 0.1f;
+	//constexpr float LEFT_TARGET_POS_X = 0.2f;
 
 
-	//使用モーション
-	if (m_AddPos.x < RIGHT_TARGET_POS_X && !m_SwitchDir)
-	{
-		m_vPosition.x += m_AddPos.x;
-		m_vRotation.x += m_AddRot.x / 2;	//回転を少し抑える
-		m_AddPos.x += ADD_POS_X;
-	}
-	else
-	{
-		//trueになると毎回ここに通るので無理やり初期化
-		if (!m_SwitchDir)
-		{
-			m_AddPos = { 0.f, 0.f, 0.f };
-		}
+	////使用モーション
+	//if (m_AddPos.x < RIGHT_TARGET_POS_X && !m_SwitchDir)
+	//{
+	//	m_vPosition.x += m_AddPos.x;
+	//	m_vQuaternion.x += m_AddRot.x / 2;	//回転を少し抑える
+	//	m_AddPos.x += ADD_POS_X;
+	//}
+	//else
+	//{
+	//	//trueになると毎回ここに通るので無理やり初期化
+	//	if (!m_SwitchDir)
+	//	{
+	//		m_AddPos = { 0.f, 0.f, 0.f };
+	//	}
 
-		//切り替えしON
-		m_SwitchDir = true;
-	}
+	//	//切り替えしON
+	//	m_SwitchDir = true;
+	//}
 
-	//切り替えし
-	if (m_SwitchDir)
-	{
-		if (m_AddPos.x < LEFT_TARGET_POS_X)
-		{
-			m_vPosition.x -= m_AddPos.x;
-			m_vRotation.x -= m_AddRot.x / 2; //回転を少し抑える
-			m_AddPos.x += ADD_POS_X;
-		}
-		else
-		{
-			m_SwitchDir = false;
-			m_AddPos = { 0.f,0.f, 0.f };	//初期化
+	////切り替えし
+	//if (m_SwitchDir)
+	//{
+	//	if (m_AddPos.x < LEFT_TARGET_POS_X)
+	//	{
+	//		m_vPosition.x -= m_AddPos.x;
+	//		m_vQuaternion.x -= m_AddRot.x / 2; //回転を少し抑える
+	//		m_AddPos.x += ADD_POS_X;
+	//	}
+	//	else
+	//	{
+	//		m_SwitchDir = false;
+	//		m_AddPos = { 0.f,0.f, 0.f };	//初期化
 
-			//モーション終了
-			return false;
-		}
-	}
+	//		//モーション終了
+	//		return false;
+	//	}
+	//}
 
-	//モーション中
+	////モーション中
 	return true;
 }
 
@@ -270,15 +296,22 @@ bool Haetataki::AttackMostion()
 
 void Haetataki::OnCollision(CollisionBase* other)
 {
-	if (other->GetTag() == CollisionBase::ColliderTag::Player)
+	if (other->GetTag() != CollisionBase::ColliderTag::Player)
 	{
 		if (CPlayer* player = dynamic_cast<CPlayer*>(other->GetListener()))
 		{
-			if(m_State == IItemObserver::State::Use)
-			Smash(*player);
+			if (m_pPlayer != player)
+			{
+				if (m_State == IItemObserver::State::Use)
+				{
+					Smash(*player);
+				}
+			}
 		}
 	}
 }
+
+//--------------------------------------------------------------------------------------------------------------
 
 void Haetataki::Smash(CPlayer& playiers)
 {
@@ -296,6 +329,26 @@ void Haetataki::Smash(CPlayer& playiers)
 		CPlayerBase::HitEvent::Knockdown);
 }
 
-void Haetataki::ChangeCollider()
+//--------------------------------------------------------------------------------------------------------------
+
+void Haetataki::OneEnterThrow()
 {
+	//プレイヤーのクォータニオン(向いている方向)記録
+	m_vQuaternion = m_pPlayer->GetQuaternion();
+
+	D3DXMATRIX matRot;
+
+	//クォータニオンをマトリックス(行列)に変換
+	D3DXMatrixRotationQuaternion(&matRot, &m_vQuaternion);
+
+	//行列の中にあるZ軸成分を取り出す
+	D3DXVECTOR3 forward = D3DXVECTOR3(matRot._31, matRot._32, matRot._33);
+
+	//取り出したZ軸成分をノーマライズ
+	D3DXVec3Normalize(&forward, &forward);
+
+	m_Velocity = forward * THROW_SPEED;
+
+	//当たり判定削除
+	CollisionManager::GetInstance()->RemoveCollider(m_pCollision.get());
 }

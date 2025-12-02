@@ -60,7 +60,6 @@ void Fun::Init()
 		this
 	);
 
-
 	//SetRotation(D3DXVECTOR3(0.f, D3DXToRadian(-90.f),0.f));
 	//m_pNowCollider = m_pUseCollider;
 
@@ -147,7 +146,7 @@ void Fun::OnCollision(CollisionBase* other)
 		{
 			if (m_State == IItemObserver::State::Use)
 			{
-				if(m_pPlayer!=player)
+				if(m_pPlayer != player)
 				{
 					Hit(*player);
 					//std::cout << player->GetPlayerID() << "‚Æ“–‚½‚Á‚½" << std::endl;
@@ -168,7 +167,7 @@ void Fun::HaveMove()
 
 
 	D3DXVECTOR3 a = { 0.f, 0.f, 1.f };
-	m_pCollision->RotationXCapsule(90.f);
+	m_pCollision->SetRotationXCapsule(90.f);
 	m_pCollision->SetLocalOffSetToCapsule(a, a);
 
 }
