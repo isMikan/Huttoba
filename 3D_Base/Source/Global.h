@@ -157,13 +157,14 @@ enum class Sprite2DList
 	Gauge,
 	font_Title,
 	Standby,
-	RedyFont,
+	ReadyFont,
 	Result,
 	Selector,
 	FontUI,		
 	BigFontUI,	
 	Clock,	
 	TimeNumber,	
+	ReadyGo,
 };
 
 //サウンドリスト列挙型

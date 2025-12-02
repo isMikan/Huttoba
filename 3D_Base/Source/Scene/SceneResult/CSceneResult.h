@@ -7,6 +7,7 @@
 
 #include "Input/CInputManager.h"
 #include "Assets/AssetManager.h"
+#include "TimeManager/CTimeManager.h"
 
 #include <functional>
 

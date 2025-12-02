@@ -11,6 +11,10 @@
 CSceneGameMain::CSceneGameMain( HWND hWnd)
 	: m_hWnd			( hWnd )
 
+	, m_GameState		( GameState::Ready )
+
+	, m_StateTimer		( 0.0f )
+
 	, m_pDbgText		( nullptr )
 
 	, m_pExplosiones	()
@@ -27,6 +31,8 @@ CSceneGameMain::CSceneGameMain( HWND hWnd)
 	, m_IsPause			( false )
 
 	, m_pGroundCollisionProxy	()
+
+	, m_pSpriteReadyGo	()
 {
 	m_pDx9 = CDirectX9::GetInstance();
 	m_pDx11 = CDirectX11::GetInstance();
@@ -84,6 +90,8 @@ HRESULT CSceneGameMain::Create()
 	//ゲージを作成.
 	m_pGaugeManager->Create(m_pPlayerManager.get());
 
+	m_pSpriteReadyGo = std::make_unique<CUIObject>();
+
 	return S_OK;
 }
 
@@ -115,6 +123,9 @@ HRESULT CSceneGameMain::LoadData()
 
 	m_pItemManager->LoadData();
 
+	//画像データの読み込み
+	m_pSpriteReadyGo->AttachSprite(AssetManager::Sprite(Sprite2DList::ReadyGo));
+
 	return S_OK;
 }
 
@@ -145,69 +156,120 @@ void CSceneGameMain::Update()
 		}
 	}
 
-	//地面マネージャーの更新処理
-	m_pGroundManager->Update();
-	
-	//地面に接地しているか
-	for (auto& item : m_pItemManager->GetItems())
-	{
-		item->IsOnGround(*m_pGroundManager);
-	}
+	//経過時間を計算
+	m_StateTimer += CTimeManager::GetDeltaTime();
 
-	//爆発
-	for (auto& exp : m_pExplosiones)
+	switch (m_GameState)
 	{
-		//爆発しているか
-		if (exp->IsStart())
+	case CSceneGameMain::GameState::Ready:
+		if (m_StateTimer >= 3.0f)
 		{
-			exp->Update();
+			//ゲームプレイへ
+			m_GameState = GameState::Play;
+			m_StateTimer = 0;
 		}
+
+		break;
+	case CSceneGameMain::GameState::Play:
+		//地面マネージャーの更新処理
+		m_pGroundManager->Update();
+
+		//地面に接地しているか
+		for (auto& item : m_pItemManager->GetItems())
+		{
+			item->IsOnGround(*m_pGroundManager);
+		}
+
+		//爆発
+		for (auto& exp : m_pExplosiones)
+		{
+			//爆発しているか
+			if (exp->IsStart())
+			{
+				exp->Update();
+			}
+		}
+
+		m_pGroundCollisionProxy->Update();
+
+		m_pItemManager->Update();
+
+		//プレイヤーの動作
+		m_pPlayerManager->MainPlayerUpdate();
+
+		//地面に接地しているか
+		for (auto& player : m_pPlayerManager->GetPlayer())
+		{
+			if (!player) continue;	//プレイヤーがいない場合、次へ
+
+			player->OnGroundCollision(*m_pGroundManager);
+		}
+
+		m_pDrawTimer->Update();
+		m_pShadowManager->Update(m_pPlayerManager.get(), m_pItemManager.get());
+		m_pGaugeManager->Update();
+
+		//レーザーの管理
+		ManageEffectLaser();
+
+		CollisionManager::GetInstance()->Update();
+
+		//次のシーンへ遷移
+		if (GetAsyncKeyState(VK_F4) & 0x8000)
+		{
+			SetNextScene(Result);
+		}
+
+		//プレイヤーが一人以下の場合.
+		if (CSceneData::GetPlayerLivingNum() <= 1)
+		{
+			//SetNextScene(Result);
+			m_GameState = GameState::Finish;
+		}
+
+		if (m_StateTimer >= 60.0f)
+		{
+			//フィニッシュへ
+			m_GameState = GameState::Finish;
+			m_StateTimer = 0;
+		}
+		break;
+	case CSceneGameMain::GameState::Finish:
+		
+		//次のシーンに遷移
+		if (m_StateTimer >= 5.0f)
+		{
+			SetNextScene(Result);
+		}
+
+		break;
+	default:
+		break;
 	}
-
-	m_pGroundCollisionProxy->Update();
-
-	m_pItemManager->Update();
-
-	//プレイヤーの動作
-	m_pPlayerManager->MainPlayerUpdate();
-
-	//地面に接地しているか
-	for (auto& player : m_pPlayerManager->GetPlayer())
-	{
-		if (!player) continue;	//プレイヤーがいない場合、次へ
-
-		player->OnGroundCollision(*m_pGroundManager);
-	}
-
-	m_pDrawTimer->Update();
-	m_pShadowManager->Update(m_pPlayerManager.get(), m_pItemManager.get());
-	m_pGaugeManager->Update();
-
-	//レーザーの管理
-	ManageEffectLaser();
-
-	CollisionManager::GetInstance()->Update();
-
-	//次のシーンへ遷移
-	if (GetAsyncKeyState(VK_F4) & 0x8000)
-	{
-		SetNextScene(Result);
-	}
-
-	//プレイヤーが一人以下の場合.
-	if (CSceneData::GetPlayerLivingNum() <= 1)
-	{
-		SetNextScene(Result);
-	}
-
 }
 
 void CSceneGameMain::Draw()
 {
 	DebugDrawManager* ddm = DebugDrawManager::GetInstance();
 
-	//カメラの処理.
-	CCameraManager::Update();
+	switch (m_GameState)
+	{
+	case CSceneGameMain::GameState::Ready:
+		m_pSpriteReadyGo->Draw();
+		break;
+	case CSceneGameMain::GameState::Play:
+		//カメラの処理.
+		CCameraManager::Update();
+		break;
+	case CSceneGameMain::GameState::Finish:
+		m_pSpriteReadyGo->Draw();
+		break;
+	default:
+		break;
+	}
+
+	////カメラの処理.
+	//CCameraManager::Update();
 	//カメラを動かす処理.
 	CCameraManager::PositionByGround(m_pGroundManager.get());
 
@@ -299,6 +361,7 @@ void CSceneGameMain::Draw()
 	}
 
 #endif // DEBUG
+
 }
 
 HRESULT CSceneGameMain::CteateExplosion()

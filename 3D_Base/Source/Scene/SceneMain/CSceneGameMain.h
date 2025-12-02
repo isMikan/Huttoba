@@ -55,6 +55,20 @@ private:
 
 	HWND		m_hWnd;			//ウィンドウハンドル
 
+	//ゲーム内の進行状況
+	enum class GameState
+	{
+		Ready,	//ゲーム開始時のReady..GOの表示
+		Play,	//ゲームプレイ
+		Finish	//ゲーム終了時のFinishの表示
+	};
+
+	//現在のゲーム内の進行状況
+	GameState	m_GameState;
+
+	//進行状況の変化用タイマー
+	float		m_StateTimer;
+
 	std::unique_ptr<CDebugText> m_pDbgText;	//デバッグテキスト
 
 	//爆発クラス
@@ -81,4 +95,9 @@ private:
 
 	//地面の当たり判定生成クラス
 	std::unique_ptr<CGroundCollisionProxy>	m_pGroundCollisionProxy;
+
+	//レディゴー画像
+	std::unique_ptr<CUIObject>		m_pSpriteReadyGo;
+	//std::unique_ptr<CUIObject>	m_pSpriteSelector;	
+
 };

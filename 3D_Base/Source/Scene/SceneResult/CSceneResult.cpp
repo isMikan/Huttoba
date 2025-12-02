@@ -168,11 +168,12 @@ void CSceneResult::SelectorControl()
 {
 	float stickY = CInputManager::GetLeftSthikY(0);
 
-	// パラメータ
-	const float threshold = 0.5f; // 入力と判定するスティックの倒し量
-	const float initialDelay = 0.2f; // 最初のディレイ（秒）
-	const float repeatInterval = 0.1f; // リピート間隔（秒）
-	const float dt = 1.0f / 60.0f; // 固定FPSならこれでOK
+	//パラメータ
+	const float threshold = 0.5f;		//入力と判定するスティックの倒し量
+	const float initialDelay = 0.2f;	//最初のディレイ（秒）
+	const float repeatInterval = 0.1f;	//リピート間隔（秒）
+
+	float dt = CTimeManager::GetDeltaTime();
 
 	static float holdTimerUp = 0.0f;
 	static float holdTimerDown = 0.0f;

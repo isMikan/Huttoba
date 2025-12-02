@@ -67,7 +67,7 @@ HRESULT CSceneStandby::LoadData()
 
 	for (int i = 0;i < 4;i++)
 	{
-		m_pRedyFontImg[i]->AttachSprite(AssetManager::Sprite(Sprite2DList::RedyFont));
+		m_pRedyFontImg[i]->AttachSprite(AssetManager::Sprite(Sprite2DList::ReadyFont));
 	}
 
 	m_pSpriteSelector->AttachSprite(AssetManager::Sprite(Sprite2DList::Selector));
