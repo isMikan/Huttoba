@@ -14,7 +14,7 @@ namespace { const bool regist = ItemBase::AutoRegister<Boomerang>(ItemID::Boomer
 Boomerang::Boomerang()
 	: m_Velocity		()
 	, m_TotalVelocity	()
-	, m_MoveSpeed		( 8.0f )	//値を変えると爆弾の移動速度が変化
+	, m_MoveSpeed		( 5.0f )	//値を変えると爆弾の移動速度が変化
 	, m_UpSpeed			( 5.0f )	//値を変えると爆弾のy軸の上昇量が変化	
 	, m_IsUseThrow	( false )
 	, m_ComeBack	( false )
@@ -79,8 +79,9 @@ void Boomerang::OnGround()
 void Boomerang::Have()
 {
 	m_ComeBack = false;
-
+	m_IsUseThrow = false;
 	HaveMove();
+
 }
 
 void Boomerang::Use()
@@ -143,41 +144,50 @@ void Boomerang::HaveMove()
 
 void Boomerang::UseMove()
 {
-	if (!m_ComeBack)
+	if (CInputManager::IsRepeat(Action::Attack,m_pPlayer->GetPlayerID()) && !m_IsUseThrow)
 	{
-		//だんだん減速
-		m_Velocity.x -= m_Velocity.x * 0.01f;
-		m_Velocity.z -= m_Velocity.z * 0.01f;
+		m_Velocity.x += 0.05;
+		m_Velocity.z += 0.05;
+
+		m_vPosition = m_pPlayer->GetPlayerRightHand().GetPosition();
 	}
 	else
 	{
-		D3DXVECTOR3 vector = m_pPlayer->GetPosition() - m_vPosition;
-		D3DXVECTOR3 initVector;
-		D3DXVec3Normalize(&initVector, &vector);
+		if (!m_ComeBack)
+		{
+			//だんだん減速
+			m_Velocity.x -= m_Velocity.x * 0.01f;
+			m_Velocity.z -= m_Velocity.z * 0.01f;
+		}
+		else
+		{
+			D3DXVECTOR3 vector = m_pPlayer->GetPosition() - m_vPosition;
+			D3DXVECTOR3 initVector;
+			D3DXVec3Normalize(&initVector, &vector);
 
-		//だんだん加速
-		m_Velocity = initVector * m_MoveSpeed;
+			//だんだん加速
+			m_Velocity = initVector * (m_MoveSpeed * 2);
 
-		m_Velocity.x += m_Velocity.x * 0.25f;
-		m_Velocity.z += m_Velocity.z * 0.25f;
+			m_Velocity.x += m_Velocity.x * 0.25f;
+			m_Velocity.z += m_Velocity.z * 0.25f;
+		}
+
+		//推進力が一定まで下がるとPlayerに戻る
+		if (std::fabs(m_Velocity.x) < 2.f && std::fabs(m_Velocity.z) < 2.f)
+		{
+			m_ComeBack = true;
+		}
+
+		//位置を移動速度*デルタタイムで計算
+		m_vPosition += m_Velocity * CTimeManager::GetDeltaTime();
+		m_TotalVelocity += m_Velocity * CTimeManager::GetDeltaTime();;
+
+		//回転
+		m_vRotation.x = m_vRotation.x + (D3DXToRadian(10.f));
+
+		//使用フラグをオンに
+		m_IsUseThrow = true;
 	}
-
-	//推進力が一定まで下がるとPlayerに戻る
-	if (std::fabs(m_Velocity.x) < 2.f && std::fabs(m_Velocity.z) < 2.f)
-	{
-		m_ComeBack = true;
-	}
-
-	//位置を移動速度*デルタタイムで計算
-	m_vPosition += m_Velocity * CTimeManager::GetDeltaTime();
-	m_TotalVelocity += m_Velocity * CTimeManager::GetDeltaTime();;
-
-	//回転
-	m_vRotation.x = m_vRotation.x + (D3DXToRadian(10.f));
-
-	//使用フラグをオンに
-	m_IsUseThrow = true;
-
 }
 
 void Boomerang::ThrowMove()
