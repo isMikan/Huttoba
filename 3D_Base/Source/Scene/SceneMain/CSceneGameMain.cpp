@@ -154,8 +154,6 @@ void CSceneGameMain::Update()
 		item->IsOnGround(*m_pGroundManager);
 	}
 
-	CollisionManager::GetInstance()->Update();
-
 	//爆発
 	for (auto& exp : m_pExplosiones)
 	{
@@ -188,6 +186,8 @@ void CSceneGameMain::Update()
 	//レーザーの管理
 	ManageEffectLaser();
 
+	CollisionManager::GetInstance()->Update();
+
 	//次のシーンへ遷移
 	if (GetAsyncKeyState(VK_F4) & 0x8000)
 	{
@@ -199,6 +199,7 @@ void CSceneGameMain::Update()
 	{
 		SetNextScene(Result);
 	}
+
 }
 
 void CSceneGameMain::Draw()

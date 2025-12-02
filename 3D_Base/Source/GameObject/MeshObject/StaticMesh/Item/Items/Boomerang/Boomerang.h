@@ -54,9 +54,6 @@ private:
     //吹き飛ばし処理
     void Smash(CPlayerBase& playiers);
 
-    //爆弾とプレイヤーの距離に応じて吹き飛ばし力を計算
-    float CalculateForceScalar(float distance);
-
 private:
     //移動速度
     D3DXVECTOR3 m_Velocity;
