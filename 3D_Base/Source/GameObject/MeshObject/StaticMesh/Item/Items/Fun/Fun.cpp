@@ -60,7 +60,7 @@ void Fun::Init()
 		this
 	);
 
-	m_pCollision->RotationXCapsule(90.f);
+	m_pCollision->SetRotationXCapsule(90.f);
 
 	m_HaveOffset = { 0.f, 0.f, 1.f };
 

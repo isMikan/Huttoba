@@ -175,10 +175,6 @@ void Haetataki::Have()
 		m_State = IItemObserver::IItemObserver::State::Use;
 	}
 
-	D3DXVECTOR3 a = { 2.f,2.f,2.f };
-	m_pCollision->SetLocalOffSetToCapsule(a, a);
-
-
 }
 
 //--------------------------------------------------------------------------------------------------------------
