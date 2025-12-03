@@ -5,14 +5,28 @@
 #include "TimeManager/CTimeManager.h"
 #include "Input/CInputManager.h"
 
-static constexpr int SMASH_POWER = 6;
-static constexpr float SMASH_ANGLE = 60.f;
+
+constexpr int SMASH_POWER = 6;		//吹っ飛び力
+constexpr float SMASH_ANGLE = 60.f; //吹っ飛び角度
+
+constexpr float MAX_CHARGE = 5.f;		  //最大チャージ上限
+constexpr float ADD_CHARGE_RANGE = 0.05f; //チャージしてる間の1f間の上昇量
+
+constexpr float MIN_VELOCITY_RANGE = 0.01f;	//飛ばしている間の1f間の減衰
+
+
+constexpr float COMEBACK_ADD_VELOCITY_RANGE = 0.25f;	//戻ってくるときの1f間の速度上昇量
+
+
+
+
 
 //Factoryに登録
 namespace { const bool regist = ItemBase::AutoRegister<Boomerang>(ItemID::Boomerang); }
 
 Boomerang::Boomerang()
 	: m_Velocity		()
+	, m_AddVelocity		()
 	, m_TotalVelocity	()
 	, m_MoveSpeed		( 5.0f )	//値を変えると爆弾の移動速度が変化
 	, m_UpSpeed			( 5.0f )	//値を変えると爆弾のy軸の上昇量が変化	
@@ -45,6 +59,8 @@ void Boomerang::Init()
 		mesh,
 		this
 	);
+
+	m_AddVelocity = { 0.f,0.f,0.f };
 }
 
 void Boomerang::Update()
@@ -80,7 +96,7 @@ void Boomerang::Have()
 {
 	m_ComeBack = false;
 	m_IsUseThrow = false;
-
+	m_AddVelocity = { 0.f,0.f,0.f };
 	HaveMove();
 
 }
@@ -145,32 +161,68 @@ void Boomerang::HaveMove()
 
 void Boomerang::UseMove()
 {
+
+	//押されている間は発射せずにチャージ
 	if (CInputManager::IsRepeat(Action::Attack,m_pPlayer->GetPlayerID()) && !m_IsUseThrow)
 	{
-		m_Velocity.x += 0.05;
-		m_Velocity.z += 0.05;
+		//チャージできるか
+		if (m_AddVelocity.x < MAX_CHARGE && m_AddVelocity.z < MAX_CHARGE)
+		{
+			m_AddVelocity.x += ADD_CHARGE_RANGE;
+			m_AddVelocity.z += ADD_CHARGE_RANGE;
+		}
+		//最大チャージ
+		else
+		{
+			static ::EsHandle hEffect = 1;
 
+			//エフェクト追加
+			hEffect = AssetManager::Effect()->Play("Explosion", m_vPosition);
+
+			//エフェクトの拡縮設定
+			AssetManager::Effect()->SetScale(hEffect, D3DXVECTOR3(0.6f, 0.6f, 0.6f));
+
+		}
 		m_vPosition = m_pPlayer->GetPlayerRightHand().GetPosition();
+
+		//プレイヤーのクォータニオン(向いている方向)記録
+		m_vQuaternion = m_pPlayer->GetQuaternion();
+
+		D3DXMATRIX matRot;
+
+		//クォータニオンをマトリックス(行列)に変換
+		D3DXMatrixRotationQuaternion(&matRot, &m_vQuaternion);
+
+		D3DXVECTOR3 forward = m_pPlayer->GetLocalAxes().forward;
+
+		//移動
+		m_Velocity.x = forward.x * (m_MoveSpeed + m_AddVelocity.x);
+		m_Velocity.y = forward.y * (m_MoveSpeed + m_AddVelocity.y);
+		m_Velocity.z = forward.z * (m_MoveSpeed + m_AddVelocity.z);
+
 	}
 	else
 	{
+		//戻ってくるフラグによって動作変更
 		if (!m_ComeBack)
 		{
 			//だんだん減速
-			m_Velocity.x -= m_Velocity.x * 0.01f;
-			m_Velocity.z -= m_Velocity.z * 0.01f;
+			m_Velocity.x -= m_Velocity.x * MIN_VELOCITY_RANGE;
+			m_Velocity.z -= m_Velocity.z * MIN_VELOCITY_RANGE;
 		}
 		else
 		{
+			//プレイヤーに戻ってくる用にベクトル取得
 			D3DXVECTOR3 vector = m_pPlayer->GetPosition() - m_vPosition;
 			D3DXVECTOR3 initVector;
 			D3DXVec3Normalize(&initVector, &vector);
 
-			//だんだん加速
+			//戻ってくる初速度
 			m_Velocity = initVector * (m_MoveSpeed * 2);
 
-			m_Velocity.x += m_Velocity.x * 0.25f;
-			m_Velocity.z += m_Velocity.z * 0.25f;
+			//だんだん戻ってくる速さ増加
+			m_Velocity.x += m_Velocity.x * COMEBACK_ADD_VELOCITY_RANGE;
+			m_Velocity.z += m_Velocity.z * COMEBACK_ADD_VELOCITY_RANGE;
 		}
 
 		//推進力が一定まで下がるとPlayerに戻る
@@ -213,12 +265,6 @@ void Boomerang::OneEnterUse()
 
 	//クォータニオンをマトリックス(行列)に変換
 	D3DXMatrixRotationQuaternion(&matRot, &m_vQuaternion);
-
-	//行列の中にあるZ軸成分を取り出す
-	//D3DXVECTOR3 forward = D3DXVECTOR3(matRot._31, matRot._32, matRot._33);
-
-	//取り出したZ軸成分をノーマライズ
-	//D3DXVec3Normalize(&forward, &forward);
 
 	D3DXVECTOR3 forward = m_pPlayer->GetLocalAxes().forward;
 

@@ -57,6 +57,7 @@ private:
 private:
     //移動速度
     D3DXVECTOR3 m_Velocity;
+    D3DXVECTOR3 m_AddVelocity;
     //どれだけ進んだか保存(折り返しに使用)
     D3DXVECTOR3 m_TotalVelocity;
 
