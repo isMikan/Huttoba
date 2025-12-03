@@ -52,18 +52,29 @@ void Fun::Init()
 	//具体的な使い方はハエたたき見る or 聞く
 	
 	//使用時の前方に出す当たり判定
-	std::shared_ptr<CStaticMesh> mesh = AssetManager::Mesh(StaticMeshList::BCapsule);
+	std::shared_ptr<CStaticMesh> UseMesh = AssetManager::Mesh(StaticMeshList::BCapsule);
+	std::shared_ptr<CStaticMesh> PickMesh = AssetManager::Mesh(StaticMeshList::Bomb);
 
-	m_pCollision = CollisionDataFactory::CreateCapsuleForMesh(
-		CollisionBase::ColliderTag::Fan,
-		mesh,
+	m_pPickUpCollider = CollisionDataFactory::CreateCapsuleForMesh(
+		CollisionBase::ColliderTag::Bomb,
+		PickMesh,
 		this
 	);
 
-	m_pCollision->SetRotationXCapsule(90.f);
 
-	m_HaveOffset = { 0.f, 0.f, 1.f };
+	m_pUseCollider = CollisionDataFactory::CreateCapsuleForMesh(
+		CollisionBase::ColliderTag::Fan,
+		UseMesh,
+		this
+	);
 
+	D3DXVECTOR3 m_HaveOffset = { 0.f, 0.f, 1.f };
+	D3DXVECTOR3 m_PickUpOffset = { 0.f, 0.3f, 0.f };
+	m_pUseCollider->SetRotationXCapsule(90.f);
+	m_pUseCollider->SetLocalOffSetToCapsule(m_HaveOffset, m_HaveOffset);
+	m_pUseCollider->SetActive(false);
+
+	m_pPickUpCollider->SetLocalOffSetToCapsule(m_PickUpOffset, m_PickUpOffset);
 
 	//--------------------------------------------------------------------------------------------------------------
 }
@@ -99,6 +110,8 @@ void Fun::OnGround()
 
 void Fun::Have()
 {
+	m_pPickUpCollider->SetActive(false);
+	m_pUseCollider->SetActive(true);
 	HaveMove();
 }
 
@@ -109,6 +122,8 @@ void Fun::Use()
 
 void Fun::Throw()
 {
+	m_pPickUpCollider->SetActive(true);
+	m_pUseCollider->SetActive(false);
 	ThrowMove();
 }
 
@@ -124,6 +139,7 @@ void Fun::ItemState(IItemObserver::State state)
 	switch (state)
 	{
 	case IItemObserver::IItemObserver::State::Have:
+
 		break;
 	case IItemObserver::IItemObserver::State::Use:
 		//エフェクト追加
@@ -164,12 +180,6 @@ void Fun::HaveMove()
 {
 	m_vPosition = m_pPlayer->GetPlayerRightHand().GetPosition();
 	m_vQuaternion = m_pPlayer->GetQuaternion();
-
-	D3DXVECTOR3 a = { 0.f, 0.f, 1.f };
-	m_pCollision->SetRotationXCapsule(90.f);
-	m_pCollision->SetLocalOffSetToCapsule(a, a);
-
-	m_pCollision->SetLocalOffSetToCapsule(a, a);
 
 }
 

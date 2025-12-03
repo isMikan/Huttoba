@@ -27,7 +27,6 @@ void SpawnItemPosition::Init()
 	m_CurrentFallGround = GroundTag::None;
 
 	IsFirstSpawn = true;
-	DecitionFirstPosition();
 }
 
 //--------------------------------------------------------------------------------------------------------------
@@ -138,20 +137,6 @@ VECTOR2 SpawnItemPosition::SetRandomPos()
 	std::uniform_real_distribution<float> RandomPosZ(m_CurrentClampRangeMin.z, m_CurrentClampRangeMax.z);
 
 	return VECTOR2(RandomPosX(gen), RandomPosZ(gen));
-}
-
-//--------------------------------------------------------------------------------------------------------------
-
-void SpawnItemPosition::DecitionFirstPosition()
-{
-	m_pFirstSpawnPosition.push_back(D3DXVECTOR3(-5.f, SPAWN_POSITION_Y, 1.f));
-	m_pFirstSpawnPosition.push_back(D3DXVECTOR3(-4.f, SPAWN_POSITION_Y, 1.f));
-	m_pFirstSpawnPosition.push_back(D3DXVECTOR3(-3.f, SPAWN_POSITION_Y, 1.f));
-	m_pFirstSpawnPosition.push_back(D3DXVECTOR3(-2.f, SPAWN_POSITION_Y, 5.f));
-	m_pFirstSpawnPosition.push_back(D3DXVECTOR3(-1.f, SPAWN_POSITION_Y, 5.f));
-	m_pFirstSpawnPosition.push_back(D3DXVECTOR3(0.f,  SPAWN_POSITION_Y, 10.f));
-	m_pFirstSpawnPosition.push_back(D3DXVECTOR3(1.f,  SPAWN_POSITION_Y, 10.f));
-	m_pFirstSpawnPosition.push_back(D3DXVECTOR3(2.f,  SPAWN_POSITION_Y, 10.f));
 }
 
 //--------------------------------------------------------------------------------------------------------------

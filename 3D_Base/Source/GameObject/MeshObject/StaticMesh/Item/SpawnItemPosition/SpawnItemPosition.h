@@ -36,9 +36,6 @@ private:
 	//ランダムで出現位置を設定
 	VECTOR2 SetRandomPos();
 
-	//初期位置決定
-	void DecitionFirstPosition();
-
 	//最初の固定沸き
 	D3DXVECTOR3 DecitionSpawn();
 
