@@ -137,6 +137,7 @@ enum class StaticMeshList
 	TestPlayer,
 	BoomerangCol,
 	PickUpCol,
+	HaetatakiCol,
 
 	floor1,
 	floor2,

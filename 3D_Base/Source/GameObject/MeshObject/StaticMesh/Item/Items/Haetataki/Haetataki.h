@@ -55,7 +55,8 @@ public:
 	//吹き飛ばし処理
 	void Smash(CPlayer& playiers);
 
-	void ChangeCollider();
+	//投げ
+	void OneEnterThrow();
 
 private:
 
@@ -69,6 +70,8 @@ private:
 
 	bool m_IsMissAttack; //攻撃は外れているか(SEのタイミング用)
 
-	std::shared_ptr<CollisionBase>	m_pNowCollider;	//拾う用当たり判定
+	//移動速度
+	D3DXVECTOR3 m_Velocity;
+
 
 };

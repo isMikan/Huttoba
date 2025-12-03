@@ -63,6 +63,8 @@ void Fun::Init()
 	m_pCollision->RotationXCapsule(90.f);
 
 	m_HaveOffset = { 0.f, 0.f, 1.f };
+
+
 	//--------------------------------------------------------------------------------------------------------------
 }
 
@@ -144,7 +146,7 @@ void Fun::OnCollision(CollisionBase* other)
 		{
 			if (m_State == IItemObserver::State::Use)
 			{
-				if(m_pPlayer!=player)
+				if(m_pPlayer != player)
 				{
 					Hit(*player);
 					std::cout << player->GetPlayerID() << "‚Æ“–‚½‚Á‚½" << std::endl;
@@ -163,7 +165,11 @@ void Fun::HaveMove()
 	m_vPosition = m_pPlayer->GetPlayerRightHand().GetPosition();
 	m_vQuaternion = m_pPlayer->GetQuaternion();
 
-	m_pCollision->SetLocalOffSetToCapsule(m_HaveOffset, m_HaveOffset);
+	D3DXVECTOR3 a = { 0.f, 0.f, 1.f };
+	m_pCollision->SetRotationXCapsule(90.f);
+	m_pCollision->SetLocalOffSetToCapsule(a, a);
+
+	m_pCollision->SetLocalOffSetToCapsule(a, a);
 
 }
 

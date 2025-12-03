@@ -22,19 +22,19 @@ ChaseSensor::ChaseSensor(D3DXVECTOR3 pos, D3DXVECTOR3 searchOffset)
 
 	D3DXVECTOR3 Offset = searchOffset;
 
-	m_pCollision[0]->SetLocalOffset(Offset);
+	m_pCollision[0]->SetLocalOffsetToSphere(Offset);
 
 	Offset.x = -1;
 
 	Offset.z += (Offset.z / 2);
 
 	//“–‚½‚è”»’è‚Ì•â³’l‚ð’Ç‰Á
-	m_pCollision[1]->SetLocalOffset(Offset);
+	m_pCollision[1]->SetLocalOffsetToSphere(Offset);
 
 
 	Offset.x = 1;
 
-	m_pCollision[2]->SetLocalOffset(Offset);
+	m_pCollision[2]->SetLocalOffsetToSphere(Offset);
 }
 
 ChaseSensor::~ChaseSensor()

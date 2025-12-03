@@ -38,12 +38,11 @@ void CollisionDraw::Draw(D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAMER
     for (auto& entry : m_pCollisionEntries)
     {
         if (!entry.pMesh || !entry.pOwner) continue;
-
         // weak_ptr をロックし、安全かつ短い名前の shared_ptr を取得
         auto pCollider = entry.pCollider.lock();
 
         // pCollider が有効でない場合は、次のエントリーへスキップ
-        if (!pCollider)
+        if (!pCollider || !pCollider->GetActive())
         {
             continue;
         }
