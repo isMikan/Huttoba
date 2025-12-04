@@ -168,7 +168,7 @@ void CSceneGameMain::Update()
 		//頭の位置を更新したいので.
 		m_pPlayerManager->Update();
 
-		if (m_StateTimer >= m_ReadyTime)
+		if (m_StateTimer >= m_ReadyDuration)
 		{
 			//ゲームプレイへ
 			m_GameState = GameState::Play;
