@@ -5,16 +5,20 @@
 #include "TimeManager/CTimeManager.h"
 #include "Input/CInputManager.h"
 
+constexpr float USE_LIMIT = 5;		//回数制限
+constexpr float MOVE_SPEED = 5.f;	//最低限の飛ぶ速さ
+
+constexpr float COMEBACK_SPEED = 2.f;	//この速度以下で切り替えす
+
+constexpr float TURN_ANGLE_RAD = 10.f;	//この速度以下で切り替えす
 
 constexpr int SMASH_POWER = 6;		//吹っ飛び力
 constexpr float SMASH_ANGLE = 60.f; //吹っ飛び角度
 
-constexpr float MAX_CHARGE = 5.f;		  //最大チャージ上限
+constexpr float MAX_CHARGE = 5.f;		  //チャージ上限
 constexpr float ADD_CHARGE_RANGE = 0.05f; //チャージしてる間の1f間の上昇量
 
-constexpr float MIN_VELOCITY_RANGE = 0.01f;	//飛ばしている間の1f間の減衰
-
-
+constexpr float USE_MIN_VELOCITY_RANGE = 0.01f;				//飛ばしている間の1f間の減衰
 constexpr float COMEBACK_ADD_VELOCITY_RANGE = 0.25f;	//戻ってくるときの1f間の速度上昇量
 
 //Factoryに登録
@@ -24,8 +28,7 @@ Boomerang::Boomerang()
 	: m_Velocity		()
 	, m_AddVelocity		()
 	, m_TotalVelocity	()
-	, m_MoveSpeed		( 5.0f )	//値を変えると爆弾の移動速度が変化
-	, m_UpSpeed			( 5.0f )	//値を変えると爆弾のy軸の上昇量が変化	
+	, m_MoveSpeed		( MOVE_SPEED )	//値を変えると爆弾の移動速度が変化
 	, m_IsUseThrow	( false )
 	, m_ComeBack	( false )
 {
@@ -40,10 +43,10 @@ Boomerang::~Boomerang()
 
 void Boomerang::Init()
 {
-	m_UseCount = 5;
+	m_UseCount = MOVE_SPEED;
 
 	m_ComeBack = false;
-	m_UsageLimit = { m_UseCount, 5 };
+	m_UsageLimit = { m_UseCount, MOVE_SPEED };
 
 	AttachMesh(AssetManager::Mesh(StaticMeshList::Boomerang));
 
@@ -206,8 +209,8 @@ void Boomerang::UseMove()
 		if (!m_ComeBack)
 		{
 			//だんだん減速
-			m_Velocity.x -= m_Velocity.x * MIN_VELOCITY_RANGE;
-			m_Velocity.z -= m_Velocity.z * MIN_VELOCITY_RANGE;
+			m_Velocity.x -= m_Velocity.x * USE_MIN_VELOCITY_RANGE;
+			m_Velocity.z -= m_Velocity.z * USE_MIN_VELOCITY_RANGE;
 		}
 		else
 		{
@@ -225,7 +228,7 @@ void Boomerang::UseMove()
 		}
 
 		//推進力が一定まで下がるとPlayerに戻る
-		if (std::fabs(m_Velocity.x) < 2.f && std::fabs(m_Velocity.z) < 2.f)
+		if (std::fabs(m_Velocity.x) < COMEBACK_SPEED && std::fabs(m_Velocity.z) < COMEBACK_SPEED)
 		{
 			m_ComeBack = true;
 		}
@@ -235,7 +238,7 @@ void Boomerang::UseMove()
 		m_TotalVelocity += m_Velocity * CTimeManager::GetDeltaTime();;
 
 		//回転
-		m_vRotation.x = m_vRotation.x + (D3DXToRadian(10.f));
+		m_vRotation.x = m_vRotation.x + (D3DXToRadian(TURN_ANGLE_RAD));
 
 		//使用フラグをオンに
 		m_IsUseThrow = true;

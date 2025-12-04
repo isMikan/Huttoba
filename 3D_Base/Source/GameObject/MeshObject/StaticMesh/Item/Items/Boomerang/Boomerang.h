@@ -64,9 +64,6 @@ private:
     //“Š‚°‚½‚ÌˆÚ“®‘¬“x
     float       m_MoveSpeed;
 
-    //“Š‚°‚½‚Ìy²‚Ìã¸—Ê
-    float       m_UpSpeed;
-
     //g—p‚Ìˆ—
     bool        m_IsUseThrow;
 
