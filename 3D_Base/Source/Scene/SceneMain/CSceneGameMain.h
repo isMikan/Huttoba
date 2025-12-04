@@ -70,9 +70,9 @@ private:
 	float		m_StateTimer;
 
 	//レディからプレイに遷移するまでの時間
-	float		m_ReadyTime;
+	float		m_ReadyDuration;
 	//フィニッシュから次の画面に遷移するまでの時間
-	float		m_FinishTime;
+	float		m_FinishDuration;
 
 	std::unique_ptr<CDebugText> m_pDbgText;	//デバッグテキスト
 
