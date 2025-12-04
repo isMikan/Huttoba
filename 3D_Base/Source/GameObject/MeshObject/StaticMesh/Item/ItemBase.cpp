@@ -93,9 +93,12 @@ void ItemBase::IsOnGround(CGroundManager& pGroundMgr)
 
 void ItemBase::DestroyItem()
 {
-	if (m_pPlayer->GetItemBase() == this)
+	if (m_pPlayer)
 	{
-		m_pPlayer->SetItemBase(nullptr);
+		if (m_pPlayer->GetItemBase() == this)
+		{
+			m_pPlayer->SetItemBase(nullptr);
+		}
 	}
 
 	static ::EsHandle hEffect = 1;
