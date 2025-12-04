@@ -162,6 +162,9 @@ void CSceneGameMain::Update()
 	switch (m_GameState)
 	{
 	case CSceneGameMain::GameState::Ready:
+		//頭の位置を更新したいので.
+		m_pPlayerManager->Update();
+
 		if (m_StateTimer >= 3.0f)
 		{
 			//ゲームプレイへ
@@ -235,7 +238,9 @@ void CSceneGameMain::Update()
 		}
 		break;
 	case CSceneGameMain::GameState::Finish:
-		
+		//頭の位置を更新したいので.
+		m_pPlayerManager->Update();
+
 		//次のシーンに遷移
 		if (m_StateTimer >= 5.0f)
 		{
@@ -313,7 +318,7 @@ void CSceneGameMain::Draw()
 
 	m_pGaugeManager->Draw(view, proj);
 
-	CFadeManager::Draw(0.f, GameMain_StartTime, true);
+	CFadeManager::Draw(0.f, 2.f, true);
 
 	//やりたいことが終わったので、深度テストを有効にしておく
 	m_pDx11->SetDepth(true);

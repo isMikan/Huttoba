@@ -13,12 +13,12 @@ CPlayerKnockdownState::CPlayerKnockdownState(CPlayerBase& pPlayer)
 	: CPlayerState				( pPlayer )
 	
 	, m_StartTime				()
-	, m_EndTime					( 0.7f )	//終了させる割合.
+	, m_EndTime					( 0.8f )	//終了させる割合.
 	, m_MaxTime					()
 
 	, m_DecreaseTriggerTime		()
-	, m_TimeDecrease			( 0.2f )
-	, m_TimeDecreaseByMashing	( 0.5f )
+	, m_TimeDecrease			( 0.1f )
+	, m_TimeDecreaseByMashing	( 0.3f )
 
 	, m_ShakeSpeed				( 3.f )
 	, m_ShakeWidth				( 3.f )
@@ -71,8 +71,13 @@ void CPlayerKnockdownState::Enter()
 	m_RightHandPos += rightHandOffset;
 	m_LeftHandPos += leftHandOffset;
 
-	//吹き飛ばされ量から終了する時間を計算.
-	m_EndTime = m_pPlayer.GetHitPower() * m_EndTime;
+	//ダウン回数の取得
+	int downCount = m_pPlayer.GetKnockdownCount();
+
+	//ダウン回数から終了する時間を計算.
+	m_EndTime = ++downCount * m_EndTime;
+	//ダウン回数を設定.
+	m_pPlayer.SetKnockdownCount(downCount);
 
 	//最大時間を設定.
 	m_MaxTime = m_EndTime;

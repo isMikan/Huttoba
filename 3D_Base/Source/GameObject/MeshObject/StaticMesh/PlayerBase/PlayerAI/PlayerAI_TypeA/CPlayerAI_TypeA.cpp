@@ -42,8 +42,8 @@ void CPlayerAI_TypeA::Update()
 	//”äŠr‚Ì‚½‚ßAÅ‘å”‚ÉÝ’è‚µ‚Ä‚¨‚­.
 	m_NearbyItems.sqrt = m_MaxSqrt;
 
-	if (m_pItemManager->GetItemVectorNum() > 0
-		&& !m_pItemBase)
+	if (m_pItemManager && !m_pItemBase
+		&& m_pItemManager->GetItemVectorNum() > 0)
 	{
 		for (auto& item : m_pItemManager->GetItems())
 		{
