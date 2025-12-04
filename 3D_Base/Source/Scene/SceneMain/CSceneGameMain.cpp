@@ -15,6 +15,9 @@ CSceneGameMain::CSceneGameMain( HWND hWnd)
 
 	, m_StateTimer		( 0.0f )
 
+	, m_ReadyTime		( 1.0f )
+	, m_FinishTime		( 2.0f )
+
 	, m_pDbgText		( nullptr )
 
 	, m_pExplosiones	()
@@ -162,7 +165,7 @@ void CSceneGameMain::Update()
 	switch (m_GameState)
 	{
 	case CSceneGameMain::GameState::Ready:
-		if (m_StateTimer >= 3.0f)
+		if (m_StateTimer >= m_ReadyTime)
 		{
 			//ゲームプレイへ
 			m_GameState = GameState::Play;
@@ -225,6 +228,7 @@ void CSceneGameMain::Update()
 		{
 			//SetNextScene(Result);
 			m_GameState = GameState::Finish;
+			m_StateTimer = 0;
 		}
 
 		if (m_StateTimer >= 60.0f)
@@ -235,9 +239,8 @@ void CSceneGameMain::Update()
 		}
 		break;
 	case CSceneGameMain::GameState::Finish:
-		
 		//次のシーンに遷移
-		if (m_StateTimer >= 5.0f)
+		if (m_StateTimer >= m_FinishTime)
 		{
 			SetNextScene(Result);
 		}
