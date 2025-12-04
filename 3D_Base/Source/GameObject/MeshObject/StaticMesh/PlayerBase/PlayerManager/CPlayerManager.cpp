@@ -16,9 +16,6 @@
 CPlayerManager::CPlayerManager()
 	: m_pPlayers		()
 
-	, m_CreateTime		()
-	, m_ReadyTime		( GameMain_StartTime )
-
 	, m_InitialSetPosY	()
 {
 }
@@ -131,13 +128,10 @@ void CPlayerManager::MainPlayerCreate(ItemManager* itemManager)
 			aiPlayer->SetItemManager(itemManager);
 		}
 
-		m_InitialSetPosY = 0.1f;
+		m_InitialSetPosY = 0.f;
 		//位置と方向の初期化.
 		InitialSettings(id);
 	}
-
-	//生成された時間を取得.
-	m_CreateTime = CTimeManager::GetTotalTime();
 }
 
 //--- リザルト ---.
@@ -177,12 +171,22 @@ void CPlayerManager::ResultPlayerCreate()
 
 //=== 各シーンの更新処理 ===.
 
+//--- 更新関数 ---.
+void CPlayerManager::Update()
+{
+	for (auto& player : m_pPlayers)
+	{
+		if (!player) continue;	//プレイヤーがいない場合、次へ.
+		//動作.
+		player->GetPlayerHead().Update(player->GetQuaternion());	//頭.
+		player->GetPlayerRightHand().Update();						//右手.
+		player->GetPlayerLeftHand().Update();						//左手.
+	}
+}
+
 //--- タイトル ---.
 void CPlayerManager::TitlePlayerUpdate()
 {
-	//経過時間を取得.
-	float t = CTimeManager::GetTotalTime();
-
 	for (auto& player : m_pPlayers)
 	{
 		if (!player) continue;	//プレイヤーがいない場合、次へ.
@@ -190,20 +194,16 @@ void CPlayerManager::TitlePlayerUpdate()
 		int id = player->GetPlayerID();
 		if (!CSceneData::GetPlayerLiving(id)) continue;	//プレイヤーが生きていない場合、次へ.
 
-		//作成から開始時間を上回った場合.
-		if (t - m_CreateTime > m_ReadyTime)		//開始時すぐには動けないようにする.
-		{
-			player->Update();	//胴体.
-		}
+		player->Update();	//胴体.
 
-		Update(player.get());
+		Update();
 
 		//落ちた場合、死亡判定にする.
 		if (player->GetPosition().y < -20.f)
 		{
 			CSceneData::SetPlayerLive(id, false);
 
-			m_InitialSetPosY = 30.f;
+			m_InitialSetPosY = 40.f;
 			InitialSettings(id);
 		}
 	}
@@ -212,20 +212,13 @@ void CPlayerManager::TitlePlayerUpdate()
 //--- メイン ---.
 void CPlayerManager::MainPlayerUpdate()
 {
-	//経過時間を取得.
-	float t = CTimeManager::GetTotalTime();
-
 	for (auto& player : m_pPlayers)
 	{
 		if (!player) continue;	//プレイヤーがいない場合、次へ.
 
-		//作成から開始時間を上回った場合.
-		if (t - m_CreateTime > m_ReadyTime)		//開始時すぐには動けないようにする.
-		{
-			player->Update();	//胴体.
-		}
+		player->Update();	//胴体.
 
-		Update(player.get());
+		Update();
 
 		//落ちた場合、削除.
 		if (player->GetPosition().y < -10.f)
@@ -244,7 +237,7 @@ void CPlayerManager::ResultPlayerUpdate()
 
 		player->ResultUpdate();
 			
-		Update(player.get());
+		Update();
 	}
 }
 
@@ -285,7 +278,7 @@ void CPlayerManager::Create()
 
 	for (int pNo = 0; pNo < Player_Max; pNo++)
 	{
-#if 1
+#if 0
 		//プレイヤーのインスタンス生成.
 		if (pNo != 1)
 			m_pPlayers[pNo] = std::make_unique<CPlayer>(pNo);
@@ -294,7 +287,7 @@ void CPlayerManager::Create()
 			m_pPlayers[pNo] = std::make_unique<CPlayerAI_TypeB>(pNo);
 		}
 #else
-#if 0
+#if 1
 		if (pNo == 0)
 		{
 			m_pPlayers[pNo] = std::make_unique<CPlayer>(pNo);
@@ -338,16 +331,6 @@ void CPlayerManager::Destroy(CPlayerBase* player)
 	CollisionManager::GetInstance()->RemoveCollider(player->GetCollider().get());
 	//配列削除.
 	m_pPlayers[id].reset();
-}
-
-//--- 更新関数 ---.
-void CPlayerManager::Update(CPlayerBase* player)
-{
-	//動作.
-	player->GetPlayerHead().Update(player->GetQuaternion());	//頭.
-	player->GetPlayerRightHand().Update();						//右手.
-	player->GetPlayerLeftHand().Update();						//左手.
-
 }
 
 //--- キャラクターの色を設定 ---.

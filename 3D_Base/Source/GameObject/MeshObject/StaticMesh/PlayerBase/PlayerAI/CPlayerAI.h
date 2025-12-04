@@ -36,14 +36,18 @@ public:
 	virtual void Draw(
 		D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAMERA& Camera ) override;
 
-	void AutomaticMovement(D3DXVECTOR3 targetDir);
-
 	//プレイヤーを設定する.
 	void SetPlayerManager(CPlayerManager* manager) { m_pPlayerManager = manager; }
 	//アイテムを設定する.
 	void SetItemManager(ItemManager* manager) { m_pItemManager = manager; }
 
+	//--- 衝突判定 ---.
+	void OnCollision(CollisionBase* pOtherCollider) override;
+
 protected:
+//======================================================================
+//		内部で呼び出す関数.
+//======================================================================
 	//--- 近くのオブジェクトを探索 ---.
 	template<typename T>
 	void FindNearbyObject(
@@ -65,6 +69,9 @@ protected:
 		}
 	}
 
+	//--- 移動処理 ---.
+	void AutomaticMovement(D3DXVECTOR3 targetDir);
+
 	//--- ランダム数値 ---.
 	float RandomFloat(float min, float max);	//引数 : 数、開始の数.
 
@@ -73,10 +80,13 @@ protected:
 	ItemManager*	m_pItemManager;		//アイテム.
 
 	D3DXVECTOR3		m_CurrentDir;		//現在の進行方向.
+	D3DXVECTOR3		m_TargetDir;		//目的の進行方向.
 	D3DXVECTOR3		m_PreviousDiff;		//以前との差.
 
 	NearbyObject	m_NearbyPlayers;	//近くのプレイヤー.
 	NearbyObject	m_NearbyItems;		//近くのアイテム.
+
+	bool			m_IsGround;
 
 	float m_MaxSqrt;
 };

@@ -23,6 +23,7 @@ CPlayerAI::CPlayerAI(int index)
 	, m_pItemManager	( nullptr )
 
 	, m_CurrentDir		( 0.f, 0.f, 0.f )
+	, m_TargetDir		( 0.f, 0.f, 0.f )	
 	, m_PreviousDiff	( 99.f, 99.f, 99.f )	//‰‰ñ‚ÍA”äŠr‚Ì‚½‚ß‘å‚«‚¢”’l‚É‚µ‚Ä‚¨‚­.
 
 	, m_NearbyPlayers	()
@@ -46,6 +47,7 @@ CPlayerAI::~CPlayerAI()
 void CPlayerAI::Update()
 {
 	CPlayerBase::Update();
+	m_IsGround = false;
 }
 
 //--- –ˆƒtƒŒ[ƒ€‚Ì•`‰æ ---.
@@ -55,6 +57,22 @@ void CPlayerAI::Draw(
 	CPlayerBase::Draw( View, Proj, Light, Camera );
 }
 
+void CPlayerAI::OnCollision(CollisionBase* pOtherCollider)
+{
+	if (pOtherCollider->GetTag() == CollisionBase::ColliderTag::Ground)
+	{
+		m_IsGround = true;
+		//std::cout << "“–‚½‚Á‚Ä‚é" << std::endl;
+	}
+
+	CPlayerBase::OnCollision(pOtherCollider);
+}
+
+//======================================================================
+//		“à•”‚ÅŒÄ‚Ño‚·ŠÖ”.
+//======================================================================
+
+//--- ˆÚ“®ˆ— ---.
 void CPlayerAI::AutomaticMovement(D3DXVECTOR3 targetDir)
 {
 	//ˆÚ“®E‰ñ“]‚ð‚µ‚È‚¢ê‡.
