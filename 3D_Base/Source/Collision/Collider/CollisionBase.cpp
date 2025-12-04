@@ -34,7 +34,7 @@ void CollisionBase::SetLocalOffSetToCapsule(
 void CollisionBase::SetRotationXCapsule(float rad)
 {
     D3DXMATRIX mRot;
-    D3DXMatrixRotationX(&mRot, D3DXToRadian(rad)); // ó·ÅFXé≤Ç…90ìxì|Ç∑
+    D3DXMatrixRotationX(&mRot, rad); // ó·ÅFXé≤Ç…90ìxì|Ç∑
 
     D3DXVec3TransformCoord(&m_LocalOffsetA, &m_LocalOffsetA, &mRot);
     D3DXVec3TransformCoord(&m_LocalOffsetB, &m_LocalOffsetB, &mRot);

@@ -46,6 +46,9 @@ constexpr float OFFSET_USE_COLLISION_X = 0.0f;
 constexpr float OFFSET_USE_COLLISION_Y = 1.1f;
 constexpr float OFFSET_USE_COLLISION_Z = 0.0f;
 
+constexpr float USE_COUNT = 7;	//使用上限
+
+
 //--------------------------------------------------------------------------------------------------------------
 
 Haetataki::Haetataki()
@@ -73,12 +76,10 @@ Haetataki::~Haetataki()
 
 void Haetataki::Init()
 {
-	static const int USE_COUNT = 7;	//使用カウント
 
 	AttachMesh(AssetManager::Mesh(StaticMeshList::Haetataki));
 
 	SetPosition(INITAL_POS_X, INITAL_POS_Y, INITAL_POS_Z);
-	//SetRotation(INITAL_ROT_X, INITAL_ROT_Y, INITAL_ROT_Z);
 
 	m_State = IItemObserver::IItemObserver::State::Spawn;
 	m_UseCount = USE_COUNT;
@@ -101,7 +102,7 @@ void Haetataki::Init()
 		this
 	);
 
-	//使用しない
+	//攻撃用判定はいったん使用しない
 	m_pUseCollider->SetActive(false);
 
 	D3DXVECTOR3 UseOffset = { OFFSET_USE_COLLISION_X,OFFSET_USE_COLLISION_Y,OFFSET_USE_COLLISION_Z };
@@ -297,7 +298,7 @@ bool Haetataki::AttackMostion()
 
 void Haetataki::OnCollision(CollisionBase* other)
 {
-	if (other->GetTag() != CollisionBase::ColliderTag::Player)
+	if (other->GetTag() == CollisionBase::ColliderTag::Player)
 	{
 		if (CPlayer* player = dynamic_cast<CPlayer*>(other->GetListener()))
 		{

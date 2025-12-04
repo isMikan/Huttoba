@@ -70,7 +70,7 @@ void Fun::Init()
 
 	D3DXVECTOR3 m_HaveOffset = { 0.f, 0.f, 1.f };
 	D3DXVECTOR3 m_PickUpOffset = { 0.f, 0.3f, 0.f };
-	m_pUseCollider->SetRotationXCapsule(90.f);
+	m_pUseCollider->SetRotationXCapsule(D3DXToRadian(90.f));
 	m_pUseCollider->SetLocalOffSetToCapsule(m_HaveOffset, m_HaveOffset);
 	m_pUseCollider->SetActive(false);
 
