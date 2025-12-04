@@ -5,8 +5,8 @@ CGroundManager::CGroundManager()
 {
 	Create();
 	//\
-	m_FallTime = { 99.f, 10.f, 50.f, 3.f };
 	m_FallTime = { 999.f, 999.f, 999.f, 3 };
+	m_FallTime = { 99.f, 45.f, 30.f, 15.f };
 }
 
 CGroundManager::~CGroundManager()
