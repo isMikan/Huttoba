@@ -48,6 +48,7 @@ constexpr float OFFSET_USE_COLLISION_Z = 0.0f;
 
 constexpr float USE_COUNT = 7;	//使用上限
 
+constexpr float SLERP_DURATION = 0.5f; // 回転にかける総時間
 
 //--------------------------------------------------------------------------------------------------------------
 
@@ -60,6 +61,7 @@ Haetataki::Haetataki()
 	, m_IsFlyAwayPower	( 3.f )
 	, m_IsMissAttack	( false )
 	, m_Velocity		()
+	, m_slerpTime		()
 {
 	Init();
 }
@@ -170,11 +172,8 @@ void Haetataki::Have()
 	//位置を合わせる
 	m_vPosition = m_pPlayer->GetPlayerRightHand().GetPosition();
 
-	//Nキーで使用状態へ
-	if (GetAsyncKeyState('N') & 0x0001)
-	{
-		m_State = IItemObserver::IItemObserver::State::Use;
-	}
+	m_SwitchDir = false;
+	m_AddPos = { 0.f,0.f, 0.f };	//初期化
 
 }
 
@@ -183,7 +182,6 @@ void Haetataki::Have()
 void Haetataki::Use()
 {
 	m_vPosition = m_pPlayer->GetPlayerRightHand().GetPosition();
-	m_vQuaternion = m_pPlayer->GetQuaternion();
 
 
 	//モーション終了で所持状態へ戻る
@@ -247,48 +245,69 @@ void Haetataki::TakeMostion()
 
 bool Haetataki::AttackMostion()
 {
-	////定数宣言
-	//constexpr float RIGHT_TARGET_POS_X = 0.1f;
-	//constexpr float LEFT_TARGET_POS_X = 0.2f;
+	//定数宣言
+	constexpr float RIGHT_TARGET_POS_X = 0.1f;
+	constexpr float LEFT_TARGET_POS_X = 0.2f;
 
+	// プレイヤーの回転
+	D3DXQUATERNION playerQ = m_pPlayer->GetQuaternion();
 
-	////使用モーション
-	//if (m_AddPos.x < RIGHT_TARGET_POS_X && !m_SwitchDir)
-	//{
-	//	m_vPosition.x += m_AddPos.x;
-	//	m_vQuaternion.x += m_AddRot.x / 2;	//回転を少し抑える
-	//	m_AddPos.x += ADD_POS_X;
-	//}
-	//else
-	//{
-	//	//trueになると毎回ここに通るので無理やり初期化
-	//	if (!m_SwitchDir)
-	//	{
-	//		m_AddPos = { 0.f, 0.f, 0.f };
-	//	}
+	// ハエたたきの補正角
+	static D3DXQUATERNION fix;
 
-	//	//切り替えしON
-	//	m_SwitchDir = true;
-	//}
+	//位置を合わせる
+	m_vPosition = m_pPlayer->GetPlayerRightHand().GetPosition();
+	D3DXQuaternionRotationYawPitchRoll(&fix, 0, 0, 5);
 
-	////切り替えし
-	//if (m_SwitchDir)
-	//{
-	//	if (m_AddPos.x < LEFT_TARGET_POS_X)
-	//	{
-	//		m_vPosition.x -= m_AddPos.x;
-	//		m_vQuaternion.x -= m_AddRot.x / 2; //回転を少し抑える
-	//		m_AddPos.x += ADD_POS_X;
-	//	}
-	//	else
-	//	{
-	//		m_SwitchDir = false;
-	//		m_AddPos = { 0.f,0.f, 0.f };	//初期化
+	D3DXQUATERNION startRotationQ = playerQ;
+	D3DXQUATERNION endRotationQ	  = playerQ * fix;
 
-	//		//モーション終了
-	//		return false;
-	//	}
-	//}
+	m_slerpTime += CTimeManager::GetDeltaTime();
+
+	float t = m_slerpTime / SLERP_DURATION;
+	if (t > 1.f)
+	{
+		t = 1.f;
+	}
+
+	// 球面線形補間 (Slerp) を実行
+	// D3DXQuaternionSlerp 関数で、滑らかに補間された四元数を得る
+	D3DXQuaternionSlerp(
+		&m_vQuaternion,
+		&startRotationQ,
+		&endRotationQ,
+		t
+	);
+	//使用モーション
+	if (m_AddPos.x < RIGHT_TARGET_POS_X && !m_SwitchDir)
+	{
+		m_vPosition.x += m_AddPos.x;
+		//D3DXQuaternionRotationYawPitchRoll(&fix, 0, 0, 5);
+		m_AddPos.x += ADD_POS_X;
+	}
+	else
+	{
+		//trueになると毎回ここに通るので無理やり初期化
+		if (!m_SwitchDir)
+		{
+			m_AddPos = { 0.f, 0.f, 0.f };
+		}
+
+		//切り替えしON
+		m_SwitchDir = true;
+	}
+
+	// モーション終了判定
+	if (m_SwitchDir && m_AddPos.x >= LEFT_TARGET_POS_X)
+	{
+		// 回転が完了した場合（tが1.0に達した場合）の処理を追加しても良い
+		if (t >= 1.0f)
+		{
+			// Slerpカウンターをリセット
+			m_slerpTime = 0.0f;
+			return false; // モーション終了
+		}
+	}
 
 	////モーション中
 	return true;
