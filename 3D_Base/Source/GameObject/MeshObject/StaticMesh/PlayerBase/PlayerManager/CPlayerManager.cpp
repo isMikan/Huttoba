@@ -3,6 +3,7 @@
 #include "PlayerBase/Player/CPlayer.h"
 #include "PlayerBase/PlayerAI/CPlayerAI.h"
 #include "PlayerBase/PlayerAI/PlayerAI_TypeA/CPlayerAI_TypeA.h"
+#include "PlayerBase/PlayerAI/PlayerAI_TypeB/CPlayerAI_TypeB.h"
 
 #include "PlayerBase/PlayerState/PlayerMoveState/PlayerMoveIdelState/CPlayerMoveIdleState.h"
 #include "PlayerBase/PlayerState/PlayerTurnState/PlayerTurnIdleState/CPlayerTurnIdleState.h"
@@ -286,7 +287,12 @@ void CPlayerManager::Create()
 	{
 #if 1
 		//プレイヤーのインスタンス生成.
-		m_pPlayers[pNo] = std::make_unique<CPlayer>(pNo);
+		if (pNo != 1)
+			m_pPlayers[pNo] = std::make_unique<CPlayer>(pNo);
+		else
+		{
+			m_pPlayers[pNo] = std::make_unique<CPlayerAI_TypeB>(pNo);
+		}
 #else
 #if 0
 		if (pNo == 0)
