@@ -25,7 +25,7 @@ void CShadowManager::Create()
 	{
 		shadow = std::make_unique<CShadow>();
 		shadow->SetScale(0.015f, 0.015f, 1.f);
-		shadow->SetPosition(0.f, -10.f, 0.f);
+		shadow->SetPosition(0.f, -10.f, -10.f);
 	}
 }
 
@@ -66,7 +66,7 @@ void CShadowManager::Update(
 			}
 			else
 			{
-				m_pShadow[playerID]->SetPosition(0.f, -10.f, 0.f);
+				m_pShadow[playerID]->SetPosition(0.f, -10.f, -10.f);
 			}
 		}
 
@@ -77,7 +77,7 @@ void CShadowManager::Update(
 
 		for (size_t i = Player_Max + items->GetItemVectorNum();i < Shadow_Max;i++)
 		{
-			m_pShadow[i]->SetPosition(0, -10.0f, 0);
+			m_pShadow[i]->SetPosition(0.f, -10.f, -10.f);
 		}
 }
 
