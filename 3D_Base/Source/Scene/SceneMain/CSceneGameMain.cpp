@@ -252,24 +252,8 @@ void CSceneGameMain::Draw()
 {
 	DebugDrawManager* ddm = DebugDrawManager::GetInstance();
 
-	switch (m_GameState)
-	{
-	case CSceneGameMain::GameState::Ready:
-		m_pSpriteReadyGo->Draw();
-		break;
-	case CSceneGameMain::GameState::Play:
-		//カメラの処理.
-		CCameraManager::Update();
-		break;
-	case CSceneGameMain::GameState::Finish:
-		m_pSpriteReadyGo->Draw();
-		break;
-	default:
-		break;
-	}
-
-	////カメラの処理.
-	//CCameraManager::Update();
+	//カメラの処理.
+	CCameraManager::Update();
 	//カメラを動かす処理.
 	CCameraManager::PositionByGround(m_pGroundManager.get());
 
@@ -362,6 +346,19 @@ void CSceneGameMain::Draw()
 
 #endif // DEBUG
 
+	m_pDx11->SetDepth(false);
+	switch (m_GameState)
+	{
+	case CSceneGameMain::GameState::Ready:
+		m_pSpriteReadyGo->Draw();
+		break;
+	case CSceneGameMain::GameState::Finish:
+		m_pSpriteReadyGo->Draw();
+		break;
+	default:
+		break;
+	}
+	m_pDx11->SetDepth(true);
 }
 
 HRESULT CSceneGameMain::CteateExplosion()
