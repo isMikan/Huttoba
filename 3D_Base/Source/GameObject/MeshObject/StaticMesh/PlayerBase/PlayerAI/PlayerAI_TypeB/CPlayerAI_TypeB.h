@@ -18,6 +18,9 @@ private:
 	//アイテムの探索
 	void SearchItem();
 
+	//アイテムを所持中の動き
+	void HaveItem();
+
 private:
 	//アイテム距離スコアの調整係数
 	float m_DistanceWeight;
