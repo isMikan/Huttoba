@@ -174,8 +174,17 @@ void CSceneGameMain::Update()
 
 		break;
 	case CSceneGameMain::GameState::Play:
+
 		//地面マネージャーの更新処理
 		m_pGroundManager->Update();
+
+		//地面に接地しているか
+		for (auto& player : m_pPlayerManager->GetPlayer())
+		{
+			if (!player) continue;	//プレイヤーがいない場合、次へ
+
+			player->OnGroundCollision(*m_pGroundManager);
+		}
 
 		//地面に接地しているか
 		for (auto& item : m_pItemManager->GetItems())
@@ -199,14 +208,6 @@ void CSceneGameMain::Update()
 
 		//プレイヤーの動作
 		m_pPlayerManager->MainPlayerUpdate();
-
-		//地面に接地しているか
-		for (auto& player : m_pPlayerManager->GetPlayer())
-		{
-			if (!player) continue;	//プレイヤーがいない場合、次へ
-
-			player->OnGroundCollision(*m_pGroundManager);
-		}
 
 		m_pDrawTimer->Update();
 		m_pShadowManager->Update(m_pPlayerManager.get(), m_pItemManager.get());

@@ -53,8 +53,8 @@ void CPlayerAI_TypeA::Update()
 				if(boomerang)
 				{
 					FindNearbyObject(boomerang, m_NearbyItems, IsSearchItem(boomerang));
+					m_TargetDir = m_NearbyItems.dir;
 				}
-				AutomaticMovement(m_NearbyItems.dir);
 
 				if (m_NearbyItems.sqrt < 0.5f)
 				{
@@ -74,7 +74,7 @@ void CPlayerAI_TypeA::Update()
 		}
 		if (m_NearbyPlayers.sqrt > 0.5f)
 		{
-			AutomaticMovement(m_NearbyPlayers.dir);
+			m_TargetDir = m_NearbyPlayers.dir;
 		}
 		if (m_NearbyPlayers.sqrt < RandomFloat(2.f, 6.f)
 			&& (IsAnyActionState<CPlayerActionIdleState>()
@@ -83,6 +83,12 @@ void CPlayerAI_TypeA::Update()
 			m_Control = ActionInstruct::Attack;
 		}
 	}
+
+	if (!m_IsGround)
+	{
+		m_TargetDir = D3DXVECTOR3(0.0f, 0.f, 10.f) - m_vPosition;
+	}
+	AutomaticMovement(m_TargetDir);
 
 	CPlayerAI::Update();
 }
