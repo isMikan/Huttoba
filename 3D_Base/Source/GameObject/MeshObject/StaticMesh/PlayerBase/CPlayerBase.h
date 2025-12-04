@@ -156,18 +156,22 @@ public:
 	//プレイヤーが左手を持っている(読み込み用).
 	const CPlayerLeftHand& GetPlayerLeftHand() const { return *m_pLeftHand; }
 
-	//持っているアイテムを取得と設定.
+	//持っているアイテムの取得と設定.
 	ItemBase* GetItemBase() const { return m_pItemBase; }
 	void SetItemBase(ItemBase* item) { m_pItemBase = item; }
 
-	//プレイヤー番号を取得.
+	//プレイヤー番号の取得.
 	int GetPlayerID() const { return m_PlayerID; }
 
-	//攻撃を受けた力を取得.
+	//攻撃を受けた力の取得と設定.
 	float GetHitPower() const { return m_HitForce; }
 	void SetHitPower(float power) { m_HitForce = power; }
 	
-	//攻撃を受けた情報を取得と設定.
+	//ダウン回数の取得と設定.
+	int GetKnockdownCount() const { return m_KnokdownCount; }
+	void SetKnockdownCount(int count) { m_KnokdownCount = count; }
+
+	//攻撃を受けた情報の取得と設定.
 	HitAttack GetHitAttack() const { return m_HitAttack; }
 	//アニメーション状態変更用.
 	void SetHitAnim(HitEvent anim) {
@@ -180,10 +184,10 @@ public:
 		m_HitAttack.hitEvent = anim;		//ヒットアニメーション.
 	}
 
-	//プレイヤーの接触情報を取得と設定.
+	//プレイヤーの接触情報の取得と設定.
 	HitPlayer GetHitPlayer() const { return m_HitPlayer; }
 
-	//ダウン状態の時間を取得と設定.
+	//ダウン状態の時間の取得と設定.
 	Gauge GetKnockdownTime() const { return m_KnockdownTime; }
 	void SetKnockdownTime(float remaining, float max) {
 		m_KnockdownTime.remaining = remaining; 
@@ -265,4 +269,5 @@ protected:
 	bool			m_IsAboveGround;	//ステージの上かどうか
 
 	float			m_HitForce;			//攻撃を受けた数値.
+	int				m_KnokdownCount;	//ダウン回数.
 };

@@ -165,6 +165,9 @@ void CSceneGameMain::Update()
 	switch (m_GameState)
 	{
 	case CSceneGameMain::GameState::Ready:
+		//頭の位置を更新したいので.
+		m_pPlayerManager->Update();
+
 		if (m_StateTimer >= m_ReadyTime)
 		{
 			//ゲームプレイへ
@@ -174,8 +177,17 @@ void CSceneGameMain::Update()
 
 		break;
 	case CSceneGameMain::GameState::Play:
+
 		//地面マネージャーの更新処理
 		m_pGroundManager->Update();
+
+		//地面に接地しているか
+		for (auto& player : m_pPlayerManager->GetPlayer())
+		{
+			if (!player) continue;	//プレイヤーがいない場合、次へ
+
+			player->OnGroundCollision(*m_pGroundManager);
+		}
 
 		//地面に接地しているか
 		for (auto& item : m_pItemManager->GetItems())
@@ -199,14 +211,6 @@ void CSceneGameMain::Update()
 
 		//プレイヤーの動作
 		m_pPlayerManager->MainPlayerUpdate();
-
-		//地面に接地しているか
-		for (auto& player : m_pPlayerManager->GetPlayer())
-		{
-			if (!player) continue;	//プレイヤーがいない場合、次へ
-
-			player->OnGroundCollision(*m_pGroundManager);
-		}
 
 		m_pDrawTimer->Update();
 		m_pShadowManager->Update(m_pPlayerManager.get(), m_pItemManager.get());
@@ -239,6 +243,9 @@ void CSceneGameMain::Update()
 		}
 		break;
 	case CSceneGameMain::GameState::Finish:
+		//頭の位置を更新したいので.
+		m_pPlayerManager->Update();
+
 		//次のシーンに遷移
 		if (m_StateTimer >= m_FinishTime)
 		{
@@ -316,7 +323,7 @@ void CSceneGameMain::Draw()
 
 	m_pGaugeManager->Draw(view, proj);
 
-	CFadeManager::Draw(0.f, GameMain_StartTime, true);
+	CFadeManager::Draw(0.f, 2.f, true);
 
 	//やりたいことが終わったので、深度テストを有効にしておく
 	m_pDx11->SetDepth(true);

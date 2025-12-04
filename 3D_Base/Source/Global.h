@@ -50,9 +50,6 @@ static constexpr int Ground_Max = 4;	//地面.
 static constexpr int Player_Max = 4;	//プレイヤー.
 static constexpr int Gauge_Max = 40;	//ゲージとフレーム.
 
-//時間.
-static constexpr float GameMain_StartTime =	1.f;	//ゲームメイン開始時間.
-
 //弾のインターバル
 static constexpr float Player_Shot_Interval = 15;
 

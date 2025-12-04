@@ -30,6 +30,8 @@ public:
 	void ResultPlayerCreate();
 
 //=== 各シーンの更新関数 ===.
+	//--- 更新処理 ---.
+	void Update();
 	//--- タイトル ---.
 	void TitlePlayerUpdate();
 	//--- メイン ---.
@@ -53,8 +55,6 @@ private:
 	void Create();
 	//--- 破棄処理 ---.
 	void Destroy(CPlayerBase* player);
-	//--- 更新処理 ---.
-	void Update(CPlayerBase* player);
 
 	//--- キャラクターの色を設定する ---.
 	ObjectColor CharacterColorSettings(int index);
@@ -67,9 +67,6 @@ private:
 // 	   内部で使用する変数.
 //======================================================================
 	std::vector<std::unique_ptr<CPlayerBase>>		m_pPlayers;		//プレイヤー.
-
-	float			m_CreateTime;		//作成された時間.
-	float			m_ReadyTime;		//準備OKの時間.
 
 	float			m_InitialSetPosY;	//y軸の初期位置.
 };
