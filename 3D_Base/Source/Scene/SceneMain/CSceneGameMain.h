@@ -69,6 +69,11 @@ private:
 	//進行状況の変化用タイマー
 	float		m_StateTimer;
 
+	//レディからプレイに遷移するまでの時間
+	float		m_ReadyTime;
+	//フィニッシュから次の画面に遷移するまでの時間
+	float		m_FinishTime;
+
 	std::unique_ptr<CDebugText> m_pDbgText;	//デバッグテキスト
 
 	//爆発クラス
@@ -98,6 +103,5 @@ private:
 
 	//レディゴー画像
 	std::unique_ptr<CUIObject>		m_pSpriteReadyGo;
-	//std::unique_ptr<CUIObject>	m_pSpriteSelector;	
-
+	//std::unique_ptr<CUIObject>	m_pSpriteSelector;
 };
