@@ -14,6 +14,7 @@ SpawnItemPosition::SpawnItemPosition(std::unique_ptr<CGroundManager>& GroundMama
 	, m_pFirstSpawnPosition		{}
 {
 	Init();
+	DecitionFirstPosition();
 }
 
 SpawnItemPosition::~SpawnItemPosition()

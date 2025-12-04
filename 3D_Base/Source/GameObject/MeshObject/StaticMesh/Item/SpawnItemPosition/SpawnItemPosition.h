@@ -39,6 +39,10 @@ private:
 	//Å‰‚ÌŒÅ’è•¦‚«
 	D3DXVECTOR3 DecitionSpawn();
 
+	//ŒÅ’è‚í‚«‚ÌˆÊ’uŒˆ’è
+	void DecitionFirstPosition();
+
+
 	//’Êí‚Ìƒ‰ƒ“ƒ_ƒ€•¦‚«
 	D3DXVECTOR3 RamdomSpawn();
 
