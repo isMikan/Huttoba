@@ -17,10 +17,6 @@ constexpr float MIN_VELOCITY_RANGE = 0.01f;	//îÚÇŒÇµÇƒÇ¢ÇÈä‘ÇÃ1fä‘ÇÃå∏êä
 
 constexpr float COMEBACK_ADD_VELOCITY_RANGE = 0.25f;	//ñﬂÇ¡ÇƒÇ≠ÇÈÇ∆Ç´ÇÃ1fä‘ÇÃë¨ìxè„è∏ó 
 
-
-
-
-
 //FactoryÇ…ìoò^
 namespace { const bool regist = ItemBase::AutoRegister<Boomerang>(ItemID::Boomerang); }
 
@@ -44,8 +40,10 @@ Boomerang::~Boomerang()
 
 void Boomerang::Init()
 {
-	m_ComeBack = false;
+	m_UseCount = 5;
 
+	m_ComeBack = false;
+	m_UsageLimit = { m_UseCount, 5 };
 
 	AttachMesh(AssetManager::Mesh(StaticMeshList::Boomerang));
 
@@ -98,7 +96,6 @@ void Boomerang::Have()
 	m_IsUseThrow = false;
 	m_AddVelocity = { 0.f,0.f,0.f };
 	HaveMove();
-
 }
 
 void Boomerang::Use()
@@ -125,9 +122,11 @@ void Boomerang::ItemState(IItemObserver::State state)
 	case IItemObserver::IItemObserver::State::OnGround:
 		break;
 	case IItemObserver::IItemObserver::State::Have:
+		if (m_UseCount <= 0){ Destroy(); }
 		break;
 	case IItemObserver::IItemObserver::State::Use:
 		OneEnterUse();
+
 		break;
 	case IItemObserver::IItemObserver::State::Throw:
 		OneEnterThrow();
@@ -283,6 +282,8 @@ void Boomerang::OneEnterUse()
 	);
 
 	m_IsOkFall = false;
+	m_UsageLimit.remaining = --m_UseCount;
+
 }
 
 void Boomerang::OneEnterThrow()

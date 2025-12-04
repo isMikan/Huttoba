@@ -1,7 +1,7 @@
 #include "CTimeManager.h"
 
 //§ŒÀŠÔ
-constexpr int TIME_LIMIT = 99;
+constexpr int TIME_LIMIT = 60;
 
 CTimeManager::CTimeManager()
 	: m_PauseStateTime		()
