@@ -181,6 +181,9 @@ enum class enSoundList
 	SE_HitHand,
 	SE_HitHaetataki,
 	SE_MissHaetataki,
+	SE_BoomerangCharge,
+	SE_BoomerangMaxCharge,
+	SE_BoomerangThrow,
 
 
 	//‰¹‚ª‘‚¦‚½‚çu‚±‚±v‚É’Ç‰Á

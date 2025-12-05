@@ -280,7 +280,7 @@ void CPlayerManager::Create()
 	{
 #if 1
 		//プレイヤーのインスタンス生成.
-		if (pNo != 1)
+		if (pNo != 4)
 			m_pPlayers[pNo] = std::make_unique<CPlayer>(pNo);
 		else
 		{

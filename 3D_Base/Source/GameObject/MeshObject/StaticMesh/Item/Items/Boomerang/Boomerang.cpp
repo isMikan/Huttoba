@@ -31,6 +31,8 @@ Boomerang::Boomerang()
 	, m_MoveSpeed		( MOVE_SPEED )	//値を変えると爆弾の移動速度が変化
 	, m_IsUseThrow	( false )
 	, m_ComeBack	( false )
+	, m_IsCharge	( false )
+	, m_IsMaxCharge	( false )
 {
 	Init();
 }
@@ -43,16 +45,17 @@ Boomerang::~Boomerang()
 
 void Boomerang::Init()
 {
+	//ゲージ
 	m_UseCount = MOVE_SPEED;
-
-	m_ComeBack = false;
 	m_UsageLimit = { m_UseCount, USE_LIMIT };
 
+	//各種フラグ
+	m_ComeBack = false;
+	m_IsCharge = false;
+	m_IsMaxCharge = false;
+
+	//メッシュをアタッチ
 	AttachMesh(AssetManager::Mesh(StaticMeshList::Boomerang));
-
-	m_State = IItemObserver::IItemObserver::State::Spawn;
-	m_tGravity = 0.01f;
-
 	std::shared_ptr<CStaticMesh> mesh = AssetManager::Mesh(StaticMeshList::Bomb);
 
 	m_pCollision = CollisionDataFactory::CreateSphereForMesh(
@@ -61,12 +64,20 @@ void Boomerang::Init()
 		this
 	);
 
+	//ステート設定
+	m_State = IItemObserver::IItemObserver::State::Spawn;
+	m_tGravity = 0.01f;
+
+
 	m_AddVelocity = { 0.f,0.f,0.f };
 }
 
 void Boomerang::Update()
 {
 	ItemBase::Update();
+	std::cout << "Y = " << m_vPosition.y << std::endl;
+
+
 }
 
 void Boomerang::Draw(D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAMERA& Camera)
@@ -97,6 +108,8 @@ void Boomerang::Have()
 {
 	m_ComeBack = false;
 	m_IsUseThrow = false;
+	m_IsCharge = false;
+	m_IsMaxCharge = false;
 	m_AddVelocity = { 0.f,0.f,0.f };
 	HaveMove();
 }
@@ -173,6 +186,11 @@ void Boomerang::UseMove()
 		{
 			m_AddVelocity.x += ADD_CHARGE_RANGE;
 			m_AddVelocity.z += ADD_CHARGE_RANGE;
+
+			//チャージのサウンド
+			if (!m_IsCharge)	{AssetManager::Sound()->PlaySE(enSoundList::SE_BoomerangCharge);}
+
+			m_IsCharge = true;
 		}
 		//最大チャージ
 		else
@@ -184,6 +202,13 @@ void Boomerang::UseMove()
 
 			//エフェクトの拡縮設定
 			AssetManager::Effect()->SetScale(hEffect, D3DXVECTOR3(0.6f, 0.6f, 0.6f));
+			AssetManager::Sound()->Stop(enSoundList::SE_BoomerangCharge);
+
+
+			if (!m_IsMaxCharge){AssetManager::Sound()->PlaySE(enSoundList::SE_BoomerangMaxCharge);}
+
+			m_IsMaxCharge = true;
+			m_IsCharge = false;
 
 		}
 		m_vPosition = m_pPlayer->GetPlayerRightHand().GetPosition();
@@ -200,7 +225,6 @@ void Boomerang::UseMove()
 
 		//移動
 		m_Velocity.x = forward.x * (m_MoveSpeed + m_AddVelocity.x);
-		m_Velocity.y = forward.y * (m_MoveSpeed + m_AddVelocity.y);
 		m_Velocity.z = forward.z * (m_MoveSpeed + m_AddVelocity.z);
 
 	}
@@ -242,7 +266,11 @@ void Boomerang::UseMove()
 		m_vRotation.x = m_vRotation.x + (D3DXToRadian(TURN_ANGLE_RAD));
 
 		//使用フラグをオンに
+		if(!m_IsUseThrow){ AssetManager::Sound()->PlaySE(enSoundList::SE_BoomerangThrow); }
 		m_IsUseThrow = true;
+
+		//チャージのSE消す
+		AssetManager::Sound()->Stop(enSoundList::SE_BoomerangCharge);
 	}
 }
 

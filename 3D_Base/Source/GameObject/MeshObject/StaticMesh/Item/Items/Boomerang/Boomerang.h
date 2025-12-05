@@ -68,4 +68,6 @@ private:
     bool        m_IsUseThrow;
 
     bool        m_ComeBack;
+    bool        m_IsCharge;
+    bool        m_IsMaxCharge;
 };
