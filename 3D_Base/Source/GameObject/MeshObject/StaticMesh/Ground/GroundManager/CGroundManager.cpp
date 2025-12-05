@@ -7,6 +7,8 @@ CGroundManager::CGroundManager()
 	//\
 	m_FallTime = { 99.f, 45.f, 30.f, 15.f };
 	m_FallTime = { 999.f, 999.f, 999.f, 999.f };
+
+	ExtractMeshRadius();
 }
 
 CGroundManager::~CGroundManager()
@@ -127,6 +129,16 @@ void CGroundManager::ResultGroundCreate()
 // 	   内部で呼び出す関数.
 //======================================================================
 
+D3DXVECTOR3 CGroundManager::GetGroundCenterPos()
+{
+	D3DXVECTOR3 center = m_pGrounds[m_pGrounds.size() - 1]->GetPosition();
+
+	center.x -= m_GroundRadius[m_pGrounds.size() - 1];
+	center.z -= m_GroundRadius[m_pGrounds.size() - 1];
+
+	return center;
+}
+
 //--- 構築関数 ---.
 void CGroundManager::Create()
 {
@@ -145,5 +157,51 @@ void CGroundManager::Destroy(int index)
 {
 	m_pGrounds[index].reset();
 	m_pGrounds.resize(m_pGrounds.size() - 1);
+}
+
+bool CGroundManager::ExtractMeshRadius()
+{
+	for (int i = 0;i < Ground_Max;i++)
+	{
+		if (!m_pGrounds[i] || !m_pGrounds[i]->GetMesh()) return false;
+
+		LPDIRECT3DVERTEXBUFFER9 pVB = nullptr;	//頂点バッファ
+		void* pVertices = nullptr;				//頂点
+
+		//グラウンドのメッシュ
+		auto mesh = m_pGrounds[i]->GetMesh();
+
+		//頂点バッファを取得
+		if (FAILED(mesh->GetMesh()->GetVertexBuffer(&pVB))) return false;
+
+		//メッシュの頂点バッファをロックする
+		if (FAILED(pVB->Lock(0, 0, &pVertices, 0)))
+		{
+			SAFE_RELEASE(pVB);
+			return false;
+		}
+
+		D3DXVECTOR3 outCenter;
+		float		outRadius;
+
+		//メッシュの外接円の中心と半径を計算する
+		D3DXComputeBoundingSphere(
+			static_cast<D3DXVECTOR3*>(pVertices),
+			mesh->GetMesh()->GetNumVertices(),		//頂点の数
+			mesh->GetMesh()->GetFVF(),				//頂点の情報
+			&outCenter,								//(out)中心座標
+			&outRadius);							//(out)半径
+
+		//メッシュの頂点バッファをアンロックする
+		if (pVB != nullptr)
+		{
+			pVB->Unlock();
+			SAFE_RELEASE(pVB); // 取得したポインタを解放
+		}
+
+		m_GroundRadius[i] = outRadius;
+	}
+
+	return true;
 }
 

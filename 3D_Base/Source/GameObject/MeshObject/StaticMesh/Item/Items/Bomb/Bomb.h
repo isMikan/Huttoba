@@ -74,15 +74,15 @@ private:
     float       m_UpSpeed;
 
     //投げてから爆発するまでの時間
-    double       m_ExplosionTime;
+    float       m_ExplosionTime;
 
     //爆発するまでのカウント
-    double       m_ExplosionCnt;
+    float       m_ExplosionCnt;
 
     //点滅の経過時間を記録
     double      m_ColorTimer;
 
-    //爆発時の処理
+    //爆発フラグ
     bool        m_IsExploded;
 
     //爆発の中心位置に近いほど多く吹き飛ぶので最小と最大の吹き飛ばし力を追加

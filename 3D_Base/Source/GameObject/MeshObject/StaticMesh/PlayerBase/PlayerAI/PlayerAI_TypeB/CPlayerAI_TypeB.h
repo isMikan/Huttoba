@@ -1,5 +1,4 @@
 #pragma once
-
 #include "PlayerBase/PlayerAI/CPlayerAI.h"
 
 class CPlayerAI_TypeB
@@ -19,9 +18,15 @@ private:
 	void SearchItem();
 
 	//アイテムを所持中の動き
-	void HaveItem();
+	void HandleItemAction();
+
+	//回避行動
+	void AvoidDanger();
 
 private:
+	//動きの優先度のスコア
+	float	m_MoveScore;
+
 	//アイテム距離スコアの調整係数
-	float m_DistanceWeight;
+	float	m_DistanceWeight;
 };

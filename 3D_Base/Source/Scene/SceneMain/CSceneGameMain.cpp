@@ -80,7 +80,7 @@ HRESULT CSceneGameMain::Create()
 	//アイテムマネージャーの作成
 	m_pItemManager = std::make_unique<ItemManager>(m_pGroundManager);
 
-	m_pPlayerManager->MainPlayerCreate(m_pItemManager.get());
+	m_pPlayerManager->MainPlayerCreate(m_pItemManager.get(), m_pGroundManager.get());
 
 	//地面の当たり判定クラスの生成
 	m_pGroundCollisionProxy = std::make_unique<CGroundCollisionProxy>(*m_pGroundManager);

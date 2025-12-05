@@ -111,7 +111,7 @@ void CPlayerManager::StandbyPlayerCreate()
 }
 
 //--- メイン ---.
-void CPlayerManager::MainPlayerCreate(ItemManager* itemManager)
+void CPlayerManager::MainPlayerCreate(ItemManager* itemManager, CGroundManager* groundManager)
 {
 	Create();
 
@@ -126,6 +126,7 @@ void CPlayerManager::MainPlayerCreate(ItemManager* itemManager)
 		{
 			aiPlayer->SetPlayerManager(this);
 			aiPlayer->SetItemManager(itemManager);
+			aiPlayer->SetGroundManager(groundManager);
 		}
 
 		m_InitialSetPosY = 0.f;
@@ -278,7 +279,7 @@ void CPlayerManager::Create()
 
 	for (int pNo = 0; pNo < Player_Max; pNo++)
 	{
-#if 0
+#if 1
 		//プレイヤーのインスタンス生成.
 		if (pNo != 1)
 			m_pPlayers[pNo] = std::make_unique<CPlayer>(pNo);
