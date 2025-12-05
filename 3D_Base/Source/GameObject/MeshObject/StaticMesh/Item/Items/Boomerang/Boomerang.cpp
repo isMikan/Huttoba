@@ -33,6 +33,7 @@ Boomerang::Boomerang()
 	, m_ComeBack	( false )
 	, m_IsCharge	( false )
 	, m_IsMaxCharge	( false )
+	, m_hEffect()
 {
 	Init();
 }
@@ -75,7 +76,6 @@ void Boomerang::Init()
 void Boomerang::Update()
 {
 	ItemBase::Update();
-	std::cout << "Y = " << m_vPosition.y << std::endl;
 
 
 }
@@ -195,13 +195,15 @@ void Boomerang::UseMove()
 		//最大チャージ
 		else
 		{
-			static ::EsHandle hEffect = 1;
-
 			//エフェクト追加
-			hEffect = AssetManager::Effect()->Play("Explosion", m_vPosition);
+			if (!AssetManager::Effect()->IsPlaying(m_hEffect[Efect::ChargeMax]))
+			{
+				m_hEffect[Efect::ChargeMax] = AssetManager::Effect()->Play("BoomerangMaxCharge", m_vPosition);
+			}
 
 			//エフェクトの拡縮設定
-			AssetManager::Effect()->SetScale(hEffect, D3DXVECTOR3(0.6f, 0.6f, 0.6f));
+			AssetManager::Effect()->SetScale(m_hEffect[Efect::ChargeMax], D3DXVECTOR3(0.5f, 0.5f, 0.5f));
+			AssetManager::Effect()->SetLocation(m_hEffect[Efect::ChargeMax],m_pPlayer->GetPosition());
 			AssetManager::Sound()->Stop(enSoundList::SE_BoomerangCharge);
 
 
@@ -353,12 +355,10 @@ void Boomerang::Smash(CPlayerBase& playiers)
 		SmashVel,
 		CPlayerBase::HitEvent::Knockdown);
 
-	static ::EsHandle hEffect = 1;
-
 	//エフェクト追加
-	hEffect = AssetManager::Effect()->Play("Explosion", m_vPosition);
+	m_hEffect[Efect::HitPlayer] = AssetManager::Effect()->Play("Explosion", m_vPosition);
 
 	//エフェクトの拡縮設定
-	AssetManager::Effect()->SetScale(hEffect, D3DXVECTOR3(0.6f, 0.6f, 0.6f));
+	AssetManager::Effect()->SetScale(m_hEffect[Efect::HitPlayer], D3DXVECTOR3(0.6f, 0.6f, 0.6f));
 
 }
