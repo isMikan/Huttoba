@@ -76,8 +76,6 @@ void Boomerang::Init()
 void Boomerang::Update()
 {
 	ItemBase::Update();
-
-
 }
 
 void Boomerang::Draw(D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAMERA& Camera)
@@ -106,9 +104,9 @@ void Boomerang::OnGround()
 
 void Boomerang::Have()
 {
-	m_ComeBack = false;
+	m_ComeBack	 = false;
 	m_IsUseThrow = false;
-	m_IsCharge = false;
+	m_IsCharge	 = false;
 	m_IsMaxCharge = false;
 	m_AddVelocity = { 0.f,0.f,0.f };
 	HaveMove();
