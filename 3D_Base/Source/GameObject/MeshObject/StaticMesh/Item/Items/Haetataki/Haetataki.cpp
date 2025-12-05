@@ -170,39 +170,39 @@ void Haetataki::Have()
 
 	static float a = 0.f, b = 0.f, c = 0.f;
 
-	if (GetKeyState('B') & 0x8000)
-	{
-		a += 0.5;
-		std::cout << "Yaw = " << a << std::endl;
-	}
-	if (GetKeyState('N') & 0x8000)
-	{
-		b += 0.5;
-		std::cout << "Pitch = " << b << std::endl;
-	}
-	if (GetKeyState('M') & 0x8000)
-	{
-		c += 0.5;
-		std::cout << "Roll = " << c << std::endl;
-	}
-	if (GetKeyState('G') & 0x8000)
-	{
-		a -= 0.5;
-		std::cout << "Yaw = " << a << std::endl;
+	//if (GetKeyState('B') & 0x8000)
+	//{
+	//	a += 0.5;
+	//	std::cout << "Yaw = " << a << std::endl;
+	//}
+	//if (GetKeyState('N') & 0x8000)
+	//{
+	//	b += 0.5;
+	//	std::cout << "Pitch = " << b << std::endl;
+	//}
+	//if (GetKeyState('M') & 0x8000)
+	//{
+	//	c += 0.5;
+	//	std::cout << "Roll = " << c << std::endl;
+	//}
+	//if (GetKeyState('G') & 0x8000)
+	//{
+	//	a -= 0.5;
+	//	std::cout << "Yaw = " << a << std::endl;
 
-	}
-	if (GetKeyState('H') & 0x8000)
-	{
-		b -= 0.5;
-		std::cout << "Pitch = " << b << std::endl;
+	//}
+	//if (GetKeyState('H') & 0x8000)
+	//{
+	//	b -= 0.5;
+	//	std::cout << "Pitch = " << b << std::endl;
 
-	}
-	if (GetKeyState('J') & 0x8000)
-	{
-		c -= 0.5;
-		std::cout << "Roll = " << c << std::endl;
+	//}
+	//if (GetKeyState('J') & 0x8000)
+	//{
+	//	c -= 0.5;
+	//	std::cout << "Roll = " << c << std::endl;
 
-	}
+	//}
 
 	// ハエたたきの補正角
 	D3DXQUATERNION fix;
@@ -333,11 +333,11 @@ bool Haetataki::AttackMostion()
 	if (t >= 1.0f)
 	{
 		m_slerpTime = 0.0f;
-		std::cout << "モーション終了" << std::endl;
+		//std::cout << "モーション終了" << std::endl;
 		return false; // モーション終了
 	}
 
-	std::cout << "モーション中" << std::endl;
+	//std::cout << "モーション中" << std::endl;
 
 	//モーション中
 	return true;
