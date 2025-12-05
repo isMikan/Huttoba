@@ -37,7 +37,7 @@ bool CollisionSphereCapsule::CheckCollision(
 
 	// カプセルの軸線分 (A-B) 上の、球の中心 (centerS) に最も近い点 (P) を求める
 
-	// 線分ベクトル (B - A)
+	// 線分ベクトル
 	D3DXVECTOR3 AB = B - A;
 
 	// 球の中心からAへのベクトル (centerS - A)
@@ -53,7 +53,7 @@ bool CollisionSphereCapsule::CheckCollision(
 		// ABがゼロベクトルでない場合
 		t = D3DXVec3Dot(&AS, &AB) / lengthSqAB;
 
-		// tを0.0～1.0の範囲にクランプ（線分上に限定）
+		// tを0.0～1.0の範囲にクランプ
 		t = std::max(0.0f, std::min(1.0f, t));
 	}
 	// else: lengthSqAB == 0.0 の場合、tは0のまま。AとBが同じ点で、球vs球判定になる。

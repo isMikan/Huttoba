@@ -200,6 +200,7 @@ void CSceneGameMain::Update()
 		//プレイヤーの動作
 		m_pPlayerManager->MainPlayerUpdate();
 
+
 		//地面に接地しているか
 		for (auto& player : m_pPlayerManager->GetPlayer())
 		{

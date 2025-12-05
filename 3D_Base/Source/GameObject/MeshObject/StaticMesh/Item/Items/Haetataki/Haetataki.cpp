@@ -1,54 +1,54 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "Haetataki.h"
 #include "PlayerBase/PlayerManager/CPlayerManager.h"
 
 //--------------------------------------------------------------------------------------------------------------
 
-//Factory‚É“o˜^
+//Factoryã«ç™»éŒ²
 namespace { const bool regist = ItemBase::AutoRegister<Haetataki>(ItemID::Haetataki); }
 
 //--------------------------------------------------------------------------------------------------------------
 
-//”Ä—p’è”éŒ¾
+//æ±ç”¨å®šæ•°å®£è¨€
 
-//ƒvƒŒƒCƒ„[‚Æ‚ÌˆÊ’u‚ğ‡‚í‚¹‚é‚½‚ß‚ÌƒIƒtƒZƒbƒg
+//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã¨ã®ä½ç½®ã‚’åˆã‚ã›ã‚‹ãŸã‚ã®ã‚ªãƒ•ã‚»ãƒƒãƒˆ
 constexpr float OFFSET_X = 0.5f;	
 constexpr float OFFSET_Y = 1.f;		
 
-//ƒ‚[ƒVƒ‡ƒ“‚ÌˆÚ“®‰Á‘¬“x
+//ãƒ¢ãƒ¼ã‚·ãƒ§ãƒ³ã®ç§»å‹•åŠ é€Ÿåº¦
 constexpr float ADD_POS_X = 0.02f;
 
-//ƒ‚[ƒVƒ‡ƒ“‚Ì‰ñ“]‰Á‘¬“x
+//ãƒ¢ãƒ¼ã‚·ãƒ§ãƒ³ã®å›è»¢åŠ é€Ÿåº¦
 constexpr float ADD_ROT_X = 0.2f;		
 constexpr float ADD_ROT_Y = 0.2f;
 constexpr float ADD_ROT_Z = 0.2f;
 
 constexpr float THROW_SPEED = 6.0f;
 
-//‰ŠúˆÊ’u
+//åˆæœŸä½ç½®
 constexpr float INITAL_POS_X = 0.f;		
 constexpr float INITAL_POS_Y = 5.f;
 constexpr float INITAL_POS_Z = 5.f;
 
-//‰ŠúŠp“x
+//åˆæœŸè§’åº¦
 constexpr float INITAL_ROT_X = 0.f;
 constexpr float INITAL_ROT_Y = 0.f;
 constexpr float INITAL_ROT_Z = 90.f;
 
-//d—ÍŠÖ˜A
+//é‡åŠ›é–¢é€£
 constexpr float INITAL_GRAVITY = 0.01f;
 constexpr float ADD_GRAVITY = 0.001f;
 
-//ƒXƒe[ƒW‚Ì‚‚³(“–‚½‚è”»’è‚ª‚Å‚«‚½‚çÁ‚·)“ËŠÑ
+//ã‚¹ãƒ†ãƒ¼ã‚¸ã®é«˜ã•(å½“ãŸã‚Šåˆ¤å®šãŒã§ããŸã‚‰æ¶ˆã™)çªè²«
 constexpr float STAGE_HEIGHT = 1.2f;
 
 constexpr float OFFSET_USE_COLLISION_X = 0.0f;
 constexpr float OFFSET_USE_COLLISION_Y = 1.1f;
 constexpr float OFFSET_USE_COLLISION_Z = 0.0f;
 
-constexpr float USE_COUNT = 7;	//g—pãŒÀ
+constexpr float USE_COUNT = 7;	//ä½¿ç”¨ä¸Šé™
 
-constexpr float SLERP_DURATION = 0.5f; // ‰ñ“]‚É‚©‚¯‚é‘ŠÔ
+constexpr float SLERP_DURATION = 0.5f; // å›è»¢ã«ã‹ã‘ã‚‹ç·æ™‚é–“
 
 //--------------------------------------------------------------------------------------------------------------
 
@@ -104,7 +104,7 @@ void Haetataki::Init()
 		this
 	);
 
-	//UŒ‚—p”»’è‚Í‚¢‚Á‚½‚ñg—p‚µ‚È‚¢
+	//æ”»æ’ƒç”¨åˆ¤å®šã¯ã„ã£ãŸã‚“ä½¿ç”¨ã—ãªã„
 	m_pUseCollider->SetActive(false);
 
 	D3DXVECTOR3 UseOffset = { OFFSET_USE_COLLISION_X,OFFSET_USE_COLLISION_Y,OFFSET_USE_COLLISION_Z };
@@ -116,7 +116,7 @@ void Haetataki::Init()
 
 void Haetataki::Update()
 {
-	//ƒAƒCƒeƒ€‹¤’Ê‚ÌUpdate
+	//ã‚¢ã‚¤ãƒ†ãƒ å…±é€šã®Update
 	ItemBase::Update();
 }
 
@@ -124,7 +124,7 @@ void Haetataki::Update()
 
 void Haetataki::Draw(D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAMERA& Camera)
 {
-	//ƒAƒCƒeƒ€‹¤’Ê‚ÌDraw
+	//ã‚¢ã‚¤ãƒ†ãƒ å…±é€šã®Draw
 	ItemBase::Draw(View, Proj, Light, Camera);
 }
 
@@ -132,7 +132,7 @@ void Haetataki::Draw(D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAMERA& C
 
 void Haetataki::Spawn()
 {
-	//—‰ºˆ—
+	//è½ä¸‹å‡¦ç†
 	if(m_vPosition.y > STAGE_HEIGHT)
 	{
 		m_vPosition.y -= m_tGravity;
@@ -154,26 +154,29 @@ void Haetataki::OnGround()
 
 void Haetataki::Have()
 {
-	//ƒAƒCƒeƒ€‚ğE‚¤ƒ‚[ƒVƒ‡ƒ“
+	//ã‚¢ã‚¤ãƒ†ãƒ ã‚’æ‹¾ã†ãƒ¢ãƒ¼ã‚·ãƒ§ãƒ³
 	TakeMostion();
 
 	m_pPickUpCollider->SetActive(false);
 	m_pUseCollider->SetActive(true);
 
-	// ƒvƒŒƒCƒ„[‚Ì‰ñ“]
-	D3DXQUATERNION playerQ = m_pPlayer->GetQuaternion();
-
-	// ƒnƒG‚½‚½‚«‚Ì•â³Šp
-	D3DXQUATERNION fix;
-	D3DXQuaternionRotationYawPitchRoll(&fix, 0, 0, 0);
-
-	m_vQuaternion = playerQ * fix;
-
-	//ˆÊ’u‚ğ‡‚í‚¹‚é
+		//ä½ç½®ã‚’åˆã‚ã›ã‚‹
 	m_vPosition = m_pPlayer->GetPlayerRightHand().GetPosition();
 
+	// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®å›è»¢
+	D3DXQUATERNION playerQ = m_pPlayer->GetQuaternion();
+
+	// ãƒã‚¨ãŸãŸãã®è£œæ­£è§’
+	D3DXQUATERNION fix;
+	D3DXQuaternionRotationYawPitchRoll(&fix, D3DXToRadian(90.f), 0, D3DXToRadian(45.f));
+
+	D3DXQUATERNION finalQ;
+	D3DXQuaternionMultiply(&finalQ, &fix, &playerQ);
+	m_vQuaternion = finalQ;
+
+
 	m_SwitchDir = false;
-	m_AddPos = { 0.f,0.f, 0.f };	//‰Šú‰»
+	m_AddPos = { 0.f,0.f, 0.f };	//åˆæœŸåŒ–
 
 }
 
@@ -184,11 +187,11 @@ void Haetataki::Use()
 	m_vPosition = m_pPlayer->GetPlayerRightHand().GetPosition();
 
 
-	//ƒ‚[ƒVƒ‡ƒ“I—¹‚ÅŠó‘Ô‚Ö–ß‚é
+	//ãƒ¢ãƒ¼ã‚·ãƒ§ãƒ³çµ‚äº†ã§æ‰€æŒçŠ¶æ…‹ã¸æˆ»ã‚‹
 	if (!AttackMostion())
 	{
 		m_State = IItemObserver::IItemObserver::State::Have;
-		m_IsMissAttack = false; //‰Šú‰»
+		m_IsMissAttack = false; //åˆæœŸåŒ–
 	}
 }
 
@@ -196,7 +199,7 @@ void Haetataki::Use()
 
 void Haetataki::Throw()
 {
-	//ˆÚ“®—Ê‚ªˆê’èˆÈ‰º‚È‚ç
+	//ç§»å‹•é‡ãŒä¸€å®šä»¥ä¸‹ãªã‚‰
 	if (D3DXVec3Length(&m_Velocity) <= 0.6f)
 	{
 		DestroyItem();
@@ -245,24 +248,24 @@ void Haetataki::TakeMostion()
 
 bool Haetataki::AttackMostion()
 {
-	//’è”éŒ¾
+	//å®šæ•°å®£è¨€
 	constexpr float RIGHT_TARGET_POS_X = 0.1f;
 	constexpr float LEFT_TARGET_POS_X = 0.2f;
 
-	// ƒvƒŒƒCƒ„[‚Ì‰ñ“]
+	// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®å›è»¢
 	D3DXQUATERNION playerQ = m_pPlayer->GetQuaternion();
 
-	// ƒnƒG‚½‚½‚«‚Ì•â³Šp
+	// ãƒã‚¨ãŸãŸãã®è£œæ­£è§’
 	static D3DXQUATERNION fix;
 
-	//ˆÊ’u‚ğ‡‚í‚¹‚é
+	//ä½ç½®ã‚’åˆã‚ã›ã‚‹
 	m_vPosition = m_pPlayer->GetPlayerRightHand().GetPosition();
-	D3DXQuaternionRotationYawPitchRoll(&fix, 0, 0, 5);
+	D3DXQuaternionRotationYawPitchRoll(&fix, 10, -2, -5);
 
 	D3DXQUATERNION startRotationQ = playerQ;
 	D3DXQUATERNION endRotationQ	  = playerQ * fix;
 
-	m_slerpTime += CTimeManager::GetDeltaTime();
+	m_slerpTime += (CTimeManager::GetDeltaTime()) * 3;
 
 	float t = m_slerpTime / SLERP_DURATION;
 	if (t > 1.f)
@@ -270,46 +273,30 @@ bool Haetataki::AttackMostion()
 		t = 1.f;
 	}
 
-	// ‹…–ÊüŒ`•âŠÔ (Slerp) ‚ğÀs
-	// D3DXQuaternionSlerp ŠÖ”‚ÅAŠŠ‚ç‚©‚É•âŠÔ‚³‚ê‚½lŒ³”‚ğ“¾‚é
+	// çƒé¢ç·šå½¢è£œé–“ (Slerp) ã‚’å®Ÿè¡Œ
+	// D3DXQuaternionSlerp é–¢æ•°ã§ã€æ»‘ã‚‰ã‹ã«è£œé–“ã•ã‚ŒãŸå››å…ƒæ•°ã‚’å¾—ã‚‹
 	D3DXQuaternionSlerp(
 		&m_vQuaternion,
 		&startRotationQ,
 		&endRotationQ,
 		t
 	);
-	//g—pƒ‚[ƒVƒ‡ƒ“
-	if (m_AddPos.x < RIGHT_TARGET_POS_X && !m_SwitchDir)
-	{
-		m_vPosition.x += m_AddPos.x;
-		//D3DXQuaternionRotationYawPitchRoll(&fix, 0, 0, 5);
-		m_AddPos.x += ADD_POS_X;
-	}
-	else
-	{
-		//true‚É‚È‚é‚Æ–ˆ‰ñ‚±‚±‚É’Ê‚é‚Ì‚Å–³—‚â‚è‰Šú‰»
-		if (!m_SwitchDir)
-		{
-			m_AddPos = { 0.f, 0.f, 0.f };
-		}
 
-		//Ø‚è‘Ö‚¦‚µON
-		m_SwitchDir = true;
+	//ä½¿ç”¨ãƒ¢ãƒ¼ã‚·ãƒ§ãƒ³
+	m_vPosition.x += m_AddPos.x;
+	m_AddPos.x += ADD_POS_X;
+
+	// å›è»¢ãŒå®Œäº†ã—ãŸå ´åˆ
+	if (t >= 1.0f)
+	{
+		m_slerpTime = 0.0f;
+		std::cout << "ãƒ¢ãƒ¼ã‚·ãƒ§ãƒ³çµ‚äº†" << std::endl;
+		return false; // ãƒ¢ãƒ¼ã‚·ãƒ§ãƒ³çµ‚äº†
 	}
 
-	// ƒ‚[ƒVƒ‡ƒ“I—¹”»’è
-	if (m_SwitchDir && m_AddPos.x >= LEFT_TARGET_POS_X)
-	{
-		// ‰ñ“]‚ªŠ®—¹‚µ‚½ê‡it‚ª1.0‚É’B‚µ‚½ê‡j‚Ìˆ—‚ğ’Ç‰Á‚µ‚Ä‚à—Ç‚¢
-		if (t >= 1.0f)
-		{
-			// SlerpƒJƒEƒ“ƒ^[‚ğƒŠƒZƒbƒg
-			m_slerpTime = 0.0f;
-			return false; // ƒ‚[ƒVƒ‡ƒ“I—¹
-		}
-	}
+	std::cout << "ãƒ¢ãƒ¼ã‚·ãƒ§ãƒ³ä¸­" << std::endl;
 
-	////ƒ‚[ƒVƒ‡ƒ“’†
+	//ãƒ¢ãƒ¼ã‚·ãƒ§ãƒ³ä¸­
 	return true;
 }
 
@@ -336,13 +323,13 @@ void Haetataki::OnCollision(CollisionBase* other)
 
 void Haetataki::Smash(CPlayer& playiers)
 {
-	//”š’e‚ÆƒvƒŒƒCƒ„[‚ÌˆÊ’u‚ÅƒxƒNƒgƒ‹‚ğ‚Æ‚é
+	//çˆ†å¼¾ã¨ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ä½ç½®ã§ãƒ™ã‚¯ãƒˆãƒ«ã‚’ã¨ã‚‹
 	D3DXVECTOR3 vecLen = m_vPosition - playiers.GetPosition();
 
-	//ƒxƒNƒgƒ‹‚ğ’·‚³‚É•ÏŠ·
+	//ãƒ™ã‚¯ãƒˆãƒ«ã‚’é•·ã•ã«å¤‰æ›
 	float len = D3DXVec3Length(&vecLen);
 
-	//ƒvƒŒƒCƒ„[‚Ì‚«”ò‚Î‚µ‚ÌŒvZ
+	//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®å¹ãé£›ã°ã—ã®è¨ˆç®—
 	D3DXVECTOR3 SmashVel = playiers.GetKnockbackVelocity(m_vPosition, 8, 60.0f);
 
 	playiers.SetHitAttack(
@@ -354,22 +341,22 @@ void Haetataki::Smash(CPlayer& playiers)
 
 void Haetataki::OneEnterThrow()
 {
-	//ƒvƒŒƒCƒ„[‚ÌƒNƒH[ƒ^ƒjƒIƒ“(Œü‚¢‚Ä‚¢‚é•ûŒü)‹L˜^
+	//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ã‚¯ã‚©ãƒ¼ã‚¿ãƒ‹ã‚ªãƒ³(å‘ã„ã¦ã„ã‚‹æ–¹å‘)è¨˜éŒ²
 	m_vQuaternion = m_pPlayer->GetQuaternion();
 
 	D3DXMATRIX matRot;
 
-	//ƒNƒH[ƒ^ƒjƒIƒ“‚ğƒ}ƒgƒŠƒbƒNƒX(s—ñ)‚É•ÏŠ·
+	//ã‚¯ã‚©ãƒ¼ã‚¿ãƒ‹ã‚ªãƒ³ã‚’ãƒãƒˆãƒªãƒƒã‚¯ã‚¹(è¡Œåˆ—)ã«å¤‰æ›
 	D3DXMatrixRotationQuaternion(&matRot, &m_vQuaternion);
 
-	//s—ñ‚Ì’†‚É‚ ‚éZ²¬•ª‚ğæ‚èo‚·
+	//è¡Œåˆ—ã®ä¸­ã«ã‚ã‚‹Zè»¸æˆåˆ†ã‚’å–ã‚Šå‡ºã™
 	D3DXVECTOR3 forward = D3DXVECTOR3(matRot._31, matRot._32, matRot._33);
 
-	//æ‚èo‚µ‚½Z²¬•ª‚ğƒm[ƒ}ƒ‰ƒCƒY
+	//å–ã‚Šå‡ºã—ãŸZè»¸æˆåˆ†ã‚’ãƒãƒ¼ãƒãƒ©ã‚¤ã‚º
 	D3DXVec3Normalize(&forward, &forward);
 
 	m_Velocity = forward * THROW_SPEED;
 
-	//“–‚½‚è”»’èíœ
+	//å½“ãŸã‚Šåˆ¤å®šå‰Šé™¤
 	CollisionManager::GetInstance()->RemoveCollider(m_pCollision.get());
 }

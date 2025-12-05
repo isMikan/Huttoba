@@ -53,7 +53,8 @@ void ItemBase::Update()
 	offSet = {0.f,0.f,1.f};
 
 	static constexpr float UNDER_MAX = -5.f;
-	if (m_vPosition.y < UNDER_MAX)
+	if (m_pPlayer &&
+		m_pPlayer->GetPosition().y < UNDER_MAX)
 	{
 		DestroyItem();
 	}
