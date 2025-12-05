@@ -329,6 +329,8 @@ void CPlayerManager::Destroy(CPlayerBase* player)
 
 	//“–‚½‚è”»’èíœ.
 	CollisionManager::GetInstance()->RemoveCollider(player->GetCollider().get());
+
+	m_pPlayers[id]->SetItemBase(nullptr);
 	//”z—ñíœ.
 	m_pPlayers[id].reset();
 }

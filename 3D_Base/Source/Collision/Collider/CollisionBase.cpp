@@ -23,6 +23,8 @@ CollisionBase::CollisionBase(
     m_MoveOffsetB = { 0.f,0.f, 0.f };
 }
 
+//--------------------------------------------------------------------------------------------------------------
+
 void CollisionBase::SetLocalOffSetToCapsule(
     const D3DXVECTOR3& localOffsetA,
     const D3DXVECTOR3& localOffsetB)
@@ -30,6 +32,8 @@ void CollisionBase::SetLocalOffSetToCapsule(
     m_MoveOffsetA = localOffsetA;
     m_MoveOffsetB = localOffsetB;
 }
+
+//--------------------------------------------------------------------------------------------------------------
 
 void CollisionBase::SetRotationXCapsule(float rad)
 {
@@ -39,6 +43,23 @@ void CollisionBase::SetRotationXCapsule(float rad)
     D3DXVec3TransformCoord(&m_LocalOffsetA, &m_LocalOffsetA, &mRot);
     D3DXVec3TransformCoord(&m_LocalOffsetB, &m_LocalOffsetB, &mRot);
 }
+
+//--------------------------------------------------------------------------------------------------------------
+
+void CollisionBase::SetRotationCapsule(float Yaw, float Pitch, float Roll)
+{
+    D3DXMATRIX mRot;
+    D3DXMatrixRotationYawPitchRoll(
+        &mRot,
+        Yaw,    // Yaw   YŽ²
+        Pitch,  // Pitch XŽ²
+        Roll    // Roll  ZŽ²
+    );
+    D3DXVec3TransformCoord(&m_LocalOffsetA, &m_LocalOffsetA, &mRot);
+    D3DXVec3TransformCoord(&m_LocalOffsetB, &m_LocalOffsetB, &mRot);
+}
+
+//--------------------------------------------------------------------------------------------------------------
 
 void CollisionBase::InvokeCollision(CollisionBase* pOther)
 {

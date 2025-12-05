@@ -235,7 +235,7 @@ void CSceneGameMain::Update()
 			m_StateTimer = 0;
 		}
 
-		if (m_StateTimer >= 60.0f)
+		if (m_StateTimer >= 999.0f)
 		{
 			//フィニッシュへ
 			m_GameState = GameState::Finish;

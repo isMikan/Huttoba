@@ -163,6 +163,7 @@ void Boomerang::HaveMove()
 
 void Boomerang::UseMove()
 {
+	if (!m_pPlayer)return;
 
 	//‰Ÿ‚³‚ê‚Ä‚¢‚éŠÔ‚Í”­ŽË‚¹‚¸‚Éƒ`ƒƒ[ƒW
 	if (CInputManager::IsRepeat(Action::Attack,m_pPlayer->GetPlayerID()) && !m_IsUseThrow)

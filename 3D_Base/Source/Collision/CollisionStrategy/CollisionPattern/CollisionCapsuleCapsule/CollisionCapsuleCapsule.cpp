@@ -81,8 +81,7 @@ bool CollisionCapsuleCapsule::CheckCollision(
 		s = (b * t - d) / a;
 		s = std::max(0.0f, std::min(1.0f, s));
 	}
-	// Note: t も先にクランプしてから s を再計算するパターンもありますが、
-	// この s を優先し t を再計算するパターンは、多くの衝突ライブラリで採用される標準的な方法の一つです。
+	// この s を優先し t を再計算するパターン
 
 	// 最短距離を計算
 
