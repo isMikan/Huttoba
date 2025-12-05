@@ -111,7 +111,7 @@ void CPlayerManager::StandbyPlayerCreate()
 }
 
 //--- ƒƒCƒ“ ---.
-void CPlayerManager::MainPlayerCreate(ItemManager* itemManager)
+void CPlayerManager::MainPlayerCreate(ItemManager* itemManager, CGroundManager* groundManager)
 {
 	Create();
 
@@ -126,6 +126,7 @@ void CPlayerManager::MainPlayerCreate(ItemManager* itemManager)
 		{
 			aiPlayer->SetPlayerManager(this);
 			aiPlayer->SetItemManager(itemManager);
+			aiPlayer->SetGroundManager(groundManager);
 		}
 
 		m_InitialSetPosY = 0.f;

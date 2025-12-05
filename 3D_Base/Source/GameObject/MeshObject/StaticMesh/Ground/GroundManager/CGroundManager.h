@@ -47,6 +47,12 @@ public:
 	//地面を取得.
 	const std::vector<std::unique_ptr<CGround>>& GetGrounds() const { return m_pGrounds; }
 
+	//現在の地面の半径を取得(sizeだと要素数を返すので-1している)
+	float GetGroundRadius() { return m_GroundRadius[m_pGrounds.size() - 1]; }
+
+	//地面の中心位置を取得
+	D3DXVECTOR3 GetGroundCenterPos();
+
 private:
 //======================================================================
 // 	   内部で呼び出す関数.
@@ -56,6 +62,9 @@ private:
 	//--- 破棄関数 ---.
 	void Destroy(int index);
 
+	//地面の半径を抽出
+	bool ExtractMeshRadius();
+
 private:
 //======================================================================
 // 	   内部で使用する変数.
@@ -63,4 +72,7 @@ private:
 	std::vector<std::unique_ptr<CGround>>	m_pGrounds;	//地面.
 
 	std::array<float, Ground_Max>	m_FallTime;		//落ちる時間.
+
+	//地面の半径
+	std::array<float, Ground_Max>	m_GroundRadius;
 };

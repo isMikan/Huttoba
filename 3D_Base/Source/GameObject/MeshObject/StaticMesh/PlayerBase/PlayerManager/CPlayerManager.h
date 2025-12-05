@@ -3,6 +3,8 @@
 #include "PlayerBase/CPlayerBase.h"
 #include "Item/ItemManager/ItemManager.h"
 
+class CGroundManager;
+
 /***********************************************************************
 *   プレイヤーマネージャークラス.				制作者 [甲把]
 **/
@@ -25,7 +27,7 @@ public:
 	//--- 準備画面 ---.
 	void StandbyPlayerCreate();
 	//--- メイン ---.
-	void MainPlayerCreate(ItemManager* itemManager);
+	void MainPlayerCreate(ItemManager* itemManager, CGroundManager* groundManager);
 	//--- リザルト ---.
 	void ResultPlayerCreate();
 

@@ -20,6 +20,7 @@
 #include "Item/Items/Boomerang/Boomerang.h"
 
 #include "Sound/CSoundManager.h"
+#include <Item/Items/Bomb/Bomb.h>
 
 CPlayerAI_TypeA::CPlayerAI_TypeA(int index)
 	: CPlayerAI		( index )
@@ -49,7 +50,7 @@ void CPlayerAI_TypeA::Update()
 		{
 			if(IsSearchItem(item.get()))
 			{
-				Boomerang* boomerang = dynamic_cast<Boomerang*>(item.get());
+				Bomb* boomerang = dynamic_cast<Bomb*>(item.get());
 				if(boomerang)
 				{
 					FindNearbyObject(boomerang, m_NearbyItems, IsSearchItem(boomerang));

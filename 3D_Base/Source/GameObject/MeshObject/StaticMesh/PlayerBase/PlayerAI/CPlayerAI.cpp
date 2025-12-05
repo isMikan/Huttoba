@@ -21,6 +21,7 @@ CPlayerAI::CPlayerAI(int index)
 
 	, m_pPlayerManager	( nullptr )
 	, m_pItemManager	( nullptr )
+	, m_pGroundManager	( nullptr )
 
 	, m_CurrentDir		( 0.f, 0.f, 0.f )
 	, m_TargetDir		( 0.f, 0.f, 0.f )	
@@ -35,6 +36,7 @@ CPlayerAI::CPlayerAI(int index)
 
 CPlayerAI::~CPlayerAI()
 {
+	m_pGroundManager = nullptr;
 	m_pPlayerManager = nullptr;
 	m_pItemManager = nullptr;
 }
