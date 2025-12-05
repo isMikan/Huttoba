@@ -104,6 +104,11 @@ public:
 		m_pManager->SetPaused(handle, paused);
 	}
 
+	bool IsPlaying(::EsHandle handle)
+	{
+		return m_pManager->Exists(handle);
+	}
+
 	//Ä¶‘¬“x‚Ìİ’è
 	void SetSpeed(::EsHandle handle, float speed)
 	{
