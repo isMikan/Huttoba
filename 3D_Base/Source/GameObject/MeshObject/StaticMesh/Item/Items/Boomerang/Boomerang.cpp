@@ -46,7 +46,7 @@ void Boomerang::Init()
 	m_UseCount = MOVE_SPEED;
 
 	m_ComeBack = false;
-	m_UsageLimit = { m_UseCount, MOVE_SPEED };
+	m_UsageLimit = { m_UseCount, USE_LIMIT };
 
 	AttachMesh(AssetManager::Mesh(StaticMeshList::Boomerang));
 

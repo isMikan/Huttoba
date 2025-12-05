@@ -46,10 +46,14 @@ constexpr float OFFSET_USE_COLLISION_X = 0.0f;
 constexpr float OFFSET_USE_COLLISION_Y = 1.1f;
 constexpr float OFFSET_USE_COLLISION_Z = 0.0f;
 
-constexpr float USE_COUNT = 7;	//使用上限
+//使用上限
+constexpr float USE_COUNT = 7;	
 
-constexpr float SLERP_DURATION = 0.5f; // 回転にかける総時間
+// 回転にかける総時間
+constexpr float SLERP_DURATION = 0.5f; 
 
+//回数制限
+constexpr float USE_LIMIT = 5;		
 //--------------------------------------------------------------------------------------------------------------
 
 Haetataki::Haetataki()
@@ -78,13 +82,14 @@ Haetataki::~Haetataki()
 
 void Haetataki::Init()
 {
+	m_UseCount = USE_LIMIT;
+	m_UsageLimit = { m_UseCount, USE_LIMIT };
 
 	AttachMesh(AssetManager::Mesh(StaticMeshList::Haetataki));
 
 	SetPosition(INITAL_POS_X, INITAL_POS_Y, INITAL_POS_Z);
 
 	m_State = IItemObserver::IItemObserver::State::Spawn;
-	m_UseCount = USE_COUNT;
 	m_tGravity = INITAL_GRAVITY;
 
 
@@ -263,8 +268,11 @@ void Haetataki::ItemState(IItemObserver::State state)
 	switch (state)
 	{
 	case IItemObserver::State::Have:
+		if (m_UseCount <= 0) { Destroy(); }
+
 		break;
 	case IItemObserver::State::Use:
+		m_UsageLimit.remaining = --m_UseCount;
 		break;
 	case IItemObserver::State::Throw:
 		OneEnterThrow();
@@ -377,6 +385,15 @@ void Haetataki::Smash(CPlayer& playiers)
 	playiers.SetHitAttack(
 		SmashVel,
 		CPlayerBase::HitEvent::Knockdown);
+
+	static ::EsHandle hEffect = 1;
+
+	//エフェクト追加
+	hEffect = AssetManager::Effect()->Play("Explosion", m_vPosition);
+
+	//エフェクトの拡縮設定
+	AssetManager::Effect()->SetScale(hEffect, D3DXVECTOR3(0.6f, 0.6f, 0.6f));
+
 }
 
 //--------------------------------------------------------------------------------------------------------------
