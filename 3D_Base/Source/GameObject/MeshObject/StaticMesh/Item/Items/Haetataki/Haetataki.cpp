@@ -110,6 +110,7 @@ void Haetataki::Init()
 	D3DXVECTOR3 UseOffset = { OFFSET_USE_COLLISION_X,OFFSET_USE_COLLISION_Y,OFFSET_USE_COLLISION_Z };
 
 	m_pUseCollider->SetLocalOffSetToCapsule(UseOffset, UseOffset);
+	m_pUseCollider->SetRotationCapsule(0.f, D3DXToRadian(90.f), 0.f);
 }
 
 //--------------------------------------------------------------------------------------------------------------
