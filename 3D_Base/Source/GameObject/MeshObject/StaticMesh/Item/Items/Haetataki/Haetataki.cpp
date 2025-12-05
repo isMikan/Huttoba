@@ -166,8 +166,46 @@ void Haetataki::Have()
 	// プレイヤーの回転
 	D3DXQUATERNION playerQ = m_pPlayer->GetQuaternion();
 
+
+	static float a = 0.f, b = 0.f, c = 0.f;
+
+	if (GetKeyState('B') & 0x8000)
+	{
+		a += 0.5;
+		std::cout << "Yaw = " << a << std::endl;
+	}
+	if (GetKeyState('N') & 0x8000)
+	{
+		b += 0.5;
+		std::cout << "Pitch = " << b << std::endl;
+	}
+	if (GetKeyState('M') & 0x8000)
+	{
+		c += 0.5;
+		std::cout << "Roll = " << c << std::endl;
+	}
+	if (GetKeyState('G') & 0x8000)
+	{
+		a -= 0.5;
+		std::cout << "Yaw = " << a << std::endl;
+
+	}
+	if (GetKeyState('H') & 0x8000)
+	{
+		b -= 0.5;
+		std::cout << "Pitch = " << b << std::endl;
+
+	}
+	if (GetKeyState('J') & 0x8000)
+	{
+		c -= 0.5;
+		std::cout << "Roll = " << c << std::endl;
+
+	}
+
 	// ハエたたきの補正角
 	D3DXQUATERNION fix;
+	//D3DXQuaternionRotationYawPitchRoll(&fix, D3DXToRadian(a), D3DXToRadian(b), D3DXToRadian(c));
 	D3DXQuaternionRotationYawPitchRoll(&fix, D3DXToRadian(90.f), 0, D3DXToRadian(45.f));
 
 	D3DXQUATERNION finalQ;
@@ -256,21 +294,25 @@ bool Haetataki::AttackMostion()
 	D3DXQUATERNION playerQ = m_pPlayer->GetQuaternion();
 
 	// ハエたたきの補正角
-	static D3DXQUATERNION fix;
+	static D3DXQUATERNION Startfix;
+	static D3DXQUATERNION Endfix;
 
 	//位置を合わせる
 	m_vPosition = m_pPlayer->GetPlayerRightHand().GetPosition();
-	D3DXQuaternionRotationYawPitchRoll(&fix, 10, -2, -5);
+	//y,x,z
+	D3DXQuaternionRotationYawPitchRoll(&Startfix, D3DXToRadian(45.f), D3DXToRadian(45.f), D3DXToRadian(90.f));
+	D3DXQuaternionRotationYawPitchRoll(&Endfix, D3DXToRadian(12.f), D3DXToRadian(196.f), D3DXToRadian(81.5));
+	//D3DXQuaternionRotationYawPitchRoll(&fix, 0, D3DXToRadian(-45.f), D3DXToRadian(90.f));
 
-	D3DXQUATERNION startRotationQ = playerQ;
-	D3DXQUATERNION endRotationQ	  = playerQ * fix;
+	D3DXQUATERNION startRotationQ = playerQ * Startfix;
+	D3DXQUATERNION endRotationQ	  = playerQ * Endfix;
 
-	m_slerpTime += (CTimeManager::GetDeltaTime()) * 3;
+	m_slerpTime += (CTimeManager::GetDeltaTime()) * 5;
 
 	float t = m_slerpTime / SLERP_DURATION;
-	if (t > 1.f)
+	if (t > 1.0f)
 	{
-		t = 1.f;
+		t = 1.0;
 	}
 
 	// 球面線形補間 (Slerp) を実行
