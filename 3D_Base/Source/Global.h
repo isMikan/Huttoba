@@ -185,6 +185,7 @@ enum class enSoundList
 	SE_BoomerangCharge,
 	SE_BoomerangMaxCharge,
 	SE_BoomerangThrow,
+	SE_DestroyItem,
 
 
 	//‰¹‚ª‘‚¦‚½‚çu‚±‚±v‚É’Ç‰Á
