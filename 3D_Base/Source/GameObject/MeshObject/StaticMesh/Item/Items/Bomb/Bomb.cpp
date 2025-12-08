@@ -13,7 +13,7 @@ Bomb::Bomb()
 	, m_MoveSpeed		( 3.0f )	//値を変えると爆弾の移動速度が変化
 	, m_UpSpeed			( 5.0f )	//値を変えると爆弾のy軸の上昇量が変化
 
-	, m_ExplosionTime	( 5.0f )	//値を変えると爆発するまでの時間が変化
+	, m_ExplosionTime	( 1.0f )	//値を変えると爆発するまでの時間が変化
 	, m_ExplosionCnt	( 0.0f )
 
 	, m_ColorTimer		( 0.0 )
@@ -139,15 +139,17 @@ void Bomb::ItemState(IItemObserver::State state)
 
 void Bomb::OnCollision(CollisionBase* other)
 {
-	if (other->GetTag() == CollisionBase::ColliderTag::Player)
+	//爆発したときだけ判定する
+	if (m_IsExploded) 
 	{
+		//タグがプレイヤー意外だと無視
+		if (other->GetTag() != CollisionBase::ColliderTag::Player)return;
+		
 		if (CPlayerBase* player = dynamic_cast<CPlayerBase*>(other->GetListener()))
 		{
-			if (m_IsExploded)
-			{
-				Smash(*player);
-			}
-		}
+
+			Smash(*player);
+		}	
 	}
 }
 
@@ -158,8 +160,14 @@ void Bomb::HaveMove()
 
 void Bomb::UseMove()
 {
+	//爆発すればアイテムを破棄する
 	if (m_IsExploded)
+	{
 		m_IsDestroy = true;
+		return;
+	}
+
+	m_ExplosionCnt += CTimeManager::GetDeltaTime();
 
 	//現在の高さによって落下するかを決める
 	if (m_vPosition.y > 0.1f)
@@ -172,10 +180,10 @@ void Bomb::UseMove()
 	}
 	else
 	{
-		//地面の高さなのでy軸移動量を0にする
-		m_Velocity.y = 0;
-
-		Explosion();
+		if (m_IsOnGround && m_ExplosionCnt > m_ExplosionTime)
+		{
+			Explosion();
+		}
 	}
 
 	//位置を移動速度*デルタタイムで計算
@@ -251,9 +259,6 @@ void Bomb::Explosion()
 
 		//エフェクトの拡縮設定
 		AssetManager::Effect()->SetScale(hEffect, D3DXVECTOR3(0.6f, 0.6f, 0.6f));
-
-		////アイテムの状態を破棄にする
-		//DestroyItem();
 	}
 }
 

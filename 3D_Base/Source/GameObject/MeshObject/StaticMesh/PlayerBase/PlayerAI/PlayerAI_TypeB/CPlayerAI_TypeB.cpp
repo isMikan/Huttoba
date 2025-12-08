@@ -1,9 +1,13 @@
 #include "CPlayerAI_TypeB.h"
-#include <PlayerBase/PlayerState/PlayerActionState/PlayerActionIdleState/CPlayerActionIdleState.h>
-#include <PlayerBase/PlayerState/PlayerActionState/PlayerHoldingIdleState/CPlayerHoldingIdleState.h>
+#include <PlayerBase/PlayerState/PlayerActionState/PlayerKnockbackState/CPlayerKnockbackState.h>
+#include <PlayerBase/PlayerState/PlayerActionState/PlayerKnockdownState/CPlayerKnockdownState.h>
+
+#include "Ground/GroundManager/CGroundManager.h"
 
 CPlayerAI_TypeB::CPlayerAI_TypeB(int index)
 	: CPlayerAI			( index )
+
+	, m_MoveScore		()
 
 	, m_DistanceWeight	( 0.5f )	//値を変えるとアイテム距離スコアが変化
 									//値を大きくすると近くのアイテム、小さくすると好みのアイテムを優先する
@@ -18,9 +22,17 @@ void CPlayerAI_TypeB::Update()
 {
 	m_Control = ActionInstruct::None;
 
+	//毎フレーム行動スコアを低くする
+	//0にすると scoer = -距離 をしているので何も行動しないのスコアが高くなる
+	m_MoveScore = -10000;
+
 	SearchItem();
 
-	HaveItem();
+	HandleItemAction();
+
+	AvoidDanger();
+
+	AutomaticMovement(m_NearbyItems.dir);
 
 	CPlayerAI::Update();
 }
@@ -38,42 +50,41 @@ void CPlayerAI_TypeB::SearchItem()
 	//狙うアイテム
 	ItemBase* targetItem = nullptr;
 
-	//最も高いスコアを記録
-	float maxScore = -100000;
-
-	for (auto& item : m_pItemManager->GetItems())
+	if (m_pItemManager
+		&& m_pItemManager->GetItemVectorNum() > 0)
 	{
-		//アイテムが地面に落ちていないなら無視する
-		//近くのアイテムが降ってくるまで待つならこのif分を無効化
-		if (item->GetState() != ItemBase::State::OnGround) continue;
-
-		//アイテムとの距離の計算
-		D3DXVECTOR3 distance = item->GetPosition() - m_vPosition;
-
-		//処理負荷軽減のために距離の2乗の値を渡す
-		float distanceSq = D3DXVec3LengthSq(&distance);
-
-		//スコアは距離が近いほうが高くしたいので
-		float score = -distanceSq * m_DistanceWeight;
-
-		//スコアが今までの最大より大きいなら
-		if (maxScore < score)
+		for (auto& item : m_pItemManager->GetItems())
 		{
-			maxScore = score;
+			//アイテムが地面に落ちていないなら無視する
+			//近くのアイテムが降ってくるまで待つならこのif分を無効化
+			if (item->GetState() != ItemBase::State::OnGround) continue;
 
-			//ターゲットを更新
-			targetItem = item.get();
-			// 移動用の方向ベクトルも保存
-			//D3DXVec3Normalize(&m_NearbyItems.dir, &distance);
-			m_NearbyItems.dir = distance;
-			m_NearbyItems.sqrt = distanceSq;
+			//アイテムとの距離の計算
+			D3DXVECTOR3 distance = item->GetPosition() - m_vPosition;
+
+			//処理負荷軽減のために距離の2乗の値を渡す
+			float distanceSq = D3DXVec3LengthSq(&distance);
+
+			//スコアは距離が近いほうが高くしたいので
+			float score = -distanceSq * m_DistanceWeight;
+
+			//スコアが今までの最大より大きいなら
+			if (m_MoveScore < score)
+			{
+				m_MoveScore = score;
+
+				//ターゲットを更新
+				targetItem = item.get();
+
+				m_NearbyItems.dir = distance;
+				m_NearbyItems.sqrt = distanceSq;
+			}
 		}
 	}
 
 	//ターゲットが決まったら移動
 	if (targetItem)
 	{
-		AutomaticMovement(m_NearbyItems.dir);
 		//アイテムが近ければ拾う
 		if (m_NearbyItems.sqrt < 3.0f)
 		{
@@ -82,7 +93,7 @@ void CPlayerAI_TypeB::SearchItem()
 	}
 }
 
-void CPlayerAI_TypeB::HaveItem()
+void CPlayerAI_TypeB::HandleItemAction()
 {
 	//アイテムを未所持なら返す
 	if (!m_pItemBase)return;
@@ -90,14 +101,15 @@ void CPlayerAI_TypeB::HaveItem()
 	//狙うプレイヤー
 	CPlayerBase* targetPlayer = nullptr;
 
-	//最も高いスコアを記録
-	float maxScore = -100000;
-
 	for (auto& player : m_pPlayerManager->GetPlayer())
 	{
 		//自分なら無視して次へ
 		if (player.get() == this)continue;
 
+		//中身がないなら無視して次へ
+		if (!player)continue;
+
+		//ここでエラー
 		//他プレイヤーとの距離の計算
 		D3DXVECTOR3 distance = player->GetPosition() - m_vPosition;
 
@@ -107,15 +119,20 @@ void CPlayerAI_TypeB::HaveItem()
 		//スコアは距離が近いほうが高くしたいので
 		float score = -distanceSq * m_DistanceWeight;
 
-		//スコアが今までの最大より大きいなら
-		if (maxScore < score)
+		//相手プレイヤーがダウン中か吹き飛んでいる最中なら攻撃しにくくする
+		if (player->IsAnyActionState<CPlayerKnockdownState,CPlayerKnockbackState>())
 		{
-			maxScore = score;
+			score -= 5000.0f;
+		}
+
+		//スコアが今までの最大より大きいなら
+		if (m_MoveScore < score)
+		{
+			m_MoveScore = score;
 
 			//ターゲットを更新
 			targetPlayer = player.get();
-			// 移動用の方向ベクトルも保存
-			//D3DXVec3Normalize(&m_NearbyItems.dir, &distance);
+
 			m_NearbyItems.dir = distance;
 			m_NearbyItems.sqrt = distanceSq;
 		}
@@ -124,13 +141,32 @@ void CPlayerAI_TypeB::HaveItem()
 	//ターゲットが決まったら移動指示
 	if (targetPlayer)
 	{
-		AutomaticMovement(m_NearbyItems.dir);
 		//ターゲットプレイヤーと近ければ攻撃
-		if (m_NearbyItems.sqrt < 5.0f
-			&& (IsAnyActionState<CPlayerActionIdleState>()
-				|| IsAnyActionState<CPlayerHoldingIdleState>()))
+		if (m_NearbyItems.sqrt < 1.0f)
 		{
 			m_Control = ActionInstruct::Attack;
 		}
+	}
+}
+
+void CPlayerAI_TypeB::AvoidDanger()
+{
+	//地面の中心位置をとる
+	D3DXVECTOR3 groundCenterPos = m_pGroundManager->GetGroundCenterPos();
+
+	//地面の半径の全長を計算
+	float groundRadius = m_pGroundManager->GetGroundRadius() * m_pGroundManager->GetGroundRadius();
+
+	//中心位置からプレイヤーの位置がどれくらい離れているかを計算
+	D3DXVECTOR3 diff = m_vPosition - groundCenterPos;
+
+	//中心位置からプレイヤーの離れているかの全長を出す
+	float diffSq = diff.x * diff.x + diff.z * diff.z;
+
+	//プレイヤーの位置が地面の半径以上なら
+	if (diffSq > groundRadius - 6)
+	{
+		//一旦中央に移動
+		m_TargetDir = m_vPosition - m_pGroundManager->GetGroundCenterPos();
 	}
 }

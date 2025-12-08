@@ -5,6 +5,7 @@
 
 #include "PlayerBase/PlayerManager/CPlayerManager.h"
 #include "Item/ItemManager/ItemManager.h"
+#include "Ground/GroundManager/CGroundManager.h"
 
 /***********************************************************************
 *	プレイヤーAIクラス.							制作者 [甲把]
@@ -40,6 +41,9 @@ public:
 	void SetPlayerManager(CPlayerManager* manager) { m_pPlayerManager = manager; }
 	//アイテムを設定する.
 	void SetItemManager(ItemManager* manager) { m_pItemManager = manager; }
+
+	//地面マネージャーを設定する
+	void SetGroundManager(CGroundManager* ground) { m_pGroundManager = ground; }
 
 	//--- 衝突判定 ---.
 	void OnCollision(CollisionBase* pOtherCollider) override;
@@ -78,6 +82,9 @@ protected:
 protected:
 	CPlayerManager*	m_pPlayerManager;	//プレイヤー.
 	ItemManager*	m_pItemManager;		//アイテム.
+
+	//地面マネージャー
+	CGroundManager* m_pGroundManager;
 
 	D3DXVECTOR3		m_CurrentDir;		//現在の進行方向.
 	D3DXVECTOR3		m_TargetDir;		//目的の進行方向.
