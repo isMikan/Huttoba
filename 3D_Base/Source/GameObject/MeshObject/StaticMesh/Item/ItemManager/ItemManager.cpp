@@ -91,8 +91,6 @@ void ItemManager::Update()
 		{
 			item->Fall();
 		}
-
-		std::cout << item->GetPosition().x << std::endl;
 	}
 
 

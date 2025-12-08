@@ -332,7 +332,6 @@ void Boomerang::OneEnterUse()
 	//ˆÚ“®
 	m_Velocity = forward * m_MoveSpeed;
 
-
 	m_IsOkFall = false;
 
 }
