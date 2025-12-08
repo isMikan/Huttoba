@@ -13,7 +13,7 @@ CPlayerKnockdownState::CPlayerKnockdownState(CPlayerBase& pPlayer)
 	: CPlayerState				( pPlayer )
 	
 	, m_StartTime				()
-	, m_EndTime					( 0.8f )	//終了させる割合.
+	, m_EndTime					( 0.9f )	//終了させる割合.
 	, m_MaxTime					()
 
 	, m_DecreaseTriggerTime		()
@@ -71,13 +71,17 @@ void CPlayerKnockdownState::Enter()
 	m_RightHandPos += rightHandOffset;
 	m_LeftHandPos += leftHandOffset;
 
-	//ダウン回数の取得
-	int downCount = m_pPlayer.GetKnockdownCount();
+	//ダウン状態付きの攻撃を受けた場合.
+	if (m_pPlayer.GetHitAttack().hitEvent == CPlayerBase::HitEvent::WithDown)
+	{
+		//ダウン回数の取得
+		int downCount = m_pPlayer.GetKnockdownCount();
 
-	//ダウン回数から終了する時間を計算.
-	m_EndTime = ++downCount * m_EndTime;
-	//ダウン回数を設定.
-	m_pPlayer.SetKnockdownCount(downCount);
+		//ダウン回数から終了する時間を計算.
+		m_EndTime = ++downCount * m_EndTime;
+		//ダウン回数を設定.
+		m_pPlayer.SetKnockdownCount(downCount);
+	}
 
 	//最大時間を設定.
 	m_MaxTime = m_EndTime;
@@ -88,6 +92,8 @@ void CPlayerKnockdownState::Exit()
 {
 	//SEを止める.
 	AssetManager::Sound()->Stop(enSoundList::SE_Knockdown);
+
+	m_pPlayer.SetHitAnim(CPlayerBase::HitEvent::None);
 }
 
 //--- この状態の間に呼び出す ---.
@@ -112,6 +118,18 @@ void CPlayerKnockdownState::Update()
 	if(dynamic_cast<CPlayer*>(&m_pPlayer))
 	{
 		ChildPlayer(m_pPlayer.GetPlayerID());
+	}
+	else
+	{
+		//レバガチャが反応していない場合.
+		if (!m_IsTimeDecreasing)
+		{
+			//減少した時間を取得.
+			m_DecreaseTriggerTime = CTimeManager::GetTotalTime();
+
+			m_EndTime -= m_TimeDecreaseByMashing;	//減少する.
+			m_IsTimeDecreasing = true;
+		}
 	}
 
 	//フラグが ture の間減らす.

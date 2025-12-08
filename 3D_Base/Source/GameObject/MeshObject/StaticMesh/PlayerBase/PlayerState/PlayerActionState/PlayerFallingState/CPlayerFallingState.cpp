@@ -97,7 +97,7 @@ void CPlayerFallingState::Update()
 		|| IsEnd())
 	{
 		//ƒ_ƒEƒ“ó‘Ô•t‚«‚ÌUŒ‚‚ğó‚¯‚½ê‡.
-		if(m_pPlayer.GetHitAttack().hitEvent == CPlayerBase::HitEvent::WithDown)
+		if (m_pPlayer.GetHitAttack().hitEvent == CPlayerBase::HitEvent::WithDown)
 		{
 			m_pPlayer.SetActionState(std::make_unique<CPlayerKnockdownState>(m_pPlayer));
 			return;
