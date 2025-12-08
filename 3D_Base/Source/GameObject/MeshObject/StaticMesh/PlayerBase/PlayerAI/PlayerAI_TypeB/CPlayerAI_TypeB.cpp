@@ -45,7 +45,7 @@ void CPlayerAI_TypeB::Draw(D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAM
 void CPlayerAI_TypeB::SearchItem()
 {
 	//アイテムを持っているなら返す
-	if (m_pItemBase) return;
+	if (m_pHoldingItem) return;
 
 	//狙うアイテム
 	ItemBase* targetItem = nullptr;
@@ -96,7 +96,7 @@ void CPlayerAI_TypeB::SearchItem()
 void CPlayerAI_TypeB::HandleItemAction()
 {
 	//アイテムを未所持なら返す
-	if (!m_pItemBase)return;
+	if (!m_pHoldingItem)return;
 
 	//狙うプレイヤー
 	CPlayerBase* targetPlayer = nullptr;

@@ -1,7 +1,5 @@
 #pragma once
 
-#include "Input/CInput.h"
-
 #include "PlayerBase/CPlayerBase.h"
 
 /***********************************************************************
@@ -19,7 +17,6 @@
 class CPlayer
 	: public CPlayerBase
 {
-
 public:
 	CPlayer(int index);		//ˆø”:ƒRƒ“ƒgƒ[ƒ‰”Ô†.
 	~CPlayer() override;

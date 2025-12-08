@@ -1,19 +1,5 @@
 #include "CPlayerAI.h"
 
-#include "PlayerBase/PlayerState/PlayerMoveState/PlayerMoveState/CPlayerMoveState.h"
-#include "PlayerBase/PlayerState/PlayerTurnState/PlayerTurnState/CPlayerTurnState.h"
-
-#include "PlayerBase/PlayerState/PlayerMoveState/PlayerMoveIdelState/CPlayerMoveIdleState.h"
-#include "PlayerBase/PlayerState/PlayerTurnState/PlayerTurnIdleState/CPlayerTurnIdleState.h"
-
-#include "PlayerBase/PlayerState/PlayerActionState/PlayerHandWhiffState/CPlayerHandWhiffState.h"
-#include "PlayerBase/PlayerState/PlayerActionState/PlayerPushedState/CPlayerPushedState.h"
-#include "PlayerBase/PlayerState/PlayerActionState/PlayerKnockbackState/CPlayerKnockbackState.h"
-#include "PlayerBase/PlayerState/PlayerActionState/PlayerFallingState/CPlayerFallingState.h"
-#include "PlayerBase/PlayerState/PlayerActionState/PlayerGetUpState/CPlayerGetUpState.h"
-#include "PlayerBase/PlayerState/PlayerActionState/PlayerKnockdownState/CPlayerKnockdownState.h"
-
-
 #include "Sound/CSoundManager.h"
 
 CPlayerAI::CPlayerAI(int index)
@@ -29,6 +15,8 @@ CPlayerAI::CPlayerAI(int index)
 
 	, m_NearbyPlayers	()
 	, m_NearbyItems		()
+
+	, m_IsHitGround		( false )
 
 	, m_MaxSqrt			( 999.f )	//‰‰ñ‚ÍA”äŠr‚Ì‚½‚ß‘å‚«‚¢”’l‚É‚µ‚Ä‚¨‚­.
 {
@@ -49,7 +37,8 @@ CPlayerAI::~CPlayerAI()
 void CPlayerAI::Update()
 {
 	CPlayerBase::Update();
-	m_IsGround = false;
+
+	m_IsHitGround = false;
 }
 
 //--- –ˆƒtƒŒ[ƒ€‚Ì•`‰æ ---.
@@ -61,10 +50,10 @@ void CPlayerAI::Draw(
 
 void CPlayerAI::OnCollision(CollisionBase* pOtherCollider)
 {
+	//“–‚½‚Á‚Ä‚¢‚½ê‡.
 	if (pOtherCollider->GetTag() == CollisionBase::ColliderTag::Ground)
 	{
-		m_IsGround = true;
-		//std::cout << "“–‚½‚Á‚Ä‚é" << std::endl;
+		m_IsHitGround = true;
 	}
 
 	CPlayerBase::OnCollision(pOtherCollider);

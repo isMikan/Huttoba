@@ -68,19 +68,14 @@ void CPlayerItemAttackState::Enter()
 	m_RightHandStartPos = rightHandOffset;
 	m_LeftHandStartPos = leftHandOffset;
 
-	ItemBase* item = m_pPlayer.GetItemBase();
+	ItemBase* item = m_pPlayer.GetHoldingItem();
 
-	if (dynamic_cast<Haetataki*>(item) 
-		|| dynamic_cast<SmashBat*>(item)
-		|| dynamic_cast<Boomerang*>(item))
+	if (m_pPlayer.IsAnyHoldingItem<Haetataki, SmashBat, Boomerang>())
 	{
 		m_RightHandEndPos = m_OneHand_RightHandEndPos;
 		m_LeftHandEndPos = m_OneHand_LeftHandEndPos;
 	}
-	else if (dynamic_cast<Bomb*>(item)
-		|| dynamic_cast<Mushroom*>(item)
-		|| dynamic_cast<Fun*>(item)
-		|| dynamic_cast<TrackingRobot*>(item))
+	else if (m_pPlayer.IsAnyHoldingItem<Bomb, Mushroom, Fun, TrackingRobot>())
 	{
 		m_RightHandEndPos = m_HoldBothHands_RightHandEndPos;
 		m_LeftHandEndPos = m_HoldBothHands_LeftHandEndPos;
@@ -98,7 +93,7 @@ void CPlayerItemAttackState::Update()
 	//ÉQÅ[ÉÄëSëÃÇÃåoâﬂéûä‘.
 	float t = CTimeManager::GetTotalTime();
 
-	ItemBase* item = m_pPlayer.GetItemBase();
+	ItemBase* item = m_pPlayer.GetHoldingItem();
 		
 	if (dynamic_cast<Fun*>(item))
 	{

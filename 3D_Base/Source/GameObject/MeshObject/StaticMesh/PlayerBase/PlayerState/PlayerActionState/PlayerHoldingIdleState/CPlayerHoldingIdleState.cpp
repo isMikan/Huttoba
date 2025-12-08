@@ -71,7 +71,7 @@ void CPlayerHoldingIdleState::Exit()
 void CPlayerHoldingIdleState::Update()
 {
 	//持っているアイテム.
-	ItemBase* item = m_pPlayer.GetItemBase();
+	ItemBase* item = m_pPlayer.GetHoldingItem();
 
 	if (!item)
 	{
@@ -89,25 +89,15 @@ void CPlayerHoldingIdleState::Update()
 	D3DXVECTOR3 rightHandOffsetPos = m_pPlayer.GetPlayerRightHand().GetOffsetPos();
 	D3DXVECTOR3 leftHandOffsetPos = m_pPlayer.GetPlayerLeftHand().GetOffsetPos();
 
-	if (dynamic_cast<Haetataki*>(item)
-		|| dynamic_cast<SmashBat*>(item)
-		|| dynamic_cast<Boomerang*>(item))
+	if(m_pPlayer.IsAnyHoldingItem<Haetataki, SmashBat, Boomerang>())
 	{
 		rightHandOffsetPos += m_OneHand_RightHandEndPos;
 		leftHandOffsetPos += m_OneHand_LeftHandEndPos;
-		if (!dynamic_cast<Boomerang*>(item))
-		{
-			item->SetState(IItemObserver::IItemObserver::State::Have);
-		}
 	}
-	else if (dynamic_cast<Bomb*>(item)
-		|| dynamic_cast<Mushroom*>(item)
-		|| dynamic_cast<Fun*>(item)
-		|| dynamic_cast<TrackingRobot*>(item))
+	else if (m_pPlayer.IsAnyHoldingItem<Bomb, Mushroom, Fun, TrackingRobot>())
 	{
 		rightHandOffsetPos += m_HoldBothHands_RightHandEndPos;
 		leftHandOffsetPos += m_HoldBothHands_LeftHandEndPos;
-		item->SetState(IItemObserver::IItemObserver::State::Have);
 	}
 
 	//経過時間を取得.

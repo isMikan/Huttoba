@@ -1,21 +1,5 @@
 #include "CPlayerBase.h"
 
-#include "PlayerState/PlayerMoveState/PlayerMoveIdelState/CPlayerMoveIdleState.h"
-#include "PlayerState/PlayerTurnState/PlayerTurnIdleState/CPlayerTurnIdleState.h"
-#include "PlayerState/PlayerActionState/PlayerActionIdleState/CPlayerActionIdleState.h"
-
-#include "PlayerBase/PlayerState/PlayerActionState/PlayerPickupState/CPlayerPickupState.h"
-#include "PlayerBase/PlayerState/PlayerActionState/PlayerThrowState/CPlayerThrowState.h"
-#include "PlayerBase/PlayerState/PlayerActionState/PlayerHandAttackState/CPlayerHandAttackState.h"
-#include "PlayerBase/PlayerState/PlayerActionState/PlayerItemAttackState/CPlayerItemAttackState.h"
-#include "PlayerBase/PlayerState/PlayerActionState/PlayerPushedState/CPlayerPushedState.h"
-#include "PlayerBase/PlayerState/PlayerActionState/PlayerKnockbackState/CPlayerKnockbackState.h"
-#include "PlayerBase/PlayerState/PlayerActionState/PlayerFallingState/CPlayerFallingState.h"
-#include "PlayerBase/PlayerState/PlayerActionState/PlayerKnockdownState/CPlayerKnockdownState.h"
-
-#include "PlayerBase/PlayerState/PlayerActionState/PlayerResultWin_TypeA/CPlayerResultWin_TypeA.h"
-#include "PlayerBase/PlayerState/PlayerActionState/PlayerResultLose_TypeA/CPlayerResultLose_TypeA.h"
-
 #include "Item/ItemBase.h"	
 #include "Item/Items/Boomerang/Boomerang.h"
 #include "Collision/CollisionUtility/CollisionUtility.h"
@@ -32,7 +16,7 @@ CPlayerBase::CPlayerBase( int index )
 	, m_pTurnState		( std::make_unique<CPlayerTurnIdleState>( *this ) )
 	, m_pActionState	( std::make_unique<CPlayerActionIdleState>( *this ) )
 
-	, m_pItemBase		( nullptr )
+	, m_pHoldingItem		( nullptr )
 
 	, m_Control			( ActionInstruct::None )
 	, m_HitAttack		()
@@ -51,7 +35,7 @@ CPlayerBase::CPlayerBase( int index )
 
 CPlayerBase::~CPlayerBase()
 {
-	m_pItemBase = nullptr;
+	m_pHoldingItem = nullptr;
 }
 
 //======================================================================
@@ -91,25 +75,26 @@ void CPlayerBase::Update()
 	}
 
 	//アイテムが存在する場合.
-	if (m_pItemBase)
+	if (m_pHoldingItem)
 	{
 		//アイテムを投げる.
 		if (m_Control == ActionInstruct::ToggleItem)
 		{
-			m_pItemBase->SetState(IItemObserver::State::Throw);
+			m_pHoldingItem->SetState(IItemObserver::State::Throw);
 			SetActionState(std::make_unique<CPlayerThrowState>(*this));
 		}
 		//アイテムの攻撃.
 		if (m_Control == ActionInstruct::Attack)
 		{
-			if (dynamic_cast<Boomerang*>(m_pItemBase)
-				&& dynamic_cast<Boomerang*>(m_pItemBase)->GetIsUseThrow())
+			if (!m_pHoldingItem
+				|| (dynamic_cast<Boomerang*>(m_pHoldingItem)
+				&& dynamic_cast<Boomerang*>(m_pHoldingItem)->GetIsUseThrow()))
 			{
 				SetActionState(std::make_unique<CPlayerHandAttackState>(*this));
 			}
 			else
 			{
-				m_pItemBase->SetState(IItemObserver::State::Use);
+				m_pHoldingItem->SetState(IItemObserver::State::Use);
 				SetActionState(std::make_unique<CPlayerItemAttackState>(*this));
 			}
 		}
@@ -443,12 +428,12 @@ void CPlayerBase::OnCollision(CollisionBase* pOtherCollider)
 			{
 				//拾う指示をされ、アイテムを持っていない場合.
 				if (m_Control == ActionInstruct::ToggleItem
-					&& !m_pItemBase)
+					&& !m_pHoldingItem)
 				{
 					item->SetPlayer(this);
 					item->SetState(IItemObserver::State::Have);
 					SetActionState(std::make_unique<CPlayerPickupState>(*this));
-					m_pItemBase = item;
+					m_pHoldingItem = item;
 				}
 			}
 		}
@@ -457,7 +442,7 @@ void CPlayerBase::OnCollision(CollisionBase* pOtherCollider)
 
 		if (Boomerang* item = dynamic_cast<Boomerang*>(pOtherCollider->GetListener()))
 		{
-			if (m_pItemBase == item)
+			if (m_pHoldingItem == item)
 			{
 				if (item->GetIsComeBack())
 				{

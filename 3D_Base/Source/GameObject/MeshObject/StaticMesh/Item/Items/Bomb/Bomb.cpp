@@ -203,7 +203,7 @@ void Bomb::OneEnterUse()
 	EnterUseThrowCommon();
 
 	//投げた瞬間に別のアイテムを持ったり使ったりできるように追加
-	m_pPlayer->SetItemBase(nullptr);
+	m_pPlayer->SetHoldingItem(nullptr);
 }
 
 void Bomb::OneEnterThrow()

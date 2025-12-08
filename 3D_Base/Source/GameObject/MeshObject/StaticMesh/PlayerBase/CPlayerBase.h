@@ -10,6 +10,29 @@
 
 #include "PlayerState/CPlayerState.h"
 
+#include "PlayerState/PlayerMoveState/PlayerMoveState/CPlayerMoveState.h"
+#include "PlayerState/PlayerTurnState/PlayerTurnState/CPlayerTurnState.h"
+
+#include "PlayerState/PlayerMoveState/PlayerMoveIdelState/CPlayerMoveIdleState.h"
+#include "PlayerState/PlayerTurnState/PlayerTurnIdleState/CPlayerTurnIdleState.h"
+#include "PlayerState/PlayerActionState/PlayerActionIdleState/CPlayerActionIdleState.h"
+#include "PlayerState/PlayerActionState/PlayerHoldingIdleState/CPlayerHoldingIdleState.h"
+
+#include "PlayerState/PlayerActionState/PlayerPickupState/CPlayerPickupState.h"
+#include "PlayerState/PlayerActionState/PlayerThrowState/CPlayerThrowState.h"
+#include "PlayerState/PlayerActionState/PlayerHandAttackState/CPlayerHandAttackState.h"
+#include "PlayerState/PlayerActionState/PlayerHandHitState/CPlayerHandHitState.h"
+#include "PlayerState/PlayerActionState/PlayerHandWhiffState/CPlayerHandWhiffState.h"
+#include "PlayerState/PlayerActionState/PlayerItemAttackState/CPlayerItemAttackState.h"
+#include "PlayerState/PlayerActionState/PlayerPushedState/CPlayerPushedState.h"
+#include "PlayerState/PlayerActionState/PlayerKnockbackState/CPlayerKnockbackState.h"
+#include "PlayerState/PlayerActionState/PlayerFallingState/CPlayerFallingState.h"
+#include "PlayerState/PlayerActionState/PlayerKnockdownState/CPlayerKnockdownState.h"
+#include "PlayerState/PlayerActionState/PlayerGetUpState/CPlayerGetUpState.h"
+
+#include "PlayerState/PlayerActionState/PlayerResultWin_TypeA/CPlayerResultWin_TypeA.h"
+#include "PlayerState/PlayerActionState/PlayerResultLose_TypeA/CPlayerResultLose_TypeA.h"
+
 class ItemBase;
 
 /***********************************************************************
@@ -157,8 +180,8 @@ public:
 	const CPlayerLeftHand& GetPlayerLeftHand() const { return *m_pLeftHand; }
 
 	//持っているアイテムの取得と設定.
-	ItemBase* GetItemBase() const { return m_pItemBase; }
-	void SetItemBase(ItemBase* item) { m_pItemBase = item; }
+	ItemBase* GetHoldingItem() const { return m_pHoldingItem; }
+	void SetHoldingItem(ItemBase* item) { m_pHoldingItem = item; }
 
 	//プレイヤー番号の取得.
 	int GetPlayerID() const { return m_PlayerID; }
@@ -212,16 +235,29 @@ public:
 	void SetIsAboveGround(bool isAboveGround) { m_IsAboveGround = isAboveGround; }
 
 	//nullptr ではないかチェック.
-	template<typename T>
+	template<typename TState>
 	bool IsActionState() const {
 		return (m_pActionState
-			&& dynamic_cast<T*>(m_pActionState.get()) != nullptr);
+			&& dynamic_cast<TState*>(m_pActionState.get()) != nullptr);
 	}
 	//複数のテンプレート.
-	template<typename... Ts>
+	template<typename... TStatus>
 	//複数の条件に対応して結果を返す.
 	bool IsAnyActionState() const { 
-		return ( ... || IsActionState<Ts>());	//... 条件にしたいIItemObserver::Stateを入れる.
+		return ( ... || IsActionState<TStatus>());	//... 条件にしたい State を入れる.
+	}
+
+	//nullptr ではないかチェック.
+	template<typename TItem>
+	bool IsHoldingItem() const {
+		return (m_pHoldingItem
+			&& dynamic_cast<TItem*>(m_pHoldingItem) != nullptr);
+	}
+	//複数のテンプレート.
+	template<typename... TItems>
+	//複数の条件に対応して結果を返す.
+	bool IsAnyHoldingItem() const {
+		return ( ... || IsHoldingItem<TItems>());	//... 条件にしたい Item を入れる.
 	}
 
 	//イベントバスを持つ.
@@ -255,7 +291,7 @@ protected:
 	std::unique_ptr<CPlayerState>		m_pTurnState;	//回転.
 	std::unique_ptr<CPlayerState>		m_pActionState;	//行動.
 
-	ItemBase*		m_pItemBase;		//アイテムベース（ここに所持アイテムを入れる）.
+	ItemBase*		m_pHoldingItem;		//アイテムベース（ここに所持アイテムを入れる）.
 
 	ActionInstruct	m_Control;			//指示.
 	HitAttack		m_HitAttack;		//攻撃を受けた情報.

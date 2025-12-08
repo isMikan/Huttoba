@@ -96,9 +96,9 @@ void ItemBase::DestroyItem()
 {
 	if (m_pPlayer)
 	{
-		if (m_pPlayer->GetItemBase() == this)
+		if (m_pPlayer->GetHoldingItem() == this)
 		{
-			m_pPlayer->SetItemBase(nullptr);
+			m_pPlayer->SetHoldingItem(nullptr);
 		}
 	}
 

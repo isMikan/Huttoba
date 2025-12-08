@@ -22,8 +22,12 @@ public:
 		D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAMERA& Camera ) override;
 
 private:
+	//--- プレイヤーの散策条件 ---.
 	bool IsSearchPlayer(CPlayerBase* player);
 
+	//--- アイテムの散策条件 ---.
 	bool IsSearchItem(ItemBase* item);
 
+private:
+	bool	m_IsSearchPlayer;	//プレイヤーを探すか.
 };

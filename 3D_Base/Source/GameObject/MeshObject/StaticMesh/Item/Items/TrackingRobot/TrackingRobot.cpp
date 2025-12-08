@@ -226,7 +226,7 @@ void TrackingRobot::OneEnterUse()
 	D3DXVec3Normalize(&forward, &forward);
 
 	//投げた瞬間に別のアイテムを持ったり使ったりできるように追加
-	m_pPlayer->SetItemBase(nullptr);
+	m_pPlayer->SetHoldingItem(nullptr);
 
 	//索敵判定クラスの生成
 	m_pChaseSensor = std::make_unique<ChaseSensor>(m_vPosition, m_CollisionOffSet);

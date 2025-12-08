@@ -288,7 +288,7 @@ void CPlayerManager::Create()
 			m_pPlayers[pNo] = std::make_unique<CPlayerAI_TypeB>(pNo);
 		}
 #else
-#if 0
+#if 1
 		if (pNo == 0)
 		{
 			m_pPlayers[pNo] = std::make_unique<CPlayer>(pNo);
@@ -331,7 +331,7 @@ void CPlayerManager::Destroy(CPlayerBase* player)
 	//“–‚½‚è”»’èíœ.
 	CollisionManager::GetInstance()->RemoveCollider(player->GetCollider().get());
 
-	m_pPlayers[id]->SetItemBase(nullptr);
+	m_pPlayers[id]->SetHoldingItem(nullptr);
 	//”z—ñíœ.
 	m_pPlayers[id].reset();
 }
