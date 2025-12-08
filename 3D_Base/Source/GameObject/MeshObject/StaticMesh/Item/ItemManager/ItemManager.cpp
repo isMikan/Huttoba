@@ -6,6 +6,9 @@
 #include "Item/SelectSpawnItem/SelectSpawnItem.h"
 #include "Item/SpawnItemPosition/SpawnItemPosition.h"
 
+
+constexpr int INITAL_SPAWN_ITEM_LIMIT = 8;
+
 //--------------------------------------------------------------------------------------------------------------
 
 ItemManager::ItemManager(std::unique_ptr<CGroundManager>& GroundManager)
@@ -49,7 +52,7 @@ HRESULT ItemManager::LoadData()
 
 void ItemManager::Init()
 {
-	m_SpawnLimit = 8;
+	m_SpawnLimit = INITAL_SPAWN_ITEM_LIMIT;
 	for (auto& item : m_pItems)
 	{
 		item->Init();
@@ -88,6 +91,8 @@ void ItemManager::Update()
 		{
 			item->Fall();
 		}
+
+		std::cout << item->GetPosition().x << std::endl;
 	}
 
 
