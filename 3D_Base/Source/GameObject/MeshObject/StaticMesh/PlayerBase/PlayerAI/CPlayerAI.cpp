@@ -69,7 +69,9 @@ void CPlayerAI::AutomaticMovement(D3DXVECTOR3 targetDir)
 	//移動・回転をしない場合.
 	if (IsAnyActionState<
 		CPlayerHandWhiffState,		//ふらつき.
+		CPlayerPushedState,			//押し出され.
 		CPlayerKnockbackState,		//吹き飛ばされ.
+		CPlayerFallingState,		//落ちる.
 		CPlayerGetUpState,			//起き上がり.
 		CPlayerKnockdownState>())	//ダウン中.
 	{
