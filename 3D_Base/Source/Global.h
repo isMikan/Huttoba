@@ -128,6 +128,7 @@ enum class StaticMeshList
 	Mushroom,
 	TrackingRobot,
 	Boomerang,
+	Magnet,
 
 	ExplosionCol,
 	FunCol,
@@ -199,6 +200,7 @@ enum class ItemID
 	SmashBat,
 	TrackingRobot,
 	Boomerang,
+	Magnet,
 
 	Max,
 	None = -1,

@@ -261,6 +261,7 @@
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\GroundCollisionProxy\CGroundCollisionProxy.cpp" />
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\Item\Items\Boomerang\Boomerang.cpp" />
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\Item\Items\Fun\Fun.cpp" />
+    <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\Item\Items\Magnet\Magnet.cpp" />
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\Item\Items\Mushroom\Mushroom.cpp" />
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\Item\Items\TrackingRobot\ChaseSensor\ChaseSensor.cpp" />
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\Item\Items\TrackingRobot\TrackingRobot.cpp" />
@@ -384,6 +385,7 @@
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\GroundCollisionProxy\CGroundCollisionProxy.h" />
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\Item\Items\Boomerang\Boomerang.h" />
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\Item\Items\Fun\Fun.h" />
+    <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\Item\Items\Magnet\Magnet.h" />
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\Item\Items\Mushroom\Mushroom.h" />
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\Item\Items\TrackingRobot\ChaseSensor\ChaseSensor.h" />
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\Item\Items\TrackingRobot\TrackingRobot.h" />
