@@ -106,6 +106,7 @@ void ItemBase::DestroyItem()
 
 	//エフェクト追加
 	hEffect = AssetManager::Effect()->Play("Break", m_vPosition);
+	AssetManager::Sound()->PlaySE(enSoundList::SE_DestroyItem);
 
 	//エフェクトの拡縮設定
 	AssetManager::Effect()->SetScale(hEffect, D3DXVECTOR3(0.3f, 0.3f, 0.3f));

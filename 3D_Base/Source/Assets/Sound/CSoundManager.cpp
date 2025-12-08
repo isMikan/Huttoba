@@ -30,7 +30,8 @@ HRESULT CSoundManager::Create()
     m_SoundInfoList.push_back({ enSoundList::SE_MissHaetataki,  _T("Data\\Sound\\SE\\MissHaetataki.mp3"),   _T("SE_MissHaetataki") });
     m_SoundInfoList.push_back({ enSoundList::SE_BoomerangMaxCharge,_T("Data\\Sound\\SE\\BoomerangMaxCharge.mp3"),   _T("SE_BoomerangMaxCharge") });
     m_SoundInfoList.push_back({ enSoundList::SE_BoomerangCharge,   _T("Data\\Sound\\SE\\BoomerangCharge.mp3"),      _T("SE_BoomerangCharge") });
-    m_SoundInfoList.push_back({ enSoundList::SE_BoomerangThrow,    _T("Data\\Sound\\SE\\BoomerangThrow.mp3"),      _T("SE_BoomerangThrow") });
+    m_SoundInfoList.push_back({ enSoundList::SE_BoomerangThrow,    _T("Data\\Sound\\SE\\BoomerangThrow.mp3"),       _T("SE_BoomerangThrow") });
+    m_SoundInfoList.push_back({ enSoundList::SE_DestroyItem,       _T("Data\\Sound\\SE\\DestroyItem.mp3"),          _T("SE_DestroyItem") });
 
 	//サウンドのインスタンスを格納するための配列を確保
     for (auto& sound : m_SoundInfoList)

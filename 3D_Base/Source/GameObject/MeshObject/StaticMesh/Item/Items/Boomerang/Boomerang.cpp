@@ -104,10 +104,15 @@ void Boomerang::OnGround()
 
 void Boomerang::Have()
 {
-	m_ComeBack	 = false;
-	m_IsUseThrow = false;
-	m_IsCharge	 = false;
-	m_IsMaxCharge = false;
+	//帰ってきたときに取得音を鳴らす
+	if(m_IsUseThrow == true){ AssetManager::Sound()->PlaySE(enSoundList::SE_Pickup);}
+
+	//帰ってきたときの初期化
+	if ( m_ComeBack	  )	{ m_ComeBack	= false;}
+	if ( m_IsUseThrow )	{ m_IsUseThrow	= false;}
+	if ( m_IsCharge	  )	{ m_IsCharge	= false;}
+	if ( m_IsMaxCharge)	{ m_IsMaxCharge = false;}
+
 	m_AddVelocity = { 0.f,0.f,0.f };
 	HaveMove();
 }
@@ -265,6 +270,9 @@ void Boomerang::UseMove()
 		//回転
 		m_vRotation.x = m_vRotation.x + (D3DXToRadian(TURN_ANGLE_RAD));
 
+		//ゲージ減少
+		if (!m_IsUseThrow){ m_UsageLimit.remaining = --m_UseCount; }
+		
 		//使用フラグをオンに
 		if(!m_IsUseThrow){ AssetManager::Sound()->PlaySE(enSoundList::SE_BoomerangThrow); }
 		m_IsUseThrow = true;
@@ -314,7 +322,6 @@ void Boomerang::OneEnterUse()
 	);
 
 	m_IsOkFall = false;
-	m_UsageLimit.remaining = --m_UseCount;
 
 }
 

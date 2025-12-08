@@ -128,6 +128,7 @@ enum class StaticMeshList
 	Mushroom,
 	TrackingRobot,
 	Boomerang,
+	Magnet,
 
 	ExplosionCol,
 	FunCol,
@@ -184,6 +185,7 @@ enum class enSoundList
 	SE_BoomerangCharge,
 	SE_BoomerangMaxCharge,
 	SE_BoomerangThrow,
+	SE_DestroyItem,
 
 
 	//‰¹‚ª‘‚¦‚½‚çu‚±‚±v‚É’Ç‰Á
@@ -199,6 +201,7 @@ enum class ItemID
 	SmashBat,
 	TrackingRobot,
 	Boomerang,
+	Magnet,
 
 	Max,
 	None = -1,
