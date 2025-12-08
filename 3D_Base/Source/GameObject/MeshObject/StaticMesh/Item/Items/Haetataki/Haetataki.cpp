@@ -42,9 +42,9 @@ constexpr float ADD_GRAVITY = 0.001f;
 //ステージの高さ(当たり判定ができたら消す)突貫
 constexpr float STAGE_HEIGHT = 0.5f;
 
-constexpr float OFFSET_USE_COLLISION_X = 0.0f;
+constexpr float OFFSET_USE_COLLISION_X = 0.f;
 constexpr float OFFSET_USE_COLLISION_Y = 1.1f;
-constexpr float OFFSET_USE_COLLISION_Z = 0.0f;
+constexpr float OFFSET_USE_COLLISION_Z = 0.f;
 
 //使用上限
 constexpr float USE_COUNT = 7;	
@@ -53,7 +53,7 @@ constexpr float USE_COUNT = 7;
 constexpr float SLERP_DURATION = 0.5f; 
 
 //回数制限
-constexpr float USE_LIMIT = 5;		
+constexpr float USE_LIMIT = 999;		
 //--------------------------------------------------------------------------------------------------------------
 
 Haetataki::Haetataki()
@@ -114,6 +114,7 @@ void Haetataki::Init()
 
 	D3DXVECTOR3 UseOffset = { OFFSET_USE_COLLISION_X,OFFSET_USE_COLLISION_Y,OFFSET_USE_COLLISION_Z };
 
+	//m_pUseCollider->SetRotationXCapsule(D3DXToRadian(90.f));
 	m_pUseCollider->SetLocalOffSetToCapsule(UseOffset, UseOffset);
 }
 
@@ -174,39 +175,43 @@ void Haetataki::Have()
 
 	static float a = 0.f, b = 0.f, c = 0.f;
 
-	//if (GetKeyState('B') & 0x8000)
-	//{
-	//	a += 0.5;
-	//	std::cout << "Yaw = " << a << std::endl;
-	//}
-	//if (GetKeyState('N') & 0x8000)
-	//{
-	//	b += 0.5;
-	//	std::cout << "Pitch = " << b << std::endl;
-	//}
-	//if (GetKeyState('M') & 0x8000)
-	//{
-	//	c += 0.5;
-	//	std::cout << "Roll = " << c << std::endl;
-	//}
-	//if (GetKeyState('G') & 0x8000)
-	//{
-	//	a -= 0.5;
-	//	std::cout << "Yaw = " << a << std::endl;
+	if (GetKeyState('B') & 0x8000)
+	{
+		a += 0.05;
+		std::cout << "Yaw = " << a << std::endl;
+	}
+	if (GetKeyState('N') & 0x8000)
+	{
+		b += 0.05;
+		std::cout << "Pitch = " << b << std::endl;
+	}
+	if (GetKeyState('M') & 0x8000)
+	{
+		c += 0.05;
+		std::cout << "Roll = " << c << std::endl;
+	}
+	if (GetKeyState('G') & 0x8000)
+	{
+		a -= 0.05;
+		std::cout << "Yaw = " << a << std::endl;
 
-	//}
-	//if (GetKeyState('H') & 0x8000)
-	//{
-	//	b -= 0.5;
-	//	std::cout << "Pitch = " << b << std::endl;
+	}
+	if (GetKeyState('H') & 0x8000)
+	{
+		b -= 0.05;
+		std::cout << "Pitch = " << b << std::endl;
 
-	//}
-	//if (GetKeyState('J') & 0x8000)
-	//{
-	//	c -= 0.5;
-	//	std::cout << "Roll = " << c << std::endl;
+	}
+	if (GetKeyState('J') & 0x8000)
+	{
+		c -= 0.05;
+		std::cout << "Roll = " << c << std::endl;
 
-	//}
+	}
+
+	//D3DXVECTOR3 vec = { a,b,c };
+	//m_pUseCollider->SetLocalOffSetToCapsule(vec, vec);
+
 
 	// ハエたたきの補正角
 	D3DXQUATERNION fix;
@@ -298,22 +303,33 @@ bool Haetataki::AttackMostion()
 	constexpr float RIGHT_TARGET_POS_X = 0.1f;
 	constexpr float LEFT_TARGET_POS_X = 0.2f;
 
-	// プレイヤーの回転
-	D3DXQUATERNION playerQ = m_pPlayer->GetQuaternion();
-
+	//テストコード
+	static D3DXQUATERNION initalPlayerQ;
+	static bool isFirst;
 	// ハエたたきの補正角
 	static D3DXQUATERNION Startfix;
 	static D3DXQUATERNION Endfix;
 
+	// プレイヤーの回転
+	D3DXQUATERNION playerQ = m_pPlayer->GetQuaternion();
+
+	if (isFirst)
+	{
+		initalPlayerQ = playerQ;
+		m_slerpTime = 0.0f;
+		isFirst = false;
+		m_AddPos = { 0.f,0.f,0.f };
+	}
+
 	//位置を合わせる
 	m_vPosition = m_pPlayer->GetPlayerRightHand().GetPosition();
 	//y,x,z
-	D3DXQuaternionRotationYawPitchRoll(&Startfix, D3DXToRadian(45.f), D3DXToRadian(45.f), D3DXToRadian(90.f));
-	D3DXQuaternionRotationYawPitchRoll(&Endfix, D3DXToRadian(12.f), D3DXToRadian(196.f), D3DXToRadian(81.5));
+	D3DXQuaternionRotationYawPitchRoll(&Startfix, D3DXToRadian(90.f), 0, D3DXToRadian(45.f));
+	D3DXQuaternionRotationYawPitchRoll(&Endfix, D3DXToRadian(14.5f), D3DXToRadian(8.f), D3DXToRadian(61.5f));
 	//D3DXQuaternionRotationYawPitchRoll(&fix, 0, D3DXToRadian(-45.f), D3DXToRadian(90.f));
 
-	D3DXQUATERNION startRotationQ = playerQ * Startfix;
-	D3DXQUATERNION endRotationQ	  = playerQ * Endfix;
+	D3DXQUATERNION startRotationQ = initalPlayerQ * Startfix;
+	D3DXQUATERNION endRotationQ	  = initalPlayerQ * Endfix;
 
 	m_slerpTime += (CTimeManager::GetDeltaTime()) * 5;
 
@@ -332,15 +348,28 @@ bool Haetataki::AttackMostion()
 		t
 	);
 
+	D3DXMATRIX rotationMatix;
+	D3DXMatrixRotationQuaternion(&rotationMatix, &m_vQuaternion);
+
+	D3DXVECTOR3 localMove = D3DXVECTOR3(m_AddPos.x, 0.0f, 0.0f);
+
+	D3DXVECTOR3 worldMove;
+	D3DXVec3TransformCoord(&worldMove, &localMove, &rotationMatix);
+
+	m_vPosition = m_pPlayer->GetPlayerRightHand().GetPosition();
+	m_vPosition += worldMove;
+
+
 	//使用モーション
-	m_vPosition.x += m_AddPos.x;
-	m_AddPos.x += ADD_POS_X;
+
+	m_AddPos.x += 0.1f * t;
 
 	// 回転が完了した場合
 	if (t >= 1.0f)
 	{
 		m_slerpTime = 0.0f;
-		//std::cout << "モーション終了" << std::endl;
+		isFirst = true;
+		std::cout << "モーション終了" << std::endl;
 		return false; // モーション終了
 	}
 
