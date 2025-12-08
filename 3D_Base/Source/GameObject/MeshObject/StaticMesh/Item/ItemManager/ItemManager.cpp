@@ -63,11 +63,20 @@ void ItemManager::Update()
 	m_pSpawnItemPosition->Uptate();
 
 	//アイテム数上限の時は作成しない
-	bool canCreateItem = m_pSpawnItemPosition->GetIsFirstSpawn() || (m_pItems.size() < m_SpawnLimit);
-	if (canCreateItem)
+	while (m_pItems.size() < m_SpawnLimit)
 	{
 		//アイテムの作成
 		CreateItem();
+
+		//もし無限ループが起きた時の対策
+		static int error = 0;
+		error++;
+		if (error >= 100)
+		{
+			m_pItems.resize(m_SpawnLimit);
+			error = 0;
+			break;
+		}
 	}
 
 	for (auto& item : m_pItems)
