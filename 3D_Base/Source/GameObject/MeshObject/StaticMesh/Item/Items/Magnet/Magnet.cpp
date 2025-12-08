@@ -5,7 +5,7 @@
 //--------------------------------------------------------------------------------------------------------------
 
 //Factoryに登録
-namespace { const bool regist = ItemBase::AutoRegister<Magnet>(ItemID::Magnet); }
+//namespace { const bool regist = ItemBase::AutoRegister<Magnet>(ItemID::Magnet); }
 
 //--------------------------------------------------------------------------------------------------------------
 
