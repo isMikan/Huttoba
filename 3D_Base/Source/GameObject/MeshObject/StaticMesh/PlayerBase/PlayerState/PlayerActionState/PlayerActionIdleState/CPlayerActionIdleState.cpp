@@ -1,6 +1,7 @@
 #include "CPlayerActionIdleState.h"
 
 #include "PlayerBase/CPlayerBase.h"
+#include "PlayerBase/PlayerState/PlayerActionState/PlayerHoldingIdleState/CPlayerHoldingIdleState.h"
 
 CPlayerActionIdleState::CPlayerActionIdleState(CPlayerBase& pPlayer)
 	: CPlayerState			( pPlayer )
@@ -52,6 +53,15 @@ void CPlayerActionIdleState::Exit()
 //--- この状態の間に呼び出す ---.
 void CPlayerActionIdleState::Update()
 {
+	//持っているアイテム.
+	ItemBase* item = m_pPlayer.GetHoldingItem();
+
+	if (item)
+	{
+		m_pPlayer.SetActionState(std::make_unique<CPlayerHoldingIdleState>(m_pPlayer));
+		return;
+	}
+	
 	//プレイヤーの位置を取得.
 	D3DXVECTOR3 playerPos = m_pPlayer.GetPosition();
 

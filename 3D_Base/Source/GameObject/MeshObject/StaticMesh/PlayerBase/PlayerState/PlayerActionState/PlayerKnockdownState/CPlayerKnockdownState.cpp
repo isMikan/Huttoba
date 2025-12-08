@@ -49,11 +49,11 @@ void CPlayerKnockdownState::Enter()
 	//SE‚ð–Â‚ç‚·.
 	AssetManager::Sound()->PlayLoop(enSoundList::SE_Knockdown);
 
-	ItemBase* item = m_pPlayer.GetItemBase();
+	ItemBase* item = m_pPlayer.GetHoldingItem();
 
 	if (item)
 	{
-		m_pPlayer.SetItemBase(nullptr);
+		m_pPlayer.SetHoldingItem(nullptr);
 		item->DestroyItem();
 	}
 

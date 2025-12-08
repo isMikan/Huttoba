@@ -1,29 +1,19 @@
 #include "CPlayerAI_TypeA.h"
 
-#include "PlayerBase/PlayerState/PlayerMoveState/PlayerMoveState/CPlayerMoveState.h"
-#include "PlayerBase/PlayerState/PlayerTurnState/PlayerTurnState/CPlayerTurnState.h"
-
-#include "PlayerBase/PlayerState/PlayerMoveState/PlayerMoveIdelState/CPlayerMoveIdleState.h"
-#include "PlayerBase/PlayerState/PlayerTurnState/PlayerTurnIdleState/CPlayerTurnIdleState.h"
-#include "PlayerBase/PlayerState/PlayerActionState/PlayerActionIdleState/CPlayerActionIdleState.h"
-#include "PlayerBase/PlayerState/PlayerActionState/PlayerHoldingIdleState/CPlayerHoldingIdleState.h"
-
-#include "PlayerBase/PlayerState/PlayerActionState/PlayerHandAttackState/CPlayerHandAttackState.h"
-#include "PlayerBase/PlayerState/PlayerActionState/PlayerItemAttackState/CPlayerItemAttackState.h"
-#include "PlayerBase/PlayerState/PlayerActionState/PlayerHandWhiffState/CPlayerHandWhiffState.h"
-#include "PlayerBase/PlayerState/PlayerActionState/PlayerPushedState/CPlayerPushedState.h"
-#include "PlayerBase/PlayerState/PlayerActionState/PlayerKnockbackState/CPlayerKnockbackState.h"
-#include "PlayerBase/PlayerState/PlayerActionState/PlayerFallingState/CPlayerFallingState.h"
-#include "PlayerBase/PlayerState/PlayerActionState/PlayerGetUpState/CPlayerGetUpState.h"
-#include "PlayerBase/PlayerState/PlayerActionState/PlayerKnockdownState/CPlayerKnockdownState.h"
-
+#include "Item/Items/Haetataki/Haetataki.h"
+#include "Item/Items/SmashBat/SmashBat.h"
+#include "Item/Items/Bomb/Bomb.h"
+#include "Item/Items/Mushroom/Mushroom.h"
+#include "Item/Items/Fun/Fun.h"
 #include "Item/Items/Boomerang/Boomerang.h"
+#include "Item/Items/TrackingRobot/TrackingRobot.h"
 
 #include "Sound/CSoundManager.h"
-#include <Item/Items/Bomb/Bomb.h>
 
 CPlayerAI_TypeA::CPlayerAI_TypeA(int index)
-	: CPlayerAI		( index )
+	: CPlayerAI			( index )
+
+	, m_IsSearchPlayer	( false )
 {
 }
 
@@ -43,28 +33,36 @@ void CPlayerAI_TypeA::Update()
 	//”äŠr‚Ì‚½‚ßAÅ‘å”‚ÉÝ’è‚µ‚Ä‚¨‚­.
 	m_NearbyItems.sqrt = m_MaxSqrt;
 
-	if (m_pItemManager && !m_pItemBase
+	if (m_pItemManager && !m_pHoldingItem
 		&& m_pItemManager->GetItemVectorNum() > 0)
 	{
 		for (auto& item : m_pItemManager->GetItems())
 		{
+			if (!item) continue;
+
 			if(IsSearchItem(item.get()))
 			{
-				Bomb* boomerang = dynamic_cast<Bomb*>(item.get());
-				if(boomerang)
-				{
-					FindNearbyObject(boomerang, m_NearbyItems, IsSearchItem(boomerang));
-					m_TargetDir = m_NearbyItems.dir;
-				}
+				FindNearbyObject(item.get(), m_NearbyItems, IsSearchItem(item.get()));
+				m_TargetDir = m_NearbyItems.dir;
 
 				if (m_NearbyItems.sqrt < 0.5f)
 				{
 					m_Control = ActionInstruct::ToggleItem;
 				}
 			}
+			else
+			{
+				m_IsSearchPlayer = true;
+			}
 		}
 	}
 	else
+	{
+		m_IsSearchPlayer = true;
+	}
+
+	//ƒvƒŒƒCƒ„[‚ÌŽUô.
+	if (m_IsSearchPlayer)
 	{
 		//”äŠr‚Ì‚½‚ßAÅ‘å”‚ÉÝ’è‚µ‚Ä‚¨‚­.
 		m_NearbyPlayers.sqrt = m_MaxSqrt;
@@ -77,15 +75,21 @@ void CPlayerAI_TypeA::Update()
 		{
 			m_TargetDir = m_NearbyPlayers.dir;
 		}
-		if (m_NearbyPlayers.sqrt < RandomFloat(2.f, 6.f)
-			&& (IsAnyActionState<CPlayerActionIdleState>()
-				|| IsAnyActionState<CPlayerHoldingIdleState>()))
+
+		if (m_NearbyPlayers.sqrt < RandomFloat(4.f, 8.f)
+			&& IsAnyActionState<CPlayerHoldingIdleState>()
+			&& IsAnyHoldingItem<Bomb, Mushroom, Fun, Boomerang, TrackingRobot>())
+		{
+			m_Control = ActionInstruct::Attack;
+		}
+		else if (m_NearbyPlayers.sqrt < RandomFloat(1.f, 2.5f)
+			&& IsAnyActionState<CPlayerActionIdleState, CPlayerHoldingIdleState>())
 		{
 			m_Control = ActionInstruct::Attack;
 		}
 	}
 
-	if (!m_IsGround)
+	if (!m_IsHitGround)
 	{
 		m_TargetDir = D3DXVECTOR3(0.0f, 0.f, 10.f) - m_vPosition;
 	}
@@ -126,7 +130,7 @@ bool CPlayerAI_TypeA::IsSearchPlayer(CPlayerBase* player)
 
 bool CPlayerAI_TypeA::IsSearchItem(ItemBase* item)
 {
-	if(item->GetState() != IItemObserver::IItemObserver::State::OnGround)
+	if(item->GetState() != IItemObserver::State::OnGround)
 	{
 		return false;
 	}

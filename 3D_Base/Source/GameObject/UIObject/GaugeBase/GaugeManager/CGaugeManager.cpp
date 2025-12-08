@@ -56,7 +56,7 @@ void CGaugeManager::Create(
 			}
 			else if (dynamic_cast<CPlayerHoldingIdleState*>(state))
 			{
-				auto item = player.get()->GetItemBase();
+				auto item = player.get()->GetHoldingItem();
 				if (item && (!dynamic_cast<Bomb*>(item)
 					&& !dynamic_cast<Mushroom*>(item)
 					&& !dynamic_cast<TrackingRobot*>(item)))
@@ -64,7 +64,7 @@ void CGaugeManager::Create(
 					GaugeCreate(player.get(), item->GetUsageLimit());
 				}
 			}
-			else if ((!player || !player.get()->GetItemBase()) 
+			else if ((!player || !player.get()->GetHoldingItem()) 
 				&& !dynamic_cast<CPlayerItemAttackState*>(state))
 			{
 				Destroy(dynamic_cast<CStaticMeshObject*>(player.get()));
@@ -132,10 +132,10 @@ void CGaugeManager::Update()
 					//時間を取得し、ゲージクラスに渡す.
 					m_pGauge[gaugeNo]->SetGaugeInfo(player->GetKnockdownTime());
 				}
-				else if (player->GetItemBase())
+				else if (player->GetHoldingItem())
 				{
 					//時間を取得し、ゲージクラスに渡す.
-					m_pGauge[gaugeNo]->SetGaugeInfo(player->GetItemBase()->GetUsageLimit());
+					m_pGauge[gaugeNo]->SetGaugeInfo(player->GetHoldingItem()->GetUsageLimit());
 				}
 			}
 			if (Mushroom* mush = dynamic_cast<Mushroom*>(object))

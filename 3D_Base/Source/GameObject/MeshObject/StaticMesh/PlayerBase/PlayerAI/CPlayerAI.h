@@ -93,7 +93,7 @@ protected:
 	NearbyObject	m_NearbyPlayers;	//近くのプレイヤー.
 	NearbyObject	m_NearbyItems;		//近くのアイテム.
 
-	bool			m_IsGround;
+	bool			m_IsHitGround;		//地面の当たり判定と接触しているか.
 
-	float m_MaxSqrt;
+	float			m_MaxSqrt;			//最大の距離.
 };

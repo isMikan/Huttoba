@@ -105,8 +105,8 @@ void ItemManager::CreateItem()
 	ItemID itemId = m_pSpawnItem->SerectSpawnItem(m_pItems);
 
 	//選択されたアイテム作成
-	//m_pItems.push_back(ItemFactory::GetInstance()->CreateItem(itemId));
-	m_pItems.push_back(ItemFactory::GetInstance()->CreateItem(ItemID::Boomerang)); //←指定アイテム生成
+	m_pItems.push_back(ItemFactory::GetInstance()->CreateItem(itemId));
+	//m_pItems.push_back(ItemFactory::GetInstance()->CreateItem(ItemID::Haetataki)); //←指定アイテム生成
 
 	//生成されたアイテムの位置設定
 	m_pItems.back()->SetPosition(m_pSpawnItemPosition->SerectPosition());
@@ -141,7 +141,7 @@ void ItemManager::CheckSpawnLimit()
 	//ステージの落ち状況によって上限変更
 	switch (m_pSpawnItemPosition->GetCurrentFallGround())
 	{
-	case GroundTag::SafeGround:			m_SpawnLimit = 1; break;
+	case GroundTag::SafeGround:			m_SpawnLimit = 0; break;
 	case GroundTag::ThirdFallGround:	m_SpawnLimit = 1; break;
 	case GroundTag::SecondFallGround:	m_SpawnLimit = 4; break;
 	case GroundTag::FirstFallGround:	m_SpawnLimit = 6; break;

@@ -63,7 +63,7 @@ void CPlayerThrowState::Exit()
 {
 	m_pPlayer.SetQuaternion(m_StartQuat);
 
-	m_pPlayer.SetItemBase(nullptr);
+	m_pPlayer.SetHoldingItem(nullptr);
 }
 
 //--- ‚±‚Ìó‘Ô‚ÌŠÔ‚ÉŒÄ‚Ño‚· ---.

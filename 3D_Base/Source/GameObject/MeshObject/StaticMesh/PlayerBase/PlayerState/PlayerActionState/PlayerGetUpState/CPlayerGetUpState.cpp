@@ -71,7 +71,7 @@ void CPlayerGetUpState::Update()
 	if (t - m_StartTime > m_EndTime)
 	{
 		//アイテムを持っている場合.
-		if (m_pPlayer.GetItemBase())
+		if (m_pPlayer.GetHoldingItem())
 		{
 			//アイテム持ち、何もなし状態.
 			m_pPlayer.SetActionState(std::make_unique<CPlayerHoldingIdleState>(m_pPlayer));

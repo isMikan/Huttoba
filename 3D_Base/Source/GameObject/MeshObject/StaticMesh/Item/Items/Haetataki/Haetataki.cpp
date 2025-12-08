@@ -40,7 +40,7 @@ constexpr float INITAL_GRAVITY = 0.01f;
 constexpr float ADD_GRAVITY = 0.001f;
 
 //ステージの高さ(当たり判定ができたら消す)突貫
-constexpr float STAGE_HEIGHT = 1.2f;
+constexpr float STAGE_HEIGHT = 0.5f;
 
 constexpr float OFFSET_USE_COLLISION_X = 0.0f;
 constexpr float OFFSET_USE_COLLISION_Y = 1.1f;
