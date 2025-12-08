@@ -23,6 +23,8 @@
 #include "PlayerBase/PlayerManager/CPlayerManager.h"
 #include "Ground/GroundManager/CGroundManager.h"
 
+#include "GameObject/MeshObject/SkinMesh/RollingChick/RollingChickManager/CRollingChickManager.h"
+
 #include "Scene/CSceneManager.h"
 #include "Input/CInputManager.h"
 
@@ -94,9 +96,10 @@ private:
 	std::unique_ptr<CGroundManager> 	m_pGroundManager;
 
 	//アイテムクラス
-	std::unique_ptr<ItemManager>	m_pItemManager;
+	std::unique_ptr<ItemManager>		m_pItemManager;
 
-	bool	m_IsPause;	//ポーズ中か.
+	//ひよこマネージャークラス.
+	std::unique_ptr<CRollingChickManager>	m_pRollingChickManager;
 
 	//地面の当たり判定生成クラス
 	std::unique_ptr<CGroundCollisionProxy>	m_pGroundCollisionProxy;
@@ -104,4 +107,6 @@ private:
 	//レディゴー画像
 	std::unique_ptr<CUIObject>		m_pSpriteReadyGo;
 	//std::unique_ptr<CUIObject>	m_pSpriteSelector;
+
+	bool	m_IsPause;	//ポーズ中か.
 };

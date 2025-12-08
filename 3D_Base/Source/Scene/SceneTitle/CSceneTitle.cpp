@@ -42,12 +42,12 @@ CSceneTitle::~CSceneTitle()
 
 HRESULT CSceneTitle::Create()
 {
-	//プレイヤーマネージャーのインスタンス作成.
-	m_pPlayerManager = std::make_unique<CPlayerManager>();
-
 	//地面マネージャークラスのインスタンス作成.
 	m_pGroundManager = std::make_unique<CGroundManager>();
 	m_pGroundManager->MainGroundCreate();
+
+	//プレイヤーマネージャーのインスタンス作成.
+	m_pPlayerManager = std::make_unique<CPlayerManager>();
 
 	m_pSpriteTitleImg = std::make_unique<CUIObject>();
 	m_pSpriteSelector = std::make_unique<CUIObject>();

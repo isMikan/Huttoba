@@ -13,7 +13,7 @@ CPlayerKnockdownState::CPlayerKnockdownState(CPlayerBase& pPlayer)
 	: CPlayerState				( pPlayer )
 	
 	, m_StartTime				()
-	, m_EndTime					( 0.9f )	//I—¹‚³‚¹‚éŠ„‡.
+	, m_EndTime					( 5.f )	//I—¹‚³‚¹‚éŠ„‡.
 	, m_MaxTime					()
 
 	, m_DecreaseTriggerTime		()

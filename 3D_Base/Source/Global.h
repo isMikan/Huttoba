@@ -104,6 +104,7 @@ enum EnSceneList
 enum class SkinMeshList
 {
 	Zako = 0,
+	Chick
 };
 
 enum class StaticMeshList
@@ -186,7 +187,7 @@ enum class enSoundList
 	SE_BoomerangMaxCharge,
 	SE_BoomerangThrow,
 	SE_DestroyItem,
-
+	SE_Warning,
 
 	//‰¹‚ª‘‚¦‚½‚çu‚±‚±v‚É’Ç‰Á
 	max,

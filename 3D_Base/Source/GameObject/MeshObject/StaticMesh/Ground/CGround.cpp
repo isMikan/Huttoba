@@ -14,8 +14,8 @@ CGround::CGround()
 	, m_ShakeTriggerTime		()
 
 	, m_IsChangeColor			( false )
-	, m_IsShake					( false )
 	, m_IsFallDown				( false )
+	, m_IsSound					( false )
 {
 	m_DefaultColor =
 	{
@@ -47,21 +47,23 @@ void CGround::Update()
 	if (m_IsChangeColor)
 	{
 		ChangeColorOfGround();
+
+		if(!m_IsSound)
+		{
+			//SE‚ğ–Â‚ç‚·.
+			AssetManager::Sound()->PlaySE(enSoundList::SE_Warning);
+			m_IsSound = true;
+		}
 	}
 	else
 	{
 		m_ObjectColor[0] = m_DefaultColor;
 	}
 
-	//’n–Ê‚ª—h‚ê‚éê‡.
-	if (m_IsShake)
-	{
-		//ShakeGround();
-	}
-
 	//’n–Ê‚ª—‚¿‚éê‡.
 	if (m_IsFallDown)
 	{
+		ShakeGround();
 		FallDownGround();
 	}
 }
@@ -112,7 +114,7 @@ void CGround::ShakeGround()
 
 	//—h‚ê‚Ä‚¢‚éŠÔ‚ÌŒ»İ‚ÌŠ„‡.
 	float progress = 
-		(t - m_ShakeTriggerTime) / m_ShakeTime;
+		(t - m_ShakeTriggerTime) /5.f;
 	progress = std::clamp(progress, 0.f, 1.f);
 
 	//¶‰E‚É—h‚ê‚é.

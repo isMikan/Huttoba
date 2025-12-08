@@ -93,11 +93,18 @@ void CPlayerHoldingIdleState::Update()
 	{
 		rightHandOffsetPos += m_OneHand_RightHandEndPos;
 		leftHandOffsetPos += m_OneHand_LeftHandEndPos;
+
 	}
 	else if (m_pPlayer.IsAnyHoldingItem<Bomb, Mushroom, Fun, TrackingRobot>())
 	{
 		rightHandOffsetPos += m_HoldBothHands_RightHandEndPos;
 		leftHandOffsetPos += m_HoldBothHands_LeftHandEndPos;
+
+		//‘—•—‹@‚Ì’·‰Ÿ‚µ‰ğœ‚Ì‚½‚ß.
+		if (m_pPlayer.IsAnyHoldingItem<Fun>())
+		{
+			item->SetState(IItemObserver::State::Have);
+		}
 	}
 
 	//Œo‰ßŠÔ‚ğæ“¾.
