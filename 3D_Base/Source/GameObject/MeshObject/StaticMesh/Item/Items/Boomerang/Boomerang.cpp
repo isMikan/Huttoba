@@ -137,7 +137,7 @@ void Boomerang::Use()
 
 void Boomerang::Throw()
 {
-	if (!m_IsUseThrow) { ThrowMove(); }
+	ThrowMove();
 }
 
 void Boomerang::Destroy()
