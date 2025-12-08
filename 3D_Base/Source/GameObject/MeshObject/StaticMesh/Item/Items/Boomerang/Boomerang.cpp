@@ -41,7 +41,8 @@ Boomerang::Boomerang()
 Boomerang::~Boomerang()
 {
 	//当たり判定削除
-	CollisionManager::GetInstance()->RemoveCollider(m_pCollision.get());
+	CollisionManager::GetInstance()->RemoveCollider(m_pPickUpCollider.get());
+	CollisionManager::GetInstance()->RemoveCollider(m_pUseCollider.get());
 }
 
 void Boomerang::Init()
@@ -57,13 +58,25 @@ void Boomerang::Init()
 
 	//メッシュをアタッチ
 	AttachMesh(AssetManager::Mesh(StaticMeshList::Boomerang));
+
+	//判定作成
 	std::shared_ptr<CStaticMesh> mesh = AssetManager::Mesh(StaticMeshList::Bomb);
 
-	m_pCollision = CollisionDataFactory::CreateSphereForMesh(
+	m_pPickUpCollider = CollisionDataFactory::CreateSphereForMesh(
 		CollisionBase::ColliderTag::Bomb,
 		mesh,
 		this
 	);
+
+	mesh = AssetManager::Mesh(StaticMeshList::BoomerangCol);
+
+	m_pUseCollider = CollisionDataFactory::CreateSphereForMesh(
+		CollisionBase::ColliderTag::Boomerang,
+		mesh,
+		this
+	);
+
+	m_pUseCollider->SetActive(false);
 
 	//ステート設定
 	m_State = IItemObserver::IItemObserver::State::Spawn;
@@ -124,7 +137,7 @@ void Boomerang::Use()
 
 void Boomerang::Throw()
 {
-	ThrowMove();
+	if (!m_IsUseThrow) { ThrowMove(); }
 }
 
 void Boomerang::Destroy()
@@ -142,6 +155,10 @@ void Boomerang::ItemState(IItemObserver::State state)
 		break;
 	case IItemObserver::IItemObserver::State::Have:
 		if (m_UseCount <= 0){ Destroy(); }
+
+		m_pUseCollider->SetActive(false);
+		m_pPickUpCollider->SetActive(true);
+
 		break;
 	case IItemObserver::IItemObserver::State::Use:
 		OneEnterUse();
@@ -270,8 +287,13 @@ void Boomerang::UseMove()
 		//回転
 		m_vRotation.x = m_vRotation.x + (D3DXToRadian(TURN_ANGLE_RAD));
 
-		//ゲージ減少
-		if (!m_IsUseThrow){ m_UsageLimit.remaining = --m_UseCount; }
+		//投げる瞬間に一回だけ通す処理
+		if (!m_IsUseThrow)
+		{ 
+			m_UsageLimit.remaining = --m_UseCount; 
+			m_pUseCollider->SetActive(true);
+			m_pPickUpCollider->SetActive(false);
+		}
 		
 		//使用フラグをオンに
 		if(!m_IsUseThrow){ AssetManager::Sound()->PlaySE(enSoundList::SE_BoomerangThrow); }
@@ -310,16 +332,6 @@ void Boomerang::OneEnterUse()
 	//移動
 	m_Velocity = forward * m_MoveSpeed;
 
-	//当たり判定削除
-	CollisionManager::GetInstance()->RemoveCollider(m_pCollision.get());
-
-	std::shared_ptr<CStaticMesh> mesh = AssetManager::Mesh(StaticMeshList::BoomerangCol);
-
-	m_pCollision = CollisionDataFactory::CreateSphereForMesh(
-		CollisionBase::ColliderTag::Boomerang,
-		mesh,
-		this
-	);
 
 	m_IsOkFall = false;
 
