@@ -36,8 +36,8 @@ CSceneStandby::~CSceneStandby()
 
 HRESULT CSceneStandby::Create()
 {
-	CCameraManager::SetPosition(4.f, 2.f, -10.f);
-	CCameraManager::SetLook(4.f, 0.f, 0.f);
+	CCameraManager::SetPosition(3.7f, 3.f, -10.f);
+	CCameraManager::SetLook(3.7f, 1.f, 0.f);
 	CCameraManager::SetLight(0.f, 10.f, -10.f);
 
 	//プレイヤーマネージャーのインスタンス作成.
@@ -128,10 +128,10 @@ void CSceneStandby::Draw()
 
 		
 	//地面マネージャーの描画.
-	//m_pGroundManager->Draw(view, proj, light, camera);
+	m_pGroundManager->Draw(view, proj, light, camera);
 
 	//プレイヤーの描画.
-	//m_pPlayerManager->Draw(view, proj, light, camera);
+	m_pPlayerManager->Draw(view, proj, light, camera);
 
 	m_pDx11->SetDepth(false);
 
