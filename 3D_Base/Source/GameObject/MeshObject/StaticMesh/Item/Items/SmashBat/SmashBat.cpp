@@ -43,7 +43,7 @@ constexpr float ADD_GRAVITY = 0.001f;
 constexpr float STAGE_HEIGHT = 0.5f;
 
 constexpr float OFFSET_USE_COLLISION_X = 0.0f;
-constexpr float OFFSET_USE_COLLISION_Y = 1.1f;
+constexpr float OFFSET_USE_COLLISION_Y = -0.1f;
 constexpr float OFFSET_USE_COLLISION_Z = 0.0f;
 
 //使用上限
@@ -98,7 +98,7 @@ void SmashBat::Init()
 	std::shared_ptr<CStaticMesh> mesh = AssetManager::Mesh(StaticMeshList::Bomb);
 
 	m_pPickUpCollider = CollisionDataFactory::CreateSphereForMesh(
-		CollisionBase::ColliderTag::SmashBat,
+		CollisionBase::ColliderTag::Haetataki,
 		mesh,
 		this
 	);
@@ -106,7 +106,7 @@ void SmashBat::Init()
 	mesh = AssetManager::Mesh(StaticMeshList::HaetatakiCol);
 
 	m_pUseCollider = CollisionDataFactory::CreateCapsuleForMesh(
-		CollisionBase::ColliderTag::SmashBat,
+		CollisionBase::ColliderTag::Haetataki,
 		mesh,
 		this
 	);
@@ -163,9 +163,6 @@ void SmashBat::Have()
 {
 	//アイテムを拾うモーション
 	TakeMostion();
-
-	m_pPickUpCollider->SetActive(false);
-	m_pUseCollider->SetActive(true);
 
 	//位置を合わせる
 	m_vPosition = m_pPlayer->GetPlayerRightHand().GetPosition();
@@ -229,6 +226,8 @@ void SmashBat::Have()
 void SmashBat::Use()
 {
 	m_vPosition = m_pPlayer->GetPlayerRightHand().GetPosition();
+	m_pPickUpCollider->SetActive(false);
+	m_pUseCollider->SetActive(true);
 
 
 	//モーション終了で所持状態へ戻る
@@ -236,6 +235,11 @@ void SmashBat::Use()
 	{
 		m_State = IItemObserver::IItemObserver::State::Have;
 		m_IsMissAttack = false; //初期化
+
+		m_pPickUpCollider->SetActive(true);
+		m_pUseCollider->SetActive(false);
+
+
 	}
 }
 
