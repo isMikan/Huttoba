@@ -3,6 +3,7 @@
 #include "PlayerBase/CPlayerBase.h"
 
 #include "PlayerBase/PlayerState/PlayerActionState/PlayerActionIdleState/CPlayerActionIdleState.h"
+#include "PlayerBase/PlayerState/PlayerActionState/PlayerItemAttackState/CPlayerItemAttackState.h"
 
 #include "Item/Items/Haetataki/Haetataki.h"
 #include "Item/Items/SmashBat/SmashBat.h"
@@ -77,6 +78,15 @@ void CPlayerHoldingIdleState::Update()
 	{
 		m_pPlayer.SetActionState(std::make_unique<CPlayerActionIdleState>(m_pPlayer));
 		return;
+	}
+	if (auto boomerang = dynamic_cast<Boomerang*>(item); boomerang)
+	{
+		if (boomerang->GetState() == IItemObserver::State::Use
+			&& !boomerang->GetIsUseThrow())
+		{
+			m_pPlayer.SetActionState(std::make_unique<CPlayerItemAttackState>(m_pPlayer));
+			return;
+		}
 	}
 
 	//プレイヤーの位置を取得.

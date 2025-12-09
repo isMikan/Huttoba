@@ -13,7 +13,7 @@ CPlayerKnockdownState::CPlayerKnockdownState(CPlayerBase& pPlayer)
 	: CPlayerState				( pPlayer )
 	
 	, m_StartTime				()
-	, m_EndTime					( 5.f )	//終了させる割合.
+	, m_EndTime					( 0.9f )	//終了させる割合.
 	, m_MaxTime					()
 
 	, m_DecreaseTriggerTime		()
@@ -53,8 +53,8 @@ void CPlayerKnockdownState::Enter()
 
 	if (item)
 	{
-		m_pPlayer.SetHoldingItem(nullptr);
-		item->DestroyItem();
+		m_pPlayer.SetHoldingItem(nullptr);	//アイテムなくなった.
+		item->DestroyItem();				//アイテムを消す.
 	}
 
 	//攻撃の開始時間を取得.

@@ -39,6 +39,7 @@ void CRollingChickManager::Create(
 				for (int cNo = 0;cNo < Player_Max;cNo++)
 				{
 					if (m_SubscribePlayer.contains(player.get())) break;
+					if (m_pRollingChicks[cNo]) continue;
 
 					//ひよこクラスのインスタンス作成.
 					m_pRollingChicks[cNo] = std::make_unique<CRollingChick>();
@@ -49,14 +50,17 @@ void CRollingChickManager::Create(
 					m_PlayerChick[player.get()] = cNo;
 					//作成したプレイヤーを保存.
 					m_SubscribePlayer.insert(player.get());
+
+					break;
 				}
 			}
 			else
 			{
 				//削除する処理.
-				for (auto& chick : m_pRollingChicks)
+				if (m_PlayerChick.contains(player.get()))
 				{
-					chick.reset();
+					int id = m_PlayerChick[player.get()];
+					m_pRollingChicks[id].reset();
 					m_PlayerChick.erase(player.get());
 					m_SubscribePlayer.erase(player.get());
 				}
