@@ -130,6 +130,7 @@ enum class StaticMeshList
 	TrackingRobot,
 	Boomerang,
 	Magnet,
+	SmashBat,
 
 	ExplosionCol,
 	FunCol,

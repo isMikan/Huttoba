@@ -87,7 +87,7 @@ void SmashBat::Init()
 	m_UseCount = USE_LIMIT;
 	m_UsageLimit = { m_UseCount, USE_LIMIT };
 
-	AttachMesh(AssetManager::Mesh(StaticMeshList::Haetataki));
+	AttachMesh(AssetManager::Mesh(StaticMeshList::SmashBat));
 
 	SetPosition(INITAL_POS_X, INITAL_POS_Y, INITAL_POS_Z);
 
@@ -238,8 +238,6 @@ void SmashBat::Use()
 
 		m_pPickUpCollider->SetActive(true);
 		m_pUseCollider->SetActive(false);
-
-
 	}
 }
 
@@ -256,7 +254,6 @@ void SmashBat::Throw()
 	m_Velocity *= 0.98f;
 
 	m_vPosition += m_Velocity * static_cast<float>(CTimeManager::GetDeltaTime());
-
 }
 
 //--------------------------------------------------------------------------------------------------------------
