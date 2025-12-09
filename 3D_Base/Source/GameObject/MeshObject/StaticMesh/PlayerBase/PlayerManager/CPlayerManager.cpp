@@ -106,7 +106,7 @@ void CPlayerManager::StandbyPlayerCreate()
 
 		m_pPlayers[pNo]->SetPosition(pos);
 		m_pPlayers[pNo]->
-			SetQuaternion(0.f, D3DXToRadian(90.f), 0.f, 0.f);
+			SetQuaternion(0.f, D3DXToRadian(180.f), 0.f, 0.f);
 	}
 }
 
