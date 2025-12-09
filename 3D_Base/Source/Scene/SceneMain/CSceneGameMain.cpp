@@ -31,11 +31,14 @@ CSceneGameMain::CSceneGameMain( HWND hWnd)
 	, m_pGroundManager	()
 
 	, m_pItemManager	()
-	, m_IsPause			( false )
+
+	, m_pRollingChickManager	()
 
 	, m_pGroundCollisionProxy	()
 
 	, m_pSpriteReadyGo	()
+
+	, m_IsPause			( false )
 {
 	m_pDx9 = CDirectX9::GetInstance();
 	m_pDx11 = CDirectX11::GetInstance();
@@ -80,7 +83,11 @@ HRESULT CSceneGameMain::Create()
 	//アイテムマネージャーの作成
 	m_pItemManager = std::make_unique<ItemManager>(m_pGroundManager);
 
+	//メインの構築関数を呼び出す.
 	m_pPlayerManager->MainPlayerCreate(m_pItemManager.get(), m_pGroundManager.get());
+
+	//ひよこマネージャークラスのインスタンス生成.
+	m_pRollingChickManager = std::make_unique<CRollingChickManager>(m_pPlayerManager);
 
 	//地面の当たり判定クラスの生成
 	m_pGroundCollisionProxy = std::make_unique<CGroundCollisionProxy>(*m_pGroundManager);
@@ -91,7 +98,7 @@ HRESULT CSceneGameMain::Create()
 	//ゲージマネージャーのインスタンス作成.
 	m_pGaugeManager = std::make_unique<CGaugeManager>(m_pItemManager.get());
 	//ゲージを作成.
-	m_pGaugeManager->Create(m_pPlayerManager.get());
+	m_pGaugeManager->Init(m_pPlayerManager.get());
 
 	m_pSpriteReadyGo = std::make_unique<CUIObject>();
 
@@ -215,6 +222,7 @@ void CSceneGameMain::Update()
 		m_pDrawTimer->Update();
 		m_pShadowManager->Update(m_pPlayerManager.get(), m_pItemManager.get());
 		m_pGaugeManager->Update();
+		m_pRollingChickManager->Update();
 
 		//レーザーの管理
 		ManageEffectLaser();
@@ -321,6 +329,12 @@ void CSceneGameMain::Draw()
 	//深度テスト無効にすることで、処理順番で描画させることができる
 	m_pDx11->SetDepth(false);
 
+	m_pDx11->SetAlphaBlend(true);
+	//ひよこの描画.
+	m_pRollingChickManager->Draw(view, proj, light, camera);
+	m_pDx11->SetAlphaBlend(false);
+
+	//ゲージの描画.
 	m_pGaugeManager->Draw(view, proj);
 
 	CFadeManager::Draw(0.f, 2.f, true);

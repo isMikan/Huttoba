@@ -22,8 +22,8 @@ public:
 //======================================================================
 // 	   外部で呼び出す関数.
 //======================================================================
-	//--- 構築処理 ---.
-	void Create(CPlayerManager* playerManager);
+	//--- 初期化処理 ---.
+	void Init(CPlayerManager* playerManager);
 	//--- 更新処理 ---.
 	void Update();
 	//--- 描画処理 ---.
@@ -50,4 +50,6 @@ protected:
 
 	CPlayerManager*		m_pPlayerManager;		//プレイヤー.
 	ItemManager*		m_pItemManager;			//アイテム.
+
+	float				m_DeletePos;			//削除する地点.
 };

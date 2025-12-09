@@ -258,6 +258,8 @@
     <ClCompile Include="Source\Assets\Sprite\Sprite3D\CSprite3D.cpp" />
     <ClCompile Include="Source\Camera\CCamera.cpp" />
     <ClCompile Include="Source\Assets\Sprite\SpriteManager.cpp" />
+    <ClCompile Include="Source\GameObject\MeshObject\SkinMesh\RollingChick\CRollingChick.cpp" />
+    <ClCompile Include="Source\GameObject\MeshObject\SkinMesh\RollingChick\RollingChickManager\CRollingChickManager.cpp" />
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\GroundCollisionProxy\CGroundCollisionProxy.cpp" />
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\Item\Items\Boomerang\Boomerang.cpp" />
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\Item\Items\Fun\Fun.cpp" />
@@ -382,6 +384,8 @@
     <ClInclude Include="Source\Assets\Sprite\Sprite3D\CSprite3D.h" />
     <ClInclude Include="Source\Camera\CCamera.h" />
     <ClInclude Include="Source\Assets\Sprite\SpriteManager.h" />
+    <ClInclude Include="Source\GameObject\MeshObject\SkinMesh\RollingChick\CRollingChick.h" />
+    <ClInclude Include="Source\GameObject\MeshObject\SkinMesh\RollingChick\RollingChickManager\CRollingChickManager.h" />
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\GroundCollisionProxy\CGroundCollisionProxy.h" />
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\Item\Items\Boomerang\Boomerang.h" />
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\Item\Items\Fun\Fun.h" />

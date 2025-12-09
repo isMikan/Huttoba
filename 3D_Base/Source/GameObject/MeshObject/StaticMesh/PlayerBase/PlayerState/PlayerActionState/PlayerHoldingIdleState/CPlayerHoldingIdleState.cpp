@@ -3,6 +3,7 @@
 #include "PlayerBase/CPlayerBase.h"
 
 #include "PlayerBase/PlayerState/PlayerActionState/PlayerActionIdleState/CPlayerActionIdleState.h"
+#include "PlayerBase/PlayerState/PlayerActionState/PlayerItemAttackState/CPlayerItemAttackState.h"
 
 #include "Item/Items/Haetataki/Haetataki.h"
 #include "Item/Items/SmashBat/SmashBat.h"
@@ -78,6 +79,15 @@ void CPlayerHoldingIdleState::Update()
 		m_pPlayer.SetActionState(std::make_unique<CPlayerActionIdleState>(m_pPlayer));
 		return;
 	}
+	if (auto boomerang = dynamic_cast<Boomerang*>(item); boomerang)
+	{
+		if (boomerang->GetState() == IItemObserver::State::Use
+			&& !boomerang->GetIsUseThrow())
+		{
+			m_pPlayer.SetActionState(std::make_unique<CPlayerItemAttackState>(m_pPlayer));
+			return;
+		}
+	}
 
 	//プレイヤーの位置を取得.
 	D3DXVECTOR3 playerPos = m_pPlayer.GetPosition();
@@ -93,11 +103,18 @@ void CPlayerHoldingIdleState::Update()
 	{
 		rightHandOffsetPos += m_OneHand_RightHandEndPos;
 		leftHandOffsetPos += m_OneHand_LeftHandEndPos;
+
 	}
 	else if (m_pPlayer.IsAnyHoldingItem<Bomb, Mushroom, Fun, TrackingRobot>())
 	{
 		rightHandOffsetPos += m_HoldBothHands_RightHandEndPos;
 		leftHandOffsetPos += m_HoldBothHands_LeftHandEndPos;
+
+		//送風機の長押し解除のため.
+		if (m_pPlayer.IsAnyHoldingItem<Fun>())
+		{
+			item->SetState(IItemObserver::State::Have);
+		}
 	}
 
 	//経過時間を取得.

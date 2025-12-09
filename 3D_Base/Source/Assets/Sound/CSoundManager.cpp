@@ -28,10 +28,11 @@ HRESULT CSoundManager::Create()
     m_SoundInfoList.push_back({ enSoundList::SE_HitHand,        _T("Data\\Sound\\SE\\HitHand.mp3"),         _T("SE_HitHand") });
     m_SoundInfoList.push_back({ enSoundList::SE_HitHaetataki,   _T("Data\\Sound\\SE\\HitHaetataki.mp3"),    _T("SE_HitHaetataki") });
     m_SoundInfoList.push_back({ enSoundList::SE_MissHaetataki,  _T("Data\\Sound\\SE\\MissHaetataki.mp3"),   _T("SE_MissHaetataki") });
-    m_SoundInfoList.push_back({ enSoundList::SE_BoomerangMaxCharge,_T("Data\\Sound\\SE\\BoomerangMaxCharge.mp3"),   _T("SE_BoomerangMaxCharge") });
-    m_SoundInfoList.push_back({ enSoundList::SE_BoomerangCharge,   _T("Data\\Sound\\SE\\BoomerangCharge.mp3"),      _T("SE_BoomerangCharge") });
-    m_SoundInfoList.push_back({ enSoundList::SE_BoomerangThrow,    _T("Data\\Sound\\SE\\BoomerangThrow.mp3"),       _T("SE_BoomerangThrow") });
-    m_SoundInfoList.push_back({ enSoundList::SE_DestroyItem,       _T("Data\\Sound\\SE\\DestroyItem.mp3"),          _T("SE_DestroyItem") });
+    m_SoundInfoList.push_back({ enSoundList::SE_BoomerangMaxCharge, _T("Data\\Sound\\SE\\BoomerangMaxCharge.mp3"),  _T("SE_BoomerangMaxCharge") });
+    m_SoundInfoList.push_back({ enSoundList::SE_BoomerangCharge,    _T("Data\\Sound\\SE\\BoomerangCharge.mp3"),     _T("SE_BoomerangCharge") });
+    m_SoundInfoList.push_back({ enSoundList::SE_BoomerangThrow,     _T("Data\\Sound\\SE\\BoomerangThrow.mp3"),      _T("SE_BoomerangThrow") });
+    m_SoundInfoList.push_back({ enSoundList::SE_DestroyItem,        _T("Data\\Sound\\SE\\DestroyItem.mp3"),         _T("SE_DestroyItem") });
+    m_SoundInfoList.push_back({ enSoundList::SE_Warning,            _T("Data\\Sound\\SE\\Warning.mp3"),             _T("SE_Warning") });
 
 	//サウンドのインスタンスを格納するための配列を確保
     for (auto& sound : m_SoundInfoList)

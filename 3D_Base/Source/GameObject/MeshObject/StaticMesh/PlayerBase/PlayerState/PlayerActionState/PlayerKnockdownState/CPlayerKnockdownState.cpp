@@ -53,8 +53,8 @@ void CPlayerKnockdownState::Enter()
 
 	if (item)
 	{
-		m_pPlayer.SetHoldingItem(nullptr);
-		item->DestroyItem();
+		m_pPlayer.SetHoldingItem(nullptr);	//アイテムなくなった.
+		item->DestroyItem();				//アイテムを消す.
 	}
 
 	//攻撃の開始時間を取得.

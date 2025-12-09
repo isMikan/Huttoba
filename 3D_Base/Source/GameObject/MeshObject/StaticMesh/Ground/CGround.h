@@ -14,8 +14,6 @@ public:
 //======================================================================
 	//色が変わる時間.
 	static constexpr float	m_ChangeColorTime = 3.f;	
-	//揺れる時間.
-	static constexpr float	m_ShakeTime = 1.f;
 
 public:
 	CGround();
@@ -35,9 +33,6 @@ public:
 	//地面の色が変わるか取得と設定.
 	bool GetIsChangeColor() const { return m_IsChangeColor; }
 	void SetIsChangeColor(bool change) { m_IsChangeColor = change; }
-	//地面が揺れるか取得と設定.
-	bool GetIsShake() const { return m_IsShake; }
-	void SetIsShake(bool vibrate) { m_IsShake = vibrate; }
 	//地面が落ちるか取得と設定.
 	bool GetIsFallDown() const { return m_IsFallDown; }
 	void SetIsFallDown(bool fall) { m_IsFallDown = fall; }
@@ -85,9 +80,9 @@ private:
 	float		m_ChangeColorTriggerTime;	//色が変わり始めた時間.
 	float		m_ShakeTriggerTime;			//揺れ始めた時間.
 
-	bool		m_IsChangeColor;			//色が変わるか.
-	bool		m_IsShake;					//揺れるか.
-	bool		m_IsFallDown;				//落ちるか.
+	bool		m_IsChangeColor;	//色が変わるか.
+	bool		m_IsFallDown;		//落ちるか.
+	bool		m_IsSound;			//音が鳴るか.
 
 	GroundTag	m_pGroundType;		//タグ識別用 製作者 : 佐藤
 
