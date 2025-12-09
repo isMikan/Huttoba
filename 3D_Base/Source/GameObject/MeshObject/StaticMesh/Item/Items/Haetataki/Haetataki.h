@@ -60,9 +60,14 @@ public:
 
 private:
 
-	D3DXVECTOR3 m_Offset = { 0.5f, 1.f, 0.f };	//プレイヤーの位置に合わせる(突貫)
-	D3DXVECTOR3 m_AddPos = { 0.f,0.f, 0.f };	//モーション移動用変数
-	D3DXVECTOR3 m_AddRot = { 0.2f,0.2f,0.f };	//モーション角度調整用変数
+
+	 D3DXQUATERNION m_InitalPlayerQ;
+	 bool m_IsFirst;
+
+	 // ハエたたきの補正角
+	 D3DXQUATERNION m_Startfix;
+	 D3DXQUATERNION m_Endfix;
+
 
 	bool m_SwitchDir;		//モーション方向切り替え用
 	bool m_IsFlyAway;		//吹き飛び力発生フラグ
