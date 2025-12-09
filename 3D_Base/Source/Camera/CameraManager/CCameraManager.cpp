@@ -11,7 +11,7 @@ CCameraManager::CCameraManager()
 {
 	//地面の数分位置を変えるので、地面の最大数を設定.
 	m_LastCamera.resize(Ground_Max);
-	m_LastCamera[0] = { D3DXVECTOR3(0.f, 17.f, 0.f), D3DXVECTOR3(0.f, 1.f, 10.f) };
+	m_LastCamera[0] = { D3DXVECTOR3(0.f, 17.f, -3.f), D3DXVECTOR3(0.f, 1.f, 10.f) };
 	m_LastCamera[1] = { D3DXVECTOR3(0.f, 17.f, -3.f), D3DXVECTOR3(0.f, 1.f, 9.f) };
 	m_LastCamera[2] = { D3DXVECTOR3(0.f, 20.f, -4.f), D3DXVECTOR3(0.f, 1.f, 8.f) };
 	m_LastCamera[3] = { D3DXVECTOR3(0.f, 20.f, -10.f), D3DXVECTOR3(0.f, 1.f, 6.f) };
