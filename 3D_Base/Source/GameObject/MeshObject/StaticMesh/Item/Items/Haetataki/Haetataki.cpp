@@ -50,22 +50,24 @@ constexpr float OFFSET_USE_COLLISION_Z = 0.0f;
 constexpr float USE_COUNT = 7;	
 
 // 回転にかける総時間
-constexpr float SLERP_DURATION = 0.5f; 
+constexpr float SLERP_DURATION = 1.0f;
 
 //回数制限
-constexpr float USE_LIMIT = 5;		
+constexpr float USE_LIMIT = 100;		
 //--------------------------------------------------------------------------------------------------------------
 
 Haetataki::Haetataki()
-	: m_Offset			( OFFSET_X, OFFSET_Y, 0.f )
-	, m_AddPos			( 0.f, 0.f, 0.f )
-	, m_AddRot			( ADD_ROT_X, ADD_ROT_Y, ADD_ROT_Z)
-	, m_SwitchDir		( false )
+	: m_SwitchDir		( false )
 	, m_IsFlyAway		( false )
 	, m_IsFlyAwayPower	( 3.f )
 	, m_IsMissAttack	( false )
 	, m_Velocity		()
 	, m_slerpTime		()
+	, m_InitalPlayerQ	()
+	, m_IsFirst			()
+	, m_Startfix		()
+	, m_Endfix			()
+
 {
 	Init();
 }
@@ -174,39 +176,39 @@ void Haetataki::Have()
 
 	static float a = 0.f, b = 0.f, c = 0.f;
 
-	//if (GetKeyState('B') & 0x8000)
-	//{
-	//	a += 0.5;
-	//	std::cout << "Yaw = " << a << std::endl;
-	//}
-	//if (GetKeyState('N') & 0x8000)
-	//{
-	//	b += 0.5;
-	//	std::cout << "Pitch = " << b << std::endl;
-	//}
-	//if (GetKeyState('M') & 0x8000)
-	//{
-	//	c += 0.5;
-	//	std::cout << "Roll = " << c << std::endl;
-	//}
-	//if (GetKeyState('G') & 0x8000)
-	//{
-	//	a -= 0.5;
-	//	std::cout << "Yaw = " << a << std::endl;
+	if (GetKeyState('B') & 0x8000)
+	{
+		a += 0.5;
+		std::cout << "Yaw = " << a << std::endl;
+	}
+	if (GetKeyState('N') & 0x8000)
+	{
+		b += 0.5;
+		std::cout << "Pitch = " << b << std::endl;
+	}
+	if (GetKeyState('M') & 0x8000)
+	{
+		c += 0.5;
+		std::cout << "Roll = " << c << std::endl;
+	}
+	if (GetKeyState('G') & 0x8000)
+	{
+		a -= 0.5;
+		std::cout << "Yaw = " << a << std::endl;
 
-	//}
-	//if (GetKeyState('H') & 0x8000)
-	//{
-	//	b -= 0.5;
-	//	std::cout << "Pitch = " << b << std::endl;
+	}
+	if (GetKeyState('H') & 0x8000)
+	{
+		b -= 0.5;
+		std::cout << "Pitch = " << b << std::endl;
 
-	//}
-	//if (GetKeyState('J') & 0x8000)
-	//{
-	//	c -= 0.5;
-	//	std::cout << "Roll = " << c << std::endl;
+	}
+	if (GetKeyState('J') & 0x8000)
+	{
+		c -= 0.5;
+		std::cout << "Roll = " << c << std::endl;
 
-	//}
+	}
 
 	// ハエたたきの補正角
 	D3DXQUATERNION fix;
@@ -217,10 +219,9 @@ void Haetataki::Have()
 	D3DXQuaternionMultiply(&finalQ, &fix, &playerQ);
 	m_vQuaternion = finalQ;
 
+	if (!m_IsFirst) { m_IsFirst = true; }
 
 	m_SwitchDir = false;
-	m_AddPos = { 0.f,0.f, 0.f };	//初期化
-
 }
 
 //--------------------------------------------------------------------------------------------------------------
@@ -294,28 +295,27 @@ void Haetataki::TakeMostion()
 
 bool Haetataki::AttackMostion()
 {
-	//定数宣言
-	constexpr float RIGHT_TARGET_POS_X = 0.1f;
-	constexpr float LEFT_TARGET_POS_X = 0.2f;
-
 	// プレイヤーの回転
 	D3DXQUATERNION playerQ = m_pPlayer->GetQuaternion();
 
-	// ハエたたきの補正角
-	static D3DXQUATERNION Startfix;
-	static D3DXQUATERNION Endfix;
+	// モーション開始時の初期化
+	if (m_IsFirst)
+	{
+		m_InitalPlayerQ = playerQ; // プレイヤーの開始時の向きを固定
+		m_slerpTime = 0.0f;
+		m_IsFirst = false;
+	}
 
-	//位置を合わせる
 	m_vPosition = m_pPlayer->GetPlayerRightHand().GetPosition();
-	//y,x,z
-	D3DXQuaternionRotationYawPitchRoll(&Startfix, D3DXToRadian(45.f), D3DXToRadian(45.f), D3DXToRadian(90.f));
-	D3DXQuaternionRotationYawPitchRoll(&Endfix, D3DXToRadian(12.f), D3DXToRadian(196.f), D3DXToRadian(81.5));
-	//D3DXQuaternionRotationYawPitchRoll(&fix, 0, D3DXToRadian(-45.f), D3DXToRadian(90.f));
 
-	D3DXQUATERNION startRotationQ = playerQ * Startfix;
-	D3DXQUATERNION endRotationQ	  = playerQ * Endfix;
+	D3DXQUATERNION startQ = { D3DXToRadian(40.f), D3DXToRadian(45.f), D3DXToRadian(-51.5f), 1.0f };
+	D3DXQUATERNION endQ = { D3DXToRadian(40.f), D3DXToRadian(8.f), D3DXToRadian(61.5f), 1.0f };
 
-	m_slerpTime += (CTimeManager::GetDeltaTime()) * 5;
+	startQ *= m_InitalPlayerQ;
+	endQ  *= m_InitalPlayerQ;
+
+
+	m_slerpTime += (CTimeManager::GetDeltaTime()) * 5; // 時間経過を早める（*5）
 
 	float t = m_slerpTime / SLERP_DURATION;
 	if (t > 1.0f)
@@ -323,33 +323,26 @@ bool Haetataki::AttackMostion()
 		t = 1.0;
 	}
 
-	// 球面線形補間 (Slerp) を実行
-	// D3DXQuaternionSlerp 関数で、滑らかに補間された四元数を得る
+	// 球面線形補間でアイテムの現在の回転を更新
 	D3DXQuaternionSlerp(
 		&m_vQuaternion,
-		&startRotationQ,
-		&endRotationQ,
+		&startQ,
+		&endQ,
 		t
 	);
-
-	//使用モーション
-	m_vPosition.x += m_AddPos.x;
-	m_AddPos.x += ADD_POS_X;
 
 	// 回転が完了した場合
 	if (t >= 1.0f)
 	{
 		m_slerpTime = 0.0f;
-		//std::cout << "モーション終了" << std::endl;
+		m_IsFirst = true; // 次の攻撃のためにリセット
+		std::cout << "モーション終了" << std::endl;
 		return false; // モーション終了
 	}
 
-	//std::cout << "モーション中" << std::endl;
-
-	//モーション中
+	// モーション中
 	return true;
 }
-
 //--------------------------------------------------------------------------------------------------------------
 
 void Haetataki::OnCollision(CollisionBase* other)

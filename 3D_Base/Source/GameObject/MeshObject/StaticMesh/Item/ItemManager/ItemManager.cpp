@@ -91,8 +91,6 @@ void ItemManager::Update()
 		{
 			item->Fall();
 		}
-
-		std::cout << item->GetPosition().x << std::endl;
 	}
 
 
@@ -119,8 +117,8 @@ void ItemManager::CreateItem()
 	ItemID itemId = m_pSpawnItem->SerectSpawnItem(m_pItems);
 
 	//選択されたアイテム作成
-	m_pItems.push_back(ItemFactory::GetInstance()->CreateItem(itemId));
-	//m_pItems.push_back(ItemFactory::GetInstance()->CreateItem(ItemID::Haetataki)); //←指定アイテム生成
+	//m_pItems.push_back(ItemFactory::GetInstance()->CreateItem(itemId));
+	m_pItems.push_back(ItemFactory::GetInstance()->CreateItem(ItemID::Haetataki)); //←指定アイテム生成
 
 	//生成されたアイテムの位置設定
 	m_pItems.back()->SetPosition(m_pSpawnItemPosition->SerectPosition());
