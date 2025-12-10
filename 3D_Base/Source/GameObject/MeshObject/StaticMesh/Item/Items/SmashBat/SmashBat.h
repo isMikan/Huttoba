@@ -59,7 +59,7 @@ public:
 	void OnCollision(CollisionBase* other)override;
 
 	//‚«”ò‚Î‚µˆ—
-	void Smash(CPlayer& playiers);
+	void Smash(CPlayerBase& playiers);
 
 	//“Š‚°
 	void OneEnterThrow();

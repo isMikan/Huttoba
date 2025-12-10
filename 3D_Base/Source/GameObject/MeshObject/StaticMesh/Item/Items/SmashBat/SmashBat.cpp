@@ -53,7 +53,7 @@ constexpr float USE_COUNT = 7;
 constexpr float SLERP_DURATION = 1.0f;
 
 //回数制限
-constexpr float USE_LIMIT = 100.f;
+constexpr float USE_LIMIT = 7.f;
 
 //吹っ飛び
 constexpr float HIT_POWER = 30.f;
@@ -390,7 +390,7 @@ void SmashBat::OnCollision(CollisionBase* other)
 {
 	if (other->GetTag() == CollisionBase::ColliderTag::Player)
 	{
-		if (CPlayer* player = dynamic_cast<CPlayer*>(other->GetListener()))
+		if (CPlayerBase* player = dynamic_cast<CPlayerBase*>(other->GetListener()))
 		{
 			if (m_pPlayer != player)
 			{
@@ -407,7 +407,7 @@ void SmashBat::OnCollision(CollisionBase* other)
 
 //--------------------------------------------------------------------------------------------------------------
 
-void SmashBat::Smash(CPlayer& playiers)
+void SmashBat::Smash(CPlayerBase& playiers)
 {
 	//爆弾とプレイヤーの位置でベクトルをとる
 	D3DXVECTOR3 vecLen = m_vPosition - playiers.GetPosition();
