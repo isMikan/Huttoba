@@ -13,12 +13,6 @@ DrawTimer::~DrawTimer()
 
 void DrawTimer::Init()
 {
-	Time time[] =
-	{
-		{ Time::Ten },
-		{ Time::One }
-	};
-
 	//”š‚Ìİ’è
 	RemainingTimeImage[Time::Ten] = std::make_unique<CUIObject>();
 	RemainingTimeImage[Time::Ten]->AttachSprite(AssetManager::Sprite(Sprite2DList::TimeNumber));
@@ -30,13 +24,11 @@ void DrawTimer::Init()
 	RemainingTimeImage[Time::One]->SetPatternNo(0, 0);
 	RemainingTimeImage[Time::One]->SetPosition(675, 10, 0);
 
-	//”š‚Ìİ’è
+	//Œv‚Ìİ’è
 	m_TimerImage = std::make_unique<CUIObject>();
 	m_TimerImage->AttachSprite(AssetManager::Sprite(Sprite2DList::Clock));
 	m_TimerImage->SetPatternNo(0, 0);
 	m_TimerImage->SetPosition(560, 0, 0);
-
-
 }
 
 void DrawTimer::Update()
@@ -47,7 +39,6 @@ void DrawTimer::Update()
 	//ŠeˆÊ‚Éİ’è
 	RemainingTimeImage[Time::Ten]->SetPatternNo(timeLimit.first, 0);
 	RemainingTimeImage[Time::One]->SetPatternNo(timeLimit.second, 0);
-
 }
 
 void DrawTimer::Draw()

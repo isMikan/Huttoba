@@ -86,4 +86,6 @@ private:
 
     //Å‘å‚«”ò‚Î‚µ—Í
     float       m_MaxSmashPower;
+
+    float m_timer;
 };

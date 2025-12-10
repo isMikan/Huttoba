@@ -2,6 +2,7 @@
 
 CGaugeFrame::CGaugeFrame()
 {
+	m_vScale = { m_GaugeSize, m_GaugeSize, 1.f };
 }
 
 CGaugeFrame::~CGaugeFrame()

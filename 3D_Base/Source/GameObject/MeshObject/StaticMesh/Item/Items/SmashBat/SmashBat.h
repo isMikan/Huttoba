@@ -10,6 +10,12 @@ public:
 	SmashBat();
 	~SmashBat();
 
+	enum class Efect
+	{
+		Have = 0,
+		HitPlayer,
+	};
+
 	/*****************************************************************************************
 	* @brief    初期化
 	******************************************************************************************/
@@ -53,7 +59,7 @@ public:
 	void OnCollision(CollisionBase* other)override;
 
 	//吹き飛ばし処理
-	void Smash(CPlayer& playiers);
+	void Smash(CPlayerBase& playiers);
 
 	//投げ
 	void OneEnterThrow();
@@ -79,5 +85,7 @@ private:
 	D3DXVECTOR3 m_Velocity;
 
 	float m_slerpTime = 0.0f; // Slerpの経過時間カウンター
+
+	std::unordered_map<Efect, ::EsHandle> m_hEffect;
 
 };

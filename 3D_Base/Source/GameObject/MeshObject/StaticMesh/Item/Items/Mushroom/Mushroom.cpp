@@ -177,7 +177,17 @@ void Mushroom::UseMove()
 
 	m_UsageLimit.remaining = m_UseTime;
 
-	std::cout << m_UseTime << std::endl;
+
+
+
+	if (m_IsPlaced)
+	{
+		m_timer += CTimeManager::GetDeltaTime();
+		
+		float scale = 1.0f + fabsf(sinf(m_timer)) * 0.2f;
+
+		SetScale(scale);
+	}
 
 	if (m_UseTime < 0)
 	{

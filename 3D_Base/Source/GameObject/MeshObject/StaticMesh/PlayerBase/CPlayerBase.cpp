@@ -16,7 +16,7 @@ CPlayerBase::CPlayerBase( int index )
 	, m_pTurnState		( std::make_unique<CPlayerTurnIdleState>( *this ) )
 	, m_pActionState	( std::make_unique<CPlayerActionIdleState>( *this ) )
 
-	, m_pHoldingItem		( nullptr )
+	, m_pHoldingItem	( nullptr )
 
 	, m_Control			( ActionInstruct::None )
 	, m_HitAttack		()
@@ -80,8 +80,13 @@ void CPlayerBase::Update()
 		//アイテムを投げる.
 		if (m_Control == ActionInstruct::ToggleItem)
 		{
-			m_pHoldingItem->SetState(IItemObserver::State::Throw);
-			SetActionState(std::make_unique<CPlayerThrowState>(*this));
+			if(auto boomerang = dynamic_cast<Boomerang*>(m_pHoldingItem); 
+				(boomerang && !boomerang->GetIsUseThrow()) 
+				|| (!boomerang))
+			{
+				m_pHoldingItem->SetState(IItemObserver::State::Throw);
+				SetActionState(std::make_unique<CPlayerThrowState>(*this));
+			}
 		}
 		//アイテムの攻撃.
 		if (m_Control == ActionInstruct::Attack)

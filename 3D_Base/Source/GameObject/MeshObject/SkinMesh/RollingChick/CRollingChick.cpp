@@ -2,6 +2,7 @@
 
 CRollingChick::CRollingChick()
 {
+	m_vScale = { 0.9f, 0.9f,0.9f };
 }
 
 CRollingChick::~CRollingChick()
@@ -17,7 +18,7 @@ CRollingChick::~CRollingChick()
 void CRollingChick::Update()
 {
 	//アニメーション速度を設定.
-	m_pMesh->SetAnimSpeed(0.02f);
+	m_pMesh->SetAnimSpeed(0.025f);
 
 	CSkinMeshObject::Update();
 }

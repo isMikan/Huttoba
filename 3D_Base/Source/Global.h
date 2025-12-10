@@ -130,6 +130,7 @@ enum class StaticMeshList
 	TrackingRobot,
 	Boomerang,
 	Magnet,
+	SmashBat,
 
 	ExplosionCol,
 	FunCol,
@@ -137,6 +138,7 @@ enum class StaticMeshList
 	BoomerangCol,
 	PickUpCol,
 	HaetatakiCol,
+	SmashBatCol,
 
 	floor1,
 	floor2,
@@ -186,6 +188,7 @@ enum class enSoundList
 	SE_BoomerangCharge,
 	SE_BoomerangMaxCharge,
 	SE_BoomerangThrow,
+	SE_SmashBatHit,
 	SE_DestroyItem,
 	SE_Warning,
 

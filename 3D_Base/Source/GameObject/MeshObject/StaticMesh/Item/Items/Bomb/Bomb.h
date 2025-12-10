@@ -80,7 +80,7 @@ private:
     float       m_ExplosionCnt;
 
     //点滅の経過時間を記録
-    double      m_ColorTimer;
+    float      m_ColorTimer;
 
     //爆発フラグ
     bool        m_IsExploded;

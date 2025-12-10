@@ -13,6 +13,7 @@ ItemBase::ItemBase()
 	, m_IsOkFall	{ true }
 
 	, m_ThrowSmashPower	{ 5.0f }
+	, m_Tag				{ ItemID::None}
 
 {
 }

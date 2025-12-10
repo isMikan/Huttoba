@@ -43,7 +43,7 @@ constexpr float ADD_GRAVITY = 0.001f;
 constexpr float STAGE_HEIGHT = 0.5f;
 
 constexpr float OFFSET_USE_COLLISION_X = 0.0f;
-constexpr float OFFSET_USE_COLLISION_Y = -0.1f;
+constexpr float OFFSET_USE_COLLISION_Y = 0.0f;
 constexpr float OFFSET_USE_COLLISION_Z = 0.0f;
 
 //使用上限
@@ -53,7 +53,7 @@ constexpr float USE_COUNT = 7;
 constexpr float SLERP_DURATION = 1.0f;
 
 //回数制限
-constexpr float USE_LIMIT = 100;		
+constexpr float USE_LIMIT = 7;		
 //--------------------------------------------------------------------------------------------------------------
 
 Haetataki::Haetataki()
@@ -278,6 +278,8 @@ void Haetataki::ItemState(IItemObserver::State state)
 		break;
 	case IItemObserver::State::Use:
 		m_UsageLimit.remaining = --m_UseCount;
+		AssetManager::Sound()->PlaySE(enSoundList::SE_MissHaetataki);
+
 		break;
 	case IItemObserver::State::Throw:
 		OneEnterThrow();
@@ -353,7 +355,7 @@ void Haetataki::OnCollision(CollisionBase* other)
 {
 	if (other->GetTag() == CollisionBase::ColliderTag::Player)
 	{
-		if (CPlayer* player = dynamic_cast<CPlayer*>(other->GetListener()))
+		if (CPlayerBase* player = dynamic_cast<CPlayerBase*>(other->GetListener()))
 		{
 			if (m_pPlayer != player)
 			{
@@ -368,7 +370,7 @@ void Haetataki::OnCollision(CollisionBase* other)
 
 //--------------------------------------------------------------------------------------------------------------
 
-void Haetataki::Smash(CPlayer& playiers)
+void Haetataki::Smash(CPlayerBase& playiers)
 {
 	//爆弾とプレイヤーの位置でベクトルをとる
 	D3DXVECTOR3 vecLen = m_vPosition - playiers.GetPosition();

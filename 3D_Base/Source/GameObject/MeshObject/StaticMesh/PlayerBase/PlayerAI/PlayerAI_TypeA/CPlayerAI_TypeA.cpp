@@ -82,7 +82,7 @@ void CPlayerAI_TypeA::Update()
 		{
 			m_Control = ActionInstruct::Attack;
 		}
-		else if (m_NearbyPlayers.sqrt < RandomFloat(1.f, 2.5f)
+		else if (m_NearbyPlayers.sqrt < RandomFloat(0.5f, 2.5f)
 			&& IsAnyActionState<CPlayerActionIdleState, CPlayerHoldingIdleState>())
 		{
 			m_Control = ActionInstruct::Attack;

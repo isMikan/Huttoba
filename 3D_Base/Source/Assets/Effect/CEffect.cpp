@@ -104,21 +104,28 @@ HRESULT CEffect::Create(
 	return S_OK;
 }
 
+//--------------------------------------------------------------------------------------------------------------
+
 //データ読み込み
 HRESULT CEffect::LoadData()
 {
 	//キーとそれに対応するファイルを入れる
-	m_pEffect["Laser"] = ::EsEffect::Create(m_pManager, u"Data\\Effekseer\\Laser01.efk");
+	m_pEffect["Laser"]  = ::EsEffect::Create(m_pManager, u"Data\\Effekseer\\Laser01.efk");
 	m_pEffect["Laser1"] = ::EsEffect::Create(m_pManager, u"Data\\Effekseer\\Laser01.efk");
 	m_pEffect["Laser2"] = ::EsEffect::Create(m_pManager, u"Data\\Effekseer\\Laser01.efk");
 
 	m_pEffect["Explosion"]	=	::EsEffect::Create(m_pManager, u"Data\\Effekseer\\Explosion.efk");
 	m_pEffect["FunWind"]	=	::EsEffect::Create(m_pManager, u"Data\\Effekseer\\FunWind.efk");
 	m_pEffect["Break"]		=	::EsEffect::Create(m_pManager, u"Data\\Effekseer\\Smoke.efk");
-	m_pEffect["BoomerangMaxCharge"]	= ::EsEffect::Create(m_pManager, u"Data\\Effekseer\\BoomerangMaxCharge.efk");
+
+	m_pEffect["BoomerangMaxCharge"] = ::EsEffect::Create(m_pManager, u"Data\\Effekseer\\BoomerangMaxCharge.efk");
+	m_pEffect["SmashBatHave"]		= ::EsEffect::Create(m_pManager, u"Data\\Effekseer\\SmashBatHave.efk");
+	m_pEffect["SmashBatHit"]		= ::EsEffect::Create(m_pManager, u"Data\\Effekseer\\SmashBatHit.efk");
 
 	return S_OK;
 }
+
+//--------------------------------------------------------------------------------------------------------------
 
 //描画
 void CEffect::Draw(

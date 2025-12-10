@@ -54,10 +54,15 @@ private:
 	//片手で持つアイテム用.
 	D3DXVECTOR3		m_OneHand_RightHandEndPos;			//右手の目的の位置.
 	D3DXVECTOR3		m_OneHand_LeftHandEndPos;			//左手の目的の位置.
+	//ブーメランのチャージ用.
+	D3DXVECTOR3		m_Boomerang_RightHandEndPos;		//右手の目的の位置.
+	D3DXVECTOR3		m_Boomerang_LeftHandEndPos;			//左手の目的の位置.
 
 //====================.
 
 	D3DXQUATERNION	m_StartQuat;			//開始時の回転.
+
+	bool			m_IsBoomerangMove;		//ブーメランでの動き開始か.
 
 private:
 //======================================================================
