@@ -53,7 +53,12 @@ constexpr float USE_COUNT = 7;
 constexpr float SLERP_DURATION = 1.0f;
 
 //回数制限
-constexpr float USE_LIMIT = 7.f;
+constexpr float USE_LIMIT = 100.f;
+
+//吹っ飛び
+constexpr float HIT_POWER = 8.f;
+constexpr float HIT_ANGLE = 60.f;
+
 //--------------------------------------------------------------------------------------------------------------
 
 SmashBat::SmashBat()
@@ -290,6 +295,8 @@ void SmashBat::ItemState(IItemObserver::State state)
 
 		break;
 	case IItemObserver::State::Use:
+		AssetManager::Sound()->PlaySE(enSoundList::SE_MissHaetataki);
+
 		break;
 	case IItemObserver::State::Throw:
 		OneEnterThrow();
@@ -372,6 +379,7 @@ void SmashBat::OnCollision(CollisionBase* other)
 				if (m_State == IItemObserver::State::Use)
 				{
 					Smash(*player);
+					AssetManager::Sound()->PlaySE(enSoundList::SE_SmashBatHit);
 				}
 			}
 		}
@@ -389,7 +397,7 @@ void SmashBat::Smash(CPlayer& playiers)
 	float len = D3DXVec3Length(&vecLen);
 
 	//プレイヤーの吹き飛ばしの計算
-	D3DXVECTOR3 SmashVel = playiers.GetKnockbackVelocity(m_vPosition, 30, 30.0f);
+	D3DXVECTOR3 SmashVel = playiers.GetKnockbackVelocity(m_vPosition, HIT_POWER, HIT_ANGLE);
 
 	playiers.SetHitAttack(
 		SmashVel,
