@@ -56,7 +56,7 @@ constexpr float SLERP_DURATION = 1.0f;
 constexpr float USE_LIMIT = 100.f;
 
 //吹っ飛び
-constexpr float HIT_POWER = 8.f;
+constexpr float HIT_POWER = 30.f;
 constexpr float HIT_ANGLE = 60.f;
 
 //--------------------------------------------------------------------------------------------------------------
@@ -72,6 +72,7 @@ SmashBat::SmashBat()
 	, m_IsFirst()
 	, m_Startfix()
 	, m_Endfix()
+	, m_hEffect()
 
 {
 	Init();
@@ -224,6 +225,15 @@ void SmashBat::Have()
 
 	m_SwitchDir = false;
 
+	//エフェクト追加
+	if (!AssetManager::Effect()->IsPlaying(m_hEffect[Efect::Have]))
+	{
+		m_hEffect[Efect::Have] = AssetManager::Effect()->Play("SmashBatHave", m_vPosition);
+	}
+
+	AssetManager::Effect()->SetScale(m_hEffect[Efect::Have], D3DXVECTOR3(0.7f, 0.7f, 0.7f));
+	AssetManager::Effect()->SetLocation(m_hEffect[Efect::Have], m_pPlayer->GetPosition());
+
 	m_UseTime -= CTimeManager::GetDeltaTime();
 	m_UsageLimit.remaining = m_UseTime;
 
@@ -260,6 +270,14 @@ void SmashBat::Use()
 	{
 		DestroyItem();
 	}
+
+	//エフェクト追加
+	if (!AssetManager::Effect()->IsPlaying(m_hEffect[Efect::Have]))
+	{
+		m_hEffect[Efect::Have] = AssetManager::Effect()->Play("SmashBatHave", m_vPosition);
+	}
+
+	AssetManager::Effect()->SetLocation(m_hEffect[Efect::Have], m_pPlayer->GetPosition());
 
 }
 
@@ -380,6 +398,7 @@ void SmashBat::OnCollision(CollisionBase* other)
 				{
 					Smash(*player);
 					AssetManager::Sound()->PlaySE(enSoundList::SE_SmashBatHit);
+					m_hEffect[Efect::Have] = AssetManager::Effect()->Play("SmashBatHit", m_vPosition);
 				}
 			}
 		}
