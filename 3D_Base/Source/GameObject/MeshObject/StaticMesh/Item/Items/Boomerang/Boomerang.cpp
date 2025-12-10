@@ -181,7 +181,7 @@ void Boomerang::OnCollision(CollisionBase* other)
 		if (CPlayerBase* player = dynamic_cast<CPlayerBase*>(other->GetListener()))
 		{
 			if ((m_State == State::Use || m_State == State::Throw )
-				&& player != m_pPlayer)
+				&& player != m_pPlayer && m_IsUseThrow)
 			{
 				Smash(*player);
 			}

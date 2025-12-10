@@ -278,6 +278,8 @@ void Haetataki::ItemState(IItemObserver::State state)
 		break;
 	case IItemObserver::State::Use:
 		m_UsageLimit.remaining = --m_UseCount;
+		AssetManager::Sound()->PlaySE(enSoundList::SE_MissHaetataki);
+
 		break;
 	case IItemObserver::State::Throw:
 		OneEnterThrow();
