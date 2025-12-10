@@ -53,7 +53,12 @@ constexpr float USE_COUNT = 7;
 constexpr float SLERP_DURATION = 1.0f;
 
 //回数制限
-constexpr float USE_LIMIT = 100;
+constexpr float USE_LIMIT = 100.f;
+
+//吹っ飛び
+constexpr float HIT_POWER = 30.f;
+constexpr float HIT_ANGLE = 60.f;
+
 //--------------------------------------------------------------------------------------------------------------
 
 SmashBat::SmashBat()
@@ -67,6 +72,7 @@ SmashBat::SmashBat()
 	, m_IsFirst()
 	, m_Startfix()
 	, m_Endfix()
+	, m_hEffect()
 
 {
 	Init();
@@ -84,16 +90,15 @@ SmashBat::~SmashBat()
 
 void SmashBat::Init()
 {
-	m_UseCount = USE_LIMIT;
-	m_UsageLimit = { m_UseCount, USE_LIMIT };
+	m_UseTime = USE_LIMIT;
+	m_UsageLimit = { m_UseTime, USE_LIMIT };
 
-	AttachMesh(AssetManager::Mesh(StaticMeshList::Haetataki));
+	AttachMesh(AssetManager::Mesh(StaticMeshList::SmashBat));
 
 	SetPosition(INITAL_POS_X, INITAL_POS_Y, INITAL_POS_Z);
 
 	m_State = IItemObserver::IItemObserver::State::Spawn;
 	m_tGravity = INITAL_GRAVITY;
-
 
 	std::shared_ptr<CStaticMesh> mesh = AssetManager::Mesh(StaticMeshList::Bomb);
 
@@ -219,6 +224,24 @@ void SmashBat::Have()
 	if (!m_IsFirst) { m_IsFirst = true; }
 
 	m_SwitchDir = false;
+
+	//エフェクト追加
+	if (!AssetManager::Effect()->IsPlaying(m_hEffect[Efect::Have]))
+	{
+		m_hEffect[Efect::Have] = AssetManager::Effect()->Play("SmashBatHave", m_vPosition);
+	}
+
+	AssetManager::Effect()->SetScale(m_hEffect[Efect::Have], D3DXVECTOR3(0.7f, 0.7f, 0.7f));
+	AssetManager::Effect()->SetLocation(m_hEffect[Efect::Have], m_pPlayer->GetPosition());
+
+	m_UseTime -= CTimeManager::GetDeltaTime();
+	m_UsageLimit.remaining = m_UseTime;
+
+	if (m_UseTime < 0)
+	{
+		DestroyItem();
+	}
+
 }
 
 //--------------------------------------------------------------------------------------------------------------
@@ -238,9 +261,24 @@ void SmashBat::Use()
 
 		m_pPickUpCollider->SetActive(true);
 		m_pUseCollider->SetActive(false);
-
-
 	}
+
+	m_UseTime -= CTimeManager::GetDeltaTime();
+	m_UsageLimit.remaining = m_UseTime;
+
+	if (m_UseTime < 0)
+	{
+		DestroyItem();
+	}
+
+	//エフェクト追加
+	if (!AssetManager::Effect()->IsPlaying(m_hEffect[Efect::Have]))
+	{
+		m_hEffect[Efect::Have] = AssetManager::Effect()->Play("SmashBatHave", m_vPosition);
+	}
+
+	AssetManager::Effect()->SetLocation(m_hEffect[Efect::Have], m_pPlayer->GetPosition());
+
 }
 
 //--------------------------------------------------------------------------------------------------------------
@@ -256,7 +294,6 @@ void SmashBat::Throw()
 	m_Velocity *= 0.98f;
 
 	m_vPosition += m_Velocity * static_cast<float>(CTimeManager::GetDeltaTime());
-
 }
 
 //--------------------------------------------------------------------------------------------------------------
@@ -273,11 +310,11 @@ void SmashBat::ItemState(IItemObserver::State state)
 	switch (state)
 	{
 	case IItemObserver::State::Have:
-		if (m_UseCount <= 0) { Destroy(); }
 
 		break;
 	case IItemObserver::State::Use:
-		m_UsageLimit.remaining = --m_UseCount;
+		AssetManager::Sound()->PlaySE(enSoundList::SE_MissHaetataki);
+
 		break;
 	case IItemObserver::State::Throw:
 		OneEnterThrow();
@@ -360,6 +397,8 @@ void SmashBat::OnCollision(CollisionBase* other)
 				if (m_State == IItemObserver::State::Use)
 				{
 					Smash(*player);
+					AssetManager::Sound()->PlaySE(enSoundList::SE_SmashBatHit);
+					m_hEffect[Efect::Have] = AssetManager::Effect()->Play("SmashBatHit", m_vPosition);
 				}
 			}
 		}
@@ -377,7 +416,7 @@ void SmashBat::Smash(CPlayer& playiers)
 	float len = D3DXVec3Length(&vecLen);
 
 	//プレイヤーの吹き飛ばしの計算
-	D3DXVECTOR3 SmashVel = playiers.GetKnockbackVelocity(m_vPosition, 8, 60.0f);
+	D3DXVECTOR3 SmashVel = playiers.GetKnockbackVelocity(m_vPosition, HIT_POWER, HIT_ANGLE);
 
 	playiers.SetHitAttack(
 		SmashVel,

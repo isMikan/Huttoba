@@ -43,7 +43,7 @@ constexpr float ADD_GRAVITY = 0.001f;
 constexpr float STAGE_HEIGHT = 0.5f;
 
 constexpr float OFFSET_USE_COLLISION_X = 0.0f;
-constexpr float OFFSET_USE_COLLISION_Y = -0.1f;
+constexpr float OFFSET_USE_COLLISION_Y = 0.0f;
 constexpr float OFFSET_USE_COLLISION_Z = 0.0f;
 
 //使用上限
