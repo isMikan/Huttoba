@@ -53,7 +53,7 @@ constexpr float USE_COUNT = 7;
 constexpr float SLERP_DURATION = 1.0f;
 
 //回数制限
-constexpr float USE_LIMIT = 100;
+constexpr float USE_LIMIT = 7.f;
 //--------------------------------------------------------------------------------------------------------------
 
 SmashBat::SmashBat()
@@ -84,8 +84,8 @@ SmashBat::~SmashBat()
 
 void SmashBat::Init()
 {
-	m_UseCount = USE_LIMIT;
-	m_UsageLimit = { m_UseCount, USE_LIMIT };
+	m_UseTime = USE_LIMIT;
+	m_UsageLimit = { m_UseTime, USE_LIMIT };
 
 	AttachMesh(AssetManager::Mesh(StaticMeshList::SmashBat));
 
@@ -93,7 +93,6 @@ void SmashBat::Init()
 
 	m_State = IItemObserver::IItemObserver::State::Spawn;
 	m_tGravity = INITAL_GRAVITY;
-
 
 	std::shared_ptr<CStaticMesh> mesh = AssetManager::Mesh(StaticMeshList::Bomb);
 
@@ -219,6 +218,15 @@ void SmashBat::Have()
 	if (!m_IsFirst) { m_IsFirst = true; }
 
 	m_SwitchDir = false;
+
+	m_UseTime -= CTimeManager::GetDeltaTime();
+	m_UsageLimit.remaining = m_UseTime;
+
+	if (m_UseTime < 0)
+	{
+		DestroyItem();
+	}
+
 }
 
 //--------------------------------------------------------------------------------------------------------------
@@ -239,6 +247,15 @@ void SmashBat::Use()
 		m_pPickUpCollider->SetActive(true);
 		m_pUseCollider->SetActive(false);
 	}
+
+	m_UseTime -= CTimeManager::GetDeltaTime();
+	m_UsageLimit.remaining = m_UseTime;
+
+	if (m_UseTime < 0)
+	{
+		DestroyItem();
+	}
+
 }
 
 //--------------------------------------------------------------------------------------------------------------
@@ -270,11 +287,9 @@ void SmashBat::ItemState(IItemObserver::State state)
 	switch (state)
 	{
 	case IItemObserver::State::Have:
-		if (m_UseCount <= 0) { Destroy(); }
 
 		break;
 	case IItemObserver::State::Use:
-		m_UsageLimit.remaining = --m_UseCount;
 		break;
 	case IItemObserver::State::Throw:
 		OneEnterThrow();
@@ -374,7 +389,7 @@ void SmashBat::Smash(CPlayer& playiers)
 	float len = D3DXVec3Length(&vecLen);
 
 	//プレイヤーの吹き飛ばしの計算
-	D3DXVECTOR3 SmashVel = playiers.GetKnockbackVelocity(m_vPosition, 8, 60.0f);
+	D3DXVECTOR3 SmashVel = playiers.GetKnockbackVelocity(m_vPosition, 30, 30.0f);
 
 	playiers.SetHitAttack(
 		SmashVel,

@@ -39,7 +39,6 @@ void DrawTimer::Update()
 	//ŠeˆÊ‚ÉÝ’è
 	RemainingTimeImage[Time::Ten]->SetPatternNo(timeLimit.first, 0);
 	RemainingTimeImage[Time::One]->SetPatternNo(timeLimit.second, 0);
-
 }
 
 void DrawTimer::Draw()
