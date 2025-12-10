@@ -122,6 +122,7 @@ void ItemManager::CreateItem()
 
 	//生成されたアイテムの位置設定
 	m_pItems.back()->SetPosition(m_pSpawnItemPosition->SerectPosition());
+	m_pItems.back()->SetTag(itemId);
 }
 
 //--------------------------------------------------------------------------------------------------------------

@@ -92,6 +92,7 @@ void Bomb::Spawn()
 
 void Bomb::OnGround()
 {
+	m_Tag;
 }
 
 void Bomb::Have()

@@ -105,6 +105,10 @@ public:
 	bool GetIsUse() const { return m_IsUse; }
 	bool GetIsOkFall() const { return m_IsOkFall; }
 
+	//アイテムのタグを設定
+	ItemID GetTag() const { return m_Tag; }
+	void SetTag(ItemID tag) { m_Tag = tag; }
+
 	//使用制限の取得（ゲージに必要）.	制作者	[甲把]
 	Gauge GetUsageLimit() const { return m_UsageLimit; }
 
@@ -151,5 +155,7 @@ protected:
 	//当たり判定(判定の削除にポインタが必要なので保持)
 	std::shared_ptr<CollisionBase>	m_pPickUpCollider;	//拾う用当たり判定
 	std::shared_ptr<CollisionBase>	m_pUseCollider;		//使用中用当たり判定
+
+	ItemID m_Tag;
 
 };
