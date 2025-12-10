@@ -84,6 +84,9 @@ SmashBat::~SmashBat()
 {
 	CollisionManager::GetInstance()->RemoveCollider(m_pPickUpCollider.get());
 	CollisionManager::GetInstance()->RemoveCollider(m_pUseCollider.get());
+
+	AssetManager::Effect()->Stop(m_hEffect[Efect::Have]);
+	AssetManager::Effect()->Stop(m_hEffect[Efect::HitPlayer]);
 }
 
 //--------------------------------------------------------------------------------------------------------------
@@ -130,6 +133,8 @@ void SmashBat::Update()
 {
 	//アイテム共通のUpdate
 	ItemBase::Update();
+
+
 }
 
 //--------------------------------------------------------------------------------------------------------------
@@ -160,6 +165,11 @@ void SmashBat::Spawn()
 
 void SmashBat::OnGround()
 {
+	//エフェクト追加
+	if (!AssetManager::Effect()->IsPlaying(m_hEffect[Efect::Have]))
+	{
+		m_hEffect[Efect::Have] = AssetManager::Effect()->Play("SmashBatHave", m_vPosition);
+	}
 }
 
 //--------------------------------------------------------------------------------------------------------------
@@ -398,7 +408,6 @@ void SmashBat::OnCollision(CollisionBase* other)
 				{
 					Smash(*player);
 					AssetManager::Sound()->PlaySE(enSoundList::SE_SmashBatHit);
-					m_hEffect[Efect::Have] = AssetManager::Effect()->Play("SmashBatHit", m_vPosition);
 				}
 			}
 		}
