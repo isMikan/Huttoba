@@ -9,18 +9,15 @@ CGaugeBase::CGaugeBase()
 
 	, m_WorldPos		( 0.f, 0.f, 0.f )
 	, m_OffsetPos		( 0.f, 3.f, 0.f )
+
+	, m_GaugeSize		( 0.5f )
 {
-	Init();
+	m_vScale = { m_GaugeSize, m_GaugeSize, 1.f };
 }
 
 //======================================================================
 // 	   外部で呼び出す関数.
 //======================================================================
-
-//--- 初期化処理 ---.
-void CGaugeBase::Init()
-{
-}
 
 //--- 更新処理 ---.
 void CGaugeBase::Update()
@@ -44,7 +41,7 @@ void CGaugeBase::Draw(
 	D3DXVECTOR3 screenPos = WorldToScreen(pos, View, Proj, vp);
 
 	//画像幅の半分を引いて真ん中にする.
-	screenPos.x -= 40.f;
+	screenPos.x -= 35.f;
 
 	//変換された位置を設定.
 	m_vPosition = D3DXVECTOR3(screenPos.x, screenPos.y, 0.f);

@@ -19,7 +19,7 @@ CPlayerItemAttackState::CPlayerItemAttackState(CPlayerBase& pPlayer)
 	: CPlayerState						( pPlayer )
 	
 	, m_StartTime						()
-	, m_EndTime							( 0.2f )
+	, m_EndTime							( 0.3f )
 
 	, m_CurrentTiltAngle				()
 	, m_TiltAngleMax					( D3DXToRadian( 7.f ) )
@@ -34,8 +34,12 @@ CPlayerItemAttackState::CPlayerItemAttackState(CPlayerBase& pPlayer)
 	, m_HoldBothHands_LeftHandEndPos	( 0.f, 0.3f, 0.3f )
 	, m_OneHand_RightHandEndPos			( -0.2f, 0.3f, 0.3f )
 	, m_OneHand_LeftHandEndPos			( -0.1f, 0.2f, -0.3f )
+	, m_Boomerang_RightHandEndPos		( 0.1f, 0.1f, -0.2f )
+	, m_Boomerang_LeftHandEndPos		( 0.1f, 0.2f, 0.1f )
 
 	, m_StartQuat						( 0.f, 0.f, 0.f, 1.f )
+
+	, m_IsBoomerangMove					( false )
 {
 }
 
@@ -70,7 +74,8 @@ void CPlayerItemAttackState::Enter()
 
 	ItemBase* item = m_pPlayer.GetHoldingItem();
 
-	if (m_pPlayer.IsAnyHoldingItem<Haetataki, SmashBat, Boomerang>())
+	//各アイテムの最終の手の位置を設定.
+	if (m_pPlayer.IsAnyHoldingItem<Haetataki, SmashBat>())
 	{
 		m_RightHandEndPos = m_OneHand_RightHandEndPos;
 		m_LeftHandEndPos = m_OneHand_LeftHandEndPos;
@@ -79,6 +84,15 @@ void CPlayerItemAttackState::Enter()
 	{
 		m_RightHandEndPos = m_HoldBothHands_RightHandEndPos;
 		m_LeftHandEndPos = m_HoldBothHands_LeftHandEndPos;
+
+		m_EndTime = 0.2f;
+	}
+	else if(m_pPlayer.IsAnyHoldingItem<Boomerang>())
+	{
+		m_RightHandEndPos = m_Boomerang_RightHandEndPos + m_RightHandStartPos;
+		m_LeftHandEndPos = m_Boomerang_LeftHandEndPos + m_LeftHandStartPos;
+	
+		m_EndTime = 0.5f;
 	}
 }
 
@@ -95,6 +109,7 @@ void CPlayerItemAttackState::Update()
 
 	ItemBase* item = m_pPlayer.GetHoldingItem();
 		
+	//送風機の場合.
 	if (dynamic_cast<Fun*>(item))
 	{
 		//プレイヤーの入力を受けた場合.
@@ -114,29 +129,33 @@ void CPlayerItemAttackState::Update()
 		}
 	}
 
-	//ローカル軸を取得.
-	CPlayerBase::LocalAxes axes = m_pPlayer.GetLocalAxes();
+	//ブーメランの場合.
+	if (m_pPlayer.IsAnyHoldingItem<Boomerang>())
+	{
+		//プレイヤーの入力を受けた場合.
+		if (IsInput(m_pPlayer.GetPlayerID()))
+		{
+			m_RightHandEndPos = m_OneHand_RightHandEndPos;
+			m_LeftHandEndPos = m_OneHand_LeftHandEndPos;
+			
+			//攻撃の開始時間を取得.
+			m_StartTime = CTimeManager::GetTotalTime();
+			m_EndTime = 0.3f;
+
+			m_IsBoomerangMove = true;
+		}
+	}
 
 	//全体の時間の現在の割合.
 	float progress = (t - m_StartTime) / m_EndTime;
 	progress = std::clamp(progress, 0.f, 1.f);
 
-	//現在の傾き = 最大傾き角度 * 割合.
-	m_CurrentTiltAngle = m_pPlayer.WrapAngle(m_TiltAngleMax * progress);
-
-	//クォータニオンの傾く回転を計算する.
-	D3DXQUATERNION tiltedQuat = m_pPlayer.TiltedQuat(m_StartQuat, axes.right, m_CurrentTiltAngle);
-	//現在のクォータニオンを受け取り他の状態の回転も取り入れる.
-	D3DXQUATERNION currentQuat = m_pPlayer.GetQuaternion();
-	//クォータニオンを設定する.
-	m_pPlayer.SetQuaternion(tiltedQuat.x, currentQuat.y, tiltedQuat.z, currentQuat.w);
-
-	float eased = sinf(progress * D3DX_PI * m_HandLaps);	//補正を計算する.	
-
 	//右手と左手の調整位置
 	D3DXVECTOR3 rightHandOffsetPos;
 	D3DXVECTOR3 leftHandOffsetPos;
 
+	float eased = sinf(progress * D3DX_PI * m_HandLaps);	//補正を計算する.	
+	
 	//手の軌道の計算.
 	D3DXVec3Lerp(&rightHandOffsetPos, &m_RightHandStartPos, &m_RightHandEndPos, eased);
 	D3DXVec3Lerp(&leftHandOffsetPos, &m_LeftHandStartPos, &m_LeftHandEndPos, eased);
@@ -144,6 +163,23 @@ void CPlayerItemAttackState::Update()
 	//手の位置を調整して設定.
 	m_pPlayer.GetPlayerRightHand().SetPosition(m_pPlayer.GetObjectPos(rightHandOffsetPos));
 	m_pPlayer.GetPlayerLeftHand().SetPosition(m_pPlayer.GetObjectPos(leftHandOffsetPos));
+
+
+	//フラグが ture じゃない場合、処理をやめる.
+	if (m_pPlayer.IsAnyHoldingItem<Boomerang>() && !m_IsBoomerangMove) return;
+
+	//現在の傾き = 最大傾き角度 * 割合.
+	m_CurrentTiltAngle = m_pPlayer.WrapAngle(m_TiltAngleMax * progress);
+
+	//ローカル軸を取得.
+	CPlayerBase::LocalAxes axes = m_pPlayer.GetLocalAxes();
+
+	//クォータニオンの傾く回転を計算する.
+	D3DXQUATERNION tiltedQuat = m_pPlayer.TiltedQuat(m_StartQuat, axes.right, m_CurrentTiltAngle);
+	//現在のクォータニオンを受け取り他の状態の回転も取り入れる.
+	D3DXQUATERNION currentQuat = m_pPlayer.GetQuaternion();
+	//クォータニオンを設定する.
+	m_pPlayer.SetQuaternion(tiltedQuat.x, currentQuat.y, tiltedQuat.z, currentQuat.w);
 }
 
 //--- 入力を受け付けたか判断する ---.
