@@ -46,9 +46,6 @@ CPlayerKnockdownState::~CPlayerKnockdownState()
 //--- 状態の開始時に呼び出す ---.
 void CPlayerKnockdownState::Enter()
 {
-	//SEを鳴らす.
-	AssetManager::Sound()->PlayLoop(enSoundList::SE_Knockdown);
-
 	ItemBase* item = m_pPlayer.GetHoldingItem();
 
 	if (item)
@@ -90,9 +87,6 @@ void CPlayerKnockdownState::Enter()
 //--- 状態の終了時に呼び出す ---.
 void CPlayerKnockdownState::Exit()
 {
-	//SEを止める.
-	AssetManager::Sound()->Stop(enSoundList::SE_Knockdown);
-
 	m_pPlayer.SetHitAnim(CPlayerBase::HitEvent::None);
 }
 

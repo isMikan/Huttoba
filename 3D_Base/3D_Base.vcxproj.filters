@@ -121,6 +121,9 @@
     <ClCompile Include="Source\GameObject\UIObject\Fade\FadeManager\CFadeManager.cpp" />
     <ClCompile Include="Source\GameObject\SpriteObject\DrawTimer\DrawTimer.cpp" />
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\Item\Items\Magnet\Magnet.cpp" />
+    <ClCompile Include="Source\GameObject\MeshObject\SkinMesh\RollingChick\CRollingChick.cpp" />
+    <ClCompile Include="Source\GameObject\MeshObject\SkinMesh\RollingChick\RollingChickManager\CRollingChickManager.cpp" />
+    <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\PlayerBase\PlayerSEManager\CPlayerSEManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Assets\AssetManager.h" />
@@ -245,6 +248,9 @@
     <ClInclude Include="Source\GameObject\UIObject\Fade\FadeManager\CFadeManager.h" />
     <ClInclude Include="Source\GameObject\SpriteObject\DrawTimer\DrawTimer.h" />
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\Item\Items\Magnet\Magnet.h" />
+    <ClInclude Include="Source\GameObject\MeshObject\SkinMesh\RollingChick\CRollingChick.h" />
+    <ClInclude Include="Source\GameObject\MeshObject\SkinMesh\RollingChick\RollingChickManager\CRollingChickManager.h" />
+    <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\PlayerBase\PlayerSEManager\CPlayerSEManager.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint" />

@@ -38,9 +38,6 @@ CPlayerHandAttackState::~CPlayerHandAttackState()
 //--- 状態の開始時に呼び出す ---.
 void CPlayerHandAttackState::Enter()
 {
-	//SEを鳴らす.
-	AssetManager::Sound()->PlaySE(enSoundList::SE_AttackHand);
-
 	//攻撃の開始時間を取得.
 	m_StartTime = CTimeManager::GetTotalTime();
 
