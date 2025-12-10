@@ -24,9 +24,12 @@ private:
 	void AvoidDanger();
 
 private:
+	//移動先の情報
+	NearbyObject	m_Destination;
+
 	//動きの優先度のスコア
-	float	m_MoveScore;
+	float			m_MoveScore;
 
 	//アイテム距離スコアの調整係数
-	float	m_DistanceWeight;
+	float			m_DistanceWeight;
 };

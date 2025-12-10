@@ -7,6 +7,7 @@
 CPlayerAI_TypeB::CPlayerAI_TypeB(int index)
 	: CPlayerAI			( index )
 
+	, m_Destination		()
 	, m_MoveScore		()
 
 	, m_DistanceWeight	( 0.5f )	//値を変えるとアイテム距離スコアが変化
@@ -32,7 +33,7 @@ void CPlayerAI_TypeB::Update()
 
 	AvoidDanger();
 
-	AutomaticMovement(m_NearbyItems.dir);
+	AutomaticMovement(m_Destination.dir);
 
 	CPlayerAI::Update();
 }
@@ -68,6 +69,14 @@ void CPlayerAI_TypeB::SearchItem()
 			//スコアは距離が近いほうが高くしたいので
 			float score = -distanceSq * m_DistanceWeight;
 
+			//switch (item->get)
+			//{
+			//default:
+			//	break;
+			//}
+
+			//if(Boomerang* boomerang = dynamic_cast<Boomerang*>)
+
 			//スコアが今までの最大より大きいなら
 			if (m_MoveScore < score)
 			{
@@ -76,8 +85,8 @@ void CPlayerAI_TypeB::SearchItem()
 				//ターゲットを更新
 				targetItem = item.get();
 
-				m_NearbyItems.dir = distance;
-				m_NearbyItems.sqrt = distanceSq;
+				m_Destination.dir = distance;
+				m_Destination.sqrt = distanceSq;
 			}
 		}
 	}
@@ -86,7 +95,7 @@ void CPlayerAI_TypeB::SearchItem()
 	if (targetItem)
 	{
 		//アイテムが近ければ拾う
-		if (m_NearbyItems.sqrt < 3.0f)
+		if (m_Destination.sqrt < 3.0f)
 		{
 			m_Control = ActionInstruct::ToggleItem;
 		}
@@ -133,8 +142,8 @@ void CPlayerAI_TypeB::HandleItemAction()
 			//ターゲットを更新
 			targetPlayer = player.get();
 
-			m_NearbyItems.dir = distance;
-			m_NearbyItems.sqrt = distanceSq;
+			m_Destination.dir = distance;
+			m_Destination.sqrt = distanceSq;
 		}
 	}
 
@@ -142,7 +151,7 @@ void CPlayerAI_TypeB::HandleItemAction()
 	if (targetPlayer)
 	{
 		//ターゲットプレイヤーと近ければ攻撃
-		if (m_NearbyItems.sqrt < 1.0f)
+		if (m_Destination.sqrt < 1.0f)
 		{
 			m_Control = ActionInstruct::Attack;
 		}
@@ -163,10 +172,13 @@ void CPlayerAI_TypeB::AvoidDanger()
 	//中心位置からプレイヤーの離れているかの全長を出す
 	float diffSq = diff.x * diff.x + diff.z * diff.z;
 
+	std::cout << diffSq << std::endl;
+	std::cout << groundRadius << std::endl;
+
 	//プレイヤーの位置が地面の半径以上なら
-	if (diffSq > groundRadius - 6)
+	if (diffSq > groundRadius * (0.7f * 0.7f))
 	{
 		//一旦中央に移動
-		m_TargetDir = m_vPosition - m_pGroundManager->GetGroundCenterPos();
+		m_Destination.dir = m_pGroundManager->GetGroundCenterPos() - m_vPosition;
 	}
 }
