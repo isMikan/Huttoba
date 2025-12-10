@@ -69,13 +69,29 @@ void CPlayerAI_TypeB::SearchItem()
 			//スコアは距離が近いほうが高くしたいので
 			float score = -distanceSq * m_DistanceWeight;
 
-			//switch (item->get)
-			//{
-			//default:
-			//	break;
-			//}
 
-			//if(Boomerang* boomerang = dynamic_cast<Boomerang*>)
+			switch (item->GetTag())
+			{
+			case ItemID::Haetataki:
+				//score += 30;
+				break;
+			case ItemID::Bomb:
+				break;
+			case ItemID::Fun:
+				break;
+			case ItemID::Mushroom:
+				break;
+			case ItemID::SmashBat:
+				break;
+			case ItemID::TrackingRobot:
+				break;
+			case ItemID::Boomerang:
+				break;
+			case ItemID::None:
+				break;
+			default:
+				break;
+			}
 
 			//スコアが今までの最大より大きいなら
 			if (m_MoveScore < score)

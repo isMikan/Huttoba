@@ -14,14 +14,15 @@ public:
 	void Draw(
 		D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAMERA& Camera) override;
 private:
-	//アイテムの探索
+	//アイテムの探索行動
 	void SearchItem();
 
-	//アイテムを所持中の動き
+	//アイテムを所持中の行動
 	void HandleItemAction();
 
 	//回避行動
 	void AvoidDanger();
+
 
 private:
 	//移動先の情報
