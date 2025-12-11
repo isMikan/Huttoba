@@ -158,4 +158,7 @@ protected:
 
 	ItemID m_Tag;
 
+	//ステージより早く落ちてしまうため追加
+	bool m_IsFall;
+	float m_ItemFallCount;
 };
