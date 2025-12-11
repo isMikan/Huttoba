@@ -13,7 +13,7 @@ CPlayerKnockdownState::CPlayerKnockdownState(CPlayerBase& pPlayer)
 	: CPlayerState				( pPlayer )
 	
 	, m_StartTime				()
-	, m_EndTime					( 0.9f )	//èIóπÇ≥ÇπÇÈäÑçá.
+	, m_EndTime					( 10.9f )	//èIóπÇ≥ÇπÇÈäÑçá.
 	, m_MaxTime					()
 
 	, m_DecreaseTriggerTime		()
@@ -122,6 +122,7 @@ void CPlayerKnockdownState::Update()
 			m_DecreaseTriggerTime = CTimeManager::GetTotalTime();
 
 			m_EndTime -= m_TimeDecreaseByMashing;	//å∏è≠Ç∑ÇÈ.
+
 			m_IsTimeDecreasing = true;
 		}
 	}
@@ -162,6 +163,8 @@ void CPlayerKnockdownState::ChildPlayer(int index)
 			if (fabs(y) > 0.0f)
 				m_PrevSthikY = y;
 
+			CInputManager::VibrationController(m_pPlayer.GetPlayerID());
+			
 			m_EndTime -= m_TimeDecreaseByMashing;	//å∏è≠Ç∑ÇÈ.
 			m_IsTimeDecreasing = true;
 		}

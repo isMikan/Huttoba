@@ -44,6 +44,12 @@ public:
 	//レバガチャ用のボタンを入力したかを渡す.
 	bool IsDownKey() { return m_pXInput->IsDownKey(); }
 
+	//コントローラーの振動をさせる
+	void SetVibration() {
+		m_IsVibration = true;
+		m_VibrationCnt = 0;
+	}
+
 private:
 	//正規化したスティックの値を渡す.
 	float SthikNormalize(SHORT sthik);
@@ -63,4 +69,15 @@ private:
 	std::map<Action, bool>	m_OldInputState;
 
 	float				m_SthikDeadZone;	//スティックのデッドゾーン.
+
+	//振動する時間
+	float				m_VibrationTime;
+	//どれくらい振動したかをカウント
+	float				m_VibrationCnt;
+
+	//現在振動しているか
+	bool				m_IsVibration;
+
+	//コントローラーの振動の強さ
+	float				m_VibrationPower;
 };

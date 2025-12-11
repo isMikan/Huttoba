@@ -36,7 +36,7 @@ CXInput::CXInput( DWORD padId )
 	, m_stateOld		()
 	, m_vibration		()
 	, m_connect			( false )
-	, m_ThumbDeadZone	(0.2f)
+	, m_ThumbDeadZone	( 0.2f )
 {
 }
 

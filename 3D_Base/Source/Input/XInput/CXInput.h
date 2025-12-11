@@ -116,6 +116,4 @@ private:
 	bool				m_connect;		//接続判定.
 
 	float				m_ThumbDeadZone;//スティックのデッドゾーン.
-
-	//float				m_
 };

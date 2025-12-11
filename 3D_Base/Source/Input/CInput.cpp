@@ -4,7 +4,12 @@
 CInput::CInput(DWORD playerIndex)
 	: m_pXInput			()
 	, m_PlayerIndex		()
-	, m_SthikDeadZone	(0.2f)
+	, m_SthikDeadZone	( 0.2f )
+
+	, m_VibrationTime	( 0.1f )	//値を変えるとレバガチャ時の振動する時間が変化
+	, m_VibrationCnt	()
+	, m_IsVibration		( false )
+	, m_VibrationPower	( 30000 )	//値を変えるとコントローラーの振動の強さが変化
 {
 	m_pXInput = std::make_unique<CXInput>(playerIndex);
 
@@ -25,6 +30,24 @@ CInput::~CInput()
 void CInput::Update()
 {
 	m_pXInput->Update();
+
+	//振動フラグがオンなら
+	if (m_IsVibration)
+	{
+		//カウントを増加
+		m_VibrationCnt += CTimeManager::GetDeltaTime();
+
+		//コントローラーを振動させる
+		m_pXInput->SetVibration(m_VibrationPower, m_VibrationPower);
+
+		//カウントが振動する時間を超えたら終了
+		if (m_VibrationCnt > m_VibrationTime)
+		{
+			m_IsVibration = false;
+			//振動を止める
+			m_pXInput->SetVibration(0, 0);
+		}
+	}
 
 	for (const auto& table : m_InputTable)
 	{
