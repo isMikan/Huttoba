@@ -78,16 +78,16 @@ HRESULT CSceneTitle::LoadData()
 	//地面マネージャーの読み込み.
 	m_pGroundManager->LoadData();
 	
-	m_pSpriteTitleImg->AttachSprite(AssetManager::Sprite(Sprite2DList::font_Title));
+	m_pSpriteTitleImg->AttachSprite(AssetManager::Sprite(Sprite2DList::Font_Title));
 	m_pSpriteTitleImg->SetPosition(300.f, 20.f, 0.f);
 
-	m_pSpriteSelector->AttachSprite(AssetManager::Sprite(Sprite2DList::Selector));
+	m_pSpriteSelector->AttachSprite(AssetManager::Sprite(Sprite2DList::UI_Selector));
 
-	m_pSpriteStartFont->AttachSprite(AssetManager::Sprite(Sprite2DList::FontUI));
+	m_pSpriteStartFont->AttachSprite(AssetManager::Sprite(Sprite2DList::Font_UI_Common));
 	m_pSpriteStartFont->SetPatternNo(0, 0);
 	m_pSpriteStartFont->SetPosition(550, 440, 0);
 
-	m_pSpriteEndFont->AttachSprite(AssetManager::Sprite(Sprite2DList::FontUI));
+	m_pSpriteEndFont->AttachSprite(AssetManager::Sprite(Sprite2DList::Font_UI_Common));
 	m_pSpriteEndFont->SetPatternNo(0, 1);
 	m_pSpriteEndFont->SetPosition(570, 540, 0);
 

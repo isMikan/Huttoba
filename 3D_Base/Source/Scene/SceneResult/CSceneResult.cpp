@@ -3,12 +3,18 @@
 CSceneResult::CSceneResult()
 	: m_Action				()
 
-	, m_pSpriteResultImg	( nullptr )
+	, m_ResultFontIndex		( 3 )
+
+	, m_pSpriteResultFont	()
+	, m_pSpriteResultUIFont	()
 	, m_pSpriteSelector		( nullptr )
 
 	, m_pPlayerManager		()
 
 	, m_pGroundManager		()
+
+	, m_FontPatternNo		()
+	, m_FontPos				()
 
 	, m_SelectorPos			()
 
@@ -44,7 +50,13 @@ HRESULT CSceneResult::Create()
 	m_pGroundManager = std::make_unique<CGroundManager>();
 	m_pGroundManager->ResultGroundCreate();
 
-	m_pSpriteResultImg = std::make_unique<CUIObject>();
+	m_pSpriteResultFont = std::make_unique<CUIObject>();
+
+	for (int i = 0;i < m_ResultFontIndex;i++)
+	{
+		m_pSpriteResultUIFont.push_back(std::make_unique<CUIObject>());
+	}
+
 	m_pSpriteSelector = std::make_unique<CUIObject>();
 
 	//関数を入れる
@@ -62,8 +74,32 @@ HRESULT CSceneResult::Create()
 
 HRESULT CSceneResult::LoadData()
 {
-	m_pSpriteResultImg->AttachSprite(AssetManager::Sprite(Sprite2DList::Result));
-	m_pSpriteSelector->AttachSprite(AssetManager::Sprite(Sprite2DList::Selector));
+	SetFontPattern();
+
+	SetFontPos();
+
+	m_pSpriteResultFont->AttachSprite(AssetManager::Sprite(Sprite2DList::Font_Result));
+
+	//生き残ったプレイヤーが複数いたら
+	if (CSceneData::GetPlayerLivingNum() > 1)
+		//DRAWの表示
+		m_pSpriteResultFont->SetPatternNo(0, 1);
+	else
+		//1以下ならWINNERを表示
+		m_pSpriteResultFont->SetPatternNo(0, 0);
+
+	//表示数位置の調整
+	m_pSpriteResultFont->SetPosition(D3DXVECTOR3(50, WND_H-280, 0));
+
+	for (int i=0;i< m_ResultFontIndex;i++)
+	{
+		m_pSpriteResultUIFont[i]->AttachSprite(AssetManager::Sprite(Sprite2DList::Font_UI_Common));
+
+		m_pSpriteResultUIFont[i]->SetPatternNo(0, m_FontPatternNo[i]);
+
+		m_pSpriteResultUIFont[i]->SetPosition(m_FontPos[i]);
+	}
+	m_pSpriteSelector->AttachSprite(AssetManager::Sprite(Sprite2DList::UI_Selector));
 	
 	//プレイヤーマネージャーの読み込み.
 	m_pPlayerManager->LoadData();
@@ -130,7 +166,13 @@ void CSceneResult::Draw()
 
 	m_pDx11->SetDepth(false);
 	m_pSpriteSelector->Draw();
-	m_pSpriteResultImg->Draw();
+
+	for (auto& Font : m_pSpriteResultUIFont)
+	{
+		Font->Draw();
+	}
+
+	m_pSpriteResultFont->Draw();
 
 	CFadeManager::Draw(0.f, 1.f, true);
 
@@ -141,11 +183,25 @@ void CSceneResult::Destroy()
 {
 }
 
+void CSceneResult::SetFontPattern()
+{
+	m_FontPatternNo.push_back(4);
+	m_FontPatternNo.push_back(5);
+	m_FontPatternNo.push_back(3);
+}
+
+void CSceneResult::SetFontPos()
+{
+	m_FontPos.push_back(D3DXVECTOR3(920, 500, 0));
+	m_FontPos.push_back(D3DXVECTOR3(920, 560, 0));
+	m_FontPos.push_back(D3DXVECTOR3(920, 630, 0));
+}
+
 void CSceneResult::SetSelectorPos()
 {
-	m_SelectorPos.push_back(D3DXVECTOR3(790, 415, 0));
-	m_SelectorPos.push_back(D3DXVECTOR3(750, 510, 0));
-	m_SelectorPos.push_back(D3DXVECTOR3(770, 590, 0));
+	m_SelectorPos.push_back(D3DXVECTOR3(850, 500, 0));
+	m_SelectorPos.push_back(D3DXVECTOR3(850, 560, 0));
+	m_SelectorPos.push_back(D3DXVECTOR3(850, 630, 0));
 }
 
 void CSceneResult::MoveSelector()
