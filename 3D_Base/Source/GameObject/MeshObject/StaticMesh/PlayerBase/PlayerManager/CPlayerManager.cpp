@@ -163,13 +163,11 @@ void CPlayerManager::ResultPlayerCreate()
 
 			countFalled++;
 		}
-
 		m_pPlayers[pNo]->SetPosition(pos);
 		m_pPlayers[pNo]->
 			SetQuaternion(0.f, D3DXToRadian(180.f), 0.f, 0.f);
 	}
 }
-
 //=== 各シーンの更新処理 ===.
 
 //--- 更新関数 ---.
@@ -183,10 +181,6 @@ void CPlayerManager::Update()
 		player->GetPlayerRightHand().Update();						//右手.
 		player->GetPlayerLeftHand().Update();						//左手.
 	}
-
-
-	std::cout << "Pos : x = " << m_pPlayers[0]->GetPosition().x << std::endl;
-	std::cout << "Pos : z = " << m_pPlayers[0]->GetPosition().z << std::endl;
 }
 
 //--- タイトル ---.
