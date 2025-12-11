@@ -119,7 +119,9 @@ void CSceneTitle::Update()
 	}
 
 	//ƒvƒŒƒCƒ„[‚Ì“®ì
+	//\
 	m_pPlayerManager->TitlePlayerUpdate();
+	m_pPlayerManager->Update();
 
 	MoveSelector();
 
