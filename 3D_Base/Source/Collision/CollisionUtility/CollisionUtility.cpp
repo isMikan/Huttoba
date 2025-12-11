@@ -211,7 +211,7 @@ namespace CollisionUtility
             {
                 hitGround = true;
                 outGroundY = hitPosition.y;
-                break;
+                //break;
             }
         }
 
