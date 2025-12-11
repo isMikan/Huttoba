@@ -3,6 +3,8 @@
 CUIObject::CUIObject()
 	: m_pSprite		( nullptr )
 	, m_PatternNo	()
+
+	, m_Color		( 1.f, 1.f, 1.f )
 {
 }
 
@@ -31,6 +33,8 @@ void CUIObject::Draw()
 
 	//パターン番号を設定
 	m_pSprite->SetPatternNo( m_PatternNo.x, m_PatternNo.y );
+
+	m_pSprite->SetColor(m_Color);
 
 	//レンダリング.
 	m_pSprite->Render();

@@ -33,6 +33,14 @@ public:
 		m_PatternNo.y = y;
 	}
 
+	//色の設定.	制作者 [甲把]
+	void SetColor(D3DXVECTOR3 color) { m_Color = color; }
+	void SetColor(float r, float g, float b) {
+		m_Color.x = r;
+		m_Color.y = g;
+		m_Color.z = b;
+	}
+
 protected:
 	//CGameObjectから継承した関数
 	//final : これ以降は override させない
@@ -41,4 +49,6 @@ protected:
 protected:
 	std::shared_ptr<CSprite2D>	m_pSprite;
 	POINTS		m_PatternNo;	//パターン番号(マス目)
+
+	D3DXVECTOR3	m_Color;		//スプライトの色.	制作者 [甲把]
 };

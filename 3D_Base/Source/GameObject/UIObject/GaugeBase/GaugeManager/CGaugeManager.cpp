@@ -55,7 +55,8 @@ void CGaugeManager::Init(
 			//ダウン状態の場合.
 			if (dynamic_cast<CPlayerKnockdownState*>(state))
 			{
-				GaugeCreate(player.get(), player.get()->GetKnockdownTime());	//生成.
+				GaugeCreate(player.get(), player.get()->GetKnockdownTime(),
+					D3DXVECTOR3(1.f, 0.f, 1.f));	//生成.
 			}
 			//アイテムを持っている場合.
 			else if (dynamic_cast<CPlayerHoldingIdleState*>(state))
@@ -64,7 +65,8 @@ void CGaugeManager::Init(
 				if (item 
 					&& !player->IsAnyHoldingItem<Bomb, Mushroom, TrackingRobot>())
 				{
-					GaugeCreate(player.get(), item->GetUsageLimit());	//生成.
+					GaugeCreate(player.get(), item->GetUsageLimit(),
+						D3DXVECTOR3(1.f, 1.f, 0.f));	//生成.
 				}
 			}
 			//アイテムを持っていない場合.
@@ -86,7 +88,8 @@ void CGaugeManager::Update()
 		{
 			if (mush->GetIsPlaced())
 			{
-				GaugeCreate(mush, mush->GetUsageLimit());	//生成.
+				GaugeCreate(mush, mush->GetUsageLimit(),
+					D3DXVECTOR3(1.f, 1.f, 0.f));	//生成.
 			}
 			else
 			{
@@ -187,7 +190,9 @@ void CGaugeManager::Draw(
 //======================================================================
 
 //--- ゲージの構築処理 ---.
-void CGaugeManager::GaugeCreate(CStaticMeshObject* object, Gauge usageLimit)
+void CGaugeManager::GaugeCreate(
+	CStaticMeshObject* object, 
+	Gauge usageLimit, D3DXVECTOR3 color)
 {
 	for (int frameNo = 0; frameNo < Gauge_Max; frameNo++)
 	{
@@ -203,7 +208,8 @@ void CGaugeManager::GaugeCreate(CStaticMeshObject* object, Gauge usageLimit)
 		//タイムゲージの作成.
 		m_pGauge[gaugeNo] = std::make_unique<CTimerGauge>();							//インスタンス作成.
 		m_pGauge[gaugeNo]->AttachSprite(AssetManager::Sprite(Sprite2DList::Gauge));		//スプライト設定.
-		m_pGauge[gaugeNo]->SetGaugeInfo(usageLimit);		//時間を設定.
+		m_pGauge[gaugeNo]->SetGaugeInfo(usageLimit);	//時間を設定.
+		m_pGauge[gaugeNo]->SetColor(color);				//色を設定.
 
 		m_ObjectGauge[object].first = frameNo;	//フレーム番号を保存.
 		m_ObjectGauge[object].second = gaugeNo;	//ゲージ番号を保存.

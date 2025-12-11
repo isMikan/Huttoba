@@ -184,8 +184,6 @@ void CSceneTitle::Draw()
 	
 	m_pItemManager->Draw(view, proj, light, camera);
 
-	m_pSpriteTitleImg->Draw();
-
 	m_pDx11->SetDepth(false);
 
 	//m_pSpriteTitleFont->Draw();
@@ -225,7 +223,6 @@ void CSceneTitle::Draw()
 			isFade = false;
 		}
 	}
-
 	m_pDx11->SetDepth(true);
 }
 

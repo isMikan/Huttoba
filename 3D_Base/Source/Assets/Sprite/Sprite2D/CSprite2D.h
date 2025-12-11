@@ -110,6 +110,10 @@ public:
 	//コンテキストの取得（ビューポートの取得のために必要）		制作者 [甲把].
 	ID3D11DeviceContext* GetContext11() const { return m_pContext11.Get(); }
 
+	//=== 色をプログラム上で変更するのに必要.	制作者 [甲把] ===. 
+	//色の設定関数.
+	void SetColor(D3DXVECTOR3 color) { m_Color = color; }
+
 private:
 	CDirectX11*					m_pDx11;
 	ComPtr<ID3D11Device>		m_pDevice11;
@@ -136,4 +140,7 @@ private:
 	SPRITE_STATE	m_SpriteState;	//スプライト情報
 	POINTS			m_PatternNo;	//パターン番号(マス目)
 	POINTS			m_PatternMax;	//最大パターン(マスの最大値)
+
+	D3DXVECTOR3		m_Color;		//色.
+
 };

@@ -35,7 +35,9 @@ protected:
 // 	   “à•”‚ÅŒÄ‚Ño‚·ŠÖ”.
 //======================================================================
 	//--- ƒQ[ƒW‚Ì\’zˆ— ---.
-	void GaugeCreate(CStaticMeshObject* object, Gauge usageLimit);
+	void GaugeCreate(
+		CStaticMeshObject* object,
+		Gauge usageLimit, D3DXVECTOR3 color);
 	//--- ”jŠüˆ— ---.
 	void Destroy(CStaticMeshObject* object);
 
