@@ -183,6 +183,7 @@ enum class enSoundList
 	SE_Knockback, 
 	SE_Knockdown, 
 	SE_HitHand,
+	SE_Warning,
 	SE_HitHaetataki,
 	SE_MissHaetataki,
 	SE_BoomerangCharge,
@@ -190,8 +191,6 @@ enum class enSoundList
 	SE_BoomerangThrow,
 	SE_SmashBatHit,
 	SE_DestroyItem,
-	SE_Warning,
-	SE_Gacha,
 
 	//‰¹‚ª‘‚¦‚½‚çu‚±‚±v‚É’Ç‰Á
 	max,

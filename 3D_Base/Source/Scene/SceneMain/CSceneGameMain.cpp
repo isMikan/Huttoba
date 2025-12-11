@@ -57,8 +57,6 @@ CSceneGameMain::~CSceneGameMain()
 	//ŠO•”‚Åì¬‚µ‚Ä‚¢‚é‚Ì‚ÅA‚±‚±‚Å‚Í”jŠü‚µ‚È‚¢
 	m_hWnd = nullptr;
 
-	AssetManager::Sound()->Stop(enSoundList::BGM_SceneMain);
-
 	//“o˜^‚µ‚Ä‚¢‚é“–‚½‚è”»’è‚ð‚·‚×‚Äíœ
 	CollisionManager::GetInstance()->Init();
 }

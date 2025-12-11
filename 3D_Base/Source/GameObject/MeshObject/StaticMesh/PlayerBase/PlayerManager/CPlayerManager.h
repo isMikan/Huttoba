@@ -36,6 +36,8 @@ public:
 	void Update();
 	//--- タイトル ---.
 	void TitlePlayerUpdate();
+	//--- 準備 ---.
+	void StandbyPlayerUpdate();
 	//--- メイン ---.
 	void MainPlayerUpdate();
 	//--- リザルト ---.

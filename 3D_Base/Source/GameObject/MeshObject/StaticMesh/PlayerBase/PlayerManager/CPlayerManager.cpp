@@ -210,6 +210,25 @@ void CPlayerManager::TitlePlayerUpdate()
 	}
 }
 
+//--- 準備 ---.
+void CPlayerManager::StandbyPlayerUpdate()
+{
+	for (auto& player : m_pPlayers)
+	{
+		if (!player) continue;	//プレイヤーがいない場合、次へ.
+
+		player->Update();	//胴体.
+
+		Update();
+
+		//落ちた場合、削除.
+		if (player->GetPosition().x < -10.f)
+		{
+			Destroy(player.get());
+		}
+	}
+}
+
 //--- メイン ---.
 void CPlayerManager::MainPlayerUpdate()
 {
