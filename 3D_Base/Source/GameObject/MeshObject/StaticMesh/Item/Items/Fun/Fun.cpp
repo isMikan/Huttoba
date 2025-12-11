@@ -16,6 +16,7 @@ Fun::Fun()
 	, m_MoveSpeed	( 6.0f )		//値を変えると投げた時の移動速度が変化
 
 	, m_pNowCollider()
+	, m_pUseCollider_2()
 {
 	Init();
 	
@@ -28,6 +29,7 @@ Fun::~Fun()
 
 	CollisionManager::GetInstance()->RemoveCollider(m_pPickUpCollider.get());
 	CollisionManager::GetInstance()->RemoveCollider(m_pUseCollider.get());
+	CollisionManager::GetInstance()->RemoveCollider(m_pUseCollider_2.get());
 	CollisionManager::GetInstance()->RemoveCollider(m_pNowCollider.get());
 	CollisionManager::GetInstance()->RemoveCollider(m_pCollision.get());
 }
@@ -45,14 +47,13 @@ void Fun::Init()
 
 	m_tGravity = 0.01f;
 
-	m_HaveOffset = D3DXVECTOR3(0.0, 0.2f, 0.0f);
-
 	//持つ用と攻撃用の当たり判定をそれぞれ用意
 	//引数の末尾にfalseを入れると自動登録されなくなり、AddColliderで任意追加できるようにした
 	//具体的な使い方はハエたたき見る or 聞く
 	
 	//使用時の前方に出す当たり判定
-	std::shared_ptr<CStaticMesh> UseMesh = AssetManager::Mesh(StaticMeshList::BCapsule);
+	std::shared_ptr<CStaticMesh> UseMesh = AssetManager::Mesh(StaticMeshList::BoomerangCol);
+	std::shared_ptr<CStaticMesh> UseMesh_2 = AssetManager::Mesh(StaticMeshList::BCapsule);
 	std::shared_ptr<CStaticMesh> PickMesh = AssetManager::Mesh(StaticMeshList::Bomb);
 
 	m_pPickUpCollider = CollisionDataFactory::CreateCapsuleForMesh(
@@ -61,18 +62,28 @@ void Fun::Init()
 		this
 	);
 
-
-	m_pUseCollider = CollisionDataFactory::CreateCapsuleForMesh(
+	m_pUseCollider = CollisionDataFactory::CreateSphereForMesh(
 		CollisionBase::ColliderTag::Fan,
 		UseMesh,
 		this
 	);
 
-	D3DXVECTOR3 m_HaveOffset = { 0.f, 0.f, 1.f };
+	m_pUseCollider_2 = CollisionDataFactory::CreateCapsuleForMesh(
+		CollisionBase::ColliderTag::Fan,
+		UseMesh_2,
+		this
+	);
+
+	D3DXVECTOR3 m_UseOffset = { 0.f, 0.f, 1.5f };
+	D3DXVECTOR3 m_UseOffset_2 = { 0.f, 0.f, 0.5f };
 	D3DXVECTOR3 m_PickUpOffset = { 0.f, 0.3f, 0.f };
-	m_pUseCollider->SetRotationXCapsule(D3DXToRadian(90.f));
-	m_pUseCollider->SetLocalOffSetToCapsule(m_HaveOffset, m_HaveOffset);
+
+	m_pUseCollider->SetLocalOffsetToSphere(m_UseOffset);
 	m_pUseCollider->SetActive(false);
+
+	m_pUseCollider_2->SetRotationXCapsule(D3DXToRadian(90.f));
+	m_pUseCollider_2->SetLocalOffSetToCapsule(m_UseOffset_2, m_UseOffset_2);
+	m_pUseCollider_2->SetActive(false);
 
 	m_pPickUpCollider->SetLocalOffSetToCapsule(m_PickUpOffset, m_PickUpOffset);
 
@@ -112,6 +123,7 @@ void Fun::Have()
 {
 	m_pPickUpCollider->SetActive(false);
 	m_pUseCollider->SetActive(true);
+	m_pUseCollider_2->SetActive(true);
 	HaveMove();
 }
 
@@ -124,6 +136,7 @@ void Fun::Throw()
 {
 	m_pPickUpCollider->SetActive(true);
 	m_pUseCollider->SetActive(false);
+	m_pUseCollider_2->SetActive(false);
 	ThrowMove();
 }
 
@@ -206,10 +219,9 @@ void Fun::UseMove()
 	
 	float a = atan2f(flowerd.x, flowerd.z);
 
-	AssetManager::Effect()->SetRotation(hEffect, D3DXVECTOR3(D3DXToRadian(90), a, 0));
-
-	AssetManager::Effect()->SetSpeed(hEffect, 4.f);
-
+	AssetManager::Effect()->SetRotation(hEffect, D3DXVECTOR3(D3DXToRadian(180.f), a, 0));
+	AssetManager::Effect()->SetSpeed(hEffect, 1.f);
+	AssetManager::Effect()->SetScale(hEffect, D3DXVECTOR3(0.03f, 0.03f, 0.03f));
 	AssetManager::Effect()->SetLocation(hEffect, m_vPosition);
 }
 

@@ -210,6 +210,25 @@ void CPlayerManager::TitlePlayerUpdate()
 	}
 }
 
+//--- 準備 ---.
+void CPlayerManager::StandbyPlayerUpdate()
+{
+	for (auto& player : m_pPlayers)
+	{
+		if (!player) continue;	//プレイヤーがいない場合、次へ.
+
+		player->Update();	//胴体.
+
+		Update();
+
+		//落ちた場合、削除.
+		if (player->GetPosition().x < -10.f)
+		{
+			Destroy(player.get());
+		}
+	}
+}
+
 //--- メイン ---.
 void CPlayerManager::MainPlayerUpdate()
 {
@@ -279,16 +298,16 @@ void CPlayerManager::Create()
 
 	for (int pNo = 0; pNo < Player_Max; pNo++)
 	{
-#if 0
+#if 1
 		//プレイヤーのインスタンス生成.
-		if (pNo != 1)
+		if (pNo != 5)
 			m_pPlayers[pNo] = std::make_unique<CPlayer>(pNo);
 		else
 		{
 			m_pPlayers[pNo] = std::make_unique<CPlayerAI_TypeB>(pNo);
 		}
 #else
-#if 1
+#if 0
 		if (pNo == 0)
 		{
 			m_pPlayers[pNo] = std::make_unique<CPlayer>(pNo);

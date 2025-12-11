@@ -24,10 +24,11 @@ constexpr float COMEBACK_ADD_VELOCITY_RANGE = 0.25f;	//ñﬂÇ¡ÇƒÇ≠ÇÈÇ∆Ç´ÇÃ1fä‘ÇÃë¨ì
 //FactoryÇ…ìoò^
 namespace { const bool regist = ItemBase::AutoRegister<Boomerang>(ItemID::Boomerang); }
 
+//--------------------------------------------------------------------------------------------------------------
+
 Boomerang::Boomerang()
 	: m_Velocity		()
 	, m_AddVelocity		()
-	, m_TotalVelocity	()
 	, m_MoveSpeed		( MOVE_SPEED )	//ílÇïœÇ¶ÇÈÇ∆îöíeÇÃà⁄ìÆë¨ìxÇ™ïœâª
 	, m_IsUseThrow	( false )
 	, m_ComeBack	( false )
@@ -38,12 +39,16 @@ Boomerang::Boomerang()
 	Init();
 }
 
+//--------------------------------------------------------------------------------------------------------------
+
 Boomerang::~Boomerang()
 {
 	//ìñÇΩÇËîªíËçÌèú
 	CollisionManager::GetInstance()->RemoveCollider(m_pPickUpCollider.get());
 	CollisionManager::GetInstance()->RemoveCollider(m_pUseCollider.get());
 }
+
+//--------------------------------------------------------------------------------------------------------------
 
 void Boomerang::Init()
 {
@@ -86,15 +91,21 @@ void Boomerang::Init()
 	m_AddVelocity = { 0.f,0.f,0.f };
 }
 
+//--------------------------------------------------------------------------------------------------------------
+
 void Boomerang::Update()
 {
 	ItemBase::Update();
 }
 
+//--------------------------------------------------------------------------------------------------------------
+
 void Boomerang::Draw(D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAMERA& Camera)
 {
 	ItemBase::Draw(View, Proj, Light, Camera);
 }
+
+//--------------------------------------------------------------------------------------------------------------
 
 void Boomerang::Spawn()
 {
@@ -111,9 +122,13 @@ void Boomerang::Spawn()
 	}
 }
 
+//--------------------------------------------------------------------------------------------------------------
+
 void Boomerang::OnGround()
 {
 }
+
+//--------------------------------------------------------------------------------------------------------------
 
 void Boomerang::Have()
 {
@@ -130,49 +145,50 @@ void Boomerang::Have()
 	HaveMove();
 }
 
+//--------------------------------------------------------------------------------------------------------------
+
 void Boomerang::Use()
 {
 	UseMove();
 }
+
+//--------------------------------------------------------------------------------------------------------------
 
 void Boomerang::Throw()
 {
 	ThrowMove();
 }
 
+//--------------------------------------------------------------------------------------------------------------
+
 void Boomerang::Destroy()
 {
 	DestroyItem();
 }
 
+//--------------------------------------------------------------------------------------------------------------
+
 void Boomerang::ItemState(IItemObserver::State state)
 {
 	switch (state)
 	{
-	case IItemObserver::IItemObserver::State::Spawn:
-		break;
-	case IItemObserver::IItemObserver::State::OnGround:
-		break;
 	case IItemObserver::IItemObserver::State::Have:
+
 		if (m_UseCount <= 0){ Destroy(); }
 
+		//îªíËêÿÇËë÷Ç¶
 		m_pUseCollider->SetActive(false);
 		m_pPickUpCollider->SetActive(true);
 
 		break;
-	case IItemObserver::IItemObserver::State::Use:
-		OneEnterUse();
 
-		break;
-	case IItemObserver::IItemObserver::State::Throw:
-		OneEnterThrow();
-		break;
-	case IItemObserver::IItemObserver::State::Destroy:
-		break;
-	default:
-		break;
+	case IItemObserver::IItemObserver::State::Use	: OneEnterUse();   break;
+	case IItemObserver::IItemObserver::State::Throw	: OneEnterThrow(); break;
+	default:	break;
 	}
 }
+
+//--------------------------------------------------------------------------------------------------------------
 
 void Boomerang::OnCollision(CollisionBase* other)
 {
@@ -189,102 +205,62 @@ void Boomerang::OnCollision(CollisionBase* other)
 	}
 }
 
+//--------------------------------------------------------------------------------------------------------------
+
 void Boomerang::HaveMove()
 {
 	m_vPosition = m_pPlayer->GetPlayerRightHand().GetPosition();
 }
 
+//--------------------------------------------------------------------------------------------------------------
+
 void Boomerang::UseMove()
 {
 	if (!m_pPlayer)return;
 
-	//âüÇ≥ÇÍÇƒÇ¢ÇÈä‘ÇÕî≠éÀÇπÇ∏Ç…É`ÉÉÅ[ÉW
-	if (CInputManager::IsRepeat(Action::Attack,m_pPlayer->GetPlayerID()) && !m_IsUseThrow)
+	//çUåÇÉ{É^ÉìÇÕí∑âüÇµÇ≥ÇÍÇƒÇ¢ÇÈÇ©
+	bool IsBottomPushing = CInputManager::IsRepeat(Action::Attack, m_pPlayer->GetPlayerID());
+
+	//âüÇ≥ÇÍÇƒÇ¢ÇÈä‘ && égópíÜÇ≈ÇÕÇ»Ç¢èÍçáÇÕÉ`ÉÉÅ[ÉW
+	if (IsBottomPushing && !m_IsUseThrow)
 	{
-		//É`ÉÉÅ[ÉWÇ≈Ç´ÇÈÇ©
-		if (m_AddVelocity.x < MAX_CHARGE && m_AddVelocity.z < MAX_CHARGE)
+		//Ç‹ÇæÉ`ÉÉÅ[ÉWÇ≈Ç´ÇÈÇ©
+		bool IsCharge = m_AddVelocity.x < MAX_CHARGE && m_AddVelocity.z < MAX_CHARGE;
+
+		if ( IsCharge )
 		{
-			m_AddVelocity.x += ADD_CHARGE_RANGE;
-			m_AddVelocity.z += ADD_CHARGE_RANGE;
-
-			//É`ÉÉÅ[ÉWÇÃÉTÉEÉìÉh
-			if (!m_IsCharge)	{AssetManager::Sound()->PlaySE(enSoundList::SE_BoomerangCharge);}
-
-			m_IsCharge = true;
+			PowerCharge();
 		}
-		//ç≈ëÂÉ`ÉÉÅ[ÉW
 		else
 		{
-			//ÉGÉtÉFÉNÉgí«â¡
-			if (!AssetManager::Effect()->IsPlaying(m_hEffect[Efect::ChargeMax]))
-			{
-				m_hEffect[Efect::ChargeMax] = AssetManager::Effect()->Play("BoomerangMaxCharge", m_vPosition);
-			}
-
-			//ÉGÉtÉFÉNÉgÇÃägèkê›íË
-			AssetManager::Effect()->SetScale(m_hEffect[Efect::ChargeMax], D3DXVECTOR3(0.5f, 0.5f, 0.5f));
-			AssetManager::Effect()->SetLocation(m_hEffect[Efect::ChargeMax],m_pPlayer->GetPosition());
-			AssetManager::Sound()->Stop(enSoundList::SE_BoomerangCharge);
-
-
-			if (!m_IsMaxCharge){AssetManager::Sound()->PlaySE(enSoundList::SE_BoomerangMaxCharge);}
-
-			m_IsMaxCharge = true;
-			m_IsCharge = false;
-
+			FullCharge();
 		}
-		m_vPosition = m_pPlayer->GetPlayerRightHand().GetPosition();
 
-		//ÉvÉåÉCÉÑÅ[ÇÃÉNÉHÅ[É^ÉjÉIÉì(å¸Ç¢ÇƒÇ¢ÇÈï˚å¸)ãLò^
-		m_vQuaternion = m_pPlayer->GetQuaternion();
-
-		D3DXMATRIX matRot;
-
-		//ÉNÉHÅ[É^ÉjÉIÉìÇÉ}ÉgÉäÉbÉNÉX(çsóÒ)Ç…ïœä∑
-		D3DXMatrixRotationQuaternion(&matRot, &m_vQuaternion);
-
-		D3DXVECTOR3 forward = m_pPlayer->GetLocalAxes().forward;
-
-		//à⁄ìÆ
-		m_Velocity.x = forward.x * (m_MoveSpeed + m_AddVelocity.x);
-		m_Velocity.z = forward.z * (m_MoveSpeed + m_AddVelocity.z);
-
+		//É`ÉÉÅ[ÉWèÛãµÇ…ä÷ÇÌÇÁÇ∏ÉvÉåÉCÉÑÅ[í«è]
+		TrackingPlayer();
 	}
 	else
 	{
-		//ñﬂÇ¡ÇƒÇ≠ÇÈÉtÉâÉOÇ…ÇÊÇ¡ÇƒìÆçÏïœçX
-		if (!m_ComeBack)
-		{
-			//ÇæÇÒÇæÇÒå∏ë¨
-			m_Velocity.x -= m_Velocity.x * USE_MIN_VELOCITY_RANGE;
-			m_Velocity.z -= m_Velocity.z * USE_MIN_VELOCITY_RANGE;
-		}
-		else
-		{
-			//ÉvÉåÉCÉÑÅ[Ç…ñﬂÇ¡ÇƒÇ≠ÇÈópÇ…ÉxÉNÉgÉãéÊìæ
-			D3DXVECTOR3 vector = m_pPlayer->GetPosition() - m_vPosition;
-			D3DXVECTOR3 initVector;
-			D3DXVec3Normalize(&initVector, &vector);
-
-			//ñﬂÇ¡ÇƒÇ≠ÇÈèâë¨ìx
-			m_Velocity = initVector * (m_MoveSpeed * 2);
-
-			//ÇæÇÒÇæÇÒñﬂÇ¡ÇƒÇ≠ÇÈë¨Ç≥ëùâ¡
-			m_Velocity.x += m_Velocity.x * COMEBACK_ADD_VELOCITY_RANGE;
-			m_Velocity.z += m_Velocity.z * COMEBACK_ADD_VELOCITY_RANGE;
-		}
-
 		//êÑêióÕÇ™àÍíËÇ‹Ç≈â∫Ç™ÇÈÇ∆PlayerÇ…ñﬂÇÈ
 		if (std::fabs(m_Velocity.x) < COMEBACK_SPEED && std::fabs(m_Velocity.z) < COMEBACK_SPEED)
 		{
 			m_ComeBack = true;
 		}
 
-		//à íuÇà⁄ìÆë¨ìx*ÉfÉãÉ^É^ÉCÉÄÇ≈åvéZ
-		m_vPosition += m_Velocity * CTimeManager::GetDeltaTime();
-		m_TotalVelocity += m_Velocity * CTimeManager::GetDeltaTime();;
+		//ñﬂÇ¡ÇƒÇ≠ÇÈÉtÉâÉOÇ…ÇÊÇ¡ÇƒìÆçÏïœçX
+		if (m_ComeBack)
+		{
+			ComeBackToPlayer();
+		}
+		else
+		{
+			//ÇæÇÒÇæÇÒå∏ë¨
+			m_Velocity.x -= m_Velocity.x * USE_MIN_VELOCITY_RANGE;
+			m_Velocity.z -= m_Velocity.z * USE_MIN_VELOCITY_RANGE;
+		}
 
-		//âÒì]
+		//à⁄ìÆ + ÉuÅ[ÉÅÉâÉìâÒì]
+		m_vPosition	+= m_Velocity * CTimeManager::GetDeltaTime();
 		m_vRotation.x = m_vRotation.x + (D3DXToRadian(TURN_ANGLE_RAD));
 
 		//ìäÇ∞ÇÈèuä‘Ç…àÍâÒÇæÇØí Ç∑èàóù
@@ -304,6 +280,8 @@ void Boomerang::UseMove()
 	}
 }
 
+//--------------------------------------------------------------------------------------------------------------
+
 void Boomerang::ThrowMove()
 {
 	//à⁄ìÆó Ç™àÍíËà»â∫Ç»ÇÁ
@@ -316,6 +294,8 @@ void Boomerang::ThrowMove()
 
 	m_vPosition += m_Velocity * static_cast<float>(CTimeManager::GetDeltaTime());
 }
+
+//--------------------------------------------------------------------------------------------------------------
 
 void Boomerang::OneEnterUse()
 {
@@ -337,6 +317,8 @@ void Boomerang::OneEnterUse()
 
 }
 
+//--------------------------------------------------------------------------------------------------------------
+
 void Boomerang::OneEnterThrow()
 {
 	//ÉvÉåÉCÉÑÅ[ÇÃÉNÉHÅ[É^ÉjÉIÉì(å¸Ç¢ÇƒÇ¢ÇÈï˚å¸)ãLò^
@@ -356,6 +338,7 @@ void Boomerang::OneEnterThrow()
 	m_Velocity = forward * m_MoveSpeed;
 }
 
+//--------------------------------------------------------------------------------------------------------------
 
 void Boomerang::Smash(CPlayerBase& playiers)
 {
@@ -378,4 +361,77 @@ void Boomerang::Smash(CPlayerBase& playiers)
 	//ÉGÉtÉFÉNÉgÇÃägèkê›íË
 	AssetManager::Effect()->SetScale(m_hEffect[Efect::HitPlayer], D3DXVECTOR3(0.6f, 0.6f, 0.6f));
 
+}
+
+//--------------------------------------------------------------------------------------------------------------
+
+void Boomerang::PowerCharge()
+{
+	m_AddVelocity.x += ADD_CHARGE_RANGE;
+	m_AddVelocity.z += ADD_CHARGE_RANGE;
+
+	//É`ÉÉÅ[ÉWÇÃÉTÉEÉìÉh
+	if (!m_IsCharge) { AssetManager::Sound()->PlaySE(enSoundList::SE_BoomerangCharge); }
+
+	m_IsCharge = true;
+}
+
+//--------------------------------------------------------------------------------------------------------------
+
+void Boomerang::FullCharge()
+{
+	//ÉGÉtÉFÉNÉgí«â¡
+	if (!AssetManager::Effect()->IsPlaying(m_hEffect[Efect::ChargeMax]))
+	{
+		m_hEffect[Efect::ChargeMax] = AssetManager::Effect()->Play("BoomerangMaxCharge", m_vPosition);
+	}
+
+	//ÉGÉtÉFÉNÉgÇÃägèkê›íË
+	AssetManager::Effect()->SetScale(m_hEffect[Efect::ChargeMax], D3DXVECTOR3(0.5f, 0.5f, 0.5f));
+	AssetManager::Effect()->SetLocation(m_hEffect[Efect::ChargeMax], m_pPlayer->GetPosition());
+	AssetManager::Sound()->Stop(enSoundList::SE_BoomerangCharge);
+
+
+	if (!m_IsMaxCharge) { AssetManager::Sound()->PlaySE(enSoundList::SE_BoomerangMaxCharge); }
+
+	m_IsMaxCharge = true;
+	m_IsCharge = false;
+}
+
+//--------------------------------------------------------------------------------------------------------------
+
+void Boomerang::TrackingPlayer()
+{
+	m_vPosition = m_pPlayer->GetPlayerRightHand().GetPosition();
+
+	//ÉvÉåÉCÉÑÅ[ÇÃÉNÉHÅ[É^ÉjÉIÉì(å¸Ç¢ÇƒÇ¢ÇÈï˚å¸)ãLò^
+	m_vQuaternion = m_pPlayer->GetQuaternion();
+
+	D3DXMATRIX matRot;
+
+	//ÉNÉHÅ[É^ÉjÉIÉìÇÉ}ÉgÉäÉbÉNÉX(çsóÒ)Ç…ïœä∑
+	D3DXMatrixRotationQuaternion(&matRot, &m_vQuaternion);
+
+	D3DXVECTOR3 forward = m_pPlayer->GetLocalAxes().forward;
+
+	//à⁄ìÆ
+	m_Velocity.x = forward.x * (m_MoveSpeed + m_AddVelocity.x);
+	m_Velocity.z = forward.z * (m_MoveSpeed + m_AddVelocity.z);
+}
+
+//--------------------------------------------------------------------------------------------------------------
+
+void Boomerang::ComeBackToPlayer()
+{
+	//ÉvÉåÉCÉÑÅ[Ç…ñﬂÇ¡ÇƒÇ≠ÇÈópÇ…ÉxÉNÉgÉãéÊìæ
+	D3DXVECTOR3 vector = m_pPlayer->GetPosition() - m_vPosition;
+	D3DXVECTOR3 initVector;
+	D3DXVec3Normalize(&initVector, &vector);
+
+	//ñﬂÇ¡ÇƒÇ≠ÇÈèâë¨ìx
+	m_Velocity = initVector * (m_MoveSpeed * 2);
+
+	//ÇæÇÒÇæÇÒñﬂÇ¡ÇƒÇ≠ÇÈë¨Ç≥ëùâ¡
+	m_Velocity.x += m_Velocity.x * COMEBACK_ADD_VELOCITY_RANGE;
+	m_Velocity.z += m_Velocity.z * COMEBACK_ADD_VELOCITY_RANGE;
 }

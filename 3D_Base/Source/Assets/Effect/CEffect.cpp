@@ -115,7 +115,7 @@ HRESULT CEffect::LoadData()
 	m_pEffect["Laser2"] = ::EsEffect::Create(m_pManager, u"Data\\Effekseer\\Laser01.efk");
 
 	m_pEffect["Explosion"]	=	::EsEffect::Create(m_pManager, u"Data\\Effekseer\\Explosion.efk");
-	m_pEffect["FunWind"]	=	::EsEffect::Create(m_pManager, u"Data\\Effekseer\\FunWind.efk");
+	m_pEffect["FunWind"]	=	::EsEffect::Create(m_pManager, u"Data\\Effekseer\\FunWind2.efk");
 	m_pEffect["Break"]		=	::EsEffect::Create(m_pManager, u"Data\\Effekseer\\Smoke.efk");
 
 	m_pEffect["BoomerangMaxCharge"] = ::EsEffect::Create(m_pManager, u"Data\\Effekseer\\BoomerangMaxCharge.efk");

@@ -36,8 +36,8 @@ CSceneStandby::~CSceneStandby()
 
 HRESULT CSceneStandby::Create()
 {
-	CCameraManager::SetPosition(3.7f, 3.f, -10.f);
-	CCameraManager::SetLook(3.7f, 1.f, 0.f);
+	CCameraManager::SetPosition(3.7f, 2.2f, -10.f);
+	CCameraManager::SetLook(3.7f, 0.7f, 0.f);
 	CCameraManager::SetLight(0.f, 10.f, -10.f);
 
 	//プレイヤーマネージャーのインスタンス作成.
@@ -111,7 +111,7 @@ void CSceneStandby::Update()
 	}
 
 	//プレイヤーの動作
-	//m_pPlayerManager->();
+	m_pPlayerManager->Update();
 }
 
 void CSceneStandby::Draw()
