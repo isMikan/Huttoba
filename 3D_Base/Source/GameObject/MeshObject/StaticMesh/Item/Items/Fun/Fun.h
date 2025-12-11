@@ -65,4 +65,7 @@ private:
     std::shared_ptr<CollisionBase>	m_pNowCollider;	
 
     ::EsHandle hEffect = 1;
+
+    std::shared_ptr<CollisionBase>	m_pUseCollider_2;		//Žg—p’†—p“–‚½‚è”»’è
+
 };

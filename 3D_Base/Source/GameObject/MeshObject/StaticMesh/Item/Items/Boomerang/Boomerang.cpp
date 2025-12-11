@@ -241,6 +241,12 @@ void Boomerang::UseMove()
 	}
 	else
 	{
+		//推進力が一定まで下がるとPlayerに戻る
+		if (std::fabs(m_Velocity.x) < COMEBACK_SPEED && std::fabs(m_Velocity.z) < COMEBACK_SPEED)
+		{
+			m_ComeBack = true;
+		}
+
 		//戻ってくるフラグによって動作変更
 		if (m_ComeBack)
 		{
@@ -251,12 +257,6 @@ void Boomerang::UseMove()
 			//だんだん減速
 			m_Velocity.x -= m_Velocity.x * USE_MIN_VELOCITY_RANGE;
 			m_Velocity.z -= m_Velocity.z * USE_MIN_VELOCITY_RANGE;
-		}
-
-		//推進力が一定まで下がるとPlayerに戻る
-		if (std::fabs(m_Velocity.x) < COMEBACK_SPEED && std::fabs(m_Velocity.z) < COMEBACK_SPEED)
-		{
-			m_ComeBack = true;
 		}
 
 		//移動 + ブーメラン回転
