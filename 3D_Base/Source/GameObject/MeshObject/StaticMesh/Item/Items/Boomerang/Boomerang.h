@@ -61,12 +61,20 @@ private:
     //吹き飛ばし処理
     void Smash(CPlayerBase& playiers);
 
+    //チャージ処理
+    void PowerCharge();
+    void FullCharge();
+
+    //プレイヤーの行列に合わせる
+    void TrackingPlayer();
+
+    //プレイヤーに戻ってくる
+    void ComeBackToPlayer();
+
 private:
     //移動速度
     D3DXVECTOR3 m_Velocity;
     D3DXVECTOR3 m_AddVelocity;
-    //どれだけ進んだか保存(折り返しに使用)
-    D3DXVECTOR3 m_TotalVelocity;
 
     //投げた時の移動速度
     float       m_MoveSpeed;
