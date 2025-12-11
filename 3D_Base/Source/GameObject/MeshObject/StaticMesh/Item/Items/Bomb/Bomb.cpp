@@ -11,9 +11,9 @@ namespace { const bool regist = ItemBase::AutoRegister<Bomb>(ItemID::Bomb); }
 Bomb::Bomb()
 	: m_Velocity		()
 	, m_MoveSpeed		( 3.0f )	//値を変えると爆弾の移動速度が変化
-	, m_UpSpeed			( 15.0f )	//値を変えると爆弾のy軸の上昇量が変化
+	, m_UpSpeed			( 7.0f )	//値を変えると爆弾のy軸の上昇量が変化
 
-	, m_ExplosionTime	( 10.0f )	//値を変えると爆発するまでの時間が変化
+	, m_ExplosionTime	( 1.5f )	//値を変えると爆発するまでの時間が変化
 	, m_ExplosionCnt	( 0.0f )
 
 	, m_ColorTimer		( 0.0 )
@@ -180,10 +180,12 @@ void Bomb::UseMove()
 	}
 	else
 	{
-		if (m_IsOnGround && m_ExplosionCnt > m_ExplosionTime)
-		{
-			Explosion();
-		}
+		m_Velocity.y = 0;
+	}
+
+	if (m_IsOnGround && m_ExplosionCnt > m_ExplosionTime)
+	{
+		Explosion();
 	}
 
 	//位置を移動速度*デルタタイムで計算
