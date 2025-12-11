@@ -8,6 +8,7 @@
 #include "Input/CInputManager.h"
 #include "Assets/AssetManager.h"
 #include "TimeManager/CTimeManager.h"
+#include "Scene/SceneData/CSceneData.h"
 
 #include <functional>
 
@@ -25,20 +26,32 @@ public:
 	void Destroy()	override;
 
 private:
+	//フォントの表示パターンを設定
+	void SetFontPattern();
+	//フォントの座標を設定
+	void SetFontPos();
+
 	//選択肢の座標を設定.
 	void SetSelectorPos();
 
 	void MoveSelector();
 
-	//選択肢がスティックで連続して動いてしまうのを制御する(中間審査用でここに追加したが後でCInputに追加しておく).
+	//選択肢がスティックで連続して動いてしまうのを制御する
 	void SelectorControl();
 private:
 	CDirectX11*			m_pDx11;
 
 	std::vector<std::function<void()>>	m_Action;	//画面遷移時の動作を入れる.
 
-	std::unique_ptr<CUIObject>	m_pSpriteResultImg;	//リザルト画面.
-	std::unique_ptr<CUIObject>	m_pSpriteSelector;	//選択矢印.
+	//リザルト画面に表示するフォントUIの数
+	uint8_t	m_ResultFontIndex;
+	
+	//WINNERかDRAWの文字のどちらかを表示する
+	std::unique_ptr<CUIObject>	m_pSpriteResultFont;
+	//UI表示フォント
+	std::vector<std::unique_ptr<CUIObject>>	m_pSpriteResultUIFont;
+	//選択矢印.
+	std::unique_ptr<CUIObject>	m_pSpriteSelector;	
 
 	//プレイヤーマネージャークラス.
 	std::unique_ptr<CPlayerManager>		m_pPlayerManager;
@@ -46,10 +59,18 @@ private:
 	//地面マネージャークラス.
 	std::unique_ptr<CGroundManager> 	m_pGroundManager;
 
-	std::vector<D3DXVECTOR3>	m_SelectorPos;		//選択矢印の座標.
+	//フォントの表示パターン
+	std::vector<SHORT>	m_FontPatternNo;
+
+	//フォントの座標
+	std::vector<D3DXVECTOR3>	m_FontPos;
+
+	//選択矢印の座標.
+	std::vector<D3DXVECTOR3>	m_SelectorPos;
 
 	//8ビットの符号付整数型.
-	uint8_t						m_SelectorNumber;	//現在選択中の番号.
+	//現在選択中の番号.
+	uint8_t						m_SelectorNumber;
 
 	//スティックの上下を倒した時の保存.
 	bool isHeldUp;

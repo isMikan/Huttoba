@@ -163,13 +163,11 @@ void CPlayerManager::ResultPlayerCreate()
 
 			countFalled++;
 		}
-
 		m_pPlayers[pNo]->SetPosition(pos);
 		m_pPlayers[pNo]->
 			SetQuaternion(0.f, D3DXToRadian(180.f), 0.f, 0.f);
 	}
 }
-
 //=== 各シーンの更新処理 ===.
 
 //--- 更新関数 ---.
@@ -298,7 +296,7 @@ void CPlayerManager::Create()
 
 	for (int pNo = 0; pNo < Player_Max; pNo++)
 	{
-#if 0
+#if 1
 		//プレイヤーのインスタンス生成.
 		if (pNo != 5)
 			m_pPlayers[pNo] = std::make_unique<CPlayer>(pNo);

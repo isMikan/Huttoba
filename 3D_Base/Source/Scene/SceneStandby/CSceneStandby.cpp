@@ -70,10 +70,10 @@ HRESULT CSceneStandby::LoadData()
 {
 	for (int i = 0;i < 4;i++)
 	{
-		m_pRedyFontImg[i]->AttachSprite(AssetManager::Sprite(Sprite2DList::ReadyFont));
+		m_pRedyFontImg[i]->AttachSprite(AssetManager::Sprite(Sprite2DList::Font_UI_Ready));
 	}
 
-	m_pSpriteSelector->AttachSprite(AssetManager::Sprite(Sprite2DList::Selector));
+	m_pSpriteSelector->AttachSprite(AssetManager::Sprite(Sprite2DList::UI_Selector));
 
 	//プレイヤーマネージャーの読み込み.
 	m_pPlayerManager->LoadData();
@@ -81,11 +81,11 @@ HRESULT CSceneStandby::LoadData()
 	//地面マネージャーの読み込み.
 	m_pGroundManager->LoadData();
 
-	m_pSpriteStartFont->AttachSprite(AssetManager::Sprite(Sprite2DList::FontUI));
+	m_pSpriteStartFont->AttachSprite(AssetManager::Sprite(Sprite2DList::Font_UI_Common));
 	m_pSpriteStartFont->SetPatternNo(0, 2);
 	m_pSpriteStartFont->SetPosition(530, 440, 0);
 
-	m_pSpriteEndFont->AttachSprite(AssetManager::Sprite(Sprite2DList::FontUI));
+	m_pSpriteEndFont->AttachSprite(AssetManager::Sprite(Sprite2DList::Font_UI_Common));
 	m_pSpriteEndFont->SetPatternNo(0, 3);
 	m_pSpriteEndFont->SetPosition(500, 540, 0);
 

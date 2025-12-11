@@ -15,6 +15,8 @@ ItemBase::ItemBase()
 	, m_ThrowSmashPower	{ 5.0f }
 	, m_Tag				{ ItemID::None}
 
+	, m_IsFall		 { false }
+	, m_ItemFallCount{}
 {
 }
 
@@ -122,7 +124,20 @@ void ItemBase::Fall()
 {
 	static constexpr float GRAVITY = 0.1f;
 
-	m_vPosition.y -= GRAVITY;
+	//アイテムとステージが同時に落ちるとアイテムがめり込むのでその防止
+	if (m_IsFall)
+	{
+		m_vPosition.y -= GRAVITY;
+	}
+	else
+	{
+		m_ItemFallCount += CTimeManager::GetDeltaTime();
+	}
+
+	if (m_ItemFallCount >= 0.2f)
+	{
+		m_IsFall = true;
+	}
 }
 
 void ItemBase::OnCollision(CollisionBase* other)

@@ -46,7 +46,9 @@ private:
 	//選択矢印
 	std::unique_ptr<CUIObject>	m_pSpriteSelector;	
 
-	std::unique_ptr<CUIObject>	m_pSpriteStartFont;	
+	//スタートフォント
+	std::unique_ptr<CUIObject>	m_pSpriteStartFont;
+	//エンドフォント
 	std::unique_ptr<CUIObject>	m_pSpriteEndFont;
 
 	//選択矢印の座標
