@@ -238,6 +238,14 @@ void SmashBat::Have()
 		DestroyItem();
 	}
 
+	//エフェクト追加
+	if (!AssetManager::Effect()->IsPlaying(m_hEffect[Efect::Have]))
+	{
+		m_hEffect[Efect::Have] = AssetManager::Effect()->Play("SmashBatHave", m_vPosition);
+	}
+
+	AssetManager::Effect()->SetLocation(m_hEffect[Efect::Have], m_pPlayer->GetPosition());
+
 }
 
 //--------------------------------------------------------------------------------------------------------------
@@ -266,7 +274,6 @@ void SmashBat::Use()
 	{
 		DestroyItem();
 	}
-
 	//エフェクト追加
 	if (!AssetManager::Effect()->IsPlaying(m_hEffect[Efect::Have]))
 	{

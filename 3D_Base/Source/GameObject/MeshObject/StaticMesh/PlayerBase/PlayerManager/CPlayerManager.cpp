@@ -183,6 +183,10 @@ void CPlayerManager::Update()
 		player->GetPlayerRightHand().Update();						//右手.
 		player->GetPlayerLeftHand().Update();						//左手.
 	}
+
+
+	std::cout << "Pos : x = " << m_pPlayers[0]->GetPosition().x << std::endl;
+	std::cout << "Pos : z = " << m_pPlayers[0]->GetPosition().z << std::endl;
 }
 
 //--- タイトル ---.
@@ -298,7 +302,7 @@ void CPlayerManager::Create()
 
 	for (int pNo = 0; pNo < Player_Max; pNo++)
 	{
-#if 0
+#if 1
 		//プレイヤーのインスタンス生成.
 		if (pNo != 5)
 			m_pPlayers[pNo] = std::make_unique<CPlayer>(pNo);
