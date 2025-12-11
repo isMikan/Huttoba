@@ -165,11 +165,6 @@ void SmashBat::Spawn()
 
 void SmashBat::OnGround()
 {
-	//エフェクト追加
-	if (!AssetManager::Effect()->IsPlaying(m_hEffect[Efect::Have]))
-	{
-		m_hEffect[Efect::Have] = AssetManager::Effect()->Play("SmashBatHave", m_vPosition);
-	}
 }
 
 //--------------------------------------------------------------------------------------------------------------
@@ -234,15 +229,6 @@ void SmashBat::Have()
 	if (!m_IsFirst) { m_IsFirst = true; }
 
 	m_SwitchDir = false;
-
-	//エフェクト追加
-	if (!AssetManager::Effect()->IsPlaying(m_hEffect[Efect::Have]))
-	{
-		m_hEffect[Efect::Have] = AssetManager::Effect()->Play("SmashBatHave", m_vPosition);
-	}
-
-	AssetManager::Effect()->SetScale(m_hEffect[Efect::Have], D3DXVECTOR3(0.7f, 0.7f, 0.7f));
-	AssetManager::Effect()->SetLocation(m_hEffect[Efect::Have], m_pPlayer->GetPosition());
 
 	m_UseTime -= CTimeManager::GetDeltaTime();
 	m_UsageLimit.remaining = m_UseTime;
