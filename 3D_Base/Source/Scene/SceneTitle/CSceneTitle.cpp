@@ -32,6 +32,7 @@ CSceneTitle::CSceneTitle(HWND hWnd)
 	m_pDx11 = CDirectX11::GetInstance();
 
 	CSceneData::PlayerAllLive();
+	CSceneData::AllSlotStandby();
 
 	Create();
 	LoadData();
@@ -118,7 +119,9 @@ void CSceneTitle::Update()
 	}
 
 	//ƒvƒŒƒCƒ„[‚Ì“®ì
+	//\
 	m_pPlayerManager->TitlePlayerUpdate();
+	m_pPlayerManager->Update();
 
 	MoveSelector();
 

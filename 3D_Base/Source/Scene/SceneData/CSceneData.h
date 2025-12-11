@@ -26,9 +26,15 @@ public:
     }
 
     //準備しているかの取得.
-    static bool GetSlot(int index)
-    {
+    static bool GetSlot(int index) {
         return Instance().m_IsSlot[index];
+    }
+    //全て準備中にする.
+    static void AllSlotStandby() {
+        for (int index = 0; index < Player_Max; index++)
+        {
+            Instance().m_IsSlot[index] = false;
+        }
     }
 
     //プレイヤーが生きているのか設定.
