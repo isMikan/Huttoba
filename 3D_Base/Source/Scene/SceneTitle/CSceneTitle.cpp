@@ -32,6 +32,7 @@ CSceneTitle::CSceneTitle(HWND hWnd)
 	m_pDx11 = CDirectX11::GetInstance();
 
 	CSceneData::PlayerAllLive();
+	CSceneData::AllSlotStandby();
 
 	Create();
 	LoadData();

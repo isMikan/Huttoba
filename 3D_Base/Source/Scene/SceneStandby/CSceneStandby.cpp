@@ -4,9 +4,7 @@
 #include "Scene/SceneData/CSceneData.h"
 
 CSceneStandby::CSceneStandby()
-	: m_pSpriteStandbyImg(nullptr)
-
-	, m_pRedyFontImg()
+	: m_pRedyFontImg()
 	, m_pNotRedyFontImg()
 
 	, m_pSpriteSelector(nullptr)
@@ -15,13 +13,19 @@ CSceneStandby::CSceneStandby()
 
 	, m_pGroundManager		()
 
-	, m_Action()
+	, m_pSpriteStartFont	()
+	, m_pSpriteEndFont		()	
+
+	, m_Action				()
 
 	, m_SelectorPos()
 
 	, m_SelectorNumber(0)
 {
 	m_pDx11 = CDirectX11::GetInstance();
+
+	CSceneData::PlayerAllLive();
+	CSceneData::AllSlotStandby();
 
 	Create();
 	LoadData();
@@ -36,8 +40,8 @@ CSceneStandby::~CSceneStandby()
 
 HRESULT CSceneStandby::Create()
 {
-	CCameraManager::SetPosition(3.7f, 2.2f, -10.f);
-	CCameraManager::SetLook(3.7f, 0.7f, 0.f);
+	CCameraManager::SetPosition(2.2f, 2.f, -6.5f);
+	CCameraManager::SetLook(2.2f, 0.f, 0.f);
 	CCameraManager::SetLight(0.f, 10.f, -10.f);
 
 	//プレイヤーマネージャーのインスタンス作成.
@@ -48,7 +52,8 @@ HRESULT CSceneStandby::Create()
 	m_pGroundManager = std::make_unique<CGroundManager>();
 	m_pGroundManager->ResultGroundCreate();
 	
-	m_pSpriteStandbyImg = std::make_unique<CUIObject>();
+	m_pSpriteStartFont = std::make_unique<CUIObject>();
+	m_pSpriteEndFont = std::make_unique<CUIObject>();
 
 	for (int i = 0;i < 4;i++)
 	{
@@ -63,8 +68,6 @@ HRESULT CSceneStandby::Create()
 
 HRESULT CSceneStandby::LoadData()
 {
-	m_pSpriteStandbyImg->AttachSprite(AssetManager::Sprite(Sprite2DList::Standby));
-
 	for (int i = 0;i < 4;i++)
 	{
 		m_pRedyFontImg[i]->AttachSprite(AssetManager::Sprite(Sprite2DList::ReadyFont));
@@ -77,6 +80,14 @@ HRESULT CSceneStandby::LoadData()
 
 	//地面マネージャーの読み込み.
 	m_pGroundManager->LoadData();
+
+	m_pSpriteStartFont->AttachSprite(AssetManager::Sprite(Sprite2DList::FontUI));
+	m_pSpriteStartFont->SetPatternNo(0, 2);
+	m_pSpriteStartFont->SetPosition(530, 440, 0);
+
+	m_pSpriteEndFont->AttachSprite(AssetManager::Sprite(Sprite2DList::FontUI));
+	m_pSpriteEndFont->SetPatternNo(0, 3);
+	m_pSpriteEndFont->SetPosition(500, 540, 0);
 
 	//関数を入れる
 	m_Action =
@@ -148,8 +159,10 @@ void CSceneStandby::Draw()
 		m_pRedyFontImg[i]->Draw();
 	}
 
+	m_pSpriteStartFont->Draw();
+	m_pSpriteEndFont->Draw();
+
 	m_pSpriteSelector->Draw();
-	m_pSpriteStandbyImg->Draw();
 
 	CFadeManager::Draw(0.f, 1.f, true);
 
@@ -164,8 +177,8 @@ void CSceneStandby::InitializeRedyFont()
 {
 	for (int i = 0;i < 4;i++)
 	{
-		m_pRedyFontImg[i]->SetPosition(200 + static_cast<float>(230 * i), 240, 0);
-		m_pNotRedyFontImg[i]->SetPosition(200 + static_cast<float>(230 * i), 240, 0);
+		m_pRedyFontImg[i]->SetPosition(200 + static_cast<float>(240 * i), 100, 0);
+		m_pNotRedyFontImg[i]->SetPosition(200 + static_cast<float>(240 * i), 100, 0);
 	}
 }
 
