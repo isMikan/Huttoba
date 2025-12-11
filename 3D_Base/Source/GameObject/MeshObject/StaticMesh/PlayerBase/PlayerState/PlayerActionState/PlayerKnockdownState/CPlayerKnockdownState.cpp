@@ -119,7 +119,7 @@ void CPlayerKnockdownState::Update()
 		if (!m_IsTimeDecreasing)
 		{
 			//SE‚ğ–Â‚ç‚·.
-			AssetManager::Sound()->PlaySE(enSoundList::SE_Gacha);
+			//AssetManager::Sound()->PlaySE(enSoundList::SE_Gacha);
 			//Œ¸­‚µ‚½ŠÔ‚ğæ“¾.
 			m_DecreaseTriggerTime = CTimeManager::GetTotalTime();
 

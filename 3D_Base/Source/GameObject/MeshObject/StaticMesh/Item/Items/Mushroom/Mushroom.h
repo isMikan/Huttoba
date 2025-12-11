@@ -87,5 +87,8 @@ private:
     //Å‘å‚«”ò‚Î‚µ—Í
     float       m_MaxSmashPower;
 
-    float m_timer;
+    //‚«‚Ì‚±‚Ì‘å‚«‚³•ÏX‚Åg—p
+    float       m_timer;
+
+    ::EsHandle  m_hEffect;
 };

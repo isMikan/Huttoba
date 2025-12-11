@@ -122,6 +122,8 @@ HRESULT CEffect::LoadData()
 	m_pEffect["SmashBatHave"]		= ::EsEffect::Create(m_pManager, u"Data\\Effekseer\\SmashBatHave.efk");
 	m_pEffect["SmashBatHit"]		= ::EsEffect::Create(m_pManager, u"Data\\Effekseer\\SmashBatHit.efk");
 
+	m_pEffect["mushroomarea"]		= ::EsEffect::Create(m_pManager, u"Data\\Effekseer\\mushroomarea.efk");
+
 	return S_OK;
 }
 

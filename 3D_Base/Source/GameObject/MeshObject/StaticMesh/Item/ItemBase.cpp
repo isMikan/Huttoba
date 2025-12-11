@@ -57,7 +57,10 @@ void ItemBase::Update()
 	if (m_pPlayer &&
 		m_pPlayer->GetPosition().y < UNDER_MAX)
 	{
-		DestroyItem();
+		if (m_pPlayer->GetHoldingItem() == this)
+		{
+			DestroyItem();
+		}
 	}
 }
 

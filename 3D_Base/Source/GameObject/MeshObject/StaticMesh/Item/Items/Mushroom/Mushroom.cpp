@@ -20,6 +20,8 @@ Mushroom::Mushroom()
 
 	, m_MinSmashPower	( 6.0f )
 	, m_MaxSmashPower	( 7.0f )
+
+	, m_hEffect			()
 {
 	Init();
 }
@@ -28,6 +30,8 @@ Mushroom::~Mushroom()
 {
 	//当たり判定削除
 	CollisionManager::GetInstance()->RemoveCollider(m_pCollision.get());
+
+	AssetManager::Effect()->Stop(m_hEffect);
 }
 
 void Mushroom::Init()
@@ -165,10 +169,19 @@ void Mushroom::UseMove()
 		m_Velocity = D3DXVECTOR3(0, 0, 0);
 		
 		if (!m_IsPlaced)
+		{
+			//アイテムを設置中に
 			m_IsPlaced = true;
-		
+
+			//エフェクトの再生
+			m_hEffect = AssetManager::Effect()->Play("mushroomarea", m_vPosition);
+			//エフェクトの拡縮を設定
+			AssetManager::Effect()->SetScale(m_hEffect, D3DXVECTOR3(0.2f, 0.2f, 0.2f));
+		}
+
 	}
 
+	//移動速度を減算するための0.98f
 	m_Velocity *= 0.98f;
 
 	m_vPosition += m_Velocity * static_cast<float>(CTimeManager::GetDeltaTime());
@@ -177,9 +190,6 @@ void Mushroom::UseMove()
 
 	m_UsageLimit.remaining = m_UseTime;
 
-
-
-
 	if (m_IsPlaced)
 	{
 		m_timer += CTimeManager::GetDeltaTime();
@@ -187,6 +197,14 @@ void Mushroom::UseMove()
 		float scale = 1.0f + fabsf(sinf(m_timer)) * 0.2f;
 
 		SetScale(scale);
+
+		if (!AssetManager::Effect()->IsPlaying(m_hEffect))
+		{
+			//エフェクト再生
+			m_hEffect = AssetManager::Effect()->Play("mushroomarea", m_vPosition);
+			//エフェクトの拡縮を設定
+			AssetManager::Effect()->SetScale(m_hEffect, D3DXVECTOR3(0.2f, 0.2f, 0.2f));
+		}
 	}
 
 	if (m_UseTime < 0)
@@ -227,7 +245,6 @@ void Mushroom::OneEnterUse()
 	m_Velocity = forward * m_MoveSpeed;
 
 	m_Velocity.y = m_UpSpeed;
-
 
 	//投げた瞬間に別のアイテムを持ったり使ったりできるように追加
 	m_pPlayer->SetHoldingItem(nullptr);
