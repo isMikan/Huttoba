@@ -27,6 +27,8 @@ CSceneTitle::CSceneTitle(HWND hWnd)
 									//スティックの最低値が変化する.
 
 {
+	std::cout << "通った" << std::endl;
+	
 	m_pDx11 = CDirectX11::GetInstance();
 
 	CSceneData::PlayerAllLive();

@@ -21,6 +21,7 @@
 #include "GameObject/UIObject/GaugeBase/GaugeManager/CGaugeManager.h"
 
 #include "PlayerBase/PlayerManager/CPlayerManager.h"
+#include "PlayerBase/PlayerSEManager/CPlayerSEManager.h"
 #include "Ground/GroundManager/CGroundManager.h"
 
 #include "GameObject/MeshObject/SkinMesh/RollingChick/RollingChickManager/CRollingChickManager.h"
@@ -91,6 +92,7 @@ private:
 
 	//プレイヤーマネージャークラス.
 	std::unique_ptr<CPlayerManager>		m_pPlayerManager;
+	std::unique_ptr<CPlayerSEManager>	m_pPlayerSEManager;
 
 	//地面マネージャークラス.
 	std::unique_ptr<CGroundManager> 	m_pGroundManager;

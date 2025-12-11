@@ -1,14 +1,17 @@
 #include "CGroundManager.h"
 
 CGroundManager::CGroundManager()
-	: m_pGrounds			()
+	: m_pGrounds()
 {
 	Create();
 	m_FallTime = { 99.f, 45.f, 30.f, 15.f };
 	//\
 	m_FallTime = { 999.f, 999.f, 999.f, 999.f };
 
-	ExtractMeshRadius();
+	//for (int i = 0;i < 4;i++)
+	//{
+	//	std::cout << m_GroundRadius[i] << std::endl;
+	//}
 }
 
 CGroundManager::~CGroundManager()
@@ -36,6 +39,7 @@ void CGroundManager::LoadData()
 	m_pGrounds[FirstFallGround]->AttachMesh(AssetManager::Mesh(StaticMeshList::FirstFallGround));
 	m_pGrounds[FirstFallGround]->SetTag(GroundTag::FirstFallGround);
 
+	ExtractMeshRadius();
 }
 
 //--- 更新関数 ---.
@@ -124,8 +128,8 @@ D3DXVECTOR3 CGroundManager::GetGroundCenterPos()
 {
 	D3DXVECTOR3 center = m_pGrounds[m_pGrounds.size() - 1]->GetPosition();
 
-	center.x -= m_GroundRadius[m_pGrounds.size() - 1];
-	center.z -= m_GroundRadius[m_pGrounds.size() - 1];
+	//center.x -= m_GroundRadius[m_pGrounds.size() - 1];
+	//center.z -= m_GroundRadius[m_pGrounds.size() - 1];
 
 	return center;
 }
@@ -154,43 +158,29 @@ bool CGroundManager::ExtractMeshRadius()
 {
 	for (int i = 0;i < Ground_Max;i++)
 	{
-		if (!m_pGrounds[i] || !m_pGrounds[i]->GetMesh()) return false;
-
-		LPDIRECT3DVERTEXBUFFER9 pVB = nullptr;	//頂点バッファ
-		void* pVertices = nullptr;				//頂点
+		if (!m_pGrounds[i]) continue;
 
 		//グラウンドのメッシュ
-		auto mesh = m_pGrounds[i]->GetMesh();
+		const std::shared_ptr<CStaticMesh> mesh = m_pGrounds[i]->GetMesh();
 
-		//頂点バッファを取得
-		if (FAILED(mesh->GetMesh()->GetVertexBuffer(&pVB))) return false;
-
-		//メッシュの頂点バッファをロックする
-		if (FAILED(pVB->Lock(0, 0, &pVertices, 0)))
-		{
-			SAFE_RELEASE(pVB);
-			return false;
-		}
+		if (!mesh || !mesh->GetMesh())continue;
 
 		D3DXVECTOR3 outCenter;
-		float		outRadius;
+		float		outRadius = 0.0f;
 
-		//メッシュの外接円の中心と半径を計算する
-		D3DXComputeBoundingSphere(
-			static_cast<D3DXVECTOR3*>(pVertices),
-			mesh->GetMesh()->GetNumVertices(),		//頂点の数
-			mesh->GetMesh()->GetFVF(),				//頂点の情報
-			&outCenter,								//(out)中心座標
-			&outRadius);							//(out)半径
-
-		//メッシュの頂点バッファをアンロックする
-		if (pVB != nullptr)
+		//CollisionUtilityにある関数からメッシュの半径と位置読み込み
+		if (CollisionUtility::CalculateBoundingSphere(mesh, outCenter, outRadius))
 		{
-			pVB->Unlock();
-			SAFE_RELEASE(pVB); // 取得したポインタを解放
-		}
+			m_GroundRadius[i] = outRadius;
 
-		m_GroundRadius[i] = outRadius;
+			//デバッグ表示
+			std::cout << "Ground[" << i << "] Radius: " << outRadius << std::endl;
+		}
+		else
+		{
+			// 計算失敗
+			return false;
+		}
 	}
 
 	return true;

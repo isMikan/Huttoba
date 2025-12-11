@@ -34,9 +34,6 @@ CPlayerThrowState::~CPlayerThrowState()
 //--- 状態の開始時に呼び出す ---.
 void CPlayerThrowState::Enter()
 {
-	//SEを鳴らす.
-	AssetManager::Sound()->PlaySE(enSoundList::SE_AttackHand);
-
 	//傾き角度の初期化.
 	m_CurrentTiltAngle = 0.f;
 

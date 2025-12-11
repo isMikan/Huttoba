@@ -27,6 +27,7 @@ CSceneGameMain::CSceneGameMain( HWND hWnd)
 	, m_pGaugeManager	()
 
 	, m_pPlayerManager	()
+	, m_pPlayerSEManager()
 
 	, m_pGroundManager	()
 
@@ -87,6 +88,7 @@ HRESULT CSceneGameMain::Create()
 
 	//メインの構築関数を呼び出す.
 	m_pPlayerManager->MainPlayerCreate(m_pItemManager.get(), m_pGroundManager.get());
+	m_pPlayerSEManager = std::make_unique<CPlayerSEManager>(m_pPlayerManager);
 
 	//ひよこマネージャークラスのインスタンス生成.
 	m_pRollingChickManager = std::make_unique<CRollingChickManager>(m_pPlayerManager);

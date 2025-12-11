@@ -191,6 +191,7 @@ enum class enSoundList
 	SE_SmashBatHit,
 	SE_DestroyItem,
 	SE_Warning,
+	SE_Gacha,
 
 	//‰¹‚ª‘‚¦‚½‚çu‚±‚±v‚É’Ç‰Á
 	max,

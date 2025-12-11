@@ -79,8 +79,6 @@ void CPlayerFallingState::Enter()
 //--- ó‘Ô‚ÌI—¹‚ÉŒÄ‚Ño‚· ---.
 void CPlayerFallingState::Exit()
 {
-	//SE‚ğ–Â‚ç‚·.
-	AssetManager::Sound()->PlaySE(enSoundList::SE_Down);
 }
 
 //--- ‚±‚Ìó‘Ô‚ÌŠÔ‚ÉŒÄ‚Ño‚· ---.
