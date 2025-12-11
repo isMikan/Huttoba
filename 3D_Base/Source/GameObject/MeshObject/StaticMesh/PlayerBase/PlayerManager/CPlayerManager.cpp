@@ -100,7 +100,7 @@ void CPlayerManager::StandbyPlayerCreate()
 	{
 		if (!m_pPlayers[pNo]) return;
 
-		D3DXVECTOR3 pos(2.5f, 0.f, -1.f);
+		D3DXVECTOR3 pos(1.5f, 0.f, -1.f);
 		//左から順に表示.
 		pos.x *= pNo;
 
@@ -428,7 +428,7 @@ void CPlayerManager::InitialSettings(int index)
 		pos.y += m_InitialSetPosY;
 		m_pPlayers[index]->SetPosition(pos);
 
-		//プレイヤーの向きを設定.
+		//プレイヤーの向きを設定.z
 		D3DXQUATERNION quat = setting.second;
 		D3DXQuaternionNormalize(&quat, &quat);
 		m_pPlayers[index]->SetQuaternion(quat);

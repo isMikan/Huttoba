@@ -34,9 +34,6 @@ private:
 private:
 	CDirectX11*			m_pDx11;
 
-	//待機画面画像.
-	std::unique_ptr<CUIObject>	m_pSpriteStandbyImg;	
-
 	//プレイヤーの人数の4がマジックナンバーなので後で変更しておく.
 	//準備完了画像.
 	std::array < std::unique_ptr<CUIObject>,4 >		m_pRedyFontImg;
@@ -52,6 +49,9 @@ private:
 	//地面マネージャークラス.
 	std::unique_ptr<CGroundManager> 	m_pGroundManager;
 
+	std::unique_ptr<CUIObject>	m_pSpriteStartFont;
+	std::unique_ptr<CUIObject>	m_pSpriteEndFont;
+	
 	//画面遷移時の動作を入れる.
 	std::vector<std::function<void()>>	m_Action;	
 
