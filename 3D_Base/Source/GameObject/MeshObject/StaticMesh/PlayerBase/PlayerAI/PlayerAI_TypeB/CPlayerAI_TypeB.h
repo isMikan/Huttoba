@@ -23,6 +23,11 @@ private:
 	//回避行動
 	void AvoidDanger();
 
+	//アイテムの種類によるスコアの増減
+	float ItemScoreBonus(ItemID item);
+
+	//引数の位置がステージ端にどれくらい近いかでスコアの増減
+	float CalculateDangerRate(D3DXVECTOR3 pos);
 
 private:
 	//移動先の情報

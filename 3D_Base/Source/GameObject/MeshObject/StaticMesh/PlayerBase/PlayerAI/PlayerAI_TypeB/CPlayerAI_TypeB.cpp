@@ -69,29 +69,8 @@ void CPlayerAI_TypeB::SearchItem()
 			//スコアは距離が近いほうが高くしたいので
 			float score = -distanceSq * m_DistanceWeight;
 
-
-			switch (item->GetTag())
-			{
-			case ItemID::Haetataki:
-				//score += 30;
-				break;
-			case ItemID::Bomb:
-				break;
-			case ItemID::Fun:
-				break;
-			case ItemID::Mushroom:
-				break;
-			case ItemID::SmashBat:
-				break;
-			case ItemID::TrackingRobot:
-				break;
-			case ItemID::Boomerang:
-				break;
-			case ItemID::None:
-				break;
-			default:
-				break;
-			}
+			//アイテムの種類でスコアの増減を行う
+			score += ItemScoreBonus(item->GetTag());
 
 			//スコアが今までの最大より大きいなら
 			if (m_MoveScore < score)
@@ -188,13 +167,67 @@ void CPlayerAI_TypeB::AvoidDanger()
 	//中心位置からプレイヤーの離れているかの全長を出す
 	float diffSq = diff.x * diff.x + diff.z * diff.z;
 
-	std::cout << diffSq << std::endl;
-	std::cout << groundRadius << std::endl;
-
 	//プレイヤーの位置が地面の半径以上なら
 	if (diffSq > groundRadius * (0.7f * 0.7f))
 	{
 		//一旦中央に移動
 		m_Destination.dir = m_pGroundManager->GetGroundCenterPos() - m_vPosition;
 	}
+}
+
+float CPlayerAI_TypeB::ItemScoreBonus(ItemID item)
+{
+	switch (item)
+	{
+	case ItemID::Haetataki:
+		break;
+	case ItemID::Bomb:
+		break;
+	case ItemID::Fun:
+		break;
+	case ItemID::Mushroom:
+		break;
+	case ItemID::SmashBat:
+		break;
+	case ItemID::TrackingRobot:
+		break;
+	case ItemID::Boomerang:
+		break;
+	case ItemID::Magnet:
+		break;
+	case ItemID::Max:
+		break;
+	case ItemID::None:
+		break;
+	default:
+		break;
+	}
+
+	return 0.0f;
+}
+
+float CPlayerAI_TypeB::CalculateDangerRate(D3DXVECTOR3 pos)
+{
+	//地面の中心位置をとる
+	D3DXVECTOR3 groundCenterPos = m_pGroundManager->GetGroundCenterPos();
+
+	//地面の半径の全長を計算
+	float groundRadius = m_pGroundManager->GetGroundRadius() * m_pGroundManager->GetGroundRadius();
+
+	//中心位置からプレイヤーの位置がどれくらい離れているかを計算
+	D3DXVECTOR3 diff = m_vPosition - groundCenterPos;
+
+	//中心位置からプレイヤーの離れているかの全長を出す
+	float diffSq = diff.x * diff.x + diff.z * diff.z;
+
+	//プレイヤーの位置が地面の半径以上なら
+	if (diffSq > groundRadius * (0.7f * 0.7f))
+	{
+		////一旦中央に移動
+		//m_Destination.dir = m_pGroundManager->GetGroundCenterPos() - m_vPosition;
+
+		return -50 * 50;
+	}
+
+	return 0.0f;
 }
