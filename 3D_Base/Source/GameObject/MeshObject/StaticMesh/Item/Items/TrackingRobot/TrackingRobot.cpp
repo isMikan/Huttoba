@@ -55,7 +55,7 @@ void TrackingRobot::Init()
 
 	m_pPickUpCollider = CollisionDataFactory::CreateSphereForMesh(
 		CollisionBase::ColliderTag::TrackingRobot,
-		AssetManager::Mesh(StaticMeshList::TrackingRobot),
+		AssetManager::Mesh(StaticMeshList::PickUpCol),
 		this
 	);
 }
