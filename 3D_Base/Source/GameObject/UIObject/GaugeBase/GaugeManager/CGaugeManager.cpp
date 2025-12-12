@@ -21,6 +21,9 @@ CGaugeManager::CGaugeManager(ItemManager* itemManager)
 	, m_pPlayerManager		()
 	, m_pItemManager		( itemManager )
 
+	, m_KnockDownGaugeColor	( 1.f, 0.f, 1.f )
+	, m_ItemGaugeColor		( 1.f, 1.f, 0.f )
+
 	, m_DeletePos			( -5.f )
 {
 	m_pGauge.clear();
@@ -56,7 +59,7 @@ void CGaugeManager::Init(
 			if (dynamic_cast<CPlayerKnockdownState*>(state))
 			{
 				GaugeCreate(player.get(), player.get()->GetKnockdownTime(),
-					D3DXVECTOR3(1.f, 0.f, 1.f));	//生成.
+					D3DXVECTOR3(m_KnockDownGaugeColor));	//生成.
 			}
 			//アイテムを持っている場合.
 			else if (dynamic_cast<CPlayerHoldingIdleState*>(state))
@@ -66,7 +69,7 @@ void CGaugeManager::Init(
 					&& !player->IsAnyHoldingItem<Bomb, Mushroom, TrackingRobot>())
 				{
 					GaugeCreate(player.get(), item->GetUsageLimit(),
-						D3DXVECTOR3(1.f, 1.f, 0.f));	//生成.
+						D3DXVECTOR3(m_ItemGaugeColor));	//生成.
 				}
 			}
 			//アイテムを持っていない場合.
@@ -89,7 +92,7 @@ void CGaugeManager::Update()
 			if (mush->GetIsPlaced())
 			{
 				GaugeCreate(mush, mush->GetUsageLimit(),
-					D3DXVECTOR3(1.f, 1.f, 0.f));	//生成.
+					D3DXVECTOR3(m_ItemGaugeColor));	//生成.
 			}
 			else
 			{
@@ -139,11 +142,13 @@ void CGaugeManager::Update()
 				{
 					//時間を取得し、ゲージクラスに渡す.
 					m_pGauge[gaugeNo]->SetGaugeInfo(player->GetKnockdownTime());
+					m_pGauge[gaugeNo]->SetColor(m_KnockDownGaugeColor);
 				}
 				else if (player->GetHoldingItem())
 				{
 					//時間を取得し、ゲージクラスに渡す.
 					m_pGauge[gaugeNo]->SetGaugeInfo(player->GetHoldingItem()->GetUsageLimit());
+					m_pGauge[gaugeNo]->SetColor(m_ItemGaugeColor);
 				}
 			}
 			if (Mushroom* mush = dynamic_cast<Mushroom*>(object))

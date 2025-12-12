@@ -105,7 +105,7 @@ void CSceneStandby::Update()
 {
 	MoveSelector();
 
-	if (CInputManager::IsDown(Action::Decide, 0)/* && slot0.ready*/)
+	if (CInputManager::IsDown(Action::Decide, 0) && CSceneData::GetSlot(0))
 	{
 		//SetNextScene(GameMain);
 		//‘I‘ğ’†‚Ì”Ô†‚Åˆ—‚³‚ê‚éŠÖ”‚ª•Ï‚í‚é.

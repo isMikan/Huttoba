@@ -53,5 +53,8 @@ protected:
 	CPlayerManager*		m_pPlayerManager;		//プレイヤー.
 	ItemManager*		m_pItemManager;			//アイテム.
 
+	D3DXVECTOR3			m_KnockDownGaugeColor;	//ダウン状態のゲージの色.
+	D3DXVECTOR3			m_ItemGaugeColor;		//アイテムのゲージの色.
+
 	float				m_DeletePos;			//削除する地点.
 };

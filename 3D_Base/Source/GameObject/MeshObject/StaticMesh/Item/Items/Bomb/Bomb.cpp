@@ -195,7 +195,7 @@ void Bomb::UseMove()
 		m_Velocity.y = 0;
 	}
 
-	if (m_IsOnGround && m_ExplosionCnt > m_ExplosionTime)
+	if (m_ExplosionCnt > m_ExplosionTime)
 	{
 		Explosion();
 	}

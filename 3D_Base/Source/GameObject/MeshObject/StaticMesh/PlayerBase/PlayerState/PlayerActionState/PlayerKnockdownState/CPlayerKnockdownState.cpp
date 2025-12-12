@@ -20,8 +20,8 @@ CPlayerKnockdownState::CPlayerKnockdownState(CPlayerBase& pPlayer)
 	, m_TimeDecrease			( 0.1f )
 	, m_TimeDecreaseByMashing	( 0.3f )
 
-	, m_ShakeSpeed				( 3.f )
-	, m_ShakeWidth				( 3.f )
+	, m_ShakeSpeed				( 1.f )
+	, m_ShakeWidth				( 5.f )
 
 	, m_PrevSthikX				( 0.1f )	//0 にすると積が変わらないので.
 	, m_PrevSthikY				( 0.1f )	//0 にすると積が変わらないので.
@@ -189,7 +189,7 @@ void CPlayerKnockdownState::TimeDecrease()
 	progress = std::clamp(progress, 0.f, 1.f);
 
 	//揺れる動作を計算.
-	float offset = cosf(progress * D3DX_PI * m_ShakeSpeed) * m_ShakeWidth;
+	float offset = cosf(progress * D3DX_PI * 2.f * m_ShakeSpeed) * m_ShakeWidth;
 
 	//プレイヤーのローカル軸を取得.
 	CPlayerBase::LocalAxes axes = m_pPlayer.GetLocalAxes();
