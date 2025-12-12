@@ -220,12 +220,10 @@ float CPlayerAI_TypeB::CalculateDangerRate(D3DXVECTOR3 pos)
 	//中心位置からプレイヤーの離れているかの全長を出す
 	float diffSq = diff.x * diff.x + diff.z * diff.z;
 
-	//プレイヤーの位置が地面の半径以上なら
+	//プレイヤーの位置が地面の半径70%以上なら
 	if (diffSq > groundRadius * (0.7f * 0.7f))
 	{
-		////一旦中央に移動
-		//m_Destination.dir = m_pGroundManager->GetGroundCenterPos() - m_vPosition;
-
+		//点数減少
 		return -50 * 50;
 	}
 

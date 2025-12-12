@@ -12,7 +12,7 @@ ItemBase::ItemBase()
 	, m_IsOnGround	{ false }
 	, m_IsOkFall	{ true }
 
-	, m_ThrowSmashPower	{ 5.0f }
+	, m_ThrowSmashPower	{ 6.0f }
 	, m_Tag				{ ItemID::None}
 
 	, m_IsFall		 { false }
@@ -152,7 +152,7 @@ void ItemBase::ItemState(IItemObserver::State state)
 void ItemBase::ThrowSmash(CPlayerBase& playiers)
 {
 	//プレイヤーの吹き飛ばしの計算
-	D3DXVECTOR3 SmashVel = playiers.GetKnockbackVelocity(m_vPosition, m_ThrowSmashPower, 50.0f);
+	D3DXVECTOR3 SmashVel = playiers.GetKnockbackVelocity(m_vPosition, m_ThrowSmashPower, 30.0f);
 
 	playiers.SetHitAttack(
 		SmashVel,
