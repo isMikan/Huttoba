@@ -138,6 +138,8 @@ HRESULT CSceneGameMain::LoadData()
 	//‰æ‘œƒf[ƒ^‚Ì“Ç‚Ýž‚Ý
 	m_pSpriteReadyGo->AttachSprite(AssetManager::Sprite(Sprite2DList::ReadyGo));
 
+	m_pSpriteReadyGo->SetPosition(D3DXVECTOR3(WND_W / 2 - 693 / 2, WND_H / 2 - 217 / 2, 0));
+
 	return S_OK;
 }
 
