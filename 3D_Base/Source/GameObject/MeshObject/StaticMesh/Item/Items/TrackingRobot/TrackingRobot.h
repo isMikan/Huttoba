@@ -57,9 +57,6 @@ private:
     //吹き飛ばし処理
     void Smash(CPlayerBase& playiers);
 
-    //爆発前の色の変更処理
-    void ChangeColor();
-
     //プレイヤーの距離に応じて吹き飛ばし力を計算
     float CalculateForceScalar(float distance);
 
@@ -99,11 +96,10 @@ private:
     //爆発の吹き飛ばしの力
     float       m_KnockBackPower;
 
-    //点滅の経過時間を記録
-    double      m_ColorTimer;
-
     //爆発時の処理
     bool        m_IsExploded;
+
+    bool        m_Is;
 
     //索敵の当たり判定の位置の補正値
     D3DXVECTOR3 m_CollisionOffSet;

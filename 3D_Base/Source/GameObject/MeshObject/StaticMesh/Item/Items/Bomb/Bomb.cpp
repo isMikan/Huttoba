@@ -34,8 +34,6 @@ Bomb::Bomb()
 
 	//爆弾の紐の部分の白色の値
 	m_ObjectColor[1].diffuse = D3DXVECTOR4(0.7f, 0.7f, 0.7f, 1.0f);
-	//m_ObjectColor[1].ambient = D3DXVECTOR4(.3f, .3f, .3f, .5f);
-
 }
 
 Bomb::~Bomb()
@@ -154,12 +152,8 @@ void Bomb::OnCollision(CollisionBase* other)
 	//爆発したときだけ判定する
 	if (m_IsExploded) 
 	{
-		//タグがプレイヤー意外だと無視
-		if (other->GetTag() != CollisionBase::ColliderTag::Player)return;
-		
 		if (CPlayerBase* player = dynamic_cast<CPlayerBase*>(other->GetListener()))
 		{
-
 			Smash(*player);
 		}	
 	}
@@ -245,9 +239,6 @@ void Bomb::EnterUseThrowCommon()
 	m_Velocity = forward * m_MoveSpeed;
 
 	m_Velocity.y = m_UpSpeed;
-
-	m_pPickUpCollider->SetActive(false);
-	m_pUseCollider->SetActive(true);
 }
 
 void Bomb::Explosion()
@@ -255,6 +246,9 @@ void Bomb::Explosion()
 	//非爆発時に一度だけ処理する
 	if (!m_IsExploded)
 	{
+		m_pPickUpCollider->SetActive(false);
+		m_pUseCollider->SetActive(true);
+
 		//爆発フラグをオンに
 		m_IsExploded = true;
 
