@@ -37,10 +37,10 @@ void DrawTimer::Update()
 	std::pair timeLimit = CTimeManager::GetInstance().GetTimeLimit();
 
 	//ŠeˆÊ‚ÉÝ’è
-	//RemainingTimeImage[Time::Ten]->SetPatternNo(timeLimit.first, 0);
-	//RemainingTimeImage[Time::One]->SetPatternNo(timeLimit.second, 0);
-	RemainingTimeImage[Time::Ten]->SetPatternNo(4, 0);
 	RemainingTimeImage[Time::One]->SetPatternNo(5, 0);
+	RemainingTimeImage[Time::Ten]->SetPatternNo(4, 0);
+	//RemainingTimeImage[Time::One]->SetPatternNo(timeLimit.second, 0);
+	//RemainingTimeImage[Time::One]->SetPatternNo(timeLimit.second, 0);
 }
 
 void DrawTimer::Draw()

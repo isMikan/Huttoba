@@ -389,7 +389,7 @@ void Haetataki::Smash(CPlayerBase& playiers)
 	static ::EsHandle hEffect = 1;
 
 	//エフェクト追加
-	hEffect = AssetManager::Effect()->Play("Explosion", m_vPosition);
+	//hEffect = AssetManager::Effect()->Play("Explosion", m_vPosition);
 
 	//エフェクトの拡縮設定
 	AssetManager::Effect()->SetScale(hEffect, D3DXVECTOR3(0.6f, 0.6f, 0.6f));
