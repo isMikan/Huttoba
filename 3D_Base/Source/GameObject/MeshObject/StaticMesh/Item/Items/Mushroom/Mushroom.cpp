@@ -178,21 +178,23 @@ void Mushroom::UseMove()
 	}
 	else
 	{
-		m_vPosition.y = 0.1f;
-
-		m_Velocity = D3DXVECTOR3(0, 0, 0);
-		
-		if (!m_IsPlaced)
+		if (m_IsOnGround)
 		{
-			//アイテムを設置中に
-			m_IsPlaced = true;
+			m_vPosition.y = 0.1f;
 
-			//エフェクトの再生
-			m_hEffect = AssetManager::Effect()->Play("mushroomarea", m_vPosition);
-			//エフェクトの拡縮を設定
-			AssetManager::Effect()->SetScale(m_hEffect, D3DXVECTOR3(0.2f, 0.2f, 0.2f));
+			m_Velocity = D3DXVECTOR3(0, 0, 0);
+
+			if (!m_IsPlaced)
+			{
+				//アイテムを設置中に
+				m_IsPlaced = true;
+
+				//エフェクトの再生
+				m_hEffect = AssetManager::Effect()->Play("mushroomarea", m_vPosition);
+				//エフェクトの拡縮を設定
+				AssetManager::Effect()->SetScale(m_hEffect, D3DXVECTOR3(0.2f, 0.2f, 0.2f));
+			}
 		}
-
 	}
 
 	//移動速度を減算するための0.98f

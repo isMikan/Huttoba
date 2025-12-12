@@ -28,21 +28,20 @@ TrackingRobot::TrackingRobot()
 
 	, m_KnockBackPower	( 10.0f )	//値を変えるとプレイヤーの吹き飛ばし力が変化
 
-	, m_ColorTimer		( 0.0 )
-
 	, m_IsExploded		( false )
 
-	, m_CollisionOffSet	(0.0f, 0.0f, /*1.3*/1.8f)
+	, m_Is		( false )
+
+	, m_CollisionOffSet	(0.0f, 0.0f, 1.8f)
 {
 	Init();
-	//m_vPosition = D3DXVECTOR3(4.0f, 0.0f, 0.0f);
 }
 
 TrackingRobot::~TrackingRobot()
 {
 	//当たり判定削除
+	CollisionManager::GetInstance()->RemoveCollider(m_pUseCollider.get());
 	CollisionManager::GetInstance()->RemoveCollider(m_pPickUpCollider.get());
-	CollisionManager::GetInstance()->RemoveCollider(m_pCollision.get());
 }
 
 void TrackingRobot::Init()
@@ -58,6 +57,14 @@ void TrackingRobot::Init()
 		AssetManager::Mesh(StaticMeshList::PickUpCol),
 		this
 	);
+
+	m_pUseCollider = CollisionDataFactory::CreateSphereForMesh(
+		CollisionBase::ColliderTag::TrackingRobot,
+		AssetManager::Mesh(StaticMeshList::ExplosionCol),
+		this
+	);
+
+	m_pUseCollider->SetActive(false);
 }
 
 void TrackingRobot::Update()
@@ -133,20 +140,22 @@ void TrackingRobot::OnCollision(CollisionBase* other)
 	{
 		if (CPlayerBase* player = dynamic_cast<CPlayerBase*>(other->GetListener()))
 		{
+			//爆発したときだけ判定する
+			if (m_IsExploded)
+			{
+				m_Is = true;
+				Smash(*player);
+			}
+
 			if (m_State == State::Use)
 			{
 				if (m_pPlayer != player)
 					Explosion();
 			}
 
-			if (m_IsExploded)
-			{
-				Smash(*player);
-			}
-
 			if (m_State == IItemObserver::State::Throw && m_pPlayer != player)
 			{
-				Smash(*player);
+				ThrowSmash(*player);
 			}
 		}
 	}
@@ -160,7 +169,13 @@ void TrackingRobot::HaveMove()
 
 void TrackingRobot::UseMove()
 {
-	//if (m_pChaseSensor->GetIsHitGround())
+	//爆発すればアイテムを破棄する
+	if (m_Is)
+	{
+		m_IsDestroy = true;
+		return;
+	}
+
 	if(m_IsOnGround)
 	{
 		UpdateChaseSensor();
@@ -185,15 +200,12 @@ void TrackingRobot::UseMove()
 			m_Velocity = forward * m_MoveSpeed;
 		}
 
-
 		m_vPosition += m_Velocity * static_cast<float>(CTimeManager::GetDeltaTime());
 	}
 	else
 	{
 		Explosion();
 	}
-
-	//m_pChaseSensor->SetIsHitGround(false);
 }
 
 void TrackingRobot::ThrowMove()
@@ -259,6 +271,12 @@ void TrackingRobot::Explosion()
 	//爆発時に一度だけ処理する
 	if (!m_IsExploded)
 	{
+		m_pPickUpCollider->SetActive(false);
+		m_pUseCollider->SetActive(true);
+
+		std::cout << "当たり判定変更" << std::endl;
+
+
 		//爆発フラグをオンに
 		m_IsExploded = true;
 
@@ -268,8 +286,6 @@ void TrackingRobot::Explosion()
 
 		//拡縮設定
 		AssetManager::Effect()->SetScale(hEffect, D3DXVECTOR3(0.6f, 0.6f, 0.6f));
-
-		DestroyItem();
 	}
 }
 
@@ -286,30 +302,6 @@ void TrackingRobot::Smash(CPlayerBase& playiers)
 	playiers.SetHitAttack(
 		SmashVel,
 		CPlayerBase::HitEvent::Knockdown);
-}
-
-void TrackingRobot::ChangeColor()
-{
-	m_ColorTimer += CTimeManager::GetDeltaTime();
-
-	//点滅のスピードを経過時間/爆発するまでの時間をして割合で出す
-	float speed = 10.0f * (static_cast<float>(m_ColorTimer / m_ExplosionTime));
-
-	//+1.0fをすることで、sinの値が0~2の間の値になり、*0.5することで0~1の間の値が取れる
-	float blinkRate = (sinf(static_cast<float>(m_ColorTimer) * speed) + 1.0f) * 0.5f;
-
-	//灰色のカラーコード
-	D3DXVECTOR4 gray = D3DXVECTOR4(0.2f, 0.2f, 0.2f, 1.0f);
-
-	//赤色のカラーコード
-	D3DXVECTOR4 red = D3DXVECTOR4(1.0f, 0.0f, 0.0f, 1.0f);
-
-	//値が増加と減少がそれぞれあるので使いわけていく
-	D3DXVECTOR4 color;
-
-	D3DXVec4Lerp(&color, &gray, &red, blinkRate);
-
-	m_ObjectColor[0].diffuse = color;
 }
 
 float TrackingRobot::CalculateForceScalar(float distance)
