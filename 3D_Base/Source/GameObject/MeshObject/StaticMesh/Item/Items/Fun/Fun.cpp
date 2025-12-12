@@ -15,6 +15,8 @@ Fun::Fun()
 	, m_Velocity	()
 	, m_MoveSpeed	( 6.0f )		//値を変えると投げた時の移動速度が変化
 
+	, m_Power		( 4.0f )		
+
 	, m_pNowCollider()
 	, m_pUseCollider_2()
 {
@@ -264,7 +266,7 @@ void Fun::OneEnterThrow()
 void Fun::Hit(CPlayerBase& playiers)
 {
 	//プレイヤーの押し出しの計算
-	D3DXVECTOR3 SmashVel = playiers.GetPushbackVelocity(m_vPosition, 2.f);
+	D3DXVECTOR3 SmashVel = playiers.GetPushbackVelocity(m_vPosition, m_Power);
 
 	playiers.SetHitAttack(
 		SmashVel,

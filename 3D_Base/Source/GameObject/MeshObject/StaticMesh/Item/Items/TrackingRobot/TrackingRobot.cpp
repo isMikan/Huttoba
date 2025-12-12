@@ -19,7 +19,7 @@ TrackingRobot::TrackingRobot()
 
 	, m_Velocity		()
 	, m_MoveSpeed		( 4.0f )	//値を変えると使用時の移動速度が変化
-	, m_TurnRate		( 1.4f )	//値を変えると使用時の旋回の角度が変化
+	, m_TurnRate		( 5.0f )	//値を変えると使用時の旋回の角度が変化
 
 	, m_ThrowSpeed		( 6.0f )	//値を変えると投擲時の移動速度が変化
 

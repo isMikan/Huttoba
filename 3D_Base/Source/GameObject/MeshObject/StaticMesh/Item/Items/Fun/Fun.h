@@ -61,6 +61,9 @@ private:
     //“Š‚°‚½‚ÌˆÚ“®‘¬“x
     float       m_MoveSpeed;
 
+    //‰Ÿ‚µo‚µ‚Ì‹­‚³
+    float       m_Power;
+
     //“–‚½‚è”»’è‚ğØ‚è‘Ö‚¦‚é‚½‚ß‚É’Ç‰Á
     std::shared_ptr<CollisionBase>	m_pNowCollider;	
 
