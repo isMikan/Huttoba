@@ -5,12 +5,9 @@
 #include "TimeManager/CTimeManager.h"
 #include "Input/CInputManager.h"
 
-constexpr float USE_LIMIT = 5;		//回数制限
-constexpr float MOVE_SPEED = 5.f;	//最低限の飛ぶ速さ
 
 constexpr float COMEBACK_SPEED = 2.f;	//この速度以下で切り替えす
-
-constexpr float TURN_ANGLE_RAD = 10.f;	//この速度以下で切り替えす
+constexpr float TURN_ANGLE_RAD = 10.f;	//ブーメランが回転していく角度
 
 constexpr int SMASH_POWER = 6;		//吹っ飛び力
 constexpr float SMASH_ANGLE = 60.f; //吹っ飛び角度
@@ -20,6 +17,9 @@ constexpr float ADD_CHARGE_RANGE = 0.05f; //チャージしてる間の1f間の上昇量
 
 constexpr float USE_MIN_VELOCITY_RANGE = 0.01f;				//飛ばしている間の1f間の減衰
 constexpr float COMEBACK_ADD_VELOCITY_RANGE = 0.25f;	//戻ってくるときの1f間の速度上昇量
+
+constexpr float USE_LIMIT = 5;		//回数制限
+constexpr float MOVE_SPEED = 5.f;	//最低限の飛ぶ速さ
 
 //Factoryに登録
 namespace { const bool regist = ItemBase::AutoRegister<Boomerang>(ItemID::Boomerang); }

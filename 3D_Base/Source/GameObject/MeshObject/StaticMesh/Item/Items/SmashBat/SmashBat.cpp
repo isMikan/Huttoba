@@ -53,10 +53,10 @@ constexpr float USE_COUNT = 7;
 constexpr float SLERP_DURATION = 1.0f;
 
 //回数制限
-constexpr float USE_LIMIT = 7.f;
+constexpr float USE_LIMIT = 5.f;
 
 //吹っ飛び
-constexpr float HIT_POWER = 30.f;
+constexpr float HIT_POWER = 17.f;
 constexpr float HIT_ANGLE = 60.f;
 
 //--------------------------------------------------------------------------------------------------------------
@@ -400,6 +400,11 @@ void SmashBat::OnCollision(CollisionBase* other)
 			{
 				Smash(*player);
 				AssetManager::Sound()->PlaySE(enSoundList::SE_SmashBatHit);
+				//エフェクト追加
+				if (!AssetManager::Effect()->IsPlaying(m_hEffect[Efect::HitPlayer]))
+				{
+					m_hEffect[Efect::HitPlayer] = AssetManager::Effect()->Play("HaetatakiHit", m_vPosition);
+				}
 			}
 			if (m_State == IItemObserver::State::Throw && m_pPlayer != player)
 			{
