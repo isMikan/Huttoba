@@ -103,19 +103,20 @@ void SmashBat::Init()
 	m_State = IItemObserver::IItemObserver::State::Spawn;
 	m_tGravity = INITAL_GRAVITY;
 
-	std::shared_ptr<CStaticMesh> mesh = AssetManager::Mesh(StaticMeshList::Bomb);
+	//“–‚½‚è”»’è
+	std::shared_ptr<CStaticMesh> PickMesh = AssetManager::Mesh(StaticMeshList::PickUpCol);
+	std::shared_ptr<CStaticMesh> UseMesh = AssetManager::Mesh(StaticMeshList::HaetatakiCol);
 
 	m_pPickUpCollider = CollisionDataFactory::CreateSphereForMesh(
 		CollisionBase::ColliderTag::Haetataki,
-		mesh,
+		PickMesh,
 		this
 	);
 
-	mesh = AssetManager::Mesh(StaticMeshList::HaetatakiCol);
 
 	m_pUseCollider = CollisionDataFactory::CreateCapsuleForMesh(
 		CollisionBase::ColliderTag::Haetataki,
-		mesh,
+		UseMesh,
 		this
 	);
 
@@ -395,14 +396,16 @@ void SmashBat::OnCollision(CollisionBase* other)
 	{
 		if (CPlayerBase* player = dynamic_cast<CPlayerBase*>(other->GetListener()))
 		{
-			if (m_pPlayer != player)
+			if (m_State == IItemObserver::State::Use && m_pPlayer != player)
 			{
-				if (m_State == IItemObserver::State::Use)
-				{
-					Smash(*player);
-					AssetManager::Sound()->PlaySE(enSoundList::SE_SmashBatHit);
-				}
+				Smash(*player);
+				AssetManager::Sound()->PlaySE(enSoundList::SE_SmashBatHit);
 			}
+			if (m_State == IItemObserver::State::Throw && m_pPlayer != player)
+			{
+				ThrowSmash(*player);
+			}
+
 		}
 	}
 }
