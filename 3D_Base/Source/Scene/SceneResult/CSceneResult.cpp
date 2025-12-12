@@ -82,14 +82,21 @@ HRESULT CSceneResult::LoadData()
 
 	//生き残ったプレイヤーが複数いたら
 	if (CSceneData::GetPlayerLivingNum() > 1)
+	{
 		//DRAWの表示
 		m_pSpriteResultFont->SetPatternNo(0, 1);
+
+		//表示数位置の調整
+		m_pSpriteResultFont->SetPosition(D3DXVECTOR3(50, WND_H - 330, 0));
+	}
 	else
+	{
 		//1以下ならWINNERを表示
 		m_pSpriteResultFont->SetPatternNo(0, 0);
 
-	//表示数位置の調整
-	m_pSpriteResultFont->SetPosition(D3DXVECTOR3(50, WND_H-280, 0));
+		//表示数位置の調整
+		m_pSpriteResultFont->SetPosition(D3DXVECTOR3(50, WND_H - 280, 0));
+	}
 
 	for (int i=0;i< m_ResultFontIndex;i++)
 	{

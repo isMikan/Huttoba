@@ -260,7 +260,7 @@ void Fun::OneEnterThrow()
 void Fun::Hit(CPlayerBase& playiers)
 {
 	//プレイヤーの押し出しの計算
-	D3DXVECTOR3 SmashVel = playiers.GetPushbackVelocity(m_vPosition, 1.6f);
+	D3DXVECTOR3 SmashVel = playiers.GetPushbackVelocity(m_vPosition, 2.f);
 
 	playiers.SetHitAttack(
 		SmashVel,
