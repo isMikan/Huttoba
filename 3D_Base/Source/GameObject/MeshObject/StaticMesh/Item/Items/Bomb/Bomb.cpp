@@ -42,6 +42,8 @@ Bomb::~Bomb()
 {
 	//ìñÇΩÇËîªíËçÌèú
 	CollisionManager::GetInstance()->RemoveCollider(m_pCollision.get());
+	CollisionManager::GetInstance()->RemoveCollider(m_pPickUpCollider.get());
+	CollisionManager::GetInstance()->RemoveCollider(m_pUseCollider.get());
 }
 
 void Bomb::Init()
@@ -55,14 +57,24 @@ void Bomb::Init()
 	m_UseCount = USE_COUNT;
 	//ÉQÅ[ÉWÇÃÇΩÇﬂÇ…í«â¡.	êßçÏé“	[çbîc]
 	m_UsageLimit = { USE_COUNT, USE_COUNT };
+	
+	//ìñÇΩÇËîªíË
+	std::shared_ptr<CStaticMesh> UseMesh = AssetManager::Mesh(StaticMeshList::ExplosionCol);
+	std::shared_ptr<CStaticMesh> PickMesh = AssetManager::Mesh(StaticMeshList::PickUpCol);
 
-	std::shared_ptr<CStaticMesh> mesh = AssetManager::Mesh(StaticMeshList::Bomb);
-
-	m_pCollision = CollisionDataFactory::CreateSphereForMesh(
+	m_pPickUpCollider = CollisionDataFactory::CreateSphereForMesh(
 		CollisionBase::ColliderTag::Bomb,
-		mesh,
+		PickMesh,
 		this
 	);
+
+	m_pUseCollider = CollisionDataFactory::CreateCapsuleForMesh(
+		CollisionBase::ColliderTag::Bomb,
+		UseMesh,
+		this
+	);
+
+	m_pUseCollider->SetActive(false);
 }
 
 void Bomb::Update()
@@ -234,16 +246,8 @@ void Bomb::EnterUseThrowCommon()
 
 	m_Velocity.y = m_UpSpeed;
 
-	//ìñÇΩÇËîªíËçÌèú
-	CollisionManager::GetInstance()->RemoveCollider(m_pCollision.get());
-
-	std::shared_ptr<CStaticMesh> mesh = AssetManager::Mesh(StaticMeshList::ExplosionCol);
-
-	m_pCollision = CollisionDataFactory::CreateSphereForMesh(
-		CollisionBase::ColliderTag::Bomb,
-		mesh,
-		this
-	);
+	m_pPickUpCollider->SetActive(false);
+	m_pUseCollider->SetActive(true);
 }
 
 void Bomb::Explosion()
