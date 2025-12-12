@@ -95,19 +95,19 @@ void Haetataki::Init()
 	m_tGravity = INITAL_GRAVITY;
 
 
-	std::shared_ptr<CStaticMesh> mesh = AssetManager::Mesh(StaticMeshList::Bomb);
+	//当たり判定
+	std::shared_ptr<CStaticMesh> UseMesh = AssetManager::Mesh(StaticMeshList::HaetatakiCol);
+	std::shared_ptr<CStaticMesh> PickMesh = AssetManager::Mesh(StaticMeshList::PickUpCol);
 
 	m_pPickUpCollider = CollisionDataFactory::CreateSphereForMesh(
 		CollisionBase::ColliderTag::Haetataki,
-		mesh,
+		PickMesh,
 		this
 	);
 
-	mesh = AssetManager::Mesh(StaticMeshList::HaetatakiCol);
-
 	m_pUseCollider = CollisionDataFactory::CreateCapsuleForMesh(
 		CollisionBase::ColliderTag::Haetataki,
-		mesh,
+		UseMesh,
 		this
 	);
 
@@ -357,12 +357,13 @@ void Haetataki::OnCollision(CollisionBase* other)
 	{
 		if (CPlayerBase* player = dynamic_cast<CPlayerBase*>(other->GetListener()))
 		{
-			if (m_pPlayer != player)
+			if (m_pPlayer != player && m_State == IItemObserver::State::Use)
 			{
-				if (m_State == IItemObserver::State::Use)
-				{
-					Smash(*player);
-				}
+				Smash(*player);
+			}
+			if (m_State == IItemObserver::State::Throw && m_pPlayer != player)
+			{
+				ThrowSmash(*player);
 			}
 		}
 	}

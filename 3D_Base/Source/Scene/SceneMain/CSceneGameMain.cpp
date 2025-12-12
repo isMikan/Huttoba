@@ -219,9 +219,10 @@ void CSceneGameMain::Update()
 		m_pGroundCollisionProxy->Update();
 
 		m_pItemManager->Update();
-
 		//ƒvƒŒƒCƒ„[‚Ì“®ì
 		m_pPlayerManager->MainPlayerUpdate();
+
+
 
 		m_pDrawTimer->Update();
 		m_pShadowManager->Update(m_pPlayerManager.get(), m_pItemManager.get());

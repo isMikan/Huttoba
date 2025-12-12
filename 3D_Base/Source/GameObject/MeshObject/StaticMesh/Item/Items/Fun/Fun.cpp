@@ -54,7 +54,7 @@ void Fun::Init()
 	//使用時の前方に出す当たり判定
 	std::shared_ptr<CStaticMesh> UseMesh = AssetManager::Mesh(StaticMeshList::BoomerangCol);
 	std::shared_ptr<CStaticMesh> UseMesh_2 = AssetManager::Mesh(StaticMeshList::BCapsule);
-	std::shared_ptr<CStaticMesh> PickMesh = AssetManager::Mesh(StaticMeshList::Bomb);
+	std::shared_ptr<CStaticMesh> PickMesh = AssetManager::Mesh(StaticMeshList::PickUpCol);
 
 	m_pPickUpCollider = CollisionDataFactory::CreateCapsuleForMesh(
 		CollisionBase::ColliderTag::Bomb,
@@ -76,7 +76,7 @@ void Fun::Init()
 
 	D3DXVECTOR3 m_UseOffset = { 0.f, 0.f, 1.5f };
 	D3DXVECTOR3 m_UseOffset_2 = { 0.f, 0.f, 0.5f };
-	D3DXVECTOR3 m_PickUpOffset = { 0.f, 0.3f, 0.f };
+	D3DXVECTOR3 m_PickUpOffset = { 0.f, 0.0f, 0.f };
 
 	m_pUseCollider->SetLocalOffsetToSphere(m_UseOffset);
 	m_pUseCollider->SetActive(false);
@@ -85,7 +85,7 @@ void Fun::Init()
 	m_pUseCollider_2->SetLocalOffSetToCapsule(m_UseOffset_2, m_UseOffset_2);
 	m_pUseCollider_2->SetActive(false);
 
-	m_pPickUpCollider->SetLocalOffSetToCapsule(m_PickUpOffset, m_PickUpOffset);
+	m_pPickUpCollider->SetLocalOffsetToSphere(m_PickUpOffset);
 
 	//--------------------------------------------------------------------------------------------------------------
 }
@@ -121,9 +121,6 @@ void Fun::OnGround()
 
 void Fun::Have()
 {
-	m_pPickUpCollider->SetActive(false);
-	m_pUseCollider->SetActive(true);
-	m_pUseCollider_2->SetActive(true);
 	HaveMove();
 }
 
@@ -134,15 +131,12 @@ void Fun::Use()
 
 void Fun::Throw()
 {
-	m_pPickUpCollider->SetActive(true);
-	m_pUseCollider->SetActive(false);
-	m_pUseCollider_2->SetActive(false);
 	ThrowMove();
 }
 
 void Fun::Destroy()
 {
-
+	
 }
 
 void Fun::ItemState(IItemObserver::State state)
@@ -153,14 +147,27 @@ void Fun::ItemState(IItemObserver::State state)
 	{
 	case IItemObserver::IItemObserver::State::Have:
 
+		m_pPickUpCollider->SetActive(true);
+		m_pUseCollider->SetActive(false);
+		m_pUseCollider_2->SetActive(false);
+
 		break;
 	case IItemObserver::IItemObserver::State::Use:
+
+		m_pPickUpCollider->SetActive(false);
+		m_pUseCollider->SetActive(true);
+		m_pUseCollider_2->SetActive(true);
+
 		//エフェクト追加
 		hEffect = AssetManager::Effect()->Play("FunWind", m_vPosition);
 
 		break;
 	case IItemObserver::IItemObserver::State::Throw:
 		OneEnterThrow();
+		m_pPickUpCollider->SetActive(true);
+		m_pUseCollider->SetActive(false);
+		m_pUseCollider_2->SetActive(false);
+
 		break;
 	default:
 		break;
@@ -173,13 +180,10 @@ void Fun::OnCollision(CollisionBase* other)
 	{
 		if (CPlayerBase* player = dynamic_cast<CPlayerBase*>(other->GetListener()))
 		{
-			if (m_State == IItemObserver::State::Use)
+			if (m_State == IItemObserver::State::Use && m_pPlayer != player)
 			{
-				if(m_pPlayer != player)
-				{
-					Hit(*player);
-					std::cout << player->GetPlayerID() << "と当たった" << std::endl;
-				}
+				Hit(*player);
+				std::cout << player->GetPlayerID() << "と当たった" << std::endl;
 			}
 			if (m_State == IItemObserver::State::Throw && m_pPlayer != player)
 			{

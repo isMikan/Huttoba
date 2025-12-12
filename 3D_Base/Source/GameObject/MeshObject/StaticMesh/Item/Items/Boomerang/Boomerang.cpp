@@ -65,19 +65,18 @@ void Boomerang::Init()
 	AttachMesh(AssetManager::Mesh(StaticMeshList::Boomerang));
 
 	//îªíËçÏê¨
-	std::shared_ptr<CStaticMesh> mesh = AssetManager::Mesh(StaticMeshList::Bomb);
+	std::shared_ptr<CStaticMesh> PickMesh = AssetManager::Mesh(StaticMeshList::PickUpCol);
+	std::shared_ptr<CStaticMesh> UseMesh = AssetManager::Mesh(StaticMeshList::BoomerangCol);
 
 	m_pPickUpCollider = CollisionDataFactory::CreateSphereForMesh(
 		CollisionBase::ColliderTag::Bomb,
-		mesh,
+		PickMesh,
 		this
 	);
 
-	mesh = AssetManager::Mesh(StaticMeshList::BoomerangCol);
-
 	m_pUseCollider = CollisionDataFactory::CreateSphereForMesh(
 		CollisionBase::ColliderTag::Boomerang,
-		mesh,
+		UseMesh,
 		this
 	);
 
@@ -182,9 +181,14 @@ void Boomerang::ItemState(IItemObserver::State state)
 
 		break;
 
-	case IItemObserver::IItemObserver::State::Use	: OneEnterUse();   break;
-	case IItemObserver::IItemObserver::State::Throw	: OneEnterThrow(); break;
-	default:	break;
+	case IItemObserver::IItemObserver::State::Use	: 
+		OneEnterUse();  
+		break;
+	case IItemObserver::IItemObserver::State::Throw	: 
+		OneEnterThrow(); 
+		break;
+	default:	
+		break;
 	}
 }
 
@@ -196,11 +200,15 @@ void Boomerang::OnCollision(CollisionBase* other)
 	{
 		if (CPlayerBase* player = dynamic_cast<CPlayerBase*>(other->GetListener()))
 		{
-			if ((m_State == State::Use || m_State == State::Throw )
-				&& player != m_pPlayer && m_IsUseThrow)
+			if (m_State == State::Use && player != m_pPlayer && m_IsUseThrow)
 			{
 				Smash(*player);
 			}
+			if (m_State == IItemObserver::State::Throw && m_pPlayer != player)
+			{
+				ThrowSmash(*player);
+			}
+
 		}
 	}
 }
@@ -335,6 +343,11 @@ void Boomerang::OneEnterThrow()
 	D3DXVec3Normalize(&forward, &forward);
 
 	m_Velocity = forward * m_MoveSpeed;
+
+	//îªíËêÿÇËë÷Ç¶
+	m_pUseCollider->SetActive(true);
+	m_pPickUpCollider->SetActive(false);
+
 }
 
 //--------------------------------------------------------------------------------------------------------------
