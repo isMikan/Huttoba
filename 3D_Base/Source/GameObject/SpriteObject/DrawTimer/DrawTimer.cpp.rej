@@ -1,0 +1,16 @@
+diff a/3D_Base/Source/GameObject/SpriteObject/DrawTimer/DrawTimer.cpp b/3D_Base/Source/GameObject/SpriteObject/DrawTimer/DrawTimer.cpp	(rejected hunks)
+@@ -37,10 +37,10 @@
+ 	std::pair timeLimit = CTimeManager::GetInstance().GetTimeLimit();
+ 
+ 	//�e�ʂɐݒ�
+-	//RemainingTimeImage[Time::Ten]->SetPatternNo(timeLimit.first, 0);
+-	//RemainingTimeImage[Time::One]->SetPatternNo(timeLimit.second, 0);
+-	RemainingTimeImage[Time::Ten]->SetPatternNo(4, 0);
+-	RemainingTimeImage[Time::One]->SetPatternNo(5, 0);
++	RemainingTimeImage[Time::Ten]->SetPatternNo(timeLimit.first, 0);
++	RemainingTimeImage[Time::One]->SetPatternNo(timeLimit.second, 0);
++	//RemainingTimeImage[Time::Ten]->SetPatternNo(4, 0);
++	//RemainingTimeImage[Time::One]->SetPatternNo(5, 0);
+ }
+ 
+ void DrawTimer::Draw()

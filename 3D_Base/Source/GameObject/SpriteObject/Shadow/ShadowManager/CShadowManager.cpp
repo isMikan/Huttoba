@@ -74,17 +74,19 @@ void CShadowManager::Update(
 	//プレイヤーがすでに影生成をしているため、プレイヤー最大数からスタート
 	for (size_t i = Player_Max; i < items->GetItemVectorNum() + Player_Max; i++)
 	{
-		//for (std::unique_ptr<ItemBase>& item : items->GetItems())
-		//{
-			if (items->GetItems()[i - Player_Max]->GetIsOnGround())
-			{
-				m_pShadow[i]->Update(items->GetItemPos(static_cast<int>(i - Player_Max)));
-			}
-			else
-			{
-				m_pShadow[i]->SetPosition(0.f, -10.f, -10.f);
-			}
-		//}
+		if (items->GetItems()[i - Player_Max]->GetIsOnGround())
+		{
+			m_pShadow[i]->Update(items->GetItemPos(static_cast<int>(i - Player_Max)));
+		}
+		else
+		{
+			m_pShadow[i]->SetPosition(0.f, -10.f, -10.f);
+		}
+	}
+
+	for (size_t i = Player_Max + items->GetItemVectorNum(); i < Shadow_Max; i++)
+	{
+		m_pShadow[i]->SetPosition(0.f, -10.f, -10.f);
 	}
 }
 
