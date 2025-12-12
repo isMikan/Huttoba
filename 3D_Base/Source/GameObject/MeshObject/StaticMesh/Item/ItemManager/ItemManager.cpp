@@ -155,7 +155,7 @@ void ItemManager::CheckSpawnLimit()
 	switch (m_pSpawnItemPosition->GetCurrentFallGround())
 	{
 	case GroundTag::SafeGround:			m_SpawnLimit = 0; break;
-	case GroundTag::ThirdFallGround:	m_SpawnLimit = 1; break;
+	case GroundTag::ThirdFallGround:	m_SpawnLimit = 2; break;
 	case GroundTag::SecondFallGround:	m_SpawnLimit = 4; break;
 	case GroundTag::FirstFallGround:	m_SpawnLimit = 6; break;
 	case GroundTag::None:break;
