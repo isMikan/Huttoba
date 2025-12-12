@@ -68,7 +68,7 @@ void Bomb::Init()
 		this
 	);
 
-	m_pUseCollider = CollisionDataFactory::CreateCapsuleForMesh(
+	m_pUseCollider = CollisionDataFactory::CreateSphereForMesh(
 		CollisionBase::ColliderTag::Bomb,
 		UseMesh,
 		this

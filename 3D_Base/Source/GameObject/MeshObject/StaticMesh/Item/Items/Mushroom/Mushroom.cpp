@@ -30,6 +30,8 @@ Mushroom::~Mushroom()
 {
 	//当たり判定削除
 	CollisionManager::GetInstance()->RemoveCollider(m_pCollision.get());
+	CollisionManager::GetInstance()->RemoveCollider(m_pUseCollider.get());
+	CollisionManager::GetInstance()->RemoveCollider(m_pPickUpCollider.get());
 
 	AssetManager::Effect()->Stop(m_hEffect);
 }
@@ -48,13 +50,24 @@ void Mushroom::Init()
 
 	m_tGravity = 0.001f;
 
-	std::shared_ptr<CStaticMesh> mesh = AssetManager::Mesh(StaticMeshList::Mushroom);
+	//当たり判定
+	std::shared_ptr<CStaticMesh> UseMesh = AssetManager::Mesh(StaticMeshList::Mushroom);
+	std::shared_ptr<CStaticMesh> PickMesh = AssetManager::Mesh(StaticMeshList::PickUpCol);
 
-	m_pCollision = CollisionDataFactory::CreateSphereForMesh(
+	m_pPickUpCollider = CollisionDataFactory::CreateSphereForMesh(
 		CollisionBase::ColliderTag::Mushroom,
-		mesh,
+		PickMesh,
 		this
 	);
+
+	m_pUseCollider = CollisionDataFactory::CreateSphereForMesh(
+		CollisionBase::ColliderTag::Mushroom,
+		UseMesh,
+		this
+	);
+
+	m_pUseCollider->SetActive(false);
+
 }
 
 void Mushroom::Update()
@@ -248,6 +261,9 @@ void Mushroom::OneEnterUse()
 
 	//投げた瞬間に別のアイテムを持ったり使ったりできるように追加
 	m_pPlayer->SetHoldingItem(nullptr);
+
+	m_pPickUpCollider->SetActive(false);
+	m_pUseCollider->SetActive(true);
 }
 
 void Mushroom::OneEnterThrow()
