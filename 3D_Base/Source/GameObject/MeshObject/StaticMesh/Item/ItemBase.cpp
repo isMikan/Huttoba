@@ -128,6 +128,11 @@ void ItemBase::Fall()
 	if (m_IsFall)
 	{
 		m_vPosition.y -= GRAVITY;
+		
+		if (m_vPosition.y < -5.f)
+		{
+			DestroyItem();
+		}
 	}
 	else
 	{

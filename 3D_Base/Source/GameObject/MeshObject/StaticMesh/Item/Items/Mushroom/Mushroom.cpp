@@ -117,6 +117,7 @@ void Mushroom::Throw()
 
 void Mushroom::Destroy()
 {
+	m_IsPlaced = false;
 	DestroyItem();
 }
 
@@ -222,6 +223,7 @@ void Mushroom::UseMove()
 
 	if (m_UseTime < 0)
 	{
+		m_IsPlaced = false;
 		DestroyItem();
 	}
 }
@@ -231,6 +233,7 @@ void Mushroom::ThrowMove()
 	//ˆÚ“®—Ê‚ªˆê’èˆÈ‰º‚È‚ç
 	if (D3DXVec3Length(&m_Velocity) <= 0.3f)
 	{
+		m_IsPlaced = false;
 		DestroyItem();
 	}
 

@@ -66,14 +66,14 @@ void CGaugeManager::Init(
 			{
 				auto item = player.get()->GetHoldingItem();
 				if (item 
-					&& !player->IsAnyHoldingItem<Bomb, Mushroom, TrackingRobot>())
+					&& !player.get()->IsAnyHoldingItem<Bomb, Mushroom, TrackingRobot>())
 				{
 					GaugeCreate(player.get(), item->GetUsageLimit(),
 						D3DXVECTOR3(m_ItemGaugeColor));	//生成.
 				}
 			}
 			//アイテムを持っていない場合.
-			else if ((!player || !player.get()->GetHoldingItem()) 
+			else if (!player.get()->GetHoldingItem()
 				&& !dynamic_cast<CPlayerItemAttackState*>(state))
 			{
 				Destroy(dynamic_cast<CStaticMeshObject*>(player.get()));	//削除.
@@ -87,16 +87,16 @@ void CGaugeManager::Update()
 {
 	for (auto& item : m_pItemManager->GetItems())
 	{
-		if (Mushroom* mush = dynamic_cast<Mushroom*>(item.get()))
+		if (auto mush = dynamic_cast<Mushroom*>(item.get()))
 		{
 			if (mush->GetIsPlaced())
 			{
 				GaugeCreate(mush, mush->GetUsageLimit(),
-					D3DXVECTOR3(m_ItemGaugeColor));	//生成.
+					D3DXVECTOR3(m_ItemGaugeColor));
 			}
 			else
 			{
-				Destroy(dynamic_cast<CStaticMeshObject*>(mush));	//削除.
+				Destroy(static_cast<CStaticMeshObject*>(mush));
 			}
 		}
 	}
@@ -148,13 +148,23 @@ void CGaugeManager::Update()
 				{
 					//時間を取得し、ゲージクラスに渡す.
 					m_pGauge[gaugeNo]->SetGaugeInfo(player->GetHoldingItem()->GetUsageLimit());
+
 					m_pGauge[gaugeNo]->SetColor(m_ItemGaugeColor);
 				}
 			}
-			if (Mushroom* mush = dynamic_cast<Mushroom*>(object))
+			else if (Mushroom* mush = dynamic_cast<Mushroom*>(object))
 			{
 				//時間を取得し、ゲージクラスに渡す.
 				m_pGauge[gaugeNo]->SetGaugeInfo(mush->GetUsageLimit());
+				std::cout << "ゲージ" << mush->GetUsageLimit().remaining << std::endl;
+			}
+			else
+			{
+				deleteFrame = frameNo;
+				deleteGauge = gaugeNo;
+				deleteObject.push_back(object);
+				isDelete = true;
+				continue;
 			}
 		}
 	}

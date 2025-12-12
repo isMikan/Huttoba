@@ -208,7 +208,6 @@ void Boomerang::OnCollision(CollisionBase* other)
 			{
 				ThrowSmash(*player);
 			}
-
 		}
 	}
 }

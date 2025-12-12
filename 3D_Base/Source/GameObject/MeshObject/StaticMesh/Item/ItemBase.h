@@ -122,6 +122,8 @@ public:
 
 	virtual void ItemState(IItemObserver::State state) override;
 
+	bool GetIsDestroy() const { return m_IsDestroy; }
+
 protected:
 
 	virtual void Spawn	 ()	= 0; // èoåª
