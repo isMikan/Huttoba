@@ -33,10 +33,14 @@ private:
 //======================================================================
 // 	   内部で使用する変数.
 //======================================================================
-	D3DXVECTOR3		m_InputDir;		//入力を受けた方向.
+	D3DXVECTOR3		m_InputDir;				//入力を受けた方向.
 
-	float			m_TurnSpeed;	//回転速度.
-	float			m_TurnDir;		//回転する目標の方向.
+	float			m_TurnSpeed;			//回転速度.
+	float			m_TurnSpeedMax;			//回転速度の最大.
+	float			m_TurnSpeedMin;			//回転速度の最小.
+	float			m_TurnSpeedMaxRange;	//最大回転速度の許容範囲.
+	float			m_TurnSpeedMinRange;	//最小回転速度の許容範囲.
+	float			m_TurnDir;				//回転する目標の方向.
 
 private:
 //======================================================================

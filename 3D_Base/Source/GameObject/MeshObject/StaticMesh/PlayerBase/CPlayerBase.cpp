@@ -8,6 +8,8 @@
 CPlayerBase::CPlayerBase( int index )
 	: m_PlayerID		( index )
 		
+	, m_Bus				( GetBus() )
+	
 	, m_pHead			( std::make_unique<CPlayerHead>() )
 	, m_pRightHand		( std::make_unique<CPlayerRightHand>() )
 	, m_pLeftHand		( std::make_unique<CPlayerLeftHand>() )
@@ -26,10 +28,10 @@ CPlayerBase::CPlayerBase( int index )
 	, m_IsMoving		( false )
 	, m_IsTurning		( false )
 	, m_IsOnGround		( false )
+	, m_IsAboveGround	( false )
 
 	, m_HitForce		()
-
-	, m_Bus				( GetBus() )
+	, m_KnokdownCount	()
 {
 }
 

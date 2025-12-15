@@ -19,6 +19,8 @@ CPlayerKnockbackState::CPlayerKnockbackState(CPlayerBase& pPlayer)
 	, m_CurrentTiltAngle	()
 
 	, m_StartQuat			( 0.f, 0.f, 0.f, 1.f )
+
+	, m_Effect				()
 {
 }
 
@@ -63,6 +65,9 @@ void CPlayerKnockbackState::Enter()
 	{
 		m_pPlayer.SetHitAttack(m_Velocity, CPlayerBase::HitEvent::WithDown);
 	}
+
+	m_Effect = AssetManager::Effect()->Play("Knockback", m_pPlayer.GetPosition());
+	AssetManager::Effect()->SetRotation(m_Effect, m_Velocity);
 }
 
 //--- 状態の終了時に呼び出す ---.
@@ -73,6 +78,10 @@ void CPlayerKnockbackState::Exit()
 //--- この状態の間に呼び出す ---.
 void CPlayerKnockbackState::Update()
 {
+	AssetManager::Effect()->SetScale(m_Effect, D3DXVECTOR3(0.05f, 0.01f, 0.05f));
+	AssetManager::Effect()->SetSpeed(m_Effect, 2.f);
+	AssetManager::Effect()->SetLocation(m_Effect, m_pPlayer.GetPosition());
+
 	//経過時間を取得.
 	float t = CTimeManager::GetTotalTime();
 
