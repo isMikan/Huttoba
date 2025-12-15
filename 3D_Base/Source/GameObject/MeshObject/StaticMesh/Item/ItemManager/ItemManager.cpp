@@ -16,6 +16,7 @@ ItemManager::ItemManager(std::unique_ptr<CGroundManager>& GroundManager)
 	, m_pSpawnItem			{ std::make_unique<SelectSpawnItem>() }
 	, m_pSpawnItemPosition	{ std::make_unique<SpawnItemPosition>(GroundManager) }
 	, m_SpawnLimit			{ }
+	, m_ErrorCount			{ }
 {
 	Create();
 	Init();
@@ -70,17 +71,18 @@ void ItemManager::Update()
 	{
 		//アイテムの作成
 		CreateItem();
-
+		m_ErrorCount++;
 		//もし無限ループが起きた時の対策
-		static int error = 0;
-		error++;
-		if (error >= 100)
+		if (m_ErrorCount >= 100)
 		{
 			m_pItems.resize(m_SpawnLimit);
-			error = 0;
+			m_ErrorCount = 0;
 			break;
 		}
 	}
+
+	//無限ループではない場合初期化しとく
+	m_ErrorCount = 0;
 
 	for (auto& item : m_pItems)
 	{
