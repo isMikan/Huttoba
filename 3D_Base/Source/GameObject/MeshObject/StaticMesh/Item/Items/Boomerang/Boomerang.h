@@ -6,7 +6,7 @@ class Boomerang
 {
 public:
 
-    enum class Efect
+    enum class Effect
     {
         ChargeMax = 0,
         HitPlayer,
@@ -86,6 +86,6 @@ private:
     bool        m_IsCharge;
     bool        m_IsMaxCharge;
 
-    std::unordered_map<Efect, ::EsHandle> m_hEffect;
+    std::unordered_map<Effect, ::EsHandle> m_hEffect;
 
 };
