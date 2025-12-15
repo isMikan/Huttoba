@@ -77,7 +77,7 @@ void ItemManager::Update()
 		{
 			m_pItems.resize(m_SpawnLimit);
 			m_ErrorCount = 0;
-			break;
+			_ASSERT_EXPR(false, _T("無限ループ発生"));
 		}
 	}
 
@@ -94,8 +94,6 @@ void ItemManager::Update()
 			item->Fall();
 		}
 	}
-
-
 	//不必要なアイテム削除
 	DestroyItem();
 }
