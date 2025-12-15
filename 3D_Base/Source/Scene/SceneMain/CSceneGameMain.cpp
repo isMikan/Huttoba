@@ -139,7 +139,7 @@ HRESULT CSceneGameMain::LoadData()
 	m_pItemManager->LoadData();
 
 	//画像データの読み込み
-	m_pSpriteReadyGo->AttachSprite(AssetManager::Sprite(Sprite2DList::ReadyGo));
+	m_pSpriteReadyGo->AttachSprite(AssetManager::Sprite(Sprite2DList::Font_ReadyGo));
 
 	m_pSpriteReadyGo->SetPosition(D3DXVECTOR3(WND_W / 2 - 693 / 2, WND_H / 2 - 217 / 2, 0));
 
@@ -158,7 +158,7 @@ void CSceneGameMain::Destroy()
 void CSceneGameMain::Update()
 {
 	//BGMのループ再生
-	//AssetManager::Sound()->PlayLoop(enSoundList::BGM_SceneMain);
+	AssetManager::Sound()->PlayLoop(enSoundList::BGM_SceneMain);
 	if (CInputManager::IsDown(Action::Pause, 0))
 	{
 		if (!m_IsPause)
@@ -387,6 +387,7 @@ void CSceneGameMain::Draw()
 		m_pSpriteReadyGo->Draw();
 		break;
 	case CSceneGameMain::GameState::Finish:
+		m_pSpriteReadyGo->SetPatternNo(0, 2);
 		m_pSpriteReadyGo->Draw();
 		break;
 	default:
