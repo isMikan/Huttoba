@@ -42,6 +42,8 @@ const int WND_W = 1280;	//ウィンドウの幅.
 const int WND_H = 720;	//ウィンドウの高さ.
 const int FPS = 60;		//フレームレート.
 
+constexpr float TIME_LIMIT = 60.f;	//ゲームの制限時間
+
 //最大数
 static constexpr int Enemy_Max = 3;
 static constexpr int Explosion_Max = 20;
@@ -194,6 +196,7 @@ enum class enSoundList
 	SE_BoomerangThrow,
 	SE_SmashBatHit,
 	SE_DestroyItem,
+	SE_EndSceneMain,
 
 	//音が増えたら「ここ」に追加
 	max,

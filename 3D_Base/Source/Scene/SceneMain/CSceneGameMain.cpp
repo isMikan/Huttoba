@@ -16,7 +16,7 @@ CSceneGameMain::CSceneGameMain( HWND hWnd)
 	, m_StateTimer		( 0.0f )
 
 	, m_ReadyDuration	( 1.0f )
-	, m_FinishDuration	( 2.0f )
+	, m_FinishDuration	( 2.5f )
 
 	, m_pDbgText		( nullptr )
 
@@ -251,11 +251,13 @@ void CSceneGameMain::Update()
 			m_StateTimer = 0;
 		}
 
-		if (m_StateTimer >= 60.0f)
+		if (m_StateTimer >= TIME_LIMIT)
 		{
 			//フィニッシュへ
 			m_GameState = GameState::Finish;
 			m_StateTimer = 0;
+			AssetManager::Sound()->PlaySE(enSoundList::SE_EndSceneMain);
+
 		}
 		break;
 	case CSceneGameMain::GameState::Finish:

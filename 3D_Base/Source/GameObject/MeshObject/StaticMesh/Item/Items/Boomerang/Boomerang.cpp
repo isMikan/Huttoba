@@ -203,6 +203,7 @@ void Boomerang::OnCollision(CollisionBase* other)
 			if (m_State == State::Use && player != m_pPlayer && m_IsUseThrow)
 			{
 				Smash(*player);
+				AssetManager::Sound()->PlayLoop(enSoundList::SE_HitHaetataki);
 			}
 			if (m_State == IItemObserver::State::Throw && m_pPlayer != player)
 			{
@@ -278,8 +279,9 @@ void Boomerang::UseMove()
 			m_pPickUpCollider->SetActive(false);
 		}
 		
-		//使用フラグをオンに
+		
 		if(!m_IsUseThrow){ AssetManager::Sound()->PlaySE(enSoundList::SE_BoomerangThrow); }
+		//使用フラグをオンに
 		m_IsUseThrow = true;
 
 		//チャージのSE消す

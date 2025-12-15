@@ -360,6 +360,7 @@ void Haetataki::OnCollision(CollisionBase* other)
 			if (m_pPlayer != player && m_State == IItemObserver::State::Use)
 			{
 				Smash(*player);
+				AssetManager::Sound()->PlaySE(enSoundList::SE_HitHaetataki);
 			}
 			if (m_State == IItemObserver::State::Throw && m_pPlayer != player)
 			{
