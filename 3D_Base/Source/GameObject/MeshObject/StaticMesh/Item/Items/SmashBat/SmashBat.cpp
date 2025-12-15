@@ -298,6 +298,13 @@ void SmashBat::Throw()
 	m_Velocity *= 0.98f;
 
 	m_vPosition += m_Velocity * static_cast<float>(CTimeManager::GetDeltaTime());
+
+	//エフェクト終了
+	if (AssetManager::Effect()->IsPlaying(m_hEffect[Efect::Have]))
+	{
+		AssetManager::Effect()->Stop(m_hEffect[Efect::Have]);
+	}
+
 }
 
 //--------------------------------------------------------------------------------------------------------------

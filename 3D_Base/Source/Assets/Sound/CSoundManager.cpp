@@ -16,7 +16,10 @@ HRESULT CSoundManager::Create()
 {
 	//サウンドの列挙に対応するパスと名前を定義
     m_SoundInfoList.push_back({ enSoundList::BGM_Bonus,         _T("Data\\Sound\\BGM\\BonusGameHouse.mp3"), _T("BGM_Bonus") });
+    m_SoundInfoList.push_back({ enSoundList::BGM_SceneTitle,    _T("Data\\Sound\\BGM\\SceneTitle.mp3"),     _T("BGM_SceneTitle") });
+    m_SoundInfoList.push_back({ enSoundList::BGM_SceneStanby,   _T("Data\\Sound\\BGM\\SceneStanby.mp3"),    _T("BGM_SceneStanby") });
     m_SoundInfoList.push_back({ enSoundList::BGM_SceneMain,     _T("Data\\Sound\\BGM\\SceneMain.mp3"),      _T("BGM_SceneMain") });
+    m_SoundInfoList.push_back({ enSoundList::BGM_SceneResult,   _T("Data\\Sound\\BGM\\SceneResult.mp3"),    _T("BGM_SceneResult") });
     m_SoundInfoList.push_back({ enSoundList::SE_Jump,           _T("Data\\Sound\\SE\\Jump.wav"),            _T("SE_Jump") });
     m_SoundInfoList.push_back({ enSoundList::SE_Clear,          _T("Data\\Sound\\SE\\Clear.wav"),           _T("SE_Clear") });
     m_SoundInfoList.push_back({ enSoundList::SE_Pickup,         _T("Data\\Sound\\SE\\Pickup.mp3"),          _T("SE_Pickup") });

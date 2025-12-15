@@ -36,6 +36,8 @@ CSceneStandby::CSceneStandby()
 
 CSceneStandby::~CSceneStandby()
 {
+	AssetManager::Sound()->Stop(enSoundList::BGM_SceneStanby);
+
 }
 
 HRESULT CSceneStandby::Create()
@@ -104,6 +106,8 @@ HRESULT CSceneStandby::LoadData()
 void CSceneStandby::Update()
 {
 	MoveSelector();
+
+	AssetManager::Sound()->PlayLoop(enSoundList::BGM_SceneStanby);
 
 	if (CInputManager::IsDown(Action::Decide, 0) && CSceneData::GetSlot(0))
 	{

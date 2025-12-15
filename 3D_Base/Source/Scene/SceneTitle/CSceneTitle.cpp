@@ -27,7 +27,7 @@ CSceneTitle::CSceneTitle(HWND hWnd)
 									//スティックの最低値が変化する.
 
 {
-	std::cout << "通った" << std::endl;
+	//std::cout << "通った" << std::endl;
 	
 	m_pDx11 = CDirectX11::GetInstance();
 
@@ -41,6 +41,7 @@ CSceneTitle::CSceneTitle(HWND hWnd)
 
 CSceneTitle::~CSceneTitle()
 {
+	AssetManager::Sound()->Stop(enSoundList::BGM_SceneTitle);
 }
 
 HRESULT CSceneTitle::Create()
@@ -109,6 +110,9 @@ void CSceneTitle::Update()
 {
 	//経過時間を取得.
 	float t = CTimeManager::GetTotalTime();
+
+	//BGMのループ再生
+	AssetManager::Sound()->PlayLoop(enSoundList::BGM_SceneTitle);
 
 	//地面に接地しているか
 	for (auto& player : m_pPlayerManager->GetPlayer())

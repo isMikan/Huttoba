@@ -173,6 +173,10 @@ enum class enSoundList
 {
 	BGM_Bonus,
 	BGM_SceneMain,
+	BGM_SceneTitle,
+	BGM_SceneStanby,
+	BGM_SceneResult,
+
 	SE_Jump,
 	SE_Clear,
 	SE_Pickup,

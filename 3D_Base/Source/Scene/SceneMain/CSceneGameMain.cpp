@@ -59,6 +59,9 @@ CSceneGameMain::~CSceneGameMain()
 
 	//登録している当たり判定をすべて削除
 	CollisionManager::GetInstance()->Init();
+
+	//BGMのループ再生
+	AssetManager::Sound()->Stop(enSoundList::BGM_SceneMain);
 }
 
 HRESULT CSceneGameMain::Create()
@@ -248,7 +251,7 @@ void CSceneGameMain::Update()
 			m_StateTimer = 0;
 		}
 
-		if (m_StateTimer >= 999.0f)
+		if (m_StateTimer >= 60.0f)
 		{
 			//フィニッシュへ
 			m_GameState = GameState::Finish;
