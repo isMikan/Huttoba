@@ -42,6 +42,8 @@ const int WND_W = 1280;	//ウィンドウの幅.
 const int WND_H = 720;	//ウィンドウの高さ.
 const int FPS = 60;		//フレームレート.
 
+constexpr float TIME_LIMIT = 60.f;	//ゲームの制限時間
+
 //最大数
 static constexpr int Enemy_Max = 3;
 static constexpr int Explosion_Max = 20;
@@ -165,7 +167,6 @@ enum class Sprite2DList
 	UI_Selector,
 	Clock,	
 	TimeNumber,	
-	ReadyGo,
 };
 
 //サウンドリスト列挙型
@@ -173,6 +174,10 @@ enum class enSoundList
 {
 	BGM_Bonus,
 	BGM_SceneMain,
+	BGM_SceneTitle,
+	BGM_SceneStanby,
+	BGM_SceneResult,
+
 	SE_Jump,
 	SE_Clear,
 	SE_Pickup,
@@ -189,7 +194,9 @@ enum class enSoundList
 	SE_BoomerangMaxCharge,
 	SE_BoomerangThrow,
 	SE_SmashBatHit,
+	SE_FunUse,
 	SE_DestroyItem,
+	SE_EndSceneMain,
 
 	//音が増えたら「ここ」に追加
 	max,

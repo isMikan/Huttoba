@@ -16,7 +16,7 @@ CSceneGameMain::CSceneGameMain( HWND hWnd)
 	, m_StateTimer		( 0.0f )
 
 	, m_ReadyDuration	( 1.0f )
-	, m_FinishDuration	( 2.0f )
+	, m_FinishDuration	( 2.5f )
 
 	, m_pDbgText		( nullptr )
 
@@ -59,6 +59,9 @@ CSceneGameMain::~CSceneGameMain()
 
 	//登録している当たり判定をすべて削除
 	CollisionManager::GetInstance()->Init();
+
+	//BGMのループ再生
+	AssetManager::Sound()->Stop(enSoundList::BGM_SceneMain);
 }
 
 HRESULT CSceneGameMain::Create()
@@ -136,7 +139,7 @@ HRESULT CSceneGameMain::LoadData()
 	m_pItemManager->LoadData();
 
 	//画像データの読み込み
-	m_pSpriteReadyGo->AttachSprite(AssetManager::Sprite(Sprite2DList::ReadyGo));
+	m_pSpriteReadyGo->AttachSprite(AssetManager::Sprite(Sprite2DList::Font_ReadyGo));
 
 	m_pSpriteReadyGo->SetPosition(D3DXVECTOR3(WND_W / 2 - 693 / 2, WND_H / 2 - 217 / 2, 0));
 
@@ -248,11 +251,13 @@ void CSceneGameMain::Update()
 			m_StateTimer = 0;
 		}
 
-		if (m_StateTimer >= 999.0f)
+		if (m_StateTimer >= TIME_LIMIT)
 		{
 			//フィニッシュへ
 			m_GameState = GameState::Finish;
 			m_StateTimer = 0;
+			AssetManager::Sound()->PlaySE(enSoundList::SE_EndSceneMain);
+
 		}
 		break;
 	case CSceneGameMain::GameState::Finish:
@@ -382,6 +387,7 @@ void CSceneGameMain::Draw()
 		m_pSpriteReadyGo->Draw();
 		break;
 	case CSceneGameMain::GameState::Finish:
+		m_pSpriteReadyGo->SetPatternNo(0, 2);
 		m_pSpriteReadyGo->Draw();
 		break;
 	default:

@@ -30,10 +30,12 @@ CSceneResult::CSceneResult()
 	Create();
 	LoadData();
 	SetSelectorPos();
+
 }
 
 CSceneResult::~CSceneResult()
 {
+	AssetManager::Sound()->Stop(enSoundList::BGM_SceneResult);
 }
 
 HRESULT CSceneResult::Create()
@@ -123,6 +125,8 @@ void CSceneResult::Update()
 	MoveSelector();
 
 	SelectorControl();
+
+	AssetManager::Sound()->PlayLoop(enSoundList::BGM_SceneResult);
 
 	//’n–Ê‚ÉÚ’n‚µ‚Ä‚¢‚é‚©.
 	for (auto& player : m_pPlayerManager->GetPlayer())

@@ -35,6 +35,7 @@ Boomerang::Boomerang()
 	, m_IsCharge	( false )
 	, m_IsMaxCharge	( false )
 	, m_hEffect()
+	, m_HitPlayer	()
 {
 	Init();
 }
@@ -140,6 +141,7 @@ void Boomerang::Have()
 	if ( m_IsCharge	  )	{ m_IsCharge	= false;}
 	if ( m_IsMaxCharge)	{ m_IsMaxCharge = false;}
 
+	m_HitPlayer.clear();
 	m_AddVelocity = { 0.f,0.f,0.f };
 	HaveMove();
 }
@@ -196,20 +198,27 @@ void Boomerang::ItemState(IItemObserver::State state)
 
 void Boomerang::OnCollision(CollisionBase* other)
 {
-	if (other->GetTag() == CollisionBase::ColliderTag::Player)
+	if (other->GetTag() != CollisionBase::ColliderTag::Player) return;
+
+	CPlayerBase* player = dynamic_cast<CPlayerBase*>(other->GetListener());
+	if (player == nullptr) return;
+
+	bool IsOkHit = m_State == State::Use && player != m_pPlayer && m_IsUseThrow;
+	if (!IsOkHit) return;
+
+	//すでに当たっていないか？
+	auto it = std::find(m_HitPlayer.begin(), m_HitPlayer.end(), player);
+	if (it != m_HitPlayer.end()) return;
+
+	Smash(*player);
+	m_HitPlayer.push_back(player);
+
+	AssetManager::Sound()->PlayLoop(enSoundList::SE_HitHaetataki);
+	if (m_State == IItemObserver::State::Throw && m_pPlayer != player)
 	{
-		if (CPlayerBase* player = dynamic_cast<CPlayerBase*>(other->GetListener()))
-		{
-			if (m_State == State::Use && player != m_pPlayer && m_IsUseThrow)
-			{
-				Smash(*player);
-			}
-			if (m_State == IItemObserver::State::Throw && m_pPlayer != player)
-			{
-				ThrowSmash(*player);
-			}
-		}
+		ThrowSmash(*player);
 	}
+
 }
 
 //--------------------------------------------------------------------------------------------------------------
@@ -252,6 +261,7 @@ void Boomerang::UseMove()
 		if (std::fabs(m_Velocity.x) < COMEBACK_SPEED && std::fabs(m_Velocity.z) < COMEBACK_SPEED)
 		{
 			m_ComeBack = true;
+			m_HitPlayer.clear();
 		}
 
 		//戻ってくるフラグによって動作変更
@@ -278,8 +288,9 @@ void Boomerang::UseMove()
 			m_pPickUpCollider->SetActive(false);
 		}
 		
-		//使用フラグをオンに
+		
 		if(!m_IsUseThrow){ AssetManager::Sound()->PlaySE(enSoundList::SE_BoomerangThrow); }
+		//使用フラグをオンに
 		m_IsUseThrow = true;
 
 		//チャージのSE消す
@@ -367,10 +378,10 @@ void Boomerang::Smash(CPlayerBase& playiers)
 		CPlayerBase::HitEvent::Knockdown);
 
 	//エフェクト追加
-	m_hEffect[Efect::HitPlayer] = AssetManager::Effect()->Play("Explosion", m_vPosition);
+	m_hEffect[Effect::HitPlayer] = AssetManager::Effect()->Play("Explosion", m_vPosition);
 
 	//エフェクトの拡縮設定
-	AssetManager::Effect()->SetScale(m_hEffect[Efect::HitPlayer], D3DXVECTOR3(0.6f, 0.6f, 0.6f));
+	AssetManager::Effect()->SetScale(m_hEffect[Effect::HitPlayer], D3DXVECTOR3(0.6f, 0.6f, 0.6f));
 
 }
 
@@ -392,14 +403,14 @@ void Boomerang::PowerCharge()
 void Boomerang::FullCharge()
 {
 	//エフェクト追加
-	if (!AssetManager::Effect()->IsPlaying(m_hEffect[Efect::ChargeMax]))
+	if (!AssetManager::Effect()->IsPlaying(m_hEffect[Effect::ChargeMax]))
 	{
-		m_hEffect[Efect::ChargeMax] = AssetManager::Effect()->Play("BoomerangMaxCharge", m_vPosition);
+		m_hEffect[Effect::ChargeMax] = AssetManager::Effect()->Play("BoomerangMaxCharge", m_vPosition);
 	}
 
 	//エフェクトの拡縮設定
-	AssetManager::Effect()->SetScale(m_hEffect[Efect::ChargeMax], D3DXVECTOR3(0.5f, 0.5f, 0.5f));
-	AssetManager::Effect()->SetLocation(m_hEffect[Efect::ChargeMax], m_pPlayer->GetPosition());
+	AssetManager::Effect()->SetScale(m_hEffect[Effect::ChargeMax], D3DXVECTOR3(0.5f, 0.5f, 0.5f));
+	AssetManager::Effect()->SetLocation(m_hEffect[Effect::ChargeMax], m_pPlayer->GetPosition());
 	AssetManager::Sound()->Stop(enSoundList::SE_BoomerangCharge);
 
 

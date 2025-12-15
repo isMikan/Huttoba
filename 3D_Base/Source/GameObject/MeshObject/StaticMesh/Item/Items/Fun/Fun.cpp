@@ -21,12 +21,13 @@ Fun::Fun()
 	, m_pUseCollider_2()
 {
 	Init();
-	
+
 }
 
 Fun::~Fun()
 {
 	AssetManager::Effect()->Stop(hEffect);
+	AssetManager::Sound()->Stop(enSoundList::SE_FunUse);
 
 
 	CollisionManager::GetInstance()->RemoveCollider(m_pPickUpCollider.get());
@@ -124,6 +125,8 @@ void Fun::OnGround()
 void Fun::Have()
 {
 	HaveMove();
+
+	AssetManager::Sound()->Stop(enSoundList::SE_FunUse);
 }
 
 void Fun::Use()
@@ -207,6 +210,8 @@ void Fun::UseMove()
 	m_UseTime -= CTimeManager::GetDeltaTime();
 	//ƒQ[ƒW‚Ì‚½‚ß‚É’Ç‰Á.	§ìŽÒ	[b”c]
 	m_UsageLimit.remaining = m_UseTime;
+	AssetManager::Sound()->PlayLoop(enSoundList::SE_FunUse);
+
 
 	if (m_UseTime < 0)
 	{

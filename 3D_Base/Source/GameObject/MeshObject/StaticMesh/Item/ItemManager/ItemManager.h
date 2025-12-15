@@ -77,4 +77,6 @@ private:
 	//アイテム生成関連クラス
 	std::unique_ptr<SelectSpawnItem>	    m_pSpawnItem;
 	std::unique_ptr<SpawnItemPosition>		m_pSpawnItemPosition;
+
+	int m_ErrorCount;
 };
