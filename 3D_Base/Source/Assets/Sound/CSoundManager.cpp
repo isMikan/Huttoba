@@ -37,7 +37,8 @@ HRESULT CSoundManager::Create()
     m_SoundInfoList.push_back({ enSoundList::SE_BoomerangThrow,     _T("Data\\Sound\\SE\\BoomerangThrow.mp3"),      _T("SE_BoomerangThrow") });
     m_SoundInfoList.push_back({ enSoundList::SE_DestroyItem,        _T("Data\\Sound\\SE\\DestroyItem.mp3"),         _T("SE_DestroyItem") });
     m_SoundInfoList.push_back({ enSoundList::SE_SmashBatHit,        _T("Data\\Sound\\SE\\SmashBatHit.mp3"),         _T("SE_SmashBatHit") });
-    m_SoundInfoList.push_back({ enSoundList::SE_EndSceneMain,       _T("Data\\Sound\\SE\\EndSceneMain.mp3"),         _T("SE_EndSceneMain") });
+    m_SoundInfoList.push_back({ enSoundList::SE_FunUse,             _T("Data\\Sound\\SE\\FunUse.mp3"),              _T("SE_FunUse") });
+    m_SoundInfoList.push_back({ enSoundList::SE_EndSceneMain,       _T("Data\\Sound\\SE\\EndSceneMain.mp3"),        _T("SE_EndSceneMain") });
 
 	//サウンドのインスタンスを格納するための配列を確保
     for (auto& sound : m_SoundInfoList)
