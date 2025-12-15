@@ -109,11 +109,25 @@ void CSceneStandby::Update()
 
 	AssetManager::Sound()->PlayLoop(enSoundList::BGM_SceneStanby);
 
-	if (CInputManager::IsDown(Action::Decide, 0) && CSceneData::GetSlot(0))
+	if (CInputManager::IsDown(Action::Decide, 0))
 	{
+		switch (m_SelectorNumber)
+		{
+		case 0:
+			if (CSceneData::GetSlot(0))
+			{
+				m_Action[m_SelectorNumber]();
+			}
+			break;
+		case 1:
+			m_Action[m_SelectorNumber]();
+			break;
+		default:
+			break;
+		}
+
 		//SetNextScene(GameMain);
 		//選択中の番号で処理される関数が変わる.
-		m_Action[m_SelectorNumber]();
 	}
 
 	//コントローラーで準備状態切り替え.
