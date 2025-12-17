@@ -13,7 +13,6 @@ CSceneTitle::CSceneTitle(HWND hWnd)
 	, m_pSpriteTitleImg	()
 	, m_pSpriteSelector	()
 
-	//, m_pSpriteTitleFont()
 	, m_pSpriteStartFont()
 	, m_pSpriteEndFont	()
 
@@ -26,9 +25,7 @@ CSceneTitle::CSceneTitle(HWND hWnd)
 	//, m_SthikThreshold	(0.5f)		//ここの値を変えると選択肢を動かす
 									//スティックの最低値が変化する.
 
-{
-	//std::cout << "通った" << std::endl;
-	
+{	
 	m_pDx11 = CDirectX11::GetInstance();
 
 	CSceneData::PlayerAllLive();

@@ -2,7 +2,7 @@
 
 CScene::CScene()
 	: m_NextScene	(Title)
-	, ChangeScene	( true )
+	, ChangeScene	( false )
 {
 }
 

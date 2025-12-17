@@ -214,13 +214,13 @@ float CPlayerAI_TypeB::CalculateDangerRate(D3DXVECTOR3 pos)
 	//地面の半径の全長を計算
 	float groundRadius = m_pGroundManager->GetGroundRadius() * m_pGroundManager->GetGroundRadius();
 
-	//中心位置からプレイヤーの位置がどれくらい離れているかを計算
-	D3DXVECTOR3 diff = m_vPosition - groundCenterPos;
+	//中心位置から引数の位置がどれくらい離れているかを計算
+	D3DXVECTOR3 diff = pos - groundCenterPos;
 
-	//中心位置からプレイヤーの離れているかの全長を出す
+	//中心位置からどれくらい離れているかの全長を出す
 	float diffSq = diff.x * diff.x + diff.z * diff.z;
 
-	//プレイヤーの位置が地面の半径70%以上なら
+	//距離が地面の半径70%以上なら
 	if (diffSq > groundRadius * (0.7f * 0.7f))
 	{
 		//点数減少
