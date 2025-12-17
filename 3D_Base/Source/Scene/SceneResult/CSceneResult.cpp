@@ -83,7 +83,7 @@ HRESULT CSceneResult::LoadData()
 	m_pSpriteResultFont->AttachSprite(AssetManager::Sprite(Sprite2DList::Font_Result));
 
 	//生き残ったプレイヤーが複数いたら
-	if (CSceneData::GetPlayerLivingNum() > 1)
+	if (CSceneData::GetPlayerLivingNum() != 1)
 	{
 		//DRAWの表示
 		m_pSpriteResultFont->SetPatternNo(0, 1);
