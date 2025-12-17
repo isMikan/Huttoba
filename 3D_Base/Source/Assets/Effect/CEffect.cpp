@@ -125,6 +125,8 @@ HRESULT CEffect::LoadData()
 
 	m_pEffect["mushroomarea"]		= ::EsEffect::Create(m_pManager, u"Data\\Effekseer\\mushroomarea.efk");
 
+	m_pEffect["Knockback"]		= ::EsEffect::Create(m_pManager, u"Data\\Effekseer\\Knockback.efk");
+
 	return S_OK;
 }
 

@@ -126,6 +126,8 @@ void SmashBat::Init()
 	D3DXVECTOR3 UseOffset = { OFFSET_USE_COLLISION_X,OFFSET_USE_COLLISION_Y,OFFSET_USE_COLLISION_Z };
 
 	m_pUseCollider->SetLocalOffSetToCapsule(UseOffset, UseOffset);
+
+	m_ObjectColor[0].diffuse = D3DXVECTOR4(0.7f, 0.5f, 0.f,1.f);
 }
 
 //--------------------------------------------------------------------------------------------------------------

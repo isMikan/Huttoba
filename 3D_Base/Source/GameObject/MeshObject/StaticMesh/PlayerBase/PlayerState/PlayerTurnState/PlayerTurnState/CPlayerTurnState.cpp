@@ -5,12 +5,16 @@
 #include "PlayerBase/PlayerState/PlayerTurnState/PlayerTurnIdleState/CPlayerTurnIdleState.h"
 
 CPlayerTurnState::CPlayerTurnState(CPlayerBase& pPlayer, float x, float z)
-	: CPlayerState		( pPlayer )
+	: CPlayerState			( pPlayer )
 
-	, m_InputDir		( x, 0.f, z )
+	, m_InputDir			( x, 0.f, z )
 
-	, m_TurnSpeed		( D3DXToRadian( 5.f ) )
-	, m_TurnDir			()
+	, m_TurnSpeed			( D3DXToRadian( 5.f ) )
+	, m_TurnSpeedMax		( D3DXToRadian( 17.f ) )
+	, m_TurnSpeedMin		( D3DXToRadian( 5.f ) )
+	, m_TurnSpeedMaxRange	( D3DXToRadian( 25.f ) )
+	, m_TurnSpeedMinRange	( D3DXToRadian( 20.f ) )
+	, m_TurnDir				()
 {
 }
 
@@ -100,6 +104,11 @@ bool CPlayerTurnState::IsSmallTurn(D3DXVECTOR3 forward)
 	//Šp“x·‚ÌŠp“x‚ğŒvZ.
 	float angle = acosf(dot);
 
+	//–Ú•W‚Ü‚Å‚Ì‰ñ“]Šp“x‚ª‘å‚«‚¢ê‡AÅ‘å‘¬“x.
+	if (angle > m_TurnSpeedMaxRange) m_TurnSpeed = m_TurnSpeedMax;
+	//–Ú•W‚Ü‚Å‚Ì‰ñ“]Šp“x‚ª¬‚³‚¢ê‡AÅ‘å‘¬“x.
+	else if (angle > m_TurnSpeedMinRange) m_TurnSpeed = m_TurnSpeedMin;
+
 	//‰ñ“]—Ê‚æ‚èŠp“x‚ª¬‚³‚¢.
-	return angle < m_TurnSpeed;
+	return angle < m_TurnSpeedMin;
 }

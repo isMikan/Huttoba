@@ -6,9 +6,9 @@ CGround::CGround()
 	, m_Velocity				()
 
 	, m_ChabgeColorSpeed		( 10.f )
-	, m_ChabgeColorInterval		( 8.f )
+	, m_ChabgeColorInterval		( 10.f )
 	, m_ShakeSpeed				( 50.f )
-	, m_ShakeWidth				( 0.05f )
+	, m_ShakeWidth				( 5.f )
 
 	, m_ChangeColorTriggerTime	()
 	, m_ShakeTriggerTime		()
@@ -92,15 +92,15 @@ void CGround::ChangeColorOfGround()
 
 	D3DXVECTOR4	groundColor = m_ObjectColor[0].diffuse;
 
-	//色の数値.
-	float colorChange = cosf(progress * D3DX_PI * m_ChabgeColorSpeed) * m_ChabgeColorInterval;
-
 	//デルタタイムを取得.
 	float dt = CTimeManager::GetDeltaTime();
 
+	//色の数値.
+	float colorChange = cosf(progress * D3DX_PI * m_ChabgeColorSpeed) * m_ChabgeColorInterval * dt;
+
 	//点滅.
-	groundColor.x += colorChange * dt;
-	groundColor.y += colorChange * dt;
+	groundColor.x += colorChange;
+	groundColor.y += colorChange;
 	groundColor.z = 0.f;
 
 	m_ObjectColor[0].diffuse = groundColor;
@@ -112,13 +112,15 @@ void CGround::ShakeGround()
 	//経過時間を取得.
 	float t = CTimeManager::GetTotalTime();
 
+	//デルタタイムを取得.
+	float dt = CTimeManager::GetDeltaTime();
+
 	//揺れている時間の現在の割合.
-	float progress = 
-		(t - m_ShakeTriggerTime) /5.f;
+	float progress = (t - m_ShakeTriggerTime) / 5.f;
 	progress = std::clamp(progress, 0.f, 1.f);
 
 	//左右に揺れる.
-	m_vPosition.x += cosf(progress * D3DX_PI * m_ShakeSpeed) * m_ShakeWidth;
+	m_vPosition.x += cosf(progress * D3DX_PI * m_ShakeSpeed) * m_ShakeWidth * dt;
 }
 
 //--- 地面が落ちる ---.

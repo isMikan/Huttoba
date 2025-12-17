@@ -3,12 +3,6 @@
 #include "PlayerBase/CPlayerBase.h"
 #include "PlayerBase/PlayerAI/CPlayerAI.h"
 
-#include "PlayerBase/PlayerState/PlayerMoveState/PlayerMoveIdelState/CPlayerMoveIdleState.h"
-
-#include "PlayerBase/PlayerState/PlayerActionState/PlayerPushedState/CPlayerPushedState.h"
-#include "PlayerBase/PlayerState/PlayerActionState/PlayerFallingState/CPlayerFallingState.h"
-#include "PlayerBase/PlayerState/PlayerActionState/PlayerItemAttackState/CPlayerItemAttackState.h"
-
 CPlayerMoveState::CPlayerMoveState(CPlayerBase& pPlayer, float x, float z)
 	: CPlayerState			( pPlayer )
 
@@ -18,7 +12,7 @@ CPlayerMoveState::CPlayerMoveState(CPlayerBase& pPlayer, float x, float z)
 	
 	, m_CurrentSpeed		()
 	, m_MoveSpeed			( 8.f )
-	, m_RotatingMoveSpeed	( 5.f )
+	, m_RotatingMoveSpeed	( 4.f )
 	, m_HitingMoveSpeed		( 3.f )
 	, m_AIMoveSpeed			( 6.f )
 {
@@ -133,12 +127,15 @@ float CPlayerMoveState::GetMoveSpeed()
 	{
 		return m_HitingMoveSpeed;
 	}
-	//âÒì]ÇµÇƒÇ¢ÇÈèÍçá.
-	if (m_pPlayer.IsTurning())
+	//çUåÇÇµÇƒÇ¢ÇÈèÍçá.
+	if (m_pPlayer.IsAnyActionState<
+		CPlayerHandAttackState,
+		CPlayerItemAttackState>())
 	{
 		return m_RotatingMoveSpeed;
 	}
 
+	//AIÇÃèÍçá.
 	if (dynamic_cast<CPlayerAI*>(&m_pPlayer))
 	{
 		return m_AIMoveSpeed;

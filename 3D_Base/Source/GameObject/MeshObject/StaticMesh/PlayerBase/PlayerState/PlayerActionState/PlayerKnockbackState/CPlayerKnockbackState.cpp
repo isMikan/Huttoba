@@ -19,6 +19,8 @@ CPlayerKnockbackState::CPlayerKnockbackState(CPlayerBase& pPlayer)
 	, m_CurrentTiltAngle	()
 
 	, m_StartQuat			( 0.f, 0.f, 0.f, 1.f )
+
+	, m_Effect				()
 {
 }
 
@@ -63,6 +65,10 @@ void CPlayerKnockbackState::Enter()
 	{
 		m_pPlayer.SetHitAttack(m_Velocity, CPlayerBase::HitEvent::WithDown);
 	}
+
+	m_Effect = AssetManager::Effect()->Play("Knockback", m_pPlayer.GetPosition());
+	AssetManager::Effect()->SetRotation(m_Effect, D3DXVECTOR3(0.f, 0.f, D3DXToRadian(90.f)));
+	AssetManager::Effect()->SetScale(m_Effect, D3DXVECTOR3(0.05f, 0.01f, 0.05f));
 }
 
 //--- 状態の終了時に呼び出す ---.
@@ -73,11 +79,18 @@ void CPlayerKnockbackState::Exit()
 //--- この状態の間に呼び出す ---.
 void CPlayerKnockbackState::Update()
 {
-	//経過時間を取得.
-	float t = CTimeManager::GetTotalTime();
+	AssetManager::Effect()->SetScale(m_Effect, D3DXVECTOR3(0.05f, 0.01f, 0.05f));
+	AssetManager::Effect()->SetSpeed(m_Effect, 2.f);
 
 	//プレイヤーの位置を取得.
 	D3DXVECTOR3 playerPos = m_pPlayer.GetPosition();
+
+	D3DXVECTOR3 pos = playerPos;
+	pos.y -= 1.5f;
+	AssetManager::Effect()->SetLocation(m_Effect, pos);
+
+	//経過時間を取得.
+	float t = CTimeManager::GetTotalTime();
 
 	//現在の経過時間と開始時間の差が終了時間を上回ったら.
 	if (t - m_StartTime > m_EndTime)
