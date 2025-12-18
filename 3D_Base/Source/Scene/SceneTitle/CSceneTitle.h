@@ -40,9 +40,6 @@ private:
 
 	//地面マネージャークラス.
 	std::unique_ptr<CGroundManager> 	m_pGroundManager;
-
-	//空クラス.
-	std::unique_ptr<CSky> 		m_pSky;
 	
 	//タイトル
 	std::unique_ptr<CUIObject>	m_pSpriteTitleImg;	

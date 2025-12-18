@@ -197,6 +197,7 @@ void CPlayerBase::CreateCollider()
 			this
 		);
 
+
 	////新しい CollisionDataFactory を使ったコリジョンデータの生成と登録.
 	//std::shared_ptr<CStaticMesh> hand = AssetManager::Mesh(StaticMeshList::BCapsule);
 

@@ -210,7 +210,7 @@ void Mushroom::UseMove()
 	{
 		m_timer += CTimeManager::GetDeltaTime();
 		
-		float scale = 1.0f + fabsf(sinf(m_timer)) * 0.2f;
+		float scale = 1.5f + fabsf(sinf(m_timer)) * 0.2f;
 
 		SetScale(scale);
 

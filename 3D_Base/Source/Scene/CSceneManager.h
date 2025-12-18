@@ -28,5 +28,10 @@ private:
 private:
 	std::unique_ptr<CScene>		m_pScene;
 
+	CDirectX11* m_pDx11;
+
 	HWND	m_hWnd;
+
+	//‹óƒNƒ‰ƒX.
+	std::unique_ptr<CSky> 		m_pSky;
 };

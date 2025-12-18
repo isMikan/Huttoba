@@ -1,7 +1,7 @@
 #include "CPlayerHead.h"
 
 CPlayerHead::CPlayerHead()
-	: m_OffsetPos		( 0.f, 1.3f, 0.f )
+	: m_OffsetPos		( 0.f, 1.5f, 0.f )
 {
 	//サイズを指定する.
 	m_ObjectColor.resize(3);

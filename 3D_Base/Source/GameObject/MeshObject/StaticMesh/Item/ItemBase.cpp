@@ -18,6 +18,7 @@ ItemBase::ItemBase()
 	, m_IsFall		 { false }
 	, m_ItemFallCount{}
 {
+	m_vScale = D3DXVECTOR3(1.5f, 1.5f, 1.5f);
 }
 
 ItemBase::~ItemBase()

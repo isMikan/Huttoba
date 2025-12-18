@@ -339,10 +339,10 @@ void CPlayerManager::Create()
 		//“ª‚ÌF‚ðÝ’è.
 		m_pPlayers[pNo]->GetPlayerHead().SetObjectColor(1, CharacterColorSettings(pNo));
 
-		m_pPlayers[pNo]->SetScale(1.3f);
-		m_pPlayers[pNo]->GetPlayerHead().SetScale(1.3f);
-		m_pPlayers[pNo]->GetPlayerRightHand().SetScale(1.3f);
-		m_pPlayers[pNo]->GetPlayerLeftHand().SetScale(1.3f);
+		m_pPlayers[pNo]->SetScale(1.5f);
+		m_pPlayers[pNo]->GetPlayerHead().SetScale(1.5f);
+		m_pPlayers[pNo]->GetPlayerRightHand().SetScale(1.5f);
+		m_pPlayers[pNo]->GetPlayerLeftHand().SetScale(1.5f);
 	}
 }
 

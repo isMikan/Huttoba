@@ -2,8 +2,14 @@
 
 CSceneManager::CSceneManager(HWND hWnd)
 	: m_pScene			( nullptr )
+
+	, m_pDx11			()
 	, m_hWnd			( hWnd )
+	 
+	, m_pSky			()
 {
+	m_pDx11 = CDirectX11::GetInstance();
+
 	Create();
 }
 
@@ -14,6 +20,9 @@ CSceneManager::~CSceneManager()
 HRESULT CSceneManager::Create()
 {
 	m_pScene = std::make_unique<CSceneTitle>(m_hWnd);
+
+	//空クラスのインスタンス作成
+	m_pSky = std::make_unique<CSky>();
 
 	//衝突形状実装
 	CollisionManager::GetInstance()->RegisterStrategy();
@@ -46,6 +55,11 @@ void CSceneManager::Update()
 
 void CSceneManager::Draw()
 {
+	m_pDx11->SetDepth(false);
+	//空の描画.
+	m_pSky->Draw();
+	m_pDx11->SetDepth(true);
+
 	m_pScene->Draw();
 }
 
