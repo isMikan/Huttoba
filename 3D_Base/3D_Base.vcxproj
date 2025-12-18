@@ -295,6 +295,7 @@
     <ClCompile Include="Source\GameObject\UIObject\GaugeBase\GaugeFrame\CGaugeFrame.cpp" />
     <ClCompile Include="Source\GameObject\UIObject\GaugeBase\GaugeManager\CGaugeManager.cpp" />
     <ClCompile Include="Source\GameObject\UIObject\GaugeBase\TimerGauge\CTimerGauge.cpp" />
+    <ClCompile Include="Source\GameObject\UIObject\Sky\CSky.cpp" />
     <ClCompile Include="Source\Input\CInput.cpp" />
     <ClCompile Include="Source\Input\CInputManager.cpp" />
     <ClCompile Include="Source\Input\XInput\CXInput.cpp" />
@@ -422,6 +423,7 @@
     <ClInclude Include="Source\GameObject\UIObject\GaugeBase\GaugeFrame\CGaugeFrame.h" />
     <ClInclude Include="Source\GameObject\UIObject\GaugeBase\GaugeManager\CGaugeManager.h" />
     <ClInclude Include="Source\GameObject\UIObject\GaugeBase\TimerGauge\CTimerGauge.h" />
+    <ClInclude Include="Source\GameObject\UIObject\Sky\CSky.h" />
     <ClInclude Include="Source\Input\CInput.h" />
     <ClInclude Include="Source\Input\CInputManager.h" />
     <ClInclude Include="Source\Input\XInput\CXInput.h" />

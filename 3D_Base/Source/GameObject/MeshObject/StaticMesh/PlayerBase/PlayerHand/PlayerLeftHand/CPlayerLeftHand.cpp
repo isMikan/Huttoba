@@ -2,7 +2,7 @@
 
 CPlayerLeftHand::CPlayerLeftHand()
 {
-	m_OffsetPos = D3DXVECTOR3( -0.4f, 0.55f, 0.f );
+	m_OffsetPos = D3DXVECTOR3( -0.5f, 0.8f, 0.f );
 }
 
 CPlayerLeftHand::~CPlayerLeftHand()

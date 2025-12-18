@@ -58,6 +58,7 @@ HRESULT SpriteManager::CreateSprite2D()
 	//Šesprite2D‚Ìî•ñ‚ğ“o˜^(‚±‚±‚Ésprite2D“o˜^)
 //«-----------------------------------------------------------------------------------------------------------------------------«
 	RegisterSprite2D(Sprite2DList::Fade,			_T("Data\\Texture\\fade.png"),				{ WND_W,WND_H,WND_W,WND_H,WND_W,WND_H });
+	RegisterSprite2D(Sprite2DList::Sky,				_T("Data\\Texture\\sky.png"),				{ WND_W,WND_H,WND_W,WND_H,WND_W,WND_H });
 	RegisterSprite2D(Sprite2DList::GaugeFrame,		_T("Data\\Texture\\gauge_frame.png"),		{ 160.f, 24.f, 160.f, 24.f, 160.f, 24.f });
 	RegisterSprite2D(Sprite2DList::Gauge,			_T("Data\\Texture\\gauge.png"),				{ 160.f, 24.f, 160.f, 24.f, 160.f, 24.f });
 	RegisterSprite2D(Sprite2DList::Font_Title,		_T("Data\\Texture\\Font_Title.png"),		{ 695,400,695,400,695,400 });
