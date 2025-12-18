@@ -333,7 +333,6 @@ void CSceneGameMain::Draw()
 	//‰eƒ}ƒl[ƒWƒƒ[‚Ì•`‰æ.
 	m_pShadowManager->Draw(m_pDx11, view, proj);
 
-	m_pDrawTimer->Draw();
 
 	//ƒvƒŒƒCƒ„[‚Ì•`‰æ.
 	m_pPlayerManager->Draw(view, proj, light, camera);
@@ -346,6 +345,7 @@ void CSceneGameMain::Draw()
 
 	//[“xƒeƒXƒg–³Œø‚É‚·‚é‚±‚Æ‚ÅAˆ—‡”Ô‚Å•`‰æ‚³‚¹‚é‚±‚Æ‚ª‚Å‚«‚é
 	m_pDx11->SetDepth(false);
+	m_pDrawTimer->Draw();
 
 	m_pDx11->SetAlphaBlend(true);
 	//‚Ð‚æ‚±‚Ì•`‰æ.
