@@ -9,6 +9,7 @@ CSceneTitle::CSceneTitle(HWND hWnd)
 
 	, m_pPlayerManager	()
 	, m_pGroundManager	()
+	, m_pSky			()
 
 	, m_pSpriteTitleImg	()
 	, m_pSpriteSelector	()
@@ -46,6 +47,9 @@ HRESULT CSceneTitle::Create()
 	//地面マネージャークラスのインスタンス作成.
 	m_pGroundManager = std::make_unique<CGroundManager>();
 	m_pGroundManager->MainGroundCreate();
+
+	//空クラスのインスタンス作成.
+	m_pSky = std::make_unique<CSky>();
 
 	//プレイヤーマネージャーのインスタンス作成.
 	m_pPlayerManager = std::make_unique<CPlayerManager>();
@@ -176,6 +180,11 @@ void CSceneTitle::Draw()
 	D3DXMATRIX view = CCameraManager::GetView();		//ビュー.
 	D3DXMATRIX proj = CCameraManager::GetProjection();	//プロジェクション.
 //==================.
+
+	m_pDx11->SetDepth(false);
+	//空の描画.
+	m_pSky->Draw();
+	m_pDx11->SetDepth(true);
 
 	//地面マネージャーの描画.
 	m_pGroundManager->Draw(view, proj, light, camera);

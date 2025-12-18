@@ -1,12 +1,12 @@
 #pragma once
 
-#include "GameObject/SpriteObject/CSpriteObject.h"
+#include "GameObject/UIObject/CUIObject.h"
 
 /***********************************************************************
 *	空クラス.									制作者 [甲把]
 **/
 class CSky
-	: public CSpriteObject	//スプライトオブジェクトクラスを継承
+	: public CUIObject	//UIオブジェクトクラスを継承
 {
 public:
 	CSky();
@@ -16,11 +16,7 @@ public:
 // 	   外部で呼び出す関数.
 //======================================================================
 	void Update() override;
-	void Draw(
-		D3DXMATRIX& View, D3DXMATRIX& Proj) override;
+	void Draw() override;
 
 protected:
-	float		m_DisplayHigh;		//表示する高さの限度.
-	float		m_MaxSize;			//最大の大きさ.
-
 };

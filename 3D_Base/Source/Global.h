@@ -157,6 +157,7 @@ enum class Sprite3DList
 enum class Sprite2DList
 {
 	Fade = 0,
+	Sky,
 	GaugeFrame,
 	Gauge,
 	Font_Title,

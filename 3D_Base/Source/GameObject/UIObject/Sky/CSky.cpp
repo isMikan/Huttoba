@@ -2,6 +2,7 @@
 
 CSky::CSky()
 {
+	AttachSprite(AssetManager::Sprite(Sprite2DList::Sky));
 }
 
 CSky::~CSky()
@@ -14,10 +15,10 @@ CSky::~CSky()
 
 void CSky::Update()
 {
-	CSpriteObject::Update();
+	CUIObject::Update();
 }
 
-void CSky::Draw(D3DXMATRIX& View, D3DXMATRIX& Proj)
+void CSky::Draw()
 {
-	CSpriteObject::Draw(View, Proj);
+	CUIObject::Draw();
 }
