@@ -200,6 +200,8 @@ enum class enSoundList
 	SE_DestroyItem,
 	SE_EndSceneMain,
 
+	SE_Explosion,
+
 	//‰¹‚ª‘‚¦‚½‚çu‚±‚±v‚É’Ç‰Á
 	max,
 };

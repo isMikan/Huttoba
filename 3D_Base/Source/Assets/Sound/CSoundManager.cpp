@@ -40,6 +40,8 @@ HRESULT CSoundManager::Create()
     m_SoundInfoList.push_back({ enSoundList::SE_FunUse,             _T("Data\\Sound\\SE\\FunUse.mp3"),              _T("SE_FunUse") });
     m_SoundInfoList.push_back({ enSoundList::SE_EndSceneMain,       _T("Data\\Sound\\SE\\EndSceneMain.mp3"),        _T("SE_EndSceneMain") });
 
+    m_SoundInfoList.push_back({ enSoundList::SE_Explosion,       _T("Data\\Sound\\SE\\Explosion.mp3"),           _T("SE_Explosion") });
+
 	//サウンドのインスタンスを格納するための配列を確保
     for (auto& sound : m_SoundInfoList)
     {

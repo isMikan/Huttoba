@@ -248,6 +248,8 @@ void Bomb::Explosion()
 	//”ñ”š”­Žž‚Éˆê“x‚¾‚¯ˆ—‚·‚é
 	if (!m_IsExploded)
 	{
+		AssetManager::Sound()->PlaySE(enSoundList::SE_Explosion);
+
 		m_pPickUpCollider->SetActive(false);
 		m_pUseCollider->SetActive(true);
 
