@@ -100,9 +100,9 @@ void CPlayerManager::StandbyPlayerCreate()
 	{
 		if (!m_pPlayers[pNo]) return;
 
-		D3DXVECTOR3 pos(1.5f, 0.f, -1.f);
+		D3DXVECTOR3 pos(-1.f, 0.f, -1.f);
 		//¶‚©‚ç‡‚É•\Ž¦.
-		pos.x *= pNo;
+		pos.x += pNo * 2.f;
 
 		m_pPlayers[pNo]->SetPosition(pos);
 		m_pPlayers[pNo]->

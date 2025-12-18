@@ -41,8 +41,8 @@ CSceneStandby::~CSceneStandby()
 
 HRESULT CSceneStandby::Create()
 {
-	CCameraManager::SetPosition(2.2f, 2.f, -6.5f);
-	CCameraManager::SetLook(2.2f, 0.f, 0.f);
+	CCameraManager::SetPosition(2.f, 2.f, -8.f);
+	CCameraManager::SetLook(2.f, 0.f, 0.f);
 	CCameraManager::SetLight(0.f, 10.f, -10.f);
 
 	//プレイヤーマネージャーのインスタンス作成.
@@ -198,8 +198,8 @@ void CSceneStandby::InitializeRedyFont()
 {
 	for (size_t i = 0;i < 4;i++)
 	{
-		m_pRedyFontImg[i]->SetPosition(200.f + (240.f * i), 100.f, 0.f);
-		m_pNotRedyFontImg[i]->SetPosition(200.f + (240.f * i), 100.f, 0.f);
+		m_pRedyFontImg[i]->SetPosition(170.f + (260.f * i), 100.f, 0.f);
+		m_pNotRedyFontImg[i]->SetPosition(170.f + (260.f * i), 100.f, 0.f);
 	}
 }
 
