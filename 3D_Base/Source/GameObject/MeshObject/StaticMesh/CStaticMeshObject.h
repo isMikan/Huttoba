@@ -55,6 +55,5 @@ protected:
 
 	std::vector<ObjectColor>		m_ObjectColor;	//オブジェクトの色.		制作者 [甲把]
 
-
 	std::shared_ptr<CollisionBase>	m_pCollision;	//当たり判定(判定の削除にポインタが必要なので保持)
 };

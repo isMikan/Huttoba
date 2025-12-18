@@ -9,7 +9,7 @@
 CPlayerHandAttackState::CPlayerHandAttackState(CPlayerBase& pPlayer)
 	: CPlayerState			( pPlayer )
 	
-	, m_CenterHandOffset	( 0.2f )
+	, m_CenterHandOffset	( 0.25f )
 
 	, m_StartTime			()
 	, m_EndTime				( 0.1f )
@@ -20,8 +20,8 @@ CPlayerHandAttackState::CPlayerHandAttackState(CPlayerBase& pPlayer)
 
 	, m_RightHandStartPos	()
 	, m_LeftHandStartPos	()
-	, m_RightHandEndPos		( 0.f, 0.f, 0.6f )
-	, m_LeftHandEndPos		( 0.f, 0.f, 0.6f )
+	, m_RightHandEndPos		( 0.f, 0.f, 0.75f )
+	, m_LeftHandEndPos		( 0.f, 0.f, 0.75f )
 
 	, m_StartQuat			( 0.f, 0.f, 0.f, 1.f )
 {

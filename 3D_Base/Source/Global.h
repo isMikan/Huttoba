@@ -70,7 +70,6 @@ struct LIGHT
 	D3DXVECTOR3	Position;	//位置.
 	D3DXVECTOR3	vDirection;	//方向.
 	D3DXMATRIX	mRotation;	//回転行列.
-	float		fIntensity;	//強度(明るさ).
 };
 
 //ゲージの構造体.

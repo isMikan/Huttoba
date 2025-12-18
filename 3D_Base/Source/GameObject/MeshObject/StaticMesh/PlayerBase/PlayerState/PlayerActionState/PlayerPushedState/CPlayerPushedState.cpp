@@ -16,12 +16,12 @@ CPlayerPushedState::CPlayerPushedState(CPlayerBase& pPlayer)
 	, m_CurrentTiltAngle	()
 	, m_TiltAngleMax		( D3DXToRadian( -30.f ) )
 	, m_PhaseSplit			( 0.5f )
-	, m_HandLaps			( 3.f )	//3Žü.
+	, m_HandLaps			( 4.f )	//2Žü.
 
 	, m_RightHandStartPos	( 0.f, 0.f, 0.f )
 	, m_LeftHandStartPos	( 0.f, 0.f, 0.f )
-	, m_RightHandEndPos		( 0.f, 0.2f, 0.1f )
-	, m_LeftHandEndPos		( 0.f, 0.2f, 0.1f )
+	, m_RightHandEndPos		( 0.f, 0.25f, 0.1f )
+	, m_LeftHandEndPos		( 0.f, 0.25f, 0.1f )
 
 	, m_StartQuat			( 0.f, 0.f, 0.f, 1.f )
 {

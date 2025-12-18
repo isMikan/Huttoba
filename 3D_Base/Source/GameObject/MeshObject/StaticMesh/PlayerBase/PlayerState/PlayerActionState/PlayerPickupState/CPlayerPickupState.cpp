@@ -7,7 +7,7 @@
 CPlayerPickupState::CPlayerPickupState(CPlayerBase& pPlayer)
 	: CPlayerState			( pPlayer )
 	
-	, m_CenterHandOffset	( 0.2f )
+	, m_CenterHandOffset	( 0.25f )
 	
 	, m_StartTime			()
 	, m_EndTime				( 0.4f )
@@ -18,8 +18,8 @@ CPlayerPickupState::CPlayerPickupState(CPlayerBase& pPlayer)
 
 	, m_RightHandStartPos	()
 	, m_LeftHandStartPos	()
-	, m_RightHandEndPos		( 0.f, -0.3f, 0.6f )
-	, m_LeftHandEndPos		( 0.f, -0.3f, 0.6f )
+	, m_RightHandEndPos		( 0.f, -0.3f, 0.7f )
+	, m_LeftHandEndPos		( 0.f, -0.3f, 0.7f )
 
 	, m_StartQuat			()
 {

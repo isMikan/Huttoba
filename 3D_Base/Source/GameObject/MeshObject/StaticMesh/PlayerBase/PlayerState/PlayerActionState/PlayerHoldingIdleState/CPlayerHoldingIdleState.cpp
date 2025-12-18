@@ -22,10 +22,13 @@ CPlayerHoldingIdleState::CPlayerHoldingIdleState(CPlayerBase& pPlayer)
 	, m_HandLaps						( 2.f )	//àÍé¸.
 	, m_HandWidth						( 0.08f )
 	
-	, m_HoldBothHands_RightHandEndPos	( -0.2f, 0.f, 0.3f )
-	, m_HoldBothHands_LeftHandEndPos	( 0.2f, 0.f, 0.3f )
+	, m_HoldBothHands_RightHandEndPos	( -0.2f, 1.f, 0.1f )
+	, m_HoldBothHands_LeftHandEndPos	( 0.2f, 1.f, 0.1f )
 	, m_OneHand_RightHandEndPos			( 0.f, 0.3f, 0.2f )
 	, m_OneHand_LeftHandEndPos			( 0.1f, 0.f, -0.2f )
+	, m_DownHand_RightHandEndPos		( -0.25f, 0.f, 0.3f )
+	, m_DownHand_LeftHandEndPos			( 0.25f, 0.f, 0.3f )
+
 {
 }
 
@@ -105,10 +108,15 @@ void CPlayerHoldingIdleState::Update()
 		leftHandOffsetPos += m_OneHand_LeftHandEndPos;
 
 	}
-	else if (m_pPlayer.IsAnyHoldingItem<Bomb, Mushroom, Fun, TrackingRobot>())
+	else if (m_pPlayer.IsAnyHoldingItem<Bomb, Mushroom>())
 	{
 		rightHandOffsetPos += m_HoldBothHands_RightHandEndPos;
 		leftHandOffsetPos += m_HoldBothHands_LeftHandEndPos;
+	}
+	else if (m_pPlayer.IsAnyHoldingItem<Fun, TrackingRobot>())
+	{
+		rightHandOffsetPos += m_DownHand_RightHandEndPos;
+		leftHandOffsetPos += m_DownHand_LeftHandEndPos;
 
 		//ëóïóã@ÇÃí∑âüÇµâèúÇÃÇΩÇﬂ.
 		if (m_pPlayer.IsAnyHoldingItem<Fun>())

@@ -16,8 +16,8 @@ CPlayerThrowState::CPlayerThrowState(CPlayerBase& pPlayer)
 
 	, m_RightHandStartPos	()
 	, m_LeftHandStartPos	()
-	, m_RightHandEndPos		( 0.f, -0.5f, -0.5f )
-	, m_LeftHandEndPos		( 0.f, 0.f, 0.3f )
+	, m_RightHandEndPos		( 0.f, -0.5f, -0.7f )
+	, m_LeftHandEndPos		( 0.f, 0.f, 0.4f )
 
 	, m_StartQuat			()
 {

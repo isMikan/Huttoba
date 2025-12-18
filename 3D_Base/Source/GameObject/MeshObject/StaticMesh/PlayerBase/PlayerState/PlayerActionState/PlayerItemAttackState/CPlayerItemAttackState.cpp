@@ -30,10 +30,12 @@ CPlayerItemAttackState::CPlayerItemAttackState(CPlayerBase& pPlayer)
 	, m_RightHandEndPos					()
 	, m_LeftHandEndPos					()
 
-	, m_HoldBothHands_RightHandEndPos	( 0.f, 0.3f, 0.3f )
-	, m_HoldBothHands_LeftHandEndPos	( 0.f, 0.3f, 0.3f )
-	, m_OneHand_RightHandEndPos			( -0.2f, 0.3f, 0.3f )
+	, m_HoldBothHands_RightHandEndPos	( -0.3f, 0.8f, 0.7f)
+	, m_HoldBothHands_LeftHandEndPos	( 0.3f, 0.8f, 0.7f )
+	, m_OneHand_RightHandEndPos			( -0.6f, 0.3f, 0.7f )
 	, m_OneHand_LeftHandEndPos			( -0.1f, 0.2f, -0.3f )
+	, m_DownHand_RightHandEndPos		( -0.25f, -0.3f, 0.6f )
+	, m_DownHand_LeftHandEndPos			( 0.25f, -0.3f, 0.6f )
 	, m_Boomerang_RightHandEndPos		( 0.1f, 0.1f, -0.2f )
 	, m_Boomerang_LeftHandEndPos		( 0.1f, 0.2f, 0.1f )
 
@@ -77,22 +79,25 @@ void CPlayerItemAttackState::Enter()
 	//各アイテムの最終の手の位置を設定.
 	if (m_pPlayer.IsAnyHoldingItem<Haetataki, SmashBat>())
 	{
-		m_RightHandEndPos = m_OneHand_RightHandEndPos;
-		m_LeftHandEndPos = m_OneHand_LeftHandEndPos;
+		m_RightHandEndPos = m_OneHand_RightHandEndPos + m_RightHandStartPos;
+		m_LeftHandEndPos = m_OneHand_LeftHandEndPos + m_LeftHandStartPos;
 	}
-	else if (m_pPlayer.IsAnyHoldingItem<Bomb, Mushroom, Fun, TrackingRobot>())
+	else if (m_pPlayer.IsAnyHoldingItem<Bomb, Mushroom>())
 	{
-		m_RightHandEndPos = m_HoldBothHands_RightHandEndPos;
-		m_LeftHandEndPos = m_HoldBothHands_LeftHandEndPos;
-
-		m_EndTime = 0.2f;
+		m_RightHandEndPos = m_HoldBothHands_RightHandEndPos + m_RightHandStartPos;
+		m_LeftHandEndPos = m_HoldBothHands_LeftHandEndPos + m_LeftHandStartPos;
+	}
+	else if(m_pPlayer.IsAnyHoldingItem<Fun, TrackingRobot>())
+	{
+		m_RightHandEndPos = m_DownHand_RightHandEndPos + m_RightHandStartPos;
+		m_LeftHandEndPos = m_DownHand_LeftHandEndPos + m_LeftHandStartPos;
 	}
 	else if(m_pPlayer.IsAnyHoldingItem<Boomerang>())
 	{
 		m_RightHandEndPos = m_Boomerang_RightHandEndPos + m_RightHandStartPos;
 		m_LeftHandEndPos = m_Boomerang_LeftHandEndPos + m_LeftHandStartPos;
 	
-		m_EndTime = 0.5f;
+		m_EndTime = 0.5f;	//終了時間 5 秒.
 	}
 }
 
@@ -135,12 +140,12 @@ void CPlayerItemAttackState::Update()
 		//プレイヤーの入力を受けた場合.
 		if (IsInput(m_pPlayer.GetPlayerID()))
 		{
-			m_RightHandEndPos = m_OneHand_RightHandEndPos;
-			m_LeftHandEndPos = m_OneHand_LeftHandEndPos;
+			m_RightHandEndPos = m_OneHand_RightHandEndPos + m_RightHandStartPos;
+			m_LeftHandEndPos = m_OneHand_LeftHandEndPos + m_LeftHandStartPos;
 			
 			//攻撃の開始時間を取得.
 			m_StartTime = CTimeManager::GetTotalTime();
-			m_EndTime = 0.3f;
+			m_EndTime = 0.3f;	//終了時間 3 秒.
 
 			m_IsBoomerangMove = true;
 		}
@@ -163,7 +168,6 @@ void CPlayerItemAttackState::Update()
 	//手の位置を調整して設定.
 	m_pPlayer.GetPlayerRightHand().SetPosition(m_pPlayer.GetObjectPos(rightHandOffsetPos));
 	m_pPlayer.GetPlayerLeftHand().SetPosition(m_pPlayer.GetObjectPos(leftHandOffsetPos));
-
 
 	//フラグが ture じゃない場合、処理をやめる.
 	if (m_pPlayer.IsAnyHoldingItem<Boomerang>() && !m_IsBoomerangMove) return;

@@ -39,7 +39,9 @@ private:
 	//片手で持つアイテム用.
 	D3DXVECTOR3		m_OneHand_RightHandEndPos;			//右手の目的の位置.
 	D3DXVECTOR3		m_OneHand_LeftHandEndPos;			//左手の目的の位置.
-
+	//下に持つアイテム用.
+	D3DXVECTOR3		m_DownHand_RightHandEndPos;			//右手の目的の位置.
+	D3DXVECTOR3		m_DownHand_LeftHandEndPos;			//左手の目的の位置.
 
 private:
 //======================================================================

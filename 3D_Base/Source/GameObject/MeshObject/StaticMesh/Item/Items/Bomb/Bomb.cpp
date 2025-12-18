@@ -164,6 +164,8 @@ void Bomb::OnCollision(CollisionBase* other)
 void Bomb::HaveMove()
 {
 	m_vPosition = m_pPlayer->GetPlayerRightHand().GetPosition();
+
+	m_vPosition.x = m_pPlayer->GetPosition().x;
 }
 
 void Bomb::UseMove()

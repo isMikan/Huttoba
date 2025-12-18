@@ -7,7 +7,8 @@ CStaticMeshObject::CStaticMeshObject()
 	ObjectColor color = {
 		D3DXVECTOR4(0.5f, 0.5f, 0.5f, 1.f),
 		D3DXVECTOR4(0.3f, 0.3f, 0.3f, 1.f),
-		D3DXVECTOR4(0.1f, 0.1f, 0.1f, 1.f) };
+		D3DXVECTOR4(0.1f, 0.1f, 0.1f, 1.f)
+	};
 	//サイズを指定する.
 	m_ObjectColor.resize(1);
 	//色を設定.

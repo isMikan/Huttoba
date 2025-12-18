@@ -36,7 +36,6 @@ CSceneStandby::CSceneStandby()
 CSceneStandby::~CSceneStandby()
 {
 	AssetManager::Sound()->Stop(enSoundList::BGM_SceneStanby);
-
 }
 
 HRESULT CSceneStandby::Create()
