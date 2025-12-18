@@ -38,6 +38,7 @@ CSceneGameMain::CSceneGameMain( HWND hWnd)
 	, m_pGroundCollisionProxy	()
 
 	, m_pSpriteReadyGo	()
+	, m_pSpriteFinish	()
 
 	, m_IsPause			( false )
 {
@@ -107,6 +108,8 @@ HRESULT CSceneGameMain::Create()
 
 	m_pSpriteReadyGo = std::make_unique<CUIObject>();
 
+	m_pSpriteFinish = std::make_unique<CUIObject>();
+
 	return S_OK;
 }
 
@@ -142,6 +145,11 @@ HRESULT CSceneGameMain::LoadData()
 	m_pSpriteReadyGo->AttachSprite(AssetManager::Sprite(Sprite2DList::Font_ReadyGo));
 
 	m_pSpriteReadyGo->SetPosition(D3DXVECTOR3(WND_W / 2 - 693 / 2, WND_H / 2 - 217 / 2, 0));
+
+	//‰æ‘œƒf[ƒ^‚Ì“Ç‚Ýž‚Ý
+	m_pSpriteFinish->AttachSprite(AssetManager::Sprite(Sprite2DList::Font_Finish));
+
+	m_pSpriteFinish->SetPosition(D3DXVECTOR3(WND_W / 2 - 970 / 2, WND_H / 2 - 195 / 2, 0));
 
 	return S_OK;
 }
@@ -387,8 +395,7 @@ void CSceneGameMain::Draw()
 		m_pSpriteReadyGo->Draw();
 		break;
 	case CSceneGameMain::GameState::Finish:
-		m_pSpriteReadyGo->SetPatternNo(0, 2);
-		m_pSpriteReadyGo->Draw();
+		m_pSpriteFinish->Draw();
 		break;
 	default:
 		break;

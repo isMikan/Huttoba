@@ -172,9 +172,6 @@ bool CGroundManager::ExtractMeshRadius()
 		if (CollisionUtility::CalculateBoundingSphere(mesh, outCenter, outRadius))
 		{
 			m_GroundRadius[i] = outRadius;
-
-			//デバッグ表示
-			std::cout << "Ground[" << i << "] Radius: " << outRadius << std::endl;
 		}
 		else
 		{

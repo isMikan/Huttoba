@@ -47,8 +47,25 @@ public:
 	//地面を取得.
 	const std::vector<std::unique_ptr<CGround>>& GetGrounds() const { return m_pGrounds; }
 
-	//現在の地面の半径を取得(sizeだと要素数を返すので-1している)
-	float GetGroundRadius() { return m_GroundRadius[m_pGrounds.size() - 1]; }
+	//一番外のステージの色が変わっているかを取得(sizeだと要素数を返すので-1している)
+	bool GetIsFallDown() { return m_pGrounds[m_pGrounds.size() - 1]->GetIsChangeColor(); }
+
+	//現在の地面の半径を取得
+	float GetGroundRadius() 
+	{
+		//地面が光始めるか、地面が落ちている最中なら
+		if (GetIsFallDown()|| m_pGrounds[m_pGrounds.size() - 1]->GetIsFallDown())
+		{
+			//地面の配列の数が2以上なら
+			if (m_pGrounds.size() >= 2)
+			{
+				return m_GroundRadius[m_pGrounds.size() - 2];
+			}
+		}
+		 
+		//if文をの中を通らなければ現在のステージの半径を返す
+		return m_GroundRadius[m_pGrounds.size() - 1];
+	}
 
 	//地面の中心位置を取得
 	D3DXVECTOR3 GetGroundCenterPos();

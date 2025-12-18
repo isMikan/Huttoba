@@ -62,7 +62,8 @@ HRESULT SpriteManager::CreateSprite2D()
 	RegisterSprite2D(Sprite2DList::Gauge,			_T("Data\\Texture\\gauge.png"),				{ 160.f, 24.f, 160.f, 24.f, 160.f, 24.f });
 	RegisterSprite2D(Sprite2DList::Font_Title,		_T("Data\\Texture\\Font_Title.png"),		{ 695,400,695,400,695,400 });
 	RegisterSprite2D(Sprite2DList::Font_Result,		_T("Data\\Texture\\Font_WinnerDraw.png"),	{ 608,330,608,660,608,330 });
-	RegisterSprite2D(Sprite2DList::Font_ReadyGo,	_T("Data\\Texture\\Font_GameState.png"),	{ 693,217, 693,651, 693,217 });
+	RegisterSprite2D(Sprite2DList::Font_ReadyGo,	_T("Data\\Texture\\Font_Readygo_ver2.png"),	{ 693,217, 693,434, 693,217 });
+	RegisterSprite2D(Sprite2DList::Font_Finish,		_T("Data\\Texture\\Font_Finish.png"),		{ 970,195, 970,195, 970,195 });
 	RegisterSprite2D(Sprite2DList::Font_UI_Common,	_T("Data\\Texture\\Font_UI_Common.png"),	{ 400,64,400,544,400,64 });
 	RegisterSprite2D(Sprite2DList::Font_UI_Ready,	_T("Data\\Texture\\Font_UI_Ready.png"),		{ 239,64.5,239,517,239,64.5 });
 	RegisterSprite2D(Sprite2DList::UI_Selector,		_T("Data\\Texture\\UI_SelectArrow.png"),	{ 64,64,64,256,64,64 });

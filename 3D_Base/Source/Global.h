@@ -162,6 +162,7 @@ enum class Sprite2DList
 	Font_Title,
 	Font_Result,
 	Font_ReadyGo,
+	Font_Finish,
 	Font_UI_Common,
 	Font_UI_Ready,
 	UI_Selector,

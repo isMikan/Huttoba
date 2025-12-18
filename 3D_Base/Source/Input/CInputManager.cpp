@@ -14,7 +14,7 @@ CInputManager::~CInputManager()
 
 void CInputManager::Update()
 {
-	for (int i = 0;i < 4;i++)
+	for (size_t i = 0;i < 4;i++)
 	{
 		Instance().m_pInputs[i]->Update();
 	}

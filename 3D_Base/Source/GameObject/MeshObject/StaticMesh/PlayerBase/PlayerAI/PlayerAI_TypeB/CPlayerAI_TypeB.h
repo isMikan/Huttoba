@@ -23,11 +23,14 @@ private:
 	//回避行動
 	void AvoidDanger();
 
+	//アイテムによってそれぞれの移動や攻撃
+	void ItemMove(ItemID item);
+
 	//アイテムの種類によるスコアの増減
-	float ItemScoreBonus(ItemID item);
+	float ItemScoreBonus(const ItemID& item)const;
 
 	//引数の位置がステージ端にどれくらい近いかでスコアの増減
-	float CalculateDangerRate(D3DXVECTOR3 pos);
+	float CalculateDangerScore(const D3DXVECTOR3& pos)const;
 
 private:
 	//移動先の情報
@@ -38,4 +41,7 @@ private:
 
 	//アイテム距離スコアの調整係数
 	float			m_DistanceWeight;
+
+	//ステージのここより外側は危険とする％
+	float			m_GroundSafeRadius;
 };

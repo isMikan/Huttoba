@@ -108,7 +108,8 @@ private:
 
 	//レディゴー画像
 	std::unique_ptr<CUIObject>		m_pSpriteReadyGo;
-	//std::unique_ptr<CUIObject>	m_pSpriteSelector;
+	//フィニッシュ画像
+	std::unique_ptr<CUIObject>		m_pSpriteFinish;
 
 	bool	m_IsPause;	//ポーズ中か.
 };

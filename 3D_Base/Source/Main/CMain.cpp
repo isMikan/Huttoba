@@ -80,7 +80,7 @@ HRESULT CMain::Create()
 	m_pGame = new CGame(CCreateWindow::GetInstance()->GetHundle());
 
 	//ゲームクラスの構築（Loadも含める）.
-	m_pGame->Create();
+	//m_pGame->Create();
 
 	return S_OK;
 }
