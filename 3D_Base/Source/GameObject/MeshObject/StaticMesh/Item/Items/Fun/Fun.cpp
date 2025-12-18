@@ -60,7 +60,7 @@ void Fun::Init()
 	std::shared_ptr<CStaticMesh> PickMesh = AssetManager::Mesh(StaticMeshList::PickUpCol);
 
 	m_pPickUpCollider = CollisionDataFactory::CreateCapsuleForMesh(
-		CollisionBase::ColliderTag::Bomb,
+		CollisionBase::ColliderTag::Fan,
 		PickMesh,
 		this
 	);
