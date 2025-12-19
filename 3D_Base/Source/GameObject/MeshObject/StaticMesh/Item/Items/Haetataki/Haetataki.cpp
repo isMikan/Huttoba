@@ -67,7 +67,7 @@ Haetataki::Haetataki()
 	, m_IsFirst			()
 	, m_Startfix		()
 	, m_Endfix			()
-
+	, m_HitPlayer		()
 {
 	Init();
 }
@@ -164,7 +164,7 @@ void Haetataki::Have()
 	//アイテムを拾うモーション
 	TakeMostion();
 
-		//位置を合わせる
+	//位置を合わせる
 	m_vPosition = m_pPlayer->GetPlayerRightHand().GetPosition();
 
 	// プレイヤーの回転
@@ -172,40 +172,6 @@ void Haetataki::Have()
 
 
 	static float a = 0.f, b = 0.f, c = 0.f;
-
-	if (GetKeyState('B') & 0x8000)
-	{
-		a += 0.5;
-		std::cout << "Yaw = " << a << std::endl;
-	}
-	if (GetKeyState('N') & 0x8000)
-	{
-		b += 0.5;
-		std::cout << "Pitch = " << b << std::endl;
-	}
-	if (GetKeyState('M') & 0x8000)
-	{
-		c += 0.5;
-		std::cout << "Roll = " << c << std::endl;
-	}
-	if (GetKeyState('G') & 0x8000)
-	{
-		a -= 0.5;
-		std::cout << "Yaw = " << a << std::endl;
-
-	}
-	if (GetKeyState('H') & 0x8000)
-	{
-		b -= 0.5;
-		std::cout << "Pitch = " << b << std::endl;
-
-	}
-	if (GetKeyState('J') & 0x8000)
-	{
-		c -= 0.5;
-		std::cout << "Roll = " << c << std::endl;
-
-	}
 
 	// ハエたたきの補正角
 	D3DXQUATERNION fix;
@@ -273,6 +239,7 @@ void Haetataki::ItemState(IItemObserver::State state)
 	switch (state)
 	{
 	case IItemObserver::State::Have:
+		m_HitPlayer.clear();
 		if (m_UseCount <= 0) { Destroy(); }
 
 		break;
@@ -359,12 +326,18 @@ void Haetataki::OnCollision(CollisionBase* other)
 		{
 			if (m_pPlayer != player && m_State == IItemObserver::State::Use)
 			{
+				//すでに当たっていないか？
+				auto it = std::find(m_HitPlayer.begin(), m_HitPlayer.end(), player);
+				if (it != m_HitPlayer.end()) return;
+
 				Smash(*player);
+				m_HitPlayer.push_back(player);
 				AssetManager::Sound()->PlaySE(enSoundList::SE_HitHaetataki);
 			}
 			if (m_State == IItemObserver::State::Throw && m_pPlayer != player)
 			{
 				ThrowSmash(*player);
+				m_HitPlayer.push_back(player);
 			}
 		}
 	}

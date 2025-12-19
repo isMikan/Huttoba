@@ -62,17 +62,18 @@ constexpr float HIT_ANGLE = 60.f;
 //--------------------------------------------------------------------------------------------------------------
 
 SmashBat::SmashBat()
-	: m_SwitchDir(false)
-	, m_IsFlyAway(false)
-	, m_IsFlyAwayPower(3.f)
-	, m_IsMissAttack(false)
-	, m_Velocity()
-	, m_slerpTime()
-	, m_InitalPlayerQ()
-	, m_IsFirst()
-	, m_Startfix()
-	, m_Endfix()
-	, m_hEffect()
+	: m_SwitchDir		( false )
+	, m_IsFlyAway		( false )
+	, m_IsFlyAwayPower	( 3.f )
+	, m_IsMissAttack	( false )
+	, m_Velocity		()
+	, m_slerpTime		()
+	, m_InitalPlayerQ	()
+	, m_IsFirst			()
+	, m_Startfix		()
+	, m_Endfix			()
+	, m_hEffect			()
+	, m_HitPlayer		()
 
 {
 	Init();
@@ -183,43 +184,6 @@ void SmashBat::Have()
 	// プレイヤーの回転
 	D3DXQUATERNION playerQ = m_pPlayer->GetQuaternion();
 
-
-	static float a = 0.f, b = 0.f, c = 0.f;
-
-	if (GetKeyState('B') & 0x8000)
-	{
-		a += 0.5;
-		std::cout << "Yaw = " << a << std::endl;
-	}
-	if (GetKeyState('N') & 0x8000)
-	{
-		b += 0.5;
-		std::cout << "Pitch = " << b << std::endl;
-	}
-	if (GetKeyState('M') & 0x8000)
-	{
-		c += 0.5;
-		std::cout << "Roll = " << c << std::endl;
-	}
-	if (GetKeyState('G') & 0x8000)
-	{
-		a -= 0.5;
-		std::cout << "Yaw = " << a << std::endl;
-
-	}
-	if (GetKeyState('H') & 0x8000)
-	{
-		b -= 0.5;
-		std::cout << "Pitch = " << b << std::endl;
-
-	}
-	if (GetKeyState('J') & 0x8000)
-	{
-		c -= 0.5;
-		std::cout << "Roll = " << c << std::endl;
-
-	}
-
 	// ハエたたきの補正角
 	D3DXQUATERNION fix;
 	//D3DXQuaternionRotationYawPitchRoll(&fix, D3DXToRadian(a), D3DXToRadian(b), D3DXToRadian(c));
@@ -324,6 +288,8 @@ void SmashBat::ItemState(IItemObserver::State state)
 	{
 	case IItemObserver::State::Have:
 
+		m_HitPlayer.clear();
+		
 		break;
 	case IItemObserver::State::Use:
 		AssetManager::Sound()->PlaySE(enSoundList::SE_MissHaetataki);
@@ -407,8 +373,14 @@ void SmashBat::OnCollision(CollisionBase* other)
 		{
 			if (m_State == IItemObserver::State::Use && m_pPlayer != player)
 			{
+				//すでに当たっていないか？
+				auto it = std::find(m_HitPlayer.begin(), m_HitPlayer.end(), player);
+				if (it != m_HitPlayer.end()) return;
+
 				Smash(*player);
 				AssetManager::Sound()->PlaySE(enSoundList::SE_SmashBatHit);
+				m_HitPlayer.push_back(player);
+
 				//エフェクト追加
 				if (!AssetManager::Effect()->IsPlaying(m_hEffect[Efect::HitPlayer]))
 				{

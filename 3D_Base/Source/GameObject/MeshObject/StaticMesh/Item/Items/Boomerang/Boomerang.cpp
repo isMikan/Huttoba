@@ -198,11 +198,14 @@ void Boomerang::ItemState(IItemObserver::State state)
 
 void Boomerang::OnCollision(CollisionBase* other)
 {
-	if (other->GetTag() != CollisionBase::ColliderTag::Player) return;
+	// if連続を回避してみたけど逆に醜いかも
 
+	//当たったのはプレイヤーか
+	if (other->GetTag() != CollisionBase::ColliderTag::Player) return;
 	CPlayerBase* player = dynamic_cast<CPlayerBase*>(other->GetListener());
 	if (player == nullptr) return;
 
+	//当たってもいい状態か
 	bool IsOkHit = m_State == State::Use && player != m_pPlayer && m_IsUseThrow;
 	if (!IsOkHit) return;
 
@@ -210,6 +213,7 @@ void Boomerang::OnCollision(CollisionBase* other)
 	auto it = std::find(m_HitPlayer.begin(), m_HitPlayer.end(), player);
 	if (it != m_HitPlayer.end()) return;
 
+	//ヒット
 	Smash(*player);
 	m_HitPlayer.push_back(player);
 
@@ -218,7 +222,6 @@ void Boomerang::OnCollision(CollisionBase* other)
 	{
 		ThrowSmash(*player);
 	}
-
 }
 
 //--------------------------------------------------------------------------------------------------------------

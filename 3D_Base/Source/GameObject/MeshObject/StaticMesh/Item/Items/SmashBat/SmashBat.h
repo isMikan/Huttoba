@@ -88,4 +88,6 @@ private:
 
 	std::unordered_map<Efect, ::EsHandle> m_hEffect;
 
+	//連続ヒット防止のためにプレイヤーを保存する変数
+	std::vector<CPlayerBase*> m_HitPlayer;
 };

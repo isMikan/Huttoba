@@ -80,4 +80,6 @@ private:
 
 	float m_slerpTime = 0.0f; // Slerpの経過時間カウンター
 
+	//連続ヒット防止のためにプレイヤーを保存する変数
+	std::vector<CPlayerBase*> m_HitPlayer;
 };
