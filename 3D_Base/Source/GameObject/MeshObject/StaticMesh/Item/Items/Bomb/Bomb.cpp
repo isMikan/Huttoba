@@ -23,6 +23,8 @@ Bomb::Bomb()
 	, m_MinSmashPower	( 6.0f )	//値を変えるとプレイヤーの最小吹き飛ばし力が変化
 
 	, m_MaxSmashPower	( 10.0f )	//値を変えるとプレイヤーの最大吹き飛ばし力が変化
+
+	, m_ExplosionRadius	()
 {
 	Init();
 	m_ObjectColor.resize(2);
@@ -36,6 +38,8 @@ Bomb::Bomb()
 	m_ObjectColor[1].diffuse = D3DXVECTOR4(0.7f, 0.7f, 0.7f, 1.0f);
 
 	m_vScale = D3DXVECTOR3(3, 3, 3);
+
+	LoadExplosionMesh();
 }
 
 Bomb::~Bomb()
@@ -311,15 +315,33 @@ void Bomb::ChangeColor()
 
 float Bomb::CalculateForceScalar(float distance)
 {
-	//爆発の当たる範囲を仮設定
-	//当たり判定用メッシュの大きさにする
-	float maxDist = 1.8f;
-
 	//0.0~1.0の間で距離の割合を出す
-	float ratio = 1.0f - (distance / maxDist);
+	float ratio = 1.0f - (distance / m_ExplosionRadius);
 
 	//線形補間の計算
 	float power = m_MinSmashPower + (m_MaxSmashPower - m_MinSmashPower) * ratio;
 
 	return power;
+}
+
+bool Bomb::LoadExplosionMesh()
+{
+	//グラウンドのメッシュ
+	const std::shared_ptr<CStaticMesh> mesh = AssetManager::Mesh(StaticMeshList::ExplosionCol);
+
+	D3DXVECTOR3 outCenter;
+	float		outRadius = 0.0f;
+
+	//CollisionUtilityにある関数からメッシュの半径と位置読み込み
+	if (CollisionUtility::CalculateBoundingSphere(mesh, outCenter, outRadius))
+	{
+		m_ExplosionRadius = outRadius;
+	}
+	else
+	{
+		// 計算失敗
+		return false;
+	}
+
+	return true;
 }

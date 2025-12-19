@@ -66,6 +66,9 @@ private:
     //一番近いプレイヤーをターゲットに設定
     void UpdateChaseSensor();
 
+    //爆発の当たり判定メッシュの半径をとる
+    bool LoadExplosionMesh();
+
 private:
     CPlayerBase*                    m_pTarget;
 
@@ -100,6 +103,9 @@ private:
     bool        m_IsExploded;
 
     bool        m_Is;
+
+    //爆発の当たり判定のメッシュ半径を記録
+    float       m_ExplosionRadius;
 
     //索敵の当たり判定の位置の補正値
     D3DXVECTOR3 m_CollisionOffSet;

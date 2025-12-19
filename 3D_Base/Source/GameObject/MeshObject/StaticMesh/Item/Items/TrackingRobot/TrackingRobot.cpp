@@ -30,11 +30,15 @@ TrackingRobot::TrackingRobot()
 
 	, m_IsExploded		( false )
 
-	, m_Is		( false )
+	, m_Is				( false )
 
-	, m_CollisionOffSet	(0.0f, 0.0f, 1.8f)
+	, m_ExplosionRadius	()
+
+	, m_CollisionOffSet	( 0.0f, 0.0f, 1.8f )
 {
 	Init();
+
+	LoadExplosionMesh();
 }
 
 TrackingRobot::~TrackingRobot()
@@ -377,4 +381,26 @@ void TrackingRobot::UpdateChaseSensor()
 
 	//一番近いプレイヤーのポインタが入る
 	m_pTarget = m_pChaseSensor->GetTarget();
+}
+
+bool TrackingRobot::LoadExplosionMesh()
+{
+	//グラウンドのメッシュ
+	const std::shared_ptr<CStaticMesh> mesh = AssetManager::Mesh(StaticMeshList::ExplosionCol);
+
+	D3DXVECTOR3 outCenter;
+	float		outRadius = 0.0f;
+
+	//CollisionUtilityにある関数からメッシュの半径と位置読み込み
+	if (CollisionUtility::CalculateBoundingSphere(mesh, outCenter, outRadius))
+	{
+		m_ExplosionRadius = outRadius;
+	}
+	else
+	{
+		// 計算失敗
+		return false;
+	}
+
+	return true;
 }
