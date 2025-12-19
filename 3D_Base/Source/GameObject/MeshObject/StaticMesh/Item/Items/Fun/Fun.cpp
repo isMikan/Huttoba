@@ -59,7 +59,7 @@ void Fun::Init()
 	std::shared_ptr<CStaticMesh> UseMesh_2 = AssetManager::Mesh(StaticMeshList::BCapsule);
 	std::shared_ptr<CStaticMesh> PickMesh = AssetManager::Mesh(StaticMeshList::PickUpCol);
 
-	m_pPickUpCollider = CollisionDataFactory::CreateCapsuleForMesh(
+	m_pPickUpCollider = CollisionDataFactory::CreateSphereForMesh(
 		CollisionBase::ColliderTag::Fan,
 		PickMesh,
 		this
