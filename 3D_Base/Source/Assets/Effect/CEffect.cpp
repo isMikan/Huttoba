@@ -119,6 +119,7 @@ HRESULT CEffect::LoadData()
 	m_pEffect["Break"]		=	::EsEffect::Create(m_pManager, u"Data\\Effekseer\\Smoke.efk");
 
 	m_pEffect["BoomerangMaxCharge"] = ::EsEffect::Create(m_pManager, u"Data\\Effekseer\\BoomerangMaxCharge.efk");
+	m_pEffect["BoomerangHit"]		= ::EsEffect::Create(m_pManager, u"Data\\Effekseer\\BoomerangHit.efk");
 	m_pEffect["SmashBatHave"]		= ::EsEffect::Create(m_pManager, u"Data\\Effekseer\\SmashBatHave.efk");
 	m_pEffect["SmashBatHit"]		= ::EsEffect::Create(m_pManager, u"Data\\Effekseer\\SmashBatHit.efk");
 	m_pEffect["HaetatakiHit"]		= ::EsEffect::Create(m_pManager, u"Data\\Effekseer\\HaetatakiHit.efk");

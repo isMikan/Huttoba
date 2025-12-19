@@ -217,6 +217,7 @@ void Boomerang::OnCollision(CollisionBase* other)
 	Smash(*player);
 	m_HitPlayer.push_back(player);
 
+
 	AssetManager::Sound()->PlayLoop(enSoundList::SE_HitHaetataki);
 	if (m_State == IItemObserver::State::Throw && m_pPlayer != player)
 	{
@@ -381,10 +382,10 @@ void Boomerang::Smash(CPlayerBase& playiers)
 		CPlayerBase::HitEvent::Knockdown);
 
 	//エフェクト追加
-	m_hEffect[Effect::HitPlayer] = AssetManager::Effect()->Play("Explosion", m_vPosition);
+	m_hEffect[Effect::HitPlayer] = AssetManager::Effect()->Play("BoomerangHit", m_vPosition);
 
 	//エフェクトの拡縮設定
-	AssetManager::Effect()->SetScale(m_hEffect[Effect::HitPlayer], D3DXVECTOR3(0.6f, 0.6f, 0.6f));
+	AssetManager::Effect()->SetScale(m_hEffect[Effect::HitPlayer], D3DXVECTOR3(1.f, 1.f, 1.f));
 
 }
 
