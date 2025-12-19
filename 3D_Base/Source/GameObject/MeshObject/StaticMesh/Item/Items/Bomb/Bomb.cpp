@@ -58,9 +58,9 @@ void Bomb::Init()
 	//ƒQ[ƒW‚Ì‚½‚ß‚É’Ç‰Á.	§ìÒ	[b”c]
 	m_UsageLimit = { USE_COUNT, USE_COUNT };
 	
-	//“–‚½‚è”»’è
+	//“–‚½‚è”»’è—X­
 	std::shared_ptr<CStaticMesh> UseMesh = AssetManager::Mesh(StaticMeshList::ExplosionCol);
-	std::shared_ptr<CStaticMesh> PickMesh = AssetManager::Mesh(StaticMeshList::ExplosionCol);
+	std::shared_ptr<CStaticMesh> PickMesh = AssetManager::Mesh(StaticMeshList::PickUpCol);
 
 	m_pPickUpCollider = CollisionDataFactory::CreateSphereForMesh(
 		CollisionBase::ColliderTag::Bomb,
