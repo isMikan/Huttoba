@@ -224,4 +224,19 @@ void CSceneStandby::MoveSelector()
 	}
 
 	m_pSpriteSelector->SetPosition(m_SelectorPos[m_SelectorNumber]);
+
+	//0`1‚ÌŠÔ‚Ì”’l‚ðŒvŽZ
+	float sin = fabsf(sinf(CTimeManager::GetTotalTime() * 3));
+
+	//ŠgkÝ’è
+	m_pSpriteSelector->SetScale(1.0f, sin, 1.0f);
+
+	//Ý’uˆÊ’u
+	D3DXVECTOR3 pos = m_SelectorPos[m_SelectorNumber];
+
+	//pos.y‚ðŠgk‚É‡‚í‚¹‚Ä­‚µ‰º‚É‚¸‚ç‚·
+	pos.y += 32.f * (1 - sin);
+
+
+	m_pSpriteSelector->SetPosition(pos);
 }
