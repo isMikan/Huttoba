@@ -59,7 +59,7 @@ void Fun::Init()
 	std::shared_ptr<CStaticMesh> UseMesh_2 = AssetManager::Mesh(StaticMeshList::BCapsule);
 	std::shared_ptr<CStaticMesh> PickMesh = AssetManager::Mesh(StaticMeshList::PickUpCol);
 
-	m_pPickUpCollider = CollisionDataFactory::CreateCapsuleForMesh(
+	m_pPickUpCollider = CollisionDataFactory::CreateSphereForMesh(
 		CollisionBase::ColliderTag::Fan,
 		PickMesh,
 		this
@@ -77,8 +77,8 @@ void Fun::Init()
 		this
 	);
 
-	D3DXVECTOR3 m_UseOffset = { 0.f, 0.f, 1.5f };
-	D3DXVECTOR3 m_UseOffset_2 = { 0.f, 0.f, 0.5f };
+	D3DXVECTOR3 m_UseOffset = { 0.f, 0.5f, 1.5f };
+	D3DXVECTOR3 m_UseOffset_2 = { 0.f, 0.5f, 0.5f };
 	D3DXVECTOR3 m_PickUpOffset = { 0.f, 0.0f, 0.f };
 
 	m_pUseCollider->SetLocalOffsetToSphere(m_UseOffset);
@@ -224,7 +224,6 @@ void Fun::UseMove()
 
 
 	//エフェクトの拡縮設定
-	AssetManager::Effect()->SetScale(hEffect, D3DXVECTOR3(0.3f, 0.3f, 0.3f));
 
 	D3DXVECTOR3 flowerd = m_pPlayer->GetLocalAxes().forward;
 	
@@ -232,7 +231,7 @@ void Fun::UseMove()
 
 	AssetManager::Effect()->SetRotation(hEffect, D3DXVECTOR3(D3DXToRadian(180.f), a, 0));
 	AssetManager::Effect()->SetSpeed(hEffect, 1.f);
-	AssetManager::Effect()->SetScale(hEffect, D3DXVECTOR3(0.03f, 0.03f, 0.03f));
+	AssetManager::Effect()->SetScale(hEffect, D3DXVECTOR3(0.045f, 0.045f, 0.045f));
 	AssetManager::Effect()->SetLocation(hEffect, m_vPosition);
 }
 

@@ -60,7 +60,7 @@ void Bomb::Init()
 	
 	//“–‚½‚è”»’è
 	std::shared_ptr<CStaticMesh> UseMesh = AssetManager::Mesh(StaticMeshList::ExplosionCol);
-	std::shared_ptr<CStaticMesh> PickMesh = AssetManager::Mesh(StaticMeshList::PickUpCol);
+	std::shared_ptr<CStaticMesh> PickMesh = AssetManager::Mesh(StaticMeshList::ExplosionCol);
 
 	m_pPickUpCollider = CollisionDataFactory::CreateSphereForMesh(
 		CollisionBase::ColliderTag::Bomb,

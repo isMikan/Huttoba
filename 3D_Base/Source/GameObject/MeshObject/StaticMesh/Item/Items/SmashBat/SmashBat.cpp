@@ -52,8 +52,8 @@ constexpr float USE_COUNT = 7;
 // ‰ñ“]‚É‚©‚¯‚é‘ŠÔ
 constexpr float SLERP_DURATION = 1.0f;
 
-//‰ñ”§ŒÀ
-constexpr float USE_LIMIT = 5.f;
+//ŠÔ§ŒÀ
+constexpr float USE_LIMIT = 20.f;
 
 //‚Á”ò‚Ñ
 constexpr float HIT_POWER = 17.f;
