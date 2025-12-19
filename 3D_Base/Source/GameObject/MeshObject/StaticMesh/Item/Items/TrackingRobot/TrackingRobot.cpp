@@ -315,12 +315,8 @@ void TrackingRobot::Smash(CPlayerBase& playiers)
 
 float TrackingRobot::CalculateForceScalar(float distance)
 {
-	//爆発の当たる範囲を仮設定
-	//当たり判定用メッシュの大きさにしたい
-	float maxDist = 2;
-
 	//0.0~1.0の間で距離の割合を出す
-	float ratio = 1.0f - (distance / maxDist);
+	float ratio = 1.0f - (distance / m_ExplosionRadius);
 
 	//爆発の最小吹き飛ばし力
 	float minPower = 5.0f;
