@@ -63,6 +63,9 @@ private:
     //爆弾とプレイヤーの距離に応じて吹き飛ばし力を計算
     float CalculateForceScalar(float distance);
 
+    //爆発の当たり判定メッシュの半径をとる
+    bool LoadExplosionMesh();
+
 private:
     //移動速度
     D3DXVECTOR3 m_Velocity;
@@ -92,4 +95,7 @@ private:
 
     //爆発の最大吹き飛ばし力
     float       m_MaxSmashPower;
+
+    //爆発の当たり判定のメッシュ半径を記録
+    float       m_ExplosionRadius;
 };
