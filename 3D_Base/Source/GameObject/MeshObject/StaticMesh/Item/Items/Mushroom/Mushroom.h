@@ -91,4 +91,8 @@ private:
     float       m_timer;
 
     ::EsHandle  m_hEffect;
+
+    //˜A‘±ƒqƒbƒg–hŽ~
+    std::vector<CPlayerBase*> m_ThrowHitPlayer;
+
 };

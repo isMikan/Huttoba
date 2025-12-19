@@ -109,4 +109,8 @@ private:
 
     //索敵の当たり判定の位置の補正値
     D3DXVECTOR3 m_CollisionOffSet;
+
+    //連続ヒット防止
+    std::vector<CPlayerBase*> m_ThrowHitPlayer;
+
 };

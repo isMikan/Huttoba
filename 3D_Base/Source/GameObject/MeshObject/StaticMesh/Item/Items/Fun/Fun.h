@@ -70,5 +70,6 @@ private:
     ::EsHandle hEffect = 1;
 
     std::shared_ptr<CollisionBase>	m_pUseCollider_2;		//Žg—p’†—p“–‚½‚è”»’è
+    std::vector<CPlayerBase*> m_ThrowHitPlayer;
 
 };

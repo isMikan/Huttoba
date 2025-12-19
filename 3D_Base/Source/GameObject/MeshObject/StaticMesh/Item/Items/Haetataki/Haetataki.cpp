@@ -68,6 +68,7 @@ Haetataki::Haetataki()
 	, m_Startfix		()
 	, m_Endfix			()
 	, m_HitPlayer		()
+	, m_ThrowHitPlayer	()
 {
 	Init();
 }
@@ -333,11 +334,24 @@ void Haetataki::OnCollision(CollisionBase* other)
 				Smash(*player);
 				m_HitPlayer.push_back(player);
 				AssetManager::Sound()->PlaySE(enSoundList::SE_HitHaetataki);
+
+				//エフェクト設定
+				D3DXVECTOR3 EffectPos = player->GetPosition();
+				EffectPos.y += 1.5f;
+				static ::EsHandle hEffect = 1;
+				hEffect = AssetManager::Effect()->Play("BoomerangHit", EffectPos);
+				AssetManager::Effect()->SetScale(hEffect, D3DXVECTOR3(1.f, 1.f, 1.f));
+
 			}
+
 			if (m_State == IItemObserver::State::Throw && m_pPlayer != player)
 			{
+				//すでに当たっていないか？
+				auto it = std::find(m_ThrowHitPlayer.begin(), m_ThrowHitPlayer.end(), player);
+				if (it != m_ThrowHitPlayer.end()) return;
+
 				ThrowSmash(*player);
-				m_HitPlayer.push_back(player);
+				m_ThrowHitPlayer.push_back(player);
 			}
 		}
 	}
@@ -359,15 +373,6 @@ void Haetataki::Smash(CPlayerBase& playiers)
 	playiers.SetHitAttack(
 		SmashVel,
 		CPlayerBase::HitEvent::Knockdown);
-
-	static ::EsHandle hEffect = 1;
-
-	//エフェクト追加
-	//hEffect = AssetManager::Effect()->Play("Explosion", m_vPosition);
-
-	//エフェクトの拡縮設定
-	AssetManager::Effect()->SetScale(hEffect, D3DXVECTOR3(0.6f, 0.6f, 0.6f));
-
 }
 
 //--------------------------------------------------------------------------------------------------------------

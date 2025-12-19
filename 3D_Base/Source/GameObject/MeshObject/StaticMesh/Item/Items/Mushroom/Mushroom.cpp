@@ -22,6 +22,8 @@ Mushroom::Mushroom()
 	, m_MaxSmashPower	( 7.0f )
 
 	, m_hEffect			()
+	, m_ThrowHitPlayer	()
+
 {
 	Init();
 }
@@ -157,7 +159,12 @@ void Mushroom::OnCollision(CollisionBase* other)
 
 			if (m_State==IItemObserver::State::Throw&& m_pPlayer != player)
 			{
+				//Ç∑Ç≈Ç…ìñÇΩÇ¡ÇƒÇ¢Ç»Ç¢Ç©ÅH
+				auto it = std::find(m_ThrowHitPlayer.begin(), m_ThrowHitPlayer.end(), player);
+				if (it != m_ThrowHitPlayer.end()) return;
+
 				ThrowSmash(*player);
+				m_ThrowHitPlayer.push_back(player);
 			}
 		}
 	}

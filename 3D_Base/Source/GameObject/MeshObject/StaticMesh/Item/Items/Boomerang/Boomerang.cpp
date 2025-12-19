@@ -205,23 +205,30 @@ void Boomerang::OnCollision(CollisionBase* other)
 	CPlayerBase* player = dynamic_cast<CPlayerBase*>(other->GetListener());
 	if (player == nullptr) return;
 
-	//当たってもいい状態か
-	bool IsOkHit = m_State == State::Use && player != m_pPlayer && m_IsUseThrow;
-	if (!IsOkHit) return;
-
 	//すでに当たっていないか？
 	auto it = std::find(m_HitPlayer.begin(), m_HitPlayer.end(), player);
 	if (it != m_HitPlayer.end()) return;
 
-	//ヒット
-	Smash(*player);
-	m_HitPlayer.push_back(player);
-
-
-	AssetManager::Sound()->PlayLoop(enSoundList::SE_HitHaetataki);
-	if (m_State == IItemObserver::State::Throw && m_pPlayer != player)
+	//当たってもいい状態か
+	bool IsOkHit = m_State == State::Use && player != m_pPlayer && m_IsUseThrow;
+	if (IsOkHit)
 	{
-		ThrowSmash(*player);
+		//ヒット
+		Smash(*player);
+		m_HitPlayer.push_back(player);
+		AssetManager::Sound()->PlayLoop(enSoundList::SE_HitHaetataki);
+	}
+	else
+	{
+		if (m_State == IItemObserver::State::Throw && m_pPlayer != player)
+		{
+			//すでに当たっていないか？
+			auto it = std::find(m_ThrowHitPlayer.begin(), m_ThrowHitPlayer.end(), player);
+			if (it != m_ThrowHitPlayer.end()) return;
+
+			ThrowSmash(*player);
+			m_ThrowHitPlayer.push_back(player);
+		}
 	}
 }
 

@@ -17,8 +17,9 @@ Fun::Fun()
 
 	, m_Power		( 4.0f )		
 
-	, m_pNowCollider()
-	, m_pUseCollider_2()
+	, m_pNowCollider	()
+	, m_pUseCollider_2	()
+	, m_ThrowHitPlayer	()
 {
 	Init();
 
@@ -192,7 +193,12 @@ void Fun::OnCollision(CollisionBase* other)
 			}
 			if (m_State == IItemObserver::State::Throw && m_pPlayer != player)
 			{
+				//Ç∑Ç≈Ç…ìñÇΩÇ¡ÇƒÇ¢Ç»Ç¢Ç©ÅH
+				auto it = std::find(m_ThrowHitPlayer.begin(), m_ThrowHitPlayer.end(), player);
+				if (it != m_ThrowHitPlayer.end()) return;
+
 				ThrowSmash(*player);
+				m_ThrowHitPlayer.push_back(player);
 			}
 		}
 	}
