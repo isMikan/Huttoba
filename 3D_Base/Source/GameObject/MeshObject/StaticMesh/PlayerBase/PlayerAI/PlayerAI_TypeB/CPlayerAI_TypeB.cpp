@@ -272,7 +272,8 @@ float CPlayerAI_TypeB::CalculateDangerScore(const D3DXVECTOR3& pos) const
 		return 0;
 	}
 
-	//float danger=(diffSq-)
+	//
+	float danger = diffSq - groundSafeRadius;
 
-	return 0.0f;
+	return danger * danger;
 }
