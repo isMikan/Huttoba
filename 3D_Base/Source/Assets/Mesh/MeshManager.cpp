@@ -112,7 +112,8 @@ HRESULT MeshManager::CreateSkinMesh()
 {
 	//各SkinMeshの情報を登録
 	//↓-----------------------------------------------------------------------------------------------------------------------------↓
-	RegisterSkinMesh(SkinMeshList::Chick, _T("Data\\Mesh\\Skin\\hiyoko\\ef_hiyoko.x"));
+	RegisterSkinMesh(SkinMeshList::Zako,	_T("Data\\Mesh\\Skin\\zako\\zako.x"));
+	RegisterSkinMesh(SkinMeshList::Chick,	_T("Data\\Mesh\\Skin\\hiyoko\\ef_hiyoko.x"));
 	//↑-----------------------------------------------------------------------------------------------------------------------------↑
 
 	//スキンメッシュのインスタンス作成
