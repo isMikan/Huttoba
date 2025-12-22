@@ -84,6 +84,7 @@ HRESULT CSceneStandby::LoadData()
 	m_pSpriteStartFont->AttachSprite(AssetManager::Sprite(Sprite2DList::Font_UI_Common));
 	m_pSpriteStartFont->SetPatternNo(0, 2);
 	m_pSpriteStartFont->SetPosition(530, 440, 0);
+	m_pSpriteStartFont->SetScale(1.1f, 1.1f, 1.f);
 
 	m_pSpriteEndFont->AttachSprite(AssetManager::Sprite(Sprite2DList::Font_UI_Common));
 	m_pSpriteEndFont->SetPatternNo(0, 3);
@@ -106,7 +107,7 @@ void CSceneStandby::Update()
 	AssetManager::Sound()->PlayLoop(enSoundList::BGM_SceneStanby);
 
 	//画面がどれくらいのフェードから操作できるかを指定している
-	if (CFadeManager::GetAlpha() <= 0.7)
+	if (CFadeManager::GetAlpha() <= 0.7f)
 	{
 		MoveSelector();
 
@@ -178,6 +179,11 @@ void CSceneStandby::Draw()
 		}
 		m_pRedyFontImg[i]->Draw();
 	}
+
+
+	//コントローラー番号0が準備OKなら
+	if (CSceneData::GetSlot(0))	m_pSpriteStartFont->SetAlpha(1.f);
+	else m_pSpriteStartFont->SetAlpha(0.5f);
 
 	m_pSpriteStartFont->Draw();
 	m_pSpriteEndFont->Draw();

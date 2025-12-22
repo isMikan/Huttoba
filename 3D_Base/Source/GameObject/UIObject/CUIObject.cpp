@@ -5,6 +5,7 @@ CUIObject::CUIObject()
 	, m_PatternNo	()
 
 	, m_Color		( 1.f, 1.f, 1.f )
+	, m_Alpha		( 1.f )
 {
 }
 
@@ -15,16 +16,12 @@ CUIObject::~CUIObject()
 
 void CUIObject::Update()
 {
-	if( m_pSprite == nullptr ){
-		return;
-	}
+	if(!m_pSprite) return;
 }
 
 void CUIObject::Draw()
 {
-	if( m_pSprite == nullptr ){
-		return;
-	}
+	if(!m_pSprite) return;
 
 	//描画直前で座標や回転情報などを更新.
 	m_pSprite->SetPosition( m_vPosition );
@@ -34,6 +31,7 @@ void CUIObject::Draw()
 	//パターン番号を設定
 	m_pSprite->SetPatternNo( m_PatternNo.x, m_PatternNo.y );
 
+	m_pSprite->SetAlpha(m_Alpha);
 	m_pSprite->SetColor(m_Color);
 
 	//レンダリング.
