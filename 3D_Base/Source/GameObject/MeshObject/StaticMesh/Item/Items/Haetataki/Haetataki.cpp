@@ -122,8 +122,9 @@ void Haetataki::Init()
 	m_ObjectColor.resize(2);
 
 	//赤色のカラーコード
-	D3DXVECTOR4 red = D3DXVECTOR4(1.0f, 0.2f, 0.2f, 1.0f);
-	m_ObjectColor[0].diffuse = red;
+	D3DXVECTOR4 red = D3DXVECTOR4(0.9f, 0.f, 0.f, 1.0f);
+	D3DXVECTOR4 yellow = D3DXVECTOR4(1.0f, 1.0f, 0.2f, 1.0f);
+	m_ObjectColor[0].diffuse = yellow;
 	m_ObjectColor[1].diffuse = red;
 
 	D3DXQuaternionRotationYawPitchRoll(&m_vQuaternion, D3DXToRadian(90.0f), D3DXToRadian(90.0f), 0.0f);
