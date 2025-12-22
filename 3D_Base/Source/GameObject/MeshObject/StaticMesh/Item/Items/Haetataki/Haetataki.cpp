@@ -401,7 +401,9 @@ void Haetataki::OneEnterThrow()
 	//取り出したZ軸成分をノーマライズ
 	D3DXVec3Normalize(&forward, &forward);
 
-	m_Velocity = forward * THROW_SPEED;
+	//m_Velocity = forward * THROW_SPEED;
+
+	m_Velocity = forward * m_ThrowSpeed;
 
 	//当たり判定削除
 	CollisionManager::GetInstance()->RemoveCollider(m_pCollision.get());

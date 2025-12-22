@@ -363,7 +363,7 @@ void Boomerang::OneEnterThrow()
 	//取り出したZ軸成分をノーマライズ
 	D3DXVec3Normalize(&forward, &forward);
 
-	m_Velocity = forward * m_MoveSpeed;
+	m_Velocity = forward * m_ThrowSpeed;
 
 	//判定切り替え
 	m_pUseCollider->SetActive(true);

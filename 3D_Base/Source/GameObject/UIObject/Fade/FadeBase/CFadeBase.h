@@ -29,9 +29,6 @@ public:
 	void FadeOut(
 		float startTime, float duration);	//引数 : 開始時間・フェードにかける時間.
 
-	//α値を取得.
-	float GetAlpha() const { return m_Alpha; }
-
 private:
-	float	m_Alpha;
+
 };

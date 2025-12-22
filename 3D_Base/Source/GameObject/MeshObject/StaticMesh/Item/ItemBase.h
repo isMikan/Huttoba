@@ -143,9 +143,11 @@ protected:
 	bool m_IsDestroy;	// 破壊するかどうか
 	bool m_IsOnGround;	// 地面に接触しているか
 	bool m_IsUse;		// 使用中か
-	bool m_IsOkFall;		// 落下可能かどうか
+	bool m_IsOkFall;	// 落下可能かどうか
 
 	Gauge m_UsageLimit;	//使用制限.
+
+	float m_ThrowSpeed;	//投げた時の移動速度
 
 	float m_ThrowSmashPower;	//投擲での吹き飛ばし力
 

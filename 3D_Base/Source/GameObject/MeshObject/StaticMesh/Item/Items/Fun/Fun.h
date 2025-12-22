@@ -58,9 +58,6 @@ private:
     //ˆÚ“®‘¬“x
     D3DXVECTOR3 m_Velocity;
 
-    //“Š‚°‚½‚ÌˆÚ“®‘¬“x
-    float       m_MoveSpeed;
-
     //‰Ÿ‚µo‚µ‚Ì‹­‚³
     float       m_Power;
 

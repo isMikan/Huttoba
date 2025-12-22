@@ -255,25 +255,37 @@ float CPlayerAI_TypeB::CalculateDangerScore(const D3DXVECTOR3& pos) const
 	D3DXVECTOR3 groundCenterPos = m_pGroundManager->GetGroundCenterPos();
 
 	//中心位置から引数の位置がどれくらい離れているかを計算
-	D3DXVECTOR3 diff = pos - groundCenterPos;
+	D3DXVECTOR3 dist = pos - groundCenterPos;
 
-	//中心位置からどれくらい離れているかの全長を出す
-	float diffSq = diff.x * diff.x + diff.z * diff.z;
+	//先ほど出した中心から離れているベクトルの長さから全長を消す(y座標がないのはy軸移動がほぼないから)
+	float distSq = dist.x * dist.x + dist.z * dist.z;
 
-	//地面の半径の安全とする長さを計算
+	//地面の安全とする範囲を計算
 	float groundSafeRadius = m_pGroundManager->GetGroundRadius() * m_GroundSafeRadius;
 
-	//diffSqがルートの計算を省いているのでこちらも2乗する
-	groundSafeRadius *= groundSafeRadius;
+	//distSqがルートの計算を省いているので2乗する
+	float groundSafeRadiusSq = groundSafeRadius * groundSafeRadius;
 
 	//距離が地面の安全とする範囲より下なら
-	if (diffSq < groundSafeRadius )
+	if (distSq < groundSafeRadiusSq)
 	{
 		return 0;
 	}
 
-	//
-	float danger = diffSq - groundSafeRadius;
+	float groundRadiusSq = m_pGroundManager->GetGroundRadius() * m_pGroundManager->GetGroundRadius();
 
-	return danger * danger;
+	//引数の位置-安全なステージ範囲/ステージの全長-安全な範囲 をして割合を求める
+	float danger = (distSq - groundSafeRadiusSq) / (groundRadiusSq - groundSafeRadiusSq);
+
+	//1.0以上ならステージ外に出ているので必ず無視するくらい点数を低くする
+	if (danger >= 1.0f)
+		return -(100 * 100);
+
+	//0~1で10をかけて点数を引くくする
+	return -10 * danger;
+}
+
+void CPlayerAI_TypeB::RunBomb()
+{
+
 }

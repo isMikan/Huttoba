@@ -13,7 +13,6 @@ Mushroom::Mushroom()
 	, m_IsPlaced		( false )
 
 	, m_Velocity		()
-	, m_MoveSpeed		( 6.0f )	//値を変えると移動速度が変化
 	, m_UpSpeed			( 5.0f )	//値を変えると爆弾のy軸の上昇量が変化
 
 	, m_IsThrow			( false )
@@ -69,7 +68,6 @@ void Mushroom::Init()
 	);
 
 	m_pUseCollider->SetActive(false);
-
 }
 
 void Mushroom::Update()
@@ -99,7 +97,6 @@ void Mushroom::Spawn()
 
 void Mushroom::OnGround()
 {
-
 }
 
 void Mushroom::Have()
@@ -128,18 +125,24 @@ void Mushroom::ItemState(IItemObserver::State state)
 	switch (state)
 	{
 	case IItemObserver::IItemObserver::State::Spawn:
+		m_Billboard = false;
 		break;
 	case IItemObserver::IItemObserver::State::OnGround:
+		m_Billboard = true;
 		break;
 	case IItemObserver::IItemObserver::State::Have:
+		m_Billboard = false;
 		break;
 	case IItemObserver::IItemObserver::State::Use:
+		m_Billboard = false;
 		OneEnterUse();
 		break;
 	case IItemObserver::IItemObserver::State::Throw:
+		m_Billboard = false;
 		OneEnterThrow();
 		break;
 	case IItemObserver::IItemObserver::State::Destroy:
+		m_Billboard = false;
 		break;
 	default:
 		break;
@@ -173,6 +176,9 @@ void Mushroom::OnCollision(CollisionBase* other)
 void Mushroom::HaveMove()
 {
 	m_vPosition = m_pPlayer->GetPlayerRightHand().GetPosition();
+	m_vPosition.x = m_pPlayer->GetPosition().x;
+	m_vPosition.z = m_pPlayer->GetPosition().z;
+
 	m_vQuaternion = m_pPlayer->GetQuaternion();
 }
 
@@ -267,7 +273,7 @@ void Mushroom::OneEnterUse()
 	//取り出したZ軸成分をノーマライズ
 	D3DXVec3Normalize(&forward, &forward);
 
-	m_Velocity = forward * m_MoveSpeed;
+	m_Velocity = forward * m_ThrowSpeed;
 
 	m_Velocity.y = m_UpSpeed;
 
@@ -294,7 +300,7 @@ void Mushroom::OneEnterThrow()
 	//取り出したZ軸成分をノーマライズ
 	D3DXVec3Normalize(&forward, &forward);
 
-	m_Velocity = forward * m_MoveSpeed;
+	m_Velocity = forward * m_ThrowSpeed;
 
 	m_IsThrow = true;
 }

@@ -3,6 +3,7 @@
 
 class CPlayer;
 class ChaseSensor;
+class CSkinMeshObject;
 
 class TrackingRobot
     : public ItemBase
@@ -75,6 +76,8 @@ private:
     //索敵判定クラス
     std::unique_ptr<ChaseSensor>    m_pChaseSensor;
 
+    std::unique_ptr<CSkinMeshObject>m_pSkinMesh;
+
     //地面に当たっているか
     bool        m_IsGround;
 
@@ -86,9 +89,6 @@ private:
 
     //旋回の角度
     float       m_TurnRate;
-
-    //投げた時の移動速度
-    float       m_ThrowSpeed;
 
     //投げてから爆発するまでの時間
     double      m_ExplosionTime;

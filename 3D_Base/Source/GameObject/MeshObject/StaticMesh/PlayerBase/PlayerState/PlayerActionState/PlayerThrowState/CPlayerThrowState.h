@@ -32,11 +32,19 @@ private:
 	float			m_CurrentTiltAngle;		//現在の傾き角度.
 	float			m_TiltAngleMax;			//最大の傾き角度.
 	float			m_PhaseSplit;			//傾きの変わり目.
+	float			m_HandLaps;				//手の周回.
 	
 	D3DXVECTOR3		m_RightHandStartPos;	//右手の元の位置.
 	D3DXVECTOR3		m_LeftHandStartPos;		//左手の元の位置.
 	D3DXVECTOR3		m_RightHandEndPos;		//右手の目的の位置.
 	D3DXVECTOR3		m_LeftHandEndPos;		//左手の目的の位置.
+
+	//両手で投げるアイテム用.
+	D3DXVECTOR3		m_HoldBothHands_RightHandEndPos;	//右手の目的の位置.
+	D3DXVECTOR3		m_HoldBothHands_LeftHandEndPos;		//左手の目的の位置.
+	//片手で投げるアイテム用.
+	D3DXVECTOR3		m_OneHand_RightHandEndPos;			//右手の目的の位置.
+	D3DXVECTOR3		m_OneHand_LeftHandEndPos;			//左手の目的の位置.
 
 	D3DXQUATERNION	m_StartQuat;			//開始時の回転.
 

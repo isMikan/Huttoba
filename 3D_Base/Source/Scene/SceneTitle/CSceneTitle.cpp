@@ -197,8 +197,6 @@ void CSceneTitle::Draw()
 
 	m_pDx11->SetDepth(false);
 
-	CFadeManager::Draw(0.f, 1.f, true);
-
 	static float startTime;
 	static bool isFade = false;
 	//プレイヤーが一人の場合.
@@ -224,6 +222,9 @@ void CSceneTitle::Draw()
 			isFade = false;
 		}
 	}
+
+	CFadeManager::Draw(0.f, 1.f, true);
+
 	m_pDx11->SetDepth(true);
 }
 

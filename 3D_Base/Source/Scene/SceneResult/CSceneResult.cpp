@@ -184,9 +184,9 @@ void CSceneResult::Draw()
 
 	m_pSpriteResultFont->Draw();
 
-	CFadeManager::Draw(0.f, 1.f, true);
-
 	m_pSpriteSelector->Draw();
+
+	CFadeManager::Draw(0.f, 1.f, true);
 
 	m_pDx11->SetDepth(true);
 }

@@ -33,13 +33,19 @@ public:
 		m_PatternNo.y = y;
 	}
 
-	//色の設定.	制作者 [甲把]
+//=== 制作者 [甲把] ===.
+	//色の設定.
 	void SetColor(D3DXVECTOR3 color) { m_Color = color; }
 	void SetColor(float r, float g, float b) {
 		m_Color.x = r;
 		m_Color.y = g;
 		m_Color.z = b;
 	}
+
+	//α値の取得と設定.
+	float GetAlpha() const { return m_Alpha; }
+	void SetAlpha(float alpha) { m_Alpha = alpha; }
+//=====================.
 
 protected:
 	//CGameObjectから継承した関数
@@ -51,4 +57,6 @@ protected:
 	POINTS		m_PatternNo;	//パターン番号(マス目)
 
 	D3DXVECTOR3	m_Color;		//スプライトの色.	制作者 [甲把]
+
+	float		m_Alpha;		//透過.
 };

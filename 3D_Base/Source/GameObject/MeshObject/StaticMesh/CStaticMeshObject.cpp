@@ -2,6 +2,8 @@
 
 CStaticMeshObject::CStaticMeshObject()
 	: m_pMesh			( nullptr )
+
+	, m_Billboard		( false )
 {
 	//‰ŠúF.
 	ObjectColor color = {
@@ -53,6 +55,8 @@ void CStaticMeshObject::Draw(
 		m_pMesh->SetObjectColor(
 			mNo, m_ObjectColor[mNo].diffuse, m_ObjectColor[mNo].ambient, m_ObjectColor[mNo].specular);
 	}
+
+	m_pMesh->SetBillboard(m_Billboard);
 
 	//ƒŒƒ“ƒ_ƒŠƒ“ƒO.
 	m_pMesh->Render( View, Proj, Light, Camera.vPosition );

@@ -8,20 +8,21 @@
 
 #include "ChaseSensor/ChaseSensor.h"
 
+#include "GameObject/MeshObject/SkinMesh/CSkinMeshObject.h"
+
 //Factoryに登録
 namespace { const bool regist = ItemBase::AutoRegister<TrackingRobot>(ItemID::TrackingRobot); }
 
 TrackingRobot::TrackingRobot()
 	: m_pTarget			()
 	, m_pChaseSensor	()
+	, m_pSkinMesh		()
 
 	, m_IsGround		( false )
 
 	, m_Velocity		()
 	, m_MoveSpeed		( 4.0f )	//値を変えると使用時の移動速度が変化
 	, m_TurnRate		( 5.0f )	//値を変えると使用時の旋回の角度が変化
-
-	, m_ThrowSpeed		( 6.0f )	//値を変えると投擲時の移動速度が変化
 
 	, m_ExplosionTime	( 5.0f )	//値を変えると爆発するまでの時間が変化
 	, m_ExplosionCnt	( 0.0f )
@@ -69,6 +70,10 @@ void TrackingRobot::Init()
 	);
 
 	m_pUseCollider->SetActive(false);
+
+	m_pSkinMesh = std::make_unique<CSkinMeshObject>();
+
+	m_pSkinMesh->AttachMesh(AssetManager::Mesh(SkinMeshList::Zako));
 }
 
 void TrackingRobot::Update()
@@ -315,12 +320,8 @@ void TrackingRobot::Smash(CPlayerBase& playiers)
 
 float TrackingRobot::CalculateForceScalar(float distance)
 {
-	//爆発の当たる範囲を仮設定
-	//当たり判定用メッシュの大きさにしたい
-	float maxDist = 2;
-
 	//0.0~1.0の間で距離の割合を出す
-	float ratio = 1.0f - (distance / maxDist);
+	float ratio = 1.0f - (distance / m_ExplosionRadius);
 
 	//爆発の最小吹き飛ばし力
 	float minPower = 5.0f;

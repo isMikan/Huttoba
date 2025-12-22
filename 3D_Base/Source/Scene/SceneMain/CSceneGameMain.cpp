@@ -120,7 +120,7 @@ HRESULT CSceneGameMain::LoadData()
 		return E_FAIL;
 	}
 
-	CCameraManager::SetPosition(0.f, 20.f, -10.f);
+	CCameraManager::SetPosition( 0.f, 20.f, -10.f );
 	CCameraManager::SetLook( 0.f, 2.f, 6.f );
 	CCameraManager::SetLight( 0.f, 30.f, -10.f );
 
