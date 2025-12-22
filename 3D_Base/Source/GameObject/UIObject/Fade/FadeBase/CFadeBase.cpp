@@ -1,7 +1,6 @@
 #include "CFadeBase.h"
 
 CFadeBase::CFadeBase()
-	: m_Alpha		( 255.f )
 {
 }
 
@@ -17,7 +16,6 @@ CFadeBase::~CFadeBase()
 void CFadeBase::Reset(float alpha)
 {
 	m_Alpha = alpha;
-	m_pSprite->SetAlpha(m_Alpha);
 }
 
 //--- XVˆ— ---.
@@ -29,8 +27,6 @@ void CFadeBase::Update()
 //--- •`‰æˆ— ---.
 void CFadeBase::Draw()
 {
-	m_pSprite->SetAlpha(m_Alpha);
-
 	CUIObject::Draw();
 }
 
@@ -58,9 +54,9 @@ void CFadeBase::FadeIn(float startTime, float duration)
 //--- ™X‚ÉˆÃ‚­‚È‚é ---.
 void CFadeBase::FadeOut(float startTime, float duration)
 {
-	if (m_Alpha > 255.f)
+	if (m_Alpha > 1.f)
 	{
-		m_Alpha = 255.f;
+		m_Alpha = 1.f;
 		return;
 	}
 
