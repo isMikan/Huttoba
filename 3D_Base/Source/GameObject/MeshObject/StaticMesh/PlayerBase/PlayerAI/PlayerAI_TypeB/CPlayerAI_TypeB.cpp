@@ -284,3 +284,8 @@ float CPlayerAI_TypeB::CalculateDangerScore(const D3DXVECTOR3& pos) const
 	//
 	return -10 * danger;
 }
+
+void CPlayerAI_TypeB::RunBomb()
+{
+
+}

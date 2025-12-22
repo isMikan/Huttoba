@@ -32,6 +32,9 @@ private:
 	//引数の位置がステージ端にどれくらい近いかでスコアの増減
 	float CalculateDangerScore(const D3DXVECTOR3& pos)const;
 
+	//使用された爆弾から逃げる動き
+	void RunBomb();
+
 private:
 	//移動先の情報
 	NearbyObject	m_Destination;
