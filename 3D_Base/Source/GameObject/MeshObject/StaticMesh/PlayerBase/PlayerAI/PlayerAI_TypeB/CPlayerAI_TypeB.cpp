@@ -277,11 +277,11 @@ float CPlayerAI_TypeB::CalculateDangerScore(const D3DXVECTOR3& pos) const
 	//引数の位置-安全なステージ範囲/ステージの全長-安全な範囲 をして割合を求める
 	float danger = (distSq - groundSafeRadiusSq) / (groundRadiusSq - groundSafeRadiusSq);
 
-	//
+	//1.0以上ならステージ外に出ているので必ず無視するくらい点数を低くする
 	if (danger >= 1.0f)
 		return -(100 * 100);
 
-	//
+	//0~1で10をかけて点数を引くくする
 	return -10 * danger;
 }
 

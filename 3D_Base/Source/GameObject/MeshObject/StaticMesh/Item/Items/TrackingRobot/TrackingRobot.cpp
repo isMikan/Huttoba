@@ -8,12 +8,15 @@
 
 #include "ChaseSensor/ChaseSensor.h"
 
+#include "GameObject/MeshObject/SkinMesh/CSkinMeshObject.h"
+
 //Factory‚É“o˜^
 namespace { const bool regist = ItemBase::AutoRegister<TrackingRobot>(ItemID::TrackingRobot); }
 
 TrackingRobot::TrackingRobot()
 	: m_pTarget			()
 	, m_pChaseSensor	()
+	, m_pSkinMesh		()
 
 	, m_IsGround		( false )
 
@@ -69,6 +72,10 @@ void TrackingRobot::Init()
 	);
 
 	m_pUseCollider->SetActive(false);
+
+	m_pSkinMesh = std::make_unique<CSkinMeshObject>();
+
+	m_pSkinMesh->AttachMesh(AssetManager::Mesh(SkinMeshList::Zako));
 }
 
 void TrackingRobot::Update()
