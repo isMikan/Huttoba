@@ -1049,7 +1049,7 @@ Mesh {
    0.000000;0.000000;0.000000;;
    0.000000;0.000000;0.000000;;
    TextureFilename {
-    "C:\\Users\\game\\Desktop\\futtoba\\3D_Base\\Data\\Mesh\\Static\\Item\\mushroom.png";
+    "mushroom.png";
    }
   }
   Material {
