@@ -128,6 +128,8 @@ HRESULT CEffect::LoadData()
 
 	m_pEffect["Knockback"]		= ::EsEffect::Create(m_pManager, u"Data\\Effekseer\\Knockback.efk");
 
+	m_pEffect["Fireworks"]		= ::EsEffect::Create(m_pManager, u"Data\\Effekseer\\fireworks.efk");
+
 	return S_OK;
 }
 

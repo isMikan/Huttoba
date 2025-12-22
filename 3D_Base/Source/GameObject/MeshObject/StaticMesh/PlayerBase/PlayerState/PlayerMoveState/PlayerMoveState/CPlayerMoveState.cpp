@@ -8,7 +8,7 @@ CPlayerMoveState::CPlayerMoveState(CPlayerBase& pPlayer, float x, float z)
 
 	, m_InputDir			( x, 0.f, z )
 
-	, m_HitPushbackPower	( 0.1f )
+	, m_HitPushbackPower	( 0.01f )
 	
 	, m_CurrentSpeed		()
 	, m_MoveSpeed			( 8.f )
