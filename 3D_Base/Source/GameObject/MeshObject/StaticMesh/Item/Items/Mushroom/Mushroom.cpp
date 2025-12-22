@@ -126,24 +126,24 @@ void Mushroom::ItemState(IItemObserver::State state)
 	switch (state)
 	{
 	case IItemObserver::IItemObserver::State::Spawn:
-		m_pMesh->SetBillboard(false);
+		m_Billboard = false;
 		break;
 	case IItemObserver::IItemObserver::State::OnGround:
-		m_pMesh->SetBillboard(true);
+		m_Billboard = true;
 		break;
 	case IItemObserver::IItemObserver::State::Have:
-		m_pMesh->SetBillboard(false);
+		m_Billboard = false;
 		break;
 	case IItemObserver::IItemObserver::State::Use:
-		m_pMesh->SetBillboard(false);
+		m_Billboard = false;
 		OneEnterUse();
 		break;
 	case IItemObserver::IItemObserver::State::Throw:
-		m_pMesh->SetBillboard(false);
+		m_Billboard = false;
 		OneEnterThrow();
 		break;
 	case IItemObserver::IItemObserver::State::Destroy:
-		m_pMesh->SetBillboard(false);
+		m_Billboard = false;
 		break;
 	default:
 		break;
