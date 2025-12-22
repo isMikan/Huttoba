@@ -30,12 +30,12 @@ Bomb::Bomb()
 	m_ObjectColor.resize(2);
 
 	//”š’e‚Ì”š’e•”•ª‚ÌŠDF‚Ì’l
-	m_ObjectColor[0].diffuse = D3DXVECTOR4(0.2f, 0.2f, 0.2f, 1.0f);
+	m_ObjectColor[1].diffuse = D3DXVECTOR4(0.2f, 0.2f, 0.2f, 1.0f);
 	//ŠgU”½Ë‚¾‚¯‚Å‚Í‚¢‚¢Š´‚¶‚É‚È‚ç‚È‚©‚Á‚½‚Ì‚ÅŠÂ‹«Œõ‚à•Ï‰»
-	m_ObjectColor[0].ambient = D3DXVECTOR4(0.15f, 0.15f, .15f, 1.f);
+	m_ObjectColor[1].ambient = D3DXVECTOR4(0.15f, 0.15f, .15f, 1.f);
 
 	//”š’e‚Ì•R‚Ì•”•ª‚Ì”’F‚Ì’l
-	m_ObjectColor[1].diffuse = D3DXVECTOR4(0.7f, 0.7f, 0.7f, 1.0f);
+	m_ObjectColor[0].diffuse = D3DXVECTOR4(0.7f, 0.7f, 0.7f, 1.0f);
 
 	m_vScale = D3DXVECTOR3(5, 5, 5);
 

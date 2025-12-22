@@ -222,7 +222,7 @@ void CPlayerBase::SetActionState(std::unique_ptr<CPlayerState> newState)
 void CPlayerBase::CreateCollider()
 {
 	//新しい CollisionDataFactory を使ったコリジョンデータの生成と登録.
-	std::shared_ptr<CStaticMesh> mesh = AssetManager::Mesh(StaticMeshList::BCapsule);
+	std::shared_ptr<CStaticMesh> mesh = AssetManager::Mesh(StaticMeshList::PlayerCol);
 
 	m_pCollision =
 		CollisionDataFactory::CreateCapsuleForMesh(
@@ -230,6 +230,9 @@ void CPlayerBase::CreateCollider()
 			mesh,	
 			this
 		);
+
+	//D3DXVECTOR3 offset = { 0.f,0.4f,0.f };
+	//m_pCollision->SetLocalOffSetToCapsule(offset, offset);
 
 	////新しい CollisionDataFactory を使ったコリジョンデータの生成と登録.
 	//std::shared_ptr<CStaticMesh> hand = AssetManager::Mesh(StaticMeshList::BCapsule);
