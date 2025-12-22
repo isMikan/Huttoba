@@ -46,6 +46,7 @@ public:
 	std::vector<ObjectColor> GetObjectColor(int index) const { 
 		return std::vector<ObjectColor>{m_ObjectColor[index]};
 	}
+
 //===============================================================.
 
 	std::shared_ptr<CStaticMesh> GetMesh() const { return m_pMesh; }

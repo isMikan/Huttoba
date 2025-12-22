@@ -69,7 +69,6 @@ void Mushroom::Init()
 	);
 
 	m_pUseCollider->SetActive(false);
-
 }
 
 void Mushroom::Update()
@@ -99,7 +98,6 @@ void Mushroom::Spawn()
 
 void Mushroom::OnGround()
 {
-
 }
 
 void Mushroom::Have()
@@ -128,18 +126,24 @@ void Mushroom::ItemState(IItemObserver::State state)
 	switch (state)
 	{
 	case IItemObserver::IItemObserver::State::Spawn:
+		m_pMesh->SetBillboard(false);
 		break;
 	case IItemObserver::IItemObserver::State::OnGround:
+		m_pMesh->SetBillboard(true);
 		break;
 	case IItemObserver::IItemObserver::State::Have:
+		m_pMesh->SetBillboard(false);
 		break;
 	case IItemObserver::IItemObserver::State::Use:
+		m_pMesh->SetBillboard(false);
 		OneEnterUse();
 		break;
 	case IItemObserver::IItemObserver::State::Throw:
+		m_pMesh->SetBillboard(false);
 		OneEnterThrow();
 		break;
 	case IItemObserver::IItemObserver::State::Destroy:
+		m_pMesh->SetBillboard(false);
 		break;
 	default:
 		break;
@@ -173,6 +177,9 @@ void Mushroom::OnCollision(CollisionBase* other)
 void Mushroom::HaveMove()
 {
 	m_vPosition = m_pPlayer->GetPlayerRightHand().GetPosition();
+	m_vPosition.x = m_pPlayer->GetPosition().x;
+	m_vPosition.z = m_pPlayer->GetPosition().z;
+
 	m_vQuaternion = m_pPlayer->GetQuaternion();
 }
 

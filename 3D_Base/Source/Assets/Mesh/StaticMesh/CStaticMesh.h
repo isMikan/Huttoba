@@ -189,12 +189,10 @@ public:
 		//色の設定.
 		m_ObjectColor[index] = color;
 	}
-
-	//デフォルトの色を取得する関数.
-	ObjectColor GetDefaultColor() const {
-		return m_DefaultColor;
-	}
 //===============================================================.
+
+	//ビルボード機能のON/OFF切り替え
+	void SetBillboard(bool flag) { m_Billboard = flag; }
 
 	//メッシュを取得.
 	LPD3DXMESH GetMesh() const { return m_Model.pMesh; }
@@ -266,10 +264,10 @@ private:
 									//※x=Pitch, y=Yaw, z=Roll.
 	D3DXVECTOR3		m_Scale;		//拡大縮小値(x,y,z等倍).
 
-//===  ===.
+//=== 回転と色			制作者 [甲把] ===.
 	D3DXQUATERNION	m_Quaternion;	//クォータニオンの回転.
 
 	std::vector<ObjectColor>	m_ObjectColor;	//オブジェクトの色.
 
-	ObjectColor m_DefaultColor;	//デフォルトの色.
+	bool			m_Billboard;	//ビルボード.
  };

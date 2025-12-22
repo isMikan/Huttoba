@@ -4,6 +4,9 @@
 
 #include "PlayerBase/PlayerState/PlayerActionState/PlayerActionIdleState/CPlayerActionIdleState.h"
 
+#include "Item/Items/Bomb/Bomb.h"
+#include "Item/Items/Mushroom/Mushroom.h"
+
 CPlayerThrowState::CPlayerThrowState(CPlayerBase& pPlayer)
 	: CPlayerState			( pPlayer )
 
@@ -13,11 +16,17 @@ CPlayerThrowState::CPlayerThrowState(CPlayerBase& pPlayer)
 	, m_CurrentTiltAngle	()
 	, m_TiltAngleMax		( D3DXToRadian( 30.f ) )
 	, m_PhaseSplit			( 0.5f )
+	, m_HandLaps			( 1.f )
 
 	, m_RightHandStartPos	()
 	, m_LeftHandStartPos	()
-	, m_RightHandEndPos		( 0.f, -0.5f, -0.7f )
-	, m_LeftHandEndPos		( 0.f, 0.f, 0.4f )
+	, m_RightHandEndPos		()
+	, m_LeftHandEndPos		()
+
+	, m_HoldBothHands_RightHandEndPos	( -0.3f, 0.8f, 0.7f )
+	, m_HoldBothHands_LeftHandEndPos	( 0.3f, 0.8f, 0.7f )
+	, m_OneHand_RightHandEndPos			( 0.f, -0.5f, -0.7f )
+	, m_OneHand_LeftHandEndPos			( 0.f, 0.f, 0.4f )
 
 	, m_StartQuat			()
 {
@@ -53,6 +62,22 @@ void CPlayerThrowState::Enter()
 	//手の終了位置を設定.
 	m_RightHandEndPos = m_RightHandStartPos + m_RightHandEndPos;
 	m_LeftHandEndPos = m_LeftHandStartPos + m_LeftHandEndPos;
+
+	ItemBase* item = m_pPlayer.GetHoldingItem();
+
+	//各アイテムの最終の手の位置を設定.
+	if (m_pPlayer.IsAnyHoldingItem<Bomb, Mushroom>())
+	{
+		m_RightHandEndPos = m_HoldBothHands_RightHandEndPos + m_RightHandStartPos;
+		m_LeftHandEndPos = m_HoldBothHands_LeftHandEndPos + m_LeftHandStartPos;
+
+		m_HandLaps = 0.5f;	//半周にする.
+	}
+	else
+	{
+		m_RightHandEndPos = m_OneHand_RightHandEndPos + m_RightHandStartPos;
+		m_LeftHandEndPos = m_OneHand_LeftHandEndPos + m_LeftHandStartPos;
+	}
 }
 
 //--- 状態の終了時に呼び出す ---.
@@ -111,7 +136,7 @@ void CPlayerThrowState::Update()
 	//クォータニオンの回転を計算して設定する.
 	m_pPlayer.SetQuaternion(m_pPlayer.TiltedQuat(m_StartQuat, axes.right, m_CurrentTiltAngle));
 
-	float eased = cosf(progress * D3DX_PI);	//それぞれの手の軌道の計算.	
+	float eased = cosf(progress * D3DX_PI * m_HandLaps);	//それぞれの手の軌道の計算.	
 
 	//右手と左手の調整位置だけの計算.
 	D3DXVECTOR3 rightHandOffsetPos;

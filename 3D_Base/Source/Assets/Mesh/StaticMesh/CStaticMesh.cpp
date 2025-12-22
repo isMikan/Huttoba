@@ -42,7 +42,10 @@ CStaticMesh::CStaticMesh()
 	, m_Rotation			()
 	, m_Scale				( 1.0f, 1.0f, 1.0f )
 
-	, m_Quaternion		( 0.f, 0.f, 0.f, 1.f )
+	, m_Quaternion			( 0.f, 0.f, 0.f, 1.f )
+	, m_ObjectColor			()
+
+	, m_Billboard			( false )
 {
 }
 
@@ -802,6 +805,16 @@ void CStaticMesh::Render(
 	//ワールド行列作成.
 	//拡縮×回転×移動 ※順番がとても大切！！.
 	mWorld = mScale * mRotQuat * mTran;
+
+	//ビルボード用.
+	if (m_Billboard == true) {
+		D3DXMATRIX CancelRotation = mView;//ビュー行列.
+		CancelRotation._41
+			= CancelRotation._42 = CancelRotation._43 = 0.0f;//xyzを0にする.
+		//CancelRotationの逆行列を求めます.
+		D3DXMatrixInverse(&CancelRotation, nullptr, &CancelRotation);
+		mWorld = CancelRotation * mWorld;
+	}
 
 	//使用するシェーダのセット.
 	m_pContext11->VSSetShader( m_pVertexShader.Get(), nullptr, 0);	//頂点シェーダ.

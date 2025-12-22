@@ -30,7 +30,7 @@ CPlayerItemAttackState::CPlayerItemAttackState(CPlayerBase& pPlayer)
 	, m_RightHandEndPos					()
 	, m_LeftHandEndPos					()
 
-	, m_HoldBothHands_RightHandEndPos	( -0.3f, 0.8f, 0.7f)
+	, m_HoldBothHands_RightHandEndPos	( -0.3f, 0.8f, 0.7f )
 	, m_HoldBothHands_LeftHandEndPos	( 0.3f, 0.8f, 0.7f )
 	, m_OneHand_RightHandEndPos			( -0.6f, 0.3f, 0.7f )
 	, m_OneHand_LeftHandEndPos			( -0.1f, 0.2f, -0.3f )
