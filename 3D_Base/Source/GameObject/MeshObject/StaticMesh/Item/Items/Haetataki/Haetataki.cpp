@@ -118,6 +118,14 @@ void Haetataki::Init()
 	D3DXVECTOR3 UseOffset = { OFFSET_USE_COLLISION_X,OFFSET_USE_COLLISION_Y,OFFSET_USE_COLLISION_Z };
 
 	m_pUseCollider->SetLocalOffSetToCapsule(UseOffset, UseOffset);
+
+	m_ObjectColor.resize(2);
+
+	//赤色のカラーコード
+	D3DXVECTOR4 red = D3DXVECTOR4(1.0f, 0.2f, 0.2f, 1.0f);
+	m_ObjectColor[0].diffuse = red;
+	m_ObjectColor[1].diffuse = red;
+
 }
 
 //--------------------------------------------------------------------------------------------------------------
