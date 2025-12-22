@@ -126,6 +126,7 @@ void Haetataki::Init()
 	m_ObjectColor[0].diffuse = red;
 	m_ObjectColor[1].diffuse = red;
 
+	D3DXQuaternionRotationYawPitchRoll(&m_vQuaternion, D3DXToRadian(90.0f), D3DXToRadian(90.0f), 0.0f);
 }
 
 //--------------------------------------------------------------------------------------------------------------
@@ -213,8 +214,6 @@ void Haetataki::Use()
 
 		m_pPickUpCollider->SetActive(true);
 		m_pUseCollider->SetActive(false);
-
-
 	}
 }
 
