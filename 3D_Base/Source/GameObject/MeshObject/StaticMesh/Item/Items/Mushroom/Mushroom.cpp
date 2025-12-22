@@ -13,7 +13,6 @@ Mushroom::Mushroom()
 	, m_IsPlaced		( false )
 
 	, m_Velocity		()
-	, m_MoveSpeed		( 6.0f )	//値を変えると移動速度が変化
 	, m_UpSpeed			( 5.0f )	//値を変えると爆弾のy軸の上昇量が変化
 
 	, m_IsThrow			( false )
@@ -274,7 +273,7 @@ void Mushroom::OneEnterUse()
 	//取り出したZ軸成分をノーマライズ
 	D3DXVec3Normalize(&forward, &forward);
 
-	m_Velocity = forward * m_MoveSpeed;
+	m_Velocity = forward * m_ThrowSpeed;
 
 	m_Velocity.y = m_UpSpeed;
 
@@ -301,7 +300,7 @@ void Mushroom::OneEnterThrow()
 	//取り出したZ軸成分をノーマライズ
 	D3DXVec3Normalize(&forward, &forward);
 
-	m_Velocity = forward * m_MoveSpeed;
+	m_Velocity = forward * m_ThrowSpeed;
 
 	m_IsThrow = true;
 }

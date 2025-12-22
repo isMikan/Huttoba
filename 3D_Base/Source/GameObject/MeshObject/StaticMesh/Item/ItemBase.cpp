@@ -4,20 +4,20 @@
 #include "Collision/CollisionUtility/CollisionUtility.h"
 
 ItemBase::ItemBase()
-	: m_State		( IItemObserver::State::Spawn )
-	, m_OldState	( IItemObserver::State::None )
-	, m_pPlayer		( nullptr )
-	, m_tGravity	( 9.8f )
-	, m_IsDestroy	( false )
-	, m_IsOnGround	( false )
-	, m_IsOkFall	( true )
+	: m_State			( IItemObserver::State::Spawn )
+	, m_OldState		( IItemObserver::State::None )
+	, m_pPlayer			( nullptr )
+	, m_tGravity		( 9.8f )
+	, m_IsDestroy		( false )
+	, m_IsOnGround		( false )
+	, m_IsOkFall		( true )
 
-	, m_ThrowSpeed		()
+	, m_ThrowSpeed		( 6.0f )
 	, m_ThrowSmashPower	( 7.0f )
 	, m_Tag				( ItemID::None )
 
-	, m_IsFall		 ( false )
-	, m_ItemFallCount()
+	, m_IsFall			( false )
+	, m_ItemFallCount	()
 {
 	m_vScale = D3DXVECTOR3(1.5f, 1.5f, 1.5f);
 }

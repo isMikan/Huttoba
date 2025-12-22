@@ -23,7 +23,7 @@ constexpr float ADD_ROT_X = 0.2f;
 constexpr float ADD_ROT_Y = 0.2f;
 constexpr float ADD_ROT_Z = 0.2f;
 
-constexpr float THROW_SPEED = 6.0f;
+//constexpr float THROW_SPEED = 6.0f;
 
 //初期位置
 constexpr float INITAL_POS_X = 0.f;
@@ -446,7 +446,9 @@ void SmashBat::OneEnterThrow()
 	//取り出したZ軸成分をノーマライズ
 	D3DXVec3Normalize(&forward, &forward);
 
-	m_Velocity = forward * THROW_SPEED;
+	//m_Velocity = forward * THROW_SPEED;
+
+	m_Velocity = forward * m_ThrowSpeed;
 
 	//当たり判定削除
 	CollisionManager::GetInstance()->RemoveCollider(m_pCollision.get());

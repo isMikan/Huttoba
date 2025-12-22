@@ -90,9 +90,6 @@ private:
     //ù‰ñ‚ÌŠp“x
     float       m_TurnRate;
 
-    //“Š‚°‚½‚ÌˆÚ“®‘¬“x
-    float       m_ThrowSpeed;
-
     //“Š‚°‚Ä‚©‚ç”š”­‚·‚é‚Ü‚Å‚ÌŠÔ
     double      m_ExplosionTime;
 

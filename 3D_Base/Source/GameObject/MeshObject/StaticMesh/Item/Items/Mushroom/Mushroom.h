@@ -72,9 +72,6 @@ private:
     //ˆÚ“®‘¬“x
     D3DXVECTOR3 m_Velocity;
 
-    //“Š‚°‚½‚ÌˆÚ“®‘¬“x
-    float       m_MoveSpeed;
-
     //“Š‚°‚½‚Ìy²‚Ìã¸—Ê
     float       m_UpSpeed;
 

@@ -37,7 +37,7 @@ Bomb::Bomb()
 	//”š’e‚Ì•R‚Ì•”•ª‚Ì”’F‚Ì’l
 	m_ObjectColor[1].diffuse = D3DXVECTOR4(0.7f, 0.7f, 0.7f, 1.0f);
 
-	m_vScale = D3DXVECTOR3(3, 3, 3);
+	m_vScale = D3DXVECTOR3(5, 5, 5);
 
 	LoadExplosionMesh();
 }

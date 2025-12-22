@@ -13,7 +13,6 @@ Fun::Fun()
 	, m_HaveOffset	()
 
 	, m_Velocity	()
-	, m_MoveSpeed	( 6.0f )		//値を変えると投げた時の移動速度が変化
 
 	, m_Power		( 4.0f )		
 
@@ -269,7 +268,7 @@ void Fun::OneEnterThrow()
 	//取り出したZ軸成分をノーマライズ
 	D3DXVec3Normalize(&forward, &forward);
 
-	m_Velocity = forward * m_MoveSpeed;
+	m_Velocity = forward * m_ThrowSpeed;
 }
 
 void Fun::Hit(CPlayerBase& playiers)
