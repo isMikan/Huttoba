@@ -30,9 +30,6 @@
 #include "PlayerState/PlayerActionState/PlayerKnockdownState/CPlayerKnockdownState.h"
 #include "PlayerState/PlayerActionState/PlayerGetUpState/CPlayerGetUpState.h"
 
-#include "PlayerState/PlayerActionState/PlayerResultWin_TypeA/CPlayerResultWin_TypeA.h"
-#include "PlayerState/PlayerActionState/PlayerResultLose_TypeA/CPlayerResultLose_TypeA.h"
-
 class ItemBase;
 
 /***********************************************************************
@@ -113,6 +110,8 @@ public:
 	virtual void Draw(
 		D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAMERA& Camera) override;
 
+	//--- 準備用更新処理 ---.
+	virtual void StandbyUpdate();
 	//--- リザルト用更新処理 ---.
 	virtual void ResultUpdate();
 

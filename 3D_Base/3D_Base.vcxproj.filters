@@ -124,6 +124,8 @@
     <ClCompile Include="Source\GameObject\MeshObject\SkinMesh\RollingChick\CRollingChick.cpp" />
     <ClCompile Include="Source\GameObject\MeshObject\SkinMesh\RollingChick\RollingChickManager\CRollingChickManager.cpp" />
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\PlayerBase\PlayerSEManager\CPlayerSEManager.cpp" />
+    <ClCompile Include="Source\GameObject\UIObject\Sky\CSky.cpp" />
+    <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\PlayerBase\PlayerState\PlayerActionState\PlayerResultWin_TypeB\CPlayerResultWin_TypeB.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Assets\AssetManager.h" />
@@ -251,6 +253,8 @@
     <ClInclude Include="Source\GameObject\MeshObject\SkinMesh\RollingChick\CRollingChick.h" />
     <ClInclude Include="Source\GameObject\MeshObject\SkinMesh\RollingChick\RollingChickManager\CRollingChickManager.h" />
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\PlayerBase\PlayerSEManager\CPlayerSEManager.h" />
+    <ClInclude Include="Source\GameObject\UIObject\Sky\CSky.h" />
+    <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\PlayerBase\PlayerState\PlayerActionState\PlayerResultWin_TypeB\CPlayerResultWin_TypeB.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint" />

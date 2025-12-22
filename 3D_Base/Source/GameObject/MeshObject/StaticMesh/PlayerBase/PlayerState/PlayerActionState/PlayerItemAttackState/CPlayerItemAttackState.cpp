@@ -155,12 +155,11 @@ void CPlayerItemAttackState::Update()
 	float progress = (t - m_StartTime) / m_EndTime;
 	progress = std::clamp(progress, 0.f, 1.f);
 
+	float eased = sinf(progress * D3DX_PI * m_HandLaps);	//•â³‚ğŒvZ‚·‚é.	
+	
 	//‰Eè‚Æ¶è‚Ì’²®ˆÊ’u
 	D3DXVECTOR3 rightHandOffsetPos;
 	D3DXVECTOR3 leftHandOffsetPos;
-
-	float eased = sinf(progress * D3DX_PI * m_HandLaps);	//•â³‚ğŒvZ‚·‚é.	
-	
 	//è‚Ì‹O“¹‚ÌŒvZ.
 	D3DXVec3Lerp(&rightHandOffsetPos, &m_RightHandStartPos, &m_RightHandEndPos, eased);
 	D3DXVec3Lerp(&leftHandOffsetPos, &m_LeftHandStartPos, &m_LeftHandEndPos, eased);

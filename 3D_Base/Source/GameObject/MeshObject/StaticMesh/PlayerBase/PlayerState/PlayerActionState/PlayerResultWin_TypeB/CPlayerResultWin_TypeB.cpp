@@ -1,4 +1,4 @@
-#include "CPlayerResultWin_TypeA.h"
+#include "CPlayerResultWin_TypeB.h"
 
 #include "PlayerBase/CPlayerBase.h"
 
@@ -6,7 +6,7 @@
 #include "PlayerBase/PlayerState/PlayerActionState/PlayerHandWhiffState/CPlayerHandWhiffState.h"
 #include "PlayerBase/PlayerState/PlayerActionState/PlayerHandHitState/CPlayerHandHitState.h"
 
-CPlayerResultWin_TypeA::CPlayerResultWin_TypeA(CPlayerBase& pPlayer)
+CPlayerResultWin_TypeB::CPlayerResultWin_TypeB(CPlayerBase& pPlayer)
 	: CPlayerState			( pPlayer )
 	
 	, m_StartTime			()
@@ -16,18 +16,20 @@ CPlayerResultWin_TypeA::CPlayerResultWin_TypeA(CPlayerBase& pPlayer)
 	, m_TiltAngleMax		( D3DXToRadian( -10.f ) )
 	, m_PhaseSplit			( 0.7f )
 	, m_HandLaps			( 2.f )		//一周.
-	, m_HandWidth			( 0.045f )
+	, m_HandWidth			( 0.4f )
 
 	, m_RightHandPos		()
 	, m_LeftHandPos			()
-	, m_RightHandStartPos	( -0.1f, -0.1f, 0.2f )
-	, m_LeftHandStartPos	( 0.1f, -0.1f, 0.2f )
+	, m_RightHandStartPos	( -0.4f, 0.2f, 0.4f )
+	, m_LeftHandStartPos	(  0.4f, 0.2f, 0.4f )
+	, m_RightHandEndPos		(  0.4f, 0.2f, 0.4f )
+	, m_LeftHandEndPos		( -0.4f, 0.2f, 0.4f )
 
 	, m_StartQuat			( 0.f, 0.f, 0.f, 1.f )
 {
 }
 
-CPlayerResultWin_TypeA::~CPlayerResultWin_TypeA()
+CPlayerResultWin_TypeB::~CPlayerResultWin_TypeB()
 {
 }
 
@@ -36,7 +38,7 @@ CPlayerResultWin_TypeA::~CPlayerResultWin_TypeA()
 //======================================================================
 
 //--- 状態の開始時に呼び出す ---.
-void CPlayerResultWin_TypeA::Enter()
+void CPlayerResultWin_TypeB::Enter()
 {
 	//攻撃の開始時間を取得.
 	m_StartTime = CTimeManager::GetTotalTime();
@@ -54,15 +56,17 @@ void CPlayerResultWin_TypeA::Enter()
 	m_LeftHandStartPos += leftHandOffset;
 	m_RightHandPos = m_RightHandStartPos;
 	m_LeftHandPos = m_LeftHandStartPos;
+	m_RightHandEndPos += rightHandOffset;
+	m_LeftHandEndPos += leftHandOffset;
 }
 
 //--- 状態の終了時に呼び出す ---.
-void CPlayerResultWin_TypeA::Exit()
+void CPlayerResultWin_TypeB::Exit()
 {
 }
 
 //--- この状態の間に呼び出す ---.
-void CPlayerResultWin_TypeA::Update()
+void CPlayerResultWin_TypeB::Update()
 {
 	//経過時間を取得.
 	float t = CTimeManager::GetTotalTime();
@@ -81,45 +85,17 @@ void CPlayerResultWin_TypeA::Update()
 	float progress = (t - m_StartTime) / m_EndTime;
 	progress = progress = std::clamp(progress, 0.f, 1.f);
 
-	//時間の割合が半分より前なら（傾く動き）.
-	if (progress < m_PhaseSplit)
-	{
-		//後ろに傾くまでの現在の傾き割合.
-		float ratio = progress / m_PhaseSplit;
-		m_TiltAngleMax = D3DXToRadian(-15.f);	//10度前に
-
-		//現在の傾き = 最大傾き角度 * 割合.
-		m_CurrentTiltAngle = m_pPlayer.WrapAngle(m_TiltAngleMax * ratio);
-	}
-	//時間の割合が半分以上（戻る動き）.
-	else if (progress <= 1.0f)
-	{
-		//傾きの変わり目(m_PhaseSplit)からどれだけ経過したかを割って割合.
-		float ratio = (progress - m_PhaseSplit) / m_PhaseSplit;
-		m_TiltAngleMax = D3DXToRadian(-5.f);		//5度前に.
-		
-		//現在の傾き = 最大傾き角度 * (1 - 割合).
-		m_CurrentTiltAngle = m_pPlayer.WrapAngle(m_TiltAngleMax * (1.f - ratio));
-	}
-	else
-	{
-		//終了後は0度.
-		m_CurrentTiltAngle = 0.f;
-	}
-
-	//ローカル軸を取得.
-	CPlayerBase::LocalAxes axes = m_pPlayer.GetLocalAxes();
-	//クォータニオンの回転を計算して設定する.
-	m_pPlayer.SetQuaternion(m_pPlayer.TiltedQuat(m_StartQuat, axes.right, m_CurrentTiltAngle));
-
-	//上に手を出す計算をする.	
+	//横に手を移動する計算.	
 	float eased = sinf(progress * D3DX_PI * m_HandLaps) * m_HandWidth;	
 
-	//調整位置に足す.
-	m_RightHandPos.y += eased;
-	m_LeftHandPos.y += eased;
+	//右手と左手の調整位置
+	D3DXVECTOR3 rightHandOffsetPos;
+	D3DXVECTOR3 leftHandOffsetPos;
+	//手の軌道の計算.
+	D3DXVec3Lerp(&rightHandOffsetPos, &m_RightHandStartPos, &m_RightHandEndPos, eased);
+	D3DXVec3Lerp(&leftHandOffsetPos, &m_LeftHandStartPos, &m_LeftHandEndPos, eased);
 
 	//手の位置を調整して設定.
-	m_pPlayer.GetPlayerRightHand().SetPosition(m_pPlayer.GetObjectPos(m_RightHandPos));
-	m_pPlayer.GetPlayerLeftHand().SetPosition(m_pPlayer.GetObjectPos(m_LeftHandPos));
+	m_pPlayer.GetPlayerRightHand().SetPosition(m_pPlayer.GetObjectPos(rightHandOffsetPos));
+	m_pPlayer.GetPlayerLeftHand().SetPosition(m_pPlayer.GetObjectPos(leftHandOffsetPos));
 }

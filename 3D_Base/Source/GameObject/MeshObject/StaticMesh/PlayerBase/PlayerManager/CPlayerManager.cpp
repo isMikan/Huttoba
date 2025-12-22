@@ -215,15 +215,8 @@ void CPlayerManager::StandbyPlayerUpdate()
 	{
 		if (!player) continue;	//プレイヤーがいない場合、次へ.
 
-		player->Update();	//胴体.
-
+		player->StandbyUpdate();	//胴体.
 		Update();
-
-		//落ちた場合、削除.
-		if (player->GetPosition().x < -10.f)
-		{
-			Destroy(player.get());
-		}
 	}
 }
 
@@ -258,29 +251,6 @@ void CPlayerManager::ResultPlayerUpdate()
 		Update();
 	}
 }
-
-//エフェクトを表示するための関数.
-//void CPlayerManager::ManageEffectLaser(static::EsHandle hEffect)
-//{
-//	if (GetAsyncKeyState('Y') & 0x0001)
-//	{
-//		for (auto& player : m_pPlayers)
-//		{
-//			hEffect = AssetManager::Effect()->Play("Laser", player->GetPosition());
-//
-//			//拡縮
-//			AssetManager::Effect()->SetScale(hEffect, D3DXVECTOR3(0.8f, 0.8f, 0.8f));
-//			AssetManager::Effect()->SetRotation(hEffect, D3DXVECTOR3(D3DXToRadian(-90.f), 0.f, 0.f));
-//			AssetManager::Effect()->SetLocation(hEffect, D3DXVECTOR3(0.f, 1.f, 1.f));
-//		}
-//	}
-//
-//	//Effect制御
-//	if (GetAsyncKeyState('T') & 0x0001)
-//	{
-//		AssetManager::Effect()->Stop(hEffect);
-//	}
-//}
 
 //======================================================================
 // 	   内部で呼び出す関数.

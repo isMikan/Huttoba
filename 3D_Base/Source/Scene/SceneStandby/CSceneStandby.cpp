@@ -143,7 +143,7 @@ void CSceneStandby::Update()
 	}
 
 	//ƒvƒŒƒCƒ„[‚Ì“®ì
-	m_pPlayerManager->Update();
+	m_pPlayerManager->StandbyPlayerUpdate();
 }
 
 void CSceneStandby::Draw()

@@ -10,7 +10,7 @@
 CPlayerFallingState::CPlayerFallingState(CPlayerBase& pPlayer)
 	: CPlayerState			( pPlayer )
 
-	, m_UpHandOffset		( 0.f, 0.5f, 0.f )
+	, m_HandUpOffset		( 0.f, 0.5f, 0.f )
 	, m_StartRightAxis		()
 	, m_Velocity			()
 
@@ -162,8 +162,8 @@ void CPlayerFallingState::Update()
 	CPlayerBase::LocalAxes axes = m_pPlayer.GetLocalAxes();
 
 	//è‚Ì’²®ˆÊ’u‚Ìİ’è.
-	D3DXVECTOR3 rightHandOffsetPos = m_UpHandOffset + m_pPlayer.GetPlayerRightHand().GetOffsetPos();
-	D3DXVECTOR3 leftHandOffsetPos = m_UpHandOffset + m_pPlayer.GetPlayerLeftHand().GetOffsetPos();
+	D3DXVECTOR3 rightHandOffsetPos = m_HandUpOffset + m_pPlayer.GetPlayerRightHand().GetOffsetPos();
+	D3DXVECTOR3 leftHandOffsetPos = m_HandUpOffset + m_pPlayer.GetPlayerLeftHand().GetOffsetPos();
 
 	//è‚ÌˆÊ’u‚ğ’²®‚µ‚Äİ’è.
 	m_pPlayer.GetPlayerRightHand().SetPosition(m_pPlayer.GetObjectPos(rightHandOffsetPos));

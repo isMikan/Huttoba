@@ -29,6 +29,9 @@ private:
 	float			m_StartTime;			//開始時間.
 	float			m_EndTime;				//終了時間.
 
+	float			m_HandLaps;				//手の周回.
+	float			m_HandWidth;			//手の速度.
+
 private:
 //======================================================================
 // 	   呼び出しを禁止するコンストラクタ.

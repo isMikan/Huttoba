@@ -1,7 +1,12 @@
 #include "CPlayerBase.h"
 
+#include "PlayerState/PlayerActionState/PlayerResultWin_TypeA/CPlayerResultWin_TypeA.h"
+#include "PlayerState/PlayerActionState/PlayerResultWin_TypeB/CPlayerResultWin_TypeB.h"
+#include "PlayerState/PlayerActionState/PlayerResultLose_TypeA/CPlayerResultLose_TypeA.h"
+
 #include "Item/ItemBase.h"	
 #include "Item/Items/Boomerang/Boomerang.h"
+
 #include "Collision/CollisionUtility/CollisionUtility.h"
 #include "Scene/SceneData/CSceneData.h"
 
@@ -129,6 +134,35 @@ void CPlayerBase::Update()
 void CPlayerBase::Draw(D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAMERA& Camera)
 {
 	CStaticMeshObject::Draw(View, Proj, Light, Camera);
+}
+
+//--- 準備用更新処理 ---.
+void CPlayerBase::StandbyUpdate()
+{
+	//頭の調整位置を取得.
+	D3DXVECTOR3 headOffsetPos = GetPlayerHead().GetOffsetPos();
+	//頭の位置を設定.
+	GetPlayerHead().SetPosition(GetObjectPos(headOffsetPos));
+
+	if (CSceneData::GetSlot(m_PlayerID))
+	{
+		//設定したいポーズと異なる場合.
+		if (!IsAnyActionState<CPlayerResultWin_TypeB>())
+		{
+			SetActionState(std::make_unique<CPlayerResultWin_TypeB>(*this));
+		}
+	}
+	else
+	{
+		//設定したいポーズと異なる場合.
+		if (!IsAnyActionState<CPlayerActionIdleState>())
+		{
+			SetActionState(std::make_unique<CPlayerActionIdleState>(*this));
+		}
+	}
+
+	//行動の状態を更新.
+	m_pActionState->Update();
 }
 
 //--- リザルト用更新処理 ---.
