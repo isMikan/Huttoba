@@ -29,11 +29,13 @@ void CPlayerAI_TypeB::Update()
 	//0にすると scoer = -距離 をしているので何も行動しないのスコアが高くなる
 	m_MoveScore = -10000;
 
-	SearchItem();
+	//SearchItem();
 
-	HandleItemAction();
+	//HandleItemAction();
 
-	AvoidDanger();
+	//AvoidDanger();
+
+	RunBomb();
 
 	AutomaticMovement(m_Destination.dir);
 
@@ -164,7 +166,7 @@ void CPlayerAI_TypeB::HandleItemAction()
 		ItemMove(m_pHoldingItem->GetTag());
 
 		//ターゲットプレイヤーと近ければ攻撃
-		if (m_Destination.sqrt < 1.0f && dot>0.8f)
+		if (m_Destination.sqrt < ItemMove(m_pHoldingItem->GetTag()) && dot>0.8f)
 		{
 			m_Control = ActionInstruct::Attack;
 		}
@@ -193,7 +195,7 @@ void CPlayerAI_TypeB::AvoidDanger()
 	}
 }
 
-void CPlayerAI_TypeB::ItemMove(ItemID item)
+float CPlayerAI_TypeB::ItemMove(ItemID item)
 {
 	//アイテムによって変化する攻撃するの距離
 	float AttackDistance;
@@ -237,6 +239,7 @@ void CPlayerAI_TypeB::ItemMove(ItemID item)
 		AttackDistance = 0.0f;
 		break;
 	}
+	return AttackDistance;
 }
 
 float CPlayerAI_TypeB::ItemScoreBonus(const ItemID& item) const
@@ -309,4 +312,14 @@ float CPlayerAI_TypeB::CalculateDangerScore(const D3DXVECTOR3& pos) const
 void CPlayerAI_TypeB::RunBomb()
 {
 
+	for (auto& item : m_pItemManager->GetItems())
+	{
+		if (item->GetTag() == ItemID::Bomb)
+		{
+			if (item->GetState() == IItemObserver::State::Throw|| item->GetState() == IItemObserver::State::Use)
+			{
+				m_Destination.dir = m_vPosition - item->GetPosition();
+			}
+		}
+	}
 }
