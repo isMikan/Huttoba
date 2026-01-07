@@ -43,10 +43,6 @@ public:
 	//--- リザルト ---.
 	void ResultPlayerUpdate();
 
-	//今は実際使うかわからないのでコメント化.
-	//エフェクトを表示するための関数.
-	//void ManageEffectLaser(static::EsHandle hEffect);
-
 	//一人のプレイヤーを取得.
 	CPlayerBase* GetPlayer(int id) { return m_pPlayers[id].get(); }
 	std::vector<std::unique_ptr<CPlayerBase>>& GetPlayer() { return m_pPlayers; }
@@ -72,5 +68,7 @@ private:
 //======================================================================
 	std::vector<std::unique_ptr<CPlayerBase>>		m_pPlayers;		//プレイヤー.
 
-	float			m_InitialSetPosY;	//y軸の初期位置.
+	std::vector<int>		m_LivingOrder;		//最後に並ぶ順.
+
+	float					m_InitialSetPosY;	//y軸の初期位置.
 };

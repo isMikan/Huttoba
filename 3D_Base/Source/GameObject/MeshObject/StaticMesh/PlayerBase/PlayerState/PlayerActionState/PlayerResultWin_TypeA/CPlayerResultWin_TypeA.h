@@ -3,7 +3,7 @@
 #include "PlayerBase/PlayerState/CPlayerState.h"
 
 /***********************************************************************
-*	プレイヤーが負けた時の状態クラス.
+*	プレイヤーが勝った時の状態クラス.
 **/
 class CPlayerResultWin_TypeA
 	: public CPlayerState	//プレイヤー状態を継承.

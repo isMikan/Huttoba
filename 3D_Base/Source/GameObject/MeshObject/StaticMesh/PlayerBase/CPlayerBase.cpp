@@ -2,6 +2,8 @@
 
 #include "PlayerState/PlayerActionState/PlayerResultWin_TypeA/CPlayerResultWin_TypeA.h"
 #include "PlayerState/PlayerActionState/PlayerResultWin_TypeB/CPlayerResultWin_TypeB.h"
+#include "PlayerState/PlayerActionState/PlayerResultWin_TypeC/CPlayerResultWin_TypeC.h"
+#include "PlayerState/PlayerActionState/PlayerResultWin_TypeD/CPlayerResultWin_TypeD.h"
 #include "PlayerState/PlayerActionState/PlayerResultLose_TypeA/CPlayerResultLose_TypeA.h"
 
 #include "Item/ItemBase.h"	
@@ -147,9 +149,9 @@ void CPlayerBase::StandbyUpdate()
 	if (CSceneData::GetSlot(m_PlayerID))
 	{
 		//設定したいポーズと異なる場合.
-		if (!IsAnyActionState<CPlayerResultWin_TypeB>())
+		if (!IsAnyActionState<CPlayerResultWin_TypeD>())
 		{
-			SetActionState(std::make_unique<CPlayerResultWin_TypeB>(*this));
+			SetActionState(std::make_unique<CPlayerResultWin_TypeD>(*this));
 		}
 	}
 	else
@@ -166,7 +168,7 @@ void CPlayerBase::StandbyUpdate()
 }
 
 //--- リザルト用更新処理 ---.
-void CPlayerBase::ResultUpdate()
+void CPlayerBase::ResultUpdate(int poseNo)
 {
 	//頭の調整位置を取得.
 	D3DXVECTOR3 headOffsetPos = GetPlayerHead().GetOffsetPos();
@@ -185,13 +187,19 @@ void CPlayerBase::ResultUpdate()
 	//アイドル状態の場合.
 	if(IsAnyActionState<CPlayerActionIdleState>())
 	{
-		if (CSceneData::GetPlayerLiving(m_PlayerID))
+		switch (poseNo)
 		{
+		case 1:
 			SetActionState(std::make_unique<CPlayerResultWin_TypeA>(*this));
-		}
-		else
-		{
+			break;
+		case 2:
+			SetActionState(std::make_unique<CPlayerResultWin_TypeB>(*this));
+			break;
+		case 3:
 			SetActionState(std::make_unique<CPlayerResultLose_TypeA>(*this));
+			break;
+		default:
+			break;
 		}
 	}
 

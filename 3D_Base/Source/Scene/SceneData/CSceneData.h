@@ -46,7 +46,6 @@ public:
         return count;
     }
 
-
 private:
     std::array<bool, Player_Max>    m_IsSlot;           //€”õOK‚©.
     std::array<bool, Player_Max>    m_IsPlayerLiving;   //ƒvƒŒƒCƒ„[‚ª¶‚«‚Ä‚¢‚é‚©.

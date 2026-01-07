@@ -267,7 +267,6 @@ void CSceneGameMain::Update()
 	case CSceneGameMain::GameState::Finish:
 		//頭の位置を更新したいので.
 		m_pPlayerManager->Update();
-
 		//次のシーンに遷移
 		if (m_StateTimer >= m_FinishDuration)
 		{
