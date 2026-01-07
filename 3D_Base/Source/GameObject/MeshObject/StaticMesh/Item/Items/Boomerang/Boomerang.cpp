@@ -7,7 +7,7 @@
 
 
 constexpr float COMEBACK_SPEED = 2.f;	//この速度以下で切り替えす
-constexpr float TURN_ANGLE_RAD = 10.f;	//ブーメランが回転していく角度
+constexpr float TURN_ANGLE_RAD = -10.f;	//ブーメランが回転していく角度
 
 constexpr int SMASH_POWER = 6;		//吹っ飛び力
 constexpr float SMASH_ANGLE = 60.f; //吹っ飛び角度
@@ -211,6 +211,7 @@ void Boomerang::OnCollision(CollisionBase* other)
 
 	//当たってもいい状態か
 	bool IsOkHit = m_State == State::Use && player != m_pPlayer && m_IsUseThrow;
+
 	if (IsOkHit)
 	{
 		//ヒット
