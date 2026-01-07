@@ -2,7 +2,7 @@
 
 CShadow::CShadow()
 	: m_DisplayHigh		( 10.f )
-	, m_MaxSize			( 0.017f )
+	, m_MaxSize			( 0.025f )
 {
 }
 
