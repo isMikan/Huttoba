@@ -125,7 +125,7 @@ void Mushroom::ItemState(IItemObserver::State state)
 	switch (state)
 	{
 	case IItemObserver::IItemObserver::State::Spawn:
-		m_Billboard = false;
+		m_Billboard = true;
 		break;
 	case IItemObserver::IItemObserver::State::OnGround:
 		m_Billboard = true;

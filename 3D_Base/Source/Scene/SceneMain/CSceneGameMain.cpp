@@ -184,6 +184,31 @@ void CSceneGameMain::Update()
 	//経過時間を計算
 	m_StateTimer += CTimeManager::GetDeltaTime();
 
+
+	//地面に接地しているか
+	for (auto& player : m_pPlayerManager->GetPlayer())
+	{
+		if (!player) continue;	//プレイヤーがいない場合、次へ
+
+		player->OnGroundCollision(*m_pGroundManager);
+	}
+
+	//地面に接地しているか
+	for (auto& item : m_pItemManager->GetItems())
+	{
+		item->IsOnGround(*m_pGroundManager);
+	}
+
+	//爆発
+	for (auto& exp : m_pExplosiones)
+	{
+		//爆発しているか
+		if (exp->IsStart())
+		{
+			exp->Update();
+		}
+	}
+
 	switch (m_GameState)
 	{
 	case CSceneGameMain::GameState::Ready:
@@ -199,44 +224,15 @@ void CSceneGameMain::Update()
 
 		break;
 	case CSceneGameMain::GameState::Play:
-
 		//地面マネージャーの更新処理
 		m_pGroundManager->Update();
-
-		//地面に接地しているか
-		for (auto& player : m_pPlayerManager->GetPlayer())
-		{
-			if (!player) continue;	//プレイヤーがいない場合、次へ
-
-			player->OnGroundCollision(*m_pGroundManager);
-		}
-
-		//地面に接地しているか
-		for (auto& item : m_pItemManager->GetItems())
-		{
-			item->IsOnGround(*m_pGroundManager);
-		}
-
-		//爆発
-		for (auto& exp : m_pExplosiones)
-		{
-			//爆発しているか
-			if (exp->IsStart())
-			{
-				exp->Update();
-			}
-		}
-
 		m_pGroundCollisionProxy->Update();
 
 		m_pItemManager->Update();
 		//プレイヤーの動作
 		m_pPlayerManager->MainPlayerUpdate();
 
-
-
 		m_pDrawTimer->Update();
-		m_pShadowManager->Update(m_pPlayerManager.get(), m_pItemManager.get());
 		m_pGaugeManager->Update();
 		m_pRollingChickManager->Update();
 
@@ -265,8 +261,8 @@ void CSceneGameMain::Update()
 			m_GameState = GameState::Finish;
 			m_StateTimer = 0;
 			AssetManager::Sound()->PlaySE(enSoundList::SE_EndSceneMain);
-
 		}
+
 		break;
 	case CSceneGameMain::GameState::Finish:
 		//頭の位置を更新したいので.
@@ -282,6 +278,7 @@ void CSceneGameMain::Update()
 	default:
 		break;
 	}
+	m_pShadowManager->Update(m_pPlayerManager.get(), m_pItemManager.get());
 }
 
 void CSceneGameMain::Draw()
@@ -332,8 +329,7 @@ void CSceneGameMain::Draw()
 
 	//影マネージャーの描画.
 	m_pShadowManager->Draw(m_pDx11, view, proj);
-
-
+	
 	//プレイヤーの描画.
 	m_pPlayerManager->Draw(view, proj, light, camera);
 

@@ -16,7 +16,7 @@ void DrawTimer::Init()
 	//”š‚Ìİ’è
 	RemainingTimeImage[Time::Ten] = std::make_unique<CUIObject>();
 	RemainingTimeImage[Time::Ten]->AttachSprite(AssetManager::Sprite(Sprite2DList::TimeNumber));
-	RemainingTimeImage[Time::Ten]->SetPatternNo(0, 0);
+	RemainingTimeImage[Time::Ten]->SetPatternNo(6, 0);
 	RemainingTimeImage[Time::Ten]->SetPosition(635, 10, 0);
 
 	RemainingTimeImage[Time::One] = std::make_unique<CUIObject>();
