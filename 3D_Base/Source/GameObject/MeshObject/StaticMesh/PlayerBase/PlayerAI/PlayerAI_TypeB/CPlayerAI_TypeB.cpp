@@ -159,6 +159,10 @@ void CPlayerAI_TypeB::HandleItemAction()
 		//1で同じ方向,0で直角,-1で真後ろを向いている
 		float dot = D3DXVec3Dot(&nor, &forward);
 
+		//このif文の部分をtrueを返すのが持っているアイテムによって変化するようにして
+		//攻撃をする距離を変化させる
+		ItemMove(m_pHoldingItem->GetTag());
+
 		//ターゲットプレイヤーと近ければ攻撃
 		if (m_Destination.sqrt < 1.0f && dot>0.8f)
 		{
@@ -191,29 +195,46 @@ void CPlayerAI_TypeB::AvoidDanger()
 
 void CPlayerAI_TypeB::ItemMove(ItemID item)
 {
+	//アイテムによって変化する攻撃するの距離
+	float AttackDistance;
+
 	switch (item)
 	{
 	case ItemID::Haetataki:
+		AttackDistance = 1.0f;
 		break;
 	case ItemID::Bomb:
+		AttackDistance = 4.0f;
 		break;
 	case ItemID::Fun:
+		AttackDistance = 5.0f;
 		break;
 	case ItemID::Mushroom:
+		AttackDistance = 4.0f;
 		break;
 	case ItemID::SmashBat:
+		AttackDistance = 1.0f;
 		break;
 	case ItemID::TrackingRobot:
+		AttackDistance = 10.0f;
 		break;
 	case ItemID::Boomerang:
+		AttackDistance = 1.0f;
 		break;
 	case ItemID::Magnet:
+		AttackDistance = 1.0f;
 		break;
 	case ItemID::Max:
+		//該当しないものなら0を入れて攻撃しないようにする
+		AttackDistance = 1.0f;
 		break;
 	case ItemID::None:
+		//該当しないものなら0を入れて攻撃しないようにする
+		AttackDistance = 1.0f;
 		break;
 	default:
+		//該当しないものなら0を入れて攻撃しないようにする
+		AttackDistance = 0.0f;
 		break;
 	}
 }
