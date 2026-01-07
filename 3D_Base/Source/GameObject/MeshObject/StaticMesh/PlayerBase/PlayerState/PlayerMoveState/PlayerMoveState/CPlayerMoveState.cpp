@@ -4,17 +4,17 @@
 #include "PlayerBase/PlayerAI/CPlayerAI.h"
 
 CPlayerMoveState::CPlayerMoveState(CPlayerBase& pPlayer, float x, float z)
-	: CPlayerState			( pPlayer )
+	: CPlayerState				( pPlayer )
 
-	, m_InputDir			( x, 0.f, z )
+	, m_InputDir				( x, 0.f, z )
 
-	, m_HitPushbackPower	( 0.01f )
+	, m_HitPushbackPower		( 0.01f )
 	
-	, m_CurrentSpeed		()
-	, m_MoveSpeed			( 8.f )
-	, m_RotatingMoveSpeed	( 4.f )
-	, m_HitingMoveSpeed		( 3.f )
-	, m_AIMoveSpeed			( 6.f )
+	, m_CurrentSpeed			()
+	, m_MoveSpeed				( 8.f )
+	, m_RotatingMoveSpeed		( 4.f )
+	, m_HitingMoveSpeed			( 1.f )
+	, m_AIMoveSpeed				( 6.f )
 {
 }
 
