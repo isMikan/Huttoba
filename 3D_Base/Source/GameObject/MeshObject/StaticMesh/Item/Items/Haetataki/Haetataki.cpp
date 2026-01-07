@@ -98,7 +98,7 @@ void Haetataki::Init()
 
 	//当たり判定
 	std::shared_ptr<CStaticMesh> UseMesh = AssetManager::Mesh(StaticMeshList::HaetatakiCol);
-	std::shared_ptr<CStaticMesh> PickMesh = AssetManager::Mesh(StaticMeshList::PickUpCol);
+	std::shared_ptr<CStaticMesh> PickMesh = AssetManager::Mesh(StaticMeshList::HaetatakiPickUpCol);
 
 	m_pPickUpCollider = CollisionDataFactory::CreateSphereForMesh(
 		CollisionBase::ColliderTag::Haetataki,
@@ -116,10 +116,13 @@ void Haetataki::Init()
 	m_pUseCollider->SetActive(false);
 
 	D3DXVECTOR3 UseOffset = { OFFSET_USE_COLLISION_X,OFFSET_USE_COLLISION_Y,OFFSET_USE_COLLISION_Z };
+	D3DXVECTOR3 PickOffSet = { 0.f, 0.7f, 0.f };
 
 	m_pUseCollider->SetLocalOffSetToCapsule(UseOffset, UseOffset);
+	m_pPickUpCollider->SetLocalOffsetToSphere(PickOffSet);
 
 	m_ObjectColor.resize(2);
+
 
 	//赤色のカラーコード
 	D3DXVECTOR4 red = D3DXVECTOR4(0.9f, 0.f, 0.f, 1.0f);
@@ -250,7 +253,6 @@ void Haetataki::ItemState(IItemObserver::State state)
 	case IItemObserver::State::Have:
 		m_HitPlayer.clear();
 		if (m_UseCount <= 0) { Destroy(); }
-
 		break;
 	case IItemObserver::State::Use:
 		m_UsageLimit.remaining = --m_UseCount;

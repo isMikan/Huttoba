@@ -138,6 +138,7 @@ enum class StaticMeshList
 	TestPlayer,
 	BoomerangCol,
 	PickUpCol,
+	HaetatakiPickUpCol,
 	HaetatakiCol,
 	SmashBatCol,
 	PlayerCol,
