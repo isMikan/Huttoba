@@ -24,7 +24,7 @@ private:
 	void AvoidDanger();
 
 	//アイテムによってそれぞれの移動や攻撃
-	void ItemMove(ItemID item);
+	float ItemMove(ItemID item);
 
 	//アイテムの種類によるスコアの増減
 	float ItemScoreBonus(const ItemID& item)const;
