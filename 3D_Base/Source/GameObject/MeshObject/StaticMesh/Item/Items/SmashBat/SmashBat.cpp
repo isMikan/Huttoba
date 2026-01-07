@@ -46,14 +46,11 @@ constexpr float OFFSET_USE_COLLISION_X = 0.0f;
 constexpr float OFFSET_USE_COLLISION_Y = -0.1f;
 constexpr float OFFSET_USE_COLLISION_Z = 0.0f;
 
-//égópè„å¿
-constexpr float USE_COUNT = 7;
-
 // âÒì]Ç…Ç©ÇØÇÈëçéûä‘
 constexpr float SLERP_DURATION = 1.0f;
 
 //éûä‘êßå¿
-constexpr float USE_LIMIT = 20.f;
+constexpr float USE_LIMIT = 5.f;
 
 //êÅÇ¡îÚÇ—
 constexpr float HIT_POWER = 17.f;
