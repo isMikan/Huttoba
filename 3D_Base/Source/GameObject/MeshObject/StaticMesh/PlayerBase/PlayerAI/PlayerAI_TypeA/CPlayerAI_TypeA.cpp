@@ -29,6 +29,7 @@ CPlayerAI_TypeA::~CPlayerAI_TypeA()
 void CPlayerAI_TypeA::Update()
 {
 	m_Control = ActionInstruct::None;
+	m_IsSearchPlayer = false;
 
 	//比較のため、最大数に設定しておく.
 	m_NearbyItems.sqrt = m_MaxSqrt;
@@ -45,22 +46,27 @@ void CPlayerAI_TypeA::Update()
 				FindNearbyObject(item.get(), m_NearbyItems, IsSearchItem(item.get()));
 				m_TargetDir = m_NearbyItems.dir;
 
-				if (m_NearbyItems.sqrt < 0.5f)
+				if (m_NearbyItems.sqrt < 1.f)
 				{
 					m_Control = ActionInstruct::ToggleItem;
 				}
 			}
-			else
-			{
-				m_IsSearchPlayer = true;
-			}
 		}
 	}
-	else
+
+	for (auto& item : m_pItemManager->GetItems())
 	{
-		m_IsSearchPlayer = true;
+		if (!item) continue;
+
+		if (m_pItemManager->GetItemVectorNum() <= 0
+			|| m_pHoldingItem
+			|| !IsSearchItem(item.get()))
+		{
+			m_IsSearchPlayer = true;
+		}
 	}
 
+	std::cout<< m_IsSearchPlayer << std::endl;
 	//プレイヤーの散策.
 	if (m_IsSearchPlayer)
 	{
@@ -87,12 +93,13 @@ void CPlayerAI_TypeA::Update()
 		{
 			m_Control = ActionInstruct::Attack;
 		}
+
+		if (!m_IsHitGround)
+		{
+			m_TargetDir = D3DXVECTOR3(0.0f, 0.f, 10.f) - m_vPosition;
+		}
 	}
 
-	if (!m_IsHitGround)
-	{
-		m_TargetDir = D3DXVECTOR3(0.0f, 0.f, 10.f) - m_vPosition;
-	}
 	AutomaticMovement(m_TargetDir);
 
 	CPlayerAI::Update();
