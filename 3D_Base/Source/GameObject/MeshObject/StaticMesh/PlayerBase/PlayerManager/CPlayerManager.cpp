@@ -1,15 +1,10 @@
 #include "CPlayerManager.h"
 
 #include "PlayerBase/Player/CPlayer.h"
-#include "PlayerBase/PlayerAI/CPlayerAI.h"
 #include "PlayerBase/PlayerAI/PlayerAI_TypeA/CPlayerAI_TypeA.h"
 #include "PlayerBase/PlayerAI/PlayerAI_TypeB/CPlayerAI_TypeB.h"
 
-#include "PlayerBase/PlayerState/PlayerMoveState/PlayerMoveIdelState/CPlayerMoveIdleState.h"
-#include "PlayerBase/PlayerState/PlayerTurnState/PlayerTurnIdleState/CPlayerTurnIdleState.h"
-#include "PlayerBase/PlayerState/PlayerActionState/PlayerActionIdleState/CPlayerActionIdleState.h"
-
-#include "PlayerBase/PlayerState/PlayerActionState/PlayerHandAttackState/CPlayerHandAttackState.h"
+#include "PlayerBase/PlayerState/PlayerActionState/PlayerResultWin_TypeC/CPlayerResultWin_TypeC.h"
 
 #include "Scene/SceneData/CSceneData.h"
 
@@ -81,7 +76,7 @@ void CPlayerManager::Draw(D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAME
 {
 	for (auto& player : m_pPlayers)
 	{
-		if (!player) continue;	//プレイヤーがいない場合、次へ.
+		if (!player) continue;			//プレイヤーがいない場合、次へ.
 
 		//描画.
 		player->Draw( View, Proj, Light, Camera );						//胴体.
@@ -100,7 +95,7 @@ void CPlayerManager::StandbyPlayerCreate()
 
 	for (int pNo = 0; pNo < Player_Max; pNo++)
 	{
-		if (!m_pPlayers[pNo]) return;
+		if (!m_pPlayers[pNo]) continue;	//プレイヤーがいない場合、次へ.
 
 		D3DXVECTOR3 pos(-1.f, 0.f, -1.f);
 		//左から順に表示.
@@ -119,7 +114,7 @@ void CPlayerManager::MainPlayerCreate(ItemManager* itemManager, CGroundManager* 
 
 	for (auto& player : m_pPlayers)
 	{
-		if (!player) return;
+		if (!player) continue;			//プレイヤーがいない場合、次へ.
 
 		//プレイヤー番号を取得.
 		int id = player->GetPlayerID();
@@ -146,6 +141,8 @@ void CPlayerManager::ResultPlayerCreate()
 	int countFalled = 0;	//敗者数.
 	for (int pNo = 0; pNo < Player_Max; pNo++)
 	{
+		if (!m_pPlayers[pNo]) continue;		//プレイヤーがいない場合、次へ.
+
 		//勝利したプレイヤーの場合.
 		if (CSceneData::GetPlayerLiving(pNo))
 		{
@@ -194,7 +191,7 @@ void CPlayerManager::ResultPlayerCreate()
 			else
 			{
 				//左から順に表示.
-				pos.x = ((pos.x + 1.5f) * countFalled) - 1.5f;
+				pos.x = ((pos.x + 1.5f) * countFalled) - 2.f;
 				pos.y += 7.f;
 				pos.z = 5.f;
 
@@ -253,7 +250,7 @@ void CPlayerManager::TitlePlayerUpdate()
 		{
 			CSceneData::SetPlayerLive(id, false);
 
-			m_InitialSetPosY = 40.f;
+			m_InitialSetPosY = 50.f;
 			InitialSettings(id);
 		}
 	}
@@ -266,7 +263,28 @@ void CPlayerManager::StandbyPlayerUpdate()
 	{
 		if (!player) continue;	//プレイヤーがいない場合、次へ.
 
-		player->StandbyUpdate();	//胴体.
+		int poseNo = 0;
+
+		int id = player->GetPlayerID();	//プレイヤーIDを取得.
+
+		//準備OKの場合.
+		if (CSceneData::GetSlot(id))
+		{
+			poseNo = rand() % 3 + 1;	//0をアイドル状態にするので 1 足す.
+		}
+		//最初のプレイヤー以外の場合.
+		if(id > 0)
+		{
+			int oldId = id - 1;		//前のプレイヤー.
+			//前のプレイヤーがハイタッチを待っている場合.
+			if (m_pPlayers[oldId]->IsAnyActionState<CPlayerResultWin_TypeC>())
+			{
+				poseNo = 4;		//返してあげる.
+			}
+		}
+
+		player->StandbyUpdate(poseNo);	//準備中専用の更新処理.
+
 		Update();
 	}
 }
@@ -278,7 +296,7 @@ void CPlayerManager::MainPlayerUpdate()
 	{
 		if (!player) continue;	//プレイヤーがいない場合、次へ.
 
-		player->Update();	//胴体.
+		player->Update();		//胴体.
 
 		Update();
 
@@ -293,18 +311,85 @@ void CPlayerManager::MainPlayerUpdate()
 //--- リザルト ---.
 void CPlayerManager::ResultPlayerUpdate()
 {
+	int countLive = 0;					//勝者数.
+	static std::vector<int> ranking;	//ランキング.
+
 	for (auto& player : m_pPlayers)
 	{
 		if (!player) continue;	//プレイヤーがいない場合、次へ.
 
-		int poseNo;
-		if (CSceneData::GetPlayerLiving(player->GetPlayerID()))
+		int poseNo = 0;						//ポーズ番号.
+		int id = player->GetPlayerID();		//プレイヤーIDを取得.
+
+		//プレイヤーが生きている場合.
+		if (CSceneData::GetPlayerLiving(id))
 		{
-			poseNo = rand() % 3;
+			ranking.push_back(id);	//どのプレイヤーが前にいるのか入れておく.
+
+			switch (CSceneData::GetPlayerLivingNum())
+			{
+			//1人勝ち.
+			case 1:
+
+				poseNo = rand() % 2;
+
+				break;
+			//2人勝ち.
+			case 2:
+
+				poseNo = rand() % 3;
+				if (1 == countLive)
+				{
+					poseNo = rand() % 2;
+				}
+				//前のプレイヤーがハイタッチを待っている場合.
+				if (countLive > 0
+					&& m_pPlayers[ranking[countLive - 1]]->IsAnyActionState<CPlayerResultWin_TypeC>())
+				{
+					poseNo = 3;		//返してあげる.
+				}
+
+				break;
+			//3人勝ち.
+			case 3:
+
+				poseNo = rand() % 3;
+				if (2 == countLive)
+				{
+					poseNo = rand() % 2;
+				}
+				//前のプレイヤーがハイタッチを待っている場合.
+				if (countLive > 0
+					&& m_pPlayers[ranking[countLive - 1]]->IsAnyActionState<CPlayerResultWin_TypeC>())
+				{
+					poseNo = 3;		//返してあげる.
+				}
+
+				break;
+			//4人勝ち.
+			case 4:
+
+				poseNo = rand() % 3;
+				if (3 == countLive)
+				{
+					poseNo = rand() % 2;
+				}
+				//前のプレイヤーがハイタッチを待っている場合.
+				if (countLive > 0
+					&& m_pPlayers[ranking[countLive - 1]]->IsAnyActionState<CPlayerResultWin_TypeC>())
+				{
+					poseNo = 3;		//返してあげる.
+				}
+
+				break;
+			default:
+				break;
+			}
+			countLive++;	//勝者数をカウント（ランキングが 0 からなので遅らす）.
 		}
 		else
 		{
-			poseNo = 3;
+			poseNo = 4;		//負けた時.
 		}
 
 		player->ResultUpdate(poseNo);
@@ -327,6 +412,8 @@ void CPlayerManager::Create()
 
 	for (int pNo = 0; pNo < Player_Max; pNo++)
 	{
+		if (m_pPlayers[pNo]) continue;
+
 #if 0
 		//プレイヤーのインスタンス生成.
 		if (pNo != 1)
@@ -363,7 +450,7 @@ void CPlayerManager::Create()
 #endif
 #endif
 
-		if (!m_pPlayers[pNo]) return;
+		if (!m_pPlayers[pNo]) continue;
 
 		//胴体の色を設定.
 		m_pPlayers[pNo]->SetObjectColor(0, CharacterColorSettings(pNo));
@@ -380,8 +467,8 @@ void CPlayerManager::Create()
 //--- 破棄関数 ---.
 void CPlayerManager::Destroy(CPlayerBase* player)
 {
-	int id = player->GetPlayerID();
-	CSceneData::SetPlayerLive(id, false);
+	int id = player->GetPlayerID();			//プレイヤーIDを取得.
+	CSceneData::SetPlayerLive(id, false);	//プレイヤーが死亡した.
 
 	//当たり判定削除.
 	CollisionManager::GetInstance()->RemoveCollider(player->GetCollider().get());
@@ -437,23 +524,23 @@ void CPlayerManager::InitialSettings(int index)
 		InitialSetting
 		//プレイヤー1.
 		{
-			{ D3DXVECTOR3(-6.f, 0.f, 4.f),
-				D3DXQUATERNION(0.f, D3DXToRadian(30.f), 0.f, 1.f) }
+			{ D3DXVECTOR3(-6.f, 0.f, 4.f),		//位置.
+				D3DXQUATERNION(0.f, D3DXToRadian(30.f), 0.f, 1.f) }		//方向.
 		},
 		//プレイヤー2.
 		{
-			{ D3DXVECTOR3(6.f, 0.f, 4.f),
-				D3DXQUATERNION(0.f, D3DXToRadian(-30.f), 0.f, 1.f) }
+			{ D3DXVECTOR3(6.f, 0.f, 4.f),		//位置.
+				D3DXQUATERNION(0.f, D3DXToRadian(-30.f), 0.f, 1.f) }	//方向.
 		},
 		//プレイヤー3.
 		{
-			{ D3DXVECTOR3(-6.f, 0.f, 15.f),
-				D3DXQUATERNION(0.f, D3DXToRadian(120.f), 0.f, 1.f) }
+			{ D3DXVECTOR3(-6.f, 0.f, 15.f),		//位置.
+				D3DXQUATERNION(0.f, D3DXToRadian(120.f), 0.f, 1.f) }	//方向.
 		},
 		//プレイヤー4.
 		{
-			{ D3DXVECTOR3(6.f, 0.f, 15.f),
-				D3DXQUATERNION(0.f, D3DXToRadian(-120.f), 0.f, 1.f) }
+			{ D3DXVECTOR3(6.f, 0.f, 15.f),		//位置.
+				D3DXQUATERNION(0.f, D3DXToRadian(-120.f), 0.f, 1.f) }	//方向.
 		}
 	};
 
@@ -464,7 +551,7 @@ void CPlayerManager::InitialSettings(int index)
 		pos.y += m_InitialSetPosY;
 		m_pPlayers[index]->SetPosition(pos);
 
-		//プレイヤーの向きを設定.z
+		//プレイヤーの向きを設定.
 		D3DXQUATERNION quat = setting.second;
 		D3DXQuaternionNormalize(&quat, &quat);
 		m_pPlayers[index]->SetQuaternion(quat);
