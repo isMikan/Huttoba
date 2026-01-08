@@ -206,6 +206,9 @@ void Fun::OnCollision(CollisionBase* other)
 void Fun::HaveMove()
 {
 	m_vPosition = m_pPlayer->GetPlayerRightHand().GetPosition();
+
+	m_vPosition.y--;
+
 	m_vQuaternion = m_pPlayer->GetQuaternion();
 }
 
@@ -223,6 +226,9 @@ void Fun::UseMove()
 	}
 
 	m_vPosition = m_pPlayer->GetPlayerRightHand().GetPosition();
+
+	m_vPosition.y--;
+
 	m_vQuaternion = m_pPlayer->GetQuaternion();
 
 

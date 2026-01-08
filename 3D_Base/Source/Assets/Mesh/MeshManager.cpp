@@ -78,6 +78,7 @@ HRESULT MeshManager::CreateStaticMesh()
 	RegisterStaticMesh(StaticMeshList::Bomb,			_T("Data\\Mesh\\Static\\Item\\Bomb.x"));
 	RegisterStaticMesh(StaticMeshList::Fun,				_T("Data\\Mesh\\Static\\Item\\Fun.x"));
 	RegisterStaticMesh(StaticMeshList::Mushroom,		_T("Data\\Mesh\\Static\\Item\\Mushroom.x"));
+	//RegisterStaticMesh(StaticMeshList::TrackingRobot,	_T("Data\\Mesh\\Skin\\zako\\zako.x"));
 	RegisterStaticMesh(StaticMeshList::TrackingRobot,	_T("Data\\Mesh\\Static\\Item\\TrackingRobot.x"));
 	RegisterStaticMesh(StaticMeshList::Boomerang,		_T("Data\\Mesh\\Static\\Item\\Boomerang.x"));
 	RegisterStaticMesh(StaticMeshList::SmashBat,		_T("Data\\Mesh\\Static\\Item\\SmashBat.x"));

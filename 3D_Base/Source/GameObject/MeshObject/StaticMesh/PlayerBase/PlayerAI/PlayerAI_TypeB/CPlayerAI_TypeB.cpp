@@ -33,9 +33,9 @@ void CPlayerAI_TypeB::Update()
 
 	//HandleItemAction();
 
-	//AvoidDanger();
-
 	RunBomb();
+
+	AvoidDanger();
 
 	AutomaticMovement(m_Destination.dir);
 

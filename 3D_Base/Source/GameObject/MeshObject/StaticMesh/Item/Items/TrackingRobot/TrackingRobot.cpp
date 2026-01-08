@@ -53,6 +53,8 @@ void TrackingRobot::Init()
 {
 	AttachMesh(AssetManager::Mesh(StaticMeshList::TrackingRobot));
 
+	//m_vScale = D3DXVECTOR3(0.001f, 0.001f, 0.001f);
+
 	m_State = IItemObserver::IItemObserver::State::Spawn;
 
 	m_tGravity = 0.01f;
