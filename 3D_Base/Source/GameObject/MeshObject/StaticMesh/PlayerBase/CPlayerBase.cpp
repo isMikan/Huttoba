@@ -139,19 +139,40 @@ void CPlayerBase::Draw(D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAMERA&
 }
 
 //--- 準備用更新処理 ---.
-void CPlayerBase::StandbyUpdate()
+void CPlayerBase::StandbyUpdate(int poseNo)
 {
 	//頭の調整位置を取得.
 	D3DXVECTOR3 headOffsetPos = GetPlayerHead().GetOffsetPos();
 	//頭の位置を設定.
 	GetPlayerHead().SetPosition(GetObjectPos(headOffsetPos));
 
-	if (CSceneData::GetSlot(m_PlayerID))
+	if (poseNo > 0)
 	{
-		//設定したいポーズと異なる場合.
-		if (!IsAnyActionState<CPlayerResultWin_TypeD>())
+		//アイドル状態の場合.
+		if (IsAnyActionState<CPlayerActionIdleState>())
 		{
-			SetActionState(std::make_unique<CPlayerResultWin_TypeD>(*this));
+			switch (poseNo)
+			{
+			case 1:
+				SetActionState(std::make_unique<CPlayerResultWin_TypeA>(*this));
+				break;
+			case 2:
+				SetActionState(std::make_unique<CPlayerResultWin_TypeB>(*this));
+				break;
+			case 3:
+				//最後のプレイヤー以外の場合、このポーズOK.
+				if(m_PlayerID < 3) SetActionState(std::make_unique<CPlayerResultWin_TypeC>(*this));
+
+				else SetActionState(std::make_unique<CPlayerResultWin_TypeB>(*this));
+
+				break;
+			case 4:
+				SetActionState(std::make_unique<CPlayerResultWin_TypeD>(*this));
+				break;
+			default:
+				SetActionState(std::make_unique<CPlayerResultWin_TypeA>(*this));
+				break;
+			}
 		}
 	}
 	else
@@ -160,6 +181,7 @@ void CPlayerBase::StandbyUpdate()
 		if (!IsAnyActionState<CPlayerActionIdleState>())
 		{
 			SetActionState(std::make_unique<CPlayerActionIdleState>(*this));
+			m_vQuaternion = D3DXQUATERNION(0.f, D3DXToRadian(180.f), 0.f, 0.f);
 		}
 	}
 
@@ -185,20 +207,27 @@ void CPlayerBase::ResultUpdate(int poseNo)
 	}
 
 	//アイドル状態の場合.
-	if(IsAnyActionState<CPlayerActionIdleState>())
+	if (IsAnyActionState<CPlayerActionIdleState>())
 	{
 		switch (poseNo)
 		{
-		case 1:
+		case 0:
 			SetActionState(std::make_unique<CPlayerResultWin_TypeA>(*this));
 			break;
-		case 2:
+		case 1:
 			SetActionState(std::make_unique<CPlayerResultWin_TypeB>(*this));
 			break;
+		case 2:
+			SetActionState(std::make_unique<CPlayerResultWin_TypeC>(*this));
+			break;
 		case 3:
+			SetActionState(std::make_unique<CPlayerResultWin_TypeD>(*this));
+			break;
+		case 4:
 			SetActionState(std::make_unique<CPlayerResultLose_TypeA>(*this));
 			break;
 		default:
+			SetActionState(std::make_unique<CPlayerResultWin_TypeB>(*this));
 			break;
 		}
 	}

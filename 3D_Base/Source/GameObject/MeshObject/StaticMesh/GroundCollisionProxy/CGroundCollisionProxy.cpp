@@ -32,6 +32,7 @@ void CGroundCollisionProxy::Update()
 				AssetManager::Mesh(StaticMeshList::floor1),
 				this
 			);
+
 			break;
 		case 2:
 			//“–‚½‚è”»’èíœ

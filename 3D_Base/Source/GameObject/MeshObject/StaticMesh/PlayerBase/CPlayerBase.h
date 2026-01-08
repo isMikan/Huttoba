@@ -111,7 +111,7 @@ public:
 		D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAMERA& Camera) override;
 
 	//--- 準備用更新処理 ---.
-	virtual void StandbyUpdate();
+	virtual void StandbyUpdate(int poseNo);
 	//--- リザルト用更新処理 ---.
 	virtual void ResultUpdate(int poseNo);
 
