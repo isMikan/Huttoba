@@ -190,8 +190,8 @@ void CPlayerAI_TypeB::AvoidDanger()
 	//プレイヤーの位置が地面の半径以上なら
 	if (diffSq > groundRadius * (0.9f * 0.9f))
 	{
-		//一旦中央に移動
-		m_Destination.dir = m_pGroundManager->GetGroundCenterPos() - m_vPosition;
+		//
+		m_Destination.dir += m_pGroundManager->GetGroundCenterPos() - m_vPosition;
 	}
 }
 
@@ -318,7 +318,7 @@ void CPlayerAI_TypeB::RunBomb()
 		{
 			if (item->GetState() == IItemObserver::State::Throw|| item->GetState() == IItemObserver::State::Use)
 			{
-				m_Destination.dir = m_vPosition - item->GetPosition();
+				m_Destination.dir += m_vPosition - item->GetPosition();
 			}
 		}
 	}

@@ -16,7 +16,6 @@ namespace { const bool regist = ItemBase::AutoRegister<TrackingRobot>(ItemID::Tr
 TrackingRobot::TrackingRobot()
 	: m_pTarget			()
 	, m_pChaseSensor	()
-	, m_pSkinMesh		()
 
 	, m_IsGround		( false )
 
@@ -53,8 +52,6 @@ void TrackingRobot::Init()
 {
 	AttachMesh(AssetManager::Mesh(StaticMeshList::TrackingRobot));
 
-	//m_vScale = D3DXVECTOR3(0.001f, 0.001f, 0.001f);
-
 	m_State = IItemObserver::IItemObserver::State::Spawn;
 
 	m_tGravity = 0.01f;
@@ -72,10 +69,6 @@ void TrackingRobot::Init()
 	);
 
 	m_pUseCollider->SetActive(false);
-
-	m_pSkinMesh = std::make_unique<CSkinMeshObject>();
-
-	m_pSkinMesh->AttachMesh(AssetManager::Mesh(SkinMeshList::Zako));
 }
 
 void TrackingRobot::Update()

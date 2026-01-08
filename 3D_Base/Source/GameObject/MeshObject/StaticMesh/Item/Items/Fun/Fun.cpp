@@ -207,7 +207,8 @@ void Fun::HaveMove()
 {
 	m_vPosition = m_pPlayer->GetPlayerRightHand().GetPosition();
 
-	m_vPosition.y--;
+	//所持中に幹？を持つように見せるのでy座標を調整
+	m_vPosition.y -= 0.7;
 
 	m_vQuaternion = m_pPlayer->GetQuaternion();
 }
@@ -227,7 +228,8 @@ void Fun::UseMove()
 
 	m_vPosition = m_pPlayer->GetPlayerRightHand().GetPosition();
 
-	m_vPosition.y--;
+	//所持中に幹？を持つように見せるのでy座標を調整
+	m_vPosition.y -= 0.7;
 
 	m_vQuaternion = m_pPlayer->GetQuaternion();
 
@@ -242,7 +244,15 @@ void Fun::UseMove()
 	AssetManager::Effect()->SetRotation(hEffect, D3DXVECTOR3(D3DXToRadian(180.f), a, 0));
 	AssetManager::Effect()->SetSpeed(hEffect, 1.f);
 	AssetManager::Effect()->SetScale(hEffect, D3DXVECTOR3(0.045f, 0.045f, 0.045f));
-	AssetManager::Effect()->SetLocation(hEffect, m_vPosition);
+
+	//エフェクトの表示位置
+	static D3DXVECTOR3 efectPos;
+
+	efectPos = m_vPosition;
+	//手の位置から風を出しているように見えるのでy座標を調整
+	efectPos.y += 1.8f;
+
+	AssetManager::Effect()->SetLocation(hEffect, efectPos);
 }
 
 void Fun::ThrowMove()
