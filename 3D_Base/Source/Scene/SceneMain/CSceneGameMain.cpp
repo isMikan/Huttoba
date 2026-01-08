@@ -61,7 +61,7 @@ CSceneGameMain::~CSceneGameMain()
 	//“o˜^‚µ‚Ä‚¢‚é“–‚½‚è”»’è‚ð‚·‚×‚Äíœ
 	CollisionManager::GetInstance()->Init();
 
-	//BGM‚Ìƒ‹[ƒvÄ¶
+	//BGM‚ÌÄ¶’âŽ~
 	AssetManager::Sound()->Stop(enSoundList::BGM_SceneMain);
 }
 
@@ -144,11 +144,13 @@ HRESULT CSceneGameMain::LoadData()
 	//‰æ‘œƒf[ƒ^‚Ì“Ç‚Ýž‚Ý
 	m_pSpriteReadyGo->AttachSprite(AssetManager::Sprite(Sprite2DList::Font_ReadyGo));
 
+	//693,217‚Í‚»‚ê‚¼‚ê‰æ‘œ‚Ìc‚Æ‰¡‚Ì‘å‚«‚³
 	m_pSpriteReadyGo->SetPosition(D3DXVECTOR3(WND_W / 2 - 693 / 2, WND_H / 2 - 217 / 2, 0));
 
 	//‰æ‘œƒf[ƒ^‚Ì“Ç‚Ýž‚Ý
 	m_pSpriteFinish->AttachSprite(AssetManager::Sprite(Sprite2DList::Font_Finish));
 
+	//970,195‚Í‚»‚ê‚¼‚ê‰æ‘œ‚Ìc‚Æ‰¡‚Ì‘å‚«‚³
 	m_pSpriteFinish->SetPosition(D3DXVECTOR3(WND_W / 2 - 970 / 2, WND_H / 2 - 195 / 2, 0));
 
 	return S_OK;
@@ -167,6 +169,7 @@ void CSceneGameMain::Update()
 {
 	//BGM‚Ìƒ‹[ƒvÄ¶
 	//AssetManager::Sound()->PlayLoop(enSoundList::BGM_SceneMain);
+
 	if (CInputManager::IsDown(Action::Pause, 0))
 	{
 		if (!m_IsPause)

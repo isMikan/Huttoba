@@ -383,7 +383,7 @@ void Boomerang::Smash(CPlayerBase& playiers)
 	float len = D3DXVec3Length(&vecLen);
 
 	//プレイヤーの吹き飛ばしの計算
-	D3DXVECTOR3 SmashVel = playiers.GetKnockbackVelocity(m_vPosition, SMASH_POWER, SMASH_ANGLE);
+	D3DXVECTOR3 SmashVel = playiers.GetKnockbackVelocity(m_vPosition, SMASH_POWER + m_AddVelocity.x / 2, SMASH_ANGLE);
 
 	playiers.SetHitAttack(
 		SmashVel,
