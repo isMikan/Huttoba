@@ -271,15 +271,15 @@ void CPlayerManager::StandbyPlayerUpdate()
 		if (CSceneData::GetSlot(id))
 		{
 			poseNo = rand() % 3 + 1;	//0をアイドル状態にするので 1 足す.
-		}
-		//最初のプレイヤー以外の場合.
-		if(id > 0)
-		{
-			int oldId = id - 1;		//前のプレイヤー.
-			//前のプレイヤーがハイタッチを待っている場合.
-			if (m_pPlayers[oldId]->IsAnyActionState<CPlayerResultWin_TypeC>())
+			//最初のプレイヤー以外の場合.
+			if (id > 0)
 			{
-				poseNo = 4;		//返してあげる.
+				int oldId = id - 1;		//前のプレイヤー.
+				//前のプレイヤーがハイタッチを待っている場合.
+				if (m_pPlayers[oldId]->IsAnyActionState<CPlayerResultWin_TypeC>())
+				{
+					poseNo = 4;		//返してあげる.
+				}
 			}
 		}
 
@@ -342,12 +342,6 @@ void CPlayerManager::ResultPlayerUpdate()
 				{
 					poseNo = rand() % 2;
 				}
-				//前のプレイヤーがハイタッチを待っている場合.
-				if (countLive > 0
-					&& m_pPlayers[ranking[countLive - 1]]->IsAnyActionState<CPlayerResultWin_TypeC>())
-				{
-					poseNo = 3;		//返してあげる.
-				}
 
 				break;
 			//3人勝ち.
@@ -357,12 +351,6 @@ void CPlayerManager::ResultPlayerUpdate()
 				if (2 == countLive)
 				{
 					poseNo = rand() % 2;
-				}
-				//前のプレイヤーがハイタッチを待っている場合.
-				if (countLive > 0
-					&& m_pPlayers[ranking[countLive - 1]]->IsAnyActionState<CPlayerResultWin_TypeC>())
-				{
-					poseNo = 3;		//返してあげる.
 				}
 
 				break;
@@ -374,17 +362,19 @@ void CPlayerManager::ResultPlayerUpdate()
 				{
 					poseNo = rand() % 2;
 				}
-				//前のプレイヤーがハイタッチを待っている場合.
-				if (countLive > 0
-					&& m_pPlayers[ranking[countLive - 1]]->IsAnyActionState<CPlayerResultWin_TypeC>())
-				{
-					poseNo = 3;		//返してあげる.
-				}
 
 				break;
 			default:
 				break;
 			}
+
+			//前のプレイヤーがハイタッチを待っている場合.
+			if (countLive > 0
+				&& m_pPlayers[ranking[countLive - 1]]->IsAnyActionState<CPlayerResultWin_TypeC>())
+			{
+				poseNo = 3;		//返してあげる.
+			}
+
 			countLive++;	//勝者数をカウント（ランキングが 0 からなので遅らす）.
 		}
 		else
