@@ -287,6 +287,8 @@
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\PlayerBase\PlayerState\PlayerActionState\PlayerResultLose_TypeA\CPlayerResultLose_TypeA.cpp" />
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\PlayerBase\PlayerState\PlayerActionState\PlayerResultWin_TypeA\CPlayerResultWin_TypeA.cpp" />
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\PlayerBase\PlayerState\PlayerActionState\PlayerResultWin_TypeB\CPlayerResultWin_TypeB.cpp" />
+    <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\PlayerBase\PlayerState\PlayerActionState\PlayerResultWin_TypeC\CPlayerResultWin_TypeC.cpp" />
+    <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\PlayerBase\PlayerState\PlayerActionState\PlayerResultWin_TypeD\CPlayerResultWin_TypeD.cpp" />
     <ClCompile Include="Source\GameObject\SpriteObject\DrawTimer\DrawTimer.cpp" />
     <ClCompile Include="Source\GameObject\SpriteObject\Shadow\CShadow.cpp" />
     <ClCompile Include="Source\GameObject\SpriteObject\Shadow\ShadowManager\CShadowManager.cpp" />
@@ -416,6 +418,8 @@
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\PlayerBase\PlayerState\PlayerActionState\PlayerResultLose_TypeA\CPlayerResultLose_TypeA.h" />
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\PlayerBase\PlayerState\PlayerActionState\PlayerResultWin_TypeA\CPlayerResultWin_TypeA.h" />
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\PlayerBase\PlayerState\PlayerActionState\PlayerResultWin_TypeB\CPlayerResultWin_TypeB.h" />
+    <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\PlayerBase\PlayerState\PlayerActionState\PlayerResultWin_TypeC\CPlayerResultWin_TypeC.h" />
+    <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\PlayerBase\PlayerState\PlayerActionState\PlayerResultWin_TypeD\CPlayerResultWin_TypeD.h" />
     <ClInclude Include="Source\GameObject\SpriteObject\DrawTimer\DrawTimer.h" />
     <ClInclude Include="Source\GameObject\SpriteObject\Shadow\CShadow.h" />
     <ClInclude Include="Source\GameObject\SpriteObject\Shadow\ShadowManager\CShadowManager.h" />

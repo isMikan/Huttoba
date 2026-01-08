@@ -10,12 +10,9 @@ CPlayerResultWin_TypeB::CPlayerResultWin_TypeB(CPlayerBase& pPlayer)
 	: CPlayerState			( pPlayer )
 	
 	, m_StartTime			()
-	, m_EndTime				( 0.9f )
+	, m_EndTime				( 0.3f )
 
-	, m_CurrentTiltAngle	()
-	, m_TiltAngleMax		( D3DXToRadian( -10.f ) )
-	, m_PhaseSplit			( 0.7f )
-	, m_HandLaps			( 2.f )		//一周.
+	, m_HandLaps			( 1.f )		//一周.
 	, m_HandWidth			( 0.4f )
 
 	, m_RightHandPos		()
@@ -24,8 +21,6 @@ CPlayerResultWin_TypeB::CPlayerResultWin_TypeB(CPlayerBase& pPlayer)
 	, m_LeftHandStartPos	(  0.4f, 0.2f, 0.4f )
 	, m_RightHandEndPos		(  0.4f, 0.2f, 0.4f )
 	, m_LeftHandEndPos		( -0.4f, 0.2f, 0.4f )
-
-	, m_StartQuat			( 0.f, 0.f, 0.f, 1.f )
 {
 }
 
@@ -45,7 +40,6 @@ void CPlayerResultWin_TypeB::Enter()
 
 	//プレイヤーの位置を取得.
 	D3DXVECTOR3 playerPos = m_pPlayer.GetPosition();
-	m_StartQuat = m_pPlayer.GetQuaternion();
 
 	//手の位置を調整するための数値を取得.
 	D3DXVECTOR3 rightHandOffset = m_pPlayer.GetPlayerRightHand().GetOffsetPos();
@@ -86,7 +80,7 @@ void CPlayerResultWin_TypeB::Update()
 	progress = progress = std::clamp(progress, 0.f, 1.f);
 
 	//横に手を移動する計算.	
-	float eased = sinf(progress * D3DX_PI * m_HandLaps) * m_HandWidth;	
+	float eased = sinf(progress * D3DX_PI * m_HandLaps) * m_HandWidth;
 
 	//右手と左手の調整位置
 	D3DXVECTOR3 rightHandOffsetPos;

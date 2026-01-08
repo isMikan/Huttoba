@@ -113,7 +113,7 @@ public:
 	//--- 準備用更新処理 ---.
 	virtual void StandbyUpdate();
 	//--- リザルト用更新処理 ---.
-	virtual void ResultUpdate();
+	virtual void ResultUpdate(int poseNo);
 
 	//--- 移動状態を設定 ---.
 	void SetMoveState(std::unique_ptr<CPlayerState> newState);

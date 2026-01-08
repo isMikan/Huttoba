@@ -5,12 +5,12 @@
 /***********************************************************************
 *	プレイヤーが勝った時の状態クラス.
 **/
-class CPlayerResultWin_TypeB
+class CPlayerResultWin_TypeD
 	: public CPlayerState	//プレイヤー状態を継承.
 {
 public:
-	CPlayerResultWin_TypeB(CPlayerBase& pPlayer);
-	~CPlayerResultWin_TypeB();
+	CPlayerResultWin_TypeD(CPlayerBase& pPlayer);
+	~CPlayerResultWin_TypeD();
 
 //======================================================================
 // 	   外部で呼び出す関数.
@@ -35,8 +35,6 @@ private:
 	D3DXVECTOR3		m_RightHandPos;			//右手の位置.
 	D3DXVECTOR3		m_LeftHandPos;			//左手の位置.
 
-	D3DXVECTOR3		m_RightHandStartPos;	//右手の元の位置.
-	D3DXVECTOR3		m_LeftHandStartPos;		//左手の元の位置.
 	D3DXVECTOR3		m_RightHandEndPos;		//右手の目的の位置.
 	D3DXVECTOR3		m_LeftHandEndPos;		//左手の目的の位置.
 
@@ -44,8 +42,8 @@ private:
 //======================================================================
 // 	   呼び出しを禁止するコンストラクタ.
 //======================================================================
-	CPlayerResultWin_TypeB() = delete;	//デフォルトコンストラクタ削除.
-	CPlayerResultWin_TypeB(const CPlayerResultWin_TypeB&) = delete;
-	CPlayerResultWin_TypeB& operator = (const CPlayerResultWin_TypeB& rhs) = delete;
+	CPlayerResultWin_TypeD() = delete;	//デフォルトコンストラクタ削除.
+	CPlayerResultWin_TypeD(const CPlayerResultWin_TypeD&) = delete;
+	CPlayerResultWin_TypeD& operator = (const CPlayerResultWin_TypeD& rhs) = delete;
 
 };

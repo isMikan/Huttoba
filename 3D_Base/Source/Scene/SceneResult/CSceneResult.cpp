@@ -41,7 +41,7 @@ CSceneResult::~CSceneResult()
 HRESULT CSceneResult::Create()
 {
 	CCameraManager::SetPosition(3.f, 3.f, -10.f);
-	CCameraManager::SetLook(3.f, -1.f, -2.f);
+	CCameraManager::SetLook(3.f, 0.f, -2.f);
 	CCameraManager::SetLight(0.f, 10.f, -10.f);
 
 	//プレイヤーマネージャーのインスタンス作成.

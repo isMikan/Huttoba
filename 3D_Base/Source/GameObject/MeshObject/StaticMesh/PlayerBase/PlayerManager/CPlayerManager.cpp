@@ -16,6 +16,8 @@
 CPlayerManager::CPlayerManager()
 	: m_pPlayers		()
 
+	, m_LivingOrder		()
+
 	, m_InitialSetPosY	()
 {
 }
@@ -144,28 +146,77 @@ void CPlayerManager::ResultPlayerCreate()
 	int countFalled = 0;	//敗者数.
 	for (int pNo = 0; pNo < Player_Max; pNo++)
 	{
-		D3DXVECTOR3 pos(4.f, 0.f, -1.f);
 		//勝利したプレイヤーの場合.
 		if (CSceneData::GetPlayerLiving(pNo))
 		{
-			//右から順に表示.
-			pos.x = (pos.x - 2.5f) * (countLive + 1.f);	//配列番号の最後から埋めていく.
-			pos.z -= 5.f;
-
+			m_LivingOrder.push_back(pNo);
 			countLive++;
 		}
-		//敗北したプレイヤーの場合
-		else
-		{
-			//左から順に表示.
-			pos.x = (pos.x * countFalled) - 1.5f;
-			pos.y += 6.f;
 
-			countFalled++;
+		D3DXVECTOR3 pos(2.f, 0.f, 0.f);
+
+		switch(CSceneData::GetPlayerLivingNum())
+		{
+		case 1:
+
+			//勝利したプレイヤーの場合.
+			if (CSceneData::GetPlayerLiving(pNo))
+			{
+				pos.x = 2.5f;
+				pos.z = -4.5;
+			}
+			//敗北したプレイヤーの場合.
+			else
+			{
+				//左から順に表示.
+				pos.x = ((pos.x + 1.5f) * countFalled) - 1.5f;
+				pos.y += 7.f;
+				pos.z = 5.f;
+
+				countFalled++;
+			}
+			m_pPlayers[pNo]->SetPosition(pos);
+			m_pPlayers[pNo]->
+				SetQuaternion(0.f, D3DXToRadian(180.f), 0.f, 0.f);
+
+			break;
+		case 2:
+		case 3:
+
+			//勝利したプレイヤーの場合.
+			if (CSceneData::GetPlayerLiving(pNo))
+			{
+				//右から順に表示.
+				pos.x = pos.x * countLive;	//配列番号の最後から埋めていく.
+				pos.z = -4.5f;
+			}
+			//敗北したプレイヤーの場合.
+			else
+			{
+				//左から順に表示.
+				pos.x = ((pos.x + 1.5f) * countFalled) - 1.5f;
+				pos.y += 7.f;
+				pos.z = 5.f;
+
+				countFalled++;
+			}
+			m_pPlayers[pNo]->SetPosition(pos);
+			m_pPlayers[pNo]->
+				SetQuaternion(0.f, D3DXToRadian(180.f), 0.f, 0.f);
+
+			break;
+		case 4:
+
+			//右から順に表示.
+			pos.x = pos.x * countLive - 2.f;	//配列番号の最後から埋めていく.
+			pos.z = -3.5f;
+
+			m_pPlayers[pNo]->SetPosition(pos);
+			m_pPlayers[pNo]->
+				SetQuaternion(0.f, D3DXToRadian(180.f), 0.f, 0.f);
+
+			break;
 		}
-		m_pPlayers[pNo]->SetPosition(pos);
-		m_pPlayers[pNo]->
-			SetQuaternion(0.f, D3DXToRadian(180.f), 0.f, 0.f);
 	}
 }
 //=== 各シーンの更新処理 ===.
@@ -246,7 +297,17 @@ void CPlayerManager::ResultPlayerUpdate()
 	{
 		if (!player) continue;	//プレイヤーがいない場合、次へ.
 
-		player->ResultUpdate();
+		int poseNo;
+		if (CSceneData::GetPlayerLiving(player->GetPlayerID()))
+		{
+			poseNo = rand() % 3;
+		}
+		else
+		{
+			poseNo = 3;
+		}
+
+		player->ResultUpdate(poseNo);
 			
 		Update();
 	}

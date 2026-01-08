@@ -126,6 +126,8 @@
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\PlayerBase\PlayerSEManager\CPlayerSEManager.cpp" />
     <ClCompile Include="Source\GameObject\UIObject\Sky\CSky.cpp" />
     <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\PlayerBase\PlayerState\PlayerActionState\PlayerResultWin_TypeB\CPlayerResultWin_TypeB.cpp" />
+    <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\PlayerBase\PlayerState\PlayerActionState\PlayerResultWin_TypeC\CPlayerResultWin_TypeC.cpp" />
+    <ClCompile Include="Source\GameObject\MeshObject\StaticMesh\PlayerBase\PlayerState\PlayerActionState\PlayerResultWin_TypeD\CPlayerResultWin_TypeD.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Assets\AssetManager.h" />
@@ -255,6 +257,8 @@
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\PlayerBase\PlayerSEManager\CPlayerSEManager.h" />
     <ClInclude Include="Source\GameObject\UIObject\Sky\CSky.h" />
     <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\PlayerBase\PlayerState\PlayerActionState\PlayerResultWin_TypeB\CPlayerResultWin_TypeB.h" />
+    <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\PlayerBase\PlayerState\PlayerActionState\PlayerResultWin_TypeC\CPlayerResultWin_TypeC.h" />
+    <ClInclude Include="Source\GameObject\MeshObject\StaticMesh\PlayerBase\PlayerState\PlayerActionState\PlayerResultWin_TypeD\CPlayerResultWin_TypeD.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint" />
