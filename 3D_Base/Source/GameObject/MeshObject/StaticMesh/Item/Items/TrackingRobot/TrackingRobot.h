@@ -76,8 +76,6 @@ private:
     //õ“G”»’èƒNƒ‰ƒX
     std::unique_ptr<ChaseSensor>    m_pChaseSensor;
 
-    std::unique_ptr<CSkinMeshObject>m_pSkinMesh;
-
     //’n–Ê‚É“–‚½‚Á‚Ä‚¢‚é‚©
     bool        m_IsGround;
 
