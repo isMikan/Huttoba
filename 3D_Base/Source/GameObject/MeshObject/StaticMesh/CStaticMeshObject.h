@@ -54,6 +54,8 @@ public:
 
 	std::shared_ptr<CStaticMesh> GetMesh() const { return m_pMesh; }
 
+	std::pair<D3DXVECTOR3, float>  GetCenterAndRadius();
+
 protected:
 	std::shared_ptr<CStaticMesh>	m_pMesh;
 

@@ -61,3 +61,39 @@ void CStaticMeshObject::Draw(
 	//レンダリング.
 	m_pMesh->Render( View, Proj, Light, Camera.vPosition );
 }
+
+std::pair<D3DXVECTOR3,float> CStaticMeshObject::GetCenterAndRadius()
+{
+	D3DXVECTOR3 center = { 0.f,0.f,0.f };
+	float rad = 0.f;
+
+	LPDIRECT3DVERTEXBUFFER9 pVB = nullptr;	//頂点バッファ
+	void* pVertices = nullptr;				//頂点
+
+	//頂点バッファを取得
+	m_pMesh->GetMesh()->GetVertexBuffer(&pVB);
+
+	//メッシュの頂点バッファをロックする
+	if (FAILED(pVB->Lock(0, 0, &pVertices, 0)))
+	{
+		SAFE_RELEASE(pVB);
+		return { D3DXVECTOR3(0.f,0.f,0.f),0.f };
+	}
+
+	//メッシュの外接円の中心と半径を計算する
+	D3DXComputeBoundingSphere(
+		static_cast<D3DXVECTOR3*>(pVertices),
+		m_pMesh->GetMesh()->GetNumVertices(),					//頂点の数
+		D3DXGetFVFVertexSize(m_pMesh->GetMesh()->GetFVF()),	//頂点の情報
+		&center,											//(out)中心座標
+		&rad);										//(out)半径
+
+	//メッシュの頂点バッファをアンロックする
+	if (pVB != nullptr)
+	{
+		pVB->Unlock();
+		SAFE_RELEASE(pVB); // 取得したポインタを解放
+	}
+
+	return { center,rad };
+}
