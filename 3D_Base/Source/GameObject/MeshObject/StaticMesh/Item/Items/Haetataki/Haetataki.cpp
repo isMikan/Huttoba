@@ -320,7 +320,6 @@ bool Haetataki::AttackMostion()
 	{
 		m_slerpTime = 0.0f;
 		m_IsFirst = true; // 次の攻撃のためにリセット
-		std::cout << "モーション終了" << std::endl;
 		return false; // モーション終了
 	}
 
