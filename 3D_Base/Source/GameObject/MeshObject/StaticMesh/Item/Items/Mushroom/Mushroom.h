@@ -89,7 +89,12 @@ private:
 
     ::EsHandle  m_hEffect;
 
-    //連続ヒット防止
+    //投擲時の連続ヒット防止
     std::vector<CPlayerBase*> m_ThrowHitPlayer;
 
+    //使用時の連続ヒット防止
+    std::unordered_map<CPlayerBase*, float> m_UseHitPlayer;
+
+    //使用時の連続ヒット防止用クールタイム
+    float       m_UseHitCoolTime;
 };

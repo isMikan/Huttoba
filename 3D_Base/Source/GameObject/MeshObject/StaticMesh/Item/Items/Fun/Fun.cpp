@@ -235,14 +235,16 @@ void Fun::UseMove()
 
 
 
-	//エフェクトの拡縮設定
 
 	D3DXVECTOR3 flowerd = m_pPlayer->GetLocalAxes().forward;
 	
-	float a = atan2f(flowerd.x, flowerd.z);
+	float rot = atan2f(flowerd.x, flowerd.z);
 
-	AssetManager::Effect()->SetRotation(hEffect, D3DXVECTOR3(D3DXToRadian(180.f), a, 0));
+	//エフェクトの向きを設定(180をしているのはエフェクトの向きが反対方向だったので追加)
+	AssetManager::Effect()->SetRotation(hEffect, D3DXVECTOR3(D3DXToRadian(180.f), rot, 0) );
+	//エフェクトの再生速度を設定
 	AssetManager::Effect()->SetSpeed(hEffect, 1.f);
+	//エフェクトの拡縮設定
 	AssetManager::Effect()->SetScale(hEffect, D3DXVECTOR3(0.045f, 0.045f, 0.045f));
 
 	//エフェクトの表示位置

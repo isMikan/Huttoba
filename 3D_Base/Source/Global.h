@@ -142,6 +142,7 @@ enum class StaticMeshList
 	HaetatakiCol,
 	SmashBatCol,
 	PlayerCol,
+	MushroomCol,
 
 	floor1,
 	floor2,
