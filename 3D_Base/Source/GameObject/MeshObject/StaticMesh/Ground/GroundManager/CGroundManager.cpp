@@ -1,7 +1,9 @@
 #include "CGroundManager.h"
 
 CGroundManager::CGroundManager()
-	: m_pGrounds()
+	: m_pGrounds		()
+
+	, m_SafeAreaCount	( Ground_Max )
 {
 	Create();
 	m_FallTime = { 99.f, 45.f, 30.f, 15.f };
@@ -50,8 +52,8 @@ void CGroundManager::Update()
 
 	for (int gNo = 0; gNo < m_pGrounds.size(); gNo++)
 	{
-		//なかったら次へ.
-		if (!m_pGrounds[gNo]) continue;
+		if (!m_pGrounds[gNo]) continue;		//存在しない場合、次へ.
+
 
 		//制限のところまできたら消す.
 		if (m_pGrounds[gNo]->GetPosition().y < -30.f)
@@ -63,19 +65,22 @@ void CGroundManager::Update()
 		//落ちる時間が過ぎたら.
 		if (m_FallTime[gNo] <= t)
 		{
+			//落ちていない場合.
 			if (!m_pGrounds[gNo]->GetIsFallDown())
 			{
-				m_pGrounds[gNo]->SetShakeTriggerTime(t);
-				m_pGrounds[gNo]->SetIsChangeColor(false);
-				m_pGrounds[gNo]->SetIsFallDown(true);
+				m_pGrounds[gNo]->SetShakeTriggerTime(t);	//揺れ始めた時間.
+				m_pGrounds[gNo]->SetIsChangeColor(false);	//揺れをやめる.
+				m_pGrounds[gNo]->SetIsFallDown(true);		//落ちるフラグを true.
 			}
 		}
 		//落ちる時間より(ChangeColorTime秒)前に落ちるまで.
 		else if (m_FallTime[gNo] - CGround::m_ChangeColorTime <= t
 			&& !m_pGrounds[gNo]->GetIsChangeColor())
 		{
-			m_pGrounds[gNo]->SetChangeColorTriggerTime(t);
-			m_pGrounds[gNo]->SetIsChangeColor(true);
+			m_pGrounds[gNo]->SetChangeColorTriggerTime(t);	//色が変わり始めた時間.
+			m_pGrounds[gNo]->SetIsChangeColor(true);		//色が変わるフラグを true.
+
+			m_SafeAreaCount--;		//安全な地面の数を減らす.
 		}
 
 		m_pGrounds[gNo]->Update();
@@ -89,8 +94,7 @@ void CGroundManager::Draw(
 {
 	for (auto& ground : m_pGrounds)
 	{
-		//なかったら次へ.
-		if (!ground) continue;
+		if (!ground) continue;		//存在しない場合、次へ.
 
 		ground->Draw(View, Proj, Light, Camera);
 	}
@@ -103,6 +107,8 @@ void CGroundManager::MainGroundCreate()
 
 	for (auto& ground : m_pGrounds)
 	{
+		if (!ground) continue;		//存在しない場合、次へ.
+
 		//地面の位置を設定.
 		ground->SetPosition(0.f, -1.f, 10.f);
 	}
@@ -115,6 +121,8 @@ void CGroundManager::ResultGroundCreate()
 
 	for (auto& ground : m_pGrounds)
 	{
+		if (!ground) continue;		//存在しない場合、次へ.
+		
 		//地面の位置を設定.
 		ground->SetPosition(3.f, -1.f, -3.f);
 	}
@@ -142,6 +150,7 @@ void CGroundManager::Create()
 
 	for (auto& ground : m_pGrounds)
 	{
+		if (ground) continue;		//存在する場合、次へ.
 		//地面クラスのインスタンス作成.
 		ground = std::make_unique<CGround>();
 	}

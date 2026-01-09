@@ -2,7 +2,7 @@
 
 CGround::CGround()
 	: m_FallSpeed				( 1.5f )
-	, m_Gravity					( -9.8f )
+	, m_Gravity					( 9.8f )
 	, m_Velocity				()
 
 	, m_ChabgeColorSpeed		( 10.f )
@@ -129,7 +129,7 @@ void CGround::FallDownGround()
 	//デルタタイムを取得.
 	float dt = CTimeManager::GetDeltaTime();
 
-	m_Velocity += dt * -m_Gravity;
+	m_Velocity += dt * m_Gravity;
 	m_vPosition.y -= dt * m_Velocity * m_FallSpeed;	//地面を下へ.
 }
 
