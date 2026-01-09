@@ -1,9 +1,9 @@
 #include "CGroundCollisionProxy.h"
 
 CGroundCollisionProxy::CGroundCollisionProxy(CGroundManager& groundManager)
-	: m_pGroundManager	( groundManager )
-	, m_GroundCount		()
-	, m_OldGroundCount	()
+	: m_pGroundManager(groundManager)
+	, m_GroundCount(Ground_Max)
+	, m_OldGroundCount()
 {
 	m_vPosition = D3DXVECTOR3(0.f, -1.f, 10.f);
 }
@@ -16,11 +16,9 @@ CGroundCollisionProxy::~CGroundCollisionProxy()
 
 void CGroundCollisionProxy::Update()
 {
-	m_GroundCount = m_pGroundManager.GetGrounds().size();
-
-	if (m_GroundCount != m_OldGroundCount)
+	if (m_pGroundManager.GetSafeAreaCount() != m_OldGroundCount)
 	{
-		switch (m_GroundCount)
+		switch (m_pGroundManager.GetSafeAreaCount())
 		{
 		case 1:
 			//ìñÇΩÇËîªíËçÌèú

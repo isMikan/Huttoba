@@ -5,6 +5,7 @@
 #include "PlayerBase/PlayerAI/PlayerAI_TypeB/CPlayerAI_TypeB.h"
 
 #include "PlayerBase/PlayerState/PlayerActionState/PlayerResultWin_TypeC/CPlayerResultWin_TypeC.h"
+#include "PlayerBase/PlayerState/PlayerActionState/PlayerResultWin_TypeD/CPlayerResultWin_TypeD.h"
 
 #include "Scene/SceneData/CSceneData.h"
 
@@ -271,6 +272,7 @@ void CPlayerManager::StandbyPlayerUpdate()
 		if (CSceneData::GetSlot(id))
 		{
 			poseNo = rand() % 3 + 1;	//0をアイドル状態にするので 1 足す.
+
 			//最初のプレイヤー以外の場合.
 			if (id > 0)
 			{
@@ -279,6 +281,21 @@ void CPlayerManager::StandbyPlayerUpdate()
 				if (m_pPlayers[oldId]->IsAnyActionState<CPlayerResultWin_TypeC>())
 				{
 					poseNo = 4;		//返してあげる.
+				}
+			}
+			//最後のプレイヤー以外の場合.
+			if (id < 3)
+			{
+				int nextId = id + 1;		//前のプレイヤー.
+				//前のプレイヤーがハイタッチを待っている場合.
+				if (m_pPlayers[nextId]->IsAnyActionState<CPlayerResultWin_TypeD>())
+				{
+					poseNo = 3;		//返してあげる.
+				}
+
+				if (m_pPlayers[nextId]->IsAnyActionState<CPlayerResultWin_TypeC>())
+				{
+					poseNo = rand() % 2 + 1;	//0をアイドル状態にするので 1 足す.
 				}
 			}
 		}
@@ -326,6 +343,7 @@ void CPlayerManager::ResultPlayerUpdate()
 		{
 			ranking.push_back(id);	//どのプレイヤーが前にいるのか入れておく.
 
+			//生きている人数.
 			switch (CSceneData::GetPlayerLivingNum())
 			{
 			//1人勝ち.

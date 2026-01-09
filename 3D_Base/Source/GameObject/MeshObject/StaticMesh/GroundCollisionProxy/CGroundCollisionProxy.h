@@ -2,6 +2,7 @@
 
 #include "CStaticMeshObject.h"
 #include "Ground/GroundManager/CGroundManager.h"
+#include "Ground/CGround.h"
 
 //地面の当たり判定の生成と更新クラス
 class CGroundCollisionProxy

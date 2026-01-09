@@ -50,6 +50,9 @@ public:
 	//一番外のステージの色が変わっているかを取得(sizeだと要素数を返すので-1している)
 	bool GetIsFallDown() { return m_pGrounds[m_pGrounds.size() - 1]->GetIsChangeColor(); }
 
+	//安全な地面の数の取得.
+	int GetSafeAreaCount() const { return m_SafeAreaCount; }
+
 	//現在の地面の半径を取得
 	float GetGroundRadius() 
 	{
@@ -88,8 +91,9 @@ private:
 //======================================================================
 	std::vector<std::unique_ptr<CGround>>	m_pGrounds;	//地面.
 
-	std::array<float, Ground_Max>	m_FallTime;		//落ちる時間.
+	std::array<float, Ground_Max>	m_FallTime;			//落ちる時間.
 
-	//地面の半径
-	std::array<float, Ground_Max>	m_GroundRadius;
+	std::array<float, Ground_Max>	m_GroundRadius;		//地面の半径
+
+	int			m_SafeAreaCount;	//安全な地面の数.
 };
