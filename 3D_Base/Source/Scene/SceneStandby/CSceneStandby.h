@@ -31,6 +31,11 @@ private:
 	void SetSelectorPos();
 
 	void MoveSelector();
+
+	//アイテムの出現を切り替える
+	void SwitchSpawnFlag(ItemID SpawnItemData);
+	void SwitchAllSpawnFlag();
+
 private:
 	CDirectX11*			m_pDx11;
 
@@ -53,11 +58,14 @@ private:
 	std::unique_ptr<CUIObject>	m_pSpriteEndFont;
 	
 	//画面遷移時の動作を入れる.
-	std::vector<std::function<void()>>	m_Action;	
+	std::vector<std::vector<std::function<void()>>>	m_Action;	
 
 	//8ビットの符号付整数型の現在選択中の番号.
-	uint8_t						m_SelectorNumber;	
+	uint8_t						m_VerticalSelectorNumber;
+	uint8_t						m_HorizontalSelectorNumber;
 	
+
+
 	//選択矢印の座標.
 	std::vector<D3DXVECTOR3>	m_SelectorPos;	
 

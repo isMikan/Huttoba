@@ -17,6 +17,10 @@ enum class Action
 	Switch,			//準備切り替え.
 	NavigateUp,		//選択肢を上に移動.
 	NavigateDown,	//選択肢を下に移動.
+	NavigateLeft,	//選択肢を左に移動.
+	NavigateRight,	//選択肢を右に移動.
+
+
 
 	Pause,			//ポーズ.
 

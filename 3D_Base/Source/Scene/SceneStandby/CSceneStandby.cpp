@@ -20,7 +20,7 @@ CSceneStandby::CSceneStandby(std::unordered_map<ItemID, bool>& SpawnItemData)
 
 	, m_SelectorPos			()
 
-	, m_SelectorNumber		( 0 )
+	, m_HorizontalSelectorNumber		( 0 )
 	, m_SelectSpawnItemData	(SpawnItemData)
 {
 	m_pDx11 = CDirectX11::GetInstance();
@@ -92,12 +92,27 @@ HRESULT CSceneStandby::LoadData()
 	m_pSpriteEndFont->SetPosition(500, 540, 0);
 
 	//関数を入れる
+	//ラムダ式で関数にしてm_Actionの中に入れている(SetNextScene(Standby);ではだめ).
+	//画面に表示される選択肢の文字と同じ順番に処理を入れていく
 	m_Action =
 	{
-		//ラムダ式で関数にしてm_Actionの中に入れている(SetNextScene(Standby);ではだめ).
-		//画面に表示される選択肢の文字と同じ順番に処理を入れていく
-		[this]() {SetNextScene(GameMain);},
-		[this]() {SetNextScene(Title);}
+		{
+			[this]() { SetNextScene(GameMain);	},
+			//すべてONを追加予定
+			[this]() { SwitchSpawnFlag(ItemID::Bomb); },
+			[this]() { SwitchSpawnFlag(ItemID::Boomerang); },
+			[this]() { SwitchSpawnFlag(ItemID::Fun); },
+
+		},
+		{
+			[this]() { SetNextScene(Title);		},
+			[this]() { SwitchSpawnFlag(ItemID::Haetataki); },
+			[this]() { SwitchSpawnFlag(ItemID::Mushroom); },
+			[this]() { SwitchSpawnFlag(ItemID::SmashBat); },
+			[this]() { SwitchSpawnFlag(ItemID::TrackingRobot); },
+
+		}
+
 	};
 
 	//出現するアイテム設定の初期化
@@ -111,6 +126,8 @@ HRESULT CSceneStandby::LoadData()
 		{ItemID::SmashBat,		true},
 		{ItemID::TrackingRobot,	true},
 	};
+
+	//初期化
 
 	return S_OK;
 }
@@ -126,19 +143,19 @@ void CSceneStandby::Update()
 
 		if (CInputManager::IsDown(Action::Decide, 0))
 		{
-			switch (m_SelectorNumber)
+			switch (m_HorizontalSelectorNumber)
 			{
 			case 0:
 				//コントローラー番号0が準備OKなら
 				if (CSceneData::GetSlot(0))
 				{
 					//選択中の番号で処理される関数が変わる.
-					m_Action[m_SelectorNumber]();
+					m_Action[m_VerticalSelectorNumber][m_HorizontalSelectorNumber]();
 				}
 				break;
 			case 1:
 				//選択中の番号で処理される関数が変わる.
-				m_Action[m_SelectorNumber]();
+				m_Action[m_VerticalSelectorNumber][m_HorizontalSelectorNumber]();
 				break;
 			default:
 				break;
@@ -226,23 +243,23 @@ void CSceneStandby::SetSelectorPos()
 	m_SelectorPos.push_back(D3DXVECTOR3(455, 450, 0));
 	m_SelectorPos.push_back(D3DXVECTOR3(440, 550, 0));
 
-	m_pSpriteSelector->SetPosition(m_SelectorPos[m_SelectorNumber]);
+	m_pSpriteSelector->SetPosition(m_SelectorPos[m_HorizontalSelectorNumber]);
 }
 
 void CSceneStandby::MoveSelector()
 {
 	if (CInputManager::IsDown(Action::NavigateUp, 0) || 0 < CInputManager::GetLeftSthikY(0))
 	{
-		if (m_SelectorNumber > 0)
-			m_SelectorNumber--;
+		if (m_HorizontalSelectorNumber > 0)
+			m_HorizontalSelectorNumber--;
 	}
 	if (CInputManager::IsDown(Action::NavigateDown, 0) || 0 > CInputManager::GetLeftSthikY(0))
 	{
-		if (m_SelectorNumber < m_SelectorPos.size() - 1)
-			m_SelectorNumber++;
+		if (m_HorizontalSelectorNumber < m_SelectorPos.size() - 1)
+			m_HorizontalSelectorNumber++;
 	}
 
-	m_pSpriteSelector->SetPosition(m_SelectorPos[m_SelectorNumber]);
+	m_pSpriteSelector->SetPosition(m_SelectorPos[m_HorizontalSelectorNumber]);
 
 	//0～1の間の数値を計算
 	float sin = fabsf(sinf(CTimeManager::GetTotalTime() * 3));
@@ -251,11 +268,34 @@ void CSceneStandby::MoveSelector()
 	m_pSpriteSelector->SetScale(1.0f, sin, 1.0f);
 
 	//設置位置
-	D3DXVECTOR3 pos = m_SelectorPos[m_SelectorNumber];
+	D3DXVECTOR3 pos = m_SelectorPos[m_HorizontalSelectorNumber];
 
 	//pos.yを拡縮に合わせて少し下にずらす
 	pos.y += 32.f * (1 - sin);
 
 
 	m_pSpriteSelector->SetPosition(pos);
+}
+
+void CSceneStandby::SwitchSpawnFlag(ItemID SpawnItemData)
+{
+	m_SelectSpawnItemData[SpawnItemData] == true ? false : true;
+}
+
+void CSceneStandby::SwitchAllSpawnFlag()
+{
+	//一つでもtrueの場合はすべてfalseに
+	//すべてfalseの場合はすべてtrueに
+
+	for (auto itemSpawnFrag : m_SelectSpawnItemData)
+	{
+		//trueの場合は続行
+		if (itemSpawnFrag.second) continue;
+
+		for (auto itemSpawnFrag : m_SelectSpawnItemData)
+		{
+			itemSpawnFrag.second = true;
+		}
+		break;
+	}
 }
