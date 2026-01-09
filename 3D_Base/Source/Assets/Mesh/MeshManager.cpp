@@ -92,6 +92,7 @@ HRESULT MeshManager::CreateStaticMesh()
 	RegisterStaticMesh(StaticMeshList::HaetatakiCol,	_T("Data\\Mesh\\Static\\Collision\\HaetatakiCol.x"));
 	RegisterStaticMesh(StaticMeshList::PlayerCol,		_T("Data\\Mesh\\Static\\Collision\\PlayerCol.x"));
 	RegisterStaticMesh(StaticMeshList::SmashBatCol,		_T("Data\\Mesh\\Static\\Collision\\SmashBatCol.x"));
+	RegisterStaticMesh(StaticMeshList::MushroomCol,		_T("Data\\Mesh\\Static\\Collision\\MushroomCol.x"));
 
 	RegisterStaticMesh(StaticMeshList::floor1,			_T("Data\\Mesh\\Static\\Collision\\floor1.x"));
 	RegisterStaticMesh(StaticMeshList::floor2,			_T("Data\\Mesh\\Static\\Collision\\floor2.x"));

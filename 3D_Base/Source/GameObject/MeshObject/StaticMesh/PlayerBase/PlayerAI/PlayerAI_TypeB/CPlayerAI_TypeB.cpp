@@ -13,7 +13,7 @@ CPlayerAI_TypeB::CPlayerAI_TypeB(int index)
 	, m_DistanceWeight		( 0.5f )	//値を変えるとアイテム距離スコアが変化
 										//値を大きくすると近くのアイテム、小さくすると好みのアイテムを優先する
 
-	, m_GroundSafeRadius	( 0.8f )	//値を変えるとステージのこれより外側は危険の範囲が変化 0~1の値を入れて
+	, m_GroundSafeRadius	( 0.88f )	//値を変えるとステージのこれより外側は危険の範囲が変化 0~1の値を入れて
 {
 }
 
@@ -25,6 +25,8 @@ void CPlayerAI_TypeB::Update()
 {
 	m_Control = ActionInstruct::None;
 
+	m_Destination.dir = { 0.f,0.f,0.f };
+
 	//毎フレーム行動スコアを低くする
 	//0にすると scoer = -距離 をしているので何も行動しないのスコアが高くなる
 	m_MoveScore = -10000;
@@ -35,10 +37,12 @@ void CPlayerAI_TypeB::Update()
 
 	RunBomb();
 
-	AvoidDanger();
+	//AvoidDanger();
+
+	m_Destination.dir += CalculateStage();
 
 	AutomaticMovement(m_Destination.dir);
-
+	
 	CPlayerAI::Update();
 }
 
@@ -173,28 +177,6 @@ void CPlayerAI_TypeB::HandleItemAction()
 	}
 }
 
-void CPlayerAI_TypeB::AvoidDanger()
-{
-	//地面の中心位置をとる
-	D3DXVECTOR3 groundCenterPos = m_pGroundManager->GetGroundCenterPos();
-
-	//地面の半径の全長を計算
-	float groundRadius = m_pGroundManager->GetGroundRadius() * m_pGroundManager->GetGroundRadius();
-
-	//中心位置からプレイヤーの位置がどれくらい離れているかを計算
-	D3DXVECTOR3 diff = m_vPosition - groundCenterPos;
-
-	//中心位置からプレイヤーの離れているかの全長を出す
-	float diffSq = diff.x * diff.x + diff.z * diff.z;
-
-	//プレイヤーの位置が地面の半径以上なら
-	if (diffSq > groundRadius * (0.9f * 0.9f))
-	{
-		//
-		m_Destination.dir += m_pGroundManager->GetGroundCenterPos() - m_vPosition;
-	}
-}
-
 float CPlayerAI_TypeB::ItemMove(ItemID item)
 {
 	//アイテムによって変化する攻撃するの距離
@@ -273,6 +255,50 @@ float CPlayerAI_TypeB::ItemScoreBonus(const ItemID& item) const
 	return 0.0f;
 }
 
+D3DXVECTOR3 CPlayerAI_TypeB::CalculateStage()
+{
+	//地面の中心位置をとる
+	D3DXVECTOR3 groundCenter = m_pGroundManager->GetGroundCenterPos();
+
+	//地面の半径の全長を計算
+	float groundRadius = m_pGroundManager->GetGroundRadius();
+
+	//地面の安全範囲
+	float safeRadius = groundRadius * m_GroundSafeRadius;
+
+	//安全範囲の2乗した値
+	float safeRadiusSq = safeRadius * safeRadius;
+
+	//中心位置からプレイヤーの位置へのベクトル
+	D3DXVECTOR3 diff = m_vPosition - groundCenter;
+
+	//中心からプレイヤーへのベクトルの長さ(y座標を入れていないのはプレイヤーの高さに関係なくステージ外に移動してほしくないから)
+	float distSq = diff.x * diff.x + diff.z * diff.z;
+
+	//ベクトルの長さが安全圏の範囲よりも外側に出たら
+	if (safeRadiusSq < distSq)
+	{
+		//中心に向かうベクトル
+		D3DXVECTOR3 centerVec = groundCenter - m_vPosition;
+		
+		D3DXVec3Normalize(&centerVec, &centerVec);
+
+		//中心からプレイヤーへのベクトルをルート計算
+		float dist = sqrtf(distSq);
+		//中心からプレイヤーへのベクトルが安全範囲をどれくらい超えているかを計算
+		float overDist = dist - safeRadius;
+
+		//超えている長さによってより強い力で中央に戻るように
+		float weight = overDist * 15.0f;
+
+		//中心に向かうベクトルにどれくらいの強さで中央にに戻るかを返す
+		return centerVec * weight;
+	}
+
+	//安全範囲内なので全て0を返す
+	return D3DXVECTOR3(0.f, 0.f, 0.f);
+}
+
 float CPlayerAI_TypeB::CalculateDangerScore(const D3DXVECTOR3& pos) const
 {
 	//地面の中心位置をとる
@@ -322,4 +348,31 @@ void CPlayerAI_TypeB::RunBomb()
 			}
 		}
 	}
+}
+
+D3DXVECTOR3 CPlayerAI_TypeB::CalculateAvoidDanger()
+{
+
+	for (auto& item : m_pItemManager->GetItems())
+	{
+
+		if (item->GetState() == IItemObserver::State::Throw)
+		{
+
+		}
+
+		if (item->GetTag() == ItemID::Bomb)
+		{
+			if (item->GetState() == IItemObserver::State::Use)
+			{
+				m_Destination.dir += m_vPosition - item->GetPosition();
+			}
+		}
+
+		if (item->GetTag() == ItemID::Boomerang)
+		{
+
+		}
+	}
+	return D3DXVECTOR3();
 }
