@@ -5,7 +5,7 @@ class ItemBase;
 class SelectSpawnItem
 {
 public:
-	SelectSpawnItem();
+	SelectSpawnItem(std::unordered_map<ItemID, bool>& SpawnItemData);
 	~SelectSpawnItem();
 
 	ItemID SerectSpawnItem(std::vector<std::unique_ptr<ItemBase>>& items);
@@ -25,6 +25,7 @@ private:
 private:
 
 	std::unordered_map<ItemID, int> m_ItemsSpawnCount;
+	std::unordered_map<ItemID, bool>& m_SpawnItemData;
 	bool	m_IsSpawnMagnet;
 	int		m_MinItemCount;
 

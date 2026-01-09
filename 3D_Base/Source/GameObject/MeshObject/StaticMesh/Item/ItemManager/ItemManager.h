@@ -12,7 +12,7 @@ class ItemManager:
 	public CStaticMeshObject
 {
 public:
-	ItemManager(std::unique_ptr<CGroundManager>& GManager);
+	ItemManager(std::unique_ptr<CGroundManager>& GManager , std::unordered_map<ItemID, bool>& SpawnItemData);
 	~ItemManager();
 
 	/*****************************************************************************************

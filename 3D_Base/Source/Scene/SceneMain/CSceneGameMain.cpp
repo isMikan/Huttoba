@@ -49,6 +49,8 @@ CSceneGameMain::CSceneGameMain( HWND hWnd, std::unordered_map<ItemID, bool>& Spa
 
 	CInputManager::BindKey(Action::Pause, InputBinding(InputDevice::Keyboard, VK_F3), 0);
 
+	//アイテムマネージャーの作成
+	m_pItemManager = std::make_unique<ItemManager>(m_pGroundManager, SpawnItemData);
 	Create();
 	LoadData();
 }
@@ -85,8 +87,6 @@ HRESULT CSceneGameMain::Create()
 	m_pGroundManager = std::make_unique<CGroundManager>();
 	m_pGroundManager->MainGroundCreate();
 
-	//アイテムマネージャーの作成
-	m_pItemManager = std::make_unique<ItemManager>(m_pGroundManager);
 
 	//メインの構築関数を呼び出す.
 	m_pPlayerManager->MainPlayerCreate(m_pItemManager.get(), m_pGroundManager.get());

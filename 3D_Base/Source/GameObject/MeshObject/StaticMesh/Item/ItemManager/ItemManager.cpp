@@ -11,9 +11,9 @@ constexpr int INITAL_SPAWN_ITEM_LIMIT = 8;
 
 //--------------------------------------------------------------------------------------------------------------
 
-ItemManager::ItemManager(std::unique_ptr<CGroundManager>& GroundManager)
+ItemManager::ItemManager(std::unique_ptr<CGroundManager>& GroundManager , std::unordered_map<ItemID, bool>& SpawnItemData)
 	: m_pItems				{}
-	, m_pSpawnItem			{ std::make_unique<SelectSpawnItem>() }
+	, m_pSpawnItem			{ std::make_unique<SelectSpawnItem>(SpawnItemData) }
 	, m_pSpawnItemPosition	{ std::make_unique<SpawnItemPosition>(GroundManager) }
 	, m_SpawnLimit			{ }
 	, m_ErrorCount			{ }

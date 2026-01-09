@@ -58,7 +58,6 @@ HRESULT CSceneTitle::Create()
 	m_pSpriteEndFont = std::make_unique<CUIObject>();
 
 	//アイテムマネージャーの作成
-	m_pItemManager = std::make_unique<ItemManager>(m_pGroundManager);
 	m_pPlayerManager->MainPlayerCreate(m_pItemManager.get(), m_pGroundManager.get());
 
 	return S_OK;
@@ -88,8 +87,6 @@ HRESULT CSceneTitle::LoadData()
 	m_pSpriteEndFont->AttachSprite(AssetManager::Sprite(Sprite2DList::Font_UI_Common));
 	m_pSpriteEndFont->SetPatternNo(0, 1);
 	m_pSpriteEndFont->SetPosition(570, 540, 0);
-
-	//m_pItemManager->LoadData();
 
 	//関数を入れる
 	m_Action =
@@ -132,8 +129,6 @@ void CSceneTitle::Update()
 		m_Action[m_SelectorNumber]();
 	}
 	CollisionManager::GetInstance()->Update();
-
-	//m_pItemManager->Update();
 }
 
 void CSceneTitle::Draw()
@@ -183,8 +178,6 @@ void CSceneTitle::Draw()
 	//プレイヤーの描画.
 	m_pPlayerManager->Draw(view, proj, light, camera);
 	
-	m_pItemManager->Draw(view, proj, light, camera);
-
 	m_pDx11->SetDepth(false);
 
 	//m_pSpriteTitleFont->Draw();

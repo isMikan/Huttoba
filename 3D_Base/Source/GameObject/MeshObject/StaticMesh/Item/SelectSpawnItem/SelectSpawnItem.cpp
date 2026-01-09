@@ -3,8 +3,9 @@
 #include "Item/ItemBase.h"
 #include "Item/ItemFactory/ItemFactory.h"
 
-SelectSpawnItem::SelectSpawnItem()
+SelectSpawnItem::SelectSpawnItem(std::unordered_map<ItemID, bool>& SpawnItemData)
 	: m_ItemsSpawnCount	{}
+	, m_SpawnItemData	{ SpawnItemData }
 	, m_IsSpawnMagnet		{}
 	, m_MinItemCount		{}
 
