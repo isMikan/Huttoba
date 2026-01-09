@@ -3,7 +3,7 @@
 #include "Camera/CameraManager/CCameraManager.h"
 #include "Scene/SceneData/CSceneData.h"
 
-CSceneStandby::CSceneStandby()
+CSceneStandby::CSceneStandby(std::unordered_map<ItemID, bool>& SpawnItemData)
 	: m_pRedyFontImg		()
 	, m_pNotRedyFontImg		()
 
@@ -21,6 +21,7 @@ CSceneStandby::CSceneStandby()
 	, m_SelectorPos			()
 
 	, m_SelectorNumber		( 0 )
+	, m_SelectSpawnItemData	(SpawnItemData)
 {
 	m_pDx11 = CDirectX11::GetInstance();
 
@@ -98,6 +99,21 @@ HRESULT CSceneStandby::LoadData()
 		[this]() {SetNextScene(GameMain);},
 		[this]() {SetNextScene(Title);}
 	};
+
+	//出現するアイテム設定の初期化
+	m_SelectSpawnItemData =
+	{
+		{ItemID::Bomb,			true},
+		{ItemID::Boomerang,		true},
+		{ItemID::Fun,			true},
+		{ItemID::Haetataki,		true},
+		{ItemID::Mushroom,		true},
+		{ItemID::SmashBat,		true},
+		{ItemID::TrackingRobot,	true},
+	};
+
+
+	m_SelectSpawnItemData[ItemID::Bomb] = false;
 
 	return S_OK;
 }

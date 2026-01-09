@@ -8,7 +8,7 @@
 #include "Collision/CollisionDraw/CollisionDraw.h"
 #include "Scene/SceneData/CSceneData.h"
 
-CSceneGameMain::CSceneGameMain( HWND hWnd)
+CSceneGameMain::CSceneGameMain( HWND hWnd, std::unordered_map<ItemID, bool>& SpawnItemData)
 	: m_hWnd			( hWnd )
 
 	, m_GameState		( GameState::Ready )

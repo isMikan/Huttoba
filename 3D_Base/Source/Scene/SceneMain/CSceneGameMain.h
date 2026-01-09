@@ -38,7 +38,7 @@ class CSceneGameMain
 	: public CScene
 {
 public:
-	CSceneGameMain(HWND hWnd);
+	CSceneGameMain(HWND hWnd, std::unordered_map<ItemID, bool>& SpawnItemData);
 	~CSceneGameMain() override;
 
 	HRESULT Create() override;

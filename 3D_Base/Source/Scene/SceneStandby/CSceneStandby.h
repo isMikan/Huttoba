@@ -13,7 +13,7 @@ class CSceneStandby
 	: public CScene
 {
 public:
-	CSceneStandby();
+	CSceneStandby(std::unordered_map<ItemID, bool>& SpawnItemData);
 	~CSceneStandby() override;
 
 	HRESULT Create() override;
@@ -59,5 +59,7 @@ private:
 	uint8_t						m_SelectorNumber;	
 	
 	//‘I‘ğ–îˆó‚ÌÀ•W.
-	std::vector<D3DXVECTOR3>	m_SelectorPos;		
+	std::vector<D3DXVECTOR3>	m_SelectorPos;	
+
+	std::unordered_map<ItemID, bool>& m_SelectSpawnItemData;
 };

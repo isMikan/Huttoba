@@ -7,6 +7,7 @@ CSceneManager::CSceneManager(HWND hWnd)
 	, m_hWnd			( hWnd )
 	 
 	, m_pSky			()
+	, m_SpawnItemData	()
 {
 	m_pDx11 = CDirectX11::GetInstance();
 
@@ -79,10 +80,10 @@ void CSceneManager::CreateScene(int Scene)
 	//ÉVÅ[ÉìçÏê¨
 	switch (Scene)
 	{
-	case Title:		m_pScene = std::make_unique<CSceneTitle>	(m_hWnd);	break;
-	case Standby:	m_pScene = std::make_unique<CSceneStandby>	();			break;
-	case GameMain:  m_pScene = std::make_unique<CSceneGameMain>	(m_hWnd);	break;
-	case Result:	m_pScene = std::make_unique<CSceneResult>();			break;
+	case Title:		m_pScene = std::make_unique<CSceneTitle>	(m_hWnd);					break;
+	case Standby:	m_pScene = std::make_unique<CSceneStandby>	(m_SpawnItemData);			break;
+	case GameMain:  m_pScene = std::make_unique<CSceneGameMain>	(m_hWnd, m_SpawnItemData);	break;
+	case Result:	m_pScene = std::make_unique<CSceneResult>();							break;
 	default: 
 		//èIóπ
 		return;

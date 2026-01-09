@@ -34,4 +34,6 @@ private:
 
 	//‹óƒNƒ‰ƒX.
 	std::unique_ptr<CSky> 		m_pSky;
+
+	std::unordered_map<ItemID, bool> m_SpawnItemData;
 };
