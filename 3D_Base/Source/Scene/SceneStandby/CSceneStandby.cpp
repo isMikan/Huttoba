@@ -112,9 +112,6 @@ HRESULT CSceneStandby::LoadData()
 		{ItemID::TrackingRobot,	true},
 	};
 
-
-	m_SelectSpawnItemData[ItemID::Bomb] = false;
-
 	return S_OK;
 }
 

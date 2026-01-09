@@ -15,7 +15,6 @@ void CSpriteObject::Update()
 	if( m_pSprite == nullptr ){
 		return;
 	} 
-
 }
 
 void CSpriteObject::Draw( D3DXMATRIX& View, D3DXMATRIX& Proj )
