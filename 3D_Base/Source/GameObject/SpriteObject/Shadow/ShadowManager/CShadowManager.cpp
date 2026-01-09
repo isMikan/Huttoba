@@ -1,5 +1,7 @@
 #include "CShadowManager.h"
+
 #include "Item/ItemBase.h"
+#include "Item/Items/Haetataki/Haetataki.h"
 
 CShadowManager::CShadowManager()
 	: m_pShadow		()
@@ -74,9 +76,17 @@ void CShadowManager::Update(
 	//プレイヤーがすでに影生成をしているため、プレイヤー最大数からスタート
 	for (size_t i = Player_Max; i < items->GetItemVectorNum() + Player_Max; i++)
 	{
-		if (items->GetItems()[i - Player_Max]->GetIsOnGround())
+		auto& item = items->GetItems()[i - Player_Max];
+		if (item->GetIsOnGround())
 		{
-			m_pShadow[i]->Update(items->GetItemPos(static_cast<int>(i - Player_Max)));
+			D3DXVECTOR3 pos = items->GetItemPos(static_cast<int>(i - Player_Max));
+			if (dynamic_cast<Haetataki*>(item.get())
+				&& (item->GetState() == IItemObserver::State::OnGround
+					|| item->GetState() == IItemObserver::State::Spawn))
+			{
+				pos.x += 1.f;
+			}
+			m_pShadow[i]->Update(pos);
 		}
 		else
 		{
