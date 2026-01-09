@@ -203,7 +203,7 @@ void CPlayerManager::ResultPlayerCreate()
 				SetQuaternion(0.f, D3DXToRadian(180.f), 0.f, 0.f);
 
 			break;
-		case 4:
+		default:
 
 			//‰E‚©‚ç‡‚É•\¦.
 			pos.x = pos.x * countLive - 2.f;	//”z—ñ”Ô†‚ÌÅŒã‚©‚ç–„‚ß‚Ä‚¢‚­.
