@@ -79,6 +79,10 @@ void CPlayerFallingState::Enter()
 //--- 状態の終了時に呼び出す ---.
 void CPlayerFallingState::Exit()
 {
+	//プレイヤーの位置を取得.
+	D3DXVECTOR3 playerPos = m_pPlayer.GetPosition();
+	//地面に着地.
+	m_pPlayer.SetPosition(playerPos.x, 0.f, playerPos.z);
 }
 
 //--- この状態の間に呼び出す ---.

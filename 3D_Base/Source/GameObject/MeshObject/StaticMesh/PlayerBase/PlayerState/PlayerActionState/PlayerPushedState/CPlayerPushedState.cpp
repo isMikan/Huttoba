@@ -127,8 +127,12 @@ void CPlayerPushedState::Update()
 		m_CurrentTiltAngle = 0.f;
 	}
 
-	//クォータニオンの回転を計算して設定する.
-	m_pPlayer.SetQuaternion(m_pPlayer.TiltedQuat(m_StartQuat, axes.right, m_CurrentTiltAngle));
+	//最大(後ろなのでマイナス値)より傾いていない場合、傾く.
+	if(m_pPlayer.GetQuaternion().z > m_TiltAngleMax)
+	{
+		//クォータニオンの回転を計算して設定する.
+		m_pPlayer.SetQuaternion(m_pPlayer.TiltedQuat(m_StartQuat, axes.right, m_CurrentTiltAngle));
+	}
 
 	//手の軌道を計算.
 	float eased = cosf(progress * D3DX_PI * m_HandLaps);	

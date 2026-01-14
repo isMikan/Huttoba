@@ -16,6 +16,7 @@ ItemManager::ItemManager(std::unique_ptr<CGroundManager>& GroundManager)
 	, m_pSpawnItem			{ std::make_unique<SelectSpawnItem>() }
 	, m_pSpawnItemPosition	{ std::make_unique<SpawnItemPosition>(GroundManager) }
 	, m_SpawnLimit			{ }
+
 	, m_ErrorCount			{ }
 {
 	Create();
@@ -84,6 +85,7 @@ void ItemManager::Update()
 	//無限ループではない場合初期化しとく
 	m_ErrorCount = 0;
 
+	int itemEffectCount = 0;
 	for (auto& item : m_pItems)
 	{
 		//一旦Player0しか持てないようにする
@@ -93,7 +95,29 @@ void ItemManager::Update()
 		{
 			item->Fall();
 		}
+
+		if (AssetManager::Effect()->IsPlaying(item->GetItemOnGroundEffect()))
+		{
+			itemEffectCount++;
+		}
+
 	}
+
+	if (itemEffectCount == 0)
+	{
+		for (auto& item : m_pItems)
+		{
+			item->SetIsPlayingItemEffect(true);
+		}
+	}
+	else
+	{
+		for (auto& item : m_pItems)
+		{
+			item->SetIsPlayingItemEffect(false);
+		}
+	}
+
 	//不必要なアイテム削除
 	DestroyItem();
 }
