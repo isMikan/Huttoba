@@ -111,6 +111,15 @@ void CSceneStandby::Update()
 	{
 		MoveSelector();
 
+		//コントローラーで準備状態切り替え.
+		for (size_t i = 0; i < 4; ++i)
+		{
+			if (CInputManager::IsDown(Action::Switch, i))
+			{
+				CSceneData::ChangeSlot(i);
+			}
+		}
+
 		if (CInputManager::IsDown(Action::Decide, 0))
 		{
 			switch (m_SelectorNumber)
@@ -129,15 +138,6 @@ void CSceneStandby::Update()
 				break;
 			default:
 				break;
-			}
-		}
-
-		//コントローラーで準備状態切り替え.
-		for (size_t i = 0; i < 4; ++i)
-		{
-			if (CInputManager::IsDown(Action::Switch, i))
-			{
-				CSceneData::ChangeSlot(i);
 			}
 		}
 	}

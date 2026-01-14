@@ -100,7 +100,8 @@ private:
     //爆発時の処理
     bool        m_IsExploded;
 
-    bool        m_Is;
+    //破棄の処理を遅らせるフラグ
+    bool        m_IsPendingDestroy;
 
     //爆発の当たり判定のメッシュ半径を記録
     float       m_ExplosionRadius;

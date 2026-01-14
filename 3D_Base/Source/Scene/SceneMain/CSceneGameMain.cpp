@@ -15,7 +15,9 @@ CSceneGameMain::CSceneGameMain( HWND hWnd)
 
 	, m_StateTimer		( 0.0f )
 
-	, m_ReadyDuration	( 1.0f )
+	, m_ReadyDuration	( 1.7f )
+	, m_GoDuration		( 0.8f )
+
 	, m_FinishDuration	( 2.5f )
 
 	, m_pDbgText		( nullptr )
@@ -218,7 +220,10 @@ void CSceneGameMain::Update()
 		//頭の位置を更新したいので.
 		m_pPlayerManager->Update();
 
-		if (m_StateTimer >= m_ReadyDuration)
+		if (m_StateTimer > m_ReadyDuration)
+			m_pSpriteReadyGo->SetPatternNo(0, 1);
+
+		if (m_StateTimer >= m_ReadyDuration+ m_GoDuration)
 		{
 			//ゲームプレイへ
 			m_GameState = GameState::Play;
