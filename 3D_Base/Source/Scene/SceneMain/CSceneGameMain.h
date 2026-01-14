@@ -72,8 +72,12 @@ private:
 	//進行状況の変化用タイマー
 	float		m_StateTimer;
 
-	//レディからプレイに遷移するまでの時間
+	//レディからゴーに遷移するまでの時間
 	float		m_ReadyDuration;
+
+	//ゴーからプレイに遷移するまでの時間
+	float		m_GoDuration;
+
 	//フィニッシュから次の画面に遷移するまでの時間
 	float		m_FinishDuration;
 
