@@ -105,8 +105,13 @@ public:
 	//最大パターン数(マス目)を取得
 	POINTS GetPatternMax() const { return m_PatternMax; }
 
+	//UVの設定.
+	void SetUVInfo(D3DXVECTOR2 uv) { m_UV = uv; }
+
 	//ビルボード機能のON/OFF切り替え
 	void SetBillboard(bool flag) { m_Billboard = flag; }
+	//動くかの設定.
+	void SetIsMoving(bool flag) { m_IsMoving = flag; }
 
 private:
 	CDirectX11*				m_pDx11;
@@ -127,13 +132,15 @@ private:
 	D3DXVECTOR3		m_vRotation;	//回転.
 	D3DXVECTOR3		m_vScale;		//拡縮.
 
-	D3DXVECTOR2		m_UV;		//テクスチャUV座標.
+	D3DXVECTOR2		m_UV;			//テクスチャUV座標.
 
-	float			m_Alpha;	//α値(0:透明、1:完全不透明).
+	float			m_Alpha;		//α値(0:透明、1:完全不透明).
 
 	SPRITE_STATE	m_SpriteState;	//スプライト情報
 	POINTS			m_PatternNo;	//パターン番号(マス目)
 	POINTS			m_PatternMax;	//最大パターン(マスの最大値)
 
 	bool			m_Billboard;	//ビルボード有効無効
+	bool			m_IsMoving;		//動くか.
+
 };

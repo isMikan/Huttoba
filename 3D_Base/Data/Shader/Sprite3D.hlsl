@@ -33,7 +33,7 @@ VS_OUTPUT VS_Main(
 	VS_OUTPUT output = (VS_OUTPUT)0;
 	output.Pos = mul( Pos, g_mWVP );
 	output.UV = UV;
-	
+		
 	//UVスクロール(UV座標を操作する)
     output.UV.x += g_UV.x;
     output.UV.y += g_UV.y;

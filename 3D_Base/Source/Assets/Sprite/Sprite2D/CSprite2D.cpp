@@ -25,6 +25,7 @@ CSprite2D::CSprite2D()
 	, m_PatternNo		()
 	, m_PatternMax		()
 	, m_Color			( 1.f, 1.f, 1.f )
+	, m_IsMoving		( false )
 {
 }
 
@@ -404,14 +405,22 @@ void CSprite2D::Render()
 		//カラー.
 		cb.vColor = D3DXVECTOR4(m_Color.x, m_Color.y, m_Color.z, m_Alpha);
 
-		//テクスチャ座標(UV座標)
-		//１マスあたりの割合にパターン番号(マス目)をかけて座標を設定する
-		cb.vUV.x =
-			m_SpriteState.Stride.w / m_SpriteState.Base.w
-			* static_cast<float>(m_PatternNo.x);
-		cb.vUV.y =
-			m_SpriteState.Stride.h / m_SpriteState.Base.h
-			* static_cast<float>(m_PatternNo.y);
+		if(!m_IsMoving)
+		{
+			//テクスチャ座標(UV座標)
+			//１マスあたりの割合にパターン番号(マス目)をかけて座標を設定する
+			cb.vUV.x =
+				m_SpriteState.Stride.w / m_SpriteState.Base.w
+				* static_cast<float>(m_PatternNo.x);
+			cb.vUV.y =
+				m_SpriteState.Stride.h / m_SpriteState.Base.h
+				* static_cast<float>(m_PatternNo.y);
+		}
+		else
+		{
+			cb.vUV.x = m_UV.x;
+			cb.vUV.y = m_UV.y;
+		}
 
 		//ビューポートの幅、高さを渡す
 		cb.fViewPortWidth	= static_cast<float>( WND_W );
