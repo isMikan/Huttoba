@@ -319,7 +319,7 @@ float TrackingRobot::CalculateForceScalar(float distance)
 	float ratio = 1.0f - (distance / m_ExplosionRadius);
 
 	//”š”­‚ÌÅ¬‚«”ò‚Î‚µ—Í
-	float minPower = 5.0f;
+	float minPower = 6.0f;
 
 	//”š”­‚ÌÅ‘å‚«”ò‚Î‚µ—Í
 	float maxPower = m_KnockBackPower;
