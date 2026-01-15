@@ -21,6 +21,7 @@ CSceneStandby::CSceneStandby(std::unordered_map<ItemID, bool>& SpawnItemData)
 	, m_SelectorPos			()
 
 	, m_HorizontalSelectorNumber		( 0 )
+	, m_VerticalSelectorNumber			()
 	, m_SelectSpawnItemData	(SpawnItemData)
 {
 	m_pDx11 = CDirectX11::GetInstance();
@@ -143,7 +144,7 @@ void CSceneStandby::Update()
 
 		if (CInputManager::IsDown(Action::Decide, 0))
 		{
-			switch (m_HorizontalSelectorNumber)
+			switch (m_VerticalSelectorNumber)
 			{
 			case 0:
 				//コントローラー番号0が準備OKなら
@@ -240,25 +241,68 @@ void CSceneStandby::InitializeRedyFont()
 
 void CSceneStandby::SetSelectorPos()
 {
-	m_SelectorPos.push_back(D3DXVECTOR3(455, 450, 0));
-	m_SelectorPos.push_back(D3DXVECTOR3(440, 550, 0));
+	std::vector<D3DXVECTOR3> vertical_1 =
+	{
+		D3DXVECTOR3(455, 450, 0),
+		D3DXVECTOR3(500, 450, 0),
+		D3DXVECTOR3(550, 450, 0),
+		D3DXVECTOR3(600, 450, 0),
+		D3DXVECTOR3(650, 450, 0),
+	};
+	std::vector<D3DXVECTOR3> vertical_2 =
+	{
+		D3DXVECTOR3(455, 550, 0),
+		D3DXVECTOR3(500, 550, 0),
+		D3DXVECTOR3(550, 550, 0),
+		D3DXVECTOR3(600, 550, 0),
+		D3DXVECTOR3(650, 550, 0),
+	};
 
-	m_pSpriteSelector->SetPosition(m_SelectorPos[m_HorizontalSelectorNumber]);
+
+	m_SelectorPos.push_back(vertical_1);
+	m_SelectorPos.push_back(vertical_2);
+
+	m_pSpriteSelector->SetPosition(m_SelectorPos[m_VerticalSelectorNumber][m_HorizontalSelectorNumber]);
 }
 
 void CSceneStandby::MoveSelector()
 {
-	if (CInputManager::IsDown(Action::NavigateUp, 0) || 0 < CInputManager::GetLeftSthikY(0))
+	bool IsPushUp	= CInputManager::IsDown(Action::NavigateUp, 0)   || 0 < CInputManager::GetLeftSthikY(0); //下ボタン / 下スティックがインタラクトされた？
+	bool IsPushDown = CInputManager::IsDown(Action::NavigateDown, 0) || 0 > CInputManager::GetLeftSthikY(0); //上ボタン / 上スティックがインタラクトされた？
+	bool IsPushRight = CInputManager::IsDown(Action::NavigateRight, 0)|| 0 > CInputManager::GetLeftSthikY(0); //右ボタン / 右スティックがインタラクトされた？
+	bool IsPushLeft = CInputManager::IsDown(Action::NavigateLeft, 0) || 0 > CInputManager::GetLeftSthikY(0); //左ボタン / 左スティックがインタラクトされた？
+
+	if (IsPushUp)
 	{
-		AssetManager::Sound()->PlaySE(enSoundList::SE_MoveSelectionArrow);
-		if (m_HorizontalSelectorNumber > 0)
-			m_HorizontalSelectorNumber--;
+		if (m_VerticalSelectorNumber > 0)
+		{
+			m_VerticalSelectorNumber--;
+			AssetManager::Sound()->PlaySE(enSoundList::SE_MoveSelectionArrow);
+		}
 	}
-	if (CInputManager::IsDown(Action::NavigateDown, 0) || 0 < CInputManager::GetLeftSthikY(0))
+	if (IsPushDown)
 	{
-		AssetManager::Sound()->PlaySE(enSoundList::SE_MoveSelectionArrow);
-		if (m_HorizontalSelectorNumber < m_SelectorPos.size() - 1)
+		if (m_VerticalSelectorNumber < m_SelectorPos.size() - 1)
+		{
+			m_VerticalSelectorNumber++;
+			AssetManager::Sound()->PlaySE(enSoundList::SE_MoveSelectionArrow);
+		}
+	}
+	if (IsPushLeft)
+	{
+		if (m_HorizontalSelectorNumber > 0)
+		{
+			m_HorizontalSelectorNumber--;
+			AssetManager::Sound()->PlaySE(enSoundList::SE_MoveSelectionArrow);
+		}
+	}
+	if (IsPushRight)
+	{
+		if (m_HorizontalSelectorNumber < m_SelectorPos[m_VerticalSelectorNumber].size() - 1)
+		{
 			m_HorizontalSelectorNumber++;
+			AssetManager::Sound()->PlaySE(enSoundList::SE_MoveSelectionArrow);
+		}
 	}
 
 	//0～1の間の数値を計算
@@ -268,7 +312,7 @@ void CSceneStandby::MoveSelector()
 	m_pSpriteSelector->SetScale(1.0f, sin, 1.0f);
 
 	//設置位置
-	D3DXVECTOR3 pos = m_SelectorPos[m_HorizontalSelectorNumber];
+	D3DXVECTOR3 pos = m_SelectorPos[m_VerticalSelectorNumber][m_HorizontalSelectorNumber];
 
 	//pos.yを拡縮に合わせて少し下にずらす
 	pos.y += 32.f * (1 - sin);

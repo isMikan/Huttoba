@@ -109,4 +109,11 @@ void CSceneManager::SetInputBInding()
 
 	CInputManager::BindKey(Action::NavigateDown, InputBinding(InputDevice::GamePad, CXInput::DOWN), 0);
 	CInputManager::BindKey(Action::NavigateDown, InputBinding(InputDevice::Keyboard, VK_DOWN), 0);
+
+	CInputManager::BindKey(Action::NavigateRight, InputBinding(InputDevice::GamePad, CXInput::RIGHT), 0);
+	CInputManager::BindKey(Action::NavigateRight, InputBinding(InputDevice::Keyboard, VK_RIGHT), 0);
+
+	CInputManager::BindKey(Action::NavigateLeft, InputBinding(InputDevice::GamePad, CXInput::LEFT), 0);
+	CInputManager::BindKey(Action::NavigateLeft, InputBinding(InputDevice::Keyboard, VK_LEFT), 0);
+
 }

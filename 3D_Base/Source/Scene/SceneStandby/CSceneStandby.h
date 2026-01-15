@@ -67,7 +67,7 @@ private:
 
 
 	//‘I‘ğ–îˆó‚ÌÀ•W.
-	std::vector<D3DXVECTOR3>	m_SelectorPos;	
+	std::vector<std::vector<D3DXVECTOR3>>	m_SelectorPos;
 
 	std::unordered_map<ItemID, bool>& m_SelectSpawnItemData;
 };
