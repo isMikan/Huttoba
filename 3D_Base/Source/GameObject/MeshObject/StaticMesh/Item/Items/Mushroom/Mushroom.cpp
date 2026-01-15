@@ -272,6 +272,13 @@ void Mushroom::ThrowMove()
 		DestroyItem();
 	}
 
+	//—Ž‰ºˆ—
+	if (m_vPosition.y > 0.5f)
+	{
+		m_vPosition.y -= m_Velocity.y;
+		m_Velocity.y += m_tGravity;
+	}
+
 	m_Velocity *= 0.98f;
 
 	m_vPosition += m_Velocity * static_cast<float>(CTimeManager::GetDeltaTime());
