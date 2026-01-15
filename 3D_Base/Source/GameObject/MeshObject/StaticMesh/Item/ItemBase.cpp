@@ -4,26 +4,29 @@
 #include "Collision/CollisionUtility/CollisionUtility.h"
 
 ItemBase::ItemBase()
-	: m_State			( IItemObserver::State::Spawn )
-	, m_OldState		( IItemObserver::State::None )
-	, m_pPlayer			( nullptr )
-	, m_tGravity		( 9.8f )
-	, m_IsDestroy		( false )
-	, m_IsOnGround		( false )
-	, m_IsOkFall		( true )
+	: m_State					( IItemObserver::State::Spawn )
+	, m_OldState				( IItemObserver::State::None )
+	, m_pPlayer					( nullptr )
+	, m_tGravity				( 9.8f )
+	, m_IsDestroy				( false )
+	, m_IsOnGround				( false )
+	, m_IsOkFall				( true )
 
-	, m_ThrowSpeed		( 6.0f )
-	, m_ThrowSmashPower	( 7.0f )
-	, m_Tag				( ItemID::None )
+	, m_ThrowSpeed				( 6.0f )
+	, m_ThrowSmashPower			( 7.0f )
+	, m_Tag						( ItemID::None )
 
-	, m_IsFall			( false )
-	, m_ItemFallCount	()
+	, m_IsFall					( false )
+	, m_ItemFallCount			()
+
+	, m_ItemOnGroundEffect		()
 {
 	m_vScale = D3DXVECTOR3(1.5f, 1.5f, 1.5f);
 }
 
 ItemBase::~ItemBase()
 {
+	AssetManager::Effect()->Stop(m_ItemOnGroundEffect);
 }
 
 void ItemBase::Init()
@@ -43,10 +46,31 @@ void ItemBase::Update()
 	//ó‘Ô‚É‚æ‚Á‚Ä‘JˆÚ
 	switch (m_State)
 	{
-	case IItemObserver::State::None:					break;
-	case IItemObserver::State::Spawn:		Spawn();	break;
-	case IItemObserver::State::OnGround:	OnGround();	break;
-	case IItemObserver::State::Have:		Have();		break;
+	case IItemObserver::State::None:	break;
+	case IItemObserver::State::Spawn:	
+	{
+		AssetManager::Effect()->Stop(m_ItemOnGroundEffect);
+		Spawn();
+		break;
+	}
+	case IItemObserver::State::OnGround:
+	{
+		if (!AssetManager::Effect()->IsPlaying(m_ItemOnGroundEffect)
+			&& m_IsPlayingItemEffect)
+		{
+			m_ItemOnGroundEffect = AssetManager::Effect()->Play("ItemOnGround", m_vPosition);
+			AssetManager::Effect()->SetScale(m_ItemOnGroundEffect, D3DXVECTOR3(0.3f, 0.3f, 0.3f));
+			AssetManager::Effect()->SetSpeed(m_ItemOnGroundEffect, 3.5f);
+		}
+		OnGround();
+		break;
+	}
+	case IItemObserver::State::Have:		
+	{
+		AssetManager::Effect()->Stop(m_ItemOnGroundEffect);
+		Have();
+		break;
+	}
 	case IItemObserver::State::Use:			Use();		break;
 	case IItemObserver::State::Throw:		Throw();	break;
 	case IItemObserver::State::Destroy:		Destroy();	break;
@@ -131,6 +155,7 @@ void ItemBase::Fall()
 	{
 		m_vPosition.y -= GRAVITY;
 		
+		AssetManager::Effect()->Stop(m_ItemOnGroundEffect);
 		if (m_vPosition.y < -5.f)
 		{
 			DestroyItem();

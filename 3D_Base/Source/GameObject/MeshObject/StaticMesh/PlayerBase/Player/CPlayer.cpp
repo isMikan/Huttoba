@@ -171,9 +171,6 @@ void CPlayer::SetPlayerInputBinding(int index) const
 	CInputManager::BindKey(Action::Attack,
 		InputBinding(InputDevice::GamePad, CXInput::X), m_PlayerID);	//UŒ‚.
 
-	CInputManager::BindKey(Action::Attack,
-		InputBinding(InputDevice::GamePad, CXInput::RB), m_PlayerID);	//UŒ‚.
-
 	CInputManager::BindKey(Action::ToggleItem,	
 		InputBinding(InputDevice::GamePad, CXInput::A), m_PlayerID);	//E‚¤/Ì‚Ä‚é.
 }

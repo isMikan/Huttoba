@@ -47,8 +47,8 @@ protected:
 //======================================================================
 	std::vector<std::unique_ptr<CGaugeBase>>	m_pGauge;				//ゲージ.
 
-	std::unordered_map<CStaticMeshObject*, std::pair<int, int>>	m_ObjectGauge;		//プレイヤーとゲージを照らし合わせる.	
-	std::unordered_set<CStaticMeshObject*>						m_SubscribeObjects;	//プレイヤーの購買リスト.
+	std::unordered_map<CStaticMeshObject*, std::pair<int, int>>	m_ObjectGauge;		//オブジェクトとゲージを照らし合わせる.	
+	std::unordered_set<CStaticMeshObject*>						m_SubscribeObjects;	//オブジェクトの購買リスト.
 
 	CPlayerManager*		m_pPlayerManager;		//プレイヤー.
 	ItemManager*		m_pItemManager;			//アイテム.

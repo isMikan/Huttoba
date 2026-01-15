@@ -139,20 +139,11 @@ void CSceneResult::Update()
 	//プレイヤーの動作.
 	m_pPlayerManager->ResultPlayerUpdate();
 
-	//関数を入れる
-	m_Action =
-	{
-		//ラムダ式で関数にしてm_Actionの中に入れている(SetNextScene(Standby);ではだめ).
-		//画面に表示される選択肢の文字と同じ順番に処理を入れていく
-		[this]() {SetNextScene(GameMain);},
-		[this]() {SetNextScene(Standby);},
-		[this]() {SetNextScene(Title);}
-	};
-
 	if (CInputManager::IsDown(Action::Decide,0))
 	{
 		//選択中の番号で処理される関数が変わる.
 		m_Action[m_SelectorNumber]();
+		AssetManager::Sound()->PlaySE(enSoundList::SE_Decision);
 	}
 }
 
@@ -218,15 +209,21 @@ void CSceneResult::SetSelectorPos()
 
 void CSceneResult::MoveSelector()
 {
-	if (CInputManager::IsDown(Action::NavigateUp,0)/* || 0 < m_InputManager.GetInput(0).GetLeftSthikY()*/)
+	if (CInputManager::IsDown(Action::NavigateUp, 0)/* || 0 < m_InputManager.GetInput(0).GetLeftSthikY()*/)
 	{
 		if (m_SelectorNumber > 0)
+		{
 			m_SelectorNumber--;
+			AssetManager::Sound()->PlaySE(enSoundList::SE_MoveSelectionArrow);
+		}
 	}
 	if (CInputManager::IsDown(Action::NavigateDown,0)/* || 0 > m_InputManager.GetInput(0).GetLeftSthikY()*/)
 	{
 		if (m_SelectorNumber < m_SelectorPos.size() - 1)
+		{
 			m_SelectorNumber++;
+			AssetManager::Sound()->PlaySE(enSoundList::SE_MoveSelectionArrow);
+		}
 	}
 
 	m_pSpriteSelector->SetPosition(m_SelectorPos[m_SelectorNumber]);
@@ -265,7 +262,10 @@ void CSceneResult::SelectorControl()
 	if (stickY > threshold) {
 		if (!isHeldUp) {
 			if (m_SelectorNumber > 0)
+			{
 				m_SelectorNumber--;
+				AssetManager::Sound()->PlaySE(enSoundList::SE_MoveSelectionArrow);
+			}
 			isHeldUp = true;
 			holdTimerUp = initialDelay;
 		}
@@ -273,7 +273,10 @@ void CSceneResult::SelectorControl()
 			holdTimerUp -= dt;
 			if (holdTimerUp <= 0.0f) {
 				if (m_SelectorNumber > 0)
+				{
 					m_SelectorNumber--;
+					AssetManager::Sound()->PlaySE(enSoundList::SE_MoveSelectionArrow);
+				}
 				holdTimerUp = repeatInterval;
 			}
 		}
@@ -286,7 +289,10 @@ void CSceneResult::SelectorControl()
 	if (stickY < -threshold) {
 		if (!isHeldDown) {
 			if (m_SelectorNumber < m_SelectorPos.size() - 1)
+			{
 				m_SelectorNumber++;
+				AssetManager::Sound()->PlaySE(enSoundList::SE_MoveSelectionArrow);
+			}
 			isHeldDown = true;
 			holdTimerDown = initialDelay;
 		}
@@ -294,7 +300,10 @@ void CSceneResult::SelectorControl()
 			holdTimerDown -= dt;
 			if (holdTimerDown <= 0.0f) {
 				if (m_SelectorNumber < m_SelectorPos.size() - 1)
+				{
 					m_SelectorNumber++;
+					AssetManager::Sound()->PlaySE(enSoundList::SE_MoveSelectionArrow);
+				}
 				holdTimerDown = repeatInterval;
 			}
 		}

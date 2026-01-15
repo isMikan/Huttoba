@@ -42,10 +42,6 @@ public:
 	void SetObjectColor(int index, ObjectColor color) {
 		m_ObjectColor[index] = color;
 	}
-	//オブジェクトの色を取得する関数.
-	std::vector<ObjectColor> GetObjectColor(int index) const { 
-		return std::vector<ObjectColor>{m_ObjectColor[index]};
-	}
 
 	//ビルボード機能のON/OFF切り替え
 	void SetBillboard(bool flag) { m_Billboard = flag; }

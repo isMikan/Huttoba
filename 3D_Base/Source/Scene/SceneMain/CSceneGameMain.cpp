@@ -15,7 +15,9 @@ CSceneGameMain::CSceneGameMain( HWND hWnd, std::unordered_map<ItemID, bool>& Spa
 
 	, m_StateTimer		( 0.0f )
 
-	, m_ReadyDuration	( 1.0f )
+	, m_ReadyDuration	( 1.7f )
+	, m_GoDuration		( 0.8f )
+
 	, m_FinishDuration	( 2.5f )
 
 	, m_pDbgText		( nullptr )
@@ -41,6 +43,9 @@ CSceneGameMain::CSceneGameMain( HWND hWnd, std::unordered_map<ItemID, bool>& Spa
 	, m_pSpriteFinish	()
 
 	, m_IsPause			( false )
+
+	, m_IsOneReadySE	( false )
+	, m_IsOneGoSE		( false )
 {
 	m_pDx9 = CDirectX9::GetInstance();
 	m_pDx11 = CDirectX11::GetInstance();
@@ -168,7 +173,7 @@ void CSceneGameMain::Destroy()
 void CSceneGameMain::Update()
 {
 	//BGMのループ再生
-	//AssetManager::Sound()->PlayLoop(enSoundList::BGM_SceneMain);
+	AssetManager::Sound()->PlayLoop(enSoundList::BGM_SceneMain);
 
 	if (CInputManager::IsDown(Action::Pause, 0))
 	{
@@ -218,7 +223,24 @@ void CSceneGameMain::Update()
 		//頭の位置を更新したいので.
 		m_pPlayerManager->Update();
 
-		if (m_StateTimer >= m_ReadyDuration)
+		if (!m_IsOneReadySE)
+		{
+			AssetManager::Sound()->PlaySE(enSoundList::SE_Ready);
+			m_IsOneReadySE = true;
+		}
+
+		if (m_StateTimer > m_ReadyDuration)
+		{
+			m_pSpriteReadyGo->SetPatternNo(0, 1);
+
+			if (!m_IsOneGoSE)
+			{
+				AssetManager::Sound()->PlaySE(enSoundList::SE_Go);
+				m_IsOneGoSE = true;
+			}
+		}
+
+		if (m_StateTimer >= m_ReadyDuration+ m_GoDuration)
 		{
 			//ゲームプレイへ
 			m_GameState = GameState::Play;
@@ -256,6 +278,7 @@ void CSceneGameMain::Update()
 			//SetNextScene(Result);
 			m_GameState = GameState::Finish;
 			m_StateTimer = 0;
+			AssetManager::Sound()->PlaySE(enSoundList::SE_EndSceneMain);
 		}
 
 		if (m_StateTimer >= TIME_LIMIT)

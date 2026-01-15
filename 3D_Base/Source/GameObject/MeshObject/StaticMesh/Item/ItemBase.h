@@ -124,6 +124,9 @@ public:
 
 	bool GetIsDestroy() const { return m_IsDestroy; }
 
+	::EsHandle GetItemOnGroundEffect() const { return m_ItemOnGroundEffect; }
+	void SetIsPlayingItemEffect(bool isPlaying) { m_IsPlayingItemEffect = isPlaying; }
+
 protected:
 
 	virtual void Spawn	 ()	= 0; // 出現
@@ -165,4 +168,7 @@ protected:
 	//ステージより早く落ちてしまうため追加
 	bool m_IsFall;
 	float m_ItemFallCount;
+
+	::EsHandle			m_ItemOnGroundEffect;
+	bool				m_IsPlayingItemEffect;
 };

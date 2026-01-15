@@ -106,7 +106,7 @@ void CSceneTitle::Update()
 	float t = CTimeManager::GetTotalTime();
 
 	//BGMのループ再生
-	AssetManager::Sound()->PlayLoop(enSoundList::BGM_SceneTitle);
+	AssetManager::Sound()->PlayLoop(enSoundList::SE_BoomerangThrow);
 
 	//地面に接地しているか
 	for (auto& player : m_pPlayerManager->GetPlayer())
@@ -127,6 +127,7 @@ void CSceneTitle::Update()
 	{
 		//選択中の番号で処理される関数が変わる.
 		m_Action[m_SelectorNumber]();
+		AssetManager::Sound()->PlaySE(enSoundList::SE_Decision);
 	}
 	CollisionManager::GetInstance()->Update();
 }
@@ -233,15 +234,21 @@ void CSceneTitle::SetSelectorPos()
 
 void CSceneTitle::MoveSelector()
 {
-	if (CInputManager::IsDown(Action::NavigateUp,0) || 0 < CInputManager::GetLeftSthikY(0))
+	if (CInputManager::IsDown(Action::NavigateUp, 0) || 0 < CInputManager::GetLeftSthikY(0))
 	{
 		if (m_SelectorNumber > 0)
+		{
 			m_SelectorNumber--;
+			AssetManager::Sound()->PlaySE(enSoundList::SE_MoveSelectionArrow);
+		}
 	}
-	if (CInputManager::IsDown(Action::NavigateDown,0) || 0 > CInputManager::GetLeftSthikY(0))
+	if (CInputManager::IsDown(Action::NavigateDown, 0) || 0 > CInputManager::GetLeftSthikY(0))
 	{
 		if (m_SelectorNumber < m_SelectorPos.size() - 1)
+		{
 			m_SelectorNumber++;
+			AssetManager::Sound()->PlaySE(enSoundList::SE_MoveSelectionArrow);
+		}
 	}
 	m_pSpriteSelector->SetPosition(m_SelectorPos[m_SelectorNumber]);
 

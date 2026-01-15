@@ -35,7 +35,7 @@ public:
         Instance().m_IsPlayerLiving[index] = live; 
     }
 
-    //生きているプレイヤーの数.
+    //生きているプレイヤーの数の取得.
     static int GetPlayerLivingNum() {
         int count = 0;
         for (int index = 0; index < Player_Max; index++)
@@ -49,4 +49,5 @@ public:
 private:
     std::array<bool, Player_Max>    m_IsSlot;           //準備OKか.
     std::array<bool, Player_Max>    m_IsPlayerLiving;   //プレイヤーが生きているか.
+
 };

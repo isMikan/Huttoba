@@ -114,6 +114,12 @@ public:
 	//色の設定関数.
 	void SetColor(D3DXVECTOR3 color) { m_Color = color; }
 
+	//UVの設定.
+	void SetUVInfo(D3DXVECTOR2 uv) { m_UV = uv; }
+	//動くかの設定.
+	void SetIsMoving(bool flag) { m_IsMoving = flag; }
+
+
 private:
 	CDirectX11*					m_pDx11;
 	ComPtr<ID3D11Device>		m_pDevice11;
@@ -142,5 +148,7 @@ private:
 	POINTS			m_PatternMax;	//最大パターン(マスの最大値)
 
 	D3DXVECTOR3		m_Color;		//色.
+
+	bool			m_IsMoving;		//動くか.
 
 };

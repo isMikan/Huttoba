@@ -21,14 +21,19 @@ Mushroom::Mushroom()
 	, m_MaxSmashPower	( 7.0f )
 
 	, m_hEffect			()
-	, m_ThrowHitPlayer	()
 
+	, m_ThrowHitPlayer	()
+	, m_UseHitPlayer	()
+	, m_UseHitCoolTime	( 0.5f )
 {
 	Init();
 }
 
 Mushroom::~Mushroom()
 {
+	//中身を破棄
+	m_UseHitPlayer.clear();
+
 	//当たり判定削除
 	CollisionManager::GetInstance()->RemoveCollider(m_pCollision.get());
 	CollisionManager::GetInstance()->RemoveCollider(m_pUseCollider.get());
@@ -52,7 +57,7 @@ void Mushroom::Init()
 	m_tGravity = 0.001f;
 
 	//当たり判定
-	std::shared_ptr<CStaticMesh> UseMesh = AssetManager::Mesh(StaticMeshList::Mushroom);
+	std::shared_ptr<CStaticMesh> UseMesh = AssetManager::Mesh(StaticMeshList::MushroomCol);
 	std::shared_ptr<CStaticMesh> PickMesh = AssetManager::Mesh(StaticMeshList::PickUpCol);
 
 	m_pPickUpCollider = CollisionDataFactory::CreateSphereForMesh(
@@ -157,7 +162,22 @@ void Mushroom::OnCollision(CollisionBase* other)
 		{
 			if (m_IsPlaced)
 			{
+				float now = CTimeManager::GetTotalTime();
+
+				//keyと対応する値を入れる
+				auto it = m_UseHitPlayer.find(player);
+
+				//keyと対応するものがあるか調べる
+				if (it != m_UseHitPlayer.end())
+				{
+					//クールタイムが現在の時間未満なら抜ける
+					if (now < it->second)return;
+				}
+
 				Smash(*player);
+
+				//当たった後に現在の時間にクールタイムを足した時間を入れる
+				m_UseHitPlayer[player] = now + m_UseHitCoolTime;
 			}
 
 			if (m_State==IItemObserver::State::Throw&& m_pPlayer != player)
@@ -250,6 +270,13 @@ void Mushroom::ThrowMove()
 	{
 		m_IsPlaced = false;
 		DestroyItem();
+	}
+
+	//落下処理
+	if (m_vPosition.y > 0.5f)
+	{
+		m_vPosition.y -= m_Velocity.y;
+		m_Velocity.y += m_tGravity;
 	}
 
 	m_Velocity *= 0.98f;

@@ -142,6 +142,7 @@ enum class StaticMeshList
 	HaetatakiCol,
 	SmashBatCol,
 	PlayerCol,
+	MushroomCol,
 
 	floor1,
 	floor2,
@@ -202,6 +203,13 @@ enum class enSoundList
 	SE_EndSceneMain,
 
 	SE_Explosion,
+
+	SE_MoveSelectionArrow,
+	SE_Decision,
+	SE_PreparationSwitch,
+	SE_Ready,
+	SE_Go,
+	SE_Finish,
 
 	//‰¹‚ª‘‚¦‚½‚çu‚±‚±v‚É’Ç‰Á
 	max,

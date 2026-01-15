@@ -19,4 +19,6 @@ public:
 	void Draw() override;
 
 protected:
+	D3DXVECTOR2		m_MoveUV;		//“®‚­UV.
+
 };

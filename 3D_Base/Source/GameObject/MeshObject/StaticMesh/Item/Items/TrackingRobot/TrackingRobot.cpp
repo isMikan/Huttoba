@@ -30,7 +30,7 @@ TrackingRobot::TrackingRobot()
 
 	, m_IsExploded		( false )
 
-	, m_Is				( false )
+	, m_IsPendingDestroy( false )
 
 	, m_ExplosionRadius	()
 
@@ -147,12 +147,12 @@ void TrackingRobot::OnCollision(CollisionBase* other)
 			//爆発したときだけ判定する
 			if (m_IsExploded)
 			{
-				m_Is = true;
 				Smash(*player);
 			}
 
 			if (m_State == State::Use)
 			{
+				//使用したプレイヤー以外に当たった際の処理
 				if (m_pPlayer != player)
 					Explosion();
 			}
@@ -179,11 +179,15 @@ void TrackingRobot::HaveMove()
 void TrackingRobot::UseMove()
 {
 	//爆発すればアイテムを破棄する
-	if (m_Is)
+	if (m_IsPendingDestroy)
 	{
 		m_IsDestroy = true;
 		return;
 	}
+
+	if (m_IsExploded)
+		m_IsPendingDestroy = true;
+
 
 	if(m_IsOnGround)
 	{
@@ -206,6 +210,7 @@ void TrackingRobot::UseMove()
 			//取り出したZ軸成分をノーマライズ
 			D3DXVec3Normalize(&forward, &forward);
 
+			//向いている方向に移動する
 			m_Velocity = forward * m_MoveSpeed;
 		}
 
@@ -319,7 +324,7 @@ float TrackingRobot::CalculateForceScalar(float distance)
 	float ratio = 1.0f - (distance / m_ExplosionRadius);
 
 	//爆発の最小吹き飛ばし力
-	float minPower = 5.0f;
+	float minPower = 6.0f;
 
 	//爆発の最大吹き飛ばし力
 	float maxPower = m_KnockBackPower;
