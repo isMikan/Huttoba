@@ -203,11 +203,25 @@ void CPlayerManager::ResultPlayerCreate()
 				SetQuaternion(0.f, D3DXToRadian(180.f), 0.f, 0.f);
 
 			break;
-		default:
+		case 4:
 
 			//右から順に表示.
 			pos.x = pos.x * countLive - 2.f;	//配列番号の最後から埋めていく.
 			pos.z = -3.5f;
+
+			m_pPlayers[pNo]->SetPosition(pos);
+			m_pPlayers[pNo]->
+				SetQuaternion(0.f, D3DXToRadian(180.f), 0.f, 0.f);
+
+		default:
+			if (!CSceneData::GetPlayerLiving(pNo))
+			{
+				countFalled++;
+			}
+
+			//右から順に表示.
+			pos.x = pos.x * countFalled - 1.5f;	//配列番号の最後から埋めていく.
+			pos.z = -2.f;
 
 			m_pPlayers[pNo]->SetPosition(pos);
 			m_pPlayers[pNo]->

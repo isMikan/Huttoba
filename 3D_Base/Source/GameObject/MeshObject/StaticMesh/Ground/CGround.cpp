@@ -32,6 +32,7 @@ CGround::CGround()
 
 CGround::~CGround()
 {
+	AssetManager::Sound()->Stop(enSoundList::SE_Warning);
 }
 
 //======================================================================
