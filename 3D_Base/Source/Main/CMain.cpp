@@ -18,6 +18,8 @@ CMain::CMain()
 	//初期化リスト.
 	: m_pGame	( nullptr )
 {
+#ifdef DEBUG
+
 	// コンソールを作成・coutを設定
 	AllocConsole();
 	FILE* fp;
@@ -33,6 +35,7 @@ CMain::CMain()
 			600, 400,  // 幅, 高さ
 			SWP_NOZORDER);
 	}
+#endif
 }
 
 //=================================================

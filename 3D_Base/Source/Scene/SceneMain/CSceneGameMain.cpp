@@ -278,6 +278,7 @@ void CSceneGameMain::Update()
 			//SetNextScene(Result);
 			m_GameState = GameState::Finish;
 			m_StateTimer = 0;
+			AssetManager::Sound()->PlaySE(enSoundList::SE_EndSceneMain);
 		}
 
 		if (m_StateTimer >= TIME_LIMIT)

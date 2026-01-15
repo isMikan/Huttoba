@@ -40,7 +40,7 @@ HRESULT CSoundManager::Create()
     m_SoundInfoList.push_back({ enSoundList::SE_FunUse,             _T("Data\\Sound\\SE\\FunUse.mp3"),              _T("SE_FunUse") });
     m_SoundInfoList.push_back({ enSoundList::SE_EndSceneMain,       _T("Data\\Sound\\SE\\EndSceneMain.mp3"),        _T("SE_EndSceneMain") });
 
-    m_SoundInfoList.push_back({ enSoundList::SE_Explosion,       _T("Data\\Sound\\SE\\Explosion.mp3"),           _T("SE_Explosion") });
+    m_SoundInfoList.push_back({ enSoundList::SE_Explosion,          _T("Data\\Sound\\SE\\Explosion.mp3"),           _T("SE_Explosion") });
 
     m_SoundInfoList.push_back({ enSoundList::SE_MoveSelectionArrow, _T("Data\\Sound\\SE\\MoveSelectArrow.mp3"),     _T("SE_MoveSelectArrow") });
     m_SoundInfoList.push_back({ enSoundList::SE_Decision,           _T("Data\\Sound\\SE\\Decision.mp3"),            _T("SE_Decision") });
