@@ -170,7 +170,7 @@ void CSceneGameMain::Destroy()
 void CSceneGameMain::Update()
 {
 	//BGM‚Ìƒ‹[ƒvÄ¶
-	//AssetManager::Sound()->PlayLoop(enSoundList::BGM_SceneMain);
+	AssetManager::Sound()->PlayLoop(enSoundList::BGM_SceneMain);
 
 	if (CInputManager::IsDown(Action::Pause, 0))
 	{
