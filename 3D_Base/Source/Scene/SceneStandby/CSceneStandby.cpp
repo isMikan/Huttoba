@@ -250,13 +250,16 @@ void CSceneStandby::MoveSelector()
 {
 	if (CInputManager::IsDown(Action::NavigateUp, 0) || 0 < CInputManager::GetLeftSthikY(0))
 	{
+		AssetManager::Sound()->PlaySE(enSoundList::SE_MoveSelectionArrow);
 		if (m_HorizontalSelectorNumber > 0)
 			m_HorizontalSelectorNumber--;
 	}
-			m_SelectorNumber++;
-			AssetManager::Sound()->PlaySE(enSoundList::SE_MoveSelectionArrow);
+	if (CInputManager::IsDown(Action::NavigateDown, 0) || 0 < CInputManager::GetLeftSthikY(0))
+	{
+		AssetManager::Sound()->PlaySE(enSoundList::SE_MoveSelectionArrow);
 		if (m_HorizontalSelectorNumber < m_SelectorPos.size() - 1)
 			m_HorizontalSelectorNumber++;
+	}
 
 	//0`1‚ÌŠÔ‚Ì”’l‚ðŒvŽZ
 	float sin = fabsf(sinf(CTimeManager::GetTotalTime() * 3));
