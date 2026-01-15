@@ -116,4 +116,8 @@ private:
 	std::unique_ptr<CUIObject>		m_pSpriteFinish;
 
 	bool	m_IsPause;	//ポーズ中か.
+
+	//SEが一度だけなるように
+	bool	m_IsOneReadySE;
+	bool	m_IsOneGoSE;
 };
