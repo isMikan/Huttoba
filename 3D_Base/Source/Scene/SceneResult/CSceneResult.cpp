@@ -262,7 +262,10 @@ void CSceneResult::SelectorControl()
 	if (stickY > threshold) {
 		if (!isHeldUp) {
 			if (m_SelectorNumber > 0)
+			{
 				m_SelectorNumber--;
+				AssetManager::Sound()->PlaySE(enSoundList::SE_MoveSelectionArrow);
+			}
 			isHeldUp = true;
 			holdTimerUp = initialDelay;
 		}
@@ -270,7 +273,10 @@ void CSceneResult::SelectorControl()
 			holdTimerUp -= dt;
 			if (holdTimerUp <= 0.0f) {
 				if (m_SelectorNumber > 0)
+				{
 					m_SelectorNumber--;
+					AssetManager::Sound()->PlaySE(enSoundList::SE_MoveSelectionArrow);
+				}
 				holdTimerUp = repeatInterval;
 			}
 		}
@@ -283,7 +289,10 @@ void CSceneResult::SelectorControl()
 	if (stickY < -threshold) {
 		if (!isHeldDown) {
 			if (m_SelectorNumber < m_SelectorPos.size() - 1)
+			{
 				m_SelectorNumber++;
+				AssetManager::Sound()->PlaySE(enSoundList::SE_MoveSelectionArrow);
+			}
 			isHeldDown = true;
 			holdTimerDown = initialDelay;
 		}
@@ -291,7 +300,10 @@ void CSceneResult::SelectorControl()
 			holdTimerDown -= dt;
 			if (holdTimerDown <= 0.0f) {
 				if (m_SelectorNumber < m_SelectorPos.size() - 1)
+				{
 					m_SelectorNumber++;
+					AssetManager::Sound()->PlaySE(enSoundList::SE_MoveSelectionArrow);
+				}
 				holdTimerDown = repeatInterval;
 			}
 		}
