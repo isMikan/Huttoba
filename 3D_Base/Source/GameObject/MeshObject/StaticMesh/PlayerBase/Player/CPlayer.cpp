@@ -44,7 +44,9 @@ void CPlayer::HandleInput()
 
 	//移動・回転をしない場合.
 	if (IsAnyActionState<
+		CPlayerHandHitState,		//当たり.
 		CPlayerHandWhiffState,		//ふらつき.
+		CPlayerPickupState,			//拾う.
 		CPlayerKnockbackState,		//吹き飛ばされ.
 		CPlayerGetUpState,			//起き上がり.
 		CPlayerKnockdownState>())	//ダウン中.

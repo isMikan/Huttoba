@@ -8,7 +8,7 @@ CPlayerHandHitState::CPlayerHandHitState(CPlayerBase& pPlayer)
 	: CPlayerState			( pPlayer )
 	
 	, m_StartTime			()
-	, m_EndTime				( 0.3f )
+	, m_EndTime				( 0.2f )
 
 	, m_PhaseSplit			( 0.5f )
 

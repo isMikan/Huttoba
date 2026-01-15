@@ -8,7 +8,7 @@ CPlayerHandWhiffState::CPlayerHandWhiffState(CPlayerBase& pPlayer)
 	: CPlayerState			( pPlayer )
 	
 	, m_StartTime			()
-	, m_EndTime				( 0.4f )
+	, m_EndTime				( 0.5f )
 							  
 	, m_CurrentTiltAngle	()
 	, m_TiltAngleMax		( D3DXToRadian( 20.f ) )

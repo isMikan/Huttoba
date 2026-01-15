@@ -68,7 +68,9 @@ void CPlayerAI::AutomaticMovement(D3DXVECTOR3 targetDir)
 {
 	//ˆÚ“®E‰ñ“]‚ğ‚µ‚È‚¢ê‡.
 	if (IsAnyActionState<
+		CPlayerHandHitState,		//“–‚½‚è.
 		CPlayerHandWhiffState,		//‚Ó‚ç‚Â‚«.
+		CPlayerPickupState,			//E‚¤.
 		CPlayerPushedState,			//‰Ÿ‚µo‚³‚ê.
 		CPlayerKnockbackState,		//‚«”ò‚Î‚³‚ê.
 		CPlayerFallingState,		//—‚¿‚é.
