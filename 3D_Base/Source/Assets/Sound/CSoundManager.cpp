@@ -42,6 +42,14 @@ HRESULT CSoundManager::Create()
 
     m_SoundInfoList.push_back({ enSoundList::SE_Explosion,       _T("Data\\Sound\\SE\\Explosion.mp3"),           _T("SE_Explosion") });
 
+    m_SoundInfoList.push_back({ enSoundList::SE_MoveSelectionArrow, _T("Data\\Sound\\SE\\MoveSelectArrow.mp3"),     _T("SE_MoveSelectArrow") });
+    m_SoundInfoList.push_back({ enSoundList::SE_Decision,           _T("Data\\Sound\\SE\\Decision.mp3"),            _T("SE_Decision") });
+    m_SoundInfoList.push_back({ enSoundList::SE_PreparationSwitch,  _T("Data\\Sound\\SE\\PreparationSwitch.mp3"),   _T("SE_PreparationSwitch") });
+    m_SoundInfoList.push_back({ enSoundList::SE_Ready,              _T("Data\\Sound\\SE\\Ready.mp3"),               _T("SE_Ready") });
+    m_SoundInfoList.push_back({ enSoundList::SE_Go,                 _T("Data\\Sound\\SE\\Go.mp3"),                  _T("SE_Go") });
+    m_SoundInfoList.push_back({ enSoundList::SE_Finish,             _T("Data\\Sound\\SE\\Explosion.mp3"),           _T("SE_Finish") });
+
+
 	//サウンドのインスタンスを格納するための配列を確保
     for (auto& sound : m_SoundInfoList)
     {

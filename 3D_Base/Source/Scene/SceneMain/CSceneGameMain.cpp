@@ -43,6 +43,9 @@ CSceneGameMain::CSceneGameMain( HWND hWnd)
 	, m_pSpriteFinish	()
 
 	, m_IsPause			( false )
+
+	, m_IsOneReadySE	( false )
+	, m_IsOneGoSE		( false )
 {
 	m_pDx9 = CDirectX9::GetInstance();
 	m_pDx11 = CDirectX11::GetInstance();
@@ -220,8 +223,22 @@ void CSceneGameMain::Update()
 		//“ª‚ÌˆÊ’u‚ðXV‚µ‚½‚¢‚Ì‚Å.
 		m_pPlayerManager->Update();
 
+		if (!m_IsOneReadySE)
+		{
+			AssetManager::Sound()->PlaySE(enSoundList::SE_Ready);
+			m_IsOneReadySE = true;
+		}
+
 		if (m_StateTimer > m_ReadyDuration)
+		{
 			m_pSpriteReadyGo->SetPatternNo(0, 1);
+
+			if (!m_IsOneGoSE)
+			{
+				AssetManager::Sound()->PlaySE(enSoundList::SE_Go);
+				m_IsOneGoSE = true;
+			}
+		}
 
 		if (m_StateTimer >= m_ReadyDuration+ m_GoDuration)
 		{

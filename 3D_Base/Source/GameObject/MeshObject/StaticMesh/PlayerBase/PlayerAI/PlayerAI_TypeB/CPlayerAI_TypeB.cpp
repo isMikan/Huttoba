@@ -352,9 +352,12 @@ void CPlayerAI_TypeB::RunBomb()
 
 D3DXVECTOR3 CPlayerAI_TypeB::CalculateAvoidDanger()
 {
-
 	for (auto& item : m_pItemManager->GetItems())
 	{
+
+		D3DXVECTOR3 itemPos = item->GetPosition();
+
+		float itemLenSq = D3DXVec3LengthSq(&itemPos);
 
 		if (item->GetState() == IItemObserver::State::Throw)
 		{

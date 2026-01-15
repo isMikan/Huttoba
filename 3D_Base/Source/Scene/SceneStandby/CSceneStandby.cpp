@@ -116,12 +116,15 @@ void CSceneStandby::Update()
 		{
 			if (CInputManager::IsDown(Action::Switch, i))
 			{
+				AssetManager::Sound()->PlaySE(enSoundList::SE_PreparationSwitch);
 				CSceneData::ChangeSlot(i);
 			}
 		}
 
 		if (CInputManager::IsDown(Action::Decide, 0))
 		{
+			AssetManager::Sound()->PlaySE(enSoundList::SE_Decision);
+
 			switch (m_SelectorNumber)
 			{
 			case 0:
@@ -221,12 +224,18 @@ void CSceneStandby::MoveSelector()
 	if (CInputManager::IsDown(Action::NavigateUp, 0) || 0 < CInputManager::GetLeftSthikY(0))
 	{
 		if (m_SelectorNumber > 0)
+		{
 			m_SelectorNumber--;
+			AssetManager::Sound()->PlaySE(enSoundList::SE_MoveSelectionArrow);
+		}
 	}
 	if (CInputManager::IsDown(Action::NavigateDown, 0) || 0 > CInputManager::GetLeftSthikY(0))
 	{
 		if (m_SelectorNumber < m_SelectorPos.size() - 1)
+		{
 			m_SelectorNumber++;
+			AssetManager::Sound()->PlaySE(enSoundList::SE_MoveSelectionArrow);
+		}
 	}
 
 	m_pSpriteSelector->SetPosition(m_SelectorPos[m_SelectorNumber]);
