@@ -204,6 +204,13 @@ enum class enSoundList
 
 	SE_Explosion,
 
+	SE_MoveSelectionArrow,
+	SE_Decision,
+	SE_PreparationSwitch,
+	SE_Ready,
+	SE_Go,
+	SE_Finish,
+
 	//‰¹‚ª‘‚¦‚½‚çu‚±‚±v‚É’Ç‰Á
 	max,
 };

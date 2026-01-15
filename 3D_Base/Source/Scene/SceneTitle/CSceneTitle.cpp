@@ -130,6 +130,7 @@ void CSceneTitle::Update()
 	{
 		//‘I‘ð’†‚Ì”Ô†‚Åˆ—‚³‚ê‚éŠÖ”‚ª•Ï‚í‚é.
 		m_Action[m_SelectorNumber]();
+		AssetManager::Sound()->PlaySE(enSoundList::SE_Decision);
 	}
 	CollisionManager::GetInstance()->Update();
 
@@ -240,15 +241,21 @@ void CSceneTitle::SetSelectorPos()
 
 void CSceneTitle::MoveSelector()
 {
-	if (CInputManager::IsDown(Action::NavigateUp,0) || 0 < CInputManager::GetLeftSthikY(0))
+	if (CInputManager::IsDown(Action::NavigateUp, 0) || 0 < CInputManager::GetLeftSthikY(0))
 	{
 		if (m_SelectorNumber > 0)
+		{
 			m_SelectorNumber--;
+			AssetManager::Sound()->PlaySE(enSoundList::SE_MoveSelectionArrow);
+		}
 	}
-	if (CInputManager::IsDown(Action::NavigateDown,0) || 0 > CInputManager::GetLeftSthikY(0))
+	if (CInputManager::IsDown(Action::NavigateDown, 0) || 0 > CInputManager::GetLeftSthikY(0))
 	{
 		if (m_SelectorNumber < m_SelectorPos.size() - 1)
+		{
 			m_SelectorNumber++;
+			AssetManager::Sound()->PlaySE(enSoundList::SE_MoveSelectionArrow);
+		}
 	}
 	m_pSpriteSelector->SetPosition(m_SelectorPos[m_SelectorNumber]);
 

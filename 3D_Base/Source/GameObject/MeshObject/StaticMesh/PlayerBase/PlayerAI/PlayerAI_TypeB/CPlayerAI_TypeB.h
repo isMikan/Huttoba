@@ -35,7 +35,7 @@ private:
 	//使用された爆弾から逃げる動き
 	void RunBomb();
 
-
+	//回避行動
 	D3DXVECTOR3 CalculateAvoidDanger();
 
 private:
@@ -50,4 +50,6 @@ private:
 
 	//ステージのここより外側は危険とする％
 	float			m_GroundSafeRadius;
+
+	//float			m_
 };
