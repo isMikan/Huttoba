@@ -144,28 +144,8 @@ VECTOR2 SpawnItemPosition::SetRandomPos()
 
 void SpawnItemPosition::DecitionFirstPosition()
 {
-//#if 0
-//	m_pFirstSpawnPosition.push_back(D3DXVECTOR3(6.f, SPAWN_POSITION_Y, 12.f));
-//	m_pFirstSpawnPosition.push_back(D3DXVECTOR3(-8.f,SPAWN_POSITION_Y, 12.f));
-//	m_pFirstSpawnPosition.push_back(D3DXVECTOR3(-6.f,SPAWN_POSITION_Y, 12.f));
-//	m_pFirstSpawnPosition.push_back(D3DXVECTOR3(-4.f, SPAWN_POSITION_Y,12.f));
-//	m_pFirstSpawnPosition.push_back(D3DXVECTOR3(-2.f,SPAWN_POSITION_Y, 12.f));
-//	m_pFirstSpawnPosition.push_back(D3DXVECTOR3(0.f,SPAWN_POSITION_Y,  12.f));
-//	m_pFirstSpawnPosition.push_back(D3DXVECTOR3(2.f,SPAWN_POSITION_Y,  12.f));
-//	m_pFirstSpawnPosition.push_back(D3DXVECTOR3(4.f, SPAWN_POSITION_Y, 12.f));
-//#else 1
-//	m_pFirstSpawnPosition.push_back(D3DXVECTOR3(0.f, SPAWN_POSITION_Y, 10.f));
-//	m_pFirstSpawnPosition.push_back(D3DXVECTOR3(-8.f, SPAWN_POSITION_Y, 0.f));
-//	m_pFirstSpawnPosition.push_back(D3DXVECTOR3(-8.f, SPAWN_POSITION_Y, 0.f));
-//	m_pFirstSpawnPosition.push_back(D3DXVECTOR3(-8.f, SPAWN_POSITION_Y, 0.f));
-//	m_pFirstSpawnPosition.push_back(D3DXVECTOR3(-8.f, SPAWN_POSITION_Y, 0.f));
-//	m_pFirstSpawnPosition.push_back(D3DXVECTOR3(-8.f, SPAWN_POSITION_Y, 0.f));
-//	m_pFirstSpawnPosition.push_back(D3DXVECTOR3(-8.f, SPAWN_POSITION_Y, 0.f));
-//	m_pFirstSpawnPosition.push_back(D3DXVECTOR3(-8.f, SPAWN_POSITION_Y, 0.f));
-//
-//#endif
 	m_pFirstSpawnPosition.push_back(D3DXVECTOR3(-10.f,SPAWN_POSITION_Y, 9.2f));
-	m_pFirstSpawnPosition.push_back(D3DXVECTOR3(0.f,  SPAWN_POSITION_Y, -0.5f));
+	m_pFirstSpawnPosition.push_back(D3DXVECTOR3(0.f,  SPAWN_POSITION_Y, -0.3f));
 	m_pFirstSpawnPosition.push_back(D3DXVECTOR3(0.f,  SPAWN_POSITION_Y, 18.6f));
 	m_pFirstSpawnPosition.push_back(D3DXVECTOR3(10.f, SPAWN_POSITION_Y, 9.2f));
 	m_pFirstSpawnPosition.push_back(D3DXVECTOR3(0.f,  SPAWN_POSITION_Y, 3.5f));
