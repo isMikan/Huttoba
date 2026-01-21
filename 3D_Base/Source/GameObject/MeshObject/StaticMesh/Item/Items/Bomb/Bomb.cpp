@@ -312,7 +312,7 @@ void Bomb::ChangeColor()
 	//D3DX‚ÌVec4‚ÌüŒ`•âŠÔ‚ÌŒvZ
 	D3DXVec4Lerp(&color, &gray, &red, blinkRate);
 
-	m_ObjectColor[0].diffuse = color;
+	m_ObjectColor[1].diffuse = color;
 }
 
 float Bomb::CalculateForceScalar(float distance)

@@ -94,12 +94,12 @@ void CSceneManager::CreateScene(int Scene)
 
 void CSceneManager::SetInputBInding()
 {
-	CInputManager::BindKey(Action::Decide, InputBinding(InputDevice::GamePad, CXInput::B), 0);
+	CInputManager::BindKey(Action::Decide, InputBinding(InputDevice::GamePad, CXInput::A), 0);
 	CInputManager::BindKey(Action::Decide, InputBinding(InputDevice::Keyboard, 'Z'), 0);
 
 	for (int i = 0;i < 4;i++)
 	{
-		CInputManager::BindKey(Action::Switch, InputBinding(InputDevice::GamePad, CXInput::A), i);
+		CInputManager::BindKey(Action::Switch, InputBinding(InputDevice::GamePad, CXInput::X), i);
 		CInputManager::BindKey(Action::Switch, InputBinding(InputDevice::Keyboard, 'X'), i);
 	}
 

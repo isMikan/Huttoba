@@ -44,7 +44,7 @@ public:
     static bool IsDownKey(int index) { return  Instance().m_pInputs[index]->IsDownKey(); }
 
     //レバガチャ成功時のコントローラーの振動
-    static void VibrationController(int index) { Instance().m_pInputs[index]->SetVibration(); }
+   // static void VibrationController(int index) { Instance().m_pInputs[index]->SetVibration(); }
 
 private:
     CInputManager();
