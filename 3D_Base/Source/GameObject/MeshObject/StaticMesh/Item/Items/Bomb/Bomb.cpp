@@ -185,8 +185,8 @@ void Bomb::UseMove()
 
 	m_ExplosionCnt += CTimeManager::GetDeltaTime();
 
-	//Œ»Ý‚Ì‚‚³‚É‚æ‚Á‚Ä—Ž‰º‚·‚é‚©‚ðŒˆ‚ß‚é
-	if (m_vPosition.y > 0.1f)
+		//Œ»Ý‚Ì‚‚³‚É‚æ‚Á‚Ä—Ž‰º‚·‚é‚©‚ðŒˆ‚ß‚é
+	if (m_vPosition.y > 0.1f && !m_IsFall)
 	{
 		//ÅŒã‚Ém_vPosition‚É+‚·‚é‚Ì‚Åd—Í‰Á‘¬“x‚ð-‚ÅŒvŽZ‚·‚é
 		m_Velocity.y -= m_tGravity;
