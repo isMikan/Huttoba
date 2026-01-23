@@ -35,6 +35,9 @@ CSceneResult::CSceneResult()
 	SetSelectorPos();
 
 	m_FireworksEffect.resize(m_FireworksMax);
+	AssetManager::Sound()->PlaySE(enSoundList::SE_HandClap);
+	AssetManager::Sound()->PlaySE(enSoundList::SE_FieWork);
+
 }
 
 CSceneResult::~CSceneResult()
@@ -44,6 +47,8 @@ CSceneResult::~CSceneResult()
 		AssetManager::Effect()->Stop(firework);
 	}
 	AssetManager::Sound()->Stop(enSoundList::BGM_SceneResult);
+	AssetManager::Sound()->Stop(enSoundList::SE_HandClap);
+	AssetManager::Sound()->Stop(enSoundList::SE_FieWork);
 }
 
 HRESULT CSceneResult::Create()

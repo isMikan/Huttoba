@@ -38,6 +38,8 @@ HRESULT CSoundManager::Create()
     m_SoundInfoList.push_back({ enSoundList::SE_DestroyItem,        _T("Data\\Sound\\SE\\DestroyItem.mp3"),         _T("SE_DestroyItem") });
     m_SoundInfoList.push_back({ enSoundList::SE_SmashBatHit,        _T("Data\\Sound\\SE\\SmashBatHit.mp3"),         _T("SE_SmashBatHit") });
     m_SoundInfoList.push_back({ enSoundList::SE_FunUse,             _T("Data\\Sound\\SE\\FunUse.mp3"),              _T("SE_FunUse") });
+    m_SoundInfoList.push_back({ enSoundList::SE_HandClap,           _T("Data\\Sound\\SE\\HandClap.mp3"),                _T("SE_HandClap") });
+    m_SoundInfoList.push_back({ enSoundList::SE_FieWork,            _T("Data\\Sound\\SE\\firework.mp3"),                _T("SE_firework") });
     m_SoundInfoList.push_back({ enSoundList::SE_Piko,               _T("Data\\Sound\\SE\\Piko.mp3"),                _T("SE_Piko") });
     m_SoundInfoList.push_back({ enSoundList::SE_EndSceneMain,       _T("Data\\Sound\\SE\\EndSceneMain.mp3"),        _T("SE_EndSceneMain") });
 

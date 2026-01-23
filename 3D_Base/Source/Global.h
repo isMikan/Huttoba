@@ -201,6 +201,8 @@ enum class enSoundList
 	SE_SmashBatHit,
 	SE_FunUse,
 	SE_Piko,
+	SE_HandClap,
+	SE_FieWork,
 	SE_DestroyItem,
 	SE_EndSceneMain,
 
@@ -212,6 +214,7 @@ enum class enSoundList
 	SE_Ready,
 	SE_Go,
 	SE_Finish,
+
 
 	//‰¹‚ª‘‚¦‚½‚çu‚±‚±v‚É’Ç‰Á
 	max,
