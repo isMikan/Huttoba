@@ -130,7 +130,6 @@ HRESULT CSceneStandby::LoadData()
 	{
 		{
 			[this]() { SetNextScene(GameMain);	},
-			//すべてONを追加予定
 			[this]() { SwitchSpawnFlag(ItemID::Bomb); },
 			[this]() { SwitchSpawnFlag(ItemID::Bomb); },
 			[this]() { SwitchSpawnFlag(ItemID::Boomerang); },
@@ -176,22 +175,19 @@ void CSceneStandby::Update()
 
 		if (CInputManager::IsDown(Action::Decide, 0))
 		{
-			switch (m_VerticalSelectorNumber)
+			if (m_VerticalSelectorNumber == 0 && m_HorizontalSelectorNumber == 0)
 			{
-			case 0:
 				//コントローラー番号0が準備OKなら
 				if (CSceneData::GetSlot(0))
 				{
 					//選択中の番号で処理される関数が変わる.
 					m_Action[m_VerticalSelectorNumber][m_HorizontalSelectorNumber]();
 				}
-				break;
-			case 1:
+			}
+			else
+			{
 				//選択中の番号で処理される関数が変わる.
 				m_Action[m_VerticalSelectorNumber][m_HorizontalSelectorNumber]();
-				break;
-			default:
-				break;
 			}
 		}
 
@@ -257,7 +253,7 @@ void CSceneStandby::Draw()
 	m_pSpriteStartFont->Draw();
 	m_pSpriteEndFont->Draw();
 
-
+	//アイテム出現欄では別のカーソルを使用するため、どちらか一つを描画する
 	bool SelectSelecter = m_HorizontalSelectorNumber == 0;
 	if (SelectSelecter)
 	{
@@ -384,6 +380,9 @@ void CSceneStandby::SwitchSpawnFlag(ItemID SpawnItemData)
 	{
 		m_SelectSpawnItemData[SpawnItemData] = true;
 	}
+
+	AssetManager::Sound()->PlaySE(enSoundList::SE_Decision);
+
 }
 
 void CSceneStandby::SwitchAllSpawnFlag()
