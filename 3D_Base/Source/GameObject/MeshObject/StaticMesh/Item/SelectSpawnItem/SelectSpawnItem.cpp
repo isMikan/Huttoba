@@ -15,6 +15,11 @@ SelectSpawnItem::SelectSpawnItem(std::unordered_map<ItemID, bool>& SpawnItemData
 	{
 		m_ItemsSpawnCount[registryItem.first] = 0;
 	}
+
+	std::erase_if(m_ItemsSpawnCount, [this](const auto& item) {
+		return IsOkSpawn(item.first);
+		});
+
 }
 
 SelectSpawnItem::~SelectSpawnItem()
@@ -68,6 +73,13 @@ void SelectSpawnItem::MinItemCount()
 	}
 
 	 m_MinItemCount = minCount;
+}
+
+//--------------------------------------------------------------------------------------------------------------
+
+bool SelectSpawnItem::IsOkSpawn(ItemID item)
+{
+	return m_SpawnItemData[item];
 }
 
 //--------------------------------------------------------------------------------------------------------------

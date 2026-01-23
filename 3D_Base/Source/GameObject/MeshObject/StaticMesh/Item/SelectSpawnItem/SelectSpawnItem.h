@@ -15,11 +15,15 @@ private:
 	//最小カウントを求める
 	void MinItemCount();
 
+	//出現アイテムに選択されているか
+	bool IsOkSpawn(ItemID item);
+
 	//抽選に入れるかどうか選択
 	std::vector<std::pair<ItemID, int>> LotterySelect();
 
 	//配列の中身を抽選して返す
 	std::pair<ItemID, int> Lottery(std::vector<std::pair<ItemID, int>> LotterySelectItems);
+
 
 
 private:
