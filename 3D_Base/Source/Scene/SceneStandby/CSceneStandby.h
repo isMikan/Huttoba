@@ -41,7 +41,8 @@ private:
 	std::array < std::unique_ptr<CUIObject>,4 >		m_pNotRedyFontImg;	
 
 	//選択矢印.
-	std::unique_ptr<CUIObject>			m_pSpriteSelector;	
+	std::unique_ptr<CUIObject>			m_pSpriteSelector;
+	std::unique_ptr<CUIObject>			m_pReadyHowTo;
 
 	//プレイヤーマネージャークラス.
 	std::unique_ptr<CPlayerManager>		m_pPlayerManager;

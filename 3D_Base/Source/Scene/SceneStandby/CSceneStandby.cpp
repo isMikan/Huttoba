@@ -15,6 +15,7 @@ CSceneStandby::CSceneStandby()
 
 	, m_pSpriteStartFont	()
 	, m_pSpriteEndFont		()	
+	, m_pReadyHowTo			()
 
 	, m_Action				()
 
@@ -52,8 +53,9 @@ HRESULT CSceneStandby::Create()
 	m_pGroundManager = std::make_unique<CGroundManager>();
 	m_pGroundManager->ResultGroundCreate();
 	
-	m_pSpriteStartFont = std::make_unique<CUIObject>();
-	m_pSpriteEndFont = std::make_unique<CUIObject>();
+	m_pSpriteStartFont	= std::make_unique<CUIObject>();
+	m_pSpriteEndFont	= std::make_unique<CUIObject>();
+	m_pReadyHowTo		= std::make_unique<CUIObject>();
 
 	for (size_t i = 0;i < 4;i++)
 	{
@@ -85,6 +87,9 @@ HRESULT CSceneStandby::LoadData()
 	m_pSpriteStartFont->SetPatternNo(0, 2);
 	m_pSpriteStartFont->SetPosition(530, 440, 0);
 	m_pSpriteStartFont->SetScale(1.1f, 1.1f, 1.f);
+
+	m_pReadyHowTo->AttachSprite(AssetManager::Sprite(Sprite2DList::ReadyHowTo));
+	m_pReadyHowTo->SetPosition(0, 625, 0);
 
 	m_pSpriteEndFont->AttachSprite(AssetManager::Sprite(Sprite2DList::Font_UI_Common));
 	m_pSpriteEndFont->SetPatternNo(0, 3);
@@ -189,6 +194,7 @@ void CSceneStandby::Draw()
 	else m_pSpriteStartFont->SetAlpha(0.5f);
 
 	m_pSpriteStartFont->Draw();
+	m_pReadyHowTo->Draw();
 	m_pSpriteEndFont->Draw();
 
 	m_pSpriteSelector->Draw();
