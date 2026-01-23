@@ -70,6 +70,7 @@ HRESULT SpriteManager::CreateSprite2D()
 	RegisterSprite2D(Sprite2DList::UI_Selector,		_T("Data\\Texture\\UI_SelectArrow.png"),	{ 64,64,64,256,64,64 });
 	RegisterSprite2D(Sprite2DList::Clock,			_T("Data\\Texture\\clock.png"),				{ 56,63,56,63,56,63 });
 	RegisterSprite2D(Sprite2DList::TimeNumber,		_T("Data\\Texture\\number.png"),			{ 40,40,330,32,33,31 });
+	RegisterSprite2D(Sprite2DList::ItemSelect,		_T("Data\\Texture\\ItemSlect.png"),			{ 80,80,80,80,80,80 });
 
 	
 //Å™-----------------------------------------------------------------------------------------------------------------------------Å™

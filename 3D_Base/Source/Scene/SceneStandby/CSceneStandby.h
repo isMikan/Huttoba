@@ -45,6 +45,9 @@ private:
 	//準備中画像.
 	std::array < std::unique_ptr<CUIObject>,4 >		m_pNotRedyFontImg;	
 
+	//アイテムの出現管理UI
+	std::unordered_map<ItemID, std::unique_ptr<CUIObject>> m_SelectSpawnItemImg;
+
 	//選択矢印.
 	std::unique_ptr<CUIObject>			m_pSpriteSelector;	
 
@@ -70,4 +73,6 @@ private:
 	std::vector<std::vector<D3DXVECTOR3>>	m_SelectorPos;
 
 	std::unordered_map<ItemID, bool>& m_SelectSpawnItemData;
+
+	ItemID m_ItemList[7];
 };

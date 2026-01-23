@@ -23,6 +23,8 @@ CSceneStandby::CSceneStandby(std::unordered_map<ItemID, bool>& SpawnItemData)
 	, m_HorizontalSelectorNumber		( 0 )
 	, m_VerticalSelectorNumber			()
 	, m_SelectSpawnItemData	(SpawnItemData)
+	, m_SelectSpawnItemImg	()
+	, m_ItemList			(ItemID::Bomb,ItemID::Boomerang,ItemID::Fun,ItemID::Haetataki,ItemID::Mushroom,ItemID::SmashBat,ItemID::TrackingRobot)
 {
 	m_pDx11 = CDirectX11::GetInstance();
 
@@ -65,6 +67,12 @@ HRESULT CSceneStandby::Create()
 
 	m_pSpriteSelector = std::make_unique<CUIObject>();
 
+
+	for (auto item : m_ItemList)
+	{
+		m_SelectSpawnItemImg[item] = std::make_unique<CUIObject>();
+	}
+
 	return S_OK;
 }
 
@@ -91,6 +99,25 @@ HRESULT CSceneStandby::LoadData()
 	m_pSpriteEndFont->AttachSprite(AssetManager::Sprite(Sprite2DList::Font_UI_Common));
 	m_pSpriteEndFont->SetPatternNo(0, 3);
 	m_pSpriteEndFont->SetPosition(500, 540, 0);
+
+	m_SelectSpawnItemImg[ItemID::Bomb]			->AttachSprite(AssetManager::Sprite(Sprite2DList::ItemSelect));
+	m_SelectSpawnItemImg[ItemID::Boomerang]		->AttachSprite(AssetManager::Sprite(Sprite2DList::ItemSelect));
+	m_SelectSpawnItemImg[ItemID::Fun]			->AttachSprite(AssetManager::Sprite(Sprite2DList::ItemSelect));
+	m_SelectSpawnItemImg[ItemID::Haetataki]		->AttachSprite(AssetManager::Sprite(Sprite2DList::ItemSelect));
+	m_SelectSpawnItemImg[ItemID::Mushroom]		->AttachSprite(AssetManager::Sprite(Sprite2DList::ItemSelect));
+	m_SelectSpawnItemImg[ItemID::SmashBat]		->AttachSprite(AssetManager::Sprite(Sprite2DList::ItemSelect));
+	m_SelectSpawnItemImg[ItemID::TrackingRobot]	->AttachSprite(AssetManager::Sprite(Sprite2DList::ItemSelect));
+
+	m_SelectSpawnItemImg[ItemID::Boomerang]		->SetPosition(980, 515, 0);
+	m_SelectSpawnItemImg[ItemID::Fun]			->SetPosition(1060, 515, 0);
+	m_SelectSpawnItemImg[ItemID::Haetataki]		->SetPosition(1140, 515, 0);
+	m_SelectSpawnItemImg[ItemID::Bomb]			->SetPosition(900, 595, 0);
+	m_SelectSpawnItemImg[ItemID::SmashBat]		->SetPosition(980, 595, 0);
+	m_SelectSpawnItemImg[ItemID::TrackingRobot]	->SetPosition(1060, 595, 0);
+	m_SelectSpawnItemImg[ItemID::Mushroom]		->SetPosition(1140, 595, 0);
+
+
+
 
 	//関数を入れる
 	//ラムダ式で関数にしてm_Actionの中に入れている(SetNextScene(Standby);ではだめ).
@@ -211,6 +238,12 @@ void CSceneStandby::Draw()
 		m_pRedyFontImg[i]->Draw();
 	}
 
+	for (auto& item : m_ItemList)
+	{
+		m_SelectSpawnItemImg[item]->Draw();
+
+	}
+
 
 	//コントローラー番号0が準備OKなら
 	if (CSceneData::GetSlot(0))	m_pSpriteStartFont->SetAlpha(1.f);
@@ -267,10 +300,10 @@ void CSceneStandby::SetSelectorPos()
 
 void CSceneStandby::MoveSelector()
 {
-	bool IsPushUp	= CInputManager::IsDown(Action::NavigateUp, 0)   || 0 < CInputManager::GetLeftSthikY(0); //下ボタン / 下スティックがインタラクトされた？
-	bool IsPushDown = CInputManager::IsDown(Action::NavigateDown, 0) || 0 > CInputManager::GetLeftSthikY(0); //上ボタン / 上スティックがインタラクトされた？
-	bool IsPushRight = CInputManager::IsDown(Action::NavigateRight, 0)|| 0 > CInputManager::GetLeftSthikY(0); //右ボタン / 右スティックがインタラクトされた？
-	bool IsPushLeft = CInputManager::IsDown(Action::NavigateLeft, 0) || 0 > CInputManager::GetLeftSthikY(0); //左ボタン / 左スティックがインタラクトされた？
+	bool IsPushUp	= CInputManager::IsDown(Action::NavigateUp, 0)   || 0 < CInputManager::GetLeftSthikY(0); //下ボタン / 下スティックが動かされたされた？
+	bool IsPushDown = CInputManager::IsDown(Action::NavigateDown, 0) || 0 > CInputManager::GetLeftSthikY(0); //上ボタン / 上スティックが動かされたされた？
+	bool IsPushRight = CInputManager::IsDown(Action::NavigateRight, 0)|| 0 > CInputManager::GetLeftSthikY(0); //右ボタン / 右スティック動かされたされた？
+	bool IsPushLeft = CInputManager::IsDown(Action::NavigateLeft, 0) || 0 > CInputManager::GetLeftSthikY(0); //左ボタン / 左スティックが動かされたされた？
 
 	if (IsPushUp)
 	{
