@@ -171,6 +171,7 @@ enum class Sprite2DList
 	UI_Selector,
 	Clock,	
 	TimeNumber,	
+	ReadyHowTo,
 	ItemSelect,
 	ItemSelecter,
 };
@@ -201,6 +202,9 @@ enum class enSoundList
 	SE_BoomerangThrow,
 	SE_SmashBatHit,
 	SE_FunUse,
+	SE_Piko,
+	SE_HandClap,
+	SE_FieWork,
 	SE_DestroyItem,
 	SE_EndSceneMain,
 
@@ -212,6 +216,7 @@ enum class enSoundList
 	SE_Ready,
 	SE_Go,
 	SE_Finish,
+
 
 	//âπÇ™ëùÇ¶ÇΩÇÁÅuÇ±Ç±ÅvÇ…í«â¡
 	max,

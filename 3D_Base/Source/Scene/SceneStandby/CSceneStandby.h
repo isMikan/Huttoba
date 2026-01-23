@@ -51,6 +51,8 @@ private:
 	//選択矢印.
 	std::unique_ptr<CUIObject>			m_pSpriteSelector;
 	std::unique_ptr<CUIObject>			m_pItemSelector;
+	std::unique_ptr<CUIObject>			m_pSpriteSelector;
+	std::unique_ptr<CUIObject>			m_pReadyHowTo;
 
 	//プレイヤーマネージャークラス.
 	std::unique_ptr<CPlayerManager>		m_pPlayerManager;

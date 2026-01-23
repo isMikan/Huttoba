@@ -342,7 +342,7 @@ void Haetataki::OnCollision(CollisionBase* other)
 
 				Smash(*player);
 				m_HitPlayer.push_back(player);
-				AssetManager::Sound()->PlaySE(enSoundList::SE_HitHaetataki);
+				AssetManager::Sound()->PlaySE(enSoundList::SE_Piko);
 
 				//エフェクト設定
 				D3DXVECTOR3 EffectPos = player->GetPosition();

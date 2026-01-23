@@ -401,6 +401,17 @@ void Boomerang::Smash(CPlayerBase& playiers)
 
 void Boomerang::PowerCharge()
 {
+	if (!AssetManager::Effect()->IsPlaying(m_hEffect[Effect::Charging]))
+	{
+		m_hEffect[Effect::Charging] = AssetManager::Effect()->Play("SmashBatHave", m_vPosition);
+	}
+
+	//エフェクトの拡縮設定
+	AssetManager::Effect()->SetScale(m_hEffect[Effect::Charging], D3DXVECTOR3(1.f, 1.f, 1.f));
+	AssetManager::Effect()->SetLocation(m_hEffect[Effect::Charging], m_pPlayer->GetPosition());
+
+	AssetManager::Sound()->Stop(enSoundList::SE_BoomerangCharge);
+
 	m_AddVelocity.x += ADD_CHARGE_RANGE;
 	m_AddVelocity.z += ADD_CHARGE_RANGE;
 
