@@ -9,6 +9,7 @@ public:
     enum class Effect
     {
         ChargeMax = 0,
+        Charging,
         HitPlayer,
     };
 
