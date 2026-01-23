@@ -163,7 +163,8 @@ void CPlayerKnockdownState::ChildPlayer(int index)
 			if (fabs(y) > 0.0f)
 				m_PrevSthikY = y;
 
-			CInputManager::VibrationController(m_pPlayer.GetPlayerID());
+			//一旦コントローラーの振動なしで
+			//CInputManager::VibrationController(m_pPlayer.GetPlayerID());
 			
 			m_EndTime -= m_TimeDecreaseByMashing;	//減少する.
 			m_IsTimeDecreasing = true;

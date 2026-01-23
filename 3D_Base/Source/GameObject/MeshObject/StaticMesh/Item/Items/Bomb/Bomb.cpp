@@ -185,8 +185,8 @@ void Bomb::UseMove()
 
 	m_ExplosionCnt += CTimeManager::GetDeltaTime();
 
-	//現在の高さによって落下するかを決める
-	if (m_vPosition.y > 0.1f)
+		//現在の高さによって落下するかを決める
+	if (m_vPosition.y > 0.1f && !m_IsFall)
 	{
 		//最後にm_vPositionに+するので重力加速度を-で計算する
 		m_Velocity.y -= m_tGravity;
@@ -312,7 +312,7 @@ void Bomb::ChangeColor()
 	//D3DXのVec4の線形補間の計算
 	D3DXVec4Lerp(&color, &gray, &red, blinkRate);
 
-	m_ObjectColor[0].diffuse = color;
+	m_ObjectColor[1].diffuse = color;
 }
 
 float Bomb::CalculateForceScalar(float distance)

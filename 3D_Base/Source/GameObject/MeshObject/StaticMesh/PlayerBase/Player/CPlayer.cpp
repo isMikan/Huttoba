@@ -44,7 +44,9 @@ void CPlayer::HandleInput()
 
 	//ˆÚ“®E‰ñ“]‚ğ‚µ‚È‚¢ê‡.
 	if (IsAnyActionState<
+		CPlayerHandHitState,		//“–‚½‚è.
 		CPlayerHandWhiffState,		//‚Ó‚ç‚Â‚«.
+		CPlayerPickupState,			//E‚¤.
 		CPlayerKnockbackState,		//‚«”ò‚Î‚³‚ê.
 		CPlayerGetUpState,			//‹N‚«ã‚ª‚è.
 		CPlayerKnockdownState>())	//ƒ_ƒEƒ“’†.
@@ -169,8 +171,8 @@ void CPlayer::SetPlayerInputBinding(int index) const
 
 	//ƒRƒ“ƒgƒ[ƒ‰‘€ì.
 	CInputManager::BindKey(Action::Attack,
-		InputBinding(InputDevice::GamePad, CXInput::X), m_PlayerID);	//UŒ‚.
+		InputBinding(InputDevice::GamePad, CXInput::A), m_PlayerID);	//UŒ‚.
 
 	CInputManager::BindKey(Action::ToggleItem,	
-		InputBinding(InputDevice::GamePad, CXInput::A), m_PlayerID);	//E‚¤/Ì‚Ä‚é.
+		InputBinding(InputDevice::GamePad, CXInput::X), m_PlayerID);	//E‚¤/Ì‚Ä‚é.
 }

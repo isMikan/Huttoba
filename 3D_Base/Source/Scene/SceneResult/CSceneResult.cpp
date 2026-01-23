@@ -24,6 +24,9 @@ CSceneResult::CSceneResult()
 	, isHeldDown			(false)
 
 	, cnt					( 0 )
+
+	, m_FireworksEffect		()
+	, m_FireworksMax		( 6 )
 {
 	m_pDx11 = CDirectX11::GetInstance();
 
@@ -31,10 +34,15 @@ CSceneResult::CSceneResult()
 	LoadData();
 	SetSelectorPos();
 
+	m_FireworksEffect.resize(m_FireworksMax);
 }
 
 CSceneResult::~CSceneResult()
 {
+	for(auto& firework : m_FireworksEffect)
+	{
+		AssetManager::Effect()->Stop(firework);
+	}
 	AssetManager::Sound()->Stop(enSoundList::BGM_SceneResult);
 }
 
@@ -139,6 +147,20 @@ void CSceneResult::Update()
 	//プレイヤーの動作.
 	m_pPlayerManager->ResultPlayerUpdate();
 
+	for(auto& player : m_pPlayerManager->GetPlayer())
+	{
+		for (int eNo = 0; eNo < m_FireworksMax; eNo++)
+		{
+			if (CSceneData::GetPlayerLiving(player->GetPlayerID())
+				&& !AssetManager::Effect()->IsPlaying(m_FireworksEffect[eNo]))
+			{
+				int posX = rand() % 10 - 1;	//-1～8までの数値.
+				m_FireworksEffect[eNo] = AssetManager::Effect()->Play("Fireworks", D3DXVECTOR3(posX, -4.f, 1.f));
+				AssetManager::Effect()->SetScale(m_FireworksEffect[eNo], D3DXVECTOR3(0.3f, 0.3f, 0.3f));
+			}
+		}
+	}
+
 	if (CInputManager::IsDown(Action::Decide,0))
 	{
 		//選択中の番号で処理される関数が変わる.
@@ -180,6 +202,9 @@ void CSceneResult::Draw()
 	CFadeManager::Draw(0.f, 1.f, true);
 
 	m_pDx11->SetDepth(true);
+
+	//Effectクラス
+	AssetManager::Effect()->Draw(view, proj, light, camera);
 }
 
 void CSceneResult::Destroy()

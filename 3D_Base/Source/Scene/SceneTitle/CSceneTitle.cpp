@@ -106,7 +106,7 @@ void CSceneTitle::Update()
 	float t = CTimeManager::GetTotalTime();
 
 	//BGMのループ再生
-	AssetManager::Sound()->PlayLoop(enSoundList::SE_BoomerangThrow);
+	AssetManager::Sound()->PlayLoop(enSoundList::BGM_SceneTitle);
 
 	//地面に接地しているか
 	for (auto& player : m_pPlayerManager->GetPlayer())

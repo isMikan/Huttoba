@@ -78,4 +78,7 @@ private:
 
 	//フレームカウント.
 	int cnt;
+
+	std::vector<::EsHandle>		m_FireworksEffect;	//花火エフェクト.
+	int							m_FireworksMax;		//花火の最大数.
 };

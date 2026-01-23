@@ -347,7 +347,7 @@ void Haetataki::OnCollision(CollisionBase* other)
 				//エフェクト設定
 				D3DXVECTOR3 EffectPos = player->GetPosition();
 				EffectPos.y += 1.5f;
-				static ::EsHandle hEffect = 1;
+				static ::EsHandle hEffect = -1;
 				hEffect = AssetManager::Effect()->Play("BoomerangHit", EffectPos);
 				AssetManager::Effect()->SetScale(hEffect, D3DXVECTOR3(1.f, 1.f, 1.f));
 

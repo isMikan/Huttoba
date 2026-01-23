@@ -92,6 +92,8 @@ void CPlayerSEManager::SetPlayerSE()
 				if (!m_IsSE[Knockback])
 				{
 					//SE‚ð–Â‚ç‚·.
+					AssetManager::Sound()->PlaySE(enSoundList::SE_HitHaetataki);
+					//SE‚ð–Â‚ç‚·.
 					AssetManager::Sound()->PlaySE(enSoundList::SE_Knockback);
 					m_IsSE[Knockback] = true;
 				}
