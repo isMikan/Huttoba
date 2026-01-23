@@ -49,7 +49,8 @@ private:
 	std::unordered_map<ItemID, std::unique_ptr<CUIObject>> m_SelectSpawnItemImg;
 
 	//選択矢印.
-	std::unique_ptr<CUIObject>			m_pSpriteSelector;	
+	std::unique_ptr<CUIObject>			m_pSpriteSelector;
+	std::unique_ptr<CUIObject>			m_pItemSelector;
 
 	//プレイヤーマネージャークラス.
 	std::unique_ptr<CPlayerManager>		m_pPlayerManager;

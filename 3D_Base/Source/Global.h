@@ -172,6 +172,7 @@ enum class Sprite2DList
 	Clock,	
 	TimeNumber,	
 	ItemSelect,
+	ItemSelecter,
 };
 
 //サウンドリスト列挙型
