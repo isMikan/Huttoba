@@ -29,9 +29,9 @@ void CPlayerAI_TypeB::Update()
 
 	//毎フレーム行動スコアを低くする
 	//0にすると scoer = -距離 をしているので何も行動しないのスコアが高くなる
-	m_MoveScore = -10000;
+	m_MoveScore = -1000000;
 
-	SearchItem();
+	//SearchItem();
 
 	HandleItemAction();
 
@@ -161,9 +161,9 @@ void CPlayerAI_TypeB::HandleItemAction()
 		//向いている方向
 		D3DXVECTOR3 forward = GetLocalAxes().forward;
 
-		//内積の計算
-		//1で同じ方向,0で直角,-1で真後ろを向いている
-		float dot = D3DXVec3Dot(&nor, &forward);
+		////内積の計算
+		////1で同じ方向,0で直角,-1で真後ろを向いている
+		//float dot = D3DXVec3Dot(&nor, &forward);
 
 
 		if (m_pHoldingItem)
@@ -177,7 +177,7 @@ void CPlayerAI_TypeB::HandleItemAction()
 		else
 		{
 			//ターゲットプレイヤーと近ければ攻撃
-			if (m_Destination.sqrt < 1.0f /*&& dot>0.5f*/)
+			if (m_Destination.sqrt < 1.0f /*&& dot>0.5f*/ && IsAnyActionState<CPlayerActionIdleState, CPlayerHoldingIdleState>())
 			{
 				m_Control = ActionInstruct::Attack;
 			}
