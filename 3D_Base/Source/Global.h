@@ -171,7 +171,8 @@ enum class Sprite2DList
 	UI_Selector,
 	Clock,	
 	TimeNumber,	
-	ReadyHowTo,
+	HowToReady,
+	HowToMain,
 };
 
 //サウンドリスト列挙型

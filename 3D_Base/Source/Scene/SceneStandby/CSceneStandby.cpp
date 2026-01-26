@@ -88,7 +88,7 @@ HRESULT CSceneStandby::LoadData()
 	m_pSpriteStartFont->SetPosition(530, 440, 0);
 	m_pSpriteStartFont->SetScale(1.1f, 1.1f, 1.f);
 
-	m_pReadyHowTo->AttachSprite(AssetManager::Sprite(Sprite2DList::ReadyHowTo));
+	m_pReadyHowTo->AttachSprite(AssetManager::Sprite(Sprite2DList::HowToReady));
 	m_pReadyHowTo->SetPosition(0, 625, 0);
 
 	m_pSpriteEndFont->AttachSprite(AssetManager::Sprite(Sprite2DList::Font_UI_Common));

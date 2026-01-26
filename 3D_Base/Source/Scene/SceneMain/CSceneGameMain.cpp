@@ -41,6 +41,7 @@ CSceneGameMain::CSceneGameMain( HWND hWnd)
 
 	, m_pSpriteReadyGo	()
 	, m_pSpriteFinish	()
+	, m_SpriteHowToMain ()
 
 	, m_IsPause			( false )
 
@@ -114,6 +115,7 @@ HRESULT CSceneGameMain::Create()
 	m_pSpriteReadyGo = std::make_unique<CUIObject>();
 
 	m_pSpriteFinish = std::make_unique<CUIObject>();
+	m_SpriteHowToMain = std::make_unique<CUIObject>();
 
 	return S_OK;
 }
@@ -157,6 +159,10 @@ HRESULT CSceneGameMain::LoadData()
 
 	//970,195はそれぞれ画像の縦と横の大きさ
 	m_pSpriteFinish->SetPosition(D3DXVECTOR3(WND_W / 2 - 970 / 2, WND_H / 2 - 195 / 2, 0));
+
+	m_SpriteHowToMain->AttachSprite(AssetManager::Sprite(Sprite2DList::HowToMain));
+	m_SpriteHowToMain->SetPosition(D3DXVECTOR3(0,623,0));
+
 
 	return S_OK;
 }
@@ -360,6 +366,7 @@ void CSceneGameMain::Draw()
 
 	m_pItemManager->Draw(view, proj, light, camera);
 
+	m_SpriteHowToMain->Draw();
 	////ボーン座標に合わせて球体を表示
 	//m_pStaticMeshMap[StaticMeshList::BSphere]->SetPosition(m_ZakoBonePos);
 	//m_pStaticMeshMap[StaticMeshList::BSphere]->Render(m_mView, m_mProj, m_Light, m_Camera.vPosition);

@@ -102,4 +102,3 @@ std::pair<ItemID, int> SelectSpawnItem::Lottery(std::vector<std::pair<ItemID, in
 
 	return selectItem;
 }
-

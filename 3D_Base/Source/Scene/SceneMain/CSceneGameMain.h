@@ -114,6 +114,9 @@ private:
 	std::unique_ptr<CUIObject>		m_pSpriteReadyGo;
 	//フィニッシュ画像
 	std::unique_ptr<CUIObject>		m_pSpriteFinish;
+	//操作説明画像
+	std::unique_ptr<CUIObject>		m_SpriteHowToMain;
+
 
 	bool	m_IsPause;	//ポーズ中か.
 
