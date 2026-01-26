@@ -31,9 +31,9 @@ void CPlayerAI_TypeB::Update()
 	//0にすると scoer = -距離 をしているので何も行動しないのスコアが高くなる
 	m_MoveScore = -10000;
 
-	//SearchItem();
+	SearchItem();
 
-	//HandleItemAction();
+	HandleItemAction();
 
 	RunBomb();
 
@@ -51,8 +51,8 @@ void CPlayerAI_TypeB::Draw(D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAM
 
 void CPlayerAI_TypeB::SearchItem()
 {
-	////アイテムを持っているなら返す
-	//if (m_pHoldingItem) return;
+	//アイテムを持っているなら返す
+	if (m_pHoldingItem) return;
 
 	//狙うアイテム
 	ItemBase* targetItem = nullptr;
@@ -86,6 +86,8 @@ void CPlayerAI_TypeB::SearchItem()
 				//ターゲットを更新
 				targetItem = item.get();
 
+				D3DXVec3Normalize(&distance, &distance);
+
 				m_Destination.dir = distance;
 				m_Destination.sqrt = distanceSq;
 			}
@@ -96,7 +98,7 @@ void CPlayerAI_TypeB::SearchItem()
 	if (targetItem)
 	{
 		//アイテムが近ければ拾う
-		if (m_Destination.sqrt < 3.0f)
+		if (m_Destination.sqrt < 2.0f)
 		{
 			m_Control = ActionInstruct::ToggleItem;
 		}
@@ -167,7 +169,7 @@ void CPlayerAI_TypeB::HandleItemAction()
 		if (m_pHoldingItem)
 		{
 			//ターゲットプレイヤーと近ければ攻撃
-			if (m_Destination.sqrt < ItemMove(m_pHoldingItem->GetTag()) && dot>0.8f)
+			if (m_Destination.sqrt < ItemMove(m_pHoldingItem->GetTag())/* && dot>0.5f*/)
 			{
 				m_Control = ActionInstruct::Attack;
 			}
@@ -175,7 +177,7 @@ void CPlayerAI_TypeB::HandleItemAction()
 		else
 		{
 			//ターゲットプレイヤーと近ければ攻撃
-			if (m_Destination.sqrt < 1.0f && dot>0.8f)
+			if (m_Destination.sqrt < 1.0f /*&& dot>0.5f*/)
 			{
 				m_Control = ActionInstruct::Attack;
 			}
