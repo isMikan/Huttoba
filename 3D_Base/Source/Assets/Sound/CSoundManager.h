@@ -66,12 +66,15 @@ public:
 
 	/*****************************************************************************************
 	* @brief    すべての音を停止する
+	* 
+	* @note		シーンメインのBGMだった場合ストップしない(決め打ち)
 	*****************************************************************************************/
 	void AllStop()
 	{
-		for (auto sound : m_pSound)
+		for (auto element : m_pSound)
 		{
-			sound.second->Stop();
+			if (element.first == enSoundList::BGM_SceneMain) continue;
+			element.second->Stop();
 		}
 	}
 
