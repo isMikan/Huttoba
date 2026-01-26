@@ -284,6 +284,8 @@ void CSceneGameMain::Update()
 			//SetNextScene(Result);
 			m_GameState = GameState::Finish;
 			m_StateTimer = 0;
+
+			AssetManager::Sound()->AllStop();
 			AssetManager::Sound()->PlaySE(enSoundList::SE_EndSceneMain);
 		}
 
@@ -292,6 +294,8 @@ void CSceneGameMain::Update()
 			//フィニッシュへ
 			m_GameState = GameState::Finish;
 			m_StateTimer = 0;
+
+			AssetManager::Sound()->AllStop();
 			AssetManager::Sound()->PlaySE(enSoundList::SE_EndSceneMain);
 		}
 

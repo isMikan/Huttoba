@@ -31,9 +31,9 @@ void CPlayerAI_TypeB::Update()
 	//0にすると scoer = -距離 をしているので何も行動しないのスコアが高くなる
 	m_MoveScore = -10000;
 
-	//SearchItem();
+	SearchItem();
 
-	//HandleItemAction();
+	HandleItemAction();
 
 	RunBomb();
 
@@ -53,8 +53,8 @@ void CPlayerAI_TypeB::Draw(D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAM
 
 void CPlayerAI_TypeB::SearchItem()
 {
-	//アイテムを持っているなら返す
-	if (m_pHoldingItem) return;
+	////アイテムを持っているなら返す
+	//if (m_pHoldingItem) return;
 
 	//狙うアイテム
 	ItemBase* targetItem = nullptr;
@@ -107,8 +107,8 @@ void CPlayerAI_TypeB::SearchItem()
 
 void CPlayerAI_TypeB::HandleItemAction()
 {
-	//アイテムを未所持なら返す
-	if (!m_pHoldingItem)return;
+	////アイテムを未所持なら返す
+	//if (!m_pHoldingItem)return;
 
 	//狙うプレイヤー
 	CPlayerBase* targetPlayer = nullptr;
@@ -133,7 +133,7 @@ void CPlayerAI_TypeB::HandleItemAction()
 		//相手プレイヤーがダウン中か吹き飛んでいる最中なら攻撃しにくくする
 		if (player->IsAnyActionState<CPlayerKnockdownState,CPlayerKnockbackState>())
 		{
-			score -= 5000.0f;
+			//score -= 5000.0f;
 		}
 
 		score = CalculateDangerScore(player->GetPosition());
@@ -165,14 +165,22 @@ void CPlayerAI_TypeB::HandleItemAction()
 		//1で同じ方向,0で直角,-1で真後ろを向いている
 		float dot = D3DXVec3Dot(&nor, &forward);
 
-		//このif文の部分をtrueを返すのが持っているアイテムによって変化するようにして
-		//攻撃をする距離を変化させる
-		ItemMove(m_pHoldingItem->GetTag());
 
-		//ターゲットプレイヤーと近ければ攻撃
-		if (m_Destination.sqrt < ItemMove(m_pHoldingItem->GetTag()) && dot>0.8f)
+		if (m_pHoldingItem)
 		{
-			m_Control = ActionInstruct::Attack;
+			//ターゲットプレイヤーと近ければ攻撃
+			if (m_Destination.sqrt < ItemMove(m_pHoldingItem->GetTag()) && dot>0.8f)
+			{
+				m_Control = ActionInstruct::Attack;
+			}
+		}
+		else
+		{
+			//ターゲットプレイヤーと近ければ攻撃
+			if (m_Destination.sqrt < 1.0f && dot>0.8f)
+			{
+				m_Control = ActionInstruct::Attack;
+			}
 		}
 	}
 }
@@ -229,20 +237,28 @@ float CPlayerAI_TypeB::ItemScoreBonus(const ItemID& item) const
 	switch (item)
 	{
 	case ItemID::Haetataki:
+		return 10.f;
 		break;
 	case ItemID::Bomb:
+		return 10.f;
 		break;
 	case ItemID::Fun:
+		return 10.f;
 		break;
 	case ItemID::Mushroom:
+		return 10.f;
 		break;
 	case ItemID::SmashBat:
+		return 10.f;
 		break;
 	case ItemID::TrackingRobot:
+		return 10.f;
 		break;
 	case ItemID::Boomerang:
+		return 10.f;
 		break;
 	case ItemID::Magnet:
+		return 10.f;
 		break;
 	case ItemID::Max:
 		break;

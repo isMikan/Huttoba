@@ -280,7 +280,7 @@ void CSceneResult::SelectorControl()
 
 	//パラメータ
 	const float threshold = 0.5f;		//入力と判定するスティックの倒し量
-	const float initialDelay = 0.2f;	//最初のディレイ（秒）
+	const float initialDelay = 0.8f;	//最初のディレイ（秒）
 	const float repeatInterval = 0.1f;	//リピート間隔（秒）
 
 	float dt = CTimeManager::GetDeltaTime();

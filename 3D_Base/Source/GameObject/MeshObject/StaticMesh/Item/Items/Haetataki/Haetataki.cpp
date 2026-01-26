@@ -47,13 +47,13 @@ constexpr float OFFSET_USE_COLLISION_Y = 0.0f;
 constexpr float OFFSET_USE_COLLISION_Z = 0.0f;
 
 //使用上限
-constexpr float USE_COUNT = 7;	
+constexpr float USE_COUNT = 5;	
 
 // 回転にかける総時間
 constexpr float SLERP_DURATION = 1.0f;
 
 //回数制限
-constexpr float USE_LIMIT = 7;		
+constexpr float USE_LIMIT = 5;		
 //--------------------------------------------------------------------------------------------------------------
 
 Haetataki::Haetataki()

@@ -20,8 +20,8 @@ TrackingRobot::TrackingRobot()
 	, m_IsGround		( false )
 
 	, m_Velocity		()
-	, m_MoveSpeed		( 4.0f )	//値を変えると使用時の移動速度が変化
-	, m_TurnRate		( 5.0f )	//値を変えると使用時の旋回の角度が変化
+	, m_MoveSpeed		( 6.0f )	//値を変えると使用時の移動速度が変化
+	, m_TurnRate		( 3.0f )	//値を変えると使用時の旋回の角度が変化
 
 	, m_ExplosionTime	( 5.0f )	//値を変えると爆発するまでの時間が変化
 	, m_ExplosionCnt	( 0.0f )
