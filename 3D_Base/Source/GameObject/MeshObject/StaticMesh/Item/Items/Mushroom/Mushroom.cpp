@@ -50,11 +50,9 @@ void Mushroom::Init()
 
 	AttachMesh(AssetManager::Mesh(StaticMeshList::Mushroom));
 
-	SetPosition( 3.0f, 15.0f, 0.0f );
-
 	m_State = IItemObserver::IItemObserver::State::Spawn;
 
-	m_tGravity = 0.001f;
+	m_tGravity = 0.01f;
 
 	//“–‚½‚è”»’è
 	std::shared_ptr<CStaticMesh> UseMesh = AssetManager::Mesh(StaticMeshList::MushroomCol);
@@ -90,8 +88,8 @@ void Mushroom::Spawn()
 	//—Ž‰ºˆ—
 	if (m_vPosition.y > 0.5f)
 	{
-		m_vPosition.y -= m_Velocity.y;
-		m_Velocity.y += m_tGravity;
+		m_vPosition.y -= m_tGravity;
+		m_tGravity += 0.001f;
 	}
 	else
 	{
@@ -204,7 +202,7 @@ void Mushroom::HaveMove()
 
 void Mushroom::UseMove()
 {
-	if (m_vPosition.y > 0.1f)
+	if (m_vPosition.y > 0.5f)
 	{
 		m_tGravity += 0.001f;
 		m_vPosition.y -= m_tGravity;

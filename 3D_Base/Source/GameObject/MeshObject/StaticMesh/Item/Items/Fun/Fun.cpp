@@ -108,7 +108,7 @@ void Fun::Draw(D3DXMATRIX& View, D3DXMATRIX& Proj, LIGHT& Light, CAMERA& Camera)
 void Fun::Spawn()
 {
 	//落下処理
-	if (m_vPosition.y > 0.2)
+	if (m_vPosition.y > 0.5f)
 	{
 		m_vPosition.y -= m_tGravity;
 		m_tGravity += 0.001f;
@@ -210,7 +210,7 @@ void Fun::HaveMove()
 	m_vPosition = m_pPlayer->GetPlayerRightHand().GetPosition();
 
 	//所持中に幹？を持つように見せるのでy座標を調整
-	m_vPosition.y -= 0.7;
+	m_vPosition.y -= 0.7f;
 
 	m_vQuaternion = m_pPlayer->GetQuaternion();
 }
@@ -231,7 +231,7 @@ void Fun::UseMove()
 	m_vPosition = m_pPlayer->GetPlayerRightHand().GetPosition();
 
 	//所持中に幹？を持つように見せるのでy座標を調整
-	m_vPosition.y -= 0.7;
+	m_vPosition.y -= 0.7f;
 
 	m_vQuaternion = m_pPlayer->GetQuaternion();
 
