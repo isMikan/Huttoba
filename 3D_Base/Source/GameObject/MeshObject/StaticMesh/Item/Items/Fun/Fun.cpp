@@ -24,6 +24,7 @@ Fun::Fun()
 {
 	Init();
 
+	m_ObjectColor[0].diffuse = { 0.f, 1.f, 1.f, 1.f };
 }
 
 Fun::~Fun()

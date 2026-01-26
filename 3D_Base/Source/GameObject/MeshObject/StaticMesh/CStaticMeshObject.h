@@ -29,7 +29,8 @@ public:
 	}
 
 //=== オブジェクトの色を変更するのに必要.		制作者 [甲把] ===.
-	//オブジェクトの色を設定する関数.
+	//オブジェクトの色の取得と設定.
+	std::vector<ObjectColor> GetObjectColor() { return m_ObjectColor; }
 	void SetObjectColor(
 		int index,
 		D3DXVECTOR4& diffuse,
