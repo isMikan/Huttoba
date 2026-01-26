@@ -142,7 +142,7 @@ protected:
 protected:
 	float m_tGravity;	// 重力加速度(簡易版)
 	float m_UseTime;	// 使用時間
-	float  m_UseCount;	// 使用回数
+	float m_UseCount;	// 使用回数
 	bool m_IsDestroy;	// 破壊するかどうか
 	bool m_IsOnGround;	// 地面に接触しているか
 	bool m_IsUse;		// 使用中か

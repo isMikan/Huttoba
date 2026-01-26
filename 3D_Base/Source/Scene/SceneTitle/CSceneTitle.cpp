@@ -120,8 +120,8 @@ void CSceneTitle::Update()
 	}
 
 	//プレイヤーの動作
-	//\
 	m_pPlayerManager->TitlePlayerUpdate();
+	//\
 	m_pPlayerManager->Update();
 
 	//画面がどれくらいのフェードから操作できるかを指定している
