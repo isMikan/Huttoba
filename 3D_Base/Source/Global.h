@@ -216,6 +216,7 @@ enum class enSoundList
 	SE_Go,
 	SE_Finish,
 
+	SE_InvalidAction,
 
 	//‰¹‚ª‘‚¦‚½‚çu‚±‚±v‚É’Ç‰Á
 	max,

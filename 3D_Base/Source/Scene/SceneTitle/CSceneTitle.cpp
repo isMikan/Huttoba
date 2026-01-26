@@ -124,6 +124,9 @@ void CSceneTitle::Update()
 	m_pPlayerManager->TitlePlayerUpdate();
 	m_pPlayerManager->Update();
 
+	//画面がどれくらいのフェードから操作できるかを指定している
+	if (CFadeManager::GetAlpha() >= 0.7f)return;
+
 	MoveSelector();
 
 	if (CInputManager::IsDown(Action::Decide,0))
@@ -237,6 +240,8 @@ void CSceneTitle::SetSelectorPos()
 {
 	m_SelectorPos.push_back(D3DXVECTOR3(465, 440, 0));
 	m_SelectorPos.push_back(D3DXVECTOR3(490, 540, 0));
+
+	m_pSpriteSelector->SetPosition(m_SelectorPos[m_SelectorNumber]);
 }
 
 void CSceneTitle::MoveSelector()

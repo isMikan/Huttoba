@@ -135,10 +135,6 @@ HRESULT CSceneResult::LoadData()
 
 void CSceneResult::Update()
 {
-	MoveSelector();
-
-	SelectorControl();
-
 	AssetManager::Sound()->PlayLoop(enSoundList::BGM_SceneResult);
 
 	//地面に接地しているか.
@@ -165,6 +161,13 @@ void CSceneResult::Update()
 			}
 		}
 	}
+
+	//画面がどれくらいのフェードから操作できるかを指定している
+	if (CFadeManager::GetAlpha() >= 0.7f)return;
+
+	MoveSelector();
+
+	SelectorControl();
 
 	if (CInputManager::IsDown(Action::Decide,0))
 	{
@@ -235,6 +238,8 @@ void CSceneResult::SetSelectorPos()
 	m_SelectorPos.push_back(D3DXVECTOR3(850, 500, 0));
 	m_SelectorPos.push_back(D3DXVECTOR3(850, 560, 0));
 	m_SelectorPos.push_back(D3DXVECTOR3(850, 630, 0));
+
+	m_pSpriteSelector->SetPosition(m_SelectorPos[m_SelectorNumber]);
 }
 
 void CSceneResult::MoveSelector()
@@ -280,7 +285,7 @@ void CSceneResult::SelectorControl()
 
 	//パラメータ
 	const float threshold = 0.5f;		//入力と判定するスティックの倒し量
-	const float initialDelay = 0.8f;	//最初のディレイ（秒）
+	const float initialDelay = 0.7f;	//最初のディレイ（秒）
 	const float repeatInterval = 0.1f;	//リピート間隔（秒）
 
 	float dt = CTimeManager::GetDeltaTime();

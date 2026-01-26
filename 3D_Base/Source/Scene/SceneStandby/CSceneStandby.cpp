@@ -112,41 +112,47 @@ void CSceneStandby::Update()
 	AssetManager::Sound()->PlayLoop(enSoundList::BGM_SceneStanby);
 
 	//画面がどれくらいのフェードから操作できるかを指定している
-	if (CFadeManager::GetAlpha() <= 0.7f)
-	{
-		MoveSelector();
+	if (CFadeManager::GetAlpha() >= 0.7f)return;
+
+	MoveSelector();
 
 		//コントローラーで準備状態切り替え.
-		for (size_t i = 0; i < 4; ++i)
+	for (size_t i = 0; i < 4; ++i)
+	{
+		if (CInputManager::IsDown(Action::Switch, i))
 		{
-			if (CInputManager::IsDown(Action::Switch, i))
-			{
-				AssetManager::Sound()->PlaySE(enSoundList::SE_PreparationSwitch);
-				CSceneData::ChangeSlot(i);
-			}
+			AssetManager::Sound()->PlaySE(enSoundList::SE_PreparationSwitch);
+			CSceneData::ChangeSlot(i);
 		}
+	}
 
-		if (CInputManager::IsDown(Action::Decide, 0))
+	if (CInputManager::IsDown(Action::Decide, 0))
+	{
+		switch (m_SelectorNumber)
 		{
-			AssetManager::Sound()->PlaySE(enSoundList::SE_Decision);
-
-			switch (m_SelectorNumber)
+		case 0:
+			//コントローラー番号0が準備OKなら
+			if (CSceneData::GetSlot(0))
 			{
-			case 0:
-				//コントローラー番号0が準備OKなら
-				if (CSceneData::GetSlot(0))
-				{
-					//選択中の番号で処理される関数が変わる.
-					m_Action[m_SelectorNumber]();
-				}
-				break;
-			case 1:
+				AssetManager::Sound()->PlaySE(enSoundList::SE_Decision);
+
 				//選択中の番号で処理される関数が変わる.
 				m_Action[m_SelectorNumber]();
-				break;
-			default:
-				break;
 			}
+			else
+			{
+				//準備未完了の時のSE
+				AssetManager::Sound()->PlaySE(enSoundList::SE_InvalidAction);
+			}
+			break;
+		case 1:
+			AssetManager::Sound()->PlaySE(enSoundList::SE_Decision);
+
+			//選択中の番号で処理される関数が変わる.
+			m_Action[m_SelectorNumber]();
+			break;
+		default:
+			break;
 		}
 	}
 

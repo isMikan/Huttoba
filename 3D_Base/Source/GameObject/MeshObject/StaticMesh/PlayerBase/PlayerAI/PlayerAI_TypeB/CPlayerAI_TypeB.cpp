@@ -13,7 +13,7 @@ CPlayerAI_TypeB::CPlayerAI_TypeB(int index)
 	, m_DistanceWeight		( 0.5f )	//値を変えるとアイテム距離スコアが変化
 										//値を大きくすると近くのアイテム、小さくすると好みのアイテムを優先する
 
-	, m_GroundSafeRadius	( 0.88f )	//値を変えるとステージのこれより外側は危険の範囲が変化 0~1の値を入れて
+	, m_GroundSafeRadius	( 0.8f )	//値を変えるとステージのこれより外側は危険の範囲が変化 0~1の値を入れて
 {
 }
 
@@ -31,13 +31,11 @@ void CPlayerAI_TypeB::Update()
 	//0にすると scoer = -距離 をしているので何も行動しないのスコアが高くなる
 	m_MoveScore = -10000;
 
-	SearchItem();
+	//SearchItem();
 
-	HandleItemAction();
+	//HandleItemAction();
 
 	RunBomb();
-
-	//AvoidDanger();
 
 	m_Destination.dir += CalculateStage();
 
@@ -136,7 +134,7 @@ void CPlayerAI_TypeB::HandleItemAction()
 			//score -= 5000.0f;
 		}
 
-		score = CalculateDangerScore(player->GetPosition());
+		score += CalculateDangerScore(player->GetPosition());
 
 		//スコアが今までの最大より大きいなら
 		if (m_MoveScore < score)
@@ -182,6 +180,7 @@ void CPlayerAI_TypeB::HandleItemAction()
 				m_Control = ActionInstruct::Attack;
 			}
 		}
+		std::cout << targetPlayer->GetPlayerID() << std::endl;
 	}
 }
 
@@ -353,7 +352,6 @@ float CPlayerAI_TypeB::CalculateDangerScore(const D3DXVECTOR3& pos) const
 
 void CPlayerAI_TypeB::RunBomb()
 {
-
 	for (auto& item : m_pItemManager->GetItems())
 	{
 		if (item->GetTag() == ItemID::Bomb)
