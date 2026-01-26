@@ -31,6 +31,7 @@ public:
     //ó‘Ô•Ï‰»‚Éˆê“x‚¾‚¯ˆ—
     void ItemState(IItemObserver::State state)override;
 
+    //İ’u‚³‚ê‚Ä‚¢‚é‚©‚Ç‚¤‚©æ“¾
     bool GetIsPlaced() const { return m_IsPlaced; }
 
 private:

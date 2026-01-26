@@ -5,6 +5,8 @@
 
 #include "TimeManager/CTimeManager.h"
 
+#include "PlayerBase/PlayerState/PlayerActionState/PlayerKnockbackState/CPlayerKnockbackState.h"
+
 //Factory‚É“o˜^
 namespace { const bool regist = ItemBase::AutoRegister<Fun>(ItemID::Fun); }
 
@@ -233,7 +235,9 @@ void Fun::UseMove()
 
 	m_vQuaternion = m_pPlayer->GetQuaternion();
 
-
+	//‚«”ò‚Î‚³‚ê‚Ä‚éÅ’†‚È‚çƒAƒCƒeƒ€‚ðHaveó‘Ô‚É‚·‚é
+	if (m_pPlayer->IsAnyActionState<CPlayerKnockbackState>())
+		m_State = IItemObserver::State::Have;
 
 
 	D3DXVECTOR3 flowerd = m_pPlayer->GetLocalAxes().forward;
