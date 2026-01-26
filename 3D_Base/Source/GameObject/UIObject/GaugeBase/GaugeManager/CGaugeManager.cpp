@@ -101,10 +101,8 @@ void CGaugeManager::Update()
 		}
 	}
 
-	bool isDelete = false;	//削除するのか.
-	std::vector<CStaticMeshObject*>  deleteObject{};	//削除するオブジェクト.
-	int deleteFrame = 0;	//削除するフレーム.
-	int deleteGauge = 0;	//削除するゲージ.
+	std::unordered_map<CStaticMeshObject*, bool> isDelete{};	//削除するのか.
+	std::unordered_map<CStaticMeshObject*, std::pair<int, int>> deleteGauge{};	//削除するゲージ.
 
 	for (auto it = m_ObjectGauge.begin(); it != m_ObjectGauge.end(); it++)
 	{
@@ -118,10 +116,9 @@ void CGaugeManager::Update()
 		//指定した地点に来た場合、削除準備.
 		if (object->GetPosition().y < m_DeletePos)
 		{
-			deleteFrame = frameNo;
-			deleteGauge = gaugeNo;
-			deleteObject.push_back(object);
-			isDelete = true;
+			deleteGauge[object].first = frameNo;
+			deleteGauge[object].second = gaugeNo;
+			isDelete[object] = true;
 			continue;
 		}
 
@@ -160,31 +157,31 @@ void CGaugeManager::Update()
 			}
 			else
 			{
-				deleteFrame = frameNo;
-				deleteGauge = gaugeNo;
-				deleteObject.push_back(object);
-				isDelete = true;
+				deleteGauge[object].first = frameNo;
+				deleteGauge[object].second = gaugeNo;
+				isDelete[object] = true;
 				continue;
 			}
 		}
 	}
 
-	//削除する場合.
-	if (isDelete)
+	for (auto it = deleteGauge.begin(); it != deleteGauge.end(); it++)
 	{
-		m_pGauge[deleteFrame].reset();
-		m_pGauge[deleteGauge].reset();
-		for (auto& obj : deleteObject)
-		{	
-			//プレイヤーを探す.
-			auto objectGauge = m_ObjectGauge.find(obj);
-			//見つかった場合.
-			if (objectGauge != m_ObjectGauge.end())
-			{
-				m_SubscribeObjects.erase(obj);	//登録を消す.
-				m_ObjectGauge.erase(obj);		//ゲージ削除.
-			};
-		}
+		auto object = it->first;
+		auto pair = it->second;
+		int deleteFrame = pair.first;	//フレーム番号.
+		int deleteGauge = pair.second;	//ゲージ番号.
+
+		//オブジェクトを探す.
+		auto objectGauge = m_ObjectGauge.find(object);
+		//見つかった場合.
+		if (objectGauge != m_ObjectGauge.end())
+		{
+			m_pGauge[deleteFrame].reset();
+			m_pGauge[deleteGauge].reset();
+			m_SubscribeObjects.erase(object);	//登録を消す.
+			m_ObjectGauge.erase(object);		//ゲージ削除.
+		};
 	}
 }
 
