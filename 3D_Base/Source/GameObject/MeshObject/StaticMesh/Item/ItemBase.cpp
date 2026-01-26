@@ -60,7 +60,7 @@ void ItemBase::Update()
 		{
 			m_ItemOnGroundEffect = AssetManager::Effect()->Play("ItemOnGround", m_vPosition);
 			AssetManager::Effect()->SetScale(m_ItemOnGroundEffect, D3DXVECTOR3(0.3f, 0.3f, 0.3f));
-			AssetManager::Effect()->SetSpeed(m_ItemOnGroundEffect, 3.5f);
+			AssetManager::Effect()->SetSpeed(m_ItemOnGroundEffect, 1.f);
 		}
 		OnGround();
 		break;
